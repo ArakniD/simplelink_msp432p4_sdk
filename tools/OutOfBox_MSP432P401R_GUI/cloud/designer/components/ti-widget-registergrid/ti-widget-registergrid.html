@@ -1,0 +1,471 @@
+<!--
+`ti-program-model` adds the program model for databinding to a c-program with static variables running on the target.
+    -
+Example:
+
+    <ti-program-model></ti-program-model>
+
+See ../demo.html for a full working example of how to use this component.
+
+@group TI Widgets
+@element ti-widget-registergrid
+@homepage ../ti-guicomposer-helpindex/demo.html
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-input/core-input.html">
+<link rel="import" href="../core-header-panel/core-header-panel.html">
+<link rel="import" href="../core-icons/av-icons.html">
+<link rel="import" href="../core-icon/core-icon.html">
+
+<polymer-element name="ti-widget-registergrid">
+
+    <template id="template_register_grid" >
+        <style>
+            :host {
+                display: inline-block;
+                position: static;
+            }
+
+            table {
+                border: solid grey 2px;
+                border-collapse: collapse;
+            }
+
+            th {
+                border-left: solid grey 1px;
+                border-right: solid grey 1px;
+                font-weight: bold;
+            }
+
+            td {
+                border-left: solid grey 1px;
+                border-right: solid grey 1px;
+            }
+
+
+            #core_header_panel {
+
+                /* height: 400px;  NOTE: core-header-panel or its parent MUST have a height or it will not display. */
+
+                padding: 0px;
+            }
+            #section {
+                height: 1000px;
+            }
+            #ti_widget_registergrid {
+                height: 100%;
+                left: 0px;
+                padding: 0px;
+            }
+            #table_registergrid_hdr {
+                left: 0px;
+                padding-right: 0px;
+            }
+            #registergrid_div {
+                background-color: grey;
+            }
+            #table_registergrid_div {
+                background-color: grey;
+            }
+            #table_registergrid {
+                background-color: white;
+            }
+            #core_toolbar {
+                color: black;
+                height: 20px;
+                background-color: white;
+                overflow:hidden;
+                bottom-padding:0px;
+            }
+        </style>
+<div id="container">
+        <div id="registergrid_div" style="width:100%;font-size:small;">
+            <core-header-panel mode="seamed"  id="core_header_panel" >
+                <div class="core-header"  style="height:20px;padding:0px">
+                    <table id="table_registergrid_hdr" align="left" style="font-size:small;border-bottom:transparent 0px;" >
+                        <tr>
+                            <th align="center"  width="{{colWidths[0]}}px">Block/Register Name</th>
+                            <th align="center"  width="{{colWidths[1]}}px" style="padding-left:10px;padding-right:10px;">Address</th>
+                            <th align="center"  width="{{colWidths[2]}}px">Current Value</th>
+                            <template id="colHdrTemplate" repeat="{{bit,bitIndex in bits}}">
+                                <th align="center"  width="{{colWidths[3]}}px" >{{maxBitWidth-1-bitIndex}}</th>
+                            </template>
+                        </tr>
+                    </table>
+                </div>
+                <section id="section" style="height:100%">
+
+
+
+                    <div  id="table_registergrid_div" style="height:100%;width:100%" >
+
+                        <table id="table_registergrid" align="left" style="border-top:white 0px;">
+
+
+                            <template id="deviceTemplate" repeat="{{regGroup,regGroupIndex in regGroups}}">
+                                <template if="{{regGroup.expanded}}">
+                                    <tr  style="height:28px;">
+                                        <td   width="{{colWidths[0]}}px" >
+                                            <section id="group_{{regGroupIndex}}" on-click="{{selectRegGroup}}">
+                                                <core-icon id="groupicon_{{regGroupIndex}}"icon="av:play-arrow" on-click="{{selectRegGroup}}" style="transform:rotate(90deg);color:grey;width:14px;vert-align:top;padding-bottom:3px;"></core-icon>
+                                                {{regGroup.name}}
+                                            </section>
+                                        </td>
+                                        <td width="{{colWidths[1]}}px">&nbsp;</td>
+                                        <td width="{{colWidths[2]}}px">&nbsp;</td>
+                                        <template  repeat="{{bitG in bits}}">
+                                            <td width="{{colWidths[3]}}px">&nbsp;</td>
+                                        </template>
+                                    </tr>
+                                    <template id="regGroupTemplate" repeat="{{reg,regIndex in regGroups[regGroupIndex].regs}}" >
+                                        <tr style="height:28px;background-color:{{reg.backgroundColor}};" align="center" on-click="{{selectReg}}">
+                                            <td  width="{{colWidths[0]-35}}px"  style="padding-left:35px" align="left"  on-click="{{selectReg}}">
+                                                <section id="name_{{regGroupIndex}}.{{regIndex}}">{{reg.name}}</section></td>
+                                            <td   width="{{colWidths[1]}}px" style="padding:0px;padding-left:10px;padding-right:10px;">
+                                                <section id="adrs_{{regGroupIndex}}.{{regIndex}}">{{reg.adrs}}</section></td>
+
+                                            <td id="value_{{regGroupIndex}}.{{regIndex}}" width="{{colWidths[2]}}px" style="padding:0px;"  on-click="{{selectReg}}"><section>
+                                                <!-- on-click={{valueSelected}} on-keyup="{{valueSelected}}" -->
+                                                <input  style="width:{{colWidths[2]-2}}px;text-align:center" is="core-input" id="input_{{regGroupIndex}}.{{regIndex}}" value="{{reg.value}}"/>
+                                                <!-- {{reg.value}} -->
+                                            </section></td>
+                                            <template id="colValueTemplate" repeat="{{bit2 in bits}}">
+                                                <td id="bit{{bit2}}_{{regGroupIndex}}.{{regIndex}}"
+
+                                                    width="{{colWidths[3]}}px" on-click="{{selectReg}}" > <input style="width:{{colWidths[3]-2}}px;text-align:center;" is="core-input" id="input_{{regGroupIndex}}.{{regIndex}}" value="{{getBitValue(bit2,reg.value,reg.numBits)}}"/></td>
+                                            </template>
+                                        </tr>
+                                    </template>
+                                </template>
+                                <template if="{{!regGroup.expanded}}">
+                                    <tr style="height:28px;">
+                                        <td width="{{colWidths[0]}}px" >
+                                            <section id="nsgroup_{{regGroupIndex}}" on-click="{{selectRegGroup}}">
+                                                <core-icon id="nsgroupicon_{{regGroupIndex}}" icon="av:play-arrow" on-click="{{selectRegGroup}}" style="color:grey;width:14px;vert-align:top;padding-bottom:3px;"></core-icon>
+                                                {{regGroup.name}}
+                                            </section>
+                                        </td><td width="{{colWidths[1]}}px" style="padding:0px;padding-left:10px;padding-right:10px;">&nbsp;</td>
+                                        <td width="{{colWidths[2]}}px">&nbsp;</td>
+                                        <template  repeat="{{bitG in bits}}">
+                                            <td width="{{colWidths[3]}}px">&nbsp;</td>
+                                        </template>
+                                    </tr>
+                                </template>
+                            </template>
+                        </table>
+                    </div>
+                </section>
+            </core-header-panel>
+        </div>
+</div>
+    </template>
+    <script>
+        Polymer ('ti-widget-registergrid', {
+            colWidths: undefined,  // defining as an array here makes this a global property
+            bits:undefined,
+            gridWidth: 790,
+            publish: {
+                textAlign: "center",
+                fontColor: "black",
+                regGroups: undefined,
+
+
+
+                reg_value_descs: "V04,16,0x00,0x55,Core,V05,12,0x04,0x77,Core,V06,8,0x08,0x00,Core",
+                maxBitWidth: 8
+            },
+            /*reg_value_descsChanged: function(){
+             var propArray = this.reg_value_descs.split(',');
+             while (this.regs.length > 0){
+             this.regs.pop();
+             }
+             var i=0;
+             var rowCount = 0;
+             while (i < propArray.length){
+             if ((propArray.length - i) >= 2) {
+             var reg = {"name":propArray[i++],"numBits":propArray[i++],"adrs":propArray[i++],"value":propArray[i++], "index":rowCount++, "backgroundColor":"transparent","description":propArray[i++]};
+             this.regs.push(reg);
+
+             } else {
+             break;
+             }
+             };
+             //if (this.regs.length > 0) {
+             //    this.$.tableTemplate.model = this.eoqa;
+             //}
+             },
+             */
+            selectReg: function(event){
+                var regIndex = -1;
+                var groupIndex = -1;
+                var target = event.target;
+                var id = target.id;
+                if (id) {
+                    var indexOfUnderscore = id.indexOf("_");
+                    var indexOfDot = id.indexOf(".");
+                    if (indexOfUnderscore >= 0) {
+                        var regIndexStr = id.substring(indexOfDot+1, id.length);
+                        regIndex = parseInt(regIndexStr);
+                        var groupIndexStr = id.substring(indexOfUnderscore+1,indexOfDot);
+                        groupIndex = parseInt(groupIndexStr);
+                        for (var g = 0; g < this.regGroups.length; g++) {
+                            for (var r=0;r<this.regGroups[g].regs.length;r++) {
+                                if ((g == groupIndex) && (r === regIndex)) {
+                                    this.regGroups[g].regs[r].backgroundColor = "#00bbcc"; // TI Light Tourquoise
+                                } else {
+                                    this.regGroups[g].regs[r].backgroundColor = "transparent";
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            selectRegGroup: function (event){
+                // toggle the expanded state of the group
+                var groupIndex = -1;
+                var target = event.target;
+                var id = target.id;
+                if (id) {
+                    var indexOfUnderscore = id.indexOf("_");
+
+                    if (indexOfUnderscore >= 0) {
+                        var groupIndexStr = id.substring(indexOfUnderscore+1,id.length);
+                        groupIndex = parseInt(groupIndexStr);
+                        this.regGroups[groupIndex].expanded = !this.regGroups[groupIndex].expanded;
+                        for (var r=0;r<this.regGroups[groupIndex].regs.length;r++) {
+                            // unselect any selected registers in the group
+                            this.regGroups[groupIndex].regs[r].backgroundColor = "transparent";
+                        }
+                    }
+
+                }
+            },
+            maxBitWidthChanged: function(){
+                for (var i=0;i<this.maxBitWidth;i++){
+                    this.bits[i]=(this.maxBitWidth-1)-i;
+                }
+            },
+            getBitValue: function(bitIndex,regValue,regNumBits){
+                if ((bitIndex === undefined)||(bitIndex === null)){
+                    bitIndex = 0;
+                }
+                var result = (regValue >> bitIndex) & 1;
+                if (bitIndex >= regNumBits){
+                    result = "";
+                }
+                return result.toString();
+            },
+            _valueSelected: function(event, detail, target){
+                var index = 0;
+                var id = "";
+                var inputObj = undefined;
+                var strValue = "";
+                if ((target !== undefined) && (target !== null)) {
+                    inputObj = target.firstElementChild;
+                    if ((inputObj !== undefined) && (inputObj !== null)){
+                        id = target.firstElementChild.id;
+                        if (id.indexOf('row') == 0) {
+                            index = parseInt(id.substr(3,id.length));
+                            if ((index < this.regs.length)&&(index >= 0)) {
+                                this.regs[index].inputObj = inputObj;
+                                strValue = inputObj.value;
+                                //console.log('ti-widget-registergrid: value selected: index = ' + index + ', name=' + this.regs[index].name+", value="+strValue);
+                            }
+                        }
+                    }
+                }
+            },
+            valueSelected: undefined,
+            _getJSON: function(){
+                var result = [];
+
+                for (var i=0; i< this.regs.length;i++){
+                    var regObj = {"name":"","label":"","index":i,"value":""};
+                    var row = this.regs[i];
+                    if ((row.inputObj !== null)&&(row.inputObj !== undefined)) {
+                        regObj.value = row.inputObj.value;
+                    } else {
+                        regObj.value = null;
+                    }
+                    regObj.name = row.name;
+                    regObj.label = row.label;
+                    regObj.index = row.index;
+
+                    result.push(regObj);
+                }
+                return result;
+            },
+            getJSON: undefined,
+            ready: function(){
+                this.colWidths = [150,70,100,16];
+                this.bits = [];
+                this.regGroups = [{
+                    "name": "I2C Registers",
+                    "expanded": false,
+                    "regs": [
+                        {
+                            name: "V04",
+                            "numBits": 8,
+                            "adrs": "0x00",
+                            "value": "0x55"
+                        },
+                        {
+                            name: "V05",
+                            "numBits": 8,
+                            "adrs": "0x01",
+                            "value": "0x77"
+                        },
+                        {
+                            name: "V06",
+                            "numBits": 8,
+                            "adrs": "0x02",
+                            "value": "0x00"
+                        },
+                        {
+                            name: "V07",
+                            "numBits": 8,
+                            "adrs": "0x03",
+                            "value": "0x55"
+                        },
+                        {
+                            name: "V08",
+                            "numBits": 8,
+                            "adrs": "0x04",
+                            "value": "0x77"
+                        },
+                        {
+                            name: "PEN",
+                            "numBits": 8,
+                            "adrs": "0x05",
+                            "value": "0x00"
+                        }]
+
+                },
+                    {
+                        "name": "Core Registers",
+                        "expanded": false,
+                        "regs": [
+                            {
+                                name: "PC",
+                                "numBits": 16,
+                                "adrs": "0x10",
+                                "value": "0x5555"
+                            },
+                            {
+                                name: "SP",
+                                "numBits": 16,
+                                "adrs": "0x14",
+                                "value": "0x3377"
+                            },
+                            {
+                                name: "A0",
+                                "numBits": 16,
+                                "adrs": "0x18",
+                                "value": "0x3456"
+                            },
+                            {
+                                name: "A1",
+                                "numBits": 16,
+                                "adrs": "0x1C",
+                                "value": "0x1234"
+                            },
+                            {
+                                name: "A2",
+                                "numBits": 16,
+                                "adrs": "0x20",
+                                "value": "0x9876"
+                            },
+                            {
+                                name: "A3",
+                                "numBits": 16,
+                                "adrs": "0x24",
+                                "value": "0x5451"
+                            },
+                            {
+                                name: "A4",
+                                "numBits": 16,
+                                "adrs": "0x28",
+                                "value": "0x1098"
+                            },
+                            {
+                                name: "A5",
+                                "numBits": 16,
+                                "adrs": "0x2C",
+                                "value": "0x1990"
+                            },
+                            {
+                                name: "A6",
+                                "numBits": 16,
+                                "adrs": "0x30",
+                                "value": "0x2015"
+                            },
+                            {
+                                name: "A7",
+                                "numBits": 16,
+                                "adrs": "0x34",
+                                "value": "0x5421"
+                            },
+                        ]
+                    }
+                ];
+                this.maxBitWidthChanged();
+                //this.reg_value_descsChanged();
+                this.getJSON = this._getJSON.bind(this);
+                this.valueSelected = this._valueSelected.bind(this);
+                var minWidthProperty = 27+this.colWidths[0]+1+this.colWidths[1]+1+this.colWidths[2]+1+(this.maxBitWidth*(3+this.colWidths[3]))+2;
+                this.gridWidth =  minWidthProperty;
+                //ColumnResize(this.$.table_registergrid);
+            },
+            setGridHeight: function(heightInPx){
+                this.$.core_header_panel.style.height = heightInPx.toString()+"px";
+            },
+            getBitCellWidth: function(){
+                return this.colWidths[3];
+            },
+            getTableWidth: function(){
+                return this.$.table_registergrid.getBoundingClientRect().width;
+            },
+            domReady: function(){
+                // tricky bit: core-header-panel requires a height to be specified in px in order to be displayed.
+                // want to be able to dynamically size it, so this must be assigned based on parent dimensions.
+                if (this.parentNode.clientHeight > 20 ){
+                    this.$.core_header_panel.style.height = this.parentNode.clientHeight.toString()+"px";
+                } else {
+                    this.$.core_header_panel.style.height = "200px";
+                }
+                if ((this.$.container.style.width === undefined) || (this.$.container.style.width.length === 0)){
+                    this.$.container.style.width = this.gridWidth + 'px';
+                }
+
+            }
+        });
+    </script>
+</polymer-element>

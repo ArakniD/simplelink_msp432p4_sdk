@@ -1,0 +1,150 @@
+<!--
+`ti-program-model` adds the program model for databinding to a c-program with static variables running on the target.
+    - 
+Example:
+
+    <ti-program-model></ti-program-model>
+
+See ../demo_programModel.html for a full working example of how to use this component.
+
+@group TI Core
+@element ti-program-model
+@homepage https://gitorious.design.ti.com/guicomposer-nw/ti-core-databind
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../ti-core-databind/ti-core-databind.html">
+<script src='src/internal/mqttws31.js'></script>
+<script src='src/MQTT_Model.js'></script>
+
+<polymer-element name="ti-core-mqtt-model" attributes="serverUrl topics">
+<script>
+    
+    Polymer('ti-core-mqtt-model', 
+    {
+    	serverUrl : "",
+    	topics : "",
+    	topicsChanged : function()
+    	{
+   			var topiclist = this.topics.split(',');
+    		if ( this._client && this._client_connected )
+    		{
+        		if ( this._topiclist  )
+        		{
+        			for( i = 0; i < this._topiclist.length; ++i  )
+        			{
+        				this._client.unsubscribe( this._topiclist[i] );
+        			}
+        		}
+        		
+    			for( i = 0; i < topiclist.length; ++i )
+    			{
+    				this._client.subscribe( topiclist[i] );
+    			}
+    		}
+			this._topiclist = topiclist;
+     	},
+     	serverUrlChanged : function()
+    	{
+     		//alert("ServerUrlChanged");
+    		var brokerUrl = this.serverUrl;
+    		var pos = brokerUrl.indexOf(':');
+    		var addr = brokerUrl;
+    		var port = 1883; 
+    		if (pos > 0)
+    		{
+    			addr = brokerUrl.substring(0, pos);
+    			port = parseInt( brokerUrl.substring( pos + 1 ) );
+    		};
+    		
+    		if ( this._client && this._client_connected )
+    		{
+    			this._client.disconnect();
+    			this._client_connected = false;
+    		}
+    		
+    		this._client = new Paho.MQTT.Client(addr, port, "gc_clientid_" + parseInt(Math.random() * 10000, 10));
+   			
+    		this._client.onConnect = onConnect;
+    		this._client.onMessageArrived = onMessageArrived;
+    		this._client.onConnectionLost = onConnectionLost;
+			var options = {
+				timeout: 3,
+				useSSL: false,
+				cleanSession: false,
+			   	onSuccess: onConnect
+		   };
+			
+			// this._client.startTrace();
+			
+			this._client.connect(options);
+			  
+			var that = this;
+		   function onConnect() 
+		   {
+			   that._client_connected = true;
+			   if ( that._topiclist )
+				{
+		   			for( i = 0; i < that._topiclist.length; ++i )
+					{
+		   				that._client.subscribe( that._topiclist[i] );
+					}
+				}
+			}
+			  
+			function onConnectionLost(responseObject) 
+			{
+				that._client_connected = false;
+			}
+			  
+			function onMessageArrived(message) {
+				var name = message.destinationName;
+				 // alert( "receive topic (" + name + ") value " + message.payloadString);
+				var topic = gc.databind.registry.getBinding('mqtt.' + name);
+				if (topic)
+				{
+					topic.setValue(message.payloadString);
+				}
+			}
+   		},
+   	    domReady : function()
+        {
+        },
+        generateProjectMetadata : function(exportDirectory, arrayOfLines)
+        {
+            var bindings = gc.databind.registry.parseBindingsFromGist(this.id, arrayOfLines, 'mqtt');
+            gc.databind.registry.saveBindingsToFile(exportDirectory + '/index.json', bindings);
+        }
+    });
+</script>
+</polymer-element>
+    

@@ -1,0 +1,125 @@
+<!--
+`ti-widget-bitfield-header`
+
+Displays a header consisting of a horizontal string of boxes, each displaying a value from the comma-separated values in the bitValues property.
+Intended for use in pages that provide a GUI for interacting with target registers.
+
+@group TI Widgets
+@element ti-widget-bitfield-header
+-->
+<!--
+    Copyright (c) 2014, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-base.html">
+<polymer-element name="ti-widget-bitfield-header" extends="ti-widget-base">
+
+    <template>
+        <style>
+            <style>
+            :host {
+                display: inline-block;
+                position: static;
+            }
+
+            table {
+                border-collapse: collapse;
+            }
+
+            th {
+                font-weight: bold;
+            }
+
+        </style>
+    <table id="bitfield" class="bitfield-content"  >
+      <th height="{{rowHeight}}px" >
+          <template  repeat="{{bit,bitIndex in bits}}">
+              <td id="bit{{bitIndex}}" width="{{maxColWidth}}px"  align="center" style="align:center;border:solid thin;border-color:{{borderColor}};color:{{borderColor}};background-color:{{backgroundColor}}">{{bit}}</td>
+          </template>
+      </th>
+    </table>
+    </template>
+    <script>
+        Polymer ('ti-widget-bitfield-header',
+        {
+            bits: undefined,
+            publish: {
+                /**
+                 * the comma-separated list of values to display in the header.
+                 *
+                 * @attribute bitValues
+                 * @type string
+                 * @default "7,6,5,4,3,2,1,0"
+                 */
+                bitValues: '7,6,5,4,3,2,1,0',
+                /**
+                 * the maximum width (in pixels) of a box in the header.  Do not specify any units.
+                 *
+                 * @attribute maxColWidth
+                 * @type number
+                 * @default 50
+                 */
+                maxColWidth: 50,
+                /**
+                 * the height of the header (in pixels).  Do not specify any units.
+                 *
+                 * @attribute rowHeight
+                 * @type number
+                 * @default 18
+                 */
+                rowHeight: 18,
+                /**
+                 * the color of the box border AND the color of the text within the box.
+                 *
+                 * @attribute borderColor
+                 * @type color
+                 * @default 'grey'
+                 */
+                borderColor: 'grey',
+                /**
+                 * the color of the header background.
+                 *
+                 * @attribute backgroundColor
+                 * @type color
+                 * @default 'transparent'
+                 */
+                backgroundColor: 'transparent'
+            },
+            bitValuesChanged: function(){
+                this.bits = this.bitValues.split(',');
+            },
+            getBitValue : function(index) {
+                var result = this.bits[this.bits.length-1-index];
+                return result;
+            },
+            ready: function(){
+                this.bitValuesChanged();
+            }
+        });
+    </script>
+</polymer-element>

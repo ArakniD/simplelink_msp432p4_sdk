@@ -1,0 +1,157 @@
+<!--
+`ti-widget-helpmenu` a sub menu item that performs an action.
+    - 
+Example:
+
+    <ti-widget-menubar>
+        <ti-widget-menuitem></ti-widget-menuitem>
+        <ti-widget-menuitem></ti-widget-menuitem>
+        <ti-widget-menuitem></ti-widget-menuitem>
+    </ti-widget-menubar>
+
+See ../demo.html for a full working example of how to use this component.
+
+@group TI Widget
+@element ti-widget-helpmenu
+@homepage https://gitorious.design.ti.com/guicomposer-nw/ti-widget-helpmenu
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../ti-widget-menubar/ti-widget-abstractmenu.html">
+<link rel="import" href="../ti-widget-menubar/ti-widget-menuitem.html">
+<link rel="import" href="../ti-widget-menubar/ti-widget-menuaction.html">
+
+<polymer-element name="ti-widget-helpmenu" extends="ti-widget-abstractmenu">
+    <template>
+        <ti-widget-menuitem id="HelpMenu" name="{{name}}">
+            <template if="{{_helpLinkValid}}">
+                <ti-widget-menuaction id="HelpHelp" icon="help" name="Help" description="Online Help"></ti-widget-menuaction>
+            </template>
+            <template if="{{_e2eLinkValid}}">
+                <ti-widget-menuaction id="HelpE2E" icon="question-answer" name="E2E Support Forum" description="Ask an Expert"></ti-widget-menuaction>
+            </template>
+            <ti-widget-menuaction id="HelpAbout" icon="info" name="About" description="Launch the about dialog."></ti-widget-menuaction>
+            <content></content>
+        </ti-widget-menuitem>
+    </template>
+    <script>
+
+        Polymer('ti-widget-helpmenu',
+        {
+            _helpLinkValid: false,
+            _e2eLinkValid: false,
+            name : 'Help',
+            getMenuItem : function() { return this.$.HelpMenu; }, 
+            domReady : function()
+            {
+                this.super();
+                
+                if (gc.nav && gc.nav.registerAction && typeof process !== 'undefined') 
+                {
+                    // We are running in a node-webkit context
+                    var gui = require('nw.gui');
+                    if ((gui !== undefined) && (gui.App.manifest.name.indexOf("GUIComposer") < 0)) 
+                    {
+                        gc.nav.registerAction('HelpAbout',
+                        {
+                            run: function () 
+                            {
+                                try 
+                                {
+                                    // open about box.
+                                    var aboutBox = gui.Window.open('about.html',
+                                    {
+                                        title: 'About ' + gui.App.manifest.name,
+                                        position: 'center',
+                                        width: 600,
+                                        height: 480,
+                                        toolbar: gui.App.manifest.debug_enabled,
+                                        icon: "gui_icon.png"
+                                    });
+                                    aboutBox.setAlwaysOnTop(true);
+                                }
+                                catch (ex) 
+                                {
+                                    console.log("Exception in Help Menu - About Box: ex=" + ex.toString());
+                                }
+
+                            }
+                        });
+
+                        var helpLink = gui.App.manifest.help;
+                        if ((helpLink !== undefined) && (helpLink !== null) && (helpLink.length > 0)) 
+                        {
+                            this._helpLinkValid = true;
+                            gc.nav.registerAction('HelpHelp',
+                            {
+                                run: function () 
+                                {
+                                    try 
+                                    {
+                                        gui.Shell.openExternal(helpLink);
+                                    }
+                                    catch (ex) 
+                                    {
+                                        console.log("Exception in Help Menu - Help link: ex=" + ex.toString());
+                                    }
+
+                                }
+                            });
+                        }
+                        var e2eLink = gui.App.manifest.e2e;
+                        if ((e2eLink !== undefined) && (e2eLink !== null) && (e2eLink.length > 0)) 
+                        {
+                            this._e2eLinkValid = true;
+                            gc.nav.registerAction('HelpE2E',
+                            {
+                                run: function () 
+                                {
+                                    try 
+                                    {
+                                        gui.Shell.openExternal(e2eLink);
+                                    }
+                                    catch (ex) 
+                                    {
+                                        console.log("Exception in Help Menu - e2e link: ex=" + ex.toString());
+                                    }
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+</polymer-element>
+    

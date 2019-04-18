@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Interface: IRefreshListener</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Interface: IRefreshListener</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="gc.html">gc</a><a href="gc.databind.html">.databind</a>.</span>
+        
+        IRefreshListener
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">Listener interface that provides the client with notification when its time to refresh something.</div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<dt>
+    
+        
+        
+        <h4 class="name" id="onRefresh"><span class="type-signature"></span>onRefresh<span class="signature">(progress)</span><span class="type-signature"></span></h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>This method is called when the refresh interval has expired.</p><p>Some clients wish to be informed when the operation is finally completed.  As a result, this event passes along an{gc.databind.IProgressCounter} interface.  If the operation that this implementation performsis asynchronous in nature, then you must indicate this by calling {gc.databind.IProgressCounter.#wait} to mark the start of the operation before returning from this method call.  Later, you must call {gc.databind.IProgressCounter#done} to mark the completion of this operation.  If this operation delegates to other operations, itis acceptable to pass this progress interface along to those operations so that they can add their ownasynchronous jobs to the progress counter.</p><p>If this operation is not asynchronous, then nothing needs to be done with the progress counter.  You cansimply ignore it.  However, if you delegate any operations to other objects, you still need to pass thisprogress counter along to them in case the delgated operation is asynchronous in nature.
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>progress</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="gc.databind.IProgressCounter.html">gc.databind.IProgressCounter</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">interface for the client to indicate progress ofasynchronous operations so the client can determine when the operation is fully completed.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    
+        
+        
+        <h4 class="name" id="onRefresh"><span class="type-signature"></span>onRefresh<span class="signature">(progress<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>This method is called when its time to refresh something</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>progress</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="gc.databind.IProgressCounter.html">gc.databind.IProgressCounter</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">interface for the client to indicate progress ofasynchronous operations so the client can determine when the refresh operation is fully completed.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="gc.databind.AbstractAsyncBindValue.html">AbstractAsyncBindValue</a></li><li><a href="gc.databind.AbstractBind.html">AbstractBind</a></li><li><a href="gc.databind.AbstractBindValue.html">AbstractBindValue</a></li><li><a href="gc.databind.AbstractLookupBindValue.html">AbstractLookupBindValue</a></li><li><a href="gc.databind.AbstractStatus.html">AbstractStatus</a></li><li><a href="gc.databind.BindingRegistry.html">BindingRegistry</a></li><li><a href="gc.databind.BindListenerAdapter.html">BindListenerAdapter</a></li><li><a href="gc.databind.DataConverter.html">DataConverter</a></li><li><a href="gc.databind.FunctionBindValue.html">FunctionBindValue</a></li><li><a href="gc.databind.ProgressCounter.html">ProgressCounter</a></li><li><a href="gc.databind.RefreshIntervalBindValue.html">RefreshIntervalBindValue</a></li><li><a href="gc.databind.VariableBindValue.html">VariableBindValue</a></li><li><a href="gc.databind.VariableLookupBindValue.html">VariableLookupBindValue</a></li><li><a href="gc.widget.StatusIndicator.Factory.html">Factory</a></li></ul><h3>Namespaces</h3><ul><li><a href="gc.html">gc</a></li><li><a href="gc.databind.html">databind</a></li><li><a href="gc.widget.html">widget</a></li><li><a href="gc.widget.StatusIndicator.html">StatusIndicator</a></li></ul><h3>Interfaces</h3><ul><li><a href="gc.databind.IBind.html">IBind</a></li><li><a href="gc.databind.IBindAction.html">IBindAction</a></li><li><a href="gc.databind.IBindFactory.html">IBindFactory</a></li><li><a href="gc.databind.IBindProvider.html">IBindProvider</a></li><li><a href="gc.databind.IBindValue.html">IBindValue</a></li><li><a href="gc.databind.IChangedListener.html">IChangedListener</a></li><li><a href="gc.databind.IDataBinder.html">IDataBinder</a></li><li><a href="gc.databind.IDataConverter.html">IDataConverter</a></li><li><a href="gc.databind.IDisposable.html">IDisposable</a></li><li><a href="gc.databind.IFinished.html">IFinished</a></li><li><a href="gc.databind.IFinishedWithResult.html">IFinishedWithResult</a></li><li><a href="gc.databind.ILookupBindValue.html">ILookupBindValue</a></li><li><a href="gc.databind.IProgressCounter.html">IProgressCounter</a></li><li><a href="gc.databind.IRefreshListener.html">IRefreshListener</a></li><li><a href="gc.databind.IStaleListener.html">IStaleListener</a></li><li><a href="gc.databind.IStatus.html">IStatus</a></li><li><a href="gc.databind.IStatusListener.html">IStatusListener</a></li><li><a href="gc.widget.IStatusIndicator.html">IStatusIndicator</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Sat May 09 2015 21:21:15 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

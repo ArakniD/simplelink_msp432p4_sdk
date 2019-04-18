@@ -1,0 +1,158 @@
+<!doctype html>
+<!--
+Copyright 2014 - 2015. Texas Instruments Incorporated. All rights reserved.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+*   Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+*   Neither the name of Texas Instruments Incorporated nor the names of
+its contributors may be used to endorse or promote products derived
+from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<html>
+<head>
+    <title>Computed Value Bingings - Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <script src="../../../webcomponentsjs/webcomponents.js"></script>
+    <script src="demo.js"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            height: 100%;
+            overflow-y: hidden;
+        }
+        
+        design-gist-element-preview {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body unresolved>
+<!-- ------------------------------------------------------------------------------------- -->
+<link rel="import" href="../../../ti-core-stylesheets/ti-core-stylesheets.html">
+<link rel="import" href="../../../ti-core-databind/ti-program-model.html">
+<link rel="import" href="../../../ti-widget-common/ti-widget-label.html">
+<link rel="import" href="../../../ti-widget-common/ti-widget-textbox.html">
+<link rel="import" href="../../../ti-widget-common/ti-widget-droplist.html">
+<link rel="import" href="../../../ti-widget-common/ti-widget-spinner.html">
+<link rel="import" href="../../../paper-input/paper-input.html">
+
+  <template id="template_obj" is="auto-binding">
+    <style>    
+      #date {
+        left: 430px;
+        top: 150px;
+        position: absolute;
+        width: 280px;
+        height: 20px;
+      }
+      #ti_widget_label {
+        left: 390px;
+        top: 150px;
+        position: absolute;
+      }
+      #dayOfWeek {
+        left: 90px;
+        top: 100px;
+        position: absolute;
+      }
+      #dayOfMonth {
+        width: 4em;
+        left: 200px;
+        top: 100px;
+        position: absolute;
+      }
+      #ti_widget_label1 {
+        left: 40px;
+        top: 100px;
+        position: absolute;
+      }
+      #ti_widget_label2 {
+        left: 40px;
+        top: 150px;
+        position: absolute;
+      }
+      #month {
+        left: 90px;
+        top: 150px;
+        position: absolute;
+      }
+      #ti_widget_label3 {
+        left: 40px;
+        top: 200px;
+        position: absolute;
+      }
+      #year {
+        left: 90px;
+        top: 200px;
+        position: absolute;
+        width: 70px;
+        height: 20px;
+      }
+      #ti_widget_label4 {
+        left: 40px;
+        top: 20px;
+        position: absolute;
+      }
+      #ti_widget_label5 {
+        left: 300px;
+        top: 50px;
+        position: absolute;
+      }
+      #ti_widget_label6 {
+        left: 300px;
+        top: 200px;
+        position: absolute;
+      }
+      #raw_value {
+        left: 40px;
+        top: 280px;
+        position: absolute;
+      }
+      #rounded_value {
+        left: 390px;
+        top: 300px;
+        position: absolute;
+      }
+    </style>
+    <ti-program-model id="pm"></ti-program-model>
+    <ti-widget-label label="Date:" id="ti_widget_label"></ti-widget-label>
+    <ti-widget-textbox id="date"></ti-widget-textbox>
+    <ti-widget-label label="Day:" id="ti_widget_label1"></ti-widget-label>
+    <ti-widget-droplist selectedtext="Monday" labels="Monday|Tuesay|Wednesday|Thursday|Friday|Saturday|Sunday" id="dayOfWeek"></ti-widget-droplist>
+    <ti-widget-spinner value="1" id="dayOfMonth" maxValue="31" minValue="1"></ti-widget-spinner>
+    <ti-widget-label label="Month:" id="ti_widget_label2"></ti-widget-label>
+    <ti-widget-droplist selectedtext="January" labels="January,February,March,April,May,June,July,August,September,October,November,December" id="month"></ti-widget-droplist>
+    <ti-widget-label label="Year:" id="ti_widget_label3"></ti-widget-label>
+    <ti-widget-textbox value="1960" id="year"></ti-widget-textbox>
+    <ti-widget-label label="Computed Value Binding Demo" textdecoration="underline" fontcolor="orange" fontsize="xx-large" id="ti_widget_label4"></ti-widget-label>
+    <ti-widget-label label="}" fontcolor="orange" fontsize="10em" id="ti_widget_label5"></ti-widget-label>
+    <ti-widget-label label="-" fontcolor="orange" fontsize="10em" id="ti_widget_label6"></ti-widget-label>
+    <paper-input label="Enter a floating point value here" id="raw_value"></paper-input>
+    <ti-widget-label label="Rounded Value = " id="rounded_value"></ti-widget-label>  </template>
+</body>
+</html>

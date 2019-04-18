@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="_display_ext_8h" kind="file" language="C++">
+    <compoundname>DisplayExt.h</compoundname>
+    <includes refid="_display_8h" local="no">ti/display/Display.h</includes>
+    <includes local="no">ti/grlib/grlib.h</includes>
+    <incdepgraph>
+      <node id="66">
+        <label>stdarg.h</label>
+      </node>
+      <node id="65">
+        <label>stdint.h</label>
+      </node>
+      <node id="67">
+        <label>ti/grlib/grlib.h</label>
+      </node>
+      <node id="64">
+        <label>ti/display/Display.h</label>
+        <link refid="_display_8h"/>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>DisplayExt.h</label>
+        <link refid="_display_ext_8h"/>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <innerclass refid="struct_display_gr_lib___object" prot="public">DisplayGrLib_Object</innerclass>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="_display_ext_8h_1a1a91f53b6a55be41a9e1fefb6057a5d2" prot="public" static="no">
+        <name>DisplayExt_getGraphicsContext</name>
+        <param><defname>handle</defname></param>
+        <initializer><ref refid="_display_ext_8h_1aeb6dd2d48a05708b28d372a59cfcd95b" kindref="member">DisplayExt_doGetGraphicsContext</ref>(handle)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get Graphics_Context of first opened Display that uses GrLib <simplesect kind="see"><para>Display_doGetGrlibContext() </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/display/DisplayExt.h" line="136" column="11" bodyfile="exports/tidrivers_msp432/source/ti/display/DisplayExt.h" bodystart="136" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_display_ext_8h_1a10bc4ee8d6e6e8694b4df64e39375a08" prot="public" static="no">
+        <type>struct <ref refid="struct_display_gr_lib___object" kindref="compound">DisplayGrLib_Object</ref></type>
+        <definition>typedef struct DisplayGrLib_Object  DisplayGrLib_Object</definition>
+        <argsstring></argsstring>
+        <name>DisplayGrLib_Object</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/display/DisplayExt.h" line="149" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_display_ext_8h_1a4f7c1242c4a278989925cff6ff214fc6" prot="public" static="no">
+        <type>struct <ref refid="struct_display_gr_lib___object" kindref="compound">DisplayGrLib_Object</ref> *</type>
+        <definition>typedef struct DisplayGrLib_Object * DisplayGrLib_Handle</definition>
+        <argsstring></argsstring>
+        <name>DisplayGrLib_Handle</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/display/DisplayExt.h" line="149" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_display_ext_8h_1aeb6dd2d48a05708b28d372a59cfcd95b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Graphics_Context *</type>
+        <definition>Graphics_Context* DisplayExt_doGetGraphicsContext</definition>
+        <argsstring>(Display_Handle handle)</argsstring>
+        <name>DisplayExt_doGetGraphicsContext</name>
+        <param>
+          <type><ref refid="_display_8h_1a045a26811755aabf1886d982c49e54ab" kindref="member">Display_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <briefdescription>
+<para>Get the Graphics_Context object of the first available and open Display that uses GrLib for output. </para>        </briefdescription>
+        <detaileddescription>
+<para>Useful for drawing graphics if you know that the display is GrLib capable.</para><para><simplesect kind="note"><para>Calling GrLib functions directly is not thread-safe, and can conflict with Display calls or other GrLib calls.</para></simplesect>
+<simplesect kind="return"><para>Graphics_Context pointer or NULL if no open display is found. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/display/DisplayExt.h" line="167" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Extention of Display to access GrLib functionality in capable displays. </para>    </briefdescription>
+    <detaileddescription>
+<para>============================================================================</para><para><heading level="1">Driver include</heading>
+</para><para>The display header file should be included in an application as follows: <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/DisplayExt.h&gt;</highlight></codeline>
+</programlisting></para><para><heading level="1">Operation</heading>
+</para><para>This extension depends on an already opened Display interface, and accesses the global Display_config object.</para><para><simplesect kind="note"><para>All Display statements will be removed and no display operations will take place if the symbol <emphasis>Display_DISABLE_ALL</emphasis> is defined globally, or before <emphasis><ref refid="_display_8h" kindref="compound">Display.h</ref></emphasis> is included.</para></simplesect>
+<heading level="2">Using the extension</heading>
+</para><para>First, the regular Display interface must be opened, and after that, APIs in this extension become usable.</para><para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/display/Display.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;ti/display/DisplayExt.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;ti/grlib/grlib.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//...</highlight></codeline>
+<codeline><highlight class="normal">Display_Handle<sp/><sp/><sp/><sp/>handle;</highlight></codeline>
+<codeline><highlight class="normal">Display_Params<sp/><sp/><sp/><sp/>params;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Display_Params_init(&amp;params);</highlight></codeline>
+<codeline><highlight class="normal">Display_open(Display_Type_GRLIB,<sp/>&amp;params);</highlight></codeline>
+<codeline><highlight class="normal">//Display_open(Display_ALL,<sp/>&amp;params);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Graphics_Context<sp/>*pContext<sp/>=<sp/>DisplayExt_getGraphicsContext();</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Graphics_Rectangle<sp/>rect<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.sXMin<sp/>=<sp/>10,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.sXMax<sp/>=<sp/>30,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.sYMin<sp/>=<sp/>10,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.sYMax<sp/>=<sp/>20,</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>It&apos;s<sp/>possible<sp/>that<sp/>no<sp/>compatible<sp/>Display<sp/>is<sp/>available<sp/>or<sp/>opened.</highlight></codeline>
+<codeline><highlight class="normal">if<sp/>(pContext<sp/>!=<sp/>NULL)</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Graphics_fillRectangle(pContext,<sp/>&amp;rect);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Graphics_flushBuffer(pContext);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para><para><heading level="2">Implementation</heading>
+</para><para>This interface expects that all Display implementations that report type Display_Type_GRLIB will also &apos;inherit&apos; the <ref refid="struct_display_gr_lib___object" kindref="compound">DisplayGrLib_Object</ref> so that the implementation specific instance object can be cast to the type <ref refid="struct_display_gr_lib___object" kindref="compound">DisplayGrLib_Object</ref>.</para><para>In practice this means that the Graphics_Context object used to control GrLib by the display implementation must be the first member of the Object structure used by that implementation.</para><para>For example, Display_SharpObject can be cast to <ref refid="struct_display_gr_lib___object" kindref="compound">DisplayGrLib_Object</ref> to access the Graphics_Context object, without this interface having prior knowledge about the Sharp display implementation.</para><para><heading level="1">Instrumentation</heading>
+</para><para>The Display interface produces log statements if instrumentation is enabled.</para><para><table rows="3" cols="2"><row>
+<entry thead="yes"><para>Diagnostics Mask </para></entry><entry thead="yes"><para>Log details  </para></entry></row>
+<row>
+<entry thead="no"><para>Diags_USER1 </para></entry><entry thead="no"><para>basic operations performed </para></entry></row>
+<row>
+<entry thead="no"><para>Diags_USER2 </para></entry><entry thead="no"><para>detailed operations performed </para></entry></row>
+</table>
+<hruler/>
+ </para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2016,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>are<sp/>met:</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>Texas<sp/>Instruments<sp/>Incorporated<sp/>nor<sp/>the<sp/>names<sp/>of</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>its<sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>from<sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>THIS<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>BY<sp/>THE<sp/>COPYRIGHT<sp/>HOLDERS<sp/>AND<sp/>CONTRIBUTORS<sp/>&quot;AS<sp/>IS&quot;</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>AND<sp/>ANY<sp/>EXPRESS<sp/>OR<sp/>IMPLIED<sp/>WARRANTIES,<sp/>INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>THE<sp/>IMPLIED<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY<sp/>AND<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>PURPOSE<sp/>ARE<sp/>DISCLAIMED.<sp/>IN<sp/>NO<sp/>EVENT<sp/>SHALL<sp/>THE<sp/>COPYRIGHT<sp/>OWNER<sp/>OR</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>CONTRIBUTORS<sp/>BE<sp/>LIABLE<sp/>FOR<sp/>ANY<sp/>DIRECT,<sp/>INDIRECT,<sp/>INCIDENTAL,<sp/>SPECIAL,</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>EXEMPLARY,<sp/>OR<sp/>CONSEQUENTIAL<sp/>DAMAGES<sp/>(INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>PROCUREMENT<sp/>OF<sp/>SUBSTITUTE<sp/>GOODS<sp/>OR<sp/>SERVICES;<sp/>LOSS<sp/>OF<sp/>USE,<sp/>DATA,<sp/>OR<sp/>PROFITS;</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>OR<sp/>BUSINESS<sp/>INTERRUPTION)<sp/>HOWEVER<sp/>CAUSED<sp/>AND<sp/>ON<sp/>ANY<sp/>THEORY<sp/>OF<sp/>LIABILITY,</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>WHETHER<sp/>IN<sp/>CONTRACT,<sp/>STRICT<sp/>LIABILITY,<sp/>OR<sp/>TORT<sp/>(INCLUDING<sp/>NEGLIGENCE<sp/>OR</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>OTHERWISE)<sp/>ARISING<sp/>IN<sp/>ANY<sp/>WAY<sp/>OUT<sp/>OF<sp/>THE<sp/>USE<sp/>OF<sp/>THIS<sp/>SOFTWARE,</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>EVEN<sp/>IF<sp/>ADVISED<sp/>OF<sp/>THE<sp/>POSSIBILITY<sp/>OF<sp/>SUCH<sp/>DAMAGE.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*/</highlight></codeline>
+<codeline lineno="115"><highlight class="preprocessor">#ifndef<sp/>ti_display_DisplayExt__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_display_DisplayExt__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_display_8h" kindref="compound">ti/display/Display.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/grlib/grlib.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>-----------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="126"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Constants</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"><sp/>*<sp/>------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="128"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>-----------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="131"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Macros</highlight></codeline>
+<codeline lineno="132"><highlight class="comment"><sp/>*<sp/>------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="133"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(Display_DISABLE_ALL)<sp/>||<sp/>(!Display_DISABLE_ALL)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136" refid="_display_ext_8h_1a1a91f53b6a55be41a9e1fefb6057a5d2" refkind="member"><highlight class="preprocessor">#<sp/><sp/>define<sp/>DisplayExt_getGraphicsContext(handle)<sp/>\</highlight></codeline>
+<codeline lineno="137"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>DisplayExt_doGetGraphicsContext(handle)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>define<sp/>DisplayExt_getGraphicsContext(handle)<sp/><sp/><sp/><sp/>NULL</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>-----------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="143"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Typedefs</highlight></codeline>
+<codeline lineno="144"><highlight class="comment"><sp/>*<sp/>------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="145"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146" refid="struct_display_gr_lib___object" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_display_gr_lib___object" kindref="compound">DisplayGrLib_Object</ref></highlight></codeline>
+<codeline lineno="147"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="148" refid="struct_display_gr_lib___object_1a862853916cae353daca18557f29fc7c2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Graphics_Context<sp/><ref refid="struct_display_gr_lib___object_1a862853916cae353daca18557f29fc7c2" kindref="member">g_sContext</ref>;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal">}<sp/><ref refid="_display_ext_8h_1a10bc4ee8d6e6e8694b4df64e39375a08" kindref="member">DisplayGrLib_Object</ref>,<sp/>*<ref refid="_display_ext_8h_1a4f7c1242c4a278989925cff6ff214fc6" kindref="member">DisplayGrLib_Handle</ref>;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>-----------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="152"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Functions</highlight></codeline>
+<codeline lineno="153"><highlight class="comment"><sp/>*<sp/>------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="154"><highlight class="comment"><sp/>*/</highlight></codeline>
+<codeline lineno="167"><highlight class="normal">Graphics_Context<sp/><sp/>*<ref refid="_display_ext_8h_1aeb6dd2d48a05708b28d372a59cfcd95b" kindref="member">DisplayExt_doGetGraphicsContext</ref>(<ref refid="struct_display___config" kindref="compound">Display_Handle</ref><sp/>handle);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//ti_display_DisplayExt__include</highlight></codeline>
+    </programlisting>
+    <location file="exports/tidrivers_msp432/source/ti/display/DisplayExt.h"/>
+  </compounddef>
+</doxygen>

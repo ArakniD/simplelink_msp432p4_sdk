@@ -1,0 +1,388 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+    Copyright (c) 2014, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+        its contributors may be used to endorse or promote products derived
+        from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<!doctype html>
+<html>
+<head>
+  <title>ti-service-programloader</title>
+  
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!--[if gte IE 6]>
+    <script type="text/javascript">
+        // this is IE greater than or equal to 6
+        var isInternetExplorer=true;
+    </script>
+    <![endif]-->
+
+    <script>
+        var isIE =   ((navigator.appName == 'Microsoft Internet Explorer') ||
+        ((navigator.appName == 'Netscape') &&
+        (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)));
+        if (window.isInternetExplorer) {
+            isIE =  true;
+        }
+
+        if ( isIE ){
+            var object = document.createElement("object");
+            object.setAttribute("id", "ticloudagentlauncher");
+            object.setAttribute("type", "application/x-ticloudagentlauncher");
+            object.setAttribute("width", "0");
+            object.setAttribute("height", "0");
+            document.head.appendChild( object );
+            window.TICloudAgent_HACK = {};
+            window. TICloudAgent_HACK.plugin = document.getElementById("ticloudagentlauncher");
+        }
+    </script>
+    <link rel="import" href="../polymer/polymer.html">
+    <script src="../webcomponentsjs/webcomponents.js"></script>
+
+    <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+    <link rel="import" href="../ti-core-backplane/ti-core-backplane.html">
+    <link rel="import" href="ti-service-programloader.html">
+    <link rel="import" href="ti-service-programloader-dialog.html">
+    <style type="text/css" media="screen, print, projection">
+        body,
+        html {
+            margin:0;
+            padding:0;
+        }
+        #wrap {
+            width:650px;
+            height:375px;
+            margin:0 auto;
+        }
+        #sidebar {
+            float:left;
+            width:218px;
+            padding:0px;
+        }
+        #main {
+            float:right;
+            width:410px;
+            padding:11px;
+        }
+
+        #footer {
+            clear:both;
+            padding:0px;
+        }
+        #footer p {
+            margin:0;
+        }
+        * html #footer {
+            height:1px;
+        }
+
+    </style>
+  <style shim-shadowdom>
+  
+    body {
+      font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+      margin: 0;
+      padding: 24px;
+    }
+    
+    ti-core-backplane {
+      display: block;
+      width: 100%;
+      padding: 25px 0;
+    }
+    
+    
+  </style>
+  
+</head>
+<body unresolved>
+<ti-service-programloader-dialog id="programLoaderDialog" style="width:660px;height:300px"></ti-service-programloader-dialog>
+<div id="wrap">
+<div id="sidebar" align="center">
+    <p></p><b><div id="boardName"></div></b><p></p>
+    <p></p>Device: <select id="deviceList" onchange="onDeviceSelectedHdlr()" style="width:180px"></select>
+    <p></p>
+
+    <div id="connectBtnDiv" >
+        <button  id="btnConnect"   onclick="onBtnConnectClicked();"  >Connect</button><p></p>
+    </div>
+
+    <div id="disconnectBtnDiv" style="display:none">
+        <button  id="btnDisconnect"  onclick="onBtnDisconnectClicked();"  >Disconnect</button><p></p>
+    </div>
+</div>
+<div id="main" >
+    <h3>ti-service-programloader demo</h3>
+    <div id="status"></div>
+    <!-- set hidden="false" if you wish to monitor the state changes here...-->
+    <div id="currentState" style="display:none"></div>
+    <div id='programLoader' style="display:none">
+        <ti-service-programloader  style="display:none"></ti-service-programLoader>
+
+    </div>
+
+    <div id="downloadInstallerBtnDiv" style="display:none">
+         <button raisedButton id="btnDownloadInstaller"  onclick="onBtnDownloadInstallerClicked();"  ><img src="../ti-core-backplane/images/download16x19.png"> Download TI Cloud Agent</button><p></p>
+    </div>
+
+
+
+</div>
+</div>
+  <script>
+    var backplane;
+    var programLoader;
+    var currentAction = 0;
+    var currentStateDiv = document.getElementById("currentState");
+    var statusDiv = document.getElementById('status');
+    var deviceList = document.getElementById('deviceList');
+    var connectBtnDiv = document.getElementById("connectBtnDiv");
+    var btnConnect = document.getElementById("btnConnect");
+    var disconnectBtnDiv = document.getElementById("disconnectBtnDiv");
+    var btnDisconnet = document.getElementById("btnDisconnect");
+    var downloadInstallerBtnDiv = document.getElementById('downloadInstallerBtnDiv');
+    var programLoaderBtnDiv = document.getElementById("programLoader");
+
+    var myDevices = [
+        {   boardName: 'MSP-EXP430G2 v1.5',
+            deviceName: 'MSP430G2553',
+            fileName: 'ReadTemp_2553.cpp.hex',
+            fileFolderName: 'demo/binfiles/',
+            startBtnName: 'P1.3',
+            msgWaitingForData: "Press the Start Button (P1.3 on your MSP-EXP430G2 Launchpad) to start reading the temperature - the Green LED should turn on.",
+            msgConnectDevice: "Please connect your MSP-EXP430G2 Launchpad to a USB port of your computer and then click Connect.",
+            boardImage:'launchpad-mspexp430g2-02.jpg',
+            startBtnImage:'startbutton-mspexp430g2-02.jpg',
+            imageFolderName:'demo/images/'
+        },
+        {   boardName: 'MSP-EXP430G2 v1.5',
+            deviceName: 'MSP430G2553',
+            fileName: 'MSP2553_uart_monitor.out',
+            fileFolderName: 'demo/binfiles/',
+            startBtnName: 'P1.3',
+            msgWaitingForData: "Press the Start Button (P1.3 on your MSP-EXP430G2 Launchpad) to start reading the temperature - the Green LED should turn on.",
+            msgConnectDevice: "Please connect your MSP-EXP430G2 Launchpad to a USB port of your computer and then click Connect.",
+            boardImage:'launchpad-mspexp430g2-02.jpg',
+            startBtnImage:'startbutton-mspexp430g2-02.jpg',
+            imageFolderName:'demo/images/'
+        },
+        {
+            boardName: 'MSP-EXP430F5529LP',
+            deviceName: 'MSP430F5529',
+            fileName: 'ReadTemp_5529.cpp.hex',
+            fileFolderName: 'demo/binfiles/',
+            startBtnName: 'P1.1',
+            msgWaitingForData: "Press the Start Button (P1.1 on your MSP-EXP430F5529LP Launchpad) to start reading the temperature - the Green LED should turn on.",
+            msgConnectDevice: "Please connect your MSP-EXP430F5529LP Launchpad to a USB port of your computer and then click Connect.",
+            boardImage: 'msp430f5529.jpg',
+            startBtnImage: 'startbutton-msp430f5529.jpg',
+            imageFolderName:'demo/images/'
+        },
+        {
+            boardName: 'MSP-EXP430F5529LP',
+            deviceName: 'MSP430F5529',
+            fileName: 'BlinkAndEcho_5529.cpp.hex',
+            fileFolderName: 'demo/binfiles/',
+            startBtnName: 'P1.1',
+            msgWaitingForData: "Press the Start Button (P1.1 on your MSP-EXP430F5529LP Launchpad) to start reading the temperature - the Green LED should turn on.",
+            msgConnectDevice: "Please connect your MSP-EXP430F5529LP Launchpad to a USB port of your computer and then click Connect.",
+            boardImage: 'msp430f5529.jpg',
+            startBtnImage: 'startbutton-msp430f5529.jpg',
+            imageFolderName:'demo/images/'
+        },
+        {
+            boardName: 'MSP-EXP432P401R',
+            deviceName: 'msp432p401r',
+            connectionID: 'TIXDS110_Connection',
+            fileName: 'OutOfBox_MSP432.out',
+            fileFolderName: 'demo/binfiles/',
+            startBtnName: 'P1.1',
+            msgWaitingForData: "Press the Start Button (P1.1 on your MSP-EXP432P401R Launchpad) to start mixing colors.",
+            msgConnectDevice: "Please connect your MSP-EXP432P401R Launchpad to a USB port of your computer and then click Connect.",
+            boardImage: 'MSP432.jpg',
+            startBtnImage: 'MSP432.jpg',
+            imageFolderName: 'images/'
+        }
+    ];
+
+
+    var selectedBoardIndex = 1;
+
+    var setStateMachine = function(strEvent) {
+        if (backplane) {
+            backplane.updateStateMachine(strEvent);
+        }
+    };
+
+/*    var onBtnSkipDownloadClicked = function() {
+        if (programLoader) {
+            programLoader.updateStateMachine('onSkipProgramDownloadBtnClicked');
+        }
+    };
+    */
+    var onBtnConnectClicked = function() {
+        if (backplane) {
+            backplane.updateStateMachine('onConnectBtnClicked');
+        }
+    };
+    var onBtnDisconnectClicked = function() {
+        if (backplane) {
+            backplane.updateStateMachine('onDisconnectBtnClicked');
+        }
+    };
+    var onBtnDownloadInstallerClicked = function() {
+        if (backplane) {
+            backplane.downloadTICloudAgentInstaller();
+        }
+    };
+    var onDeviceSelectedHdlr = function(e) {
+        var index = deviceList.selectedIndex;
+        console.log('User selected device['+ index+'] '+myDevices[index].boardName+', deviceName='+ myDevices[index].deviceName);
+        selectedBoardIndex = index;
+        backplane.selectedDevice = myDevices[index];
+        programLoader.selectedDevice = myDevices[index];
+    };
+
+    var myStatusChangedHdlr = function(e){
+        //var backplane = e.currentTarget;
+
+        statusDiv.innerHTML = "<b>Target Status:</b> "+ e.currentTarget.status;
+        currentStateDiv.innerHTML = "Current State: "+e.currentTarget.currentState.name;
+
+    };
+    var myCurrentStateChangedHdlr = function(e){
+        //var backplane = e.currentTarget;
+        currentStateDiv.innerHTML = backplane.currentState.name;
+        switch(backplane.currentState.name){
+            case 'downloadTICloudAgent':
+                if ((!backplane.isAutoDownloadEnabled) && (!backplane.isProgramDownloadDisabled)) {
+                    downloadInstallerBtnDiv.style.display = '';  //hidden = false
+                }
+                break;
+            case 'ready':
+               // programLoaderBtnDiv.style.display = '';
+
+                break;
+            default:
+                programLoaderBtnDiv.style.display = 'none';
+                downloadInstallerBtnDiv.style.display = 'none';  //hidden = true
+                break;
+        }
+    };
+    var myConnectionStatusChangedHdlr = function(e){
+    };
+
+    var myProgramDownloadBtnVisibilityChangedHdlr = function(){
+        if (programLoader) {
+            console.log('myProgramDownloadBtnVisibilityChangedHdlr called: isProgramDownloadBtnVisible = '+programLoader.isProgramDownloadBtnVisible)
+            if (programLoader.isProgramDownloadBtnVisible) {
+
+                var programLoaderDialog = document.querySelector('ti-service-programloader-dialog');
+                if (programLoaderDialog){
+                    programLoaderDialog.toggle();
+                }
+            }
+        }
+    };
+
+    var myBtnVisibilityChangedHdlr = function(){
+        if (backplane) {
+
+            if (backplane.isConnectBtnVisible) {
+                connectBtnDiv.style.display ='';
+            } else {
+                connectBtnDiv.style.display ='none';
+            }
+
+            if (backplane.isDisconnectBtnVisible) {
+                disconnectBtnDiv.style.display = '';
+            } else {
+                disconnectBtnDiv.style.display ='none';
+            }
+
+            if (backplane.isCloudAgentDownloadBtnVisible) {
+                downloadInstallerBtnDiv.style.display = '';
+            } else {
+                downloadInstallerBtnDiv.style.display ='none';
+
+            }
+        }
+    };
+
+
+    addEventListener('polymer-ready', function() {
+	  console.log("ABOUT TO START DEMO!");
+	  var i;
+        //backplane = document.getElementById("10");
+        backplane = document.querySelector('ti-core-backplane');
+        programLoader = document.querySelector('ti-service-programloader');
+        backplane.addEventListener("statusMsgUpdated",myStatusChangedHdlr);
+        backplane.addEventListener("currentStateUpdated",myCurrentStateChangedHdlr);
+        backplane.addEventListener("connectionStatusChanged",myConnectionStatusChangedHdlr);
+        backplane.addEventListener("btnVisibilityChanged", myBtnVisibilityChangedHdlr);
+        programLoader.backplane = backplane;
+        programLoader.selectedDevice = myDevices[selectedBoardIndex];
+        backplane.selectedDevice = myDevices[selectedBoardIndex];
+        programLoader.addEventListener("programDownloadUIVisibilityChanged",myProgramDownloadBtnVisibilityChangedHdlr);
+        programLoader.addEventListener("statusMsgUpdated",myStatusChangedHdlr);
+
+
+        while (deviceList.firstChild) {
+            deviceList.removeChild(deviceList.firstChild);
+        }
+        var html = "";
+        for (var i = 0; i < myDevices.length; i++) {
+            var device = myDevices[i];
+            html += "<option value=\"" + device.boardName + " ("+device.fileName+")"+"\">" + device.boardName + " ("+device.fileName+")"+"</option>\n";
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.text = device.boardName + " ("+device.fileName+")";
+            //opt.innerHTML = i;
+
+            deviceList.appendChild(opt);
+            if (i == selectedBoardIndex) {
+                deviceList.options[i].selected = true;
+            }
+        }
+        //$("#formData").html(html);
+        deviceList.value = myDevices[selectedBoardIndex];
+    });
+  </script>
+  
+</body>
+</html>
+

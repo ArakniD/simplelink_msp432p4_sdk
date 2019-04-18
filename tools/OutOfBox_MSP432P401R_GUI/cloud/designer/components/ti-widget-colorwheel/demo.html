@@ -1,0 +1,154 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+Copyright (c) 2014, Texas Instruments Incorporated
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+*   Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+*   Neither the name of Texas Instruments Incorporated nor the names of
+its contributors may be used to endorse or promote products derived
+from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+	<!--[if gte IE 6]>
+	<script type="text/javascript">
+		// this is IE greater than or equal to 6
+		var isInternetExplorer=true;
+	</script>
+	<![endif]-->
+
+	<script>
+		var isIE =   ((navigator.appName == 'Microsoft Internet Explorer') ||
+		((navigator.appName == 'Netscape') &&
+		(new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)));
+		if (window.isInternetExplorer) {
+			isIE =  true;
+		}
+
+		if ( isIE ){
+			var object = document.createElement("object");
+			object.setAttribute("id", "ticloudagentlauncher");
+			object.setAttribute("type", "application/x-ticloudagentlauncher");
+			object.setAttribute("width", "0");
+			object.setAttribute("height", "0");
+			document.head.appendChild( object );
+			window.TICloudAgent_HACK = {};
+			window. TICloudAgent_HACK.plugin = document.getElementById("ticloudagentlauncher");
+		}
+	</script>
+	<link rel="import" href="../polymer/polymer.html">
+	<script src="../webcomponentsjs/webcomponents.js"></script>
+	<style>
+		body {
+			height: 100%;
+			margin: 0;
+			padding: 20px;
+			font-family: sans-serif;
+		}
+		.icons {
+			color: red;
+		}
+		.wide { display: block; padding-left: 5px; padding-top:5px; vertical-align:bottom; background-color: gray; }
+		.container {height: 28px; width:120px;}
+	</style>
+	<link rel="import" href="ti-widget-colorwheel.html">
+	<link rel="import" href="../ti-widget-common/ti-widget-slider.html">
+	<link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+</head>
+
+<body>
+<template is="auto-binding" id="demoTemplate">
+	<style>
+		#ti_widget_colorwheel {
+			width: 500px;
+			height: 500px;
+		}
+		.red::shadow paper-slider::shadow #sliderBar::shadow #activeProgress,
+		.red::shadow paper-slider::shadow #sliderKnobInner,
+		.red::shadow paper-slider::shadow #sliderKnobInner::before,
+		.red::shadow .tickContainer.show > span.tick {
+			background-color: #c00;
+		}
+		.green::shadow paper-slider::shadow #sliderBar::shadow #activeProgress,
+		.green::shadow paper-slider::shadow #sliderKnobInner,
+		.green::shadow paper-slider::shadow #sliderKnobInner::before,
+		.green::shadow .tickContainer.show > span.tick {
+			background-color: #0a0;
+		}
+		.blue::shadow paper-slider::shadow #sliderBar::shadow #activeProgress,
+		.blue::shadow paper-slider::shadow #sliderKnobInner,
+		.blue::shadow paper-slider::shadow #sliderKnobInner::before,
+		.blue::shadow .tickContainer.show > span.tick {
+			background-color: #00c;
+		}
+	</style>
+	<h1 align="center">Demo of ti-widget-colorwheel</h1>
+	<p>&nbsp;</p>
+	<div layout horizontal>
+		<div style="padding:10px;">
+			<table>
+				<tr>
+					<td style="color:#c00;font-weight:bold">RED</td>
+					<td width="255px"><ti-widget-slider class="red" value="{{ $.ti_widget_colorwheel.red }}"  on-mouseup="{{onMouseUpHdlr}}" style="color:red;width:255px;" maxvalue="255" labels="0,255" id="slider_red"></ti-widget-slider></td>
+				</tr>
+				<tr>
+					<td style="color:#0a0;font-weight:bold">GREEN</td>
+					<td width="255px"><ti-widget-slider class="green" value="{{ $.ti_widget_colorwheel.green }}" on-mouseup="{{onMouseUpHdlr}}" style="color:green;width:255px;" maxvalue="255" labels="0,255" id="slider_green"></ti-widget-slider>
+				</tr>
+				<tr>
+					<td style="color:#00c;font-weight:bold">BLUE</td>
+					<td width="255px"><ti-widget-slider class="blue" value="{{ $.ti_widget_colorwheel.blue }}" on-mouseup="{{onMouseUpHdlr}}" style="color:blue;width:255px;" maxvalue="255" labels="0,255" id="slider_blue"></ti-widget-slider></td>
+				</tr>
+			</table>
+		</div>
+		<div style="padding-left:100px;">
+			<div><b>Selected Color:</b></div>
+			<div id="selectedColorDiv" style="height:180px;width:180px;border:solid grey 1px;"></div>
+		</div>
+	</div>
+	<div>
+		<ti-widget-colorwheel id="ti_widget_colorwheel" on-colorchanged="{{onColorChangedHdlr}}" ></ti-widget-colorwheel>
+	</div>
+</template>
+<script>
+	var template = document.querySelector('#demoTemplate');
+	template.selectedColor = 'rgb(0,0,0)';
+	template.onMouseUpHdlr = function(event){
+		// clear out the circle
+		template.$.ti_widget_colorwheel.drawColorWheel();
+	}
+	template.onColorChangedHdlr = function(event){
+		template.$.selectedColorDiv.style.backgroundColor = 'rgb(' + template.$.slider_red.value+','+template.$.slider_green.value+','+template.$.slider_blue.value+')';
+	}
+
+</script>
+</body>
+</html>

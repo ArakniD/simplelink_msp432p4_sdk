@@ -1,0 +1,1028 @@
+<html>
+<head>
+<title>module ti.uia.events.UIAStatistic</title>
+<meta name="description" content="UIA Statistics Events">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.events.</span><span class="xdoc-id">UIAStatistic</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIASnapshot.html" title="module UIASnapshot"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/package.html" title="package ti.uia.events"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIASync.html" title="module UIASync"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html">index URL</a></div>
+<p class="xdocHdrSummary">UIA Statistics Events</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-1">DETAILS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-2">EXAMPLES</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+The UIAStatistic module defines events that allow
+ tooling to analyze the performance of the software
+ (CPU Utilization, throughput, etc.)
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/events/UIAStatistic-src.html"><span class="xdocLabelFile">ti/uia/events/UIAStatistic.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/events/UIAStatistic.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIAStatistic_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIAStatistic_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIAStatistic_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIAStatistic_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIAStatistic_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIAStatistic_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Constants</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#bytes.Processed"><span class="xdoc-id">UIAStatistic_bytesProcessed</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;bytesProcessed statistic event</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#bytes.Processed.By.Instance"><span class="xdoc-id">UIAStatistic_bytesProcessedByInstance</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;bytesProcessedByInstance statistic event</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#cpu.Load"><span class="xdoc-id">UIAStatistic_cpuLoad</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of cycles used by an XDC module</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#cpu.Load.By.Instance"><span class="xdoc-id">UIAStatistic_cpuLoadByInstance</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of cycles used by a non XDC module or thread</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#free.Bytes"><span class="xdoc-id">UIAStatistic_freeBytes</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of free bytes in heap</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#words.Processed"><span class="xdoc-id">UIAStatistic_wordsProcessed</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;wordsProcessed statistic event</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#words.Processed.By.Instance"><span class="xdoc-id">UIAStatistic_wordsProcessedByInstance</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;wordsProcessedByInstance statistic event</span></span></a>;</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The UIAStatistic module defines events that allow
+ tooling to analyze the performance of the software
+ (CPU Utilization, throughput, etc.)</div>
+<div class="xdocText">The generation of UIAStatistic events is controlled by a module's diagnostics
+  mask, which is described in details in <tt><a class="xdoc-link" href="../../../xdc/runtime/Diags.html" title="xdc.runtime.Diags">xdc.runtime.Diags</a></tt>.
+ <tt>UIAStatistic</tt> events are generated only when the Diags.ANALYSIS bit is set
+  in the module's diagnostics mask.</div>
+<div class="xdocText">The following configuration script demonstrates how the application might
+  control the logging of ANALYSIS events embedded in the <tt>Mod</tt> module at configuration
+  time. In this case, the configuration script arranges for the <tt>Log</tt>
+  statements within modules to always generate ANALYSIS events.
+  Without these configuration statements, no ANALYSIS events would be generated
+  by any modules.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLES</div>
+<div class="xdocText">Example 1: This is part of the XDC configuration file for the application:</div>
+<div class="xdocText"><PRE class="Example">  var UIAStatistic = xdc.useModule('ti.uia.events.UIAStatistic');
+  var Diags = xdc.useModule('xdc.runtime.Diags');
+  var LoggerSys = xdc.useModule('xdc.runtime.LoggerSys');
+  var Defaults = xdc.useModule('xdc.runtime.Defaults');
+  var logger = LoggerSys.create();
+
+  Defaults.common$.diags_ANALYSIS = Diags.ALWAYS_ON;
+  Defaults.common$.logger = logger;
+</PRE></div>
+<div class="xdocText"><hr /></div>
+<div class="xdocText">Example 2: The following example configures a module to support logging
+  of ANALYSIS events, but defers the actual activation and deactivation of the
+  logging until runtime. See the <tt><a class="xdoc-link" href="Diags.html#set.Mask" title="Diags.setMask">Diags_setMask()</a></tt>
+  function for details on specifying the control string.</div>
+<div class="xdocText">This is a part of the XDC configuration file for the application:</div>
+<div class="xdocText"><PRE class="Example">  var UIAStatistic = xdc.useModule('ti.uia.events.UIAStatistic');
+  var Diags = xdc.useModule('xdc.runtime.Diags');
+  var Mod = xdc.useModule('my.pkg.Mod');
+
+  Mod.common$.diags_ANALYSIS = Diags.RUNTIME_OFF;
+</PRE></div>
+<div class="xdocText">This is a part of the C code for the application:</div>
+<div class="xdocText"><PRE class="Example">  // turn on logging of ANALYSIS events in the module
+  Diags_setMask("my.pkg.Mod+Z");
+
+  // turn off logging of ANALYSIS events in the module
+  Diags_setMask("my.pkg.Mod-Z");
+</PRE></div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="bytes.Processed"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic_</span><span class="xdoc-id">bytesProcessed</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#bytes.Processed">index URL</a></div>
+<p class="xdocHdrSummaryDcl">bytesProcessed statistic event</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAStatistic_bytesProcessed</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">name</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that provides the name
+                              of the entity that is processing the data</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">numBytes</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of bytes processed</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Number of bytes that were processed.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="bytes.Processed.By.Instance"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic_</span><span class="xdoc-id">bytesProcessedByInstance</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#bytes.Processed.By.Instance">index URL</a></div>
+<p class="xdocHdrSummaryDcl">bytesProcessedByInstance statistic event</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAStatistic_bytesProcessedByInstance</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;constant string identifying the file the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;the line number the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">instanceId</span>
+<span class="xdocChildSum">&#151;&nbsp;the instance ID (e.g. thread handle) of the
+                             entity that is processing the data</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">numBytes</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of bytes processed</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Number of bytes that were processed along with filename,
+  line number and instance ID.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an
+   event that tracks the number of bytes processed</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAStatistic.h&gt;
+  ...
+ Void myFunction(){
+   int instanceId = 0x1234; // change to e.g. a TaskId or some other unique ID
+   int numBytes= 567;       // change to number of bytes actually processed
+
+   Log_write4(UIAStatistic_bytesProcessedByInstance, (IArg)__FILE__,(IArg)__LINE__,instanceId,numBytes);
+ }
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event:</div>
+<div class="xdocText"><PRE class="Example">  Bytes Processed at Line 123 in demo.c (InstanceId 0x1234): Num Bytes=567
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="cpu.Load"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic_</span><span class="xdoc-id">cpuLoad</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#cpu.Load">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of cycles used by an XDC module</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAStatistic_cpuLoad</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">numCycles</span>
+<span class="xdocChildSum">&#151;&nbsp;the CPU load in cycles</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a cpuLoad
+   event that tracks the number of cycles used by an XDC module.
+   The module ID is logged along with the event.  For non-XDC
+   code, or for code with multiple instances @see #cpuLoadByInstance.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAStatistic.h&gt;
+  ...
+ Void myFunction(){
+   int numCycles = 0;
+   // update numCycles with the number of cycles processed
+   Log_write1(UIAStatistic_cpuLoad, numCycles);
+ }
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event:</div>
+<div class="xdocText"><PRE class="Example">  CPU Load: NumCycles=1234
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="cpu.Load.By.Instance"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic_</span><span class="xdoc-id">cpuLoadByInstance</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#cpu.Load.By.Instance">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of cycles used by a non XDC module or thread</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAStatistic_cpuLoadByInstance</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">name</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that provides the name of the entity that is processing the data</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">instanceId</span>
+<span class="xdocChildSum">&#151;&nbsp;the instance ID (e.g. thread handle) of the entity that is processing the data</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">numCycles</span>
+<span class="xdocChildSum">&#151;&nbsp;the CPU load in cycles</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a cpuLoad
+   event that tracks the number of cycles used by
+   code that is not in an XDC module or by a thread</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAStatistic.h&gt;
+  static volatile int gMyGlobalInstanceId = 0;
+  ...
+ Void myFunction(){
+  IArg key;
+  int localInstanceId;
+  int numCycles = 0;
+ // protect pre-increment operation from race conditions
+  key = Gate_enterSystem();
+  localInstanceId = ++gMyGlobalInstanceId;
+  Gate_leaveSystem(key);
+   // update numCycles with the number of cycles processed
+   Log_write3(UIAStatistic_cpuLoadByInstance, "myFunction",localInstanceId,numCycles);
+ }
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event:</div>
+<div class="xdocText"><PRE class="Example">  CPU Load for myFunction (instanceId = 0x1234): NumCycles=1234
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="free.Bytes"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic_</span><span class="xdoc-id">freeBytes</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#free.Bytes">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of free bytes in heap</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAStatistic_freeBytes</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;constant string identifying the file the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;the line number the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">heapId</span>
+<span class="xdocChildSum">&#151;&nbsp;heap identifier (e.g IHeap_Handle)</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">freeBytes</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of bytes free on the heap</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a freeBytes
+   event that tracks the number of bytes free in the heap</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAStatistic.h&gt;
+  ...
+ Void myFunction(){
+   int heapId = 0x1234;    // change to heap ID
+   int numBytesFree = 567; // change to number of bytes free on the heap
+
+   Log_write4(UIAStatistic_freeBytes, (IArg)__FILE__,(IArg)__LINE__,heapId,numFreeBytes);
+ }
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event:</div>
+<div class="xdocText"><PRE class="Example">  Heap at Line 123 in demo.c (HeapId 0x1234): Free Bytes=567
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="words.Processed"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic_</span><span class="xdoc-id">wordsProcessed</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#words.Processed">index URL</a></div>
+<p class="xdocHdrSummaryDcl">wordsProcessed statistic event</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAStatistic_wordsProcessed</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">name</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that provides the name
+                              of the entity that is processing the data</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">numWords</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of words processed</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">number of words that were processed.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="words.Processed.By.Instance"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic_</span><span class="xdoc-id">wordsProcessedByInstance</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#words.Processed.By.Instance">index URL</a></div>
+<p class="xdocHdrSummaryDcl">wordsProcessedByInstance statistic event</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAStatistic_wordsProcessedByInstance</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;constant string identifying the file the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;the line number the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">instanceId</span>
+<span class="xdocChildSum">&#151;&nbsp;the instance ID (e.g. thread handle) of the
+                             entity that is processing the data</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">numWords</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of words processed</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Number of words that were processed along with filename,
+  line number and instance ID.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an
+   event that tracks the number of words processed</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAStatistic.h&gt;
+  ...
+ Void myFunction(){
+   int instanceId = 0x1234;  // change to e.g. a TaskId or some other unique ID
+   int numWords= 567;        // change to number of words actually processed
+
+   Log_write4(UIAStatistic_wordsProcessedByInstance, (IArg)__FILE__,(IArg)__LINE__,instanceId,numWords);
+ }
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event:</div>
+<div class="xdocText"><PRE class="Example">  Words Processed at Line 123 in demo.c (InstanceId 0x1234): Num Words=567
+</PRE></div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">UIAStatistic_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">UIAStatistic_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">UIAStatistic_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">UIAStatistic_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">UIAStatistic_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">UIAStatistic_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/events/UIAStatistic-src.html"><span class="xdocLabelFile">ti/uia/events/UIAStatistic.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> UIAStatistic = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.events.UIAStatistic'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metabytes.Processed">UIAStatistic.<span class="xdoc-id">bytesProcessed</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;bytesProcessed statistic event</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Bytes Processed by %s: NumBytes=0x%x"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metabytes.Processed.By.Instance">UIAStatistic.<span class="xdoc-id">bytesProcessedByInstance</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;bytesProcessedByInstance statistic event</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Bytes Processed at %$F (InstanceId 0x%x): Num Bytes=%d"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metacpu.Load">UIAStatistic.<span class="xdoc-id">cpuLoad</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of cycles used by an XDC module</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "CPU Load: NumCycles=%d"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metacpu.Load.By.Instance">UIAStatistic.<span class="xdoc-id">cpuLoadByInstance</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of cycles used by a non XDC module or thread</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "CPU Load for %s (instanceId = 0x%x): NumCycles=%d"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metafree.Bytes">UIAStatistic.<span class="xdoc-id">freeBytes</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of free bytes in heap</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Heap at %$F (HeapId 0x%x): Free Bytes=%d"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metawords.Processed">UIAStatistic.<span class="xdoc-id">wordsProcessed</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;wordsProcessed statistic event</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Words Processed by %s: NumWords=0x%x"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metawords.Processed.By.Instance">UIAStatistic.<span class="xdoc-id">wordsProcessedByInstance</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;wordsProcessedByInstance statistic event</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Words Processed at %$F (InstanceId 0x%x): Num Words=%d"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">UIAStatistic.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metabytes.Processed"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic.</span><span class="xdoc-id">bytesProcessed</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#bytes.Processed">index URL</a></div>
+<p class="xdocHdrSummaryDcl">bytesProcessed statistic event</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAStatistic.<span class="xdoc-id">bytesProcessed</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Bytes Processed by %s: NumBytes=0x%x"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">name</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that provides the name
+                              of the entity that is processing the data</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">numBytes</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of bytes processed</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Number of bytes that were processed.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#bytes.Processed" title="UIAStatistic_bytesProcessed">UIAStatistic_bytesProcessed</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metabytes.Processed.By.Instance"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic.</span><span class="xdoc-id">bytesProcessedByInstance</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#bytes.Processed.By.Instance">index URL</a></div>
+<p class="xdocHdrSummaryDcl">bytesProcessedByInstance statistic event</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAStatistic.<span class="xdoc-id">bytesProcessedByInstance</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Bytes Processed at %$F (InstanceId 0x%x): Num Bytes=%d"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;constant string identifying the file the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;the line number the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">instanceId</span>
+<span class="xdocChildSum">&#151;&nbsp;the instance ID (e.g. thread handle) of the
+                             entity that is processing the data</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">numBytes</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of bytes processed</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Number of bytes that were processed along with filename,
+  line number and instance ID.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an
+   event that tracks the number of bytes processed</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAStatistic.h&gt;
+  ...
+ Void myFunction(){
+   int instanceId = 0x1234; // change to e.g. a TaskId or some other unique ID
+   int numBytes= 567;       // change to number of bytes actually processed
+
+   Log_write4(UIAStatistic_bytesProcessedByInstance, (IArg)__FILE__,(IArg)__LINE__,instanceId,numBytes);
+ }
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event:</div>
+<div class="xdocText"><PRE class="Example">  Bytes Processed at Line 123 in demo.c (InstanceId 0x1234): Num Bytes=567
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#bytes.Processed.By.Instance" title="UIAStatistic_bytesProcessedByInstance">UIAStatistic_bytesProcessedByInstance</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metacpu.Load"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic.</span><span class="xdoc-id">cpuLoad</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#cpu.Load">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of cycles used by an XDC module</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAStatistic.<span class="xdoc-id">cpuLoad</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "CPU Load: NumCycles=%d"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">numCycles</span>
+<span class="xdocChildSum">&#151;&nbsp;the CPU load in cycles</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a cpuLoad
+   event that tracks the number of cycles used by an XDC module.
+   The module ID is logged along with the event.  For non-XDC
+   code, or for code with multiple instances @see #cpuLoadByInstance.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAStatistic.h&gt;
+  ...
+ Void myFunction(){
+   int numCycles = 0;
+   // update numCycles with the number of cycles processed
+   Log_write1(UIAStatistic_cpuLoad, numCycles);
+ }
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event:</div>
+<div class="xdocText"><PRE class="Example">  CPU Load: NumCycles=1234
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#cpu.Load" title="UIAStatistic_cpuLoad">UIAStatistic_cpuLoad</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metacpu.Load.By.Instance"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic.</span><span class="xdoc-id">cpuLoadByInstance</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#cpu.Load.By.Instance">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of cycles used by a non XDC module or thread</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAStatistic.<span class="xdoc-id">cpuLoadByInstance</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "CPU Load for %s (instanceId = 0x%x): NumCycles=%d"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">name</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that provides the name of the entity that is processing the data</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">instanceId</span>
+<span class="xdocChildSum">&#151;&nbsp;the instance ID (e.g. thread handle) of the entity that is processing the data</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">numCycles</span>
+<span class="xdocChildSum">&#151;&nbsp;the CPU load in cycles</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a cpuLoad
+   event that tracks the number of cycles used by
+   code that is not in an XDC module or by a thread</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAStatistic.h&gt;
+  static volatile int gMyGlobalInstanceId = 0;
+  ...
+ Void myFunction(){
+  IArg key;
+  int localInstanceId;
+  int numCycles = 0;
+ // protect pre-increment operation from race conditions
+  key = Gate_enterSystem();
+  localInstanceId = ++gMyGlobalInstanceId;
+  Gate_leaveSystem(key);
+   // update numCycles with the number of cycles processed
+   Log_write3(UIAStatistic_cpuLoadByInstance, "myFunction",localInstanceId,numCycles);
+ }
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event:</div>
+<div class="xdocText"><PRE class="Example">  CPU Load for myFunction (instanceId = 0x1234): NumCycles=1234
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#cpu.Load.By.Instance" title="UIAStatistic_cpuLoadByInstance">UIAStatistic_cpuLoadByInstance</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metafree.Bytes"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic.</span><span class="xdoc-id">freeBytes</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#free.Bytes">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of free bytes in heap</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAStatistic.<span class="xdoc-id">freeBytes</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Heap at %$F (HeapId 0x%x): Free Bytes=%d"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;constant string identifying the file the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;the line number the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">heapId</span>
+<span class="xdocChildSum">&#151;&nbsp;heap identifier (e.g IHeap_Handle)</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">freeBytes</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of bytes free on the heap</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a freeBytes
+   event that tracks the number of bytes free in the heap</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAStatistic.h&gt;
+  ...
+ Void myFunction(){
+   int heapId = 0x1234;    // change to heap ID
+   int numBytesFree = 567; // change to number of bytes free on the heap
+
+   Log_write4(UIAStatistic_freeBytes, (IArg)__FILE__,(IArg)__LINE__,heapId,numFreeBytes);
+ }
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event:</div>
+<div class="xdocText"><PRE class="Example">  Heap at Line 123 in demo.c (HeapId 0x1234): Free Bytes=567
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#free.Bytes" title="UIAStatistic_freeBytes">UIAStatistic_freeBytes</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metawords.Processed"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic.</span><span class="xdoc-id">wordsProcessed</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#words.Processed">index URL</a></div>
+<p class="xdocHdrSummaryDcl">wordsProcessed statistic event</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAStatistic.<span class="xdoc-id">wordsProcessed</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Words Processed by %s: NumWords=0x%x"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">name</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that provides the name
+                              of the entity that is processing the data</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">numWords</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of words processed</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">number of words that were processed.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#words.Processed" title="UIAStatistic_wordsProcessed">UIAStatistic_wordsProcessed</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metawords.Processed.By.Instance"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic.</span><span class="xdoc-id">wordsProcessedByInstance</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#words.Processed.By.Instance">index URL</a></div>
+<p class="xdocHdrSummaryDcl">wordsProcessedByInstance statistic event</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAStatistic.<span class="xdoc-id">wordsProcessedByInstance</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Words Processed at %$F (InstanceId 0x%x): Num Words=%d"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;constant string identifying the file the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;the line number the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">instanceId</span>
+<span class="xdocChildSum">&#151;&nbsp;the instance ID (e.g. thread handle) of the
+                             entity that is processing the data</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">numWords</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of words processed</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Number of words that were processed along with filename,
+  line number and instance ID.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an
+   event that tracks the number of words processed</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAStatistic.h&gt;
+  ...
+ Void myFunction(){
+   int instanceId = 0x1234;  // change to e.g. a TaskId or some other unique ID
+   int numWords= 567;        // change to number of words actually processed
+
+   Log_write4(UIAStatistic_wordsProcessedByInstance, (IArg)__FILE__,(IArg)__LINE__,instanceId,numWords);
+ }
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event:</div>
+<div class="xdocText"><PRE class="Example">  Words Processed at Line 123 in demo.c (InstanceId 0x1234): Num Words=567
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#words.Processed.By.Instance" title="UIAStatistic_wordsProcessedByInstance">UIAStatistic_wordsProcessedByInstance</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAStatistic.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAStatistic.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAStatistic.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:10 GMT</div>
+</div></div></body>
+</html>

@@ -1,0 +1,1404 @@
+<html>
+<head>
+<title>module ti.uia.runtime.LogSync</title>
+<meta name="description" content="SyncPoint Event logging module for logging sync point events. Allows sync point events to use a different logger instance than used for other events">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.runtime.</span><span class="xdoc-id">LogSync</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/package.html" title="package ti.uia.runtime"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html">index URL</a></div>
+<p class="xdocHdrSummary">SyncPoint Event logging module for logging sync point events.  Allows sync
+  point events to use a different logger instance than used for other events</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-1">DETAILS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-2">EXAMPLES</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+SyncPoint events are used to log timestamp values for two timebases: the
+ local CPU timestamp that is used to timestamp events from this CPU, and a
+ 'global' timestamp value that can be accessed by two or more CPUs.
+ By logging the current timestamp values from these two timebase sources,
+ the sync point events provide correlation points between the two timebases.
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/LogSync-src.html"><span class="xdocLabelFile">ti/uia/runtime/LogSync.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/runtime/LogSync.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Functions</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#disable"><span class="xdoc-id">LogSync_disable</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Disable logging of sync point events</span></span></a>();</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#enable"><span class="xdoc-id">LogSync_enable</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enables logging of sync point events</span></span></a>();</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#idle.Hook"><span class="xdoc-id">LogSync_idleHook</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Hook function that can be called by SysBios when the Idle function.
+  Logs a sync point event if required in order to enable multicore event correlation.
+  Allows multicore event correlation to be re-established after the target
+  has been halted and then resumed execution.  (e.g. after CIO operation or breakpoint)</span></span></a>();</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#is.Sync.Event.Required"><span class="xdoc-id">LogSync_isSyncEventRequired</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Is Sync Event Required</span></span></a>();</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_config_parameters"><span class="xdoc-id">LogSync_Params_init</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Initialize this config-params structure with supplier-specified defaults before instance creation</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_config_parameters" title="ti.uia.runtime.LogSync.Params">LogSync_Params</a> *params);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#put.Sync.Point"><span class="xdoc-id">LogSync_putSyncPoint</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Unconditionally put the specified <tt>Types</tt> event</span></span></a>();</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#timer.Hook"><span class="xdoc-id">LogSync_timerHook</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Hook function that can be called periodically by SysBios to enable correlation
+  of CPU trace, STM trace and software instrumentation events</span></span></a>(<span class="xdoc-kw2">UArg</span>&nbsp;<span class="xdoc-id">arg</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write.Sync.Point"><span class="xdoc-id">LogSync_writeSyncPoint</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log a sync point event along with global timestamp, local CPU frequency
+     and sync point serial number</span></span></a>();</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write.Sync.Point.Raw"><span class="xdoc-id">LogSync_writeSyncPointRaw</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a>(<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">Types_Timestamp64</a>&nbsp;*<span class="xdoc-id">cpuTS</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">Types_Timestamp64</a>&nbsp;*<span class="xdoc-id">globalTS</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;*<span class="xdoc-id">globalTickFreq</span>);</div></td></tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target instances</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LogSync_handle</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Convert this instance structure pointer into an instance handle</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LogSync_Handle_label</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The label associated with this instance object</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LogSync_Handle_name</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The name of this instance object</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LogSync_Object_count</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The number of statically-created instance objects</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LogSync_Object_first</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The handle of the first dynamically-created instance object, or NULL</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LogSync_Object_get</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The handle of the i-th statically-created instance object (array == NULL)</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LogSync_Object_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap used to allocate dynamically-created instance objects</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LogSync_Object_next</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The handle of the next dynamically-created instance object, or NULL</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LogSync_struct</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Convert this instance handle into an instance structure pointer</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogSync_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogSync_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogSync_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogSync_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogSync_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogSync_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Typedefs</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_object_types" title="ti.uia.runtime.LogSync.Object">LogSync_Object</a> *</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LogSync_Handle</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Client reference to an instance object</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LogSync_Object</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Opaque internal representation of an instance object</span></span></a> <span class="xdoc-id">LogSync_Object</span>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_config_parameters"><span class="xdoc-id">LogSync_Params</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Instance config-params structure</span></span></a> ...</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LogSync_Struct</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Opaque client structure large enough to hold an instance object</span></span></a> <span class="xdoc-id">LogSync_Struct</span>;</div></td></tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Constants</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">UInt32</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#cpu.Timestamp.Cycles.Per.Tick"><span class="xdoc-id">LogSync_cpuTimestampCyclesPerTick</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The number of CPU cycles each tick of the global timestamp corresponds to.
+    0 if no relation between clocks</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">UInt32</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#global.Timestamp.Cpu.Cycles.Per.Tick"><span class="xdoc-id">LogSync_globalTimestampCpuCyclesPerTick</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The number of CPU cycles each tick of the global timestamp corresponds
+    to.  0 if no relation between clocks</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../ti/uia/runtime/LoggerTypes.html#.Inject.Into.Trace.Fxn" title="ti.uia.runtime.LoggerTypes.InjectIntoTraceFxn">LoggerTypes_InjectIntoTraceFxn</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#inject.Into.Trace.Fxn"><span class="xdoc-id">LogSync_injectIntoTraceFxn</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Callback function that handles injection of info such as serial numbers
+ of sync point events, context change events or snapshot events into a
+ hardware trace stream. (e.g. GEM CPU Trace, System Trace, etc.)</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#max.Global.Clock.Freq"><span class="xdoc-id">LogSync_maxGlobalClockFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The highest bus clock frequency used to drive the timer used for the global
+  timestamp</span></span></a>;</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">SyncPoint events are used to log timestamp values for two timebases: the
+ local CPU timestamp that is used to timestamp events from this CPU, and a
+ 'global' timestamp value that can be accessed by two or more CPUs.
+ By logging the current timestamp values from these two timebase sources,
+ the sync point events provide correlation points between the two timebases.</div>
+<div class="xdocText">In order to allow sync point information to be injected into hardware trace
+ streams, the LogSync module supports a configuration parameter named
+ injectIntoTraceFxn that allows the user to hook in a function pointer
+ to a function that handles the (ISA specific) details of injecting whatever
+ information is required into the trace stream.  For C64X+ full gem devices,
+ the address of the ti.uia.family.c64p.GemTraceSync module's
+ GemTraceSync_injectIntoTrace function should be used.</div>
+<div class="xdocText">The sync point events are defined in the ti.uia.events.UIASync module
+ (@see ti.uia.events.UIASync#syncPoint)</div>
+<div class="xdocText">A unique 'serial number' is assigned to each sync point event that is logged.
+ The same serial number is logged as a parameter for all UIASync events that are
+ used to log information related to the sync point, allowing host-side tooling to
+ treat these separate events coherently.  The serial number can optionally be injected
+ into device-specific trace streams (e.g. CPU trace, System Trace, etc.) in order
+ to enable host-side tooling to correlate these separate streams with the CPU and
+ global timestamp information logged with the sync point events.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLES</div>
+<div class="xdocText">Example 1: This is part of the XDC configuration file for the application
+  that demonstrates a standard configuration using default settings.  In this
+  example, the Rta module internally handles the logging of the sync point
+  events.  A timestamp module that implements the IUIATimestampProvider
+  interface is used for the global timestamp.  Default values are used for
+  the CPU maxCpuClockFreq (700 MHz).</div>
+<div class="xdocText"><PRE class="Example"> // By including Rta, Log records will be collected and sent to the
+ // instrumentation host (once it is connected and started).  The Rta module
+ // logs sync point events upon receiving either the start or stop command,
+ // and prior to sending up a new event packet if
+ // LogSync_isSyncPointEventRequired() returns true.
+ var Rta  = xdc.useModule('ti.uia.services.Rta');
+
+ // By default, the sync point events will be logged to a dedicated
+ // LoggerCircBuf buffer named 'SyncLog' that is assigned to the LogSync
+ // module.  Using a dedicated event logger buffer is recommended
+ // in order to ensure that sufficient timing information
+ // is captured to enable accurate multicore event correlation.
+ // Configure LogSync.defaultSyncLoggerSize to specify a custom buffer size.
+ var LogSync = xdc.useModule('ti.uia.runtime.LogSync');
+
+ // For C64X+ and C66X devices that provide CPU trace hardware capabilities,
+ // the following line will enable injection of correlation information into
+ // the GEM CPU trace, enabling correlation of software events with the CPU
+ // trace events.
+ var GemTraceSync = xdc.useModule('ti.uia.family.c64p.GemTraceSync');
+
+ // Configure a shared timer to act as a global time reference to enable
+ // multicore correlation.  The TimestampC6472Timer module implements the
+ // IUIATimestampProvider interface, so assigning this timer to
+ // LogSync.GlobalTimestampProxy will configure the LogSync module's global
+ // clock parameters automatically.  Exmaple 2 shows how to use other
+ // types of timers.
+ var TimestampC6472Timer =
+    xdc.useModule('ti.uia.family.c64p.TimestampC6472Timer');
+ LogSync.GlobalTimestampProxy = TimestampC6472Timer;
+</PRE></div>
+<div class="xdocText"><hr /></div>
+<div class="xdocText">Example 2: Using a timer that does not implement the IUIATimestampProvider
+ interface as the global timestamp timer.  This example shows how to use,
+ for example, timers that are provided by DSP/BIOS as the global timer
+ source for event correlation 'sync point' timestamps.</div>
+<div class="xdocText"><PRE class="Example">
+ var LogSync = xdc.useModule('ti.uia.runtime.LogSync');
+ var BiosTimer = xdc.useModule('ti.sysbios.family.c64p.TimestampProvider');
+ LogSync.GlobalTimestampProxy = BiosTimer;
+
+ // The following additional configuration code is required to use
+ // a timer that does not implement the IUIATimeestampProvider interface
+ // as the global timer for the LogSync module.  If the maxGlobalClockFreq
+ // config option is not initialized, the following warning message will be displayed
+ // at build time: "Warning: UIA Event correlation disabled.  Please
+ // configure LogSync.globalClkFreq (.lo,.hi) to a non-zero value to enable."
+ LogSync.maxGlobalClockFreq.lo = 700000000; // frequency in Hz - lower 32b
+ LogSync.maxGlobalClockFreq.hi = 0;         // frequency in Hz - upper 32b
+
+ // Configure the LogSync module with CPU timestamp clock frequency info
+ // for clock frequencies other than the default (700MHz).
+ LogSync.maxCpuClockFreq.lo = 1000000000; // 1GHz CPU freq. - lower 32b
+ LogSync.maxCpuClockFreq.hi = 0;         // 1GHz CPU freq.- upper 32b
+
+ // The globalTimestampCpuCyclesPerTick config option is optional.
+ // It is used to convert global timestamp tick counts into CPU cycle counts
+ // for devices where there is a fixed relationship between the global timer
+ // frequency and the CPU clock.
+ LogSync.globalTimestampCpuCyclesPerTick = 6;
+</PRE></div>
+<div class="xdocText"><hr /></div>
+<div class="xdocText">Example 3: Disabling LogSync module at configuation time
+ The logging of sync point events can be disabled by adding the following
+ to the configuration script:</div>
+<div class="xdocText"><PRE class="Example"> LogSync.isEnabled = false;
+</PRE></div>
+<div class="xdocText"><hr /></div>
+<div class="xdocText">Example 4:  This is a part of the C code for an application that does
+  not use the Rta module, and so needs to log the sync point events itself:</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;ti/uia/runtime/LogSync.h&gt;
+  ...
+
+ // If the target has been suspended or halted
+ // since the last time an event packet was sent to the
+ // host, or the event transport has received a 'start' or
+ // 'stop' command from the host, log a new sync point event to record
+ // the current correlation info between the local
+ // timestamp and the global timestamp.
+ if ((LogSync_isSyncEventRequired())||([starting/stopping event transport])){
+    LogSync_writeSyncPoint();
+ }
+</PRE></div>
+<div class="xdocText">&lt;hr /&gt;</div>
+<div class="xdocText">Example 5:  The following configuration script snippet shows how to periodically
+ log a sync point event.  This allows System Analyzer to properly correlate UIA software
+ instrumentation events with C6X CPU trace and STM (System Trace) events.</div>
+<div class="xdocText"><PRE class="Example"> //Configure a Timer to interrupt every 100ms and call the LogSync_timerHook
+ // function to log a sync point event
+ var Timer = xdc.useModule('ti.sysbios.hal.Timer');
+ var timerParams = new Timer.Params();
+ timerParams.startMode = Timer.StartMode_AUTO;
+ timerParams.period = 100000;        // 100,000 uSecs = 100ms
+ var timer0 = Timer.create(Timer.ANY, '&amp;ti_uia_runtime_LogSync_timerHook', timerParams);
+</PRE></div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="cpu.Timestamp.Cycles.Per.Tick"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync_</span><span class="xdoc-id">cpuTimestampCyclesPerTick</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#cpu.Timestamp.Cycles.Per.Tick">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The number of CPU cycles each tick of the global timestamp corresponds to.
+    0 if no relation between clocks</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">LogSync_cpuTimestampCyclesPerTick</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If the module configured as the CpuTimestampProxy implements
+ ti.uia.runtime.IUIATimestampProvider, the default value of this config
+ option is derived at configuration time from that module's config data.
+ Otherwise it is initialized to 0 to signify that there is no way to
+ convert a number of global timestamp tick counts into an equivalent
+ number of CPU cycles.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="global.Timestamp.Cpu.Cycles.Per.Tick"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync_</span><span class="xdoc-id">globalTimestampCpuCyclesPerTick</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#global.Timestamp.Cpu.Cycles.Per.Tick">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The number of CPU cycles each tick of the global timestamp corresponds
+    to.  0 if no relation between clocks</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">LogSync_globalTimestampCpuCyclesPerTick</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">A value of 0 signifies that there is no way to convert a number of
+ global timestamp tick counts into an equivalent number of CPU cycles.
+ Note that this value will be automatically copied from the
+ GlobalTimestampProxy.cpuCyclesPerTick configuration value
+ at configuration time if GlobalTimestampProxy.cpuCyclesPerTick &gt; 0.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="inject.Into.Trace.Fxn"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync_</span><span class="xdoc-id">injectIntoTraceFxn</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#inject.Into.Trace.Fxn">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Callback function that handles injection of info such as serial numbers
+ of sync point events, context change events or snapshot events into a
+ hardware trace stream. (e.g. GEM CPU Trace, System Trace, etc.)</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../ti/uia/runtime/LoggerTypes.html#.Inject.Into.Trace.Fxn" title="ti.uia.runtime.LoggerTypes.InjectIntoTraceFxn">LoggerTypes_InjectIntoTraceFxn</a>&nbsp;<span class="xdoc-id">LogSync_injectIntoTraceFxn</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Users can provide their own custom injectIntoTraceFxn to log whatever
+ additional information they wish to record when the hook function is called.
+ For example, event serial numbers can be injected into the CPU
+ trace stream and / or STM trace stream in order to enable correlation
+ of information logged in these streams with UIA software events.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLES</div>
+<div class="xdocText"></div>
+<div class="xdocText"><B>Example 1: Correlating events with C64X+ and C66 CPU Trace</B></div>
+<div class="xdocText">The following is an example of the configuration script used
+ to inject serial numbers of sync point events or context change events or
+ snapshot Ids associated with snapshot events.</div>
+<div class="xdocText">Note that the GemTraceSync module's .xs script takes care of finding
+ all modules that implement the IUIATraceSyncClient and assigning the
+ GemTraceSync_injectIntoTrace function pointer to those modules'
+ injectIntoTraceFxn config option.</div>
+<div class="xdocText"><PRE class="Example"> //The following 3 modules all implement the IUIATraceSyncClient interface
+ var LogSnapshot   = xdc.useModule('ti.uia.runtime.LogSnapshot');
+ var LogCtxChg   = xdc.useModule('ti.uia.runtime.LogCtxChg');
+ var LogSync   = xdc.useModule('ti.uia.runtime.LogSync');
+ //For C66 devices, replace the following line with
+ // var GemTraceSync = xdc.useModule('ti.uia.family.c66.GemTraceSync');
+ var GemTraceSync = xdc.useModule('ti.uia.family.c64p.GemTraceSync');
+</PRE></div>
+<div class="xdocText"><hr>
+ <B>Example 2: How to create a custom hook function
+ and assign it to the LogSnapshot module</B></div>
+<div class="xdocText">The following is an example of a 'C' code program that implements
+ a hook function that prints out the snapshot ID that is passed in
+ as the serialNumber</div>
+<div class="xdocText"><PRE class="Example"> #include &lt;xdc/std.h&gt;
+ #include &lt;xdc/runtime/Gate.h&gt;
+ #include &lt;ti/uia/runtime/IUIATraceSyncProvider.h&gt;
+ #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+ #include &lt;stdio.h&gt;
+ #include &lt;string.h&gt;
+ extern Void myHookFxn(UInt32 serialNumber, IUIATraceSyncProvider_ContextType ctxType);
+ Void Test();
+ char name[32]={"Bob"};
+ UInt32 newAppId = 0;
+ Void myHookFxn(UInt32 serialNumber, IUIATraceSyncProvider_ContextType ctxType){
+      volatile UInt32 syncWord;
+      IArg key = Gate_enterSystem();
+      printf("newAppId written with serialNumber %d and ctxType = %d\n",serialNumber,ctxType);
+      Gate_leaveSystem(key);
+ }
+ Void Test(){
+     // note that the hook function is triggered by calling LogSnapshot_getSnapshotId()
+     // since that is where the unique snapshot ID that is passed to the
+     // hook function is generated.
+     Int snapshotId = LogSnapshot_getSnapshotId();
+     LogSnapshot_writeString(snapshotId,"User-defined name=%s.",name, strlen(name));
+ }
+
+ Void main(){
+     while(TRUE){  Test();  }
+  }
+</PRE></div>
+<div class="xdocText">In order to have the above user-defined function called by the LogSnapshot
+ module whenever it writes an event, the following configuration script
+ is needed:</div>
+<div class="xdocText"><PRE class="Example"> var LoggingSetup = xdc.useModule('ti.uia.sysbios.LoggingSetup');
+ var LogSnapshot   = xdc.useModule('ti.uia.runtime.LogSnapshot');
+ var IUIATraceSyncClient = xdc.useModule('ti.uia.runtime.IUIATraceSyncClient');
+ LogSnapshot.injectIntoTraceFxn = $externFxn('myHookFxn');
+
+</PRE></div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="LoggerTypes.html#.Inject.Into.Trace.Fxn" title="LoggerTypes.InjectIntoTraceFxn">LoggerTypes.InjectIntoTraceFxn</a>, <a class="xdoc-link" href="LogSnapshot.html" title="LogSnapshot">LogSnapshot</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="max.Global.Clock.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync_</span><span class="xdoc-id">maxGlobalClockFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#max.Global.Clock.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The highest bus clock frequency used to drive the timer used for the global
+  timestamp</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;<span class="xdoc-id">LogSync_maxGlobalClockFreq</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the globalTimestampCpuCyclesPerTick
+ config parameter.</div>
+<div class="xdocText">Defines the highest bus clock frequency used to drive the shared timer used
+ for the global timestamp.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="disable"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSync_</span><span class="xdoc-id">disable</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#disable">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Disable logging of sync point events</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LogSync_disable</span>();
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">The function returns the state of the module-level enable (<tt>TRUE</tt>
+  if enabled,<tt>FALSE</tt> if disabled) before the call. This return value
+  allows clients to restore the previous state.
+  Note: not thread safe.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="enable"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSync_</span><span class="xdoc-id">enable</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#enable">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enables logging of sync point events</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LogSync_enable</span>();
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">The function returns the state of the module-level enable (<tt>TRUE</tt>
+  if enabled,<tt>FALSE</tt> if disabled) before the call. This return value
+  allows clients to restore the previous state.
+  Note: not thread safe.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="idle.Hook"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSync_</span><span class="xdoc-id">idleHook</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#idle.Hook">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Hook function that can be called by SysBios when the Idle function.
+  Logs a sync point event if required in order to enable multicore event correlation.
+  Allows multicore event correlation to be re-established after the target
+  has been halted and then resumed execution.  (e.g. after CIO operation or breakpoint)</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogSync_idleHook</span>();
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Sync.Event.Required"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSync_</span><span class="xdoc-id">isSyncEventRequired</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#is.Sync.Event.Required">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Is Sync Event Required</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LogSync_isSyncEventRequired</span>();
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Checks whether the target has been halted since the
+ last sync point event and returns true if it has.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURN</div>
+<div class="xdocText">true if a synchronization event should be logged</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="put.Sync.Point"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSync_</span><span class="xdoc-id">putSyncPoint</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#put.Sync.Point">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Unconditionally put the specified <tt>Types</tt> event</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogSync_putSyncPoint</span>();
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This method unconditionally logs a sync point event. It is used
+  internally by the writeSyncPoint() macro and typically should not be
+  called directly.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="timer.Hook"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSync_</span><span class="xdoc-id">timerHook</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#timer.Hook">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Hook function that can be called periodically by SysBios to enable correlation
+  of CPU trace, STM trace and software instrumentation events</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogSync_timerHook</span>(<span class="xdoc-kw2">UArg</span>&nbsp;<span class="xdoc-id">arg</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write.Sync.Point"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSync_</span><span class="xdoc-id">writeSyncPoint</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#write.Sync.Point">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log a sync point event along with global timestamp, local CPU frequency
+     and sync point serial number</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogSync_writeSyncPoint</span>();
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">fmt</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that describes why the sync point was
+     logged.</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This method logs a synchronization point event, local CPU timestamp and
+  global timestamp into the log along with the fmt string a sync point
+  serial number</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write.Sync.Point.Raw"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSync_</span><span class="xdoc-id">writeSyncPointRaw</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#write.Sync.Point.Raw">index URL</a></div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogSync_writeSyncPointRaw</span>(<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">Types_Timestamp64</a>&nbsp;*<span class="xdoc-id">cpuTS</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">Types_Timestamp64</a>&nbsp;*<span class="xdoc-id">globalTS</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;*<span class="xdoc-id">globalTickFreq</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">LogSync_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">LogSync_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">LogSync_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">LogSync_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">LogSync_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LogSync_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+<a class="xdocAnchor" id="per-instance_object_types"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Object Types</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#per-instance_object_types">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">LogSync_Object</span> <span class="xdoc-id">LogSync_Object</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Opaque internal representation of an instance object</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_object_types" title="ti.uia.runtime.LogSync.Object">LogSync_Object</a> *<span class="xdoc-id">LogSync_Handle</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Client reference to an instance object</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">LogSync_Struct</span> <span class="xdoc-id">LogSync_Struct</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Opaque client structure large enough to hold an instance object</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_object_types" title="ti.uia.runtime.LogSync.Handle">LogSync_Handle</a> <span class="xdoc-id">LogSync_handle</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_object_types" title="ti.uia.runtime.LogSync.Struct">LogSync_Struct</a> *structP);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Convert this instance structure pointer into an instance handle</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_object_types" title="ti.uia.runtime.LogSync.Struct">LogSync_Struct</a> *<span class="xdoc-id">LogSync_struct</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_object_types" title="ti.uia.runtime.LogSync.Handle">LogSync_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Convert this instance handle into an instance structure pointer</div>
+</div>
+<a class="xdocAnchor" id="per-instance_config_parameters"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Config Parameters</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#per-instance_config_parameters">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">LogSync_Params</span> {
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Instance config-params structure</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdoc-link" href="../../../xdc/runtime/IInstance.html#per-instance_config_parameters" title="xdc.runtime.IInstance.Params">IInstance_Params</a> *instance;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Common per-instance configs</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">LogSync_Params</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LogSync_Params_init</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_config_parameters" title="ti.uia.runtime.LogSync.Params">LogSync_Params</a> *params);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Initialize this config-params structure with supplier-specified defaults before instance creation</div>
+</div>
+<a class="xdocAnchor" id="per-instance_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#per-instance_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Int</span> <span class="xdoc-id">LogSync_Object_count</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The number of statically-created instance objects</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_object_types" title="ti.uia.runtime.LogSync.Handle">LogSync_Handle</a> <span class="xdoc-id">LogSync_Object_get</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_object_types" title="ti.uia.runtime.LogSync.Object">LogSync_Object</a> *array, <span class="xdoc-kw2">Int</span> i);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The handle of the i-th statically-created instance object (array == NULL)</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_object_types" title="ti.uia.runtime.LogSync.Handle">LogSync_Handle</a> <span class="xdoc-id">LogSync_Object_first</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The handle of the first dynamically-created instance object, or NULL</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_object_types" title="ti.uia.runtime.LogSync.Handle">LogSync_Handle</a> <span class="xdoc-id">LogSync_Object_next</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_object_types" title="ti.uia.runtime.LogSync.Handle">LogSync_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The handle of the next dynamically-created instance object, or NULL</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">LogSync_Object_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap used to allocate dynamically-created instance objects</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Label" title="xdc.runtime.Types.Label">Types_Label</a> *<span class="xdoc-id">LogSync_Handle_label</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_object_types" title="ti.uia.runtime.LogSync.Handle">LogSync_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Label" title="xdc.runtime.Types.Label">Types_Label</a> *buf);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The label associated with this instance object</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">String</span> <span class="xdoc-id">LogSync_Handle_name</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#per-instance_object_types" title="ti.uia.runtime.LogSync.Handle">LogSync_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The name of this instance object</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/LogSync-src.html"><span class="xdocLabelFile">ti/uia/runtime/LogSync.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> LogSync = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.runtime.LogSync'</span>);
+</div>
+<div class='xdocSynHdr'>local proxy modules</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#.Cpu.Timestamp.Proxy">LogSync.<span class="xdoc-id">CpuTimestampProxy</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;CPU Timestamp Proxy</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/ITimestampClient.html" title="xdc.runtime.ITimestampClient">ITimestampClient</a>.Module</i> <span class="xdoc-kw2">null</span>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Cpu.Timestamp.Proxy" title="ti.uia.runtime.LogSync.CpuTimestampProxy">LogSync.<span class="xdoc-id">CpuTimestampProxy</span></a>.delegate$ = <i><a class="xdoc-link" href="../../../xdc/runtime/ITimestampClient.html" title="xdc.runtime.ITimestampClient">ITimestampClient</a>.Module</i> <span class="xdoc-kw2">null</span>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#.Global.Timestamp.Proxy">LogSync.<span class="xdoc-id">GlobalTimestampProxy</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Global Timestamp Proxy</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/ITimestampClient.html" title="xdc.runtime.ITimestampClient">ITimestampClient</a>.Module</i> <span class="xdoc-kw2">null</span>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Global.Timestamp.Proxy" title="ti.uia.runtime.LogSync.GlobalTimestampProxy">LogSync.<span class="xdoc-id">GlobalTimestampProxy</span></a>.delegate$ = <i><a class="xdoc-link" href="../../../xdc/runtime/ITimestampClient.html" title="xdc.runtime.ITimestampClient">ITimestampClient</a>.Module</i> <span class="xdoc-kw2">null</span>
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metacpu.Timestamp.Cycles.Per.Tick">LogSync.<span class="xdoc-id">cpuTimestampCyclesPerTick</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The number of CPU cycles each tick of the global timestamp corresponds to.
+    0 if no relation between clocks</span></span></a> = <i><span class="xdoc-kw2">UInt32</span></i> 1;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaglobal.Timestamp.Cpu.Cycles.Per.Tick">LogSync.<span class="xdoc-id">globalTimestampCpuCyclesPerTick</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The number of CPU cycles each tick of the global timestamp corresponds
+    to.  0 if no relation between clocks</span></span></a> = <i><span class="xdoc-kw2">UInt32</span></i> 0;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metainject.Into.Trace.Fxn">LogSync.<span class="xdoc-id">injectIntoTraceFxn</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Callback function that handles injection of info such as serial numbers
+ of sync point events, context change events or snapshot events into a
+ hardware trace stream. (e.g. GEM CPU Trace, System Trace, etc.)</span></span></a> = <i><span class="xdoc-kw2">Void</span>(*)(<span class="xdoc-kw2">UInt32</span>,<a class="xdoc-link" href="../../../ti/uia/runtime/IUIATraceSyncProvider.html#.Context.Type" title="ti.uia.runtime.IUIATraceSyncProvider.ContextType">IUIATraceSyncProvider.ContextType</a>)</i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metamax.Global.Clock.Freq">LogSync.<span class="xdoc-id">maxGlobalClockFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The highest bus clock frequency used to drive the timer used for the global
+  timestamp</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types.FreqHz</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#can.Cpu.Cycles.Per.Tick.Be.Changed">LogSync.<span class="xdoc-id">canCpuCyclesPerTickBeChanged</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Indicates whether the CPU timer's cycles per tick divide down ratio can
+    be changed or not</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#can.Cpu.Frequency.Be.Changed">LogSync.<span class="xdoc-id">canCpuFrequencyBeChanged</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Indicates whether the timer frequency can be changed or not</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">LogSync.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#default.Sync.Logger.Size">LogSync.<span class="xdoc-id">defaultSyncLoggerSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Configures the size of the default syncLogger created by LogSync</span></span></a> = <i><span class="xdoc-kw2">SizeT</span></i> 256;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#enable.Event.Correlation.For.J.T.A.G">LogSync.<span class="xdoc-id">enableEventCorrelationForJTAG</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable event correlation for JTAG Transports (deprecated)</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#is.Enabled">LogSync.<span class="xdoc-id">isEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Configures whether sync logging is enabled (true) or disabled (false)</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#is.Inject.Into.Trace.Enabled">LogSync.<span class="xdoc-id">isInjectIntoTraceEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;set false to turn off injection of sync point info into trace even
+  if a module that implements IUIATraceSyncProvider is configured</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#max.Cpu.Clock.Freq">LogSync.<span class="xdoc-id">maxCpuClockFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The highest bus clock frequency used to drive the timer</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types.FreqHz</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#sync.Logger">LogSync.<span class="xdoc-id">syncLogger</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Configures the logger instance to use to log sync point events</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/ILogger.html#per-instance_object_types" title="xdc.runtime.ILogger.Handle">ILogger.Handle</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class='xdocSynHdr'>per-instance config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> LogSync.<a class="xdocSynGo" href="#metaper-instance_config_parameters"><span class="xdoc-id">Params</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Instance config-params object</span></span></a>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Cpu.Timestamp.Proxy"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">proxy</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">CpuTimestampProxy</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#.Cpu.Timestamp.Proxy">index URL</a></div>
+<p class="xdocHdrSummaryDcl">CPU Timestamp Proxy</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">CpuTimestampProxy</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/ITimestampClient.html" title="xdc.runtime.ITimestampClient">ITimestampClient</a>.Module</i> <span class="xdoc-kw2">null</span>
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;some delegate module inheriting the <a class="xdoc-link" href="../../../xdc/runtime/ITimestampClient.html" title="xdc.runtime.ITimestampClient">ITimestampClient</a> interface</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>LogSync.<span class="xdoc-id">CpuTimestampProxy</span>.delegate$ = <i><a class="xdoc-link" href="../../../xdc/runtime/ITimestampClient.html" title="xdc.runtime.ITimestampClient">ITimestampClient</a>.Module</i> <span class="xdoc-kw2">null</span>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;explicit access to the currently bound delegate module</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This proxy provides a timestamp server that can be different
+  from the one provided by <tt><a class="xdoc-link" href="../../../xdc/runtime/Timestamp.html" title="xdc.runtime.Timestamp">xdc.runtime.Timestamp</a></tt>. However, if
+  not supplied by a user, this proxy defaults to whichever timestamp
+  server is provided by <tt>xdc.runtime.Timestamp</tt>.</div>
+<div class="xdocText">Configuring the CpuTimestampProxy with a local timestamp module
+  allows applications that change the CPU frequency to report this
+  information to System Analyzer so that event timestamps can
+  be adjusted to accommodate the change in frequency.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLES</div>
+<div class="xdocText">Example: the following configuration script shows how to configure
+  a C66X Local Timestamp module for use as the CpuTimestampProxy</div>
+<div class="xdocText"><PRE class="Example"> var TimestampC66Local = xdc.useModule('ti.uia.family.c66.TimestampC66Local');
+ TimestampC66Local.maxTimerClockFreq = {lo:1200000000,hi:0};
+ var LogSync = xdc.useModule('ti.uia.runtime.LogSync');
+ LogSync.CpuTimestampProxy = TimestampC66Local;
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Global.Timestamp.Proxy"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">proxy</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">GlobalTimestampProxy</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#.Global.Timestamp.Proxy">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Global Timestamp Proxy</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">GlobalTimestampProxy</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/ITimestampClient.html" title="xdc.runtime.ITimestampClient">ITimestampClient</a>.Module</i> <span class="xdoc-kw2">null</span>
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;some delegate module inheriting the <a class="xdoc-link" href="../../../xdc/runtime/ITimestampClient.html" title="xdc.runtime.ITimestampClient">ITimestampClient</a> interface</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>LogSync.<span class="xdoc-id">GlobalTimestampProxy</span>.delegate$ = <i><a class="xdoc-link" href="../../../xdc/runtime/ITimestampClient.html" title="xdc.runtime.ITimestampClient">ITimestampClient</a>.Module</i> <span class="xdoc-kw2">null</span>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;explicit access to the currently bound delegate module</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This proxy provides a timestamp server that can be different
+  from the server provided by <tt><a class="xdoc-link" href="../../../xdc/runtime/Timestamp.html" title="xdc.runtime.Timestamp">xdc.runtime.Timestamp</a></tt>.
+  This must be configured in order to use this module.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metacpu.Timestamp.Cycles.Per.Tick"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">cpuTimestampCyclesPerTick</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#cpu.Timestamp.Cycles.Per.Tick">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The number of CPU cycles each tick of the global timestamp corresponds to.
+    0 if no relation between clocks</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">cpuTimestampCyclesPerTick</span> = <i><span class="xdoc-kw2">UInt32</span></i> 1;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If the module configured as the CpuTimestampProxy implements
+ ti.uia.runtime.IUIATimestampProvider, the default value of this config
+ option is derived at configuration time from that module's config data.
+ Otherwise it is initialized to 0 to signify that there is no way to
+ convert a number of global timestamp tick counts into an equivalent
+ number of CPU cycles.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#cpu.Timestamp.Cycles.Per.Tick" title="LogSync_cpuTimestampCyclesPerTick">LogSync_cpuTimestampCyclesPerTick</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaglobal.Timestamp.Cpu.Cycles.Per.Tick"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">globalTimestampCpuCyclesPerTick</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#global.Timestamp.Cpu.Cycles.Per.Tick">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The number of CPU cycles each tick of the global timestamp corresponds
+    to.  0 if no relation between clocks</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">globalTimestampCpuCyclesPerTick</span> = <i><span class="xdoc-kw2">UInt32</span></i> 0;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">A value of 0 signifies that there is no way to convert a number of
+ global timestamp tick counts into an equivalent number of CPU cycles.
+ Note that this value will be automatically copied from the
+ GlobalTimestampProxy.cpuCyclesPerTick configuration value
+ at configuration time if GlobalTimestampProxy.cpuCyclesPerTick &gt; 0.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#global.Timestamp.Cpu.Cycles.Per.Tick" title="LogSync_globalTimestampCpuCyclesPerTick">LogSync_globalTimestampCpuCyclesPerTick</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metainject.Into.Trace.Fxn"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">injectIntoTraceFxn</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#inject.Into.Trace.Fxn">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Callback function that handles injection of info such as serial numbers
+ of sync point events, context change events or snapshot events into a
+ hardware trace stream. (e.g. GEM CPU Trace, System Trace, etc.)</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">injectIntoTraceFxn</span> = <i><span class="xdoc-kw2">Void</span>(*)(<span class="xdoc-kw2">UInt32</span>,<a class="xdoc-link" href="../../../ti/uia/runtime/IUIATraceSyncProvider.html#.Context.Type" title="ti.uia.runtime.IUIATraceSyncProvider.ContextType">IUIATraceSyncProvider.ContextType</a>)</i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Users can provide their own custom injectIntoTraceFxn to log whatever
+ additional information they wish to record when the hook function is called.
+ For example, event serial numbers can be injected into the CPU
+ trace stream and / or STM trace stream in order to enable correlation
+ of information logged in these streams with UIA software events.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLES</div>
+<div class="xdocText"></div>
+<div class="xdocText"><B>Example 1: Correlating events with C64X+ and C66 CPU Trace</B></div>
+<div class="xdocText">The following is an example of the configuration script used
+ to inject serial numbers of sync point events or context change events or
+ snapshot Ids associated with snapshot events.</div>
+<div class="xdocText">Note that the GemTraceSync module's .xs script takes care of finding
+ all modules that implement the IUIATraceSyncClient and assigning the
+ GemTraceSync_injectIntoTrace function pointer to those modules'
+ injectIntoTraceFxn config option.</div>
+<div class="xdocText"><PRE class="Example"> //The following 3 modules all implement the IUIATraceSyncClient interface
+ var LogSnapshot   = xdc.useModule('ti.uia.runtime.LogSnapshot');
+ var LogCtxChg   = xdc.useModule('ti.uia.runtime.LogCtxChg');
+ var LogSync   = xdc.useModule('ti.uia.runtime.LogSync');
+ //For C66 devices, replace the following line with
+ // var GemTraceSync = xdc.useModule('ti.uia.family.c66.GemTraceSync');
+ var GemTraceSync = xdc.useModule('ti.uia.family.c64p.GemTraceSync');
+</PRE></div>
+<div class="xdocText"><hr>
+ <B>Example 2: How to create a custom hook function
+ and assign it to the LogSnapshot module</B></div>
+<div class="xdocText">The following is an example of a 'C' code program that implements
+ a hook function that prints out the snapshot ID that is passed in
+ as the serialNumber</div>
+<div class="xdocText"><PRE class="Example"> #include &lt;xdc/std.h&gt;
+ #include &lt;xdc/runtime/Gate.h&gt;
+ #include &lt;ti/uia/runtime/IUIATraceSyncProvider.h&gt;
+ #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+ #include &lt;stdio.h&gt;
+ #include &lt;string.h&gt;
+ extern Void myHookFxn(UInt32 serialNumber, IUIATraceSyncProvider_ContextType ctxType);
+ Void Test();
+ char name[32]={"Bob"};
+ UInt32 newAppId = 0;
+ Void myHookFxn(UInt32 serialNumber, IUIATraceSyncProvider_ContextType ctxType){
+      volatile UInt32 syncWord;
+      IArg key = Gate_enterSystem();
+      printf("newAppId written with serialNumber %d and ctxType = %d\n",serialNumber,ctxType);
+      Gate_leaveSystem(key);
+ }
+ Void Test(){
+     // note that the hook function is triggered by calling LogSnapshot_getSnapshotId()
+     // since that is where the unique snapshot ID that is passed to the
+     // hook function is generated.
+     Int snapshotId = LogSnapshot_getSnapshotId();
+     LogSnapshot_writeString(snapshotId,"User-defined name=%s.",name, strlen(name));
+ }
+
+ Void main(){
+     while(TRUE){  Test();  }
+  }
+</PRE></div>
+<div class="xdocText">In order to have the above user-defined function called by the LogSnapshot
+ module whenever it writes an event, the following configuration script
+ is needed:</div>
+<div class="xdocText"><PRE class="Example"> var LoggingSetup = xdc.useModule('ti.uia.sysbios.LoggingSetup');
+ var LogSnapshot   = xdc.useModule('ti.uia.runtime.LogSnapshot');
+ var IUIATraceSyncClient = xdc.useModule('ti.uia.runtime.IUIATraceSyncClient');
+ LogSnapshot.injectIntoTraceFxn = $externFxn('myHookFxn');
+
+</PRE></div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="LoggerTypes.html#.Inject.Into.Trace.Fxn" title="LoggerTypes.InjectIntoTraceFxn">LoggerTypes.InjectIntoTraceFxn</a>, <a class="xdoc-link" href="LogSnapshot.html" title="LogSnapshot">LogSnapshot</a></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#inject.Into.Trace.Fxn" title="LogSync_injectIntoTraceFxn">LogSync_injectIntoTraceFxn</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metamax.Global.Clock.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">maxGlobalClockFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#max.Global.Clock.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The highest bus clock frequency used to drive the timer used for the global
+  timestamp</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">maxGlobalClockFreq</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types.FreqHz</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the globalTimestampCpuCyclesPerTick
+ config parameter.</div>
+<div class="xdocText">Defines the highest bus clock frequency used to drive the shared timer used
+ for the global timestamp.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#max.Global.Clock.Freq" title="LogSync_maxGlobalClockFreq">LogSync_maxGlobalClockFreq</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="can.Cpu.Cycles.Per.Tick.Be.Changed"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">canCpuCyclesPerTickBeChanged</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#can.Cpu.Cycles.Per.Tick.Be.Changed">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Indicates whether the CPU timer's cycles per tick divide down ratio can
+    be changed or not</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">canCpuCyclesPerTickBeChanged</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Set to true if the timer's CPU cycles per tick can be changed</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="can.Cpu.Frequency.Be.Changed"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">canCpuFrequencyBeChanged</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#can.Cpu.Frequency.Be.Changed">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Indicates whether the timer frequency can be changed or not</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">canCpuFrequencyBeChanged</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Set to true if the timer's clock frequency can be changed</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="default.Sync.Logger.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">defaultSyncLoggerSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#default.Sync.Logger.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Configures the size of the default syncLogger created by LogSync</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">defaultSyncLoggerSize</span> = <i><span class="xdoc-kw2">SizeT</span></i> 256;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Only used if syncLogger is null.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="enable.Event.Correlation.For.J.T.A.G"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">enableEventCorrelationForJTAG</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#enable.Event.Correlation.For.J.T.A.G">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable event correlation for JTAG Transports (deprecated)</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">enableEventCorrelationForJTAG</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">By default, event correlation is enabled for JTAG transports.
+ In order for event correlation to work with JTAG transports,
+ it is necessary for the target program to periodically execute
+ LogSync_idleHook in order to log enough synchronization information
+ to reestablish event correlation after a breakpoint has been hit.
+ The following .cfg script snippet shows how to configure the
+ ti.uia.sysbios.LoggingSetup module to enable this:</div>
+<div class="xdocText"><PRE class="Example"> .cfg script:
+ var LoggingSetup = xdc.useModule('ti.uia.sysbios.LoggingSetup');
+</PRE></div>
+<div class="xdocText">Since most JTAG debugging sessions start with a breakpoint being
+ hit at main, event correlation will only be possible once a sync
+ point event has been logged after running from main.  Calling the
+ following code snippet as part of the code that is run by main is
+ highly recommended in order to establish synchronization information
+ as early in the program's execution as possible.</div>
+<div class="xdocText"><PRE class="Example"> C code:
+ #include &lt;xdc/std.h&gt;
+ #include &lt;ti/uia/runtime/LogSync.h&gt;
+ ...
+
+    if (LogSync_isSyncEventRequired()){
+       LogSync_writeSyncPoint();
+    }
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">isEnabled</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#is.Enabled">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Configures whether sync logging is enabled (true) or disabled (false)</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">isEnabled</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Inject.Into.Trace.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">isInjectIntoTraceEnabled</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#is.Inject.Into.Trace.Enabled">index URL</a></div>
+<p class="xdocHdrSummaryDcl">set false to turn off injection of sync point info into trace even
+  if a module that implements IUIATraceSyncProvider is configured</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">isInjectIntoTraceEnabled</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The XDCScript associated with a module that implements IUIATraceSyncProvider
+ is responsible for checking this config option for all IUIATraceSyncClient
+ modules before automatically configuring the client callback function.
+ This allows users to control which features have sync points injected
+ into the trace stream.  For example, a user may wish to configure
+ LogSync.isInjectIntoTraceEnabled = true and
+ LogCtxChg.isInjectIntoTraceEnabled = false in order to reduce the number
+ of sync point events injected into the trace stream.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="max.Cpu.Clock.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">maxCpuClockFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#max.Cpu.Clock.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The highest bus clock frequency used to drive the timer</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">maxCpuClockFreq</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types.FreqHz</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the cpuTimestampCyclesPerTick
+ config parameter.</div>
+<div class="xdocText">Defines the 32 MSBs of the highest bus clock frequency used to drive
+ the timer.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sync.Logger"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSync.</span><span class="xdoc-id">syncLogger</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#sync.Logger">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Configures the logger instance to use to log sync point events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSync.<span class="xdoc-id">syncLogger</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/ILogger.html#per-instance_object_types" title="xdc.runtime.ILogger.Handle">ILogger.Handle</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If left null, an instance of LoggerStopMode will be created for
+ dedicated use by the LogSync module in order to log sync point events.
+ (The ti.uia.services.Rta and ti.uia.sysbios.LoggerSetup modules
+ can specify that the LoggerCircBuf module be used as the default
+ if the user has specified a non-JTAG transport for event upload.)</div>
+<a class="xdocAnchor" id="metaper-instance_config_parameters"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Config Parameters</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSync.html#per-instance_config_parameters">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> LogSync.<span class="xdoc-id">Params</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Instance config-params object</div>
+</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:15 GMT</div>
+</div></div></body>
+</html>

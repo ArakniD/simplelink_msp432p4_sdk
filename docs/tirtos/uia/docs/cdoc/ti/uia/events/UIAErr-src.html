@@ -1,0 +1,851 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.events.UIAErr</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> * ======== UIAErr.xdc ========
+</span>    35    <span class="comment"> */</span>
+    36    import xdc.runtime.Diags;
+    37    
+    38    <span class="xdoc">/*!
+</span>    39    <span class="xdoc"> * UIA Standard Error Events
+</span>    40    <span class="xdoc"> *
+</span>    41    <span class="xdoc"> * The UIAErr module defines standard error events that allow
+</span>    42    <span class="xdoc"> * tooling to identify common errors in a consistent way.  They are all
+</span>    43    <span class="xdoc"> * intended to be used with the Log_writeX APIs and, in the future, with
+</span>    44    <span class="xdoc"> * crash dump APIs, and provide a way to log errors in a more standardized
+</span>    45    <span class="xdoc"> * way than the generic Log_error API enables.
+</span>    46    <span class="xdoc"> *
+</span>    47    <span class="xdoc"> * The events in this module have one of the following event priority levels:
+</span>    48    <span class="xdoc"> *  EMERGENCY: used to indicate a non-recoverable situation (e.g. a crash, with
+</span>    49    <span class="xdoc"> *   the event containing information about the cause of the crash)
+</span>    50    <span class="xdoc"> *  CRITICAL: used to indicate a sever error that should raise an alarm or
+</span>    51    <span class="xdoc"> *   cause a notification message to be sent to a system administrator.
+</span>    52    <span class="xdoc"> *  ERROR: used to indicate a recoverable error that does not require an alarm
+</span>    53    <span class="xdoc"> *   to be raised.
+</span>    54    <span class="xdoc"> *
+</span>    55    <span class="xdoc"> * The following special formatting specifiers may be used to define the
+</span>    56    <span class="xdoc"> * msg field of the UIAErr events:
+</span>    57    <span class="xdoc">
+</span>    58    <span class="xdoc"> * %$S - a string parameter that can provide additional formatting specifiers
+</span>    59    <span class="xdoc"> *       Note that $S use in strings passed in as a paramter is not supported.
+</span>    60    <span class="xdoc"> *<b>@p</b>
+</span>    61    <span class="xdoc"> * %$F - a specifier for a string parameter containing the file name (__FILE__) and
+</span>    62    <span class="xdoc"> *       an integer parameter containing the line number (__LINE__).
+</span>    63    <span class="xdoc"> *
+</span>    64    <span class="xdoc"> *  The generation of UIAErr events is controlled by a module's diagnostics
+</span>    65    <span class="xdoc"> *  mask, which is described in details in `{<b>@link</b> xdc.runtime.Diags}`.
+</span>    66    <span class="xdoc"> * `UIAErr` events are generated only when the Diags.STATUS bit is set
+</span>    67    <span class="xdoc"> *  in the module's diagnostics mask.  The Diags.STATUS bit is set to ALWAYS_ON
+</span>    68    <span class="xdoc"> *  by default.
+</span>    69    <span class="xdoc"> *
+</span>    70    <span class="xdoc"> *  The following configuration script demonstrates how to enable use of
+</span>    71    <span class="xdoc"> *  UIAErr events within an application.  Since the Diags.STATUS bits are set
+</span>    72    <span class="xdoc"> *  to ALWAYS_ON by default, no explicit code is required to enable the
+</span>    73    <span class="xdoc"> *  Diags Masks for these events.
+</span>    74    <span class="xdoc"> *
+</span>    75    <span class="xdoc"> * <b>@a(Examples)</b>
+</span>    76    <span class="xdoc"> * Example 1: This is part of the XDC configuration file for the application:
+</span>    77    <span class="xdoc"> *
+</span>    78    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    79    <span class="xdoc"> *  var UIAErr = xdc.useModule('ti.uia.events.UIAErr');
+</span>    80    <span class="xdoc"> *  var Diags = xdc.useModule('xdc.runtime.Diags');
+</span>    81    <span class="xdoc"> *  var LoggerSys = xdc.useModule('xdc.runtime.LoggerSys');
+</span>    82    <span class="xdoc"> *  var Defaults = xdc.useModule('xdc.runtime.Defaults');
+</span>    83    <span class="xdoc"> *  var logger = LoggerSys.create();
+</span>    84    <span class="xdoc"> *
+</span>    85    <span class="xdoc"> *  Defaults.common$.logger = logger;
+</span>    86    <span class="xdoc"> *  <b>@p</b>
+</span>    87    <span class="xdoc"> *
+</span>    88    <span class="xdoc"> *  <b>@p(html)</b>
+</span>    89    <span class="xdoc"> *  &lt;hr /&gt;
+</span>    90    <span class="xdoc"> *  <b>@p</b>
+</span>    91    <span class="xdoc"> *
+</span>    92    <span class="xdoc"> *  Example 2: The following example configures a module to support logging
+</span>    93    <span class="xdoc"> *  of STATUS events, but defers the actual activation and deactivation of the
+</span>    94    <span class="xdoc"> *  logging until runtime. See the `{<b>@link</b> Diags#setMask Diags_setMask()}`
+</span>    95    <span class="xdoc"> *  function for details on specifying the control string.
+</span>    96    <span class="xdoc"> *
+</span>    97    <span class="xdoc"> *  This is a part of the XDC configuration file for the application:
+</span>    98    <span class="xdoc"> *
+</span>    99    <span class="xdoc"> *  <b>@p(code)</b>
+</span>   100    <span class="xdoc"> *  var UIAErr = xdc.useModule('ti.uia.events.UIAErr');
+</span>   101    <span class="xdoc"> *  var Diags = xdc.useModule('xdc.runtime.Diags');
+</span>   102    <span class="xdoc"> *  var Mod = xdc.useModule('my.pkg.Mod');
+</span>   103    <span class="xdoc"> *
+</span>   104    <span class="xdoc"> *  Mod.common$.diags_STATUS = Diags.RUNTIME_OFF;
+</span>   105    <span class="xdoc"> *  <b>@p</b>
+</span>   106    <span class="xdoc"> *
+</span>   107    <span class="xdoc"> *  This is a part of the C code for the application:
+</span>   108    <span class="xdoc"> *
+</span>   109    <span class="xdoc"> *  <b>@p(code)</b>
+</span>   110    <span class="xdoc"> *  // turn on logging of STATUS events in the module
+</span>   111    <span class="xdoc"> *  Diags_setMask("my.pkg.Mod+S");
+</span>   112    <span class="xdoc"> *
+</span>   113    <span class="xdoc"> *  // turn off logging of STATUS events in the module
+</span>   114    <span class="xdoc"> *  Diags_setMask("my.pkg.Mod-S");
+</span>   115    <span class="xdoc"> *  <b>@p</b>
+</span>   116    <span class="xdoc"> */</span>
+   117    <span class=key>module</span> UIAErr <span class=key>inherits</span> IUIAEvent {
+   118    
+   119        <span class="xdoc">/*!
+</span>   120    <span class="xdoc">     *  ======== error ========
+</span>   121    <span class="xdoc">     *  Event to use to log an existing software Error Code.
+</span>   122    <span class="xdoc">     *
+</span>   123    <span class="xdoc">     *  UIAErr_error is used primarily to support logging of legacy error codes with minimal
+</span>   124    <span class="xdoc">     *  overhead. Metadata is generated for this event that provides a predefined format
+</span>   125    <span class="xdoc">     *  specifier string that can be used to display the error code with.  This minimizes the
+</span>   126    <span class="xdoc">     *  number of parameters that need to be logged with the event (it only requires the
+</span>   127    <span class="xdoc">     *  actual error code to be logged).  Unlike the Log_error API, no __FILE__ or
+</span>   128    <span class="xdoc">     *  __LINE__ information about the call-site is logged with the error code.
+</span>   129    <span class="xdoc">     *
+</span>   130    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   131    <span class="xdoc">     *   The following C code shows how to log a legacy error code as a UIA event.
+</span>   132    <span class="xdoc">     *
+</span>   133    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   134    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   135    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   136    <span class="xdoc">     *  ...
+</span>   137    <span class="xdoc">     *  Int myErrorCode = 0xEC0DE;
+</span>   138    <span class="xdoc">     *  Log_write1(UIAErr_error,myErrorCode);
+</span>   139    <span class="xdoc">     *  ...
+</span>   140    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   141    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   142    <span class="xdoc">     *  "ERROR: ErrorCode:0xECODE"
+</span>   143    <span class="xdoc">     *
+</span>   144    <span class="xdoc">     *  <b>@param</b>(%x)          integer that identifies the type of error
+</span>   145    <span class="xdoc">     *  <b>@see</b> #errorWithStr
+</span>   146    <span class="xdoc">     */</span>
+   147        <span class=key>config</span> xdc.runtime.Log.Event error = {
+   148                mask: Diags.STATUS,
+   149                level: Diags.ERROR,
+   150                msg: <span class="string">"ERROR: ErrorCode:0x%x"</span>
+   151        };
+   152    
+   153        <span class="xdoc">/*!
+</span>   154    <span class="xdoc">     *  ======== errorWithStr ========
+</span>   155    <span class="xdoc">     *  Event to use to log an existing software Error Code and fmt string
+</span>   156    <span class="xdoc">     *
+</span>   157    <span class="xdoc">     *  UIAErr_errorWithStr is used primarily to support logging of legacy error codes along
+</span>   158    <span class="xdoc">     *  with user-defined strings that describe the error. Unlike the Log_error API,
+</span>   159    <span class="xdoc">     *  no __FILE__ or __LINE__ information about the call-site is logged with the error code.
+</span>   160    <span class="xdoc">     *
+</span>   161    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   162    <span class="xdoc">     *   The following C code shows how to log a legacy error code as a UIA event.
+</span>   163    <span class="xdoc">     *
+</span>   164    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   165    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   166    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   167    <span class="xdoc">     *  ...
+</span>   168    <span class="xdoc">     *  Int myErrorCode = 0xEC0DE;
+</span>   169    <span class="xdoc">     *  String myErrorStr = "Legacy Error String for error 0xECODE";
+</span>   170    <span class="xdoc">     *  ...
+</span>   171    <span class="xdoc">     *  Log_write2(UIAErr_errorWithStr,myErrorCode,(IArg)myErrorStr);
+</span>   172    <span class="xdoc">     *  ...
+</span>   173    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   174    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   175    <span class="xdoc">     *  "ERROR: ErrorCode:0xECODE. Legacy Error String for error 0xECODE"
+</span>   176    <span class="xdoc">     *
+</span>   177    <span class="xdoc">     *  <b>@param</b>(%x)          integer that identifies the type of error
+</span>   178    <span class="xdoc">     *  <b>@param</b>(%$S)         fmt string used to format the event message.
+</span>   179    <span class="xdoc">     *
+</span>   180    <span class="xdoc">     *  Up to 6 additional arguments can be logged with this event if
+</span>   181    <span class="xdoc">     *  required.  The formatting string should provide format specifiers
+</span>   182    <span class="xdoc">     *  for each of the additional arguments
+</span>   183    <span class="xdoc">     *
+</span>   184    <span class="xdoc">     *  <b>@see</b> #error
+</span>   185    <span class="xdoc">     *
+</span>   186    <span class="xdoc">     */</span>
+   187        <span class=key>config</span> xdc.runtime.Log.Event errorWithStr = {
+   188                mask: Diags.STATUS,
+   189                level: Diags.ERROR,
+   190                msg: <span class="string">"ERROR: ErrorCode:0x%x. %$S"</span>
+   191        };
+   192    
+   193        <span class="xdoc">/*!
+</span>   194    <span class="xdoc">     *  ======== hwError ========
+</span>   195    <span class="xdoc">     * hardware error event code
+</span>   196    <span class="xdoc">     *
+</span>   197    <span class="xdoc">     * Used to log a generic hardware error.
+</span>   198    <span class="xdoc">     * Unlike the Log_error API, no __FILE__ or __LINE__ information about
+</span>   199    <span class="xdoc">     *  the call-site is logged with the error code.
+</span>   200    <span class="xdoc">     *
+</span>   201    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   202    <span class="xdoc">     *   The following C code shows how to log a legacy error code as a UIA event.
+</span>   203    <span class="xdoc">     *
+</span>   204    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   205    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   206    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   207    <span class="xdoc">     *  ...
+</span>   208    <span class="xdoc">     *  Int myHWErrorCode = 0xEC0DE;
+</span>   209    <span class="xdoc">     *  ...
+</span>   210    <span class="xdoc">     *  Log_write1(UIAErr_hwError,myHWErrorCode);
+</span>   211    <span class="xdoc">     *  ...
+</span>   212    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   213    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   214    <span class="xdoc">     *  "HW ERROR: ErrorCode:0xECODE."
+</span>   215    <span class="xdoc">     *
+</span>   216    <span class="xdoc">     * <b>@param</b>(%x)          integer that identifies the type of warning
+</span>   217    <span class="xdoc">     * <b>@see</b> #error
+</span>   218    <span class="xdoc">     */</span>
+   219        <span class=key>config</span> xdc.runtime.Log.Event hwError = {
+   220                mask: Diags.STATUS,
+   221                level: Diags.ERROR,
+   222                msg: <span class="string">"HW ERROR: ErrorCode:0x%x"</span>};
+   223    
+   224        <span class="xdoc">/*!
+</span>   225    <span class="xdoc">     *  ======== hwErrorWithStr ========
+</span>   226    <span class="xdoc">     * hardware error event code and fmt string
+</span>   227    <span class="xdoc">     *
+</span>   228    <span class="xdoc">     * Used to log a generic hardware error.
+</span>   229    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   230    <span class="xdoc">     *   The following C code shows how to log a legacy error code and an
+</span>   231    <span class="xdoc">     *   associated string as a UIA event.
+</span>   232    <span class="xdoc">     *
+</span>   233    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   234    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   235    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   236    <span class="xdoc">     *  ...
+</span>   237    <span class="xdoc">     *  Int myHWErrorCode = 0xEC0DE;
+</span>   238    <span class="xdoc">     *  String myHWErrorStr = "My description of hardware error 0xEC0DE";
+</span>   239    <span class="xdoc">     *  ...
+</span>   240    <span class="xdoc">     *  Log_write2(UIAErr_hwErrorWithStr,myHWErrorCode,(IArg)myHWErrorStr);
+</span>   241    <span class="xdoc">     *  ...
+</span>   242    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   243    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   244    <span class="xdoc">     *  "HW ERROR: ErrorCode:0xECODE. My description of hardware error 0xEC0DE"
+</span>   245    <span class="xdoc">     *
+</span>   246    <span class="xdoc">     *  <b>@param</b>(%x)          integer that identifies the type of error
+</span>   247    <span class="xdoc">     *  <b>@param</b>(%$S)         fmt string used to format the event message.
+</span>   248    <span class="xdoc">     *
+</span>   249    <span class="xdoc">     *  Up to 6 additional arguments can be logged with this event if
+</span>   250    <span class="xdoc">     *  required.  The formatting string should provide format specifiers
+</span>   251    <span class="xdoc">     *  for each of the additional arguments
+</span>   252    <span class="xdoc">     *
+</span>   253    <span class="xdoc">     *  <b>@see</b> #error
+</span>   254    <span class="xdoc">     *
+</span>   255    <span class="xdoc">     */</span>
+   256        <span class=key>config</span> xdc.runtime.Log.Event hwErrorWithStr = {
+   257                mask: Diags.STATUS,
+   258                level: Diags.ERROR,
+   259                msg: <span class="string">"HW ERROR: ErrorCode:0x%x. %$S"</span>};
+   260    
+   261        <span class="xdoc">/*!
+</span>   262    <span class="xdoc">     *  ======== fatal ========
+</span>   263    <span class="xdoc">     * fatal error code
+</span>   264    <span class="xdoc">     *
+</span>   265    <span class="xdoc">     * Used to log a fatal, nonrecoverable error (Event level = EMERGENCY)
+</span>   266    <span class="xdoc">     *
+</span>   267    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   268    <span class="xdoc">     *   The following C code shows how to log a fatal error code as a UIA event.
+</span>   269    <span class="xdoc">     *
+</span>   270    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   271    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   272    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   273    <span class="xdoc">     *  ...
+</span>   274    <span class="xdoc">     *  Int myFatalErrorCode = 0xDEADC0DE;
+</span>   275    <span class="xdoc">     *  ...
+</span>   276    <span class="xdoc">     *  Log_write1(UIAErr_fatal,myFatalErrorCode);
+</span>   277    <span class="xdoc">     *  ...
+</span>   278    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   279    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   280    <span class="xdoc">     *  "FATAL ERROR: ErrorCode:0xDEADC0DE."
+</span>   281    <span class="xdoc">     *  <b>@param</b>(%x)          integer that identifies the type of error
+</span>   282    <span class="xdoc">     *  <b>@see</b> #error
+</span>   283    <span class="xdoc">     */</span>
+   284        <span class=key>config</span> xdc.runtime.Log.Event fatal = {
+   285                mask: Diags.STATUS,
+   286                level: Diags.EMERGENCY,
+   287                msg: <span class="string">"FATAL ERROR: ErrorCode:0x%x"</span>};
+   288    
+   289        <span class="xdoc">/*!
+</span>   290    <span class="xdoc">     *  ======== fatalWithStr ========
+</span>   291    <span class="xdoc">     * fatal error event code and fmt string
+</span>   292    <span class="xdoc">     *
+</span>   293    <span class="xdoc">     * Used to log a fatal, nonrecoverable error.
+</span>   294    <span class="xdoc">     *
+</span>   295    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   296    <span class="xdoc">     *   The following C code shows how to log a legacy error code and an
+</span>   297    <span class="xdoc">     *   associated string as a UIA event.
+</span>   298    <span class="xdoc">     *
+</span>   299    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   300    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   301    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   302    <span class="xdoc">     *  ...
+</span>   303    <span class="xdoc">     *  Int myFatalErrorCode = 0xDEADC0DE;
+</span>   304    <span class="xdoc">     *  String myFatalErrorStr = "My description of fatal error 0xDEADC0DE";
+</span>   305    <span class="xdoc">     *  ...
+</span>   306    <span class="xdoc">     *  Log_write2(UIAErr_fatalWithStr,myFatalErrorCode,(IArg)myFatalErrorStr);
+</span>   307    <span class="xdoc">     *  ...
+</span>   308    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   309    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   310    <span class="xdoc">     *  "FATAL ERROR: ErrorCode:0xDEADC0DE. My description of fatal error 0xDEADC0DE"
+</span>   311    <span class="xdoc">     *
+</span>   312    <span class="xdoc">     *  <b>@param</b>(%x)          integer that identifies the type of error
+</span>   313    <span class="xdoc">     *  <b>@param</b>(%$S)         fmt string used to format the event message.
+</span>   314    <span class="xdoc">     *
+</span>   315    <span class="xdoc">     *  Up to 6 additional arguments can be logged with this event if
+</span>   316    <span class="xdoc">     *  required.  The formatting string should provide format specifiers
+</span>   317    <span class="xdoc">     *  for each of the additional arguments
+</span>   318    <span class="xdoc">     *  <b>@see</b> #error
+</span>   319    <span class="xdoc">     */</span>
+   320        <span class=key>config</span> xdc.runtime.Log.Event fatalWithStr = {
+   321                mask: Diags.STATUS,
+   322                level: Diags.EMERGENCY,
+   323                msg: <span class="string">"FATAL ERROR: ErrorCode:0x%x. %$S"</span>};
+   324    
+   325        <span class="xdoc">/*!
+</span>   326    <span class="xdoc">     *  ======== critical ========
+</span>   327    <span class="xdoc">     * critical error event code
+</span>   328    <span class="xdoc">     *
+</span>   329    <span class="xdoc">     *  Used to log a critical error in which the system
+</span>   330    <span class="xdoc">     *  has e.g. had to kill certain operations in order to
+</span>   331    <span class="xdoc">     *  keep running.  (Event Level = CRITICAL)
+</span>   332    <span class="xdoc">     *
+</span>   333    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   334    <span class="xdoc">     *   The following C code shows how to log a fatal error code as a UIA event.
+</span>   335    <span class="xdoc">     *
+</span>   336    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   337    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   338    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   339    <span class="xdoc">     *  ...
+</span>   340    <span class="xdoc">     *  Int myCriticalErrorCode = 0xACODE;
+</span>   341    <span class="xdoc">     *  ...
+</span>   342    <span class="xdoc">     *  Log_write1(UIAErr_critical,myCriticalErrorCode);
+</span>   343    <span class="xdoc">     *  ...
+</span>   344    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   345    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   346    <span class="xdoc">     *  "CRITICAL ERROR: ErrorCode:0xACODE."
+</span>   347    <span class="xdoc">     *  <b>@param</b>(%x)          integer that identifies the type of error
+</span>   348    <span class="xdoc">     *
+</span>   349    <span class="xdoc">     *  <b>@see</b> #error
+</span>   350    <span class="xdoc">     */</span>
+   351        <span class=key>config</span> xdc.runtime.Log.Event critical = {
+   352                mask: Diags.STATUS,
+   353                level: Diags.CRITICAL,
+   354                msg: <span class="string">"CRITICAL ERROR: ErrorCode:0x%x"</span>};
+   355    
+   356        <span class="xdoc">/*!
+</span>   357    <span class="xdoc">     *  ======== criticalWithStr ========
+</span>   358    <span class="xdoc">     * critical error event code and fmt string
+</span>   359    <span class="xdoc">     *
+</span>   360    <span class="xdoc">     * Used to log a critical error in which the system
+</span>   361    <span class="xdoc">     * has e.g. had to kill certain operations in order to
+</span>   362    <span class="xdoc">     * keep running.  (Event Level = CRITICAL)
+</span>   363    <span class="xdoc">     *
+</span>   364    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   365    <span class="xdoc">     *   The following C code shows how to log a legacy error code and an
+</span>   366    <span class="xdoc">     *   associated string as a UIA event.
+</span>   367    <span class="xdoc">     *
+</span>   368    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   369    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   370    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   371    <span class="xdoc">     *  ...
+</span>   372    <span class="xdoc">     *  Int myCriticalErrorCode = 0xAC0DE;
+</span>   373    <span class="xdoc">     *  ...
+</span>   374    <span class="xdoc">     *  Log_write2(UIAErr_criticalWithStr,myCriticalErrorCode,(IArg)"My description of critical error 0xAC0DE");
+</span>   375    <span class="xdoc">     *  ...
+</span>   376    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   377    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   378    <span class="xdoc">     *  "CRITICAL ERROR: ErrorCode:0xAC0DE. My description of critical error 0xAC0DE"
+</span>   379    <span class="xdoc">     *
+</span>   380    <span class="xdoc">     *  <b>@param</b>(%x)          integer that identifies the type of error
+</span>   381    <span class="xdoc">     *  <b>@param</b>(%$S)         fmt string used to format the event message.
+</span>   382    <span class="xdoc">     *
+</span>   383    <span class="xdoc">     *  Up to 6 additional arguments can be logged with this event if
+</span>   384    <span class="xdoc">     *  required.  The formatting string should provide format specifiers
+</span>   385    <span class="xdoc">     *  for each of the additional arguments
+</span>   386    <span class="xdoc">     *
+</span>   387    <span class="xdoc">     *  <b>@see</b> #error
+</span>   388    <span class="xdoc">     */</span>
+   389        <span class=key>config</span> xdc.runtime.Log.Event criticalWithStr = {
+   390                mask: Diags.STATUS,
+   391                level: Diags.CRITICAL,
+   392                msg: <span class="string">"CRITICAL ERROR: ErrorCode:0x%x. %$S"</span>};
+   393        <span class="xdoc">/*!
+</span>   394    <span class="xdoc">     *  ======== exception ========
+</span>   395    <span class="xdoc">     * exception event code
+</span>   396    <span class="xdoc">     *
+</span>   397    <span class="xdoc">     * Used to log that an exception occurred.
+</span>   398    <span class="xdoc">     * Typically used with LogSnapshot or LogCrashDump APIs to
+</span>   399    <span class="xdoc">     * log stack dump data that identifies why the exception occurred.
+</span>   400    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   401    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   402    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   403    <span class="xdoc">     *
+</span>   404    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   405    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   406    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   407    <span class="xdoc">     *  ...
+</span>   408    <span class="xdoc">     *  Log_write2(UIAErr_exception,(IArg)__FILE__,__LINE__);
+</span>   409    <span class="xdoc">     *  ...
+</span>   410    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   411    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   412    <span class="xdoc">     *  "ERROR: Exception at demo.c line 1234."
+</span>   413    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   414    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   415    <span class="xdoc">     *
+</span>   416    <span class="xdoc">     *  <b>@see</b> #error
+</span>   417    <span class="xdoc">     */</span>
+   418        <span class=key>config</span> xdc.runtime.Log.Event exception = {
+   419                mask: Diags.STATUS,
+   420                level: Diags.ERROR,
+   421                msg: <span class="string">"ERROR: Exception at %$F."</span>};
+   422    
+   423        <span class="xdoc">/*!
+</span>   424    <span class="xdoc">     *  ======== uncaughtException ========
+</span>   425    <span class="xdoc">     * uncaughtException event code
+</span>   426    <span class="xdoc">     *
+</span>   427    <span class="xdoc">     * Used to log that an uncaught exception occurred.
+</span>   428    <span class="xdoc">     * Typically used with LogSnapshot or LogCrashDump APIs to
+</span>   429    <span class="xdoc">     * log stack dump data that identifies why the exception occurred.
+</span>   430    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   431    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   432    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   433    <span class="xdoc">     *
+</span>   434    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   435    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   436    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   437    <span class="xdoc">     *  ...
+</span>   438    <span class="xdoc">     *  Log_write2(UIAErr_uncaughtException,(IArg)__FILE__,__LINE__);
+</span>   439    <span class="xdoc">     *  ...
+</span>   440    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   441    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   442    <span class="xdoc">     *  "ERROR: Uncaught Exception at demo.c line 1234."
+</span>   443    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   444    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   445    <span class="xdoc">     *
+</span>   446    <span class="xdoc">     */</span>
+   447        <span class=key>config</span> xdc.runtime.Log.Event uncaughtException = {
+   448                mask: Diags.STATUS,
+   449                level: Diags.ERROR,
+   450                msg: <span class="string">"ERROR: Uncaught Exception at %$F."</span>};
+   451    
+   452        <span class="xdoc">/*!
+</span>   453    <span class="xdoc">     *  ======== nullPointerException ========
+</span>   454    <span class="xdoc">     * nullPointerException event code
+</span>   455    <span class="xdoc">     *
+</span>   456    <span class="xdoc">     * Used to log that a null pointer exception occurred.
+</span>   457    <span class="xdoc">     * Typically used with LogSnapshot or LogCrashDump APIs to
+</span>   458    <span class="xdoc">     * log stack dump data that identifies why the exception occurred.
+</span>   459    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   460    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   461    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   462    <span class="xdoc">     *
+</span>   463    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   464    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   465    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   466    <span class="xdoc">     *  ...
+</span>   467    <span class="xdoc">     *  Log_write2(UIAErr_nullPointerException,(IArg)__FILE__,__LINE__);
+</span>   468    <span class="xdoc">     *  ...
+</span>   469    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   470    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   471    <span class="xdoc">     *  "ERROR: Null Pointer Exception at demo.c line 1234."
+</span>   472    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   473    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   474    <span class="xdoc">     */</span>
+   475        <span class=key>config</span> xdc.runtime.Log.Event nullPointerException = {
+   476                mask: Diags.STATUS,
+   477                level: Diags.ERROR,
+   478                msg: <span class="string">"ERROR: Null Pointer Exception at %$F."</span>};
+   479    
+   480        <span class="xdoc">/*!
+</span>   481    <span class="xdoc">     *  ======== unexpectedInterrupt ========
+</span>   482    <span class="xdoc">     * unexpectedInterrupt event code
+</span>   483    <span class="xdoc">     *
+</span>   484    <span class="xdoc">     * Used to log that an unexpected interrupt occurred.
+</span>   485    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   486    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   487    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   488    <span class="xdoc">     *
+</span>   489    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   490    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   491    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   492    <span class="xdoc">     *  ...
+</span>   493    <span class="xdoc">     *  Log_write2(UIAErr_unexpectedInterrupt,(IArg)__FILE__,__LINE__);
+</span>   494    <span class="xdoc">     *  ...
+</span>   495    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   496    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   497    <span class="xdoc">     *  "ERROR: Null Pointer Exception at demo.c line 1234."
+</span>   498    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   499    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   500    <span class="xdoc">     */</span>
+   501        <span class=key>config</span> xdc.runtime.Log.Event unexpectedInterrupt = {
+   502                mask: Diags.STATUS,
+   503                level: Diags.ERROR,
+   504                msg: <span class="string">"ERROR: Unexpected Interrupt at %$F."</span>};
+   505    
+   506        <span class="xdoc">/*!
+</span>   507    <span class="xdoc">     *  ======== memoryAccessFault ========
+</span>   508    <span class="xdoc">     * memoryAccessFault event code
+</span>   509    <span class="xdoc">     *
+</span>   510    <span class="xdoc">     * Used to log that a memory access fault occurred.
+</span>   511    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   512    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   513    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   514    <span class="xdoc">     *  Comments in the code can then provide further explication of the error.
+</span>   515    <span class="xdoc">     *
+</span>   516    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   517    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   518    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   519    <span class="xdoc">     *  ...
+</span>   520    <span class="xdoc">     *  Log_write3(UIAErr_memoryAccessFault,(IArg)__FILE__,__LINE__,(IArg)badAdrs);
+</span>   521    <span class="xdoc">     *  ...
+</span>   522    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   523    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   524    <span class="xdoc">     *  "ERROR: Memory Access Fault at demo.c line 1234. [ADRS]0xFFFFFFFF"
+</span>   525    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   526    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   527    <span class="xdoc">     *  <b>@param(adrs)</b>       The address that caused the memory access fault
+</span>   528    <span class="xdoc">     */</span>
+   529        <span class=key>config</span> xdc.runtime.Log.Event memoryAccessFault = {
+   530                mask: Diags.STATUS,
+   531                level: Diags.ERROR,
+   532                msg: <span class="string">"ERROR: Memory Access Fault at %$F. [ADRS]0x%x"</span>};
+   533    
+   534        <span class="xdoc">/*!
+</span>   535    <span class="xdoc">     *  ======== securityException ========
+</span>   536    <span class="xdoc">     * securityException event code
+</span>   537    <span class="xdoc">     *
+</span>   538    <span class="xdoc">     * Used to log that a security exception occurred.
+</span>   539    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   540    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   541    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   542    <span class="xdoc">     *  Comments in the code can then provide further explication of the error.
+</span>   543    <span class="xdoc">     *
+</span>   544    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   545    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   546    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   547    <span class="xdoc">     *  ...
+</span>   548    <span class="xdoc">     *  Log_write2(UIAErr_securityException,(IArg)__FILE__,__LINE__);
+</span>   549    <span class="xdoc">     *  ...
+</span>   550    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   551    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   552    <span class="xdoc">     *  "ERROR: Security Exception at demo.c line 1234."
+</span>   553    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   554    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   555    <span class="xdoc">     */</span>
+   556        <span class=key>config</span> xdc.runtime.Log.Event securityException = {
+   557                mask: Diags.STATUS,
+   558                level: Diags.ERROR,
+   559                msg: <span class="string">"ERROR: Security Exception at %$F."</span>};
+   560    
+   561        <span class="xdoc">/*!
+</span>   562    <span class="xdoc">     *  ======== divisionByZero ========
+</span>   563    <span class="xdoc">     * divisionByZero event code
+</span>   564    <span class="xdoc">     *
+</span>   565    <span class="xdoc">     * Used to log that divide by zero exception occurred.
+</span>   566    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   567    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   568    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   569    <span class="xdoc">     *  Comments in the code can then provide further explication of the error.
+</span>   570    <span class="xdoc">     *
+</span>   571    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   572    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   573    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   574    <span class="xdoc">     *  ...
+</span>   575    <span class="xdoc">     *  Log_write2(UIAErr_divisionByZero,(IArg)__FILE__,__LINE__);
+</span>   576    <span class="xdoc">     *  ...
+</span>   577    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   578    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   579    <span class="xdoc">     *  "ERROR: Division by zero at demo.c line 1234."
+</span>   580    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   581    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   582    <span class="xdoc">     */</span>
+   583        <span class=key>config</span> xdc.runtime.Log.Event divisionByZero = {
+   584                mask: Diags.STATUS,
+   585                level: Diags.ERROR,
+   586                msg: <span class="string">"ERROR: Division by zero at %$F."</span>};
+   587    
+   588        <span class="xdoc">/*!
+</span>   589    <span class="xdoc">     *  ======== overflowException ========
+</span>   590    <span class="xdoc">     * overflowException event code
+</span>   591    <span class="xdoc">     *
+</span>   592    <span class="xdoc">     * Used to log that an overflow exception occurred.
+</span>   593    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   594    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   595    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   596    <span class="xdoc">     *  Comments in the code can then provide further explication of the error.
+</span>   597    <span class="xdoc">     *
+</span>   598    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   599    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   600    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   601    <span class="xdoc">     *  ...
+</span>   602    <span class="xdoc">     *  Log_write2(UIAErr_overflowException,(IArg)__FILE__,__LINE__);
+</span>   603    <span class="xdoc">     *  ...
+</span>   604    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   605    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   606    <span class="xdoc">     *  "ERROR: Overflow exception at demo.c line 1234."
+</span>   607    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   608    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   609    <span class="xdoc">     */</span>
+   610        <span class=key>config</span> xdc.runtime.Log.Event overflowException = {
+   611                mask: Diags.STATUS,
+   612                level: Diags.ERROR,
+   613                msg: <span class="string">"ERROR: Overflow exception at %$F."</span>};
+   614    
+   615        <span class="xdoc">/*!
+</span>   616    <span class="xdoc">     * ======== indexOutOfRange ========
+</span>   617    <span class="xdoc">     * indexOutOfRange event code
+</span>   618    <span class="xdoc">     *
+</span>   619    <span class="xdoc">     * Used to log that an index out of range condition occurred.
+</span>   620    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   621    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   622    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   623    <span class="xdoc">     *  Comments in the code can then provide further explication of the error.
+</span>   624    <span class="xdoc">     *
+</span>   625    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   626    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   627    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   628    <span class="xdoc">     *  ...
+</span>   629    <span class="xdoc">     *  Log_write3(UIAErr_indexOutOfRange,(IArg)__FILE__,__LINE__,badIndex);
+</span>   630    <span class="xdoc">     *  ...
+</span>   631    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   632    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   633    <span class="xdoc">     *  "ERROR: OIndex out of range at demo.c line 1234. [INDEX]0xFFFFFFFF"
+</span>   634    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   635    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   636    <span class="xdoc">     *  <b>@param(index)</b>      The index value that was out of range
+</span>   637    <span class="xdoc">     */</span>
+   638        <span class=key>config</span> xdc.runtime.Log.Event indexOutOfRange = {
+   639                mask: Diags.STATUS,
+   640                level: Diags.ERROR,
+   641                msg: <span class="string">"ERROR: Index out of range at %$F. [INDEX]0x%x"</span>};
+   642    
+   643        <span class="xdoc">/*!
+</span>   644    <span class="xdoc">     * ======== notImplemented ========
+</span>   645    <span class="xdoc">     * notImplemented event code
+</span>   646    <span class="xdoc">     *
+</span>   647    <span class="xdoc">     * Used to log that an attempt to access a feature that is not implemented
+</span>   648    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   649    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   650    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   651    <span class="xdoc">     *  Comments in the code can then provide further explication of the error.
+</span>   652    <span class="xdoc">     *
+</span>   653    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   654    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   655    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   656    <span class="xdoc">     *  ...
+</span>   657    <span class="xdoc">     *  Log_write2(UIAErr_notImplemented,(IArg)__FILE__,__LINE__);
+</span>   658    <span class="xdoc">     *  ...
+</span>   659    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   660    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   661    <span class="xdoc">     *  "ERROR: Attempt to access feature that is not implemented at demo.c line 1234."
+</span>   662    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   663    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   664    <span class="xdoc">     */</span>
+   665        <span class=key>config</span> xdc.runtime.Log.Event notImplemented = {
+   666                mask: Diags.STATUS,
+   667                level: Diags.ERROR,
+   668                msg: <span class="string">"ERROR: Attempt to access feature that is not implemented at %$F."</span>};
+   669    
+   670        <span class="xdoc">/*!
+</span>   671    <span class="xdoc">     * ======== stackOverflow ========
+</span>   672    <span class="xdoc">     * stackOverflow event code
+</span>   673    <span class="xdoc">     *
+</span>   674    <span class="xdoc">     * Used to log that a stack overflow was detected.  (Event Level = CRITICAL)
+</span>   675    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   676    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   677    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   678    <span class="xdoc">     *  Comments in the code can then provide further explication of the error.
+</span>   679    <span class="xdoc">     *
+</span>   680    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   681    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   682    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   683    <span class="xdoc">     *  ...
+</span>   684    <span class="xdoc">     *  Log_write2(UIAErr_stackOverflow,(IArg)__FILE__,__LINE__);
+</span>   685    <span class="xdoc">     *  ...
+</span>   686    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   687    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   688    <span class="xdoc">     *  "ERROR: Stack Overflow detected at demo.c line 1234."
+</span>   689    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   690    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   691    <span class="xdoc">     */</span>
+   692        <span class=key>config</span> xdc.runtime.Log.Event stackOverflow = {
+   693                mask: Diags.STATUS,
+   694                level: Diags.CRITICAL,
+   695                msg: <span class="string">"ERROR: Stack Overflow detected at %$F."</span>};
+   696    
+   697        <span class="xdoc">/*!
+</span>   698    <span class="xdoc">     * ======== illegalInstruction ========
+</span>   699    <span class="xdoc">     * illegalInstruction event code
+</span>   700    <span class="xdoc">     *
+</span>   701    <span class="xdoc">     * Used to log that an illegal instruction was executed
+</span>   702    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   703    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   704    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   705    <span class="xdoc">     *  Comments in the code can then provide further explication of the error.
+</span>   706    <span class="xdoc">     *
+</span>   707    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   708    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   709    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   710    <span class="xdoc">     *  ...
+</span>   711    <span class="xdoc">     *  Log_write2(UIAErr_illegalInstruction,(IArg)__FILE__,__LINE__);
+</span>   712    <span class="xdoc">     *  ...
+</span>   713    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   714    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   715    <span class="xdoc">     *  "ERROR: Illegal Instruction executed at demo.c line 1234."
+</span>   716    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   717    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   718    <span class="xdoc">     */</span>
+   719        <span class=key>config</span> xdc.runtime.Log.Event illegalInstruction = {
+   720                mask: Diags.STATUS,
+   721                level: Diags.ERROR,
+   722                msg: <span class="string">"ERROR: Illegal Instruction executed at %$F."</span>};
+   723    
+   724        <span class="xdoc">/*!
+</span>   725    <span class="xdoc">     *  ======== entryPointNotFound  ========
+</span>   726    <span class="xdoc">     *  entryPointNotFound event code
+</span>   727    <span class="xdoc">     *
+</span>   728    <span class="xdoc">     *  Used to log that a module or DLL entry point was not found
+</span>   729    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   730    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   731    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   732    <span class="xdoc">     *  Comments in the code can then provide further explication of the error.
+</span>   733    <span class="xdoc">     *
+</span>   734    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   735    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   736    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   737    <span class="xdoc">     *  ...
+</span>   738    <span class="xdoc">     *  Log_write2(UIAErr_entryPointNotFound,(IArg)__FILE__,__LINE__);
+</span>   739    <span class="xdoc">     *  ...
+</span>   740    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   741    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   742    <span class="xdoc">     *  "ERROR: Entry Point Not Found at demo.c line 1234."
+</span>   743    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   744    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   745    <span class="xdoc">     */</span>
+   746        <span class=key>config</span> xdc.runtime.Log.Event entryPointNotFound = {
+   747                mask: Diags.STATUS,
+   748                level: Diags.ERROR,
+   749                msg: <span class="string">"ERROR: Entry Point Not Found at %$F."</span>};
+   750    
+   751        <span class="xdoc">/*!
+</span>   752    <span class="xdoc">     *  ======== moduleNotFound  ========
+</span>   753    <span class="xdoc">     *  moduleNotFound event code
+</span>   754    <span class="xdoc">     *
+</span>   755    <span class="xdoc">     *  Used to log that a module was not found
+</span>   756    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   757    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   758    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   759    <span class="xdoc">     *  Comments in the code can then provide further explication of the error.
+</span>   760    <span class="xdoc">     *
+</span>   761    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   762    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   763    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   764    <span class="xdoc">     *  ...
+</span>   765    <span class="xdoc">     *  Log_write3(UIAErr_moduleNotFound,(IArg)__FILE__,__LINE__,moduleIdThatWasNotFound);
+</span>   766    <span class="xdoc">     *  ...
+</span>   767    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   768    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   769    <span class="xdoc">     *  "ERROR: Module not found at demo.c line 1234. [MODULE_ID]0x32903"
+</span>   770    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   771    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   772    <span class="xdoc">     *  <b>@param(moduleId)</b>   The Module ID of the module that was not found
+</span>   773    <span class="xdoc">     */</span>
+   774        <span class=key>config</span> xdc.runtime.Log.Event moduleNotFound = {
+   775                mask: Diags.STATUS,
+   776                level: Diags.ERROR,
+   777                msg: <span class="string">"ERROR: Module not found at %$F. [MODULE_ID]0x%x."</span>};
+   778    
+   779        <span class="xdoc">/*!
+</span>   780    <span class="xdoc">     *  ======== floatingPointError  ========
+</span>   781    <span class="xdoc">     *  floatingPointError event code
+</span>   782    <span class="xdoc">     *
+</span>   783    <span class="xdoc">     *  Used to log that a floating point error occurred
+</span>   784    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   785    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   786    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   787    <span class="xdoc">     *  Comments in the code can then provide further explication of the error.
+</span>   788    <span class="xdoc">     *
+</span>   789    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   790    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   791    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   792    <span class="xdoc">     *  ...
+</span>   793    <span class="xdoc">     *  Log_write2(UIAErr_floatingPointError,(IArg)__FILE__,__LINE__);
+</span>   794    <span class="xdoc">     *  ...
+</span>   795    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   796    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   797    <span class="xdoc">     *  "ERROR: Floating Point Error at demo.c line 1234."
+</span>   798    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   799    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   800    <span class="xdoc">     */</span>
+   801        <span class=key>config</span> xdc.runtime.Log.Event floatingPointError = {
+   802                mask: Diags.STATUS,
+   803                level: Diags.ERROR,
+   804                msg: <span class="string">"ERROR: Floating Point Error at %$F."</span>};
+   805    
+   806        <span class="xdoc">/*!
+</span>   807    <span class="xdoc">     *  ======== invalidParameter  ========
+</span>   808    <span class="xdoc">     *  invalidParameter event code
+</span>   809    <span class="xdoc">     *
+</span>   810    <span class="xdoc">     *  Used to log that an invalid parameter was detected
+</span>   811    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   812    <span class="xdoc">     *   The following C code shows how to log an exception that identifies
+</span>   813    <span class="xdoc">     *  the file and line number that the exception occurred at as a UIA event.
+</span>   814    <span class="xdoc">     *  Comments in the code can then provide further explication of the error.
+</span>   815    <span class="xdoc">     *
+</span>   816    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   817    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   818    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAErr.h&gt;
+</span>   819    <span class="xdoc">     *  ...
+</span>   820    <span class="xdoc">     *  Void myFunc(Int caseNumber){
+</span>   821    <span class="xdoc">     *    switch(caseNumber){
+</span>   822    <span class="xdoc">     *      ...
+</span>   823    <span class="xdoc">     *      break;
+</span>   824    <span class="xdoc">     *      default :
+</span>   825    <span class="xdoc">     *         Log_write4(UIAErr_floatingPointError,(IArg)__FILE__,__LINE__,1,caseNumber);
+</span>   826    <span class="xdoc">     *    }
+</span>   827    <span class="xdoc">     *  }
+</span>   828    <span class="xdoc">     *
+</span>   829    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   830    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   831    <span class="xdoc">     *  "ERROR: Invalid Parameter at demo.c line 1234. [ParamNum]1 [ParamValue]0xFFFFFFFF"
+</span>   832    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the exception occurred in
+</span>   833    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line that the exception occurred at
+</span>   834    <span class="xdoc">     *  <b>@param(paramNum)</b>   The parameter number in the function's signature that was invalid
+</span>   835    <span class="xdoc">     *  <b>@param(paramValue)</b> The invalid parameter value
+</span>   836    <span class="xdoc">     */</span>
+   837        <span class=key>config</span> xdc.runtime.Log.Event invalidParameter = {
+   838                mask: Diags.STATUS,
+   839                level: Diags.ERROR,
+   840                msg: <span class="string">"ERROR: Invalid Parameter at %$F. [ParamNum]%d [ParamValue]0x%x"</span>};
+   841    
+   842    }
+</pre>
+</body></html>

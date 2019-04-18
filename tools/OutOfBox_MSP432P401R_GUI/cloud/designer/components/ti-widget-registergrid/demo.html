@@ -1,0 +1,96 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+Copyright (c) 2014, Texas Instruments Incorporated
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+*   Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+*   Neither the name of Texas Instruments Incorporated nor the names of
+its contributors may be used to endorse or promote products derived
+from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        if ('registerElement' in document
+                && 'createShadowRoot' in HTMLElement.prototype
+                && 'import' in document.createElement('link')
+                && 'content' in document.createElement('template')) {
+            // We're using a browser with native WC support!
+        } else {
+            document.write('<script src="../webcomponentsjs/webcomponents.js"><\/script>');
+        }
+    </script>
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 20px;
+            font-family: sans-serif;
+        }
+        html ti-widget-registergrid /deep/ .core-header {
+            height: 60px;
+            font-size: 18px;
+            transition: height 0.2s;
+            background-color: #191919;
+            color: #fff;
+        }
+
+    </style>
+    <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+    <link rel="import" href="ti-widget-registergrid.html"><p>&nbsp;</p>
+</head>
+
+<body>
+<h1>ti-widget-registergrid demo</h1>
+<div layout vertical>
+<ti-widget-registergrid id="ti_widget_registergrid" style="height:400px;width:600px;"></ti-widget-registergrid><p>&nbsp;</p>
+</div>
+
+<script>
+    var btnClickHdlr = function(e){
+        var grid = document.querySelector('#ti_widget_registergrid');
+        if (grid){
+            var resultsDiv = document.getElementById("results");
+            var registerObj = grid.getJSON();
+            if (registerObj) {
+                var resultStr = "";
+                for (var i=0;i<registerObj.length;i++) {
+                    resultStr += 'index ' + registerObj[i].index + ': name=' + registerObj[i].name + ', label=' + registerObj[i].label + ', value=' + registerObj[i].value + '<br/>';
+                }
+                resultsDiv.innerHTML = resultStr;
+            } else {
+                resultsDiv.innerHTML="Error: registergrid.getJSON() returned "+registerObj;
+            }
+        }
+    }
+</script>
+</body>
+</html>

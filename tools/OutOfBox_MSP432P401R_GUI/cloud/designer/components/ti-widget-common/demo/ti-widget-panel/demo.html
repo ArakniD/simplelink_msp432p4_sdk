@@ -1,0 +1,438 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+Copyright (c) 2014, Texas Instruments Incorporated
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+*   Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+*   Neither the name of Texas Instruments Incorporated nor the names of
+its contributors may be used to endorse or promote products derived
+from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        if ('registerElement' in document
+                && 'createShadowRoot' in HTMLElement.prototype
+                && 'import' in document.createElement('link')
+                && 'content' in document.createElement('template')) {
+            // We're using a browser with native WC support!
+        } else {
+            document.write('<script src="../../../webcomponentsjs/webcomponents.js"><\/script>');
+        }
+    </script>
+    <link rel="import" href="../../../ti-core-stylesheets/ti-core-stylesheets.html">
+
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 20px;
+            background-color: rgb(240, 239, 232);
+        }
+        #ti_widget_panel {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 280px;
+            height: 250px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 150px;
+            top: 310px;
+            background-image: linear-gradient(315deg, rgb(17, 85, 102), black);
+            background-color: rgb(255, 255, 255);
+        }
+        #ti_widget_panel1 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 140px;
+            height: 90px;
+            border-radius: 2px;
+            border: medium solid white;
+            left: 220px;
+            top: 330px;
+            background-color: transparent;
+        }
+        #ti_widget_panel2 {
+            text-align: center;
+            vertical-align: middle;
+            color: black;
+            position: absolute;
+            width: 250px;
+            height: 60px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 161px;
+            top: 316px;
+            background-image: linear-gradient(315deg, rgb(255, 255, 255), rgb(224, 224, 224));
+            background-color: rgb(255, 255, 255);
+        }
+        #ti_widget_panel3 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 490px;
+            height: 490px;
+            left: 50px;
+            top: 160px;
+            background: radial-gradient(rgb(50, 50, 50), rgb(50, 50, 50), black);
+        }
+        #ti_widget_panel4 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 150px;
+            height: 90px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 220px;
+            top: 440px;
+            background-image: linear-gradient(315deg, rgb(204, 0, 0), rgb(153, 0, 0));
+            background-color: rgb(255, 255, 255);
+        }
+
+    </style>
+
+    <link rel="import" href="../../../ti-widget-common/ti-widget-panel.html">
+
+</head>
+
+<body align="center">
+
+
+<template id="demoTemplate" is="auto-binding">
+    <style>
+        #ti_widget_panel {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 47px;
+            top: 188px;
+            background-image: linear-gradient(315deg, rgb(17, 85, 102), black);
+            background-color: rgb(255, 255, 255);
+        }
+        #ti_widget_panel1 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 47px;
+            top: 286px;
+            background-image: linear-gradient(315deg, rgb(0, 187, 204), rgb(17, 85, 102));
+            background-color: rgb(255, 255, 255);
+        }
+        #ti_widget_panel2 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 621px;
+            top: 189px;
+            background-image: linear-gradient(315deg, rgb(204, 0, 0), rgb(153, 0, 0));
+            background-color: rgb(255, 255, 255);
+        }
+        #ti_widget_panel3 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 331px;
+            top: 286px;
+            background-image: linear-gradient(315deg, rgb(170, 170, 170), rgb(224, 224, 224));
+            background-color: rgb(255, 255, 255);
+        }
+        #ti_widget_panel4 {
+            text-align: center;
+            vertical-align: middle;
+            color: black;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 331px;
+            top: 188px;
+            background-image: linear-gradient(315deg, rgb(255, 255, 255), rgb(224, 224, 224));
+            background-color: rgb(255, 255, 255);
+        }
+        #ti_widget_panel5 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            left: 621px;
+            top: 287px;
+            background: radial-gradient(rgb(50, 50, 50), rgb(50, 50, 50), black);
+        }
+        #ti_widget_panel6 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 217px;
+            top: 622px;
+            background-color: rgb(17, 85, 102);
+        }
+        #ti_widget_panel7 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 509px;
+            top: 622px;
+            background-color: rgb(224, 224, 224);
+        }
+        #ti_widget_panel8 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 217px;
+            top: 726px;
+            background-color: rgb(17, 136, 153);
+        }
+        #ti_widget_panel9 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 510px;
+            top: 726px;
+            background-color: rgb(153, 0, 0);
+        }
+        #ti_widget_panel10 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 217px;
+            top: 406px;
+            background-color: black;
+        }
+        #ti_widget_panel11 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 509px;
+            top: 406px;
+            background-color: rgb(170, 170, 170);
+        }
+        #ti_widget_panel12 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 217px;
+            top: 516px;
+            background-color: rgb(204, 0, 0);
+        }
+        #ti_widget_panel13 {
+            text-align: center;
+            vertical-align: middle;
+            left: 550px;
+            top: 680px;
+            width: 270px;
+            height: 80px;
+            position: absolute;
+        }
+        #ti_widget_panel14 {
+            text-align: center;
+            vertical-align: middle;
+            left: 320px;
+            top: 660px;
+            width: 270px;
+            height: 80px;
+            position: absolute;
+        }
+        #ti_widget_panel15 {
+            text-align: center;
+            vertical-align: middle;
+            left: 440px;
+            top: 660px;
+            width: 270px;
+            height: 80px;
+            position: absolute;
+        }
+        #ti_widget_panel16 {
+            text-align: center;
+            vertical-align: middle;
+            left: 340px;
+            top: 640px;
+            width: 270px;
+            height: 80px;
+            position: absolute;
+        }
+        #ti_widget_panel17 {
+            text-align: center;
+            vertical-align: middle;
+            color: black;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            border: thin solid black;
+            left: 47px;
+            top: 60px;
+            background-color: transparent;
+        }
+        #ti_widget_panel18 {
+            text-align: center;
+            vertical-align: middle;
+            color: rgb(170, 170, 170);
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            border: thick solid rgb(170, 170, 170);
+            left: 330px;
+            top: 60px;
+            background-color: transparent;
+        }
+        #ti_widget_panel19 {
+            text-align: center;
+            vertical-align: middle;
+            left: 640px;
+            top: 310px;
+            width: 270px;
+            height: 80px;
+            position: absolute;
+        }
+        #ti_widget_panel20 {
+            text-align: center;
+            vertical-align: middle;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+            left: 509px;
+            top: 516px;
+            background-color: rgb(255, 255, 255);
+        }
+        #ti_widget_panel21 {
+            text-align: center;
+            vertical-align: middle;
+            color: white;
+            position: absolute;
+            width: 270px;
+            height: 80px;
+            border-radius: 2px;
+            border: medium solid white;
+            left: 621px;
+            top: 61px;
+            background-color: transparent;
+        }
+    </style>
+
+    <div style="font-size:x-large;font-weight:bold">ti-widget-panel demo</div>
+    <p>&nbsp;</p>
+    <div>
+
+    <ti-program-model id="pm" class="drag-element"></ti-program-model>
+    <ti-widget-panel id="ti_widget_panel22" layout vertical></ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel" layout vertical>Gradient Dark Torquoise to Black</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel1" layout vertical>Gradient Light Torquoise to Dark Torquoise</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel2" layout vertical>Gradient TI Red to TI Secondary Red</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel3" layout vertical>Gradient TI Gray to TI Secondary Gray</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel4" layout vertical>Gradient White to TI Seconary Gray</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel5" layout vertical>Radial Gradient Black to Dark Gray</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel6" layout vertical>Secondary TI Dark Torquoise</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel7" layout vertical>Secondary TI Gray</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel8" layout vertical>Secondary TI Medium Torquoise</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel9" layout vertical>Secondary TI Red</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel10" layout vertical>TI Black</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel11" layout vertical>TI Gray</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel12" layout vertical>TI Red</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel17" layout vertical>Border - Black</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel18" layout vertical>Border - Gray</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel9" layout vertical>Secondary TI Red</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel20" layout vertical>TI White</ti-widget-panel>
+    <ti-widget-panel id="ti_widget_panel21" layout vertical>Border - White</ti-widget-panel>
+    </div>
+</template>
+<script>
+
+</script>
+</body>
+</html>

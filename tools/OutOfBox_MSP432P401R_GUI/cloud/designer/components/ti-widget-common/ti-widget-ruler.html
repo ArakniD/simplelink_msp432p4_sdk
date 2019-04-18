@@ -1,0 +1,152 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-base.html">
+
+<polymer-element name="ti-widget-ruler" extends="ti-widget-base" attributes="labels minorTicks align orientation hideTicks">
+
+    <template>
+        <style>
+            * {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;   
+            }
+            :host {
+                display: inline-block;
+            }
+            div.horizontal .tick.minor {
+                height: 50%;
+            }
+            div.vertical .tick.minor {
+            	width: 50%;
+            }
+            div.horizontal .tick {
+                height: 100%;
+                width: 1px;
+            }
+            div.vertical .tick {
+            	width: 100%;
+            	height: 1px;
+            }
+            .tick {
+                z-index: 1;
+                background-color: black;
+                position: relative;
+            }
+            #tickContainer.hideTicks .tick {
+            	background-color: transparent;
+            }
+            #tickContainer.disabled .tick {
+                background-color: #c8c8c8;
+            }
+            #tickContainer {
+                position: static;
+                border: none;
+                height: 100%;
+                width: 100%;
+            }
+            label {
+                padding: 0.3em;
+                position: absolute;
+                font-size: small;
+            }
+            div.horizontal label {
+                transform: translateX(-50%);
+            }
+            div.vertical label {
+                transform: translateY(-50%);
+            }
+            div.horizontal label:not(.end) {
+                top: 100%;
+            }
+            div.vertical label:not(.end) {
+                left: 100%;
+            }
+            div.horizontal label.end {
+                bottom: 100%;
+            }
+            div.vertical label.end {
+                right: 100%;
+            }
+            div.horizontal div {
+                display: inline;
+            }
+            .ie div.tick {
+                z-index: auto; 
+            }
+
+        </style>
+        <div id="tickContainer" class="{{orientation}}" justified horizontal layout>
+            <template repeat="{{label, j in _tickLabels}}">
+                <div class="tick">
+                    <label class="{{align}}">{{label}}</label>
+                </div>
+                <template repeat="{{i in _ticks}}">
+                    <div class="tick minor"></div>
+                </template>
+            </template>
+            <div class="tick">
+                <label class="{{align}}">{{_lastLabel}}</label>
+            </div>
+         </div>
+    </template>
+    <script>
+        Polymer ('ti-widget-ruler', 
+        {
+            labels: "",
+            minorTicks: 0,
+            align: "start",
+            orientation: "horizontal",
+            _previousAlign: "start",
+            _lastOrientation: "horizontal",
+            _ticks: [],
+            _tickLabels: [],
+            hideTicks : false,
+            
+            labelsChanged: function() 
+            {
+            	var newLabels = this.parseArray(this.labels);
+            	if (newLabels.length > 0)
+            	{
+            		this._lastLabel = newLabels.pop();
+            		this._tickLabels = newLabels;
+            	}
+            	else
+            	{
+            		this._lastLabel = "";
+            		this._tickLabels = [];
+            	}
+            },
+            minorTicksChanged: function()
+            {
+                this._ticks = [];
+                for(var i = this.minorTicks; i-- > 0;)
+                {
+                    this._ticks.push("");
+                }
+            },
+            alignChanged: function() 
+            {
+                this.$.tickContainer.removeAttribute(this._previousAlign);
+                this._previousAlign = this.align;
+                this.$.tickContainer.setAttribute(this.align, null);
+            },
+            orientationChanged: function()
+            {
+           	    this.$.tickContainer.removeAttribute(this._lastOrientation);
+            	this.$.tickContainer.setAttribute(this.orientation, null)
+            	this._lastOrientation = this.orientation;
+            },
+            hideTicksChanged : function()
+            {
+            	this.addRemoveClassName(this.hideTicks, 'hideTicks', this.$.tickContainer);
+            },
+            getElement : function()
+            {
+                return this.$.tickContainer;
+            }
+        });
+    </script>
+</polymer-element>

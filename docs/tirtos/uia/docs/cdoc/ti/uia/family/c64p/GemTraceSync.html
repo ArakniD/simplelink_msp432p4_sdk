@@ -1,0 +1,514 @@
+<html>
+<head>
+<title>module ti.uia.family.c64p.GemTraceSync</title>
+<meta name="description" content="C64X+ specific code for injecting sync point info into the GEM Trace stream">
+<link rel="stylesheet" type="text/css" href="../../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.family.c64p.</span><span class="xdoc-id">GemTraceSync</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/c64p/package.html" title="package ti.uia.family.c64p"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/c64p/TimestampC6472Timer.html" title="module TimestampC6472Timer"><img class="xdocHdrArrow" src="../../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/c64p/GemTraceSync.html">index URL</a></div>
+<p class="xdocHdrSummary">C64X+ specific code for injecting sync point info into the GEM Trace stream</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+The OVERLAY register (a.k.a. TSDR register) is an undocumented register
+ availble on C64X+ Full GEM targets.  Writes into this register are injected
+ into the trace stream.  The data that is written is used by the host to
+ determine what target-side context was active at the time the trace data
+ was recorded.
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../../ti/uia/family/c64p/GemTraceSync-src.html"><span class="xdocLabelFile">ti/uia/family/c64p/GemTraceSync.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/family/c64p/GemTraceSync.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td colspan="2"><div class="xdocSynFxnCat">Functions common to all IUIATraceSyncProvider modules</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#inject.Into.Trace"><span class="xdoc-id">GemTraceSync_injectIntoTrace</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Inject syncPoint info into GEM Trace</span></span></a>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">serialNum</span>, <a class="xdoc-link" href="../../../../ti/uia/runtime/IUIATraceSyncProvider.html#.Context.Type" title="ti.uia.runtime.IUIATraceSyncProvider.ContextType">IUIATraceSyncProvider_ContextType</a>&nbsp;<span class="xdoc-id">ctxType</span>);</div></td></tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">GemTraceSync_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">GemTraceSync_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">GemTraceSync_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">GemTraceSync_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">GemTraceSync_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">GemTraceSync_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Typedefs</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">GemTraceSync_ContextType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enumeration of the various types of packet headers.
+ Stored in a 4 bit bitfield (b31-b28) of the first word in the packet</span></span></a> ...</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The OVERLAY register (a.k.a. TSDR register) is an undocumented register
+ availble on C64X+ Full GEM targets.  Writes into this register are injected
+ into the trace stream.  The data that is written is used by the host to
+ determine what target-side context was active at the time the trace data
+ was recorded.</div>
+<div class="xdocText">The register only has 30 writable bits, so in order to inject a 32b value
+ into the trace stream  (e.g. the thread handle of the currently executing
+ thread), the 32b address needs to be split into two pieces and written into
+ the OVERLAY register in two successive write operations.  To make it possible
+ to use the OVERLAY register to inject different types of context info into
+ the trace stream, the following bit assignments need to be used when
+ writing data into the OVERLAY register:</div>
+<div class="xdocText">OVERLAY register bit assignments:
+ 2 LSBs fixed (011b)
+ 6 MSBs used to determine what type of data the OVERLAY register contains</div>
+<div class="xdocText">b31-b26  : a 6 bit ?type ID? that describes what context info the sync point
+             contains
+ 000000b  : reserved
+ 000001b  : b25-b2 of OVERLAY register contains the 24 LSBs
+             of the sequence number of the Sync Point event
+             that contains correlation info.  Only 1 OVERLAY
+             register write is required for this info.
+ 000010b  : b25-b2 of OVERLAY register contains the 24 LSBs
+             of the sequence number of the Context Change event
+             that contains context change info.  Only 1 OVERLAY
+             register write is required for this info.
+   . . .  : reserved
+ 000011b  : b25-b2 of OVERLAY register contains the 24 LSBs
+             of the snapshot ID of the snapshot event
+             that contains snapshot info.  Only 1 OVERLAY register
+             write is required for this info.
+ 10XXXXb  : contains first word of a 2 word OVERLAY register sequence.
+ b25-b2   : the 24 MSBs of 32b context data.</div>
+<div class="xdocText">11XXXXb:    contains second word of a 2 word OVERLAY register sequence.
+ b29-b10 contain the 20LSBs of the sequence number of an event that contains
+             context info.
+ b9-b2 contain 8 LSBs of 32b context data.</div>
+<div class="xdocText">If the 2 word OVERLAY register protocol is being used and there is a sync
+ loss, then only the OVERLAY register data with b31-b30 = 11b will be
+ available since it was the last data written into the register.  Since this
+ contains a sequence number, it may be possible for the host to recover the
+ lost sync data by finding the context change event that has the same sequence
+ number.</div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Context.Type"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved0"></a>
+<a class="xdocAnchor" id=".Context.Type_.Sync.Point"></a>
+<a class="xdocAnchor" id=".Context.Type_.Context.Change"></a>
+<a class="xdocAnchor" id=".Context.Type_.Snapshot"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved4"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved5"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved6"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved7"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved8"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved9"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved10"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved11"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved12"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved13"></a>
+<a class="xdocAnchor" id=".Context.Type_.Global32b.Timestamp"></a>
+<a class="xdocAnchor" id=".Context.Type_.User"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">GemTraceSync_</span><span class="xdoc-id">ContextType</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/c64p/GemTraceSync.html" title="module GemTraceSync"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/c64p/GemTraceSync.html#.Context.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enumeration of the various types of packet headers.
+ Stored in a 4 bit bitfield (b31-b28) of the first word in the packet</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> <span class="xdoc-id">GemTraceSync_ContextType</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_Reserved0</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_SyncPoint</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Sync Point event serial number</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_ContextChange</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Context Change event serial number</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_Snapshot</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Snapshot event Snapshot ID</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_Reserved4</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_Reserved5</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_Reserved6</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_Reserved7</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_Reserved8</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_Reserved9</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_Reserved10</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_Reserved11</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_Reserved12</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_Reserved13</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_Global32bTimestamp</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;32b Global Timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">GemTraceSync_ContextType_User</span>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;User defined data</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">GemTraceSync_ContextType</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="inject.Into.Trace"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">GemTraceSync_</span><span class="xdoc-id">injectIntoTrace</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/c64p/GemTraceSync.html" title="module GemTraceSync"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/c64p/GemTraceSync.html#inject.Into.Trace">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Inject syncPoint info into GEM Trace</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">GemTraceSync_injectIntoTrace</span>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">serialNum</span>, <a class="xdoc-link" href="../../../../ti/uia/runtime/IUIATraceSyncProvider.html#.Context.Type" title="ti.uia.runtime.IUIATraceSyncProvider.ContextType">IUIATraceSyncProvider_ContextType</a>&nbsp;<span class="xdoc-id">ctxType</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">serialNum</span>
+<span class="xdocChildSum">&#151;&nbsp;the serial number that is to be injected</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">ctxType</span>
+<span class="xdocChildSum">&#151;&nbsp;the context type ID to be injected into the trace</span>
+</div>
+<div class="xdocChildText">the CtxChg_ContextType constant that describes what
+    context info the 2 words contain</div>
+<div class="xdocChild"><span class="xdocChildId">serialNumber</span>
+<span class="xdocChildSum">&#151;&nbsp;a sync point serial number to inject into the trace
+    stream</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This method logs a sync point event and injects
+ correlation info into the trace stream (if available)
+ to enable correlation between software events and hardware trace.</div>
+<div class="xdocText">This method logs a sync point event and injects
+ correlation info into the trace stream (if available)
+ to enable correlation between software events and hardware trace.</div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/c64p/GemTraceSync.html" title="module GemTraceSync"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/c64p/GemTraceSync.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">GemTraceSync_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">GemTraceSync_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">GemTraceSync_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">GemTraceSync_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">GemTraceSync_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">GemTraceSync_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../../ti/uia/family/c64p/GemTraceSync-src.html"><span class="xdocLabelFile">ti/uia/family/c64p/GemTraceSync.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> GemTraceSync = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.family.c64p.GemTraceSync'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide constants & types</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><i>values of type <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enumeration of the various types of packet headers.
+ Stored in a 4 bit bitfield (b31-b28) of the first word in the packet</span></span></a></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_Reserved0</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_SyncPoint</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Sync Point event serial number</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_ContextChange</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Context Change event serial number</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_Snapshot</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Snapshot event Snapshot ID</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_Reserved4</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_Reserved5</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_Reserved6</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_Reserved7</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_Reserved8</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_Reserved9</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_Reserved10</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_Reserved11</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_Reserved12</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_Reserved13</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_Global32bTimestamp</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;32b Global Timestamp</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Context.Type">GemTraceSync.<span class="xdoc-id">ContextType_User</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;User defined data</span></span></a>;
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">GemTraceSync.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Context.Type"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved0"></a>
+<a class="xdocAnchor" id=".Context.Type_.Sync.Point"></a>
+<a class="xdocAnchor" id=".Context.Type_.Context.Change"></a>
+<a class="xdocAnchor" id=".Context.Type_.Snapshot"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved4"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved5"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved6"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved7"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved8"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved9"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved10"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved11"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved12"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved13"></a>
+<a class="xdocAnchor" id=".Context.Type_.Global32b.Timestamp"></a>
+<a class="xdocAnchor" id=".Context.Type_.User"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">GemTraceSync.</span><span class="xdoc-id">ContextType</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/c64p/GemTraceSync.html" title="module GemTraceSync"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/c64p/GemTraceSync.html#.Context.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enumeration of the various types of packet headers.
+ Stored in a 4 bit bitfield (b31-b28) of the first word in the packet</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>values of type GemTraceSync.<span class="xdoc-id">ContextType</span></i>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_Reserved0</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_SyncPoint</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Sync Point event serial number</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_ContextChange</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Context Change event serial number</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_Snapshot</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Snapshot event Snapshot ID</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_Reserved4</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_Reserved5</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_Reserved6</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_Reserved7</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_Reserved8</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_Reserved9</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_Reserved10</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_Reserved11</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_Reserved12</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_Reserved13</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_Global32bTimestamp</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;32b Global Timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> GemTraceSync.<span class="xdoc-id">ContextType_User</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;User defined data</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Context.Type" title="GemTraceSync_ContextType">GemTraceSync_ContextType</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">GemTraceSync.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/c64p/GemTraceSync.html" title="module GemTraceSync"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/c64p/GemTraceSync.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>GemTraceSync.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:11 GMT</div>
+</div></div></body>
+</html>

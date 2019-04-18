@@ -1,0 +1,178 @@
+/*
+ * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ *  ======== CC3120BOOST.json ========
+ *  Definition of the components and their pin mapping on the CC3120BOOST
+ *
+ *  issue: how/where to define common signal names like those below:
+ *
+ *  Standard portable signal type names:
+ *     DIN
+ *     DOUT
+ *     AIN
+ *     AOUT
+ *     PWM
+ *     UART_RXD
+ *     UART_TXD
+ *     UART_CTS
+ *     UART_RTS
+ *     SPI_CLK
+ *     SPI_SIMO
+ *     SPI_SOMI
+ *     I2C_SDA
+ *     I2C_SCL
+ *
+ *  A signal's type is either one of the signal type names above or
+ *  an array of these names.
+ */
+{
+    /*
+     *  ======== name ========
+     *  Portable name for this object within system.deviceData.board
+     *
+     *  Example: from a config script
+     *      // add the device-specific ROMI BoosterPack definition
+     *      scripting.addHardware("/ti/boards/boosterpacks/CC3120BOOST.json");
+     *
+     *      // define a convenient alias for the main board
+     *      var LaunchPad = system.deviceData.board;
+     *
+     *      // access this BoosterPack's components via "portable" name
+     *      var NWP_WIFI  = LaunchPad.components["NWP_WIFI"].components;
+     *
+     *      // import the WiFi module
+     *      var WiFi = scripting.addModule("/ti/drivers/WiFi");
+     *
+     *      // create a WiFi instance a bind it to the NWP interface
+     *      var wifi = WiFi.addInstance();
+     *      wifi.$hardware = NWP_WIFI.NWP_HOST_INTERFACE;
+     */
+    "name": "NWP_WIFI",
+    "displayName": "CC3120 WiFi BoosterPack",
+    "headerType": "BoosterPack 40 pin",
+    "components": {
+        "NWP_HOST_INTERFACE": {
+            "type": "NWP_HOST_INTERFACE",
+            "displayName": "Network Processor Host MCU Link",
+            "subComponents": {
+                "SPI_WIFI" : {
+                    "displayName": "Network Processor SPI Interface",
+                    "definition": "/ti/boards/components/spiDevice.json",
+                    "subComponents": {
+                        "spi": {
+                            "displayName" : "WIFI SPI BUS",
+                            "definition"  : "/ti/boards/components/spiBus.json",
+                            "connections" : {
+                                /* 7:  BP standard: SPI SCLK (MSP P1.5) */
+                                "SCLK"    : 7,
+                                /* 15: BP standard: SPI MOSI (MSP P1.6) */
+                                "MOSI"   : 15,
+                                /* 14: BP standard: SPI MISO (MSP P1.7) */
+                                "MISO"   : 14
+                            }
+                        },
+                        "select": {
+                            "displayName": "WIFI SPI Chip Select",
+                            "definition"  : "/ti/boards/components/spiSelect.json",
+                            "settings": {"initialOutputState": "High"},
+                            /* 18: BP standard: GPIO|SPI CS wireless (MSP P3.0) */
+                            "connections" : {
+                                "SS": 18
+                            }
+                        }
+                    }
+                },
+
+                "UART": {
+                    "type": "UART",
+                    "signals": {
+                        /* 3: BP standard: UART1 RX */
+                        "RXD": { "type": "UART_RXD", "connection": 3 },
+
+                        /* 4: BP standard: UART1 TX */
+                        "TXD": { "type": "UART_TXD", "connection": 4 },
+
+                        /* 37: BP standard: PWM | GPIO */
+                        "CTS": { "type": "UART_CTS", "connection": 37 },
+
+                        /* 36: BP standard: Timer Capture | GPIO */
+                        "RTS": { "type": "UART_RTS", "connection": 36 }
+                    }
+                },
+
+                /* Network Processor RESET pin */
+                "NRESET": {
+                    "type": "DOUT",
+                    "signals": {
+                        /* 16: BP RST */
+                        "NRESET":   { "type": "DOUT", "connection": 16 }
+                    }
+                },
+
+                /* Network Processor host HOSTIRQ, INHIBIT, and DEFAULTS */
+                "INHIBIT": {
+                    "settings": {"initialOutputState": "Low"},
+                    "type": "DOUT",
+                    "signals": {
+                        /* 5: BP header pin #: GPIO */
+                        "INHIBIT":  { "type": "DOUT", "connection": 5 }
+                    }
+                },
+
+                "DEFAULTS": {
+                    "type": "DOUT",
+                    "signals": {
+                        /* 8: BP header pin #: GPIO */
+                        "DEFAULTS": { "type": "DOUT", "connection": 8 }
+                    }
+                },
+
+                "HOSTIRQ": {
+                    "type": "DIN",
+                    "settings": {
+                        "interruptTrigger": "Rising Edge",
+                        "pull": "None", // BP HW already pulls it down
+                        "callbackFunction": "NULL"
+                    },
+                    "signals": {
+                        /* 19: BP header pin #: GPIO | PWM (MSP P2.5) */
+                        "HOSTIRQ":  {
+                            "type": "DIN", "connection": 19
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

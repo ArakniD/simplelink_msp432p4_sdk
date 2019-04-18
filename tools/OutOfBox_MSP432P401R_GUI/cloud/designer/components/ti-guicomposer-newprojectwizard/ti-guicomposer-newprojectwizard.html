@@ -1,0 +1,1048 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../ti-widget-common/ti-widget-image.html">
+<link rel="import" href="../ti-widget-common/ti-widget-droplist.html">
+<link rel="import" href="../ti-widget-common/ti-widget-label.html">
+<link rel="import" href="../ti-widget-common/ti-widget-panel.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../ti-widget-propertygrid/ti-widget-propertygrid.html">
+<link rel="import" href="../core-icon-button/core-icon-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../core-tooltip/core-tooltip.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icon/core-icon.html">
+<polymer-element name="ti-guicomposer-newprojectwizard">
+
+    <template id="newprojectwizard" >
+
+
+        <paper-dialog id="paper_dialog" heading="{{dialogTitle}}" transition="paper-dialog-transition" autoCloseDisabled="true" style="background-color: white; ">
+
+            <div align="center">
+                <ti-widget-propertygrid  id="newProjectPropertyGrid" style="width:600px" colwidthproperty="140" colwidthvalue="460" ></ti-widget-propertygrid>
+                <div align="left" style="font-size:x-small;font-style:italic;">* = required field</div>
+            </div>
+            <div  align="center" style="padding-left:80px;">
+                <paper-button id="buttonCreateProject"  on-click="{{onCreateButtonClickedHdlr}}" style="padding-top:3px;">{{createButtonCaption}}</paper-button>
+                <paper-button id="buttonCancel" on-click="{{toggle}}" style="float:right">Close<core-icon icon="close" style="width:18px;" ></core-icon></paper-button>
+            </div>
+            <div align="center">
+                <core-icon id="warningIcon" icon="info" style="display:none;color:darkorange" ></core-icon>
+                <ti-widget-label id="statusLabel" style="color:black;" wrap label="status info here."></ti-widget-label>
+            </div>
+        </paper-dialog>
+    </template>
+
+
+    <!-- ------------------------------------------------------------------------------------- -->
+    <script>
+
+
+
+        Polymer ('ti-guicomposer-newprojectwizard', {
+            /**
+             * Fired when the projectFolder or projectName changes.
+             *
+             * @event projectFolderUpdatedEvent
+             */
+
+            statusLabel: undefined,
+            warningIcon: undefined,
+            gui: undefined,
+            win: undefined,
+            path: undefined,
+            fs: undefined,
+            spawn: undefined,
+            exec: undefined,
+            xmlFile: undefined,
+            workingDir: undefined,
+            baseDir: undefined,
+            designerDir: undefined,
+            designerSplashDir: undefined,
+            designerTargetDir: undefined,
+            isWizardOpen: false,
+            hasProjectBeenCreated: false,
+            _myTimeout: undefined,
+            outFilePath: undefined,
+            outFileName: undefined,
+            deviceName: undefined,
+            boardName: undefined,
+            properties: undefined,
+            templateName: undefined,
+            projectName: undefined,
+            applicationName: undefined,
+            titleText: undefined,
+            appText: undefined,
+            version: undefined,
+            copyright: undefined,
+            onlineHelpLink: undefined,
+            e2eLink: undefined,
+            gcruntimeVersion: '2.0.0.0',
+            bowerComponentsVersion: '1.0.0.0',
+            os: 'win',
+            supportedDevices: undefined,
+            _projectPropertyNameValues: "Project Name *,used to name sub-folder,"+
+            "Application Name *,window title and default installer name,"+
+            "Title Text *,splash screen title line 1,"+
+            "Application Text *,splash screen title line 2,"+
+            "Version *,version number,"+
+            "Copyright Notice *,copyright notice,"+
+            "Online Help Link,URL for help and info,"+
+            "Support Forum Link,URL for support forum,"+
+            "Board Name,Name of the EVM or Launchpad board,"+
+            "Device Name,none|%DEVICES%,"+
+            "Target executable,[folder-open]{{#openOutFileDialog}}path to .out file",
+            newProjectPropertyNameValues: undefined,
+
+
+            publish: {
+                enableTIbranding: true,
+                isPropertyEditingMode: false,
+                createButtonCaption: "Create Project",
+                dialogTitle: "New Project Wizard"
+            },
+            /**
+             *
+             */
+            toggle: function(isPropertyEditor,transition) {
+                if (this._myTimeout) {
+                    window.clearTimeout(this._myTimeout);
+                }
+                var dialog = this.$.paper_dialog;
+                if (this.isWizardOpen && !this.hasProjectBeenCreated &&
+                        ((document.gcGlobal.projectName === undefined)||
+                        (document.gcGlobal.projectName === null)||
+                        (document.gcGlobal.projectName.length === 0))) {
+                    // If the user has not created a project, re-open the quickstart dialog
+                    // to allow them to get help or open an existing project.
+                    var quickstartDialog = document.getElementById("quickstartDialog");
+                    quickstartDialog.toggle();
+                }
+                if (!this.isWizardOpen) {
+                    if ((isPropertyEditor !== undefined)&&(isPropertyEditor !== null) &&(isPropertyEditor) ) {
+                        this.isPropertyEditingMode = true;
+                    } else {
+                        this.isPropertyEditingMode = false;
+                    }
+                    if (this.isPropertyEditingMode){
+                        this.createButtonCaption = "Update Properties";
+                        this.dialogTitle = "Project Properties";
+                        this.displayProjectProperties();
+                    } else {
+                        this.createButtonCaption = "Create Project";
+                        this.dialogTitle = "New Project Wizard"
+                    }
+                } else {
+                    this.isPropertyEditingMode = false;
+                }
+                this.isWizardOpen = !this.isWizardOpen;
+                this.clearStatus();
+                dialog.toggle(transition);
+            },
+            clearStatus: function(){
+                this.warningIcon.style.display = 'none';
+                this.warningIcon.style.color='blue';
+                this.warningIcon.icon=' ';
+                this.statusLabel.style.display = 'none';
+                this.statusLabel.style.color = 'black';
+                this.statusLabel.innerHtml = '';
+                this.hasProjectBeenCreated = false;
+            },
+            onCreateButtonClickedHdlr: function(){
+                console.log("create button clicked!");
+
+                // Create the project folder
+                this.properties = this.$.newProjectPropertyGrid.getJSON();
+
+                var templateRow = this.$.newProjectPropertyGrid.findRow('Template');
+                if (templateRow >= 0) {
+                    this.templateName = this.properties[templateRow].value;
+                }
+
+                var projectNameRow = this.$.newProjectPropertyGrid.findRow('Project Name');
+                this.projectName = this.properties[projectNameRow].value;
+
+                var appNameRow = this.$.newProjectPropertyGrid.findRow('Application Name');
+                this.applicationName = this.properties[appNameRow].value;
+                // ensure no spaces in the project name
+                if ((this.projectName !== undefined)&&(this.projectName !== null) && (this.projectName.length > 0)) {
+                    this.projectName = this.projectName.replace(/ /g, '_');
+                }
+
+                var titleRow = this.$.newProjectPropertyGrid.findRow('Title');
+                this.titleText = this.properties[titleRow].value;
+
+                var appTextRow = this.$.newProjectPropertyGrid.findRow('Application Text');
+                this.appText = this.properties[appTextRow].value;
+
+                var versionRow = this.$.newProjectPropertyGrid.findRow('Version');
+                this.version = this.properties[versionRow].value;
+
+                var copyrightRow = this.$.newProjectPropertyGrid.findRow('Copyright');
+                this.copyright = this.properties[copyrightRow].value;
+
+                var helpLinkRow = this.$.newProjectPropertyGrid.findRow('Help Link');
+                this.onlineHelpLink = this.properties[helpLinkRow].value;
+
+                var e2eLinkRow = this.$.newProjectPropertyGrid.findRow('Support Forum');
+                this.e2eLink = this.properties[e2eLinkRow].value;
+
+                var boardNameRow = this.$.newProjectPropertyGrid.findRow('Board Name');
+                this.boardName = this.properties[boardNameRow].value;
+
+                var deviceNameRow = this.$.newProjectPropertyGrid.findRow('Device Name');
+                this.deviceName = this.properties[deviceNameRow].value;
+
+                var targetExeRow = this.$.newProjectPropertyGrid.findRow('Target');
+                this.outFilePath = this.properties[targetExeRow].value;
+                this.outFileName = this.path.basename(this.outFilePath);
+
+                this.pkgJsonObj = [];
+                var ok = true;
+                if ((!this.projectName) || (!this.applicationName) || (!this.titleText) || (!this.appText) || (!this.copyright) || (!this.version)){
+                    this.notifyUser("info","blue","Please fill in all required fields.","black");
+                    ok = false;
+                }
+                if (ok){
+                    var userSpecifiedDir = this.path.join(this.baseDir, this.projectName)
+                    var projectFolderExists = this.fs.existsSync(userSpecifiedDir);
+                    if (!this.isPropertyEditingMode) {
+                        if (projectFolderExists) {
+                            this.notifyUser("info", "blue", "A project named " + this.projectName + " already exists.  Please either remove the old project folder or use another name.", "black");
+                            ok = false;
+                        }
+                    } else {
+                        if (!projectFolderExists){
+                            this.notifyUser("error", "red", "A project named " + this.projectName + " could not be found.  Please verify that the project folder name is "+this.projectName, "black");
+                            ok = false;
+                        }
+                    }
+                }
+                if (ok) {
+                    // disable the close button so that user's don't close the dialog
+                    // before the first status message is displayed
+                    this.$.buttonCancel.disabled = true;
+                    if ((this.projectName !== undefined) && (this.projectName !== null)) {
+                        this.notifyUser("info", "blue", "Copying over files... please wait", "black");
+                        // allow the notification to get displayed by pausing execution
+                        var _self = this;
+                        setTimeout(function () {
+                            _self.createProject();
+                        }, 10);
+                    }
+                }
+
+            },
+            _updateDeviceNames: function(){
+                var osDir = 'win32';
+                switch (this.os){
+                    case 'win': osDir = 'win32'; break;
+                    case 'linux': osDir = 'linux'; break;
+                    case 'osx': osDir = 'mac'; break;
+                }
+                var jsonFilePath = this.path.join(this.baseDir,osDir,'TICloudAgent','supported_devices.json');
+                var fileContents = this.fs.readFileSync(jsonFilePath,'utf8');
+                this.supportedDevices = JSON.parse(fileContents);
+                var deviceList = [];
+                for (var key in this.supportedDevices.devices){
+                        deviceList.push(key);
+                }
+                this.newProjectPropertyNameValues = this.newProjectPropertyNameValues.replace(/\%DEVICES\%/g,deviceList.join('|'));
+            },
+            updateDeviceNames: undefined,
+            _createProject: function(){
+                try {
+                    var projectDir = this.path.join(this.baseDir, this.projectName);
+                    var splashDir = this.path.join(projectDir, 'splash');
+                    var jsonOutfilePath = this.path.join(splashDir, 'package.json');
+                    var jsonOrigOutfilePath = this.path.join(splashDir, 'package.orig');
+                    var jsonDebugOutfilePath = this.path.join(splashDir, 'package.debug');
+                    var docsDir = this.path.join(projectDir, 'docs');
+                    var designerDocsDir = this.path.join(this.designerDir, 'docs');
+                    var imagesDir = this.path.join(projectDir, 'images');
+                    var targetDir = this.path.join(projectDir, 'target');
+                    var designerImagesDir = this.path.join(this.designerDir, 'images');
+                    var installerDir = this.path.join(projectDir, 'installer');
+                    var designerInstallerDir = this.path.join(this.designerDir, 'installer');
+                    var defaultApplicationName =  this.applicationName;
+                    var templateDir = this.path.join(this.designerDir,"templates/"+this.templateName);
+                    if ((this.boardName === undefined)|| (this.boardName === null)){
+                        this.boardName = this.deviceName;
+                    }
+                    var projectJsonData = {
+                        "name": this.projectName,
+                        "main": "splashscreen.html",
+                        "chromium-args": "--ignore-certificate-errors",
+                        "single-instance": false,
+                        "splash_title": this.titleText,
+                        "splash_application_name": this.appText,
+                        "splash_copyright_notice": this.copyright,
+                        "splash_version": this.version,
+                        "main_width": 1200,
+                        "main_height": 800,
+                        "help": this.onlineHelpLink,
+                        "e2e": this.e2eLink,
+                        "board_name": this.boardName,
+                        "device_name": this.deviceName,
+                        "target_out_filename": this.outFileName,
+                        "target_out_foldername": 'target',
+                        "debug_enabled": false,
+                        "debug_splashscreen_enabled": false,
+                        "window": {
+                            "show": false,
+                            "toolbar": false,
+                            "frame": false,
+                            "position": "center",
+                            "width": 560,
+                            "height": 270,
+                            "min_width": 560,
+                            "min_height": 270,
+                            "icon": "gui_icon.png"
+                        }
+                    };
+                    var _self = this;
+                    var projectDirCreated = false;
+                    var targetFileCopied = false;
+                    var isNewProjectDir = false;
+
+                    if (!this.fs.existsSync(projectDir)) {
+                        isNewProjectDir = true;
+                        this.fs.mkdirSync(projectDir);
+                        projectDirCreated = true;
+                        this.fs.mkdirSync(splashDir);
+                        this.fs.mkdirSync(targetDir);
+                        if (!this.fs.existsSync(this.designerTargetDir)) {
+                            this.fs.mkdirSync(this.designerTargetDir);
+                        }
+
+                        this.copyFile(this.path.join(this.designerDir, 'about.html'),this.path.join(projectDir, 'about.html'));
+                        this.copyFile(this.path.join(this.designerDir, 'win32_start.bat'),this.path.join(projectDir, 'win32_start.bat'));
+                        this.copyFile(this.path.join(this.designerDir, 'win32_debug.bat'),this.path.join(projectDir, 'win32_debug.bat'));
+                        this.copyFile(this.path.join(this.designerSplashDir, 'splashscreen.html'),this.path.join(splashDir, 'splashscreen.html'));
+                        this.copyFile(this.path.join(this.designerSplashDir, 'splashScreen.js'),this.path.join(splashDir, 'splashScreen.js'));
+                        this.copyFile(this.path.join(this.designerSplashDir, 'ti_logo.png'),this.path.join(splashDir, 'gui_icon.png'));
+                        this.copyFile(this.path.join(this.designerSplashDir, 'win32_debug.bat'),this.path.join(splashDir, 'win32_debug.bat'));
+                        this.copyFile(this.path.join(this.designerSplashDir, 'win32_splash.bat'),this.path.join(splashDir, 'win32_splash.bat'));
+                        this.copyRecursiveSync(templateDir, projectDir,false,null,0);
+                        // Replace any instances of %PROJECT_NAME% in the .gui file with the name of the project's folder
+                        var projectGuiFilePath = this.path.join(projectDir,'app/index.gui');
+                        var projectGuiFile = this.fs.readFileSync(projectGuiFilePath,'utf8');
+                        projectGuiFile = projectGuiFile.replace(/%PROJECT_NAME%/g,this.projectName);
+                        this.fs.writeFileSync(projectGuiFilePath,projectGuiFile,'utf8');
+                        this.copyRecursiveSync(designerInstallerDir, installerDir,false,null,0);
+                        this.copyRecursiveSync(designerDocsDir, docsDir,false,null,0);
+                    }
+                    // wait for async file operations above to complete
+                    this.waitForFile(this.path.join(docsDir,'Software Manifest.pdf'));
+                    this.genReadmeFile(this.path.join(docsDir, 'readme.txt'), this.projectName, this.applicationName, this.titleText, this.appText, this.deviceName, this.copyright, this.onlineHelpLink);
+                    this.genInstallerXml(this.path.join(installerDir, 'installer.xml'), this.projectName, defaultApplicationName);
+                    if ((this.outFilePath !== null) && (this.outFilePath.length > 0) && (this.fs.existsSync(this.outFilePath))) {
+                        // copy the .out file specified into the target subfolder
+                        var projectTargetFolderPath = this.path.join(targetDir, this.outFileName);
+                        if (projectTargetFolderPath !== this.outFilePath) {
+                            this.copyFileSync(this.outFilePath, projectTargetFolderPath);
+                            targetFileCopied = true;
+                        }
+                        /* Target files no longer used in preview mode.
+                         // also copy it into the designer's target folder, renaming it to preview.out
+                         var previewFilePath = this.path.join(designerTargetDir, 'preview.out');
+                         if (this.fs.existsSync(previewFilePath)) {
+                         this.fs.unlinkSync(previewFilePath);
+                         }
+                         this.copyFileSync(this.outFilePath,previewFilePath);
+                         */
+                    }
+                    // create (or update) the package.json file used to start node-webkit with (located in the splash folder)
+                    this.fs.writeFile(jsonOutfilePath, JSON.stringify(projectJsonData, null, 4), function (err) {
+                        if (err) {
+                            console.log(err);
+                            throw (err);
+                        } else {
+                            console.log("JSON saved to " + jsonOutfilePath);
+                            // copy this file to package.orig to back it up
+                            _self.copyFile(jsonOutfilePath,jsonOrigOutfilePath);
+
+                            // create the debug version of the file
+                            projectJsonData.debug_enabled = true;
+                            projectJsonData.window.show = true;
+                            projectJsonData.window.toolbar = true;
+                            projectJsonData.window.frame = true;
+                            var thisObj = _self;
+
+                            _self.fs.writeFile(jsonDebugOutfilePath, JSON.stringify(projectJsonData, null, 4), function (err) {
+                                var _self = thisObj;
+                                if (err) {
+                                    console.log(err);
+                                    throw (err);
+                                } else {
+                                    _self.warningIcon.style.display = '';
+                                    _self.statusLabel.style.color = 'black';
+                                    var msgText = 'Project created successfully!'
+                                    if (!projectDirCreated) {
+                                        msgText = 'Project properties updated.';
+                                    }
+                                    _self.notifyUser("check-circle", "green", msgText, "black")
+                                    if (document.gcGlobal !== undefined) {
+                                        document.gcGlobal.projectFolder = projectDir;
+                                        document.gcGlobal.projectName = _self.projectName;
+                                        document.gcGlobal.workspaceFolder = _self.baseDir;
+                                        document.gcGlobal.createComponent = false;
+                                    }
+                                    // if running in a node-webkit context, use local storage to persist
+                                    // properties that can be re-used in future projects
+                                    if ((localStorage !== undefined)&&(localStorage !== null)){
+                                        localStorage.copyrightProperty = _self.copyright;
+                                        localStorage.supportForumUrl = _self.e2eLink;
+                                        localStorage.helpUrl = _self.onlineHelpLink;
+                                    }
+                                    _self.hasProjectBeenCreated = true;
+
+                                    // wait for the document.gcGlobal values to be observed before firing the projectFolderUpdated event
+                                    window.setTimeout(function(){
+                                        _self.fire("projectFolderUpdatedEvent");
+                                    },50);
+
+                                    // close the dialog automatically in 1 second if the user doesn't manually close it first
+                                    _self._myTimeout = window.setTimeout(function(){_self.toggle();},1000);
+                                }
+                            });
+                        }
+                    });
+                    if (isNewProjectDir){
+                        this.copyRecursiveSync(designerImagesDir, imagesDir,false,null,0);
+                    }
+                } catch (e) {
+                    var errMsg = e.toString();
+                    if ((errMsg === undefined) || (errMsg === null) || (errMsg.length === 0)) {
+                        errMsg = "Error. e.code = " + e.code;
+                    }
+                    console.log(e.toString());
+                    _self.notifyUser("error", "red", errMsg, "red");
+                }
+            },
+            createProject: undefined,
+            _notifyUser: function(iconName,iconColor, msgText, textColor){
+                var _self = this;
+
+                this.async(function() {
+                    if (_self.statusLabel) {
+                        if ((msgText !== undefined) && (msgText !== null)) {
+                            _self.statusLabel.style.color = textColor;
+                            _self.statusLabel.label = msgText;
+                            _self.statusLabel.style.display = '';
+                        } else {
+                            _self.statusLabel.style.display = 'none';
+                        }
+                        if (iconName) {
+                            _self.warningIcon.style.color = iconColor;
+                            _self.warningIcon.icon = iconName;
+                            _self.warningIcon.style.display = '';
+                        } else {
+                            _self.warningIcon.style.display = 'none';
+                        }
+                        if (_self.$.buttonCancel.disabled){
+                            if ((iconColor === 'red')||(iconColor === 'green')){
+                                _self.$.buttonCancel.disabled = false;
+                            }
+                        }
+                    }
+
+                });
+            },
+            notifyUser: undefined,
+            numTimesWaiting: 0,
+            _waitForFile: function(fileName) {
+                var _self = this;
+                fs.exists(fileName),function(exists) {
+                    if (!exists) {
+                        console.log("wait " + _self.numTimesWaiting++);
+                        if (_self.numTimesWaiting > 100) {
+                            throw "waiting too long for " + fileName;
+                        } else {
+                            setTimeout(_self.waitForFile(fileName), 50);
+                        }
+
+                    } else {
+                        _self.numTimesWaiting = 0;
+                    }
+                }
+            },
+            waitForFile: undefined,
+            setDefaultProperties: function(){
+                var year = new Date().getFullYear();
+                var copyrightProperty;
+                if (this.enableTIbranding){
+                    copyrightProperty = "Copyright " + year + ". Texas Instruments Incorporated. All rights reserved.";
+                } else {
+                    copyrightProperty = "Copyright " + year + ".";
+                }
+                if ((localStorage !== undefined)&&(localStorage !== null)){
+                    if (localStorage.copyrightProperty !== undefined){
+                        copyrightProperty = localStorage.copyrightProperty;
+                    } else {
+                        localStorage.copyrightProperty = copyrightProperty;
+                    }
+                }
+                var copyrightRow = this.$.newProjectPropertyGrid.findRow('copyright');
+                if (copyrightRow >= 0) {
+                    this.$.newProjectPropertyGrid.setValue(copyrightRow,copyrightProperty);
+                }
+
+                var supportForumUrl;
+                if (this.enableTIbranding){
+                    supportForumUrl = "http://e2e.ti.com";
+                } else {
+                    supportForumUrl = "http://www.google.com";
+                }
+                if ((localStorage !== undefined)&&(localStorage !== null)){
+                    if (localStorage.supportForumUrl !== undefined){
+                        supportForumUrl = localStorage.supportForumUrl;
+                    } else {
+                        localStorage.supportForumUrl = supportForumUrl;
+                    }
+                }
+                var supportForumUrlRow = this.$.newProjectPropertyGrid.findRow('forum');
+                if (supportForumUrlRow >= 0) {
+                    this.$.newProjectPropertyGrid.setValue(supportForumUrlRow, supportForumUrl);
+                }
+
+                var helpUrl;
+                if (this.enableTIbranding){
+                    helpUrl = "http://processors.wiki.ti.com/index.php/Main_Page";
+                } else {
+                    helpUrl = "http://www.google.com";
+                }
+                if ((localStorage !== undefined)&&(localStorage !== null)){
+                    if (localStorage.helpUrl !== undefined){
+                        helpUrl = localStorage.helpUrl;
+                    } else {
+                        localStorage.helpUrl = helpUrl;
+                    }
+                }
+                var helpUrlRow = this.$.newProjectPropertyGrid.findRow('help');
+                if (helpUrlRow >= 0) {
+                    this.$.newProjectPropertyGrid.setValue(helpUrlRow, helpUrl);
+                }
+
+            },
+
+            _genInstallerXml: function(outputFileName,projectDir, applicationName){
+
+                // Note: the application name is the same as the folder name that the application is in
+                this.xmlFile = [];
+
+                this.xmlFile.push('<?xml version="1.0" encoding="UTF-8" ?>\n');
+                this.genXmlEntryOpen(0,"properties");
+                this.genXmlEntry(3,"application",applicationName);
+                this.genXmlEntry(3,"icon",this.path.join(projectDir,"installer/ti_logo.ico"));
+                this.genXmlEntry(3,"banner",this.path.join(projectDir,"installer/installerTopBanner.gif"));
+                this.genXmlEntry(3,"licensefile",this.path.join(projectDir,"installer/license.txt"));
+                this.genXmlEntry(3,"readme",this.path.join(projectDir,"docs/readme.txt"));
+                this.genXmlEntry(3,"releasenotes",this.path.join(projectDir,"docs/readme.txt"));
+                this.genXmlEntry(3,"gcruntime_version",this.gcruntimeVersion);
+                this.genXmlEntry(3,"app_version",this.version);
+                this.genXmlEntry(3,"components_version",this.bowerComponentsVersion);
+                this.genXmlEntryClose(0,"properties");
+                this.xmlFile = this.xmlFile.join("");
+
+                try {
+                    this.fs.writeFileSync(outputFileName, this.xmlFile);
+                }
+                catch(exXml){
+                    console.log("Error writing "+outputFileName+".  ex="+exXml.toString());
+                }
+            },
+            genInstallerXml: undefined,
+            _genReadmeFile: function(outputFileName,projectName,applicationName,titleText,appText,deviceName,copyright,onlineHelpLink){
+                var readmeFile = [];
+                readmeFile.push('Readme file for '+applicationName+': ( '+projectName+')\n');
+                readmeFile.push(copyright+'\n\n');
+                readmeFile.push('')
+                readmeFile.push('This application has been configured to work with the '+deviceName+' device\n\n');
+                readmeFile.push('For help, please see '+onlineHelpLink+'\n');
+                readmeFile = readmeFile.join("");
+                try {
+                    this.fs.writeFileSync(outputFileName, readmeFile);
+                }
+                catch(exReadme){
+                    console.log("Error writing "+outputFileName+".  ex="+exReadme.toString());
+                }
+            },
+            genReadmeFile: undefined,
+            _copyFile: function(src,dest){
+                this.fs.createReadStream(src).pipe(this.fs.createWriteStream(dest));
+            },
+            copyFile: undefined,
+            _copyFileSync: function(src,dest){
+                // see http://stackoverflow.com/questions/19268723/nodejs-with-child-process-how-to-escape-my-command
+                try {
+                    var buffer = this.fs.readFileSync(src, buffer);
+                    if (buffer.length > 0) {
+                        this.fs.writeFileSync(dest, buffer);
+                    } else {
+                        throw "attempted to copy an empty file: " + src;
+                    }
+                    //              this.execSync('xcopy "'+src+'" "'+dest+'" /y /i');
+                }
+                catch(ex){
+                    throw "error copying file "+src+" ex="+ex.toString();
+                }
+            },
+            copyFileSync: undefined,
+            /**
+             *   if useLinks parameter is true, the files are linked using fs.linkSync instead of copying them.
+             *   This uses much less memory and time than synchronously copying over the files.
+             *   However, all changes made to the file in either the source or destination folder
+             *   will be seen in both folders (subject to cacheing??)
+             */
+            copyRecursiveSync: function(src, dest, useLinks, skipFolderLists,levelIndex) {
+                var exists = this.fs.existsSync(src);
+                var stats = exists && this.fs.statSync(src);
+                var isDirectory = exists && stats.isDirectory();
+                var _self = this;
+                if (exists && isDirectory) {
+                    var dirName = this.path.basename(src);
+                    var skipThisFolder = false;
+                    if ((skipFolderLists !== null) && (levelIndex >= 0) && (levelIndex < skipFolderLists.length)){
+                        var skipFolderList = skipFolderLists[levelIndex++];
+                        if (skipFolderList !== null) {
+                            for (var j = 0; j < skipFolderList.length; ++j) {
+                                var skipFolderName = skipFolderList[j];
+                                if (dirName === skipFolderName) {
+                                    skipThisFolder = true;
+                                    console.log("skipping folder ["+stats.size+"] "+src);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (!skipThisFolder) {
+                        if (!this.fs.existsSync(dest)) {
+                            this.fs.mkdirSync(dest);
+                        }
+                        this.fs.readdirSync(src).forEach(function (childItemName) {
+                            _self.copyRecursiveSync(this.path.join(src, childItemName),
+                                    this.path.join(dest, childItemName), useLinks, skipFolderLists,levelIndex );
+                        });
+                    }
+                } else {
+                    if (useLinks){
+                        //  fs.linkSync creates a link of the file, not an actual copy
+                        //  however, this uses much less memory and time and is less prone to crashing
+                        //  than attempting to do an actual streaming copy of the file.
+                        this.fs.linkSync(src, dest);
+                    } else {
+                        _self.copyFileSync(src,dest);
+                    }
+                }
+            },
+            execSync: function(command){
+                //TODO: when nw.js has moved to Node.js v12.0 API or the io.js equivalent, replace the following with child_process.execSync
+                // The problem with the following is that it is NOT done synchronously, so execSync is a misnomer at this time.
+                var output = '';
+                try {
+                    this.exec(command);
+                }
+                catch(ex){
+                    console.log('Exception while running execSync: ex='+ex.toString());
+                }
+                return output;
+            },
+
+            _xcopyRecursive: function(src,dest){
+                if (this.os === 'win'){
+                    this.execSync('xcopy "'+src+'" "'+dest+'" /s /y /i');
+                } else {
+                    throw 'xcopy not supported on '+this.os;
+                }
+            },
+            xcopyRecursive: undefined,
+            /*
+             deleteFolderRecursiveSync: function(folderName) {
+             var files = [];
+             var _self = this;
+             if (this.fs.existsSync(folderName)) {
+             files = this.fs.readdirSync(folderName);
+             files.forEach(function (file, index) {
+             var curPath = folderName + "/" + file;
+             if (this.fs.lstatSync(curPath).isDirectory()) { // recurse
+             _self.deleteFolderRecursive(curPath);
+             } else { // delete file
+             this.fs.unlinkSync(curPath);
+             }
+             });
+             this.fs.rmdirSync(folderName);
+             }
+             },
+             */
+            /*
+             *  ======== toHex ========
+             */
+            toHex: function( d) {
+                var r = d % 16;
+                var result;
+                if (d - r == 0)
+                    result = toChar(r);
+                else
+                    result = toHex((d - r) / 16) + toChar(r);
+                return result;
+            },
+
+            /*
+             *  ======== toChar ========
+             */
+            toChar: function( n) {
+                const alpha = "0123456789ABCDEF";
+                return alpha.charAt(n);
+            },
+
+            /*
+             *  ======== getXmlStr ========
+             */
+            getXmlStr: function ( str) {
+                var ch = ' ';
+                var i = 0;
+                var strHex = 0;
+                var xmlStr = "";
+                var newStr = str;
+                /* str.replace(/&/g, "&amp;").replace(/\"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); */
+                for (index = 0; index < str.length; index++) {
+                    i = str.charCodeAt(index);
+                    if ((i < 0x20) || ((i >= 0x22) && (i <= 0x29)) || (i == 0x2C) || (i
+                            == 0x2F) || ((i >= 0x3A) && (i <= 0x3E)) || (i == 0x5C) || (i
+                            > 0x7E)) {
+                        strHex = "%" + toHex(i);
+                        xmlStr = xmlStr + strHex;
+                    } else {
+                        if (i != 0x20) {
+                            xmlStr = xmlStr + str.charAt(index);
+                        } else {
+                            xmlStr = xmlStr + "+";
+                        }
+                    }
+
+                }
+                return xmlStr;
+            },
+
+            /*
+             *  ======== genXmlEntryLeadSpace ========
+             */
+            _genXmlEntryLeadSpace: function( indent, file) {
+                var spaces = '';
+                for (var i = 0; i < indent; i++) {
+                    spaces += ' ';
+                }
+                this.xmlFile.push(spaces);
+            },
+            genXmlEntryLeadSpace: undefined,
+
+            /*
+             *  ======== genXmlEntry ========
+             *  write an entry into an xml file
+             *
+             *  e.g. <myTag>myValue</myTag>\n
+             */
+            _genXmlEntry: function( indent, tag, value) {
+                var strValue = "";
+                strValue = value; /* ensure that value is converted into a string */
+
+                this.genXmlEntryLeadSpace(indent);
+                this.xmlFile.push("<");
+                this.xmlFile.push(tag);
+                this.xmlFile.push(">");
+                this.xmlFile.push(strValue);
+                this.xmlFile.push("</");
+                this.xmlFile.push(tag);
+                this.xmlFile.push(">\n");
+            },
+            genXmlEntry: undefined,
+
+            /*
+             *  ======== genXmlEntryOpen ========
+             *  write an entry into an xml file
+             *  e.g. <myTag>
+             */
+            _genXmlEntryOpen: function( indent, tag) {
+                this.genXmlEntryLeadSpace(indent);
+                this.xmlFile.push("<");
+                this.xmlFile.push(tag);
+                this.xmlFile.push(">\n");
+            },
+            genXmlEntryOpen: undefined,
+            /*
+             *  ======== genXmlEntryOpenWithKey ========
+             *  write an entry into an xml file with a key field
+             *
+             *  e.g. <myTag myKeyName=myKeyValue>
+             */
+            _genXmlEntryOpenWithKey: function( indent, tag, keyName, keyValue, value) {
+                var strKeyValue = "";
+                strKeyValue = keyValue; /* ensure that keyValue is converted into a string*/
+                this.genXmlEntryLeadSpace(indent);
+                this.xmlFile.push("<");
+                this.xmlFile.push(tag);
+                this.xmlFile.push(" ");
+                this.xmlFile.push(keyName);
+                this.xmlFile.push("=\"");
+                this.xmlFile.push(strKeyValue);
+                this.xmlFile.push("\">\n");
+            },
+            genXmlEntryOpenWithKey: undefined,
+
+            /*
+             *  ======== genXmlEntryClose ========
+             *  write an entry into an xml file with a key field
+             *
+             *  e.g. </myTag>\n
+             */
+            _genXmlEntryClose: function( indent, tag) {
+                this.genXmlEntryLeadSpace(indent);
+                this.xmlFile.push("</");
+                this.xmlFile.push(tag);
+                this.xmlFile.push(">\n");
+            },
+            genXmlEntryClose: undefined,
+            /*
+             *  ======== genXmlEntryWithKey ========
+             *  write an entry into an xml file with a key field
+             *
+             *  e.g. <myTag myKeyName=myKeyValue>myValue</myTag>\n
+             */
+            _genXmlEntryWithKey: function( indent, tag, keyName, keyValue, value) {
+                var strKeyValue = "";
+                var strValue = "";
+                strKeyValue = keyValue; /* ensure that keyValue is converted into a string*/
+                strValue = value; /* ensure that value is converted into a string */
+                this.genXmlEntryLeadSpace(indent);
+                this.xmlFile.push("<");
+                this.xmlFile.push(tag);
+                this.xmlFile.push(" ");
+                this.xmlFile.push(keyName);
+                this.xmlFile.push("=");
+                this.xmlFile.push(strKeyValue);
+                this.xmlFile.push(">");
+                this.xmlFile.push(value);
+                this.xmlFile.push("</");
+                this.xmlFile.push(tag);
+                this.xmlFile.push(">\n");
+            },
+            genXmlEntryWithKey: undefined,
+            /*
+             * ======== genXmlComment ========
+             * add an XML style comment to the active xml file
+             */
+            _genXmlComment: function( indent, comment) {
+                this.genXmlEntryLeadSpace(indent);
+                this.xmlFile.push("<!-- " + comment + " -->\n");
+            },
+            genXmlComment: undefined,
+            _getListOfTemplateProjects: function(){
+
+                var templateDir = this.path.join(this.designerDir,"templates")
+                var files = this.fs.readdirSync(templateDir);
+                var templateStr ="";
+                var helloWorldIndex = -1;
+
+                for(var i=0, l=files.length; i<l; i++) {
+                    if(files[i][0] !== '.') { // ignore hidden
+                        filePath = path.join(templateDir, files[i]);
+                        var stat = fs.statSync(filePath);
+                        var folderName = path.basename(files[i]);
+                        if (stat.isDirectory()) {
+                            if (folderName.toLowerCase() === 'hello world'){
+                                // make sure that hello world is shown last so that it is selected by default
+                                helloWorldIndex = i;
+                                helloWorldName = folderName;
+                            } else {
+                                if (templateStr.length === 0) {
+                                    templateStr = path.basename(files[i]);
+                                } else {
+                                    templateStr = path.basename(files[i]) + "|" + templateStr;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (helloWorldIndex >= 0){
+                    if (templateStr.length === 0) {
+                        templateStr = path.basename(files[helloWorldIndex]);
+                    } else {
+                        templateStr = path.basename(files[helloWorldIndex]) + "|" + templateStr;
+                    }
+                }
+                this.newProjectPropertyNameValues = "Project Template *,"+templateStr +","+this._projectPropertyNameValues;
+
+            },
+            _displayProjectProperties: function(){
+                try{
+                    this.updateDeviceNames();
+                    this.$.newProjectPropertyGrid.nameValuePairs = this.newProjectPropertyNameValues;
+                    this.$.newProjectPropertyGrid.nameValuePairsChanged();  // avoid race condition by forcing the update of the nameValuePairs
+                    var _self = this;
+                    this.async(function(){
+                        // Read the project's project.orig file to get the settings for some of the above fields
+                        var projectJsonFilePath = _self.path.join(document.gcGlobal.projectFolder,'splash/package.orig');
+                        var jsonString = _self.fs.readFileSync(projectJsonFilePath,'utf8');
+                        var projectJson = JSON.parse(jsonString);
+                        var installerXmlFilePath = _self.path.join(document.gcGlobal.projectFolder,'installer/installer.xml');
+                        var installerXmlString = _self.fs.readFileSync(installerXmlFilePath,'utf8');
+                        var applicationNameEntry = installerXmlString.substring(installerXmlString.indexOf('<application>')+'<application>'.length,installerXmlString.indexOf('</application>'));
+                        var rowIndex;
+                        rowIndex = _self.$.newProjectPropertyGrid.findRow('Project Name');
+                        if (rowIndex >= 0) {
+                            _self.$.newProjectPropertyGrid.setValue(rowIndex, document.gcGlobal.projectName);
+                        }
+                        rowIndex = _self.$.newProjectPropertyGrid.findRow('Application Name');
+                        if (rowIndex >= 0) {
+                            _self.$.newProjectPropertyGrid.setValue(rowIndex, applicationNameEntry);
+                        }
+                        rowIndex = _self.$.newProjectPropertyGrid.findRow('Title Text');
+                        if (rowIndex >= 0) {
+                            _self.$.newProjectPropertyGrid.setValue(rowIndex, projectJson.splash_title);
+                        }
+                        rowIndex = _self.$.newProjectPropertyGrid.findRow('Application Text');
+                        if (rowIndex >= 0) {
+                            _self.$.newProjectPropertyGrid.setValue(rowIndex, projectJson.splash_application_name);
+                        }
+                        rowIndex = _self.$.newProjectPropertyGrid.findRow('Version');
+                        if (rowIndex >= 0) {
+                            _self.$.newProjectPropertyGrid.setValue(rowIndex, projectJson.splash_version);
+                        }
+                        rowIndex = _self.$.newProjectPropertyGrid.findRow('Copyright');
+                        if (rowIndex >= 0) {
+                            _self.$.newProjectPropertyGrid.setValue(rowIndex, projectJson.splash_copyright_notice);
+                        }
+                        rowIndex= _self.$.newProjectPropertyGrid.findRow('help');
+                        if (rowIndex >= 0) {
+                            _self.$.newProjectPropertyGrid.setValue(rowIndex, projectJson.help);
+                        }
+                        rowIndex = _self.$.newProjectPropertyGrid.findRow('support');
+                        if (rowIndex >= 0) {
+                            _self.$.newProjectPropertyGrid.setValue(rowIndex, projectJson.e2e);
+                        }
+                        rowIndex = _self.$.newProjectPropertyGrid.findRow('Board');
+                        if (rowIndex >= 0) {
+                            _self.$.newProjectPropertyGrid.setValue(rowIndex, projectJson.board_name);
+                        }
+                        rowIndex = _self.$.newProjectPropertyGrid.findRow('Device');
+                        if (rowIndex >= 0) {
+                            _self.$.newProjectPropertyGrid.setValue(rowIndex, projectJson.device_name);
+                        }
+                        rowIndex = _self.$.newProjectPropertyGrid.findRow('executable');
+                        if ((rowIndex >= 0) &&(projectJson.target_out_filename !== undefined) && (projectJson.target_out_foldername !== undefined) &&
+                                (projectJson.target_out_filename.length > 0) && (projectJson.target_out_foldername.length > 0)) {
+                            _self.$.newProjectPropertyGrid.setValue(rowIndex, _self.path.join(projectJson.target_out_foldername,projectJson.target_out_filename));
+                        }
+                    })
+                }
+                catch (e){
+                    var errMsg = e.toString();
+                    if ((errMsg === undefined) || (errMsg === null) || (errMsg.length === 0)) {
+                        errMsg = "Error. e.code = " + e.code;
+                    }
+                    console.log(e.toString());
+                    this.notifyUser("error", "red", errMsg, "red");
+                }
+
+            },
+            displayProjectProperties: undefined,
+            ready: function () {
+                this.enableTIbranding = document.gcGlobal.tiBrandingEnabled;
+                this.gui = require('nw.gui');
+                this.win = this.gui.Window.get();
+                this.path = require('path');
+                this.fs = require('fs');
+                this.onFinished = require('on-finished');
+                this.destroy = require('destroy')
+
+                this.workingDir = this.path.normalize(process.cwd());
+                this.baseDir = this.path.join(workingDir, '..');
+                if (this.baseDir.lastIndexOf("designer") === (this.baseDir.length - 8)) {
+                    this.baseDir = this.path.join(this.baseDir, '..');
+                }
+
+                this.designerDir = this.path.normalize(process.cwd());
+                if (this.designerDir.indexOf('splash') === (this.designerDir.length - 6)) {
+                    this.designerSplashDir = this.designerDir;
+                    this.designerDir = this.path.join(this.designerDir, "..");
+                } else {
+                    this.designerSplashDir = this.path.join(this.designerDir, 'splash');
+                }
+                this.designerTargetDir = this.path.join(this.designerDir, 'target');
+                console.log('baseDir = ' + this.baseDir);
+                this.statusLabel = this.$.statusLabel;
+                this.warningIcon = this.$.warningIcon;
+
+                try {
+                    var versionXml = fs.readFileSync(this.path.join(baseDir, "version.xml"), 'utf8');
+                    if ((versionXml !== undefined) && (versionXml !== null) && (versionXml.length > 0)) {
+                        this.gcruntimeVersion = versionXml.substring(versionXml.indexOf("<version>") + 9, versionXml.indexOf("</version>"));
+                    }
+                }
+                catch (ex) {
+                    console.log("ti-guicomposer-newprojectwizard: failed to read version.xml file: ex=" + ex.toString());
+                }
+
+                this.genXmlEntryLeadSpace = this._genXmlEntryLeadSpace.bind(this);
+                this.genXmlEntry = this._genXmlEntry.bind(this);
+                this.genXmlEntryOpen = this._genXmlEntryOpen.bind(this);
+                this.genXmlEntryOpenWithKey = this._genXmlEntryOpenWithKey.bind(this);
+                this.genXmlEntryClose = this._genXmlEntryClose.bind(this);
+                this.genXmlComment = this._genXmlComment.bind(this);
+                this.genXmlComment = this._genXmlComment.bind(this);
+                this.genInstallerXml = this._genInstallerXml.bind(this);
+                this.genReadmeFile = this._genReadmeFile.bind(this);
+                this.createProject = this._createProject.bind(this);
+                this.notifyUser = this._notifyUser.bind(this);
+                this.waitForFile = this._waitForFile.bind(this);
+                this.spawn = require("child_process").spawn;
+                this.exec = require('child_process').exec;
+                this.copyFile = this._copyFile.bind(this);
+                this.copyFileSync = this._copyFileSync.bind(this);
+                this.xcopyRecursive = this._xcopyRecursive.bind(this);
+                this.displayProjectProperties = this._displayProjectProperties.bind(this);
+                this.updateDeviceNames = this._updateDeviceNames.bind(this);
+                this.getListOfTemplateProjects = this._getListOfTemplateProjects.bind(this);
+
+
+				this._getListOfTemplateProjects();
+                this.updateDeviceNames();
+                this.$.newProjectPropertyGrid.nameValuePairs = this.newProjectPropertyNameValues;
+                this.$.newProjectPropertyGrid.nameValuePairsChanged();  // avoid race condition by forcing the update of the nameValuePairs
+                this.setDefaultProperties();
+
+                //this.$.newProjectPropertyGrid.nameValuePairs = this.newProjectPropertyNameValues;
+               // this.$.newProjectPropertyGrid.nameValuePairsChanged();  // avoid race condition by forcing the update of the nameValuePairs
+               // this.setDefaultProperties();
+                this.os = 'linux';
+                if (navigator.appVersion.indexOf("Mac") != -1)
+                    this.os = 'osx';
+                if (navigator.appVersion.indexOf("Win") != -1)
+                    this.os = 'win';
+
+                var _self = this;
+                document.querySelector('#openOutFileDialog').addEventListener("change", function (evt) {
+                    console.log("openOutFileDialog value = " + this.value);
+                    var targetExecutableRow = _self.$.newProjectPropertyGrid.findRow('Target');
+                    if (targetExecutableRow >= 0) {
+                        _self.$.newProjectPropertyGrid.setValue(targetExecutableRow, this.value);
+                    }
+                }, false);
+
+                // Workaround to ensure paper dialog is properly position: see https://github.com/Polymer/paper-dialog/issues/44
+                this.$.paper_dialog.addEventListener("core-overlay-open-completed", function (e) {
+                    setTimeout(function () {
+                        //_self.$.paper_dialog.resetTargetDimensions();
+                        _self.$.paper_dialog.updateTargetDimensions();
+                    }, 400);
+                });
+            },
+            domReady: function(){
+                this.$.newProjectPropertyGrid.configure();
+            }
+
+        });
+    </script>
+
+</polymer-element>

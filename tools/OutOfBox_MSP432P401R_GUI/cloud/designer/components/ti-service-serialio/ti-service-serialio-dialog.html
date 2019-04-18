@@ -1,0 +1,384 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../ti-widget-common/ti-widget-image.html">
+<link rel="import" href="../ti-widget-common/ti-widget-label.html">
+<link rel="import" href="../ti-widget-common/ti-widget-panel.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icon/core-icon.html">
+<link rel="import" href="../ti-core-backplane/ti-core-backplane.html">
+<link rel="import" href="ti-service-serialio.html">
+
+<polymer-element name="ti-service-serialio-dialog">
+
+    <template>
+
+
+        <paper-dialog id="paper_dialog" heading="{{dialogTitle}}" transition="paper-dialog-transition" autoCloseDisabled="true" style="background-color: white; ">
+            <div id="portInfo" >
+                <p></p>Ports: <select id="serialPortList" on-change="{{onPortSelectedHdlr}}" style="width:110px"></select>
+
+                <p></p>BaudRates: <select id="baudRateList" on-change="{{onBaudRateSelectedHdlr}}" style="width:70px"></select>
+            </div><p>&nbsp;</p>
+            <div align="center">
+                <core-icon id="warningIcon" icon="info" style="display:none;color:darkorange" ></core-icon>
+                <ti-widget-label id="statusLabel" style="color:black;" wrap label=""></ti-widget-label>
+            </div>
+            <div  align="center" style="padding-left:80px;">
+                <paper-button id="btnClose" on-click="{{toggle}}" style="float:right">Close<core-icon icon="close" style="width:18px;" ></core-icon></paper-button>
+            </div>
+        </paper-dialog>
+    </template>
+
+
+    <!-- ------------------------------------------------------------------------------------- -->
+    <script>
+
+
+
+        Polymer ('ti-service-serialio-dialog', {
+            /**
+             * Fired when the projectFolder or templateName changes.
+             *
+             * @event projectFolderUpdatedEvent
+             */
+
+            statusLabel: undefined,
+            warningIcon: undefined,
+            _myTimeout: undefined,
+            publish: {
+                dialogTitle: "Serial Port Configuration"
+            },
+
+            /**
+             *
+             */
+            toggle: function() {
+                if (this._myTimeout) {
+                    window.clearTimeout(this._myTimeout);
+                }
+                var dialog = this.$.paper_dialog;
+                this.isWizardOpen = !this.isWizardOpen;
+                this.clearStatus();
+                if (this.isWizardOpen){
+                    this.configure();
+                } else {
+                    this.unconfigure();
+                }
+                dialog.toggle();
+            },
+            clearStatus: function(){
+                this.warningIcon.style.display = 'none';
+                this.warningIcon.style.color='blue';
+                this.warningIcon.icon=' ';
+                this.statusLabel.style.color = 'black';
+                this.statusLabel.innerHtml = '';
+                this.errorMsgReceived = false;
+               // this.$.btnOpenSerialPort.style.display = 'none';
+            },
+
+            _backplane: undefined,
+            _serialIO: undefined,
+            findComponent: function(componentName){
+                var result = undefined;
+                if (document !== undefined){
+                    result = document.querySelector(componentName);
+                }
+                if ((document === undefined) || (result === undefined)){
+                    if (window.document === undefined){
+                        throw "window.document is not defined"
+                    }
+                    result = window.document.querySelector(componentName);
+                }
+                return result;
+            },
+
+            configure: function(){
+
+                this._serialIO = this.findComponent('ti-service-serialio');
+                if (this._serialIO === undefined){
+                    var targetAccess = this.findComponent('ti-service-targetaccess');
+                    if (targetAccess !== undefined){
+                        this._serialIO = targetAccess.serialIO;
+                    } else {
+                        var programModel = this.findComponent('ti-program-model');
+                        if (programModel !== undefined){
+                            this._serialIO = programModel.targetAccess.serialIO;
+                        }
+                    }
+                }
+                var _self = this;
+                if ((this._serialIO !== undefined) && (this._serialIO !== null)) {
+                    this._serialIO.addEventListener("serialPortUIVisibilityChanged", this.serialIOVisiblityChangedHdlr);
+                    this._serialIO.addEventListener('serialPortListUpdated', function () {
+                        _self.generatePortList();
+                    });
+                    this._serialIO.addEventListener("statusMsgUpdated", this.statusChangedHdlr);
+                    this.generatePortList();
+                    this._backplane = this._serialIO.backplane;
+                    if  ((this._backplane !== undefined) && (this._backplane !== null)) {
+                        this._backplane.addEventListener("statusMsgUpdated", this.statusChangedHdlr);
+                      /*  if (!this._backplane.isConnectedToCloudAgent) {
+                            //this.$.btnOpenSerialPort.style.display = '';
+                        } else {
+                            this._serialIO.updateStateMachine('userOpenSerialPort');
+                        }
+                        */
+                    } else {
+                        this._notifyUser("error", "red", "Backplane not defined.", "red");
+                    }
+                } else {
+                    this._notifyUser("error","red","ti-service-serialio not found in document.body.","red");
+                }
+            },
+            unconfigure: function(){
+                if ((this._backplane !== undefined) && (this._backplane !== null)){
+                    this._backplane.removeEventListener("statusMsgUpdated");
+                    this._backplane.removeEventListener("currentStateUpdated");
+                }
+                if ((this._serialIO !== undefined) && (this._serialIO !== null)) {
+                    this._serialIO.removeEventListener("programDownloadUIVisibilityChanged");
+                    this._serialIO.removeEventListener('serialPortListUpdated');
+                    this._serialIO.removeEventListener("statusMsgUpdated");
+                }
+            },
+            _statusChangedHdlr: function(e){
+                var msg = e.currentTarget.status;
+                if (msg.toUpperCase().indexOf('PROGRAMMED') >= 0){
+                    this.notifyUser("check-circle", "green", e.currentTarget.status, "black");
+                    // close the dialog automatically in 1 second
+                    var _self = this;
+                    this._myTimeout = window.setTimeout(function(){_self.toggle();},1000);
+                } else {
+                    if (msg.toUpperCase().indexOf("ERROR") >= 0){
+                        this.errorMsgReceived = true;
+                        this.notifyUser("error", "red", msg, "red");
+                    }
+                   /* if (!this.errorMsgReceived) {
+                        this.notifyUser("info", "blue", msg, "black");
+                    }
+                    */
+                }
+            },
+            statusChangedHdlr: undefined,
+            errorMsgReceived: false,
+            serialIOVisiblityChangedHdlr: function(){
+                if (this._serialIO) {
+                    console.log('serialIOVisiblityChangedHdlr called: isProgramDownloadBtnVisible = '+this._serialIO.isProgramDownloadBtnVisible)
+                    var portInfoDiv = this.$.portInfoDiv;
+                    if (this._serialIO.isSerialPortUIVisible) {
+                        portInfoDiv.style.display = '';
+                        serialPortIODiv.style.display = ''; // not hidden
+/*                        if (serialIO.hasOpenSerialPortBeenCalled) {
+                            btnOpenSerialPort.style.display = 'none';
+                            btnCloseSerialPort.style.display = '';
+                        } else {
+                            btnOpenSerialPort.style.display ='';
+                            btnCloseSerialPort.style.display = 'none';
+
+                        }
+*/
+                    } else {
+                        portInfoDiv.style.display = 'none';
+/*                        serialPortIODiv.style.display = 'none'; // not hidden
+                        btnOpenSerialPort.style.display = 'none';
+                        btnCloseSerialPort.style.display = 'none';
+*/
+                    }
+                }
+            },
+
+            _notifyUser: function(iconName,iconColor, msgText, textColor){
+                var _self = this;
+
+                this.async(function() {
+                    if (_self.statusLabel) {
+                        if ((msgText !== undefined) && (msgText !== null)) {
+                            _self.statusLabel.style.color = textColor;
+                            _self.statusLabel.label = msgText;
+                            _self.statusLabel.style.display = '';
+                        } else {
+                            _self.statusLabel.style.display = 'none';
+                        }
+                        if (iconName) {
+                            _self.warningIcon.style.color = iconColor;
+                            _self.warningIcon.icon = iconName;
+                            _self.warningIcon.style.display = '';
+                        } else {
+                            _self.warningIcon.style.display = 'none';
+                        }
+                        if (_self.$.btnClose.disabled){
+                            if ((iconColor === 'red')||(iconColor === 'green')){
+                                _self.$.btnClose.disabled = false;
+                            }
+                        }
+                    }
+
+                });
+            },
+            notifyUser: undefined,
+            numTimesWaiting: 0,
+            ready: function () {
+                this.statusLabel = this.$.statusLabel;
+                this.warningIcon = this.$.warningIcon;
+                this.notifyUser = this._notifyUser.bind(this);
+                this.statusChangedHdlr = this._statusChangedHdlr.bind(this);
+                var _self = this;
+                // Workaround to ensure paper dialog is properly position: see https://github.com/Polymer/paper-dialog/issues/44
+                this.$.paper_dialog.addEventListener("core-overlay-open-completed", function (e) {
+                    setTimeout(function(){
+                        //_self.$.paper_dialog.resetTargetDimensions();
+                        _self.$.paper_dialog.updateTargetDimensions();
+                    },400);
+                });
+
+            },
+            _serialPortList: undefined,
+            _baudRateList: undefined,
+            _serialIO: undefined,
+            _serialIOFound: false,
+
+            generatePortList: function(){
+                if (this._serialIO !== undefined) {
+                    this._serialPortList = this.$.serialPortList;
+                    this._baudRateList = this.$.baudRateList;
+
+                    while (this._serialPortList.firstChild) {
+                        this._serialPortList.removeChild(this._serialPortList.firstChild);
+                    }
+                    while (this._baudRateList.firstChild) {
+                        this._baudRateList.removeChild(this._baudRateList.firstChild);
+                    }
+                    var html = "";
+
+                    var selectedPort = 0;
+                    if ((this._serialIO) && (this._serialIO.serialPorts) && (this._serialIO.serialPorts.length > 0)) {
+                        for (var i = 0; i < this._serialIO.serialPorts.length; i++) {
+                            var port = this._serialIO.serialPorts[i];
+                            html += "<option value=\"" + port.comName + "\">" + port.comName + "</option>\n";
+                            var opt = document.createElement('option');
+                            opt.value = i;
+                            opt.text = port.comName;
+                            //opt.innerHTML = i;
+
+                            this._serialPortList.appendChild(opt);
+                            if (port.selected) {
+                                selectedPort = i;
+                                this._serialPortList.options[i].selected = true;
+                            }
+                        }
+                        //$("#formData").html(html);
+                        this._serialPortList.value = selectedPort;
+
+
+                        var selectedRate = -1;
+                        var indexOf9600 = 0;
+                        for (var i = 0; i < this._serialIO.baudRates.length; i++) {
+                            var baudRate = this._serialIO.baudRates[i];
+
+                            // override the default selected baud rate of 9600 to set the default as 115200
+                            //_baudRateList.options[_baudRateList.options.length] = new Option(baudRate.rate, i);
+                            var opt = document.createElement('option');
+                            opt.value = i;
+                            opt.text = baudRate.rate;
+                            if (baudRate.rate === "9600") {
+                                indexOf9600 = i;
+                            }
+                            //opt.innerHTML = i;
+
+                            this._baudRateList.appendChild(opt);
+                            if (baudRate.rate === this._serialIO.selectedBaudRate) {//(baudRate.rate === '115200') {
+                                selectedRate = i;
+                                this._baudRateList.options[i].selected = true;
+                            } else {
+                                this._baudRateList.options[i].selected = false;
+                            }
+
+                        }
+                        if (selectedRate < 0) {
+                            selectedRate = indexOf9600;
+                        }
+                        this._baudRateList.value = selectedRate;
+                    }
+                }
+            },
+            onPortSelectedHdlr: function(e) {
+                var portIndex = this._serialPortList.selectedIndex;
+                var baudIndex = this._baudRateList.selectedIndex;
+                console.log('User selected serial port[' + portIndex + '] ' + this._serialIO.serialPorts[portIndex].displayName + ':'+this._serialIO.baudRates[baudIndex].rate+', pnpId=' + this._serialIO.serialPorts[portIndex].pnpId);
+
+                if (this._serialIO.currentState.name.indexOf("running") === 0) {
+                    this._serialIO.updateStateMachine('userCloseSerialPort');
+                }
+                this._serialIO.selectedSerialPort = this._serialIO.serialPorts[portIndex];
+                if (this._serialIO.selectedBaudRate !== this._serialIO.baudRates[baudIndex].rate) {
+                    this._serialIO.selectedBaudRate = this._serialIO.baudRates[baudIndex].rate;
+                } else {
+                    // since selectedBaudRateChanged will only fire when a different value is assigned,
+                    // need to explicitly assign the baudRate to the selectedSerialPort.baudRate to ensure
+                    // that it is correctly set.
+                    this._serialIO.selectedSerialPort.baudRate = this._serialIO.baudRates[baudIndex].rate;
+                }
+                this._notifyUser("info", "blue", "Reconfiguring connection to target...", "black")
+                // For targets that have a .ccxml file with uart_connection as the connection type,
+                // we need to disconnect, regenerate the .ccxml file with the correct COM port name
+                // and then connect again using this .ccxml file.  Due to the way the program model is
+                // structured, it will not initialize correctly unless a full page reload is performed,
+                // so as 'temporary' hack, the page will be reloaded instead of doing a disconnect / reconnect.
+                // TODO: re-work initialization of program model to allow it to be restarted without this hack
+
+                // Note that this hack will only be done in the case where the serial port is configured via
+                // this dialog, so existing applications such as the MSP432P401R Color Mixer Demo that directly
+                // configure the serialIO module will not break.
+
+                // Also note that changing the baudRate does not require regenerating the .ccxml file, so this
+                // hack is not required in the case where just the baud rate is changed.
+
+                // TODO: define the localStorage global object so that it works for cloud-based Apps.
+                // Until this is done, the hack can only be used in node-webkit applications.
+
+                var enableRestartHack = false;
+                if ((localStorage !== undefined) && (localStorage !== null)) {
+                    localStorage.comPort = this._serialIO.selectedSerialPort.comName;
+                    localStorage.baudRate = this._serialIO.selectedSerialPort.baudRate;
+                } else {
+                    enableRestartHack = false
+                }
+
+                if (!enableRestartHack) {
+                    this._serialIO.backplane.disconnect();
+                    var _self = this;
+                    var myTimeout = window.setTimeout(function () {
+                        //if (_self._serialIO.currentState.name.indexOf("running") !== 0){
+                        //    _self._serialIO.updateStateMachine('userOpenSerialPort');
+                        //}
+
+                        _self._serialIO.backplane.connect();
+                        _self.toggle();
+                    }, 2000);
+                } else {
+                    window.setTimeout(function () {
+                        window.location.reload(true);
+                    },2000);
+                }
+            },
+
+            onBaudRateSelectedHdlr: function(e) {
+                var index = this._baudRateList.selectedIndex;
+                if (this._serialIO.currentState.name.indexOf("running") === 0) {
+                    this._serialIO.updateStateMachine('userCloseSerialPort');
+                }
+                var _self = this;
+                var myTimeout = window.setTimeout(function(){
+                    _self._serialIO.selectedBaudRate = _self._serialIO.baudRates[index].rate;
+                    if (_self._serialIO.currentState.name.indexOf("running") !== 0){
+                        _self._serialIO.updateStateMachine('userOpenSerialPort');
+                    }
+                }, 300);
+            }
+
+
+        });
+    </script>
+
+</polymer-element>

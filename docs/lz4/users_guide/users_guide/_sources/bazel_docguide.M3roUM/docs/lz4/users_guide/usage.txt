@@ -1,0 +1,46 @@
+Usage
+=====
+
+Performance Configuration
+-------------------------
+
+The following are options for configuring the performance of LZ4 compression. There are no performance configuration options for decompression.
+
+Hash Table Size
+~~~~~~~~~~~~~~~
+
+The LZ4 compression API's use a hash table to find matches in the input data. A larger hash table provides a larger window of past history and a higher chance of finding a match (thus better compression ratio). The hash table size must be a power of two with a maximum size of 32768 bytes and is passed as the log2() of the table size. It is recommended to use a minimum size of 1024 bytes (hashLog2Size = 10) but some data sets may see a large improvement increasing the hash table size.
+
+Command Line Utility
+--------------------
+
+The LZ4 open source project provides a command line utility that can be used to compress and decompress .lz4 files on another platform such as a personal computer. Some examples of how this can be used in combination with the LZ4 compression utility API's:
+
+-  Data logging: Store compressed data in FRAM, transmit to a host processor and decompress the data.
+-  Extended data storage: Compress program data on a personal computer with maximum compression and extract data at runtime on MSP MCU.
+-  Over the air update: Compress an entire MSP MCU program with maximum compression and transmit the data to a device for firmware upgrade.
+
+The LZ4 source code and makefile to build the command line utility can be obtained with the latest release at http://www.lz4.org.
+
+Windows
+~~~~~~~
+
+A pre-built command line utility is provided with this release. An example of invoking this command to compress a file with maximum compression settings is shown below.
+
+::
+
+    ${INSTALL_DIR}/tools/lz4/lz4.exe -9 data.txt
+
+Linux
+~~~~~
+
+The command line utility can be installed on linux systems by running the following app-get command.
+
+::
+
+    sudo apt-get install liblz4-tool
+
+macOS
+~~~~~
+
+Mac users can download the latest release from http://www.lz4.org or extract the included release version and run Make.

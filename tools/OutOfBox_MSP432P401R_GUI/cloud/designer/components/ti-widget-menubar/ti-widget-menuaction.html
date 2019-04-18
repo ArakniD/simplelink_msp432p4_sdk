@@ -1,0 +1,136 @@
+<!--
+`ti-widget-menuaction` a sub menu item that performs an action.
+    - 
+Example:
+
+    <ti-widget-menubar>
+        <ti-widget-menuitem>
+            <ti-widget-menuaction onclick="onCelsiusHdlr()" id="c_menu" alwaysenabled="true" checked="false" name="&deg;C" description="Celsius"></ti-widget-menuaction>
+            <ti-widget-menuaction onclick="onFarenheitHdlr()" id="fmenu" alwaysenabled="true" checked="true" name="&deg;F" description="Farenheit"></ti-widget-menuaction>
+            <ti-widget-menuaction onclick="onKelvinHdlr()" id="kmenu" alwaysenabled="true" checked="false" name="&deg;K" description="Kelvin"></ti-widget-menuaction>
+        </ti-widget-menuitem>
+    </ti-widget-menubar>
+
+See demo.html for a full working example of how to use this component.
+
+@group TI Widget
+@element ti-widget-menuaction
+@homepage https://gitorious.design.ti.com/guicomposer-nw/ti-widget-menuaction
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-icons/core-icons.html">
+
+<polymer-element name="ti-widget-menuaction" attributes="name description icon action">
+<template>
+    <style>
+        #menuAction {
+            padding:8px 16px 6px 16px;
+            cursor:pointer;
+            white-space:nowrap;
+        } 
+    </style>
+
+
+    <li id="menuAction" on-click="{{run}}" title="{{description}}"><core-icon icon={{icon}} checked="{{checked}}" ></core-icon> {{name}}</li>
+</template>
+<script>
+    
+    Polymer('ti-widget-menuaction', 
+    {
+        name : 'action',
+        description: 'this action does nothing',
+        publish: {
+            /**
+             * Set true to display a checkmark to the left of the menu item.
+             *
+             * @attribute checked
+             * @type boolean
+             * @default false
+             */
+            checked: false,
+            /**
+             * Set true to always enable this menu item.  If false, the menu item will be enabled when connected to the target device.
+             *
+             * @attribute alwaysenabled
+             * @type boolean
+             * @default false
+             */
+            alwaysenabled: false
+        },
+        checkedChanged: function(){
+            if (this.checked){
+                this.icon = "check"
+            } else {
+                this.icon = "none";
+            }
+        },
+        run : function() 
+        { 
+            if (gc.nav.onClick(this._actionId))
+            {
+                // hide menu on successful start of menu action
+                var menuItem = this.parentNode; 
+                if (menuItem && menuItem.hide)
+                {
+                    menuItem.hide();
+                }
+            } 
+        },
+        ready : function() 
+        {
+            var that = this;
+            that._actionId = that.action || that.id; 
+            if (gc && gc.nav && gc.nav.addStateListener)
+            {
+                that._actionListener = new gc.nav.StateListener(that.$.menuAction);
+                gc.nav.addStateListener(that._actionId, that._actionListener);
+            }
+            if (this.alwaysenabled){
+                gc.nav.enableAction(that._actionId);
+            }
+        },
+        actionChanged : function() 
+        {
+            var action = this.action;
+            if (action !== undefined && action !== null && gc && gc.nav && gc.nav.registerAction)
+            {
+                gc.nav.removeStateListener(this._actionId, this._actionListener);
+                this._actionId = action;
+                gc.nav.addStateListener(this._actionId, this._actionListener);
+            }
+        }
+        
+    });
+   
+</script>
+</polymer-element>
+    

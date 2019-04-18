@@ -1,0 +1,82 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../ti-widget-common/ti-widget-label.html">
+<link rel="import" href="../ti-widget-common/ti-widget-base.html">
+
+<polymer-element name="ti-widget-stats" extends="ti-widget-base" attributes="value minValue maxValue avereage name">
+    <template>
+        <style>
+            :host 
+            {
+                display: inline-block;
+                font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            }
+            * {
+            	padding: 0.5em;
+            }
+            #title {
+            	font-size: large;
+            	color: #555;
+            	padding: 0.3em;
+            }
+            #top {
+            	width: 100%;
+            	height: 100%;
+            }
+        </style>
+
+      <div id="top" vertical layout around-justified>
+        <div id="minDiv" horizontal layout center>
+          <ti-widget-label label="Min:" fontsize="medium" id="ti_widget_label1"></ti-widget-label>
+          <ti-widget-label fontsize="medium" id="minValue" label="{{_displayMinValue}}"></ti-widget-label>
+        </div>
+        <div id="aveDiv" horizontal layout>
+          <ti-widget-label label="Ave:" fontsize="medium" id="ti_widget_label4"></ti-widget-label>
+          <ti-widget-label fontsize="medium" id="aveValue" label="{{_displayAveValue}}"></ti-widget-label>
+        </div>
+        <div id="maxDiv" horizontal layout>
+          <ti-widget-label label="Max:" fontsize="medium" id="ti_widget_label6"></ti-widget-label>
+          <ti-widget-label fontsize="medium" id="maxValue" label="{{_displayMaxValue}}"></ti-widget-label>
+        </div>
+      </div>
+    </template>
+    
+    <script>
+        Polymer ('ti-widget-stats', 
+        {
+            value: 0,
+            minValue: undefined,
+            maxValue: undefined,
+            average: undefined,
+            _displayMinValue : "",
+            _displayMaxValue : "",
+            _displayAveValue : "",
+            decimalPlaces : 1,
+            _count : 0,
+            _runningTotal : 0,
+            valueChanged : function()
+            {
+            	var newValue = +this.value;
+            	if (this.minValue === undefined || this.minValue > newValue)
+            	{
+            		this.minValue = newValue;
+            		this._displayMinValue = newValue.toFixed(+this.decimalPlaces);
+            	}
+            	if (this.maxValue === undefined || this.maxValue < newValue)
+            	{
+            		this.maxValue = newValue;
+            		this._displayMaxValue = newValue.toFixed(+this.decimalPlaces);
+            	}
+            	this._count++;
+            	this._runningTotal += newValue;
+            	this.average = this._runningTotal / this._count;
+            	this._displayAveValue = this.average.toFixed(+this.decimalPlaces);
+            },
+            ready: function()
+            {
+            	this.minValue = undefined;
+            	this.maxValue = undefined;
+            	this.average = undefined;
+            }
+        });
+    </script>
+</polymer-element>

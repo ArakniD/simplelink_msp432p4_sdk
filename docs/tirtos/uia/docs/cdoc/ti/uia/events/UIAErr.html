@@ -1,0 +1,3191 @@
+<html>
+<head>
+<title>module ti.uia.events.UIAErr</title>
+<meta name="description" content="UIA Standard Error Events">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.events.</span><span class="xdoc-id">UIAErr</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAChanCtx.html" title="module UIAChanCtx"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/package.html" title="package ti.uia.events"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAEvt.html" title="module UIAEvt"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html">index URL</a></div>
+<p class="xdocHdrSummary">UIA Standard Error Events</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-1">DETAILS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-2">EXAMPLES</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+The UIAErr module defines standard error events that allow
+ tooling to identify common errors in a consistent way.  They are all
+ intended to be used with the Log_writeX APIs and, in the future, with
+ crash dump APIs, and provide a way to log errors in a more standardized
+ way than the generic Log_error API enables.
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/events/UIAErr-src.html"><span class="xdocLabelFile">ti/uia/events/UIAErr.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/events/UIAErr.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIAErr_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIAErr_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIAErr_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIAErr_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIAErr_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIAErr_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Constants</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#critical"><span class="xdoc-id">UIAErr_critical</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;critical error event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#critical.With.Str"><span class="xdoc-id">UIAErr_criticalWithStr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;critical error event code and fmt string</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#division.By.Zero"><span class="xdoc-id">UIAErr_divisionByZero</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;divisionByZero event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#entry.Point.Not.Found"><span class="xdoc-id">UIAErr_entryPointNotFound</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;entryPointNotFound event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#error"><span class="xdoc-id">UIAErr_error</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Event to use to log an existing software Error Code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#error.With.Str"><span class="xdoc-id">UIAErr_errorWithStr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Event to use to log an existing software Error Code and fmt string</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#exception"><span class="xdoc-id">UIAErr_exception</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;exception event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#fatal"><span class="xdoc-id">UIAErr_fatal</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;fatal error code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#fatal.With.Str"><span class="xdoc-id">UIAErr_fatalWithStr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;fatal error event code and fmt string</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#floating.Point.Error"><span class="xdoc-id">UIAErr_floatingPointError</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;floatingPointError event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#hw.Error"><span class="xdoc-id">UIAErr_hwError</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;hardware error event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#hw.Error.With.Str"><span class="xdoc-id">UIAErr_hwErrorWithStr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;hardware error event code and fmt string</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#illegal.Instruction"><span class="xdoc-id">UIAErr_illegalInstruction</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;illegalInstruction event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#index.Out.Of.Range"><span class="xdoc-id">UIAErr_indexOutOfRange</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;indexOutOfRange event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#invalid.Parameter"><span class="xdoc-id">UIAErr_invalidParameter</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;invalidParameter event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#memory.Access.Fault"><span class="xdoc-id">UIAErr_memoryAccessFault</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;memoryAccessFault event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#module.Not.Found"><span class="xdoc-id">UIAErr_moduleNotFound</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;moduleNotFound event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#not.Implemented"><span class="xdoc-id">UIAErr_notImplemented</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;notImplemented event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#null.Pointer.Exception"><span class="xdoc-id">UIAErr_nullPointerException</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;nullPointerException event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#overflow.Exception"><span class="xdoc-id">UIAErr_overflowException</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;overflowException event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#security.Exception"><span class="xdoc-id">UIAErr_securityException</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;securityException event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#stack.Overflow"><span class="xdoc-id">UIAErr_stackOverflow</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;stackOverflow event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#uncaught.Exception"><span class="xdoc-id">UIAErr_uncaughtException</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;uncaughtException event code</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#unexpected.Interrupt"><span class="xdoc-id">UIAErr_unexpectedInterrupt</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;unexpectedInterrupt event code</span></span></a>;</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The UIAErr module defines standard error events that allow
+ tooling to identify common errors in a consistent way.  They are all
+ intended to be used with the Log_writeX APIs and, in the future, with
+ crash dump APIs, and provide a way to log errors in a more standardized
+ way than the generic Log_error API enables.</div>
+<div class="xdocText">The events in this module have one of the following event priority levels:
+  EMERGENCY: used to indicate a non-recoverable situation (e.g. a crash, with
+   the event containing information about the cause of the crash)
+  CRITICAL: used to indicate a sever error that should raise an alarm or
+   cause a notification message to be sent to a system administrator.
+  ERROR: used to indicate a recoverable error that does not require an alarm
+   to be raised.</div>
+<div class="xdocText">The following special formatting specifiers may be used to define the
+ msg field of the UIAErr events:</div>
+<div class="xdocText">%$S - a string parameter that can provide additional formatting specifiers
+       Note that $S use in strings passed in as a paramter is not supported.</div>
+<div class="xdocText">%$F - a specifier for a string parameter containing the file name (__FILE__) and
+       an integer parameter containing the line number (__LINE__).</div>
+<div class="xdocText">The generation of UIAErr events is controlled by a module's diagnostics
+  mask, which is described in details in <tt><a class="xdoc-link" href="../../../xdc/runtime/Diags.html" title="xdc.runtime.Diags">xdc.runtime.Diags</a></tt>.
+ <tt>UIAErr</tt> events are generated only when the Diags.STATUS bit is set
+  in the module's diagnostics mask.  The Diags.STATUS bit is set to ALWAYS_ON
+  by default.</div>
+<div class="xdocText">The following configuration script demonstrates how to enable use of
+  UIAErr events within an application.  Since the Diags.STATUS bits are set
+  to ALWAYS_ON by default, no explicit code is required to enable the
+  Diags Masks for these events.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLES</div>
+<div class="xdocText">Example 1: This is part of the XDC configuration file for the application:</div>
+<div class="xdocText"><PRE class="Example">  var UIAErr = xdc.useModule('ti.uia.events.UIAErr');
+  var Diags = xdc.useModule('xdc.runtime.Diags');
+  var LoggerSys = xdc.useModule('xdc.runtime.LoggerSys');
+  var Defaults = xdc.useModule('xdc.runtime.Defaults');
+  var logger = LoggerSys.create();
+
+  Defaults.common$.logger = logger;
+</PRE></div>
+<div class="xdocText"><hr /></div>
+<div class="xdocText">Example 2: The following example configures a module to support logging
+  of STATUS events, but defers the actual activation and deactivation of the
+  logging until runtime. See the <tt><a class="xdoc-link" href="Diags.html#set.Mask" title="Diags.setMask">Diags_setMask()</a></tt>
+  function for details on specifying the control string.</div>
+<div class="xdocText">This is a part of the XDC configuration file for the application:</div>
+<div class="xdocText"><PRE class="Example">  var UIAErr = xdc.useModule('ti.uia.events.UIAErr');
+  var Diags = xdc.useModule('xdc.runtime.Diags');
+  var Mod = xdc.useModule('my.pkg.Mod');
+
+  Mod.common$.diags_STATUS = Diags.RUNTIME_OFF;
+</PRE></div>
+<div class="xdocText">This is a part of the C code for the application:</div>
+<div class="xdocText"><PRE class="Example">  // turn on logging of STATUS events in the module
+  Diags_setMask("my.pkg.Mod+S");
+
+  // turn off logging of STATUS events in the module
+  Diags_setMask("my.pkg.Mod-S");
+</PRE></div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="critical"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">critical</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#critical">index URL</a></div>
+<p class="xdocHdrSummaryDcl">critical error event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_critical</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log a critical error in which the system
+  has e.g. had to kill certain operations in order to
+  keep running.  (Event Level = CRITICAL)</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a fatal error code as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myCriticalErrorCode = 0xACODE;
+  ...
+  Log_write1(UIAErr_critical,myCriticalErrorCode);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "CRITICAL ERROR: ErrorCode:0xACODE."
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="critical.With.Str"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">criticalWithStr</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#critical.With.Str">index URL</a></div>
+<p class="xdocHdrSummaryDcl">critical error event code and fmt string</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_criticalWithStr</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error
+(%$S)         fmt string used to format the event message.</span>
+</div>
+<div class="xdocChildText">Up to 6 additional arguments can be logged with this event if
+  required.  The formatting string should provide format specifiers
+  for each of the additional arguments</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log a critical error in which the system
+ has e.g. had to kill certain operations in order to
+ keep running.  (Event Level = CRITICAL)</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a legacy error code and an
+   associated string as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myCriticalErrorCode = 0xAC0DE;
+  ...
+  Log_write2(UIAErr_criticalWithStr,myCriticalErrorCode,(IArg)"My description of critical error 0xAC0DE");
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "CRITICAL ERROR: ErrorCode:0xAC0DE. My description of critical error 0xAC0DE"
+
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="division.By.Zero"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">divisionByZero</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#division.By.Zero">index URL</a></div>
+<p class="xdocHdrSummaryDcl">divisionByZero event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_divisionByZero</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that divide by zero exception occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_divisionByZero,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Division by zero at demo.c line 1234."
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="entry.Point.Not.Found"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">entryPointNotFound</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#entry.Point.Not.Found">index URL</a></div>
+<p class="xdocHdrSummaryDcl">entryPointNotFound event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_entryPointNotFound</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a module or DLL entry point was not found</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_entryPointNotFound,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Entry Point Not Found at demo.c line 1234."
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="error"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">error</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#error">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Event to use to log an existing software Error Code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_error</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">UIAErr_error is used primarily to support logging of legacy error codes with minimal
+  overhead. Metadata is generated for this event that provides a predefined format
+  specifier string that can be used to display the error code with.  This minimizes the
+  number of parameters that need to be logged with the event (it only requires the
+  actual error code to be logged).  Unlike the Log_error API, no __FILE__ or
+  __LINE__ information about the call-site is logged with the error code.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a legacy error code as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myErrorCode = 0xEC0DE;
+  Log_write1(UIAErr_error,myErrorCode);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: ErrorCode:0xECODE"
+
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error.With.Str" title="errorWithStr">errorWithStr</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="error.With.Str"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">errorWithStr</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#error.With.Str">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Event to use to log an existing software Error Code and fmt string</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_errorWithStr</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error
+(%$S)         fmt string used to format the event message.</span>
+</div>
+<div class="xdocChildText">Up to 6 additional arguments can be logged with this event if
+  required.  The formatting string should provide format specifiers
+  for each of the additional arguments</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">UIAErr_errorWithStr is used primarily to support logging of legacy error codes along
+  with user-defined strings that describe the error. Unlike the Log_error API,
+  no __FILE__ or __LINE__ information about the call-site is logged with the error code.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a legacy error code as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myErrorCode = 0xEC0DE;
+  String myErrorStr = "Legacy Error String for error 0xECODE";
+  ...
+  Log_write2(UIAErr_errorWithStr,myErrorCode,(IArg)myErrorStr);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: ErrorCode:0xECODE. Legacy Error String for error 0xECODE"
+
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="exception"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">exception</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#exception">index URL</a></div>
+<p class="xdocHdrSummaryDcl">exception event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_exception</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an exception occurred.
+ Typically used with LogSnapshot or LogCrashDump APIs to
+ log stack dump data that identifies why the exception occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_exception,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Exception at demo.c line 1234."
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="fatal"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">fatal</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#fatal">index URL</a></div>
+<p class="xdocHdrSummaryDcl">fatal error code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_fatal</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log a fatal, nonrecoverable error (Event level = EMERGENCY)</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a fatal error code as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myFatalErrorCode = 0xDEADC0DE;
+  ...
+  Log_write1(UIAErr_fatal,myFatalErrorCode);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "FATAL ERROR: ErrorCode:0xDEADC0DE."
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="fatal.With.Str"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">fatalWithStr</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#fatal.With.Str">index URL</a></div>
+<p class="xdocHdrSummaryDcl">fatal error event code and fmt string</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_fatalWithStr</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error
+(%$S)         fmt string used to format the event message.</span>
+</div>
+<div class="xdocChildText">Up to 6 additional arguments can be logged with this event if
+  required.  The formatting string should provide format specifiers
+  for each of the additional arguments</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log a fatal, nonrecoverable error.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a legacy error code and an
+   associated string as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myFatalErrorCode = 0xDEADC0DE;
+  String myFatalErrorStr = "My description of fatal error 0xDEADC0DE";
+  ...
+  Log_write2(UIAErr_fatalWithStr,myFatalErrorCode,(IArg)myFatalErrorStr);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "FATAL ERROR: ErrorCode:0xDEADC0DE. My description of fatal error 0xDEADC0DE"
+
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="floating.Point.Error"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">floatingPointError</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#floating.Point.Error">index URL</a></div>
+<p class="xdocHdrSummaryDcl">floatingPointError event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_floatingPointError</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a floating point error occurred</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_floatingPointError,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Floating Point Error at demo.c line 1234."
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="hw.Error"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">hwError</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#hw.Error">index URL</a></div>
+<p class="xdocHdrSummaryDcl">hardware error event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_hwError</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of warning</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log a generic hardware error.
+ Unlike the Log_error API, no __FILE__ or __LINE__ information about
+  the call-site is logged with the error code.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a legacy error code as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myHWErrorCode = 0xEC0DE;
+  ...
+  Log_write1(UIAErr_hwError,myHWErrorCode);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "HW ERROR: ErrorCode:0xECODE."
+
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="hw.Error.With.Str"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">hwErrorWithStr</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#hw.Error.With.Str">index URL</a></div>
+<p class="xdocHdrSummaryDcl">hardware error event code and fmt string</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_hwErrorWithStr</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error
+(%$S)         fmt string used to format the event message.</span>
+</div>
+<div class="xdocChildText">Up to 6 additional arguments can be logged with this event if
+  required.  The formatting string should provide format specifiers
+  for each of the additional arguments</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log a generic hardware error.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a legacy error code and an
+   associated string as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myHWErrorCode = 0xEC0DE;
+  String myHWErrorStr = "My description of hardware error 0xEC0DE";
+  ...
+  Log_write2(UIAErr_hwErrorWithStr,myHWErrorCode,(IArg)myHWErrorStr);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "HW ERROR: ErrorCode:0xECODE. My description of hardware error 0xEC0DE"
+
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="illegal.Instruction"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">illegalInstruction</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#illegal.Instruction">index URL</a></div>
+<p class="xdocHdrSummaryDcl">illegalInstruction event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_illegalInstruction</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an illegal instruction was executed</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_illegalInstruction,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Illegal Instruction executed at demo.c line 1234."
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="index.Out.Of.Range"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">indexOutOfRange</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#index.Out.Of.Range">index URL</a></div>
+<p class="xdocHdrSummaryDcl">indexOutOfRange event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_indexOutOfRange</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">index</span>
+<span class="xdocChildSum">&#151;&nbsp;The index value that was out of range</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an index out of range condition occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write3(UIAErr_indexOutOfRange,(IArg)__FILE__,__LINE__,badIndex);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: OIndex out of range at demo.c line 1234. [INDEX]0xFFFFFFFF"
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="invalid.Parameter"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">invalidParameter</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#invalid.Parameter">index URL</a></div>
+<p class="xdocHdrSummaryDcl">invalidParameter event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_invalidParameter</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">paramNum</span>
+<span class="xdocChildSum">&#151;&nbsp;The parameter number in the function's signature that was invalid</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">paramValue</span>
+<span class="xdocChildSum">&#151;&nbsp;The invalid parameter value</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an invalid parameter was detected</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Void myFunc(Int caseNumber){
+    switch(caseNumber){
+      ...
+      break;
+      default :
+         Log_write4(UIAErr_floatingPointError,(IArg)__FILE__,__LINE__,1,caseNumber);
+    }
+  }
+
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Invalid Parameter at demo.c line 1234. [ParamNum]1 [ParamValue]0xFFFFFFFF"
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="memory.Access.Fault"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">memoryAccessFault</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#memory.Access.Fault">index URL</a></div>
+<p class="xdocHdrSummaryDcl">memoryAccessFault event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_memoryAccessFault</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">adrs</span>
+<span class="xdocChildSum">&#151;&nbsp;The address that caused the memory access fault</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a memory access fault occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write3(UIAErr_memoryAccessFault,(IArg)__FILE__,__LINE__,(IArg)badAdrs);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Memory Access Fault at demo.c line 1234. [ADRS]0xFFFFFFFF"
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="module.Not.Found"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">moduleNotFound</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#module.Not.Found">index URL</a></div>
+<p class="xdocHdrSummaryDcl">moduleNotFound event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_moduleNotFound</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">moduleId</span>
+<span class="xdocChildSum">&#151;&nbsp;The Module ID of the module that was not found</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a module was not found</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write3(UIAErr_moduleNotFound,(IArg)__FILE__,__LINE__,moduleIdThatWasNotFound);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Module not found at demo.c line 1234. [MODULE_ID]0x32903"
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="not.Implemented"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">notImplemented</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#not.Implemented">index URL</a></div>
+<p class="xdocHdrSummaryDcl">notImplemented event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_notImplemented</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an attempt to access a feature that is not implemented</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_notImplemented,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Attempt to access feature that is not implemented at demo.c line 1234."
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="null.Pointer.Exception"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">nullPointerException</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#null.Pointer.Exception">index URL</a></div>
+<p class="xdocHdrSummaryDcl">nullPointerException event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_nullPointerException</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a null pointer exception occurred.
+ Typically used with LogSnapshot or LogCrashDump APIs to
+ log stack dump data that identifies why the exception occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_nullPointerException,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Null Pointer Exception at demo.c line 1234."
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="overflow.Exception"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">overflowException</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#overflow.Exception">index URL</a></div>
+<p class="xdocHdrSummaryDcl">overflowException event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_overflowException</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an overflow exception occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_overflowException,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Overflow exception at demo.c line 1234."
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="security.Exception"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">securityException</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#security.Exception">index URL</a></div>
+<p class="xdocHdrSummaryDcl">securityException event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_securityException</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a security exception occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_securityException,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Security Exception at demo.c line 1234."
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="stack.Overflow"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">stackOverflow</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#stack.Overflow">index URL</a></div>
+<p class="xdocHdrSummaryDcl">stackOverflow event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_stackOverflow</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a stack overflow was detected.  (Event Level = CRITICAL)</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_stackOverflow,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Stack Overflow detected at demo.c line 1234."
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="uncaught.Exception"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">uncaughtException</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#uncaught.Exception">index URL</a></div>
+<p class="xdocHdrSummaryDcl">uncaughtException event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_uncaughtException</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an uncaught exception occurred.
+ Typically used with LogSnapshot or LogCrashDump APIs to
+ log stack dump data that identifies why the exception occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_uncaughtException,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Uncaught Exception at demo.c line 1234."
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="unexpected.Interrupt"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr_</span><span class="xdoc-id">unexpectedInterrupt</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#unexpected.Interrupt">index URL</a></div>
+<p class="xdocHdrSummaryDcl">unexpectedInterrupt event code</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIAErr_unexpectedInterrupt</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an unexpected interrupt occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_unexpectedInterrupt,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Null Pointer Exception at demo.c line 1234."
+</PRE></div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">UIAErr_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">UIAErr_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">UIAErr_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">UIAErr_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">UIAErr_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">UIAErr_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/events/UIAErr-src.html"><span class="xdocLabelFile">ti/uia/events/UIAErr.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> UIAErr = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.events.UIAErr'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metacritical">UIAErr.<span class="xdoc-id">critical</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;critical error event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.C.R.I.T.I.C.A.L" title="xdc.runtime.Diags.CRITICAL">Diags.CRITICAL</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "CRITICAL ERROR: ErrorCode:0x%x"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metacritical.With.Str">UIAErr.<span class="xdoc-id">criticalWithStr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;critical error event code and fmt string</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.C.R.I.T.I.C.A.L" title="xdc.runtime.Diags.CRITICAL">Diags.CRITICAL</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "CRITICAL ERROR: ErrorCode:0x%x. %$S"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metadivision.By.Zero">UIAErr.<span class="xdoc-id">divisionByZero</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;divisionByZero event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Division by zero at %$F."
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaentry.Point.Not.Found">UIAErr.<span class="xdoc-id">entryPointNotFound</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;entryPointNotFound event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Entry Point Not Found at %$F."
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaerror">UIAErr.<span class="xdoc-id">error</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Event to use to log an existing software Error Code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: ErrorCode:0x%x"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaerror.With.Str">UIAErr.<span class="xdoc-id">errorWithStr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Event to use to log an existing software Error Code and fmt string</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: ErrorCode:0x%x. %$S"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaexception">UIAErr.<span class="xdoc-id">exception</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;exception event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Exception at %$F."
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metafatal">UIAErr.<span class="xdoc-id">fatal</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;fatal error code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.M.E.R.G.E.N.C.Y" title="xdc.runtime.Diags.EMERGENCY">Diags.EMERGENCY</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "FATAL ERROR: ErrorCode:0x%x"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metafatal.With.Str">UIAErr.<span class="xdoc-id">fatalWithStr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;fatal error event code and fmt string</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.M.E.R.G.E.N.C.Y" title="xdc.runtime.Diags.EMERGENCY">Diags.EMERGENCY</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "FATAL ERROR: ErrorCode:0x%x. %$S"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metafloating.Point.Error">UIAErr.<span class="xdoc-id">floatingPointError</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;floatingPointError event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Floating Point Error at %$F."
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metahw.Error">UIAErr.<span class="xdoc-id">hwError</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;hardware error event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "HW ERROR: ErrorCode:0x%x"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metahw.Error.With.Str">UIAErr.<span class="xdoc-id">hwErrorWithStr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;hardware error event code and fmt string</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "HW ERROR: ErrorCode:0x%x. %$S"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaillegal.Instruction">UIAErr.<span class="xdoc-id">illegalInstruction</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;illegalInstruction event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Illegal Instruction executed at %$F."
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaindex.Out.Of.Range">UIAErr.<span class="xdoc-id">indexOutOfRange</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;indexOutOfRange event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Index out of range at %$F. [INDEX]0x%x"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metainvalid.Parameter">UIAErr.<span class="xdoc-id">invalidParameter</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;invalidParameter event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Invalid Parameter at %$F. [ParamNum]%d [ParamValue]0x%x"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metamemory.Access.Fault">UIAErr.<span class="xdoc-id">memoryAccessFault</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;memoryAccessFault event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Memory Access Fault at %$F. [ADRS]0x%x"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metamodule.Not.Found">UIAErr.<span class="xdoc-id">moduleNotFound</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;moduleNotFound event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Module not found at %$F. [MODULE_ID]0x%x."
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metanot.Implemented">UIAErr.<span class="xdoc-id">notImplemented</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;notImplemented event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Attempt to access feature that is not implemented at %$F."
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metanull.Pointer.Exception">UIAErr.<span class="xdoc-id">nullPointerException</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;nullPointerException event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Null Pointer Exception at %$F."
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaoverflow.Exception">UIAErr.<span class="xdoc-id">overflowException</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;overflowException event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Overflow exception at %$F."
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metasecurity.Exception">UIAErr.<span class="xdoc-id">securityException</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;securityException event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Security Exception at %$F."
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metastack.Overflow">UIAErr.<span class="xdoc-id">stackOverflow</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;stackOverflow event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.C.R.I.T.I.C.A.L" title="xdc.runtime.Diags.CRITICAL">Diags.CRITICAL</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Stack Overflow detected at %$F."
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metauncaught.Exception">UIAErr.<span class="xdoc-id">uncaughtException</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;uncaughtException event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Uncaught Exception at %$F."
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaunexpected.Interrupt">UIAErr.<span class="xdoc-id">unexpectedInterrupt</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;unexpectedInterrupt event code</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Unexpected Interrupt at %$F."
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">UIAErr.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metacritical"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">critical</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#critical">index URL</a></div>
+<p class="xdocHdrSummaryDcl">critical error event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">critical</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.C.R.I.T.I.C.A.L" title="xdc.runtime.Diags.CRITICAL">Diags.CRITICAL</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "CRITICAL ERROR: ErrorCode:0x%x"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log a critical error in which the system
+  has e.g. had to kill certain operations in order to
+  keep running.  (Event Level = CRITICAL)</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a fatal error code as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myCriticalErrorCode = 0xACODE;
+  ...
+  Log_write1(UIAErr_critical,myCriticalErrorCode);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "CRITICAL ERROR: ErrorCode:0xACODE."
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#critical" title="UIAErr_critical">UIAErr_critical</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metacritical.With.Str"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">criticalWithStr</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#critical.With.Str">index URL</a></div>
+<p class="xdocHdrSummaryDcl">critical error event code and fmt string</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">criticalWithStr</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.C.R.I.T.I.C.A.L" title="xdc.runtime.Diags.CRITICAL">Diags.CRITICAL</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "CRITICAL ERROR: ErrorCode:0x%x. %$S"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error
+(%$S)         fmt string used to format the event message.</span>
+</div>
+<div class="xdocChildText">Up to 6 additional arguments can be logged with this event if
+  required.  The formatting string should provide format specifiers
+  for each of the additional arguments</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log a critical error in which the system
+ has e.g. had to kill certain operations in order to
+ keep running.  (Event Level = CRITICAL)</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a legacy error code and an
+   associated string as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myCriticalErrorCode = 0xAC0DE;
+  ...
+  Log_write2(UIAErr_criticalWithStr,myCriticalErrorCode,(IArg)"My description of critical error 0xAC0DE");
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "CRITICAL ERROR: ErrorCode:0xAC0DE. My description of critical error 0xAC0DE"
+
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#critical.With.Str" title="UIAErr_criticalWithStr">UIAErr_criticalWithStr</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metadivision.By.Zero"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">divisionByZero</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#division.By.Zero">index URL</a></div>
+<p class="xdocHdrSummaryDcl">divisionByZero event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">divisionByZero</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Division by zero at %$F."
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that divide by zero exception occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_divisionByZero,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Division by zero at demo.c line 1234."
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#division.By.Zero" title="UIAErr_divisionByZero">UIAErr_divisionByZero</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaentry.Point.Not.Found"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">entryPointNotFound</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#entry.Point.Not.Found">index URL</a></div>
+<p class="xdocHdrSummaryDcl">entryPointNotFound event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">entryPointNotFound</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Entry Point Not Found at %$F."
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a module or DLL entry point was not found</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_entryPointNotFound,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Entry Point Not Found at demo.c line 1234."
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#entry.Point.Not.Found" title="UIAErr_entryPointNotFound">UIAErr_entryPointNotFound</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaerror"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">error</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#error">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Event to use to log an existing software Error Code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">error</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: ErrorCode:0x%x"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">UIAErr_error is used primarily to support logging of legacy error codes with minimal
+  overhead. Metadata is generated for this event that provides a predefined format
+  specifier string that can be used to display the error code with.  This minimizes the
+  number of parameters that need to be logged with the event (it only requires the
+  actual error code to be logged).  Unlike the Log_error API, no __FILE__ or
+  __LINE__ information about the call-site is logged with the error code.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a legacy error code as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myErrorCode = 0xEC0DE;
+  Log_write1(UIAErr_error,myErrorCode);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: ErrorCode:0xECODE"
+
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error.With.Str" title="errorWithStr">errorWithStr</a></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#error" title="UIAErr_error">UIAErr_error</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaerror.With.Str"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">errorWithStr</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#error.With.Str">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Event to use to log an existing software Error Code and fmt string</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">errorWithStr</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: ErrorCode:0x%x. %$S"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error
+(%$S)         fmt string used to format the event message.</span>
+</div>
+<div class="xdocChildText">Up to 6 additional arguments can be logged with this event if
+  required.  The formatting string should provide format specifiers
+  for each of the additional arguments</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">UIAErr_errorWithStr is used primarily to support logging of legacy error codes along
+  with user-defined strings that describe the error. Unlike the Log_error API,
+  no __FILE__ or __LINE__ information about the call-site is logged with the error code.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a legacy error code as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myErrorCode = 0xEC0DE;
+  String myErrorStr = "Legacy Error String for error 0xECODE";
+  ...
+  Log_write2(UIAErr_errorWithStr,myErrorCode,(IArg)myErrorStr);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: ErrorCode:0xECODE. Legacy Error String for error 0xECODE"
+
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#error.With.Str" title="UIAErr_errorWithStr">UIAErr_errorWithStr</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaexception"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">exception</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#exception">index URL</a></div>
+<p class="xdocHdrSummaryDcl">exception event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">exception</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Exception at %$F."
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an exception occurred.
+ Typically used with LogSnapshot or LogCrashDump APIs to
+ log stack dump data that identifies why the exception occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_exception,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Exception at demo.c line 1234."
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#exception" title="UIAErr_exception">UIAErr_exception</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metafatal"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">fatal</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#fatal">index URL</a></div>
+<p class="xdocHdrSummaryDcl">fatal error code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">fatal</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.M.E.R.G.E.N.C.Y" title="xdc.runtime.Diags.EMERGENCY">Diags.EMERGENCY</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "FATAL ERROR: ErrorCode:0x%x"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log a fatal, nonrecoverable error (Event level = EMERGENCY)</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a fatal error code as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myFatalErrorCode = 0xDEADC0DE;
+  ...
+  Log_write1(UIAErr_fatal,myFatalErrorCode);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "FATAL ERROR: ErrorCode:0xDEADC0DE."
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#fatal" title="UIAErr_fatal">UIAErr_fatal</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metafatal.With.Str"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">fatalWithStr</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#fatal.With.Str">index URL</a></div>
+<p class="xdocHdrSummaryDcl">fatal error event code and fmt string</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">fatalWithStr</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.M.E.R.G.E.N.C.Y" title="xdc.runtime.Diags.EMERGENCY">Diags.EMERGENCY</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "FATAL ERROR: ErrorCode:0x%x. %$S"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error
+(%$S)         fmt string used to format the event message.</span>
+</div>
+<div class="xdocChildText">Up to 6 additional arguments can be logged with this event if
+  required.  The formatting string should provide format specifiers
+  for each of the additional arguments</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log a fatal, nonrecoverable error.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a legacy error code and an
+   associated string as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myFatalErrorCode = 0xDEADC0DE;
+  String myFatalErrorStr = "My description of fatal error 0xDEADC0DE";
+  ...
+  Log_write2(UIAErr_fatalWithStr,myFatalErrorCode,(IArg)myFatalErrorStr);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "FATAL ERROR: ErrorCode:0xDEADC0DE. My description of fatal error 0xDEADC0DE"
+
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#fatal.With.Str" title="UIAErr_fatalWithStr">UIAErr_fatalWithStr</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metafloating.Point.Error"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">floatingPointError</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#floating.Point.Error">index URL</a></div>
+<p class="xdocHdrSummaryDcl">floatingPointError event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">floatingPointError</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Floating Point Error at %$F."
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a floating point error occurred</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_floatingPointError,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Floating Point Error at demo.c line 1234."
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#floating.Point.Error" title="UIAErr_floatingPointError">UIAErr_floatingPointError</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metahw.Error"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">hwError</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#hw.Error">index URL</a></div>
+<p class="xdocHdrSummaryDcl">hardware error event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">hwError</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "HW ERROR: ErrorCode:0x%x"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of warning</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log a generic hardware error.
+ Unlike the Log_error API, no __FILE__ or __LINE__ information about
+  the call-site is logged with the error code.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a legacy error code as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myHWErrorCode = 0xEC0DE;
+  ...
+  Log_write1(UIAErr_hwError,myHWErrorCode);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "HW ERROR: ErrorCode:0xECODE."
+
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#hw.Error" title="UIAErr_hwError">UIAErr_hwError</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metahw.Error.With.Str"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">hwErrorWithStr</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#hw.Error.With.Str">index URL</a></div>
+<p class="xdocHdrSummaryDcl">hardware error event code and fmt string</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">hwErrorWithStr</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "HW ERROR: ErrorCode:0x%x. %$S"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId"></span>
+<span class="xdocChildSum">&#151;&nbsp;(%x)          integer that identifies the type of error
+(%$S)         fmt string used to format the event message.</span>
+</div>
+<div class="xdocChildText">Up to 6 additional arguments can be logged with this event if
+  required.  The formatting string should provide format specifiers
+  for each of the additional arguments</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log a generic hardware error.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a legacy error code and an
+   associated string as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Int myHWErrorCode = 0xEC0DE;
+  String myHWErrorStr = "My description of hardware error 0xEC0DE";
+  ...
+  Log_write2(UIAErr_hwErrorWithStr,myHWErrorCode,(IArg)myHWErrorStr);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "HW ERROR: ErrorCode:0xECODE. My description of hardware error 0xEC0DE"
+
+</PRE></div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="UIAErr.html#error" title="error">error</a></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#hw.Error.With.Str" title="UIAErr_hwErrorWithStr">UIAErr_hwErrorWithStr</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaillegal.Instruction"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">illegalInstruction</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#illegal.Instruction">index URL</a></div>
+<p class="xdocHdrSummaryDcl">illegalInstruction event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">illegalInstruction</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Illegal Instruction executed at %$F."
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an illegal instruction was executed</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_illegalInstruction,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Illegal Instruction executed at demo.c line 1234."
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#illegal.Instruction" title="UIAErr_illegalInstruction">UIAErr_illegalInstruction</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaindex.Out.Of.Range"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">indexOutOfRange</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#index.Out.Of.Range">index URL</a></div>
+<p class="xdocHdrSummaryDcl">indexOutOfRange event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">indexOutOfRange</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Index out of range at %$F. [INDEX]0x%x"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">index</span>
+<span class="xdocChildSum">&#151;&nbsp;The index value that was out of range</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an index out of range condition occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write3(UIAErr_indexOutOfRange,(IArg)__FILE__,__LINE__,badIndex);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: OIndex out of range at demo.c line 1234. [INDEX]0xFFFFFFFF"
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#index.Out.Of.Range" title="UIAErr_indexOutOfRange">UIAErr_indexOutOfRange</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metainvalid.Parameter"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">invalidParameter</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#invalid.Parameter">index URL</a></div>
+<p class="xdocHdrSummaryDcl">invalidParameter event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">invalidParameter</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Invalid Parameter at %$F. [ParamNum]%d [ParamValue]0x%x"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">paramNum</span>
+<span class="xdocChildSum">&#151;&nbsp;The parameter number in the function's signature that was invalid</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">paramValue</span>
+<span class="xdocChildSum">&#151;&nbsp;The invalid parameter value</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an invalid parameter was detected</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Void myFunc(Int caseNumber){
+    switch(caseNumber){
+      ...
+      break;
+      default :
+         Log_write4(UIAErr_floatingPointError,(IArg)__FILE__,__LINE__,1,caseNumber);
+    }
+  }
+
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Invalid Parameter at demo.c line 1234. [ParamNum]1 [ParamValue]0xFFFFFFFF"
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#invalid.Parameter" title="UIAErr_invalidParameter">UIAErr_invalidParameter</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metamemory.Access.Fault"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">memoryAccessFault</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#memory.Access.Fault">index URL</a></div>
+<p class="xdocHdrSummaryDcl">memoryAccessFault event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">memoryAccessFault</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Memory Access Fault at %$F. [ADRS]0x%x"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">adrs</span>
+<span class="xdocChildSum">&#151;&nbsp;The address that caused the memory access fault</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a memory access fault occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write3(UIAErr_memoryAccessFault,(IArg)__FILE__,__LINE__,(IArg)badAdrs);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Memory Access Fault at demo.c line 1234. [ADRS]0xFFFFFFFF"
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#memory.Access.Fault" title="UIAErr_memoryAccessFault">UIAErr_memoryAccessFault</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metamodule.Not.Found"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">moduleNotFound</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#module.Not.Found">index URL</a></div>
+<p class="xdocHdrSummaryDcl">moduleNotFound event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">moduleNotFound</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Module not found at %$F. [MODULE_ID]0x%x."
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">moduleId</span>
+<span class="xdocChildSum">&#151;&nbsp;The Module ID of the module that was not found</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a module was not found</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write3(UIAErr_moduleNotFound,(IArg)__FILE__,__LINE__,moduleIdThatWasNotFound);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Module not found at demo.c line 1234. [MODULE_ID]0x32903"
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#module.Not.Found" title="UIAErr_moduleNotFound">UIAErr_moduleNotFound</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metanot.Implemented"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">notImplemented</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#not.Implemented">index URL</a></div>
+<p class="xdocHdrSummaryDcl">notImplemented event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">notImplemented</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Attempt to access feature that is not implemented at %$F."
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an attempt to access a feature that is not implemented</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_notImplemented,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Attempt to access feature that is not implemented at demo.c line 1234."
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#not.Implemented" title="UIAErr_notImplemented">UIAErr_notImplemented</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metanull.Pointer.Exception"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">nullPointerException</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#null.Pointer.Exception">index URL</a></div>
+<p class="xdocHdrSummaryDcl">nullPointerException event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">nullPointerException</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Null Pointer Exception at %$F."
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a null pointer exception occurred.
+ Typically used with LogSnapshot or LogCrashDump APIs to
+ log stack dump data that identifies why the exception occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_nullPointerException,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Null Pointer Exception at demo.c line 1234."
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#null.Pointer.Exception" title="UIAErr_nullPointerException">UIAErr_nullPointerException</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaoverflow.Exception"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">overflowException</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#overflow.Exception">index URL</a></div>
+<p class="xdocHdrSummaryDcl">overflowException event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">overflowException</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Overflow exception at %$F."
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an overflow exception occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_overflowException,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Overflow exception at demo.c line 1234."
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#overflow.Exception" title="UIAErr_overflowException">UIAErr_overflowException</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metasecurity.Exception"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">securityException</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#security.Exception">index URL</a></div>
+<p class="xdocHdrSummaryDcl">securityException event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">securityException</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Security Exception at %$F."
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a security exception occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_securityException,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Security Exception at demo.c line 1234."
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#security.Exception" title="UIAErr_securityException">UIAErr_securityException</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metastack.Overflow"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">stackOverflow</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#stack.Overflow">index URL</a></div>
+<p class="xdocHdrSummaryDcl">stackOverflow event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">stackOverflow</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.C.R.I.T.I.C.A.L" title="xdc.runtime.Diags.CRITICAL">Diags.CRITICAL</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Stack Overflow detected at %$F."
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that a stack overflow was detected.  (Event Level = CRITICAL)</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.
+  Comments in the code can then provide further explication of the error.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_stackOverflow,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Stack Overflow detected at demo.c line 1234."
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#stack.Overflow" title="UIAErr_stackOverflow">UIAErr_stackOverflow</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metauncaught.Exception"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">uncaughtException</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#uncaught.Exception">index URL</a></div>
+<p class="xdocHdrSummaryDcl">uncaughtException event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">uncaughtException</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Uncaught Exception at %$F."
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an uncaught exception occurred.
+ Typically used with LogSnapshot or LogCrashDump APIs to
+ log stack dump data that identifies why the exception occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_uncaughtException,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Uncaught Exception at demo.c line 1234."
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#uncaught.Exception" title="UIAErr_uncaughtException">UIAErr_uncaughtException</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaunexpected.Interrupt"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">unexpectedInterrupt</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#unexpected.Interrupt">index URL</a></div>
+<p class="xdocHdrSummaryDcl">unexpectedInterrupt event code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">unexpectedInterrupt</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.S.T.A.T.U.S" title="xdc.runtime.Diags.STATUS">Diags.STATUS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>level: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.E.R.R.O.R" title="xdc.runtime.Diags.ERROR">Diags.ERROR</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "ERROR: Unexpected Interrupt at %$F."
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">__FILE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The file that the exception occurred in</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">__LINE__</span>
+<span class="xdocChildSum">&#151;&nbsp;The line that the exception occurred at</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Used to log that an unexpected interrupt occurred.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log an exception that identifies
+  the file and line number that the exception occurred at as a UIA event.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Log.h&gt;
+  #include &lt;ti/uia/events/UIAErr.h&gt;
+  ...
+  Log_write2(UIAErr_unexpectedInterrupt,(IArg)__FILE__,__LINE__);
+  ...
+</PRE></div>
+<div class="xdocText"><PRE class="Example">  "ERROR: Null Pointer Exception at demo.c line 1234."
+</PRE></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#unexpected.Interrupt" title="UIAErr_unexpectedInterrupt">UIAErr_unexpectedInterrupt</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIAErr.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAErr.html" title="module UIAErr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIAErr.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIAErr.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:10 GMT</div>
+</div></div></body>
+</html>

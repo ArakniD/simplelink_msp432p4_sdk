@@ -1,0 +1,53 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-base-numberbox.html">
+<polymer-element name="ti-widget-spinner" extends="ti-widget-base-numberbox" attributes="value increment">
+
+    <template>
+        <style>
+            #spinnerWidget {
+                width: 100%;
+                vert-align: middle;
+                display: inline-block;
+            }
+        </style>
+
+        <input type="number" class="form-control" id="spinnerWidget" on-change="{{onChangeHandler}}" on-input="{{onIntermediateChangeHandler}}"
+                    on-focus="{{focusHandler}}" on-blur="{{blurHandler}}"  
+                    min="{{minValue}}" max="{{maxValue}}" step="{{increment}}"/>
+
+    </template>
+    <script>
+        Polymer ('ti-widget-spinner', 
+        {
+            value: 0,
+            minValue: 0,
+            maxValue: 100,
+            increment: 1,
+            getElement : function() 
+            {
+                return this.$.spinnerWidget;
+            },
+            formatChangedValue : function(value)
+            {
+                var newValue = +value;
+                if ((this.minValue === undefined || this.minValue < newValue) && 
+                    (this.maxValue === undefined || this.maxValue > newValue))
+                {
+                    newValue = Math.round(((newValue - this.minValue ) / this.increment)) * this.increment + this.minValue;
+                }
+                return this.super([newValue]);
+            },
+            incrementChanged : function()
+            {
+                this.increment = +this.increment; // convert to number, if not already.
+                if (this.increment <= 0)
+                {
+                    this.increment = 1;
+                }
+                
+                // update value in case the desired value can
+                this.refreshValue();
+            }
+        });
+    </script>
+</polymer-element>

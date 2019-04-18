@@ -1,0 +1,845 @@
+<!--
+`ti-service-targetaccess` enables target memory I/O operations for use in program-model interactions with the target.
+    - 
+Example:
+
+    <ti-service-targetaccess></ti-service-targetaccess>
+
+See demo.html for a full working example of how to use this component.
+
+@group TI GUIComposer
+@element ti-service-targetaccess
+@homepage ../ti-guicomposer-helpindex/demo.html
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../ti-service-serialio/ti-service-serialio.html">
+<link rel="import" href="../ti-core-backplane/ti-core-backplane.html">
+<script type='text/javascript' src="../ti-core-backplane/FileSaver.js"></script>
+<script type='text/javascript' src="../ti-service-targetaccess/src/TargetAccess.js"></script>
+
+<polymer-element name="ti-service-targetaccess">
+
+    <script>
+        Polymer('ti-service-targetaccess', {
+            _self: undefined,
+            deleteSerialioUponDetach: false,
+            ds: undefined,
+            core: undefined,
+            myTimeout: null,
+            requestId: 0,
+            basicWaitingMsg: undefined,
+            areSymbolsLoaded: false,
+            ccxmlString: undefined,
+            ccxmlFileUpdated: false,
+            initComplete: false,
+            baseDir: undefined,
+            projectDir: undefined,
+            states: [
+
+                {
+                    'name': 'disconnected',
+                    'statusString': '',
+                    'waitForUser': true,
+                    'caption': 'Connect',
+                    'skip': false,
+                    'events': {
+                        'gotoNextState': 'ccxmlReady',
+                        'ccxml_ready': 'ccxmlReady',
+                        'backplane_disconnect': 'disconnected',
+                        'backplane_disconnected': 'disconnected'
+                    }
+                },
+
+                {
+                    'name': 'ccxmlReady',
+                    'statusString': '',
+                    'waitForUser': true,
+                    'caption': 'Connected via SerialIO',
+                    'skip': false,
+                    'events': {
+                        'gotoNextState': 'evalReady',
+                        'onEvalHookedIn': 'evalReady',
+                        'backplane_disconnect': 'disconnect',
+                        'backplane_disconnected': 'disconnect',
+                        'backplane_downloadTICloudAgent': 'disconnected'
+
+                    }
+                },
+                {
+                    'name': 'waitForDeviceToBePluggedIn',
+                    'statusString': "",
+                    'caption': 'Disconnect',
+                    'waitForUser': true,
+                    'skip': false,
+                    'events': {
+                        'gotoNextState': 'disconnected',
+                        'onUserSaysDevicePluggedIn': 'disconnected',
+                        'backplane_disconnect': 'disconnected',
+                        'backplane_downloadTICloudAgent': 'disconnected',
+                        'backplane_disconnected': 'disconnected'
+                    }
+                },
+                {
+                    'name': 'evalReady',
+                    'statusString': "",
+                    'caption': 'evaluate function enabled',
+                    'waitForUser': false,
+                    'skip': false,
+                    'events': {
+                        'onSymbolsLoaded': 'symbolsReady',
+                        'ccxml_ready': 'ccxmlReady',
+                        'backplane_disconnect': 'disconnect',
+                        'backplane_disconnected': 'disconnect'
+                    }
+                },
+                {
+                    'name': 'symbolsReady',
+                    'statusString': "",
+                    'caption': 'symbols loaded',
+                    'waitForUser': false,
+                    'skip': false,
+                    'events': {
+                        'gotoNextState': 'disconnect',
+                        'ccxml_ready': 'ccxmlReady',
+                        'backplane_disconnect': 'disconnect',
+                        'backplane_disconnected': 'disconnect'
+                    }
+                },
+                {
+                    'name': 'disconnect',
+                    'statusString': '',
+                    'caption': 'Disconnect',
+                    'waitForUser': true,
+                    'skip': false,
+                    'events': {
+                        'gotoNextState': 'disconnected',
+                        'backplane_disconnect': 'disconnected',
+                        'backplane_disconnected': 'disconnected'
+                    }
+                }
+
+            ],
+            userActions: ['onTargetReady','onUserSaysDevicePluggedIn'],
+            stateIndexes: {},
+            prevState: undefined,
+
+            /**
+             * Fired when the currentState changes and the current state's waitForUser property is true.
+             *
+             * @event currentStateUpdated
+             */
+            /**
+             * Fired when the status caption changes.
+             *
+             * @event statusMessageChanged
+             */
+            /**
+             * Fired when the symbols have been loaded from the file specified in the selectedDevice object's fileName property.
+             *
+             * @event symbolsReady
+             */
+            publish: {
+                backplane: undefined,
+                serialIO: undefined,
+                /**
+                 * waitForTargetsReady is set to true by the application in situations where
+                 * the ti-service-serialio component is used.  The application is responsible for
+                 * calling setUserAction('onTargetReady'); in response to the serialIO.serialPortsReadyToBeOpened event
+                 *
+                 * @attribute waitForTargetReady
+                 * @type boolean
+                 * @default false
+                 */
+                waitForTargetReady: false,
+                /**
+                 * An object that represents the device that is being interacted with.
+                 * The object must have the following fields:
+                 *  <p> {<br/>
+                         *   boardName:     'MSP-EXP430G2 v1.5',<br/>
+                         *   deviceName:      'MSP430G2553',<br/>
+                         *   fileName:      'ReadTempAndSendToSerialPort.cpp.hex',<br/>
+                         *   }<br/>
+                 *   <p>Additional fields can be added for other device-specific information.  e.g.
+                 *   {
+                         *   startBtnName:  'Name of button to press to start target running: e.g. P1.3',<br/>
+                         *   boardImage:    'Name of image file of target board to display e.g. launchpad-mspexp430g2-02.jpg',<br/>
+                         *   startBtnImage  'Name of image file showing location of start button e.g. startbutton-mspexp430g2-02.jpg'<br/>
+                         *   }<br/>
+                 * <p>
+                 *
+                 * @attribute selectedDevice
+                 * @type object
+                 * @default undefined
+                 */
+                selectedDevice: undefined,
+                /**
+                 * the name of the selected device.  This is a two-way binding, allowing it
+                 * to be used within the application's html page
+                 * e.g. <div>{{ti-service-targetaccess.deviceName}}</div>
+                 *
+                 * @attribute deviceName
+                 * @type string
+                 * @default ''
+                 */
+                deviceName: {value: '', reflect: true},
+
+
+                /**
+                 * The current state of this object's internal state machine.
+                 *
+                 * @attribute currentState
+                 * @type string
+                 * @default 'disconnected'
+                 */
+                currentState: {value: undefined, reflect: true},  // see https://groups.google.com/forum/#!msg/polymer-dev/IX_gvSQT78Y/UtxDo-M2H6MJ
+                // and http://stackoverflow.com/questions/23861029/how-does-data-binding-in-polymer-work
+
+                /**
+                 * a string representing the current status of the interactions with the target device.
+                 *
+                 * @attribute status
+                 * @type string
+                 * @default 'Disconnected.'
+                 */
+                status: {value: '', reflect: false},
+                /**
+                 * set to true to automatically connect to the target upon setting the selectedDevice
+                 *
+                 * @attribute autoConect
+                 * @type boolean
+                 * @default true
+                 */
+                autoConnect: false
+            },
+            /**
+             * Method to read a target value given a symbolic name or expression.
+             * This method will return a Q.Promise() object so you can call use .then() and .fail() on to
+             * sequence further operations when this one is completed.
+             * On failure, an object with a 'message' member will be returned.
+             * This method can be used to read scalar values, strings, objects and arrays.
+             *
+             * @method readValue
+             * @param {string} exp - string containing the expression to read the value of.
+             * @return {Q.Promise} a promise that will resolve with the read value.
+             */
+            readValue: function(exp){
+                return gc.target.access.readValue(exp);
+            },
+            /**
+             * Method to write a value to the target using a symbolic name or expression.
+             * This method will return a Q.Promise() object so you can call use .then() and .fail() on to
+             * sequence further operations when this one is completed.
+             * On failure, an object will be returned with a 'message' member.
+             * This method can be used to write scalar values only.
+             *
+             * @method writeValue
+             * @param {string} exp - string l-value expression for the location of the value to write.
+             * @return {Q.Promise} a promise that will resolve when the value is written.
+             */
+            writeValue: function(exp){
+                return gc.target.access.writeValue(exp);
+            },
+            /**
+             * Method to read memory from the target.
+             * This method will return a Q.Promise() object so you can call use .then() and .fail() on to
+             * sequence further operations when this one is completed.
+             * On failure, an object will be returned with a 'message' member.
+             * On success, an array of values read from the target will be returned.
+             *
+             * @method readMemory
+             * @param {number|string} addrs - address to read data from
+             * @param {number} size - optional number of values to read starting from address.  Default is 1
+             * @param {number|string} type - optional string representing the type of data to read.  Default is 'int'
+             * @param {number} page - optional page number to read from.  Default is zero representing the default data page.
+             * @return {Q.Promise} a promise that will resolve with the array of data read from the target.
+             */
+            readMemory: function(addrs, size, type, page) {
+                return gc.target.access.readMemory(addrs, size, type, page);
+            },
+            /**
+             * evaluate(expression): call this function to evaluate a string such as "PC" or *(int*)0x1234
+             * The result is passed to the evaluationCompleteCallback as a string
+             *
+             * @function evaluate
+             * @param1 exp - string containing the expression to evaluage
+             * @param2  evalCompleteCallback - a callback function that will be called when the expression
+             *   evaluation has completed (see _evaluationCompleteCallback for an example implementation)
+             */
+            _evaluate: function(exp,evalCompleteCallback){
+                if ((this.dsLiteEvaluate !== undefined)&&(this.dsLiteEvaluate !== null)){
+                    this.dsLiteEvaluate(exp,evalCompleteCallback);
+                }
+            },
+            evaluate: undefined,
+            dsLiteEvaluate: undefined,
+            _evaluationCompleteCallback: function(argumentsObj, err){
+
+                //TODO: whatever you want to do when an evalation returns its result.
+                if ((argumentsObj !== undefined)&&(argumentsObj !== null)) {
+                    console.log("ti-service-targetaccess.EvaluationCompleteCallback: number of arguments=" + argumentsObj.length);
+                }
+                var errorStr = "";
+                if (err !== undefined) {
+                    errorStr = "" + err;
+                }
+                if ((!this.areSymbolsLoaded)&& (errorStr.length === 0) ) {
+                    this.areSymbolsLoaded = true;
+                    this.updateStateMachine('onSymbolsLoaded');
+                }
+            },
+            evaluationCompleteCallback: undefined,
+            /**
+             * quitEvaluate: call this function to stop evaluation (e.g. to change the state the debug server is in)
+             * When the quit operation has completed, the evaluationQuitCallback function will be called
+             *
+             * @function quitEvaluate
+             * @param1 evalQuitCallback - callback function that will be called when the quit has completed
+             */
+            _quitEvaluate: function (callback) {
+                if ((this.dsLiteQuit !== undefined)&&(this.dsLiteQuit !== null)) {
+                    this.dsLiteQuit(callback);
+                }
+            },
+            quitEvaluate: undefined,
+            dsLiteQuit: undefined,
+            _evaluationQuitCallback: function(){
+                //TODO: whatever you want to do when quitting the eval
+                console.log("ti-service-targetaccess.EvaluationQuitCallback");
+
+            },
+            evaluationQuitCallback: undefined,
+
+            _backplaneCurrentStateChangedHdlr: function(e) {
+                console.log('ti-service-targetaccess: backplaneCurrentState changed to ' + e.target.currentState.name);
+                this.updateStateMachine('backplane_' + e.target.currentState.name);
+            },
+            backplaneCurrentStateChangedHdlr: undefined,
+
+            _backplaneConnectionStatusChangedHdlr: function(e) {
+                console.log('ti-service-targetaccess: backplaneConnectionState changed .isConnectedToCloudAgent=' + e.target.isConnectedToCloudAgent);
+
+            },
+            backplaneConnectionStatusChangedHdlr: undefined,
+
+            _backplaneBtnVisibilityChangedHdlr: function(e) {
+                if (e.target.isDisconnectBtnVisible) {
+
+                }
+            },
+            backplaneBtnVisibilityChangedHdlr: undefined,
+
+            backplaneChanged: function() {
+                if (this.backplane !== undefined) {
+                    this.backplane.autoHideProgressBar = false;
+                    this.backplane.addEventListener("currentStateUpdated", this.backplaneCurrentStateChangedHdlr);
+                    this.backplane.addEventListener("connectionStatusChanged", this.backplaneConnectionStatusChangedHdlr);
+                    this.backplane.addEventListener("btnVisibilityChanged", this.backplaneBtnVisibilityChangedHdlr);
+                    if (this.backplane.currentState !== undefined) {
+                        console.log('ti-service-targetaccess: backplane event handlers initialized. backplane.currentState.name=' + this.backplane.currentState.name);
+                    }
+                }
+            },
+            _serialPortOpenHdlr: function(e){
+                var tempCcxmlString =  this.backplane.selectedDeviceCcxmlString.replace(/\%SERIALPORT\%/g, this.serialIO.selectedSerialPort.comName);
+                if ((tempCcxmlString !== this.ccxmlString) || (!this.ccxmlFileUpdated)){
+                    // In the case where the debug server has previously been configured to connect via a different serial port,
+                    // the backplane will first deconfigure the debug server and then reconfigure it to use the new ccxml file...
+                    console.log('ti-service-targetaccess: Serial Port changed to '+this.serialIO.selectedSerialPort.comName+', reconfiguring...');
+                    this.serialPortListHdlr(e);
+                }
+            },
+            serialPortOpenHdlr: undefined,
+            _serialPortListHdlr: function(e){
+                console.log('ti-service-targetaccess: default serial port=' + this.serialIO.selectedSerialPort.comName);
+                var _self = this;
+                if (this.backplane.selectedDeviceCcxmlString === undefined){
+                    throw ('ti-service-targetaccess exception: selectedDeviceCcxmlString is undefined!');
+                }
+
+
+                // Do not replace %SERIALPORT% in the backplane's ccxmlString as we may need to switch serial ports later on
+
+                // For targets that have a .ccxml file with uart_connection as the connection type,
+                // we need to disconnect, regenerate the .ccxml file with the correct COM port name
+                // and then connect again using this .ccxml file.  Due to the way the program model is
+                // structured, it will not initialize correctly unless a full page reload is performed,
+                // so as 'temporary' hack, when the user changes the serial port configuration via
+                // ti-service-serialio-dialog, the comName and baudRate will be stored in node-webkit's
+                // 'localStorage' and the page will be reloaded.  When the code subsequently reaches this point,
+                // we need to use the localStorage values for the .ccxml file instead of the default values
+                // determined by ti-core-backplane/agent.js
+
+                // TODO: re-work initialization of program model to allow it to be restarted without this hack
+
+                if ((localStorage !== undefined) && (localStorage !== null)){
+                    if ((localStorage.comPort !== undefined) && (localStorage.comPort !== 'undefined')) {
+                        this.serialIO.selectedSerialPort.comName = localStorage.comPort;
+                        localStorage.comPort = 'undefined';  // since COM Ports are dynamically assigned, only use it once.
+                    }
+                    if ((localStorage.baudRate !== undefined) && (localStorage.baudRate !== 'undefined')) {
+                        this.serialIO.selectedSerialPort.baudRate = localStorage.baudRate;
+                        localStorage.baudRate = 'undefined';
+                    }
+                }
+
+                this.ccxmlString =  this.backplane.selectedDeviceCcxmlString.replace(/\%SERIALPORT\%/g, this.serialIO.selectedSerialPort.comName);
+                this.ccxmlFileUpdated = true;
+                this.serialIO.selectedDevice = this.backplane.selectedDevice;
+
+                this.backplane.configureDebugServer(this.selectedDevice.deviceName+'.ccxml',this.ccxmlString,true, function(error) {
+                    if ((error !== undefined) && (error !== null)) {
+                        var msg = error;
+                        if (Array.isArray(error)){
+                            msg = error[0]
+                        }
+                        if ((msg !== undefined)&&(msg !== null)&&(msg.message !== undefined)){
+                            msg = msg.message;
+                        }
+                        console.log('ti-service-targetaccess: failed to configure debug server with serial port.  error=' + msg);
+                        _self.backplane.statusString2 = msg;
+                    } else {
+                        if (_self.backplane.isDebugServerConfigured) {
+                            _self.setStatus('ti-service-targetaccess: Debug Server Configured for serial port ' + _self.serialIO.selectedSerialPort.comName)
+
+                            if (_self.backplane) {
+                                _self.backplane.statusString1 = _self.serialIO.selectedSerialPort.comName + ":" + _self.serialIO.selectedSerialPort.baudRate;
+                            }
+                            _self.updateStateMachine('ccxml_ready');
+                        } else {
+                            console.log("ti-service-targetaccess: failed to configure Debug Server with serial port.  backplane.isDebugServerConfigured = false")
+                        }
+                    }
+                });
+            },
+            serialPortListHdlr: undefined,
+            _replugNoticeHdlr: function(e){
+                if (this.backplane !== undefined){
+                    this.backplane.progressBarEnabled = false;
+                    this.backplane.autoHideProgressBar = false;
+                }
+            },
+            replugNoticeHdlr: undefined,
+            serialIOChanged: function() {
+                if (this.serialIO !== undefined) {
+                    this.serialIO.addEventListener('serialPortsReadyToBeOpened', this.serialPortListHdlr);
+                    this.serialIO.addEventListener('serialPortOpen', this.serialPortOpenHdlr);
+                    this.serialIO.addEventListener('replugNoticeVisibilityChanged', this.replugNoticeHdlr);
+                    this.serialIO.addEventListener("statusMsgUpdated",this.serialStatusUpdated);
+                    this.serialIO.addEventListener("currentStateUpdated",this.serialStateChanged);
+                    if (this.serialIO.currentState !== undefined) {
+                        console.log('ti-service-targetaccess: serialIO event handlers initialized. serialIO.currentState.name=' + this.serialIO.currentState.name);
+                    }
+                }
+            },
+            _serialStatusUpdated: function(){
+                this.setStatus(this.serialIO.status);
+
+            },
+            serialStatusUpdated: undefined,
+            _serialStateChanged: function(){
+                switch (this.serialIO.currentState.name){
+                    case 'findingSerialPorts':
+                        if (this.backplane){
+                            this.backplane.statusString2 = "";
+                            this.backplane.tooltip2 = "";
+                        }
+                        break;
+                    case 'waitForDeviceToBePluggedIn':
+                        this.backplane.hideProgressBar();
+                        this.backplane.statusString2 = this.serialIO.status;
+                        break;
+                    case 'disconnected':
+                        this.backplane.hideProgressBar();
+                        break;
+                }
+            },
+            serialStateChanged: undefined,
+            selectedDeviceChanged: function() {
+                this.ccxmlFileUpdated = false;
+                this.boardName = this.selectedDevice.boardName;
+                this.deviceName = this.selectedDevice.deviceName;
+                this.fileName = this.selectedDevice.fileName;
+                this.fileFolderName = this.selectedDevice.fileFolderName;
+                console.log("ti-service-targetaccess: boardName="+this.boardName+",deviceName="+this.deviceName+",fileName="+this.fileName+",fileFolderName="+this.fileFolderName);
+                this.basicWaitingMsg = this.selectedDevice.msgWaitingForData;
+                this.msgWaitingForData = this.basicWaitingMsg;
+                this.serialIO.selectedDevice = this.selectedDevice;
+                this.backplane.selectedDevice = this.selectedDevice;
+                if ((this.autoConnect) && (this.initComplete) && (this.backplane !== undefined)){
+                    this.backplane.updateStateMachine('onConnectBtnClicked');
+                }
+                /*else (
+                 //if (this.autoConnect) {
+                 //console.log("selectedDeviceChanged: could not auto-connect: initComplete="+this.initComplete+", backplane="+this.backplane);
+                 //};
+                 )
+                 */
+            },
+
+            _setStatus: function(strStatus) {
+                this.status = strStatus;
+                if (strStatus.length > 0) {
+                    this.fire('statusMsgUpdated');
+                }
+            },
+            setStatus: undefined,
+
+            //provided for testing purposes
+            /* returns true if state changed, false otherwise */
+            _updateStateMachine: function(strEventName) {
+                var result = false;
+                var origStateName = this.currentState.name;
+                var newStateName = this.currentState.events[strEventName];
+                if (newStateName) {
+                    console.log('ti-service-targetaccess: updateStateMachine event = ' + strEventName);
+                    if (newStateName !== origStateName) {
+                        this.prevState = this.currentState;
+                        var newIndex = this.stateIndexes[newStateName];
+                        this.currentState = this.states[newIndex];
+                        console.log('ti-service-targetaccess: state change from ' + origStateName + ' to ' + newStateName);
+                    }
+                    result = true;
+                } else {
+                    console.log('OUT OF SEQUENCE updateStateMachine event: ' + strEventName)
+                    console.log(this.currentState.events.length + ' valid event names for state=' + this.currentState.name + ':');
+                    for (var i = 0; i < this.currentState.events.length; i++) {
+                        console.log('event[' + i + ']=' + this.currentState.events[i].name);
+                    }
+                }
+
+                return (result);
+            },
+            updateStateMachine: undefined,
+
+            _currentStateChanged: function() {
+                console.log('onCurrentStateChanged: currentState.name=' + this.currentState.name);
+                if (this.currentState.statusString.length > 0) {
+                    this.setStatus(this.currentState.statusString);
+                }
+                console.log('onCurrentStateChanged: status=' + this.status);
+                this.prevState = this.currentState;
+                switch (this.currentState.name) {
+                    case 'disconnected':
+                        if (this.dsLiteQuit !== undefined){
+                            this.dsLiteQuit();
+                            this.dsLiteQuit = undefined;
+                            this.dsLiteEvaluate = undefined;
+                        }
+
+                        if (this.backplane) {
+                            this.backplane.statusString2 = "";
+                            this.backplane.hideProgressBar();
+                        }
+                        if ((this.areSymbolsLoaded)&&(this.backplane)){
+                            this.backplane.statusString2 = "";
+                            this.backplane.tooltip2 = "";
+                        }
+                        this.areSymbolsLoaded = false;
+                        break;
+                    case 'ccxmlReady':
+
+                        console.log('ti-service-targetaccess: ccxmlReady');
+                        this.ds = this.backplane.ds;
+                        if (this.ds !== undefined){
+                            var target = this.selectedDevice.deviceName;
+                            var _thisService = this;
+                            var autorun = this.selectedDevice.runTargetToReadMemory;
+                            if (autorun === undefined){
+                                autorun = false;
+                            }
+                            if (this.ccxmlString === undefined){
+                                this.ccxmlString = this.backplane.selectedDeviceCcxmlString;
+                            }
+
+                            this.backplane.configureDebugServer(this.selectedDevice.deviceName+".ccxml", this.ccxmlString, autorun, function(error) {
+                                if (error !== null) {
+                                    var msg = error;
+                                    if ((error !== undefined)&&(error !== null)&&(error.message !== undefined)){
+                                        msg = error.message;
+                                    }
+                                    console.log('ti-service-targetaccess: Error configuring Debug Server. Error='+msg);
+                                    _thisService.backplane.statusString2 = msg;
+                                } else {
+                                    _thisService.dsLiteEvaluate = function (exp, evalCompleteCallback) {
+                                        _thisService.core = _thisService.backplane.core;
+                                        _thisService.core.expressions.evaluate(exp).then( function (data) {
+                                            if ((evalCompleteCallback !== undefined)&&(evalCompleteCallback !== null)) {
+                                                evalCompleteCallback.apply(window, arguments);
+                                            } else {
+                                                _thisService.evaluationCompleteCallback.apply(_thisService, arguments);
+                                            }
+                                        }).fail(function(error){
+                                            var msg = "Error evaluating expression "+exp;
+                                            if ((error !== undefined) && (error !== null)){
+                                                if (error.message !== undefined){
+                                                    msg = error.message;
+                                                }
+                                                _thisService.evaluationCompleteCallback.apply(_thisService, null, msg);
+                                            }
+                                            throw msg;
+
+
+                                        });
+                                    };
+
+                                    _thisService.dsLiteQuit = function (evalQuitCallback) {
+                                        // TODO:  _thisService.core.expressions.quit(function () {
+                                        if (evalQuitCallback !== undefined) {
+                                            evalQuitCallback();
+                                        } else {
+                                            _thisService.evaluationQuitCallback();
+                                        }
+                                        // });
+
+                                    };
+                                    _thisService.updateStateMachine('onEvalHookedIn');
+                                }
+                            });
+
+                        }
+                        break;
+                    case 'evalReady':
+                        console.log('ti-service-targetaccess: evalReady.');
+                        if (this.evaluate !== undefined){
+                            //TODO: Add code to establish communications with monitor on the target here.
+                            // see agent.js file in ti-core-backplane for insight into APIs that are supported by DSLite
+                            // e.g. to  this.ds.serial.list to list serial ports, this.ds.debug.loadprogram to program flash.
+                            // Note: use ti-service-serialio and ti-service-programloader instead of calling the above 2 methods here.
+                            var pathToSymbols;
+                            var path;
+                            if (typeof process !== "undefined"){
+
+                                path = require('path');
+                                pathToSymbols = path.join(this.projectDir,path.normalize(this.selectedDevice.fileFolderName));
+                                pathToSymbols = path.join(pathToSymbols,this.selectedDevice.fileName);
+                                // NOTE: MUST have windows style slashes for GEL commands when running in windows.
+                                // User resolvePath to convert from / to \\
+                                pathToSymbols = this.resolvePath(pathToSymbols);
+                            } else {
+                                pathToSymbols = this.resolvePath(this.selectedDevice.fileFolderName+this.selectedDevice.fileName);
+                            }
+
+                            if (pathToSymbols.indexOf("file:///") == 0){
+                                pathToSymbols = pathToSymbols.substring(8,pathToSymbols.length);
+                            }
+                            if (typeof process !== "undefined") {
+                                pathToSymbols = path.normalize(unescape(pathToSymbols));  // unescape spaces in path name
+                                pathToSymbols = path.posix.normalize(pathToSymbols);
+                                pathToSymbols =  pathToSymbols.replace(/\\/g,"\\\\");
+                                // if (navigator.appVersion.indexOf("Win") != -1) {
+                                //    cmd /c for %A in ("C:\Documents and Settings\User\NTUSER.DAT") do @echo %~sA
+
+                                var fs = require('fs');
+                                if (!fs.existsSync(pathToSymbols)) {
+                                    if (this.backplane) {
+                                        this.backplane.statusString2 = 'Could not find symbol file';
+                                        this.backplane.tooltip2 = 'Could not find symbol file ' + pathToSymbols;
+                                        this.backplane.hideProgressBar();
+                                    }
+                                }
+                            }
+                            console.log('ti-service-targetaccess: pathToSymbols='+pathToSymbols);
+                            this.setStatus('Loading symbol file '+pathToSymbols);
+                            this.evaluate('GEL_SymbolLoad("'+ pathToSymbols+'")');
+                        }
+                        break;
+                    case 'symbolsReady':
+                        console.log('ti-service-targetaccess: symbolsReady.');
+                        if (this.evaluate !== undefined) {
+
+                            //this.evaluate("ErrorCount");  // evaluate value of symbol - should fail due to symbols not being loaded.
+                            console.log('ti-service-targetaccess: symbols loaded, evaluate now ready for use');
+                            this.setStatus('Evaluate now ready for use');
+                            if (this.backplane) {
+                                this.backplane.statusString2 = 'Program Model Ready.';
+                                this.backplane.tooltip2 = '';
+                            }
+                            this.fire('symbolsReady');
+                            this.backplane.hideProgressBar();
+
+                            gc.target.access.fireReady(this.core);
+
+                        }
+                        break;
+                    case 'waitForDeviceToBePluggedIn':
+                        this.ds = undefined;
+                        //fire an event to notify the client that they need to show a 'unplug device and plug it back in' message.
+                        this.backplane.hideProgressBar();
+                        this.backplane.updateStateMachine('onDisconnectBtnClicked');
+                        break;
+                    case 'disconnect':
+                    	gc.target.access.disconnect();  // make sure we disconnect target access from dsLite.
+                    	
+                        if (this.quitEvaluate !== undefined) {
+                            this.quitEvaluate();
+                        }
+                        if (this.backplane !== undefined) {
+                            this.backplane.hideProgressBar();
+                        }
+                        this.ds = undefined;
+                        this.updateStateMachine('disconnectComplete');
+                        break;
+
+                }
+                this.fire('currentStateUpdated');
+
+            },
+            currentStateChanged: undefined,
+            autoConnectChanged: function(){
+                if ((this.autoConnect)&&(this.selectedDevice !== undefined)&&(this.selectedDevice !== null)) {
+                    this.backplane.updateStateMachine('onConnectBtnClicked');
+                }
+            },
+            /*
+             * evaluationCompleteCallback
+             *
+             */
+
+            setUserAction: function(e) {
+                console.log('setUserAction: ' + e);
+                if (this.currentState.events[e]) {
+                    this.currentState = this.states[this.stateIndexes[this.currentState.events[e]]];
+                    console.log('updated currentState to ' + this.currentState.name);
+                }
+            },
+            consoleOutput: function() {
+                text = function(message) {
+                    console.log(message);
+                }
+            },
+
+
+            ready: function() {
+                this.enteredView();
+                // this.addEventListener("valueChanged",dialValueChangedHandler,false);
+            },
+
+            // see https://groups.google.com/forum/#!searchin/polymer-dev/binding/polymer-dev/wzfxU9vVAg0/1sFyrmnxy5EJ for info on why initialization is not
+            // considered complete until either enteredView or created is called
+            enteredView: function() {
+                this._self = this;
+                // Use the internal backplane instance and allow the backplaneChanged handler to hook it in
+                this.stateIndexes = {};
+                for (var i = 0; i < this.states.length; i++) {
+                    this.stateIndexes[this.states[i].name] = i;
+                }
+                this.currentState = this.states[0];
+                this.prevState = this.currentState;
+
+                this.currentState = this.states[0];
+                this.setStatus = this._setStatus.bind(this);
+                this.currentState = this.states[0];
+                this.updateStateMachine = this._updateStateMachine.bind(this);
+                this.currentStateChanged = this._currentStateChanged.bind(this);
+                this.evaluationCompleteCallback = this._evaluationCompleteCallback.bind(this);
+                this.evaluationQuitCallback = this._evaluationQuitCallback.bind(this);
+                this.serialPortListHdlr = this._serialPortListHdlr.bind(this);
+                this.serialPortOpenHdlr = this._serialPortOpenHdlr.bind(this);
+                this.replugNoticeHdlr = this._replugNoticeHdlr.bind(this);
+                this.serialStatusUpdated = this._serialStatusUpdated.bind(this);
+                this.serialStateChanged = this._serialStateChanged.bind(this);
+                this.backplaneCurrentStateChangedHdlr = this._backplaneCurrentStateChangedHdlr.bind(this);
+                this.backplaneConnectionStatusChangedHdlr = this._backplaneConnectionStatusChangedHdlr.bind(this);
+                this.backplaneBtnVisibilityChangedHdlr = this._backplaneBtnVisibilityChangedHdlr.bind(this);
+                this.evaluate = this._evaluate.bind(this);
+                this.quitEvaluate = this._quitEvaluate.bind(this);
+
+                if ((this.parentNode !== undefined) &&(this.parentNode !== null)) {
+                    this.serialIO = this.parentNode.querySelector("ti-service-serialio");
+                    if ((this.serialIO === undefined) || (!this.serialIO)) {
+                        this.serialIO = document.createElement("ti-service-serialio");
+                        var body = document.querySelector("body");
+                        if (body) {
+                            body.appendChild(this.serialIO);
+                            this.deleteSerialioUponDetach = true;
+                        }
+                    }
+                } else {
+                    this.serialIO = document.querySelector("ti-service-serialio");
+                    if ((this.serialIO === undefined) || (!this.serialIO)) {
+                        this.serialIO = document.createElement("ti-service-serialio");
+                        if (this.serialIO !== undefined) {
+                            var body = document.querySelector("body");
+                            if (body) {
+                                body.appendChild(this.serialIO);
+                                this.deleteSerialioUponDetach = true;
+
+                            }
+                        }
+                    }
+                }
+                if (this.serialIO !== undefined) {
+                    this.backplane = this.serialIO.backplane;
+                }
+                if (typeof process !== "undefined"){
+                    // running in node-webkit
+                    var fs = require('fs');
+                    var path = require('path');
+                    var workingDir = path.normalize(process.cwd());
+                    this.projectDir = workingDir;
+                    if (this.projectDir.lastIndexOf('splash') === (this.projectDir.length-6)){
+                        this.projectDir = path.join(this.projectDir,'..');
+                    }
+                    this.baseDir = path.join(workingDir,'..');
+                    var osFolderName = 'linux';
+                    if (navigator.appVersion.indexOf("Mac") != -1)
+                        osFolderName = 'mac';
+                    if (navigator.appVersion.indexOf("Win") != -1)
+                        osFolderName = 'win32';
+
+                    var osDir = path.join(this.baseDir,osFolderName);
+                    if (!fs.existsSync(osDir)){
+                        this.baseDir = path.join(this.baseDir,'..');
+                        osDir = path.join(this.baseDir,osFolderName);
+                    }
+
+
+                    var gui = require('nw.gui');
+
+                    if (this.selectedDevice === undefined) {
+                        var deviceInfo = {
+                            boardName: gui.App.manifest.board_name,
+                            deviceName: gui.App.manifest.device_name,
+                            fileName: gui.App.manifest.target_out_filename,
+                            fileFolderName: gui.App.manifest.target_out_foldername,
+                        };
+                        if ((deviceInfo.deviceName !== undefined) && (deviceInfo.fileName !== undefined) && (deviceInfo.fileFolderName !== undefined)) {
+                            this.selectedDevice = deviceInfo;
+                        }
+                    }
+                    this.initComplete = true;
+
+                }
+            }
+        })
+
+    </script>
+</polymer-element>

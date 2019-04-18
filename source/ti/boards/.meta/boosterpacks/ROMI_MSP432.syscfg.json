@@ -1,0 +1,250 @@
+/*
+ * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ *  ======== ROMI_MSP432.json ========
+ *  Definition of the components and their pin mapping on the ROMI BoosterPack
+ *
+ *  Standard portable signal type names:
+ *     DIN
+ *     DOUT
+ *     AIN
+ *     AOUT
+ *     PWM
+ *     UART_RXD
+ *     UART_TXD
+ *     UART_CTS
+ *     UART_RTS
+ *     SPI_SCLK
+ *     SPI_MOSI
+ *     SPI_MISO
+ *     I2C_SDA
+ *     I2C_SCL
+ *
+ *  A signal type is either one of the signal type names above or
+ *  an array of these names.
+ */
+{
+    /*
+     *  ======== name ========
+     *  Portable name for this object within system.deviceData.board
+     *
+     *  Example: from a config script
+     *      // add the device-specific ROMI BoosterPack definition
+     *      scripting.addHardware("/ti/boards/boosterpacks/ROMI_MSP432.json");
+     *
+     *      // define a convenient alias for the main board
+     *      var LaunchPad = system.deviceData.board;
+     *
+     *      // access this BoosterPack's components via "portable" name
+     *      var ROMI = LaunchPad.components["ROMI"].components;
+     *
+     *      // import the GPIO module
+     *      var GPIO = scripting.addModule("/ti/drivers/GPIO");
+     *
+     *      // create a GPIO instance a bind it to the right wheel encoder
+     *      var gpio = GPIO.addInstance();
+     *      gpio.$hardware = ROMI.ENCODER_RIGHT;
+     */
+    "name": "ROMI",
+
+    /*
+     *  ======== displayName ========
+     *  Name shown in SysConfig GUI for this BoosterPack
+     */
+    "displayName": "ROMI MSP432",
+
+    /*
+     *  ======== headerType ========
+     *  The type of the header
+     *    /ti/boards/MSP-EXP432P401R.json
+     */
+    "headerType": "MSP-EXP432P401R J5 Edge Connector",
+
+    "components": {
+        "WHEEL_RIGHT": {
+            "type": "WHEEL",
+            "displayName": "Right Wheel",
+
+            "subComponents": {
+                "encoder":  {
+                    "type": "DIN",
+                    "settings": {
+                        "pull": "Pull Up",
+                        "mode": "Input",
+                        "interruptTrigger": "Falling Edge",
+                        "callbackFunction": "NULL"
+                    },
+                    "signals": {
+                        /* 11: MSP P6.2 */
+                        "encoder":   { "type": "DIN", "connection": 11 }
+                    }
+                },
+
+                "direction":  {
+                    "type": "DOUT",
+                    "signals": {
+                        /* 3: MSP P9.0 */
+                        "direction": { "type": "DOUT", "connection": 3}
+                    }
+                },
+
+                "throttle":  {
+                    "type": "PWM",
+                    "signals": {
+                        /* 9: MSP P9.2 */
+                        "throttle":  { "type": "PWM", "connection": 9}
+                    }
+                }
+            }
+        },
+        "WHEEL_LEFT": {
+            "type": "WHEEL",
+            "displayName": "Left Wheel",
+
+            "subComponents": {
+                "encoder": {
+                    "type": "DIN",
+                    "settings": {
+                        "pull": "Pull Up",
+                        "mode": "Input",
+                        "interruptTrigger": "Falling Edge",
+                        "callbackFunction": "NULL"
+                    },
+                    "signals": {
+                        /* 14: MSP P6.3 */
+                        "encoder":   { "type": "DIN", "connection": 14 }
+                    }
+                },
+
+
+                "direction": {
+                    "type": "DOUT",
+                    "signals": {
+                        /* 6: MSP P9.1 */
+                        "direction": { "type": "DOUT", "connection": 6}
+                    }
+                },
+
+                "throttle": {
+                    "type": "PWM",
+                    "signals": {
+                        /* 12: MSP P9.3 */
+                        "throttle":  { "type": "PWM", "connection": 12}
+                    }
+                }
+            }
+        },
+
+        /* reflectance sensors and illumination LED */
+        "REFLECTANCE_ARRAY": {
+            "type": "REFLECTANCE_ARRAY",
+            "displayName": "Pololu Reflectance Sensor",
+
+            "subComponents": {
+                "irOut": {
+                    "type": "DOUT",
+                    "settings": { "initialOutputState": "Low", "outputStrength": "High"},
+                    "signals": {
+                        /* 10: MSP P5.3 */
+                        "irOut": { "type": "DOUT", "connection": 10 }
+                    }
+                },
+
+                "io1": {
+                    "type": ["DOUT", "DIN"],
+                    "signals": {
+                        /* 18: MSP P7.0 */
+                        "io1": { "type": ["DOUT", "DIN"], "connection": 18}
+                    }
+                },
+
+                "io2": {
+                    "type": ["DOUT", "DIN"],
+                    "signals": {
+                        /* 15: MSP P7.1 */
+                        "io2": { "type": ["DOUT", "DIN"], "connection": 15}
+                    }
+                },
+
+                "io3": {
+                    "type": ["DOUT", "DIN"],
+                    "signals": {
+                        /* 16: MSP P7.2 */
+                        "io3": { "type": ["DOUT", "DIN"], "connection": 16}
+                    }
+                },
+
+                "io4": {
+                    "type": ["DOUT", "DIN"],
+                    "signals": {
+                        /* 13: MSP P7.3 */
+                        "io4": { "type": ["DOUT", "DIN"], "connection": 13}
+                    }
+                },
+
+                "io5": {
+                    "type": ["DOUT", "DIN"],
+                    "signals": {
+                        /* 23: MSP P7.4 */
+                        "io5": { "type": ["DOUT", "DIN"], "connection": 23}
+                    }
+                },
+
+                "io6": {
+                    "type": ["DOUT", "DIN"],
+                    "signals": {
+                        /* 24: MSP P7.5 */
+                        "io6": { "type": ["DOUT", "DIN"], "connection": 24}
+                    }
+                },
+
+                "io7": {
+                    "type": ["DOUT", "DIN"],
+                    "signals": {
+                        /* 25: MSP P7.6 */
+                        "io7": { "type": ["DOUT", "DIN"], "connection": 25}
+                    }
+                },
+
+                "io8": {
+                    "type": ["DOUT", "DIN"],
+                    "signals": {
+                        /* 26: MSP P7.7 */
+                        "io8": { "type": ["DOUT", "DIN"], "connection": 26}
+                    }
+                }
+            }
+        }
+    }
+}

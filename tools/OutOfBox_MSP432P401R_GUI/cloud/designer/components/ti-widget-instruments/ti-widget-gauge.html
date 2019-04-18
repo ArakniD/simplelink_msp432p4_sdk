@@ -1,0 +1,125 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../ti-widget-instruments/ti-widget-base-gauge.html">
+
+<polymer-element name="ti-widget-gauge" extends="ti-widget-base-gauge" attributes="value gaugeThickness">
+    <template>
+        <style>
+            :host 
+            {
+                display: inline-block;
+                font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            }
+            svg {
+                width: 100%;
+                height: auto;
+                overflow: visible;
+            }
+            #minLabel, #maxLabel {
+                transform: translateX(-50%);
+                color: #555;
+                padding: 0.3em;
+                position: absolute;
+                font-size: small;
+            }
+            #minLabelDiv {
+            	position: relative;
+            	left: 10%;
+            	width: 0px;
+            }
+            #maxLabelDiv {
+            	position: relative;
+            	left: 90%;
+            	width: 0px;
+            }
+            #valueLabelDiv {
+            	position: relative;
+            	left: 50%;
+            	width: 0px;
+            	bottom: 1.3em;
+            	padding: 0px;
+            	margin: 0px;
+            }
+            #valueLabel {
+                transform: translateX(-50%);
+                color: #555;
+                position: absolute;
+            	font-size: xx-large;
+            	font-weight: bold;
+            	bottom: 0px;
+            	padding: 0px;
+            	margin: 0px;
+            }
+            #title {
+            	font-size: large;
+            	color: #555;
+            	padding: 0.3em;
+            }
+            #labelsContainer {
+            	height: 1.3em;
+            }
+            #top {
+            	width: 100%;
+            	height: 100%;
+            }
+        </style>
+
+		<div id="top" layout vertical around-justified>
+			<label id="title">{{titleLabel}}</label>
+			<div>
+	        <svg id="gauge" width="100%" height="100%" viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet">
+	            <path class="innerShadow" stroke="none" fill="#edebeb" id="underlay" d="M0,100A100,100,0,0,1,200,100L160,100A60,60,0,0,0,40,100Z"></path>
+	            <path class="innerShadow" stroke="none" fill="orange" id="level" d="M0,100A100,100,0,0,1,100,0L100,40A60,60,0,0,0,40,100Z"></path>
+	        </svg>
+	        <div id="labelsContainer" layout horizontal>
+	        	<div id="minLabelDiv"><label id="minLabel">{{minValue}}</label></div>
+	        	<div id="valueLabelDiv"><label id="valueLabel">{{_displayValue}}</label></div>
+	        	<div id="maxLabelDiv"><label id="maxLabel">{{maxValue}}</label></div>
+	        </div>
+	        </div>
+        </div>  
+    </template>
+    
+    <script>
+        Polymer ('ti-widget-gauge', 
+        {
+            gaugeThickness: 40,
+            updateGauge : function(val)
+            {
+                var path = this.$.level;
+                path.setAttribute('d', this.createPath(val));
+                var color = this.getColorForPercentage(val, this._percentColors);
+                
+                path.setAttribute('fill', color);
+            },
+            gaugeThicknessChanged : function()
+            {
+            	this.updateValue();
+            	var path = this.$.underlay;
+            	path.setAttribute('d', this.createPath(1));
+            	var width = +this.gaugeThickness/4;
+            	
+            	this.$.minLabelDiv.style.left = width + '%';
+            	this.$.maxLabelDiv.style.left = (100-width) + '%';
+            },
+            createPath : function(val) 
+            {
+            	var Ro = 100;
+            	var Ri = 100 - this.gaugeThickness;
+            	
+            	Ri = Math.max(Ri, 5);
+            	Ri = Math.min(Ri, 95);
+            	
+                var alpha = (1 - val) * Math.PI;
+                
+                var Xo = Ro * Math.cos(alpha);
+                var Yo = Ro * Math.sin(alpha);
+                var Xi = Ri * Math.cos(alpha);
+                var Yi = Ri * Math.sin(alpha);
+
+                return 'M0,100A100,100,0,0,1,' + (100+Xo) + ',' + (100-Yo) + 
+                           'L' + (100+Xi) + ',' + (100-Yi) + 
+                           'A' + Ri + ',' + Ri + ',0,0,0,' + (100-Ri) + ',100Z'; 
+            }
+        });
+    </script>
+</polymer-element>

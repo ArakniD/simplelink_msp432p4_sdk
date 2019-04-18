@@ -1,0 +1,144 @@
+<html>
+<head>
+<title>package iar.tools.configuro</title>
+<meta name="description" content="Command-line configuration tool for IAR Embedded Workbench">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">package</span> <span class="xdoc-id">iar.tools.configuro</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/package.html">index URL</a></div>
+<p class="xdocHdrSummary">Command-line configuration tool for IAR Embedded Workbench</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-1">USAGE</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-2">OPTIONS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-3">DETAILS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-4">INPUTS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-5">OUTPUTS</a></li>
+</ul>
+<div class="xdocBrief">
+This command-line tool computes the appropriate configuro options from the
+  set of options passed from the IAR Workbench (for ex. target/platform
+  from compile options). With these options, the xdc.tools.configuro tool
+  is executed to compute the set of libraries, command-line flags and
+  the other artifacts needed to build the application in IAR Workbench.
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id">XDCspec</span></tt> declarations</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../iar/tools/configuro/package-src.html"><span class="xdocLabelFile">iar/tools/configuro/package.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynX">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">package</span> <span class="xdoc-id">iar.tools.configuro</span> [1, 0, 0] {
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">module</span> <a class='xdocSynGo' href='../../../iar/tools/configuro/Main.html' title='iar.tools.configuro.Main'><span class="xdoc-id">Main</span>;</a>
+</div>
+<div class='xdocSynSum'><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Command implementation</div>
+<div class="xdocSynCode">
+<tt></tt>}
+</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">USAGE</div>
+<div class="xdocText"><tt>xs iar.tools.configuro [--help]<br />&nbsp;&nbsp;&nbsp;&nbsp;[-o outdir (optional)]<br />&nbsp;&nbsp;&nbsp;&nbsp;[-c codegen_dir]<br />&nbsp;&nbsp;&nbsp;&nbsp;[--cc compiler_name_string]<br />&nbsp;&nbsp;&nbsp;&nbsp;[--device device_name]<br />&nbsp;&nbsp;&nbsp;&nbsp;[--cfgArgs args_string]<br />&nbsp;&nbsp;&nbsp;&nbsp;[--compileOptions compile_options_string]<br />&nbsp;&nbsp;&nbsp;&nbsp;[--linkOptions linker_options_string]<br />&nbsp;&nbsp;&nbsp;&nbsp;[--profile profile]<br />&nbsp;&nbsp;&nbsp;&nbsp;[--projFile project_file (optional)]<br />&nbsp;&nbsp;&nbsp;&nbsp;infile.cfg (optional)</tt></div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">OPTIONS</div>
+<div class="xdocText"><dl><dt><tt>-o</tt></dt><dd>Pathname of the output directory<p>  A directory containing the generated build artifacts, in particular
+  the <tt>compiler.defs</tt> and <tt>linker.cmd</tt> files.
+</p><p>  The last component of the output directory path must be a valid
+  ANSI C identifier; i.e., it must consist entirely of alphanumeric or
+  '_' characters and must not start with a number.  So, the names
+  '0app' and 'app-test' are not valid but '0app/config' and
+  'app-test/config' are valid.
+</p><p>  This is optional parameter. By default, the output directory has the
+  name <tt>configPkg</tt> and will be  within the <tt>{#cfgDir}</tt> directory.
+</p></dd><dt><tt>-c</tt></dt><dd>Root directory of the code generation tools<p>  The path to the installation directory of the compiler and linker
+  for the selected target. The definition of "installation directory"
+  can vary from compiler to compiler, but is most commonly the
+  directory that contains a "bin" subdirectory.
+</p></dd><dt><tt>--device</tt></dt><dd>The name of the device<p>  The device name has to be passed to the xdc.tools.configuro tool.
+</p></dd><dt><tt>--compileOptions</tt></dt><dd>Compile options used for building C files<p>  The compiler options are required to find the target and platform
+  options for xdc.tools.configuro.
+</p></dd><dt><tt>--linkOptions</tt></dt><dd>Linker options used for linking libraries<p>  The linker options are required to pull in the correct libraries
+  during link.
+</p></dd><dt><tt>--profile</tt></dt><dd>Build profile</dd><dt><tt>--cfgArgs</tt></dt><dd>Optional arguments passed to configuration script<p>  This option lets the user pass values into the configuration script
+  from the command line. The argument is an expression in JavaScript
+  syntax.  Its value is available in the configuration script under the
+  name <tt>Program.build.cfgArgs</tt>.
+</p><p>  The JavaScript expression is evaluated in the configuration domain
+  after the platform package is imported, immediately before calling
+  the user's configuration script.
+</p><p>  This string has the same effect as the <tt>cfgArgs</tt> string in
+  <tt><a class="xdoc-link" href="../../../xdc/bld/Executable.html#.Attrs" title="xdc.bld.Executable.Attrs">xdc.bld.Executable.Attrs</a></tt>.
+</p><p>  You can pass multiple values to configuration scripts using the
+  syntax of a JavaScript <tt>Object</tt> constant:
+</p><p><PRE class="Example">      xs xdc.tools.configuro --cfgArgs '{foo:"hello", bar:2}' ... app.cfg
+</PRE></p><p>  The configuration script can read the various fields as, e.g.:
+</p><p><PRE class="Example">      if (Program.build.cfgArgs.foo == "hello") {
+          :
+      }
+</PRE></p></dd><dt><tt>--projFile</tt></dt><dd>IAR Embedded project file<p>  This file is searched for the RTSC configuration file (.cfg).
+</p></dd></div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This command-line tool computes the appropriate configuro options from the
+  set of options passed from the IAR Workbench (for ex. target/platform
+  from compile options). With these options, the xdc.tools.configuro tool
+  is executed to compute the set of libraries, command-line flags and
+  the other artifacts needed to build the application in IAR Workbench.</div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">INPUTS</div>
+<div class="xdocText"></div>
+<div class="xdocText"><DL><DT> <tt>-o outdir (Optional)</tt></DT><DD>
+      Optionally an output directory can be provided.
+</DD><DT> <tt>-c codegen_dir</tt></DT><DD>
+      Root directory of the code generation tools.
+</DD><DT> <tt>--device device_name_string</tt></DT><DD>
+      The name of the device.
+</DD><DT> <tt>--compileOptions compile_options_string</tt></DT><DD>
+      The command line options passed to the compiler.
+</DD><DT> <tt>--linkOptions linker_options_string</tt></DT><DD>
+      The command line options passed to the linker.
+</DD><DT> <tt>--profile profile</tt></DT><DD>
+      The build profile.
+</DD><DT> <tt>--projFile project_file (Optional)</tt></DT><DD>
+      IAR Embedded Workbench project file. This is optional when
+      infile.cfg is passed on command line.
+</DD><DT> <tt>infile.cfg (Optional)</tt></DT><DD>
+      A user-supplied configuration script that names a set of RTSC
+      modules, and optionally changes their configuration settings.
+      If provided, it will override the --projFile option.
+</DD></DL></div>
+<span id="xdoc-sect-5"></span>
+<div class="xdocSect">OUTPUTS</div>
+<div class="xdocText"></div>
+<div class="xdocText"><DL><DT> <tt>outdir/</tt></DT><DD>
+      A directory containing all generated build artifacts.
+</DD><DT> <tt>outdir/compiler.defs</tt></DT><DD>
+      A file containing C compiler command-line flags. These flags must
+      included on the compiler command line for any C source file that
+      directly accesses the RTSC content. The flags define the header file
+      and include paths to ensure object code compatibility between all
+      all included content.
+</DD><DT> <tt>outdir/linker.cmd</tt></DT><DD>
+      A file containing linker command-line flags. These flags must be
+      included on the linker command line for the final link of the
+      application. The flags list needed libraries and object files,
+      and on some platforms define the embedded system memory map.
+</DD></DL></div>
+<div class="xdocText">For example:</div>
+<div class="xdocText"><PRE class="Example">      xs iar.tools.configuro -c "&lt;codegen_dir&gt;" --cc "&lt;compiler&gt;"
+         --device "&lt;device_name&gt;" --cfgArgs "&lt;cfg_script_args&gt;"
+         --compileOptions "&lt;compiler_options&gt;" --linkOptions "&lt;link_options&gt;"
+         --profile "&lt;profile&gt;" infile.cfg
+</PRE></div>
+<div id="xdocDate">generated on Wed, 21 Nov 2018 17:15:11 GMT</div>
+</div></div></body>
+</html>

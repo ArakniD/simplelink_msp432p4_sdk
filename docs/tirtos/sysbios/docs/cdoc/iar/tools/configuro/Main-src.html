@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module iar.tools.configuro.Main</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/* 
+</span>     2    <span class="comment"> *  Copyright (c) 2013 Texas Instruments and others.
+</span>     3    <span class="comment"> *  All rights reserved. This program and the accompanying materials
+</span>     4    <span class="comment"> *  are made available under the terms of the Eclipse Public License v1.0
+</span>     5    <span class="comment"> *  which accompanies this distribution, and is available at
+</span>     6    <span class="comment"> *  http://www.eclipse.org/legal/epl-v10.html
+</span>     7    <span class="comment"> *
+</span>     8    <span class="comment"> *  Contributors:
+</span>     9    <span class="comment"> *      Texas Instruments - initial implementation
+</span>    10    <span class="comment"> *
+</span>    11    <span class="comment"> * */</span>
+    12    <span class="xdoc">/*!
+</span>    13    <span class="xdoc"> *  ======== Main ========
+</span>    14    <span class="xdoc"> *  Command-line configuration tool for IAR Embedded Workbench
+</span>    15    <span class="xdoc"> *
+</span>    16    <span class="xdoc"> *  This command-line tool computes the appropriate configuro options from the
+</span>    17    <span class="xdoc"> *  set of options passed from the IAR Workbench (for ex. target/platform
+</span>    18    <span class="xdoc"> *  from compile options). With these options, the xdc.tools.configuro tool
+</span>    19    <span class="xdoc"> *  is executed to compute the set of libraries, command-line flags and
+</span>    20    <span class="xdoc"> *  the other artifacts needed to build the application in IAR Workbench.
+</span>    21    <span class="xdoc"> *
+</span>    22    <span class="xdoc"> *  <b>@a(INPUTS)</b>
+</span>    23    <span class="xdoc"> *  <b>@p(dlist)</b>
+</span>    24    <span class="xdoc"> *    - `-o outdir (Optional)`
+</span>    25    <span class="xdoc"> *      Optionally an output directory can be provided.
+</span>    26    <span class="xdoc"> *    - `-c codegen_dir`
+</span>    27    <span class="xdoc"> *      Root directory of the code generation tools.
+</span>    28    <span class="xdoc"> *    - `--device device_name_string`
+</span>    29    <span class="xdoc"> *      The name of the device.
+</span>    30    <span class="xdoc"> *    - `--compileOptions compile_options_string`
+</span>    31    <span class="xdoc"> *      The command line options passed to the compiler.
+</span>    32    <span class="xdoc"> *    - `--linkOptions linker_options_string`
+</span>    33    <span class="xdoc"> *      The command line options passed to the linker.
+</span>    34    <span class="xdoc"> *    - `--profile profile`
+</span>    35    <span class="xdoc"> *      The build profile.
+</span>    36    <span class="xdoc"> *    - `--projFile project_file (Optional)`
+</span>    37    <span class="xdoc"> *      IAR Embedded Workbench project file. This is optional when
+</span>    38    <span class="xdoc"> *      infile.cfg is passed on command line.
+</span>    39    <span class="xdoc"> *    - `infile.cfg (Optional)`
+</span>    40    <span class="xdoc"> *      A user-supplied configuration script that names a set of RTSC
+</span>    41    <span class="xdoc"> *      modules, and optionally changes their configuration settings.
+</span>    42    <span class="xdoc"> *      If provided, it will override the --projFile option.
+</span>    43    <span class="xdoc"> *  <b>@p</b>
+</span>    44    <span class="xdoc"> *
+</span>    45    <span class="xdoc"> *  <b>@a(OUTPUTS)</b>
+</span>    46    <span class="xdoc"> *  <b>@p(dlist)</b>
+</span>    47    <span class="xdoc"> *    - `outdir/`
+</span>    48    <span class="xdoc"> *      A directory containing all generated build artifacts.
+</span>    49    <span class="xdoc"> *    - `outdir/compiler.defs`
+</span>    50    <span class="xdoc"> *      A file containing C compiler command-line flags. These flags must
+</span>    51    <span class="xdoc"> *      included on the compiler command line for any C source file that
+</span>    52    <span class="xdoc"> *      directly accesses the RTSC content. The flags define the header file
+</span>    53    <span class="xdoc"> *      and include paths to ensure object code compatibility between all
+</span>    54    <span class="xdoc"> *      all included content.
+</span>    55    <span class="xdoc"> *    - `outdir/linker.cmd`
+</span>    56    <span class="xdoc"> *      A file containing linker command-line flags. These flags must be
+</span>    57    <span class="xdoc"> *      included on the linker command line for the final link of the
+</span>    58    <span class="xdoc"> *      application. The flags list needed libraries and object files,
+</span>    59    <span class="xdoc"> *      and on some platforms define the embedded system memory map.
+</span>    60    <span class="xdoc"> *  <b>@p</b>
+</span>    61    <span class="xdoc"> *
+</span>    62    <span class="xdoc"> *  For example:
+</span>    63    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    64    <span class="xdoc"> *      xs iar.tools.configuro -c "&lt;codegen_dir&gt;" --cc "&lt;compiler&gt;"
+</span>    65    <span class="xdoc"> *         --device "&lt;device_name&gt;" --cfgArgs "&lt;cfg_script_args&gt;"
+</span>    66    <span class="xdoc"> *         --compileOptions "&lt;compiler_options&gt;" --linkOptions "&lt;link_options&gt;"
+</span>    67    <span class="xdoc"> *         --profile "&lt;profile&gt;" infile.cfg
+</span>    68    <span class="xdoc"> *  <b>@p</b>
+</span>    69    <span class="xdoc"> */</span>
+    70    <span class=key>metaonly</span> <span class=key>module</span> Main <span class=key>inherits</span> xdc.tools.ICmd {
+    71    
+    72        <span class="xdoc">/*!
+</span>    73    <span class="xdoc">     * usage help message
+</span>    74    <span class="xdoc">     */</span>
+    75        <span class=key>override</span> <span class=key>config</span> String usage[] = [
+    76            <span class="string">'[-o outdir (optional)]'</span>,
+    77            <span class="string">'[-c codegen_dir]'</span>,
+    78            <span class="string">'[--cc compiler_name_string]'</span>,
+    79            <span class="string">'[--device device_name]'</span>,
+    80            <span class="string">'[--cfgArgs args_string]'</span>,
+    81            <span class="string">'[--compileOptions compile_options_string]'</span>,
+    82            <span class="string">'[--linkOptions linker_options_string]'</span>,
+    83            <span class="string">'[--profile profile]'</span>,
+    84            <span class="string">'[--projFile project_file (optional)]'</span>,
+    85            <span class="string">'infile.cfg (optional)'</span>
+    86        ];
+    87    
+    88    <span class=key>instance</span>:
+    89    
+    90        <span class="xdoc">/*!
+</span>    91    <span class="xdoc">     *  ======== output ========
+</span>    92    <span class="xdoc">     *  Pathname of the output directory
+</span>    93    <span class="xdoc">     *
+</span>    94    <span class="xdoc">     *  A directory containing the generated build artifacts, in particular
+</span>    95    <span class="xdoc">     *  the `compiler.defs` and `linker.cmd` files.
+</span>    96    <span class="xdoc">     *
+</span>    97    <span class="xdoc">     *  The last component of the output directory path must be a valid
+</span>    98    <span class="xdoc">     *  ANSI C identifier; i.e., it must consist entirely of alphanumeric or
+</span>    99    <span class="xdoc">     *  '_' characters and must not start with a number.  So, the names
+</span>   100    <span class="xdoc">     *  '0app' and 'app-test' are not valid but '0app/config' and
+</span>   101    <span class="xdoc">     *  'app-test/config' are valid.
+</span>   102    <span class="xdoc">     *
+</span>   103    <span class="xdoc">     *  This is optional parameter. By default, the output directory has the
+</span>   104    <span class="xdoc">     *  name `configPkg` and will be  within the `{#cfgDir}` directory.
+</span>   105    <span class="xdoc">     */</span>
+   106        @CommandOption(<span class="string">"o"</span>)
+   107        <span class=key>config</span> String output = <span class="string">""</span>;
+   108    
+   109        <span class="xdoc">/*!
+</span>   110    <span class="xdoc">     *  ======== rootDir ========
+</span>   111    <span class="xdoc">     *  Root directory of the code generation tools
+</span>   112    <span class="xdoc">     *
+</span>   113    <span class="xdoc">     *  The path to the installation directory of the compiler and linker
+</span>   114    <span class="xdoc">     *  for the selected target. The definition of "installation directory"
+</span>   115    <span class="xdoc">     *  can vary from compiler to compiler, but is most commonly the
+</span>   116    <span class="xdoc">     *  directory that contains a "bin" subdirectory.
+</span>   117    <span class="xdoc">     */</span>
+   118        @CommandOption(<span class="string">"c"</span>)
+   119        <span class=key>config</span> String rootDir = <span class=key>null</span>;
+   120    
+   121        <span class="xdoc">/*!
+</span>   122    <span class="xdoc">     *  ======== compiler ========
+</span>   123    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   124    <span class="xdoc">     *  The name of the compiler
+</span>   125    <span class="xdoc">     *
+</span>   126    <span class="xdoc">     *  The compiler name is required to find the target and platform
+</span>   127    <span class="xdoc">     *  xdc.tools.configuro options.
+</span>   128    <span class="xdoc">     */</span>
+   129        @CommandOption(<span class="string">"cc"</span>)
+   130        <span class=key>config</span> String compiler = <span class="string">""</span>;
+   131    
+   132        <span class="xdoc">/*!
+</span>   133    <span class="xdoc">     *  ======== device ========
+</span>   134    <span class="xdoc">     *  The name of the device
+</span>   135    <span class="xdoc">     *
+</span>   136    <span class="xdoc">     *  The device name has to be passed to the xdc.tools.configuro tool.
+</span>   137    <span class="xdoc">     */</span>
+   138        @CommandOption(<span class="string">"device"</span>)
+   139        <span class=key>config</span> String device = <span class=key>null</span>;
+   140    
+   141        <span class="xdoc">/*!
+</span>   142    <span class="xdoc">     *  ======== compileOptions ========
+</span>   143    <span class="xdoc">     *  Compile options used for building C files
+</span>   144    <span class="xdoc">     *
+</span>   145    <span class="xdoc">     *  The compiler options are required to find the target and platform
+</span>   146    <span class="xdoc">     *  options for xdc.tools.configuro.
+</span>   147    <span class="xdoc">     */</span>
+   148        @CommandOption(<span class="string">"compileOptions"</span>)
+   149        <span class=key>config</span> String compileOptions = <span class=key>null</span>;
+   150    
+   151        <span class="xdoc">/*!
+</span>   152    <span class="xdoc">     *  ======== linkOptions ========
+</span>   153    <span class="xdoc">     *  Linker options used for linking libraries
+</span>   154    <span class="xdoc">     *
+</span>   155    <span class="xdoc">     *  The linker options are required to pull in the correct libraries
+</span>   156    <span class="xdoc">     *  during link.
+</span>   157    <span class="xdoc">     */</span>
+   158        @CommandOption(<span class="string">"linkOptions"</span>)
+   159        <span class=key>config</span> String linkOptions = <span class=key>null</span>;
+   160    
+   161        <span class="xdoc">/*!
+</span>   162    <span class="xdoc">     *  ======== profile ========
+</span>   163    <span class="xdoc">     *  Build profile
+</span>   164    <span class="xdoc">     */</span>
+   165        @CommandOption(<span class="string">"profile"</span>)
+   166        <span class=key>config</span> String profile = <span class="string">""</span>;
+   167    
+   168        <span class="xdoc">/*!
+</span>   169    <span class="xdoc">     *  ======== cfgArgs ========
+</span>   170    <span class="xdoc">     *  Optional arguments passed to configuration script
+</span>   171    <span class="xdoc">     *
+</span>   172    <span class="xdoc">     *  This option lets the user pass values into the configuration script
+</span>   173    <span class="xdoc">     *  from the command line. The argument is an expression in JavaScript
+</span>   174    <span class="xdoc">     *  syntax.  Its value is available in the configuration script under the
+</span>   175    <span class="xdoc">     *  name `Program.build.cfgArgs`.
+</span>   176    <span class="xdoc">     *
+</span>   177    <span class="xdoc">     *  The JavaScript expression is evaluated in the configuration domain
+</span>   178    <span class="xdoc">     *  after the platform package is imported, immediately before calling
+</span>   179    <span class="xdoc">     *  the user's configuration script.
+</span>   180    <span class="xdoc">     *
+</span>   181    <span class="xdoc">     *  This string has the same effect as the `cfgArgs` string in
+</span>   182    <span class="xdoc">     *  `{<b>@link</b> xdc.bld.Executable#Attrs}`.
+</span>   183    <span class="xdoc">     *
+</span>   184    <span class="xdoc">     *  You can pass multiple values to configuration scripts using the
+</span>   185    <span class="xdoc">     *  syntax of a JavaScript `Object` constant:
+</span>   186    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   187    <span class="xdoc">     *      xs xdc.tools.configuro --cfgArgs '{foo:"hello", bar:2}' ... app.cfg
+</span>   188    <span class="xdoc">     *  <b>@p</b>
+</span>   189    <span class="xdoc">     *
+</span>   190    <span class="xdoc">     *  The configuration script can read the various fields as, e.g.:
+</span>   191    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   192    <span class="xdoc">     *      if (Program.build.cfgArgs.foo == "hello") {
+</span>   193    <span class="xdoc">     *          :
+</span>   194    <span class="xdoc">     *      }
+</span>   195    <span class="xdoc">     *  <b>@p</b>
+</span>   196    <span class="xdoc">     *
+</span>   197    <span class="xdoc">     *  <b>@a(Note)</b>
+</span>   198    <span class="xdoc">     *  Different command line shells, such as UNIX `bash` verses Windows
+</span>   199    <span class="xdoc">     *  `cmd.exe`, interpret quotes on the command line very differently.
+</span>   200    <span class="xdoc">     *  As a result, the syntax necessary to pass a string such as "hello"
+</span>   201    <span class="xdoc">     *  to `configuro` can vary depending on the shell you use.
+</span>   202    <span class="xdoc">     *
+</span>   203    <span class="xdoc">     *  For most UNIX shells, it is possible to use single quotes around the
+</span>   204    <span class="xdoc">     *  use of double quotes as in the example above.  However, since Windows
+</span>   205    <span class="xdoc">     *  `cmd.exe` does not treat the single quote as a special character, it
+</span>   206    <span class="xdoc">     *  is necessary to use a backslash, '\', to ensure that the double quote
+</span>   207    <span class="xdoc">     *  characters are passed to the configuro tool.
+</span>   208    <span class="xdoc">     *
+</span>   209    <span class="xdoc">     *  Windows `cmd.exe`:
+</span>   210    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   211    <span class="xdoc">     *      xs xdc.tools.configuro --cfgArgs "{foo:\"hello\", bar:2}" ...
+</span>   212    <span class="xdoc">     *  <b>@p</b>
+</span>   213    <span class="xdoc">     *
+</span>   214    <span class="xdoc">     *  UNIX `bash`, `ksh`, `csh`, ...:
+</span>   215    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   216    <span class="xdoc">     *      xs xdc.tools.configuro --cfgArgs '{foo:"hello", bar:2}' ...
+</span>   217    <span class="xdoc">     *  <b>@p</b>
+</span>   218    <span class="xdoc">     *
+</span>   219    <span class="xdoc">     *  <b>@see</b> xdc.bld.Executable#Attrs
+</span>   220    <span class="xdoc">     */</span>
+   221        @CommandOption(<span class="string">"cfgArgs"</span>)
+   222        <span class=key>config</span> String cfgArgs = <span class="string">""</span>;
+   223    
+   224        <span class="xdoc">/*!
+</span>   225    <span class="xdoc">     *  ======== projFile ========
+</span>   226    <span class="xdoc">     *  IAR Embedded project file.
+</span>   227    <span class="xdoc">     *
+</span>   228    <span class="xdoc">     *  This file is searched for the RTSC configuration file (.cfg).
+</span>   229    <span class="xdoc">     */</span>
+   230        @CommandOption(<span class="string">"projFile"</span>)
+   231        <span class=key>config</span> String projFile = <span class="string">""</span>;
+   232    }
+   233    <span class="comment">/*
+</span>   234    <span class="comment"> *  @(#) iar.tools.configuro; 1, 0, 0,0; 1-9-2017 12:51:04; /db/ztree/library/trees/xdctools/xdctools-h00/src/
+</span>   235    <span class="comment"> */</span>
+   236    
+</pre>
+</body></html>

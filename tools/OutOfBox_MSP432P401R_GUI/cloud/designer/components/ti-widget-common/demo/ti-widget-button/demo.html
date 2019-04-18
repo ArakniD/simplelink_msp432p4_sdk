@@ -1,0 +1,139 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+Copyright (c) 2014, Texas Instruments Incorporated
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+*   Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+*   Neither the name of Texas Instruments Incorporated nor the names of
+its contributors may be used to endorse or promote products derived
+from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<!DOCTYPE html>
+<html>
+<script>
+    if ('registerElement' in document
+            && 'createShadowRoot' in HTMLElement.prototype
+            && 'import' in document.createElement('link')
+            && 'content' in document.createElement('template')) {
+        // We're using a browser with native WC support!
+    } else {
+        document.write('<script src="../../../webcomponentsjs/webcomponents.js"><\/script>');
+    }
+</script>
+<style>
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 20px;
+    }
+</style>
+<head>
+
+    <link rel="import" href="../../../ti-widget-common/ti-widget-button.html">
+    <link rel="import" href="../../../ti-core-stylesheets/ti-core-stylesheets.html">
+</head>
+
+<body align="center">
+
+<h1>ti-widget-button demo</h1>
+<p>&nbsp;</p><p>&nbsp;</p>
+<template id="btnDemoTemplate" is="auto-binding">
+    <section hero="" id="example1">
+
+        <div class="example"><div style="padding-bottom:10px"><b>default properties: raised, not disabled</b></div>
+            <ti-widget-button id="btnDefaultRaised" raised="" on-click="{{onClickHdlr}};">Default</ti-widget-button>
+            <ti-widget-button id="btnPrimaryRaised"  raised="" on-click="{{onClickHdlr}};" buttonType="primary">Primary</ti-widget-button>
+            <ti-widget-button id="btnSecondaryRaised" raised="" on-click="{{onClickHdlr}};" buttonType="secondary">Secondary</ti-widget-button>
+            <ti-widget-button id="btnSuccessRaised" raised="" on-click="{{onClickHdlr}};" buttonType="success">Success</ti-widget-button>
+            <ti-widget-button id="btnInfoRaised" raised="" on-click="{{onClickHdlr}};" buttonType="info">Info</ti-widget-button>
+            <ti-widget-button id="btnWarningRaised" raised="" on-click="{{onClickHdlr}};" buttonType="warning">Warning</ti-widget-button>
+            <ti-widget-button id="btnErrorRaised" raised="" on-click="{{onClickHdlr}};" buttonType="error">Error</ti-widget-button>
+            <ti-widget-button id="btnLinkRaised" raised="" on-click="{{onClickHdlr}};" buttonType="link">Link</ti-widget-button>
+        </div>
+        <p>&nbsp;</p>
+        <div class="example"><div style="padding-bottom:10px;"><b>not raised, not disabled</b></div>
+            <ti-widget-button id="btnDefault" on-click="{{onClickHdlr}};">Default</ti-widget-button>
+            <ti-widget-button id="btnPrimary"  buttonType="primary" on-click="{{onClickHdlr}};">Primary</ti-widget-button>
+            <ti-widget-button id="btnSecondary" buttonType="secondary" on-click="{{onClickHdlr}};">Secondary</ti-widget-button>
+            <ti-widget-button id="btnSuccess" buttonType="success" on-click="{{onClickHdlr}};">Success</ti-widget-button>
+            <ti-widget-button id="btnInfo" buttonType="info" on-click="{{onClickHdlr}};">Info</ti-widget-button>
+            <ti-widget-button id="btnWarning" buttonType="warning" on-click="{{onClickHdlr}};">Warning</ti-widget-button>
+            <ti-widget-button id="btnError" buttonType="error" on-click="{{onClickHdlr}};">Error</ti-widget-button>
+            <ti-widget-button id="btnLink" buttonType="link" on-click="{{onClickHdlr}};">Link</ti-widget-button>
+        </div>
+        <p>&nbsp;</p>
+        <div class="example"><div style="padding-bottom:10px"><b>disabled</b></div><br/>
+            <ti-widget-button disabled="" >Default</ti-widget-button>
+            <ti-widget-button disabled="" buttonType="primary" >Primary</ti-widget-button>
+            <ti-widget-button disabled="" buttonType="secondary">Secondary</ti-widget-button>
+            <ti-widget-button disabled="" buttonType="success">Success</ti-widget-button>
+            <ti-widget-button disabled="" buttonType="info">Info</ti-widget-button>
+            <ti-widget-button disabled="" buttonType="warning">Warning</ti-widget-button>
+            <ti-widget-button disabled="" buttonType="error">Error</ti-widget-button>
+            <ti-widget-button disabled="" buttonType="link">Link</ti-widget-button>
+        </div>
+    </section>
+    <p>&nbsp;</p>
+    <div id="textStringDiv"></div>
+</template>
+<script>
+    var numTimesClicked = 0;
+    var template = document.querySelector('#btnDemoTemplate');
+    template.onClickHdlr = function(event,detail,sender){
+        var button =  sender;
+        var textStringDiv = template.$.textStringDiv;
+        this.numTimesClicked += 1;
+        var attributeList = '';
+        var attributeName;
+        var btnType = 'default';
+        var raised = false;
+        for (var i=0;i<button.attributes.length;i++){
+            attributeName = button.attributes[i].localName;
+            switch (attributeName){
+                case 'id': break;
+                case 'on-click': break;
+                case 'buttontype':
+                    btnType = button.attributes[i].value;
+                    break;
+                case 'tabindex': break;
+                case 'raised':
+                    raised = true;
+                    break;
+                default:
+                    attributeList += attributeName + ' ';
+                    break;
+            }
+        }
+        var outputString =  button.innerHTML + " button clicked. buttonType="+btnType+", raised="+raised;
+        textStringDiv.innerHTML = outputString;
+    }
+</script>
+</body>
+</html>

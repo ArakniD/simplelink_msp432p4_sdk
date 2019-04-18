@@ -1,0 +1,259 @@
+/*
+ * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ *  ======== BOOSTXL-EDUMKII.syscfg.json ========
+ */
+
+/*
+ * I2C addresses for TMP006 and OPT3001 are documented by the schematics
+ * in http://www.ti.com/lit/pdf/SLAU599
+ */
+{
+    "name"       : "BOOSTXL_EDUMKII",           /* must be C identifier */
+    "displayName": "EDUMKII Demonstration BoosterPack",
+    "headerType" : "BoosterPack 40 pin",
+    "components" : {
+        "RGBMulticolorLED" :
+        {
+            "name"         : "RGBMulticolorLED",
+            "displayName"  : "RGB Multicolor LED",
+            "definition"   : "/ti/boards/components/CREE-CLV1A-FKB.json",
+            "subComponents":
+            {
+                "blueChannel":
+                {
+                    "connections": { "digitalOutput" : 37 }
+                },
+                "greenChannel":
+                {
+                    "connections": { "digitalOutput" : 38 }
+                },
+                "redChannel":
+                {
+                    "connections": { "digitalOutput" : 39 }
+                }
+            }
+        },
+
+        "joystick":
+        {
+            "name"         : "joystick",
+            "displayName"  : "2-axis Joystick with Pushbutton",
+            "definition"   : "/ti/boards/components/ITEAD-IM130330001.json",
+            "subComponents":
+            {
+                "horizontal":
+                {
+                    "connections": { "analogInput" : 2 }
+                },
+                "vertical":
+                {
+                    "connections": { "analogInput" : 26 }
+                },
+                "select":
+                {
+                    "connections": { "digitalInput" : 5 }
+                }
+            }
+         },
+
+        "accelerometer" :
+        {
+            "name"         : "accelerometer",
+            "displayName"  : "3-Axis Accelerometer",
+            "definition"   : "/ti/boards/components/KIONIX-KXTC9-2050.json",
+            "subComponents":
+            {
+                "axisX":
+                {
+                    "connections": { "analogInput" : 23 }
+                },
+                "axisY":
+                {
+                    "connections": { "analogInput" : 24 }
+                },
+                "axisZ":
+                {
+                    "connections": { "analogInput" : 25 }
+                }
+            }
+        },
+
+        "buttonBottom": {
+            "displayName" : "Bottom Button",
+            "definition"  : "/ti/boards/components/button.json",
+            "connections" : { "input": 32 }
+        },
+
+        "buttonTop": {
+            "displayName" : "Top Button",
+            "definition"  : "/ti/boards/components/button.json",
+            "connections" : { "input": 33 }
+        },
+
+        "Buzzer": {
+            "type"        : "PWM",
+            "displayName" : "Buzzer",
+            "signals"     : { "output": { "type": "PWM" } },
+            "connections" : { "output": 40 }
+        },
+
+        "Microphone": {
+            "type"        : "AIN",
+            "displayName" : "Microphone",
+            "signals"     : { "input": { "type": "AIN" } },
+            "connections" : { "input": 6 }
+        },
+
+
+        "SENSORS_I2C": {
+            "isBus"      : true,
+            "type"       : "I2C",
+            "displayName": "Sensors I2C",
+
+            "signals": {
+                /* BP standard: I2C_SDA (MSP P6.4) */
+                "SDA": {"type": "I2C_SDA", "connection": 10},
+
+                /* BP standard: I2C_SCL (MSP P6.5) */
+                "SCL": {"type": "I2C_SCL", "connection":  9}
+            }
+        },
+
+        /* From http://www.ti.com/lit/ds/symlink/opt3001.pdf:
+         *     7.3.4.2 Serial Interface
+         *     The OPT3001 supports the transmission protocol for standard
+         *     mode (up to 100 kHz), fast mode (up to 400 kHz), and high-speed
+         *     mode (up to 2.6 MHz).
+         * 
+         *     7.3.4.1 Serial Bus Address
+         *     ADDR address
+         *     ---- -------
+         *      GND 1000100 (0x44)
+         *      VCC 1000101 (0x45)
+         *      SDA 1000110 (0x46)
+         *      SCL 1000111 (0x47)
+         */
+        "OPT3001":
+        {
+            "type"       : "OPT3001",
+            "displayName": "Optical Sensor",
+            "partNum"    : "TI-OPT3001",
+            "settings"   :
+            {
+                "address":  68,  /* 0x47 = 64 + 4 */
+                "maxSpeed": 2600 /* 2.6 Mbps (high-speed mode) */
+            },
+            "subComponents":
+            {
+                "I2C":
+                {
+                    "link": "SENSORS_I2C"
+                },
+                "OPT_INT":
+                {
+                    "type"       : "SENSOR_INT",
+                    "displayName": "Optical Interrupt",
+                    "signals"    :
+                    {
+                        "OPT_INT":
+                        {
+                            "type"    : "DIN",
+                            "settings":
+                            {
+                                "interruptTrigger": "Rising Edge",
+                                "callbackFunction" : "NULL"
+                            },
+                            "connection": 11
+                        }
+                    }
+                }
+            }
+        },
+
+        /* From http://www.ti.com/ww/eu/sensampbook/tmp006.pdf:
+         *     Serial Interface
+         *     The TMP006 and TMP006B support the transmission protocol for 
+         *     fast (1 kHz to 400 kHz) and high-speed (1 kHz to 3.4 MHz) modes.
+         * 
+         *     Serial Bus Address
+         *     ADR1 ADR0 address
+         *     ---- ---- -------
+         *       0    0  1000000 (0x40)
+         *       0    1  1000001 (0x41)
+         *       0   SDA 1000010 (0x42)
+         *       0   SCL 1000011 (0x43)
+         *       1    0  1000100 (0x44)
+         *       1    0  1000101 (0x45)
+         *       1   SDA 1000110 (0x46)
+         *       1   SCL 1000111 (0x47)
+         */
+        "TMP006":
+        {
+            "type"       : "TMP006",
+            "displayName": "Temperature Sensor",
+            "partNum"    : "TI-TMP006",
+            "settings"   :
+            {
+                "address":  64,  /* 0x40 = 64 + 0 */
+                "maxSpeed": 3400 /* 3.4 Mbps (high-speed mode) */
+            },
+            "subComponents":
+            {
+                "I2C":
+                {
+                    "link": "SENSORS_I2C"
+                },
+                "TMP_INT":
+                {
+                    "type"       : "SENSOR_INT",
+                    "displayName": "Temperature Interrupt",
+                    "signals"    :
+                    {
+                        "TMP_INT":
+                        {
+                            "type"    : "DIN",
+                            "settings":
+                            {
+                                "interruptTrigger": "Rising Edge",
+                                "callbackFunction": "NULL"
+                            },
+                            "connection": 8
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

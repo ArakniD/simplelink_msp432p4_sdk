@@ -1,0 +1,1284 @@
+<html>
+<head>
+<title>module ti.uia.sysbios.LoggingSetup</title>
+<meta name="description" content="Module to aid in configuring TI-RTOS logging using UIA and System Analyzer">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.sysbios.</span><span class="xdoc-id">LoggingSetup</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerStreamer2.html" title="module LoggerStreamer2"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/package.html" title="package ti.uia.sysbios"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html">index URL</a></div>
+<p class="xdocHdrSummary">Module to aid in configuring TI-RTOS logging using UIA and System Analyzer</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-1">DETAILS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-2">EXAMPLE</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+The LoggingSetup module automates the process of configuring an application
+  to use UIA events, and configures TI-RTOS modules to capture user-specified
+  information such as CPU Load, Task Load and Task Execution so that it can
+  be displayed by System Analyzer.  It also automates the creation of
+  infrastructure modules such as loggers, the ServiceManager and RTA modules
+  to enable the capture and upload of the events over a user-specified
+  transport.
+  Both JTAG and Non-JTAG transports are supported.
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/sysbios/LoggingSetup-src.html"><span class="xdocLabelFile">ti/uia/sysbios/LoggingSetup.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> LoggingSetup = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.sysbios.LoggingSetup'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide constants & types</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><i>values of type <a class="xdocSynGo" href="#.Logger.Type">LoggingSetup.<span class="xdoc-id">LoggerType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enum of the type of loggers that can be used</span></span></a></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Logger.Type">LoggingSetup.<span class="xdoc-id">LoggerType_MIN</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;LoggerMin - Minimal footprint logger
+ (JTAG only)</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Logger.Type">LoggingSetup.<span class="xdoc-id">LoggerType_STOPMODE</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;LoggerStopMode (JTAG only)</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Logger.Type">LoggingSetup.<span class="xdoc-id">LoggerType_JTAGRUNMODE</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;LoggerRunMode JTAG (c6x only)</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Logger.Type">LoggingSetup.<span class="xdoc-id">LoggerType_RUNMODE</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;LoggerRunMode ETHERNET upload</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Logger.Type">LoggingSetup.<span class="xdoc-id">LoggerType_IDLE</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;LoggerIdle - Upload in Idle loop</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Logger.Type">LoggingSetup.<span class="xdoc-id">LoggerType_STREAMER2</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;LoggerStreamer2 - Application manages
+ logger buffers</span></span></a>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><i>values of type <a class="xdocSynGo" href="#.Timestamp.Size">LoggingSetup.<span class="xdoc-id">TimestampSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Timestamp.Size">LoggingSetup.<span class="xdoc-id">TimestampSize_AUTO</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Use the logger's default timestamp size</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Timestamp.Size">LoggingSetup.<span class="xdoc-id">TimestampSize_NONE</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;No timestamps logged with events</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Timestamp.Size">LoggingSetup.<span class="xdoc-id">TimestampSize_32b</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;32-bit timestamps</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Timestamp.Size">LoggingSetup.<span class="xdoc-id">TimestampSize_64b</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;64-bit timestamps</span></span></a>;
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#benchmark.Logging">LoggingSetup.<span class="xdoc-id">benchmarkLogging</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable logging of benchmark events</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#counting.And.Graphing.Logging">LoggingSetup.<span class="xdoc-id">countingAndGraphingLogging</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable logging of counting and graphing events</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#cpu.Id">LoggingSetup.<span class="xdoc-id">cpuId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;CPU ID to put in the packet header as the endpoint ID</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> 0;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#enable.Context.Aware.Function.Profiler">LoggingSetup.<span class="xdoc-id">enableContextAwareFunctionProfiler</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable System Analyzer's Context Aware Function Profiler</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#enable.Task.Profiler">LoggingSetup.<span class="xdoc-id">enableTaskProfiler</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable System Analyzer's Task Profiler</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#load.Hwi.Logging">LoggingSetup.<span class="xdoc-id">loadHwiLogging</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable Hardware Interrupt (Hwi) event logging</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#load.Logger">LoggingSetup.<span class="xdoc-id">loadLogger</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;User-created logger used for the Load module Log events</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/ILogger.html#per-instance_object_types" title="xdc.runtime.ILogger.Handle">ILogger.Handle</a></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#load.Logger.Size">LoggingSetup.<span class="xdoc-id">loadLoggerSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Size (in MAUs) of the packet used to upload the Load module Log events</span></span></a> = <i><span class="xdoc-kw2">SizeT</span></i> 512;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#load.Logging">LoggingSetup.<span class="xdoc-id">loadLogging</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable CPU load event logging</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#load.Logging.Runtime.Control">LoggingSetup.<span class="xdoc-id">loadLoggingRuntimeControl</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Specify whether load logging can be enabled / disabled at runtime</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#load.Swi.Logging">LoggingSetup.<span class="xdoc-id">loadSwiLogging</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable Software Interrupt (Swi) event logging</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#load.Task.Logging">LoggingSetup.<span class="xdoc-id">loadTaskLogging</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable Task load logging</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#logger.Type">LoggingSetup.<span class="xdoc-id">loggerType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Configures the type of logger to use</span></span></a> = <i><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggingSetup.html#.Logger.Type" title="ti.uia.sysbios.LoggingSetup.LoggerType">LoggingSetup.LoggerType</a></i> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggingSetup.html#.Logger.Type_.S.T.O.P.M.O.D.E" title="ti.uia.sysbios.LoggingSetup.LoggerType_STOPMODE">LoggingSetup.LoggerType_STOPMODE</a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#main.Logger">LoggingSetup.<span class="xdoc-id">mainLogger</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Logger used for application Log events</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/ILogger.html#per-instance_object_types" title="xdc.runtime.ILogger.Handle">ILogger.Handle</a></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#main.Logger.Size">LoggingSetup.<span class="xdoc-id">mainLoggerSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Size (in MAUs) of packet used for application Log
+  events</span></span></a> = <i><span class="xdoc-kw2">SizeT</span></i> 1024;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#main.Logging">LoggingSetup.<span class="xdoc-id">mainLogging</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable logging of application code</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#main.Logging.Runtime.Control">LoggingSetup.<span class="xdoc-id">mainLoggingRuntimeControl</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Specify whether application logging can be enabled / disabled
+  at runtime</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#max.Event.Size">LoggingSetup.<span class="xdoc-id">maxEventSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;For Snapshot events with loggers that support the writeMemoryRange API,
+  this specifies the maximum event size (in Maus) that
+  can be written with a single event. Must be less than or equal to
+  the logger's buffer size - 64</span></span></a> = <i><span class="xdoc-kw2">SizeT</span></i> 128;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#memory.Section.Name">LoggingSetup.<span class="xdoc-id">memorySectionName</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Memory section name for the buffer managed by the static instance
+  (default is null)</span></span></a> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#multicore.Event.Correlation">LoggingSetup.<span class="xdoc-id">multicoreEventCorrelation</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set to true for multi-core applications</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#num.Cores">LoggingSetup.<span class="xdoc-id">numCores</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of cores running the same image with an instance in shared
+  memory</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> 1;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#profile.Logging">LoggingSetup.<span class="xdoc-id">profileLogging</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable logging of function profiling events</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#snapshot.Logging">LoggingSetup.<span class="xdoc-id">snapshotLogging</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable logging of snapshot events</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#sync.Logger.Size">LoggingSetup.<span class="xdoc-id">syncLoggerSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Size (in MAUs) of the logger used for the <span class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html" title="ti.uia.runtime.LogSync">LogSync</span>
+  modules' sync point events</span></span></a> = <i><span class="xdoc-kw2">SizeT</span></i> <a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#default.Sync.Logger.Size" title="ti.uia.runtime.LogSync.defaultSyncLoggerSize">LogSync.defaultSyncLoggerSize</a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#sysbios.Hwi.Logging">LoggingSetup.<span class="xdoc-id">sysbiosHwiLogging</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable the SYSBIOS Hwi and Clock modules' event logging</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#sysbios.Hwi.Logging.Runtime.Control">LoggingSetup.<span class="xdoc-id">sysbiosHwiLoggingRuntimeControl</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Specify whether Hwi and Clock logging can be enabled / disabled at
+  runtime</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#sysbios.Logger">LoggingSetup.<span class="xdoc-id">sysbiosLogger</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Logger used for SYSBIOS modules' Log events</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/ILogger.html#per-instance_object_types" title="xdc.runtime.ILogger.Handle">ILogger.Handle</a></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#sysbios.Logger.Size">LoggingSetup.<span class="xdoc-id">sysbiosLoggerSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Size (in MAUs) of the packet used for the TI-RTOS modules' Log events</span></span></a> = <i><span class="xdoc-kw2">SizeT</span></i> 1024;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#sysbios.Semaphore.Logging">LoggingSetup.<span class="xdoc-id">sysbiosSemaphoreLogging</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable the SYSBIOS Semaphore module's event logging</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#sysbios.Semaphore.Logging.Runtime.Control">LoggingSetup.<span class="xdoc-id">sysbiosSemaphoreLoggingRuntimeControl</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Specify whether Semaphore logging can be enabled / disabled at runtime</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#sysbios.Swi.Logging">LoggingSetup.<span class="xdoc-id">sysbiosSwiLogging</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable SYSBIOS Swi module's event logging</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#sysbios.Swi.Logging.Runtime.Control">LoggingSetup.<span class="xdoc-id">sysbiosSwiLoggingRuntimeControl</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Specify whether Swi logging can be enabled / disabled at runtime</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#sysbios.Task.Logging">LoggingSetup.<span class="xdoc-id">sysbiosTaskLogging</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable the SYSBIOS Task module's event logging</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#sysbios.Task.Logging.Runtime.Control">LoggingSetup.<span class="xdoc-id">sysbiosTaskLoggingRuntimeControl</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Specify whether Task logging can be enabled / disabled at runtime</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#timestamp.Size">LoggingSetup.<span class="xdoc-id">timestampSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Size of the timestamps logged with the events.  Set to TimestampSize_NONE
+  to disable timestamps</span></span></a> = <i><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggingSetup.html#.Timestamp.Size" title="ti.uia.sysbios.LoggingSetup.TimestampSize">LoggingSetup.TimestampSize</a></i> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggingSetup.html#.Timestamp.Size_.A.U.T.O" title="ti.uia.sysbios.LoggingSetup.TimestampSize_AUTO">LoggingSetup.TimestampSize_AUTO</a>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The LoggingSetup module automates the process of configuring an application
+  to use UIA events, and configures TI-RTOS modules to capture user-specified
+  information such as CPU Load, Task Load and Task Execution so that it can
+  be displayed by System Analyzer.  It also automates the creation of
+  infrastructure modules such as loggers, the ServiceManager and RTA modules
+  to enable the capture and upload of the events over a user-specified
+  transport.
+  Both JTAG and Non-JTAG transports are supported.</div>
+<div class="xdocText">The following configuration script demonstrates the use of the LoggingSetup
+  module in the XDC configuration file for the application:</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">Example 1: Configuring an application to use the default settings provided
+ by LoggingSetup.  The following default settings are automatically applied:</div>
+<div class="xdocText"><UL><LI> Logging UIA events from user-provided C code.  User provided C code is
+    treated as part of the xdc.runtime.Main module.  A circular buffer of
+    size <a class="xdoc-link" href="LoggingSetup.html#main.Logger.Size" title="mainLoggerSize">mainLoggerSize</a> Bytes is enabled by default to support
+    this.
+</LI><LI> Event logging is enabled for the TI-RTOS Load and Task modules in order
+   to allow System Analyzer to display CPU Load, and Task
+   Execution information.  Logging of SWI and HWI events is disabled by
+   default. In order to optimize event capture and minimize event loss, three
+   loggers are created: one to store events from the TI-RTOS Load module
+   another to store events from other TI-RTOS modules, and the third to store user
+   Log events.
+</LI><LI> The events will be logged to <a class="xdoc-link" href="../../../ti/uia/loggers/LoggerStopMode.html" title="ti.uia.loggers.LoggerStopMode">LoggerStopMode</a>
+     loggers, and will be uploaded over JTAG when the target halts.
+</LI></UL></div>
+<div class="xdocText"><PRE class="Example">  // the Log module provides logging APIs for use by the user's software
+  var Log = xdc.useModule('xdc.runtime.Log');
+  // the LoggingSetup module's default settings configure much of the UIA infrastructure.
+  var LoggingSetup = xdc.useModule('ti.uia.sysbios.LoggingSetup');
+</PRE></div>
+<div class="xdocText"><hr /></div>
+<div class="xdocText">Example 2: Use all the default settings of LoggingSetup, except use the
+ minimal footprint logger, LoggerMin. The following settings will be applied:</div>
+<div class="xdocText"><UL><LI> Logging UIA events from user-provided C code.
+</LI><LI> Event logging is enabled for the TI-RTOS Load and Task modules, and
+     disabled for SWI and HWI.
+</LI><LI> The events will be logged via <a class="xdoc-link" href="../../../ti/uia/loggers/LoggerMin.html" title="ti.uia.loggers.LoggerMin">LoggerMin</a>,
+     and will be uploaded over JTAG when the target halts.
+</LI><LI> All events will be logged into one buffer whose default sise is
+     <a class="xdoc-link" href="../../../ti/uia/loggers/LoggerMin.html#buf.Size" title="ti.uia.loggers.LoggerMin.bufSize">ti.uia.loggers.LoggerMin.bufSize</a>
+ 
+</LI></UL></div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Logger.Type"></a>
+<a class="xdocAnchor" id=".Logger.Type_.M.I.N"></a>
+<a class="xdocAnchor" id=".Logger.Type_.S.T.O.P.M.O.D.E"></a>
+<a class="xdocAnchor" id=".Logger.Type_.J.T.A.G.R.U.N.M.O.D.E"></a>
+<a class="xdocAnchor" id=".Logger.Type_.R.U.N.M.O.D.E"></a>
+<a class="xdocAnchor" id=".Logger.Type_.I.D.L.E"></a>
+<a class="xdocAnchor" id=".Logger.Type_.S.T.R.E.A.M.E.R2"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">LoggerType</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#.Logger.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enum of the type of loggers that can be used</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>values of type LoggingSetup.<span class="xdoc-id">LoggerType</span></i>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggingSetup.<span class="xdoc-id">LoggerType_MIN</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;LoggerMin - Minimal footprint logger
+ (JTAG only)</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggingSetup.<span class="xdoc-id">LoggerType_STOPMODE</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;LoggerStopMode (JTAG only)</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggingSetup.<span class="xdoc-id">LoggerType_JTAGRUNMODE</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;LoggerRunMode JTAG (c6x only)</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggingSetup.<span class="xdoc-id">LoggerType_RUNMODE</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;LoggerRunMode ETHERNET upload</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggingSetup.<span class="xdoc-id">LoggerType_IDLE</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;LoggerIdle - Upload in Idle loop</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggingSetup.<span class="xdoc-id">LoggerType_STREAMER2</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;LoggerStreamer2 - Application manages
+ logger buffers</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Timestamp.Size"></a>
+<a class="xdocAnchor" id=".Timestamp.Size_.A.U.T.O"></a>
+<a class="xdocAnchor" id=".Timestamp.Size_.N.O.N.E"></a>
+<a class="xdocAnchor" id=".Timestamp.Size_32b"></a>
+<a class="xdocAnchor" id=".Timestamp.Size_64b"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">TimestampSize</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#.Timestamp.Size">index URL</a></div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>values of type LoggingSetup.<span class="xdoc-id">TimestampSize</span></i>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggingSetup.<span class="xdoc-id">TimestampSize_AUTO</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Use the logger's default timestamp size</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggingSetup.<span class="xdoc-id">TimestampSize_NONE</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;No timestamps logged with events</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggingSetup.<span class="xdoc-id">TimestampSize_32b</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;32-bit timestamps</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggingSetup.<span class="xdoc-id">TimestampSize_64b</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;64-bit timestamps</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="benchmark.Logging"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">benchmarkLogging</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#benchmark.Logging">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable logging of benchmark events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">benchmarkLogging</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If this is false, the events will be disabled. Otherwise the events
+  will be enabled.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="counting.And.Graphing.Logging"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">countingAndGraphingLogging</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#counting.And.Graphing.Logging">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable logging of counting and graphing events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">countingAndGraphingLogging</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If this is false, the events will be disabled. Otherwise the events
+  will be enabled.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="cpu.Id"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">cpuId</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#cpu.Id">index URL</a></div>
+<p class="xdocHdrSummaryDcl">CPU ID to put in the packet header as the endpoint ID</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">cpuId</span> = <i><span class="xdoc-kw2">Int</span></i> 0;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Not required for C6X or C7X devices (uses DNUM).</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="enable.Context.Aware.Function.Profiler"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">enableContextAwareFunctionProfiler</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#enable.Context.Aware.Function.Profiler">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable System Analyzer's Context Aware Function Profiler</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">enableContextAwareFunctionProfiler</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Setting to true enables function entry and exit logging
+  in order to generate function profiling information.
+  This requires that the compiler's function entry and exit
+  hook functions be enabled.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="enable.Task.Profiler"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">enableTaskProfiler</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#enable.Task.Profiler">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable System Analyzer's Task Profiler</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">enableTaskProfiler</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Setting enableTaskProfiler to true enables task, hwi and swi
+  entry and exit logging in order to generate profiling
+  information</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="load.Hwi.Logging"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">loadHwiLogging</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#load.Hwi.Logging">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable Hardware Interrupt (Hwi) event logging</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">loadHwiLogging</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If this is false, the Hwi load events will be disabled.
+  Otherwise the events will be enabled.
+  Use the <a class="xdoc-link" href="LoggingSetup.html#load.Logging.Runtime.Control" title="loadLoggingRuntimeControl">loadLoggingRuntimeControl</a> parameter
+  to determine whether the state can be modified during runtime.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="load.Logger"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">loadLogger</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#load.Logger">index URL</a></div>
+<p class="xdocHdrSummaryDcl">User-created logger used for the Load module Log events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">loadLogger</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/ILogger.html#per-instance_object_types" title="xdc.runtime.ILogger.Handle">ILogger.Handle</a></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Leave null to have LoggingSetup automatically create
+  the loadLogger if required.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="load.Logger.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">loadLoggerSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#load.Logger.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Size (in MAUs) of the packet used to upload the Load module Log events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">loadLoggerSize</span> = <i><span class="xdoc-kw2">SizeT</span></i> 512;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="load.Logging"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">loadLogging</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#load.Logging">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable CPU load event logging</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">loadLogging</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If loadLogging is false, CPU Load events will be disabled, otherwise the events
+  will be logged.
+  Use the <a class="xdoc-link" href="LoggingSetup.html#load.Logging.Runtime.Control" title="loadLoggingRuntimeControl">loadLoggingRuntimeControl</a> parameter
+  to determine whether the state can be modified during runtime.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="load.Logging.Runtime.Control"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">loadLoggingRuntimeControl</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#load.Logging.Runtime.Control">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Specify whether load logging can be enabled / disabled at runtime</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">loadLoggingRuntimeControl</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This determines what <a class="xdoc-link" href="../../../xdc/runtime/Diags.html" title="xdc.runtime.Diags">Diags</a> settings are
+  applied to the module's Diags mask.
+  If 'false', the Diags bits will be configured as
+  ALWAYS_ON, meaning they can't be changed at runtime. If 'true', the
+  bits will be configured as 'RUNTIME_ON'.</div>
+<div class="xdocText">Use the <a class="xdoc-link" href="LoggingSetup.html#load.Logging" title="loadLogging">loadLogging</a> parameter
+  to determine whether the event is ON or OFF. For example, the
+  following two lines set the Load module's events to 'ALWAYS_ON'.</div>
+<div class="xdocText"><PRE class="Example">  LoggingSetup.loadLogging = true;
+  LoggingSetup.loadLoggingRuntimeControl = false;
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="load.Swi.Logging"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">loadSwiLogging</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#load.Swi.Logging">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable Software Interrupt (Swi) event logging</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">loadSwiLogging</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If this is false, the Swi load events will be disabled.
+  Otherwise the events will be enabled.
+  Use the <a class="xdoc-link" href="LoggingSetup.html#load.Logging.Runtime.Control" title="loadLoggingRuntimeControl">loadLoggingRuntimeControl</a> parameter
+  to determine whether the state can be modified during runtime.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="load.Task.Logging"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">loadTaskLogging</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#load.Task.Logging">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable Task load logging</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">loadTaskLogging</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If this is false, the Task load events will be disabled.
+  Otherwise the events will be enabled.
+  Use the <a class="xdoc-link" href="LoggingSetup.html#load.Logging.Runtime.Control" title="loadLoggingRuntimeControl">loadLoggingRuntimeControl</a> parameter
+  to determine whether the state can be modified during runtime.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="logger.Type"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">loggerType</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#logger.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Configures the type of logger to use</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">loggerType</span> = <i><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggingSetup.html#.Logger.Type" title="ti.uia.sysbios.LoggingSetup.LoggerType">LoggingSetup.LoggerType</a></i> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggingSetup.html#.Logger.Type_.S.T.O.P.M.O.D.E" title="ti.uia.sysbios.LoggingSetup.LoggerType_STOPMODE">LoggingSetup.LoggerType_STOPMODE</a>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="main.Logger"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">mainLogger</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#main.Logger">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Logger used for application Log events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">mainLogger</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/ILogger.html#per-instance_object_types" title="xdc.runtime.ILogger.Handle">ILogger.Handle</a></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Leave null to have LoggingSetup automatically create
+  the mainLogger if required.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="main.Logger.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">mainLoggerSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#main.Logger.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Size (in MAUs) of packet used for application Log
+  events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">mainLoggerSize</span> = <i><span class="xdoc-kw2">SizeT</span></i> 1024;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="main.Logging"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">mainLogging</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#main.Logging">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable logging of application code</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">mainLogging</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If mainLogging is false, application logging will be disabled, otherwise
+  it will be enabled. Use the <a class="xdoc-link" href="LoggingSetup.html#main.Logging.Runtime.Control" title="mainLoggingRuntimeControl">mainLoggingRuntimeControl</a> parameter
+  to determine whether the state can be modified during runtime.
+  Together, these two configuration parameters will be used to
+  initialize the <a class="xdoc-link" href="../../../xdc/runtime/Main.html" title="xdc.runtime.Main">xdc.runtime.Main</a> Diags mask.</div>
+<div class="xdocText">The table below shows the initial values of the
+  xdc.runtime.Main Diags mask settings, based on mainLogging and
+  mainLoggingRuntimeControl configuration. These settins only
+  apply to Diags masks that have not been set in the application's
+  configuration file.  For example, this configuration code would
+  cause xdc.runtime.Main's USER1 Diags mask to be unaffected by
+  the settings of mainLogging and mainLoggingRuntimeControl:</div>
+<div class="xdocText"><PRE class="Example">  Diags.setMaskMeta('xdc.runtime.Main', Diags.USER1, Diags.RUNTIME_ON);
+</PRE></div>
+<div class="xdocText"><h3> Diags Mask Settings for xdc.runtime.Main </h3>
+  <table border="1" cellpadding="3">
+    <colgroup span="1"></colgroup> <colgroup span="5" align="center">
+  </colgroup>
+    <tr><th colspan="2" rowspan="2">  </th><th colspan="2">  mainLoggingRuntimeControl </th></tr>
+    <tr><th>  true   </th><th> false </th></tr>
+    <tr><th rowspan="2">  mainLogging  </th><th>  true  </th><td> RUNTIME_ON</td>
+    <td> ALWAYS_ON </td></tr>
+    <tr><th> false </th><td>  RUNTIME_OFF  </td> <td> ALWAYS_OFF </td></tr>
+ </table></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="main.Logging.Runtime.Control"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">mainLoggingRuntimeControl</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#main.Logging.Runtime.Control">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Specify whether application logging can be enabled / disabled
+  at runtime</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">mainLoggingRuntimeControl</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This parameter, together with <a class="xdoc-link" href="LoggingSetup.html#main.Logging" title="mainLogging">mainLogging</a>, determine the
+  initial <a class="xdoc-link" href="../../../xdc/runtime/Diags.html" title="xdc.runtime.Diags">xdc.runtime.Diags</a> settings applied to
+  <a class="xdoc-link" href="../../../xdc/runtime/Main.html" title="xdc.runtime.Main">xdc.runtime.Main</a>.
+  If 'false' and <a class="xdoc-link" href="LoggingSetup.html#main.Logging" title="mainLogging">mainLogging</a> is true, the diags bits will
+  be configured as ALWAYS_ON, meaning they can't be changed at runtime.
+  If 'true', the bits will be configured as 'RUNTIME_ON'.</div>
+<div class="xdocText">Use the <a class="xdoc-link" href="LoggingSetup.html#main.Logging" title="mainLogging">mainLogging</a> parameter
+  to determine whether the event is ON or OFF. For example, the
+  following two lines set the xdc.runtime.Main events to
+  initially be 'RUNTIME_ON'.</div>
+<div class="xdocText"><PRE class="Example">  LoggingSetup.mainLogging = true;
+  LoggingSetup.mainLoggingRuntimeControl = true;
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="max.Event.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">maxEventSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#max.Event.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">For Snapshot events with loggers that support the writeMemoryRange API,
+  this specifies the maximum event size (in Maus) that
+  can be written with a single event. Must be less than or equal to
+  the logger's buffer size - 64</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">maxEventSize</span> = <i><span class="xdoc-kw2">SizeT</span></i> 128;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The logger's writeMemoryRange API checks to see if the event size required to
+  write the block of memory is larger than maxEventSize.  If so, it will
+  split the memory range up into a number of smaller blocks and log the
+  blocks using separate events with a common snapshot ID in order to
+  allow the events to be collated and the original memory block to be
+  reconstructed on the host.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="memory.Section.Name"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">memorySectionName</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#memory.Section.Name">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Memory section name for the buffer managed by the static instance
+  (default is null)</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">memorySectionName</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">By default the local 'dataMemory' in the platform is used (typically
+  SRAM or L2SRAM).
+  The available memory section names for your device can be determined by
+  either looking in the MEMORY CONFIGURATION section of the .map file
+  that is generated when you build your application or from the Platform
+  file that your application is using.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="multicore.Event.Correlation"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">multicoreEventCorrelation</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#multicore.Event.Correlation">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Set to true for multi-core applications</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">multicoreEventCorrelation</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">When set to true, the LoggingSetup module will automatically
+ include the <a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html" title="ti.uia.runtime.LogSync">LogSync</a> module.  The LogSync module is
+ required for events from multiple CPU cores to be correlated with each other.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html" title="ti.uia.runtime.LogSync">ti.uia.runtime.LogSync</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="num.Cores"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">numCores</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#num.Cores">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of cores running the same image with an instance in shared
+  memory</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">numCores</span> = <i><span class="xdoc-kw2">Int</span></i> 1;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">A common use case is to have the same binary image (e.g. .out file)
+  run on multiple cores of a multi-core device. This causes a problem if
+  the logger's buffers are in shared memory (e.g. DDR). Since the image is
+  the same for all the cores, each core will attempt to write to the same
+  buffer in the shared memory. To avoid this, either place the logger's
+  buffers in non-shared memory, or set the numCores parameter to
+  the number of cores on the device.</div>
+<div class="xdocText">Note: Use the <tt><a class="xdoc-link" href="LoggingSetup.html#buf.Section" title="bufSection">bufSection</a></tt> along with the Program.sectMap to
+  place a logger instance's buffer into specific memory.</div>
+<div class="xdocText">Setting numCores to a value greater than 1 signals the logger to
+  statically set aside additional memory ((x numCores), allowing each
+  core to have the logger's configured buffer size amount of memory.</div>
+<div class="xdocText">Warning: Setting this parameter to a value greater than one should only
+  be done when there is a single image used on multiple cores of a
+  multi-core device AND the logger instance's buffer is in shared memory.
+  While functionally it will still work, memory will be wasted if both
+  these conditions are not met.</div>
+<div class="xdocText">The default is 1, which means do not reserve any additional memory
+  for the logger.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="profile.Logging"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">profileLogging</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#profile.Logging">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable logging of function profiling events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">profileLogging</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If this is false, the events will be disabled. Otherwise the events
+  will be enabled.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="snapshot.Logging"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">snapshotLogging</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#snapshot.Logging">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable logging of snapshot events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">snapshotLogging</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If this is false, the events will be disabled. Otherwise the events
+  will be enabled.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sync.Logger.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">syncLoggerSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#sync.Logger.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Size (in MAUs) of the logger used for the <a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html" title="ti.uia.runtime.LogSync">LogSync</a>
+  modules' sync point events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">syncLoggerSize</span> = <i><span class="xdoc-kw2">SizeT</span></i> <a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html#default.Sync.Logger.Size" title="ti.uia.runtime.LogSync.defaultSyncLoggerSize">LogSync.defaultSyncLoggerSize</a>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sysbios.Hwi.Logging"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">sysbiosHwiLogging</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#sysbios.Hwi.Logging">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable the SYSBIOS Hwi and Clock modules' event logging</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">sysbiosHwiLogging</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If false, Hwi and Clock events will be disabled, otherwise the events
+  will be enabled.
+  Use the <a class="xdoc-link" href="LoggingSetup.html#sysbios.Hwi.Logging.Runtime.Control" title="sysbiosHwiLoggingRuntimeControl">sysbiosHwiLoggingRuntimeControl</a> parameter
+  to determine whether the state can be modified during runtime.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sysbios.Hwi.Logging.Runtime.Control"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">sysbiosHwiLoggingRuntimeControl</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#sysbios.Hwi.Logging.Runtime.Control">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Specify whether Hwi and Clock logging can be enabled / disabled at
+  runtime</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">sysbiosHwiLoggingRuntimeControl</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This parameter, together with <a class="xdoc-link" href="LoggingSetup.html#sysbios.Hwi.Logging" title="sysbiosHwiLogging">sysbiosHwiLogging</a>, determine the
+  initial <a class="xdoc-link" href="../../../xdc/runtime/Diags.html" title="xdc.runtime.Diags">Diags</a> settings applied to
+  the SYSBIOS Hwi and Clock modules. For example, the following two
+  lines set the Hwi and Clock modules' events to 'ALWAYS_ON'.</div>
+<div class="xdocText"><PRE class="Example">  LoggingSetup.sysbiosHwiLogging = true;
+  LoggingSetup.sysbiosHwiLoggingRuntimeControl = false;
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sysbios.Logger"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">sysbiosLogger</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#sysbios.Logger">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Logger used for SYSBIOS modules' Log events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">sysbiosLogger</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/ILogger.html#per-instance_object_types" title="xdc.runtime.ILogger.Handle">ILogger.Handle</a></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Leave null to have LoggingSetup automatically create
+  the sysbiosLogger if required.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sysbios.Logger.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">sysbiosLoggerSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#sysbios.Logger.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Size (in MAUs) of the packet used for the TI-RTOS modules' Log events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">sysbiosLoggerSize</span> = <i><span class="xdoc-kw2">SizeT</span></i> 1024;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sysbios.Semaphore.Logging"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">sysbiosSemaphoreLogging</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#sysbios.Semaphore.Logging">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable the SYSBIOS Semaphore module's event logging</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">sysbiosSemaphoreLogging</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If false, Semaphore events will be disabled, otherwise the events
+  will be enabled.
+  Use the <a class="xdoc-link" href="LoggingSetup.html#sysbios.Semaphore.Logging.Runtime.Control" title="sysbiosSemaphoreLoggingRuntimeControl">sysbiosSemaphoreLoggingRuntimeControl</a> parameter
+  to determine whether the state can be modified during runtime.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sysbios.Semaphore.Logging.Runtime.Control"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">sysbiosSemaphoreLoggingRuntimeControl</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#sysbios.Semaphore.Logging.Runtime.Control">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Specify whether Semaphore logging can be enabled / disabled at runtime</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">sysbiosSemaphoreLoggingRuntimeControl</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This parameter, together with <a class="xdoc-link" href="LoggingSetup.html#sysbios.Semaphore.Logging" title="sysbiosSemaphoreLogging">sysbiosSemaphoreLogging</a>, determine the
+  initial <a class="xdoc-link" href="../../../xdc/runtime/Diags.html" title="xdc.runtime.Diags">Diags</a> settings applied to
+  the SYSBIOS Semaphore module. For example, the following code
+  initializes the Semaphore module's events to 'RUNTIME_OFF'.</div>
+<div class="xdocText"><PRE class="Example">  LoggingSetup.sysbiosSemaphoreLogging= false;
+  LoggingSetup.sysbiosSemaphoreLoggingRuntimeControl = true;
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sysbios.Swi.Logging"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">sysbiosSwiLogging</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#sysbios.Swi.Logging">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable SYSBIOS Swi module's event logging</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">sysbiosSwiLogging</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If false, Swi events will be disabled, otherwise the events
+  will be enabled.
+  Use the <a class="xdoc-link" href="LoggingSetup.html#sysbios.Swi.Logging.Runtime.Control" title="sysbiosSwiLoggingRuntimeControl">sysbiosSwiLoggingRuntimeControl</a> parameter
+  to determine whether the state can be modified during runtime.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sysbios.Swi.Logging.Runtime.Control"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">sysbiosSwiLoggingRuntimeControl</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#sysbios.Swi.Logging.Runtime.Control">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Specify whether Swi logging can be enabled / disabled at runtime</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">sysbiosSwiLoggingRuntimeControl</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This parameter, together with <a class="xdoc-link" href="LoggingSetup.html#sysbios.Swi.Logging" title="sysbiosSwiLogging">sysbiosSwiLogging</a>, determine the
+  initial <a class="xdoc-link" href="../../../xdc/runtime/Diags.html" title="xdc.runtime.Diags">Diags</a> settings applied to
+  the SYSBIOS Swi module. For example, the following two
+  lines initialize the Swi module's events to 'RUNTIME_OFF'.</div>
+<div class="xdocText"><PRE class="Example">  LoggingSetup.sysbiosSwiLogging = false;
+  LoggingSetup.sysbiosSwiLoggingRuntimeControl = true;
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sysbios.Task.Logging"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">sysbiosTaskLogging</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#sysbios.Task.Logging">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable the SYSBIOS Task module's event logging</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">sysbiosTaskLogging</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If false, Task events will be disabled, otherwise the events
+  will be enabled.
+  Use the <a class="xdoc-link" href="LoggingSetup.html#sysbios.Task.Logging.Runtime.Control" title="sysbiosTaskLoggingRuntimeControl">sysbiosTaskLoggingRuntimeControl</a> parameter
+  to determine whether the state can be modified during runtime.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sysbios.Task.Logging.Runtime.Control"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">sysbiosTaskLoggingRuntimeControl</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#sysbios.Task.Logging.Runtime.Control">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Specify whether Task logging can be enabled / disabled at runtime</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">sysbiosTaskLoggingRuntimeControl</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This parameter, together with <a class="xdoc-link" href="LoggingSetup.html#sysbios.Task.Logging" title="sysbiosTaskLogging">sysbiosTaskLogging</a>, determine the
+  initial <a class="xdoc-link" href="../../../xdc/runtime/Diags.html" title="xdc.runtime.Diags">Diags</a> settings applied to
+  the Task module. For example, the following two
+  lines initialize the Task module's events to
+  'ALWAYS_ON'.</div>
+<div class="xdocText"><PRE class="Example">  LoggingSetup.sysbiosTaskLogging = true;
+  LoggingSetup.sysbiosTaskLoggingRuntimeControl = false;
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="timestamp.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggingSetup.</span><span class="xdoc-id">timestampSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggingSetup.html" title="module LoggingSetup"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggingSetup.html#timestamp.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Size of the timestamps logged with the events.  Set to TimestampSize_NONE
+  to disable timestamps</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggingSetup.<span class="xdoc-id">timestampSize</span> = <i><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggingSetup.html#.Timestamp.Size" title="ti.uia.sysbios.LoggingSetup.TimestampSize">LoggingSetup.TimestampSize</a></i> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggingSetup.html#.Timestamp.Size_.A.U.T.O" title="ti.uia.sysbios.LoggingSetup.TimestampSize_AUTO">LoggingSetup.TimestampSize_AUTO</a>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:18 GMT</div>
+</div></div></body>
+</html>

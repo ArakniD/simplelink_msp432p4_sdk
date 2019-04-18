@@ -1,0 +1,1108 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="_timer_8h" kind="file" language="C++">
+    <compoundname>Timer.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includedby refid="_timer_m_s_p432_8h" local="no">TimerMSP432.h</includedby>
+    <incdepgraph>
+      <node id="280">
+        <label>stdint.h</label>
+      </node>
+      <node id="279">
+        <label>Timer.h</label>
+        <link refid="_timer_8h"/>
+        <childnode refid="280" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="281">
+        <label>Timer.h</label>
+        <link refid="_timer_8h"/>
+        <childnode refid="282" relation="include">
+        </childnode>
+      </node>
+      <node id="282">
+        <label>TimerMSP432.h</label>
+        <link refid="_timer_m_s_p432_8h"/>
+        <childnode refid="283" relation="include">
+        </childnode>
+      </node>
+      <node id="283">
+        <label>CaptureMSP432.h</label>
+        <link refid="_capture_m_s_p432_8h"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="struct_timer___params__" prot="public">Timer_Params_</innerclass>
+    <innerclass refid="struct_timer___fxn_table__" prot="public">Timer_FxnTable_</innerclass>
+    <innerclass refid="struct_timer___config__" prot="public">Timer_Config_</innerclass>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="_timer_8h_1ae07d04d02a6ddc6e02271084a71a365e" prot="public" static="no">
+        <name>Timer_CMD_RESERVED</name>
+        <initializer>(32)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Common Timer_control command code reservation offset. Timer driver implementations should offset command codes with Timer_CMD_RESERVED growing positively</para><para>Example implementation specific command codes: <programlisting><codeline><highlight class="normal">#define<sp/>TimerXYZ_CMD_COMMAND0<sp/><sp/><sp/><sp/><sp/><sp/>Timer_CMD_RESERVED<sp/>+<sp/>0</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>TimerXYZ_CMD_COMMAND1<sp/><sp/><sp/><sp/><sp/><sp/>Timer_CMD_RESERVED<sp/>+<sp/>1</highlight></codeline>
+</programlisting> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="200" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="200" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1a904cb478987bb4d1747d39280ab5727e" prot="public" static="no">
+        <name>Timer_STATUS_RESERVED</name>
+        <initializer>(-32)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Common Timer_control status code reservation offset. Timer driver implementations should offset status codes with Timer_STATUS_RESERVED growing negatively.</para><para>Example implementation specific status codes: <programlisting><codeline><highlight class="normal">#define<sp/>TimerXYZ_STATUS_ERROR0<sp/><sp/><sp/><sp/><sp/>Timer_STATUS_RESERVED<sp/>-<sp/>0</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>TimerXYZ_STATUS_ERROR1<sp/><sp/><sp/><sp/><sp/>Timer_STATUS_RESERVED<sp/>-<sp/>1</highlight></codeline>
+</programlisting> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="213" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="213" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1ac8686101a9b8fbee4eacc2b40ff708e7" prot="public" static="no">
+        <name>Timer_STATUS_SUCCESS</name>
+        <initializer>(0)</initializer>
+        <briefdescription>
+<para>Successful status code. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="218" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="218" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1aaa10cf27200f356b47e6f8a4088d37f8" prot="public" static="no">
+        <name>Timer_STATUS_ERROR</name>
+        <initializer>(-1)</initializer>
+        <briefdescription>
+<para>Generic error status code. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="223" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="223" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1a45b37be0a813d7d501da46578fd5f6b2" prot="public" static="no">
+        <name>Timer_STATUS_UNDEFINEDCMD</name>
+        <initializer>(-2)</initializer>
+        <briefdescription>
+<para>An error status code returned by <ref refid="_timer_8h_1ab27a6e779a8f6872cff60fdeab349700" kindref="member">Timer_control()</ref> for undefined command codes. </para>        </briefdescription>
+        <detaileddescription>
+<para><ref refid="_timer_8h_1ab27a6e779a8f6872cff60fdeab349700" kindref="member">Timer_control()</ref> returns Timer_STATUS_UNDEFINEDCMD if the control code is not recognized by the driver implementation. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="232" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="232" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1a7ad974822ac9cde9191164664133c3b7" prot="public" static="no">
+        <name>TIMER_CMD_RESERVED</name>
+        <initializer><ref refid="_timer_8h_1ae07d04d02a6ddc6e02271084a71a365e" kindref="member">Timer_CMD_RESERVED</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="531" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="531" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1ab7625e81516eccb35541a882c13a305a" prot="public" static="no">
+        <name>TIMER_STATUS_RESERVED</name>
+        <initializer><ref refid="_timer_8h_1a904cb478987bb4d1747d39280ab5727e" kindref="member">Timer_STATUS_RESERVED</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="532" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="532" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1ad42f3f8c71bc912c8ff5d377807f9084" prot="public" static="no">
+        <name>TIMER_STATUS_SUCCESS</name>
+        <initializer><ref refid="_timer_8h_1ac8686101a9b8fbee4eacc2b40ff708e7" kindref="member">Timer_STATUS_SUCCESS</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="533" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="533" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1a9a2642f0a8979c6201c292c0457fd7f3" prot="public" static="no">
+        <name>TIMER_STATUS_ERROR</name>
+        <initializer><ref refid="_timer_8h_1aaa10cf27200f356b47e6f8a4088d37f8" kindref="member">Timer_STATUS_ERROR</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="534" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="534" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1aadbe9198cfc62e217a5891db6431ee13" prot="public" static="no">
+        <name>TIMER_STATUS_UNDEFINEDCMD</name>
+        <initializer><ref refid="_timer_8h_1a45b37be0a813d7d501da46578fd5f6b2" kindref="member">Timer_STATUS_UNDEFINEDCMD</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="535" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="535" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1a0918ad5776d4e92a39d14e08512a0dac" prot="public" static="no">
+        <name>TIMER_ONESHOT_CB</name>
+        <initializer><ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3a01f0c06391bb2ea1ec530ba502a795a5" kindref="member">Timer_ONESHOT_CALLBACK</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="536" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="536" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1a9d843173e769ce21d39bf5ba167f626d" prot="public" static="no">
+        <name>TIMER_ONESHOT_BLOCK</name>
+        <initializer><ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3ac93d728c52e809e9c179ff8da526ca00" kindref="member">Timer_ONESHOT_BLOCKING</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="537" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="537" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1aaae1bd7f982aeb8868b474abebaab925" prot="public" static="no">
+        <name>TIMER_CONTINUOUS_CB</name>
+        <initializer><ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3ae8bfe2f9b37749ebc20b9905a459843b" kindref="member">Timer_CONTINUOUS_CALLBACK</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="538" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="538" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1a6ed963f9cd8d7543e3f1dee52803671b" prot="public" static="no">
+        <name>TIMER_MODE_FREE_RUNNING</name>
+        <initializer><ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3a90581a353ae32c561dfbc6c60b9ec49e" kindref="member">Timer_FREE_RUNNING</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="539" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="539" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1a8e62e41f3683652130e337638553bf53" prot="public" static="no">
+        <name>TIMER_PERIOD_US</name>
+        <initializer><ref refid="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6a03cfd261fae09a76a370acd8240181b1" kindref="member">Timer_PERIOD_US</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="540" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="540" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1afe6d63af0b190509afd3e7a6127b4cb0" prot="public" static="no">
+        <name>TIMER_PERIOD_HZ</name>
+        <initializer><ref refid="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6afe77ce02e894805812fd4b497b2ba41c" kindref="member">Timer_PERIOD_HZ</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="541" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="541" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1aa6ef3e588041df60af164324a4a2aef3" prot="public" static="no">
+        <name>TIMER_PERIOD_COUNTS</name>
+        <initializer><ref refid="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6ac22836849686dc6b10a6cdf2c689d142" kindref="member">Timer_PERIOD_COUNTS</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="542" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="542" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_timer_8h_1a7bb9f00454595961d5b81e2626ae3cf6" prot="public" static="no">
+        <name>Timer_Period_Units</name>
+        <initializer><ref refid="_timer_8h_1a446e5578acbc8ed7bcbc1bee3e2a2c61" kindref="member">Timer_PeriodUnits</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="543" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="543" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3" prot="public" static="no">
+        <name>Timer_Mode_</name>
+        <enumvalue id="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3a01f0c06391bb2ea1ec530ba502a795a5" prot="public">
+          <name>Timer_ONESHOT_CALLBACK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>User routine doesn&apos;t get blocked and user-specified callback function is invoked once the timer interrupt happens for only one time </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3ac93d728c52e809e9c179ff8da526ca00" prot="public">
+          <name>Timer_ONESHOT_BLOCKING</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>User routine gets blocked until timer interrupt happens for only one time. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3ae8bfe2f9b37749ebc20b9905a459843b" prot="public">
+          <name>Timer_CONTINUOUS_CALLBACK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>User routine doesn&apos;t get blocked and user-specified callback function is invoked with every timer interrupt. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3a90581a353ae32c561dfbc6c60b9ec49e" prot="public">
+          <name>Timer_FREE_RUNNING</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Timer mode settings. </para>        </briefdescription>
+        <detaileddescription>
+<para>This enum defines the timer modes that may be specified in <ref refid="_timer_8h_1aec4b45c2faaeda7bd9e2f79105e2ca2e" kindref="member">Timer_Params</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="244" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="244" bodyend="255"/>
+      </memberdef>
+      <memberdef kind="enum" id="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6" prot="public" static="no">
+        <name>Timer_PeriodUnits_</name>
+        <enumvalue id="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6a03cfd261fae09a76a370acd8240181b1" prot="public">
+          <name>Timer_PERIOD_US</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Period specified in micro seconds. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6afe77ce02e894805812fd4b497b2ba41c" prot="public">
+          <name>Timer_PERIOD_HZ</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Period specified in hertz; interrupts per second. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6ac22836849686dc6b10a6cdf2c689d142" prot="public">
+          <name>Timer_PERIOD_COUNTS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Period specified in ticks or counts. Varies from board to board. </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Timer period unit enum. </para>        </briefdescription>
+        <detaileddescription>
+<para>This enum defines the units that may be specified for the period in <ref refid="_timer_8h_1aec4b45c2faaeda7bd9e2f79105e2ca2e" kindref="member">Timer_Params</ref>. This unit has no effect with Timer_getCounts. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="263" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="263" bodyend="269"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_timer_8h_1a20f0a8998127dfcff910d15393f564a7" prot="public" static="no">
+        <type>struct <ref refid="struct_timer___config__" kindref="compound">Timer_Config_</ref> *</type>
+        <definition>typedef struct Timer_Config_* Timer_Handle</definition>
+        <argsstring></argsstring>
+        <name>Timer_Handle</name>
+        <briefdescription>
+<para>A handle that is returned from a <ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref> call. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="237" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="237" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_8h_1a9bdf0bac4961e11704f2bf087eefed4e" prot="public" static="no">
+        <type>enum <ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3" kindref="member">Timer_Mode_</ref></type>
+        <definition>typedef enum Timer_Mode_  Timer_Mode</definition>
+        <argsstring></argsstring>
+        <name>Timer_Mode</name>
+        <briefdescription>
+<para>Timer mode settings. </para>        </briefdescription>
+        <detaileddescription>
+<para>This enum defines the timer modes that may be specified in <ref refid="_timer_8h_1aec4b45c2faaeda7bd9e2f79105e2ca2e" kindref="member">Timer_Params</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="255" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_8h_1a446e5578acbc8ed7bcbc1bee3e2a2c61" prot="public" static="no">
+        <type>enum <ref refid="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6" kindref="member">Timer_PeriodUnits_</ref></type>
+        <definition>typedef enum Timer_PeriodUnits_  Timer_PeriodUnits</definition>
+        <argsstring></argsstring>
+        <name>Timer_PeriodUnits</name>
+        <briefdescription>
+<para>Timer period unit enum. </para>        </briefdescription>
+        <detaileddescription>
+<para>This enum defines the units that may be specified for the period in <ref refid="_timer_8h_1aec4b45c2faaeda7bd9e2f79105e2ca2e" kindref="member">Timer_Params</ref>. This unit has no effect with Timer_getCounts. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="269" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_8h_1a051eb2c54ff6e078655c8bf575384cc4" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* Timer_CallBackFxn) (Timer_Handle handle)</definition>
+        <argsstring>)(Timer_Handle handle)</argsstring>
+        <name>Timer_CallBackFxn</name>
+        <briefdescription>
+<para>Timer callback function. </para>        </briefdescription>
+        <detaileddescription>
+<para>User definable callback function prototype. The timer driver will call the defined function and pass in the timer driver&apos;s handle and the pointer to the user-specified the argument.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Timer_Handle </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="280" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="280" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_8h_1aec4b45c2faaeda7bd9e2f79105e2ca2e" prot="public" static="no">
+        <type>struct <ref refid="struct_timer___params__" kindref="compound">Timer_Params_</ref></type>
+        <definition>typedef struct Timer_Params_  Timer_Params</definition>
+        <argsstring></argsstring>
+        <name>Timer_Params</name>
+        <briefdescription>
+<para>Timer Parameters. </para>        </briefdescription>
+        <detaileddescription>
+<para>Timer parameters are used to with the <ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref> call. Default values for these parameters are set using <ref refid="_timer_8h_1ae5309d35d8dfc6b2f0b24c7eec556dec" kindref="member">Timer_Params_init()</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="302" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_8h_1a965461a1bad38b7c19e37e3b337096e0" prot="public" static="no">
+        <type>int_fast16_t(*</type>
+        <definition>typedef int_fast16_t(* Timer_ControlFxn) (Timer_Handle handle, uint_fast16_t cmd, void *arg)</definition>
+        <argsstring>)(Timer_Handle handle, uint_fast16_t cmd, void *arg)</argsstring>
+        <name>Timer_ControlFxn</name>
+        <briefdescription>
+<para>A function pointer to a driver specific implementation of <ref refid="_timer_8h_1ab27a6e779a8f6872cff60fdeab349700" kindref="member">Timer_control()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="308" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="308" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_8h_1a7418a314c1c025febfd2ea43fd55c740" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* Timer_CloseFxn) (Timer_Handle handle)</definition>
+        <argsstring>)(Timer_Handle handle)</argsstring>
+        <name>Timer_CloseFxn</name>
+        <briefdescription>
+<para>A function pointer to a driver specific implementation of <ref refid="_timer_8h_1a826779747913a65d4f683a627fd0759f" kindref="member">Timer_close()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="315" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="315" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_8h_1a99b9c3330524ba12bdcf9f4159bac7dc" prot="public" static="no">
+        <type>uint32_t(*</type>
+        <definition>typedef uint32_t(* Timer_GetCountFxn) (Timer_Handle handle)</definition>
+        <argsstring>)(Timer_Handle handle)</argsstring>
+        <name>Timer_GetCountFxn</name>
+        <briefdescription>
+<para>A function pointer to a driver specific implementation of <ref refid="_timer_8h_1a29ed26e8d3139f8ac21746c14d8b7abc" kindref="member">Timer_getCount()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="321" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="321" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_8h_1a67ab2fce64b3252b4499d22d89679604" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* Timer_InitFxn) (Timer_Handle handle)</definition>
+        <argsstring>)(Timer_Handle handle)</argsstring>
+        <name>Timer_InitFxn</name>
+        <briefdescription>
+<para>A function pointer to a driver specific implementation of <ref refid="_timer_8h_1ace12508d33b354c0194b6f72cfc3bf12" kindref="member">Timer_init()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="327" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="327" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_8h_1ad833d510ee86d5b5c8cca2f23a9dbf9e" prot="public" static="no">
+        <type><ref refid="_timer_8h_1a20f0a8998127dfcff910d15393f564a7" kindref="member">Timer_Handle</ref>(*</type>
+        <definition>typedef Timer_Handle(* Timer_OpenFxn) (Timer_Handle handle, Timer_Params *params)</definition>
+        <argsstring>)(Timer_Handle handle, Timer_Params *params)</argsstring>
+        <name>Timer_OpenFxn</name>
+        <briefdescription>
+<para>A function pointer to a driver specific implementation of <ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="333" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="333" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_8h_1aa4cb84a48be15b66d2666239b06072d8" prot="public" static="no">
+        <type>int32_t(*</type>
+        <definition>typedef int32_t(* Timer_StartFxn) (Timer_Handle handle)</definition>
+        <argsstring>)(Timer_Handle handle)</argsstring>
+        <name>Timer_StartFxn</name>
+        <briefdescription>
+<para>A function pointer to a driver specific implementation of <ref refid="_timer_8h_1ae2f09cd2a7f7251e5fffade75378c332" kindref="member">Timer_start()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="340" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="340" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_8h_1a681079e95179fd797e04a7fc1e68bb6e" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* Timer_StopFxn) (Timer_Handle handle)</definition>
+        <argsstring>)(Timer_Handle handle)</argsstring>
+        <name>Timer_StopFxn</name>
+        <briefdescription>
+<para>A function pointer to a driver specific implementation of <ref refid="_timer_8h_1a3b951947aeec93b4610f87ba7b8a8621" kindref="member">Timer_stop()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="346" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="346" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_8h_1a97afbdd9735ae145134ecdb530a08cf4" prot="public" static="no">
+        <type>struct <ref refid="struct_timer___fxn_table__" kindref="compound">Timer_FxnTable_</ref></type>
+        <definition>typedef struct Timer_FxnTable_  Timer_FxnTable</definition>
+        <argsstring></argsstring>
+        <name>Timer_FxnTable</name>
+        <briefdescription>
+<para>The definition of a timer function table that contains the required set of functions to control a specific timer driver implementation. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="374" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_8h_1a4c61ce326e1836cd5a5f9d9a728c1ac4" prot="public" static="no">
+        <type>struct <ref refid="struct_timer___config__" kindref="compound">Timer_Config_</ref></type>
+        <definition>typedef struct Timer_Config_  Timer_Config</definition>
+        <argsstring></argsstring>
+        <name>Timer_Config</name>
+        <briefdescription>
+<para>Timer Global configuration. </para>        </briefdescription>
+        <detaileddescription>
+<para>The Timer_Config structure contains a set of pointers used to characterize the timer driver implementation.</para><para>This structure needs to be defined before calling <ref refid="_timer_8h_1ace12508d33b354c0194b6f72cfc3bf12" kindref="member">Timer_init()</ref> and it must not be changed thereafter.</para><para><simplesect kind="see"><para><ref refid="_timer_8h_1ace12508d33b354c0194b6f72cfc3bf12" kindref="member">Timer_init()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="396" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_timer_8h_1a826779747913a65d4f683a627fd0759f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Timer_close</definition>
+        <argsstring>(Timer_Handle handle)</argsstring>
+        <name>Timer_close</name>
+        <param>
+          <type><ref refid="_timer_8h_1a20f0a8998127dfcff910d15393f564a7" kindref="member">Timer_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <briefdescription>
+<para>Function to close a timer. The corresponding timer to the Timer_Handle becomes an available timer resource. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="pre"><para><ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref> has been called.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A Timer_Handle returned from <ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="see"><para><ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="408" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_timer_8h_1ab27a6e779a8f6872cff60fdeab349700" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int_fast16_t</type>
+        <definition>int_fast16_t Timer_control</definition>
+        <argsstring>(Timer_Handle handle, uint_fast16_t cmd, void *arg)</argsstring>
+        <name>Timer_control</name>
+        <param>
+          <type><ref refid="_timer_8h_1a20f0a8998127dfcff910d15393f564a7" kindref="member">Timer_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <param>
+          <type>uint_fast16_t</type>
+          <declname>cmd</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>arg</declname>
+        </param>
+        <briefdescription>
+<para>Function performs device specific features on a given Timer_Handle. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="pre"><para><ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref> has been called.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A Timer_Handle returned from <ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref>.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cmd</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A command value defined by the driver specific implementation.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>arg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to an optional R/W (read/write) argument that is accompanied with cmd.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Timer_Status describing an error or success state. Negative values indicate an error occurred.</para></simplesect>
+<simplesect kind="see"><para><ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="429" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_timer_8h_1a29ed26e8d3139f8ac21746c14d8b7abc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t Timer_getCount</definition>
+        <argsstring>(Timer_Handle handle)</argsstring>
+        <name>Timer_getCount</name>
+        <param>
+          <type><ref refid="_timer_8h_1a20f0a8998127dfcff910d15393f564a7" kindref="member">Timer_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <briefdescription>
+<para>Function to get the current count of a timer. The value returned represents timer counts. The value returned is always characteristic of an up counter. This is true even if the timer peripheral is counting down. Some device specific implementations may employ a prescaler in addition to this timer count. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="pre"><para><ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref> has been called.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A Timer_Handle returned from <ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="see"><para><ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref></para></simplesect>
+<simplesect kind="return"><para>The current count of the timer in timer ticks. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="448" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_timer_8h_1ace12508d33b354c0194b6f72cfc3bf12" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Timer_init</definition>
+        <argsstring>(void)</argsstring>
+        <name>Timer_init</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Function to initialize a timer module. This function will go through all available hardware resources and mark them as &quot;available&quot;. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="pre"><para>The Timer_config structure must exist and be persistent before this function can be called. This function must also be called before any other timer driver APIs.</para></simplesect>
+<simplesect kind="see"><para><ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="461" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_timer_8h_1a20f0a8998127dfcff910d15393f564a7" kindref="member">Timer_Handle</ref></type>
+        <definition>Timer_Handle Timer_open</definition>
+        <argsstring>(uint_least8_t index, Timer_Params *params)</argsstring>
+        <name>Timer_open</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>index</declname>
+        </param>
+        <param>
+          <type><ref refid="_timer_8h_1aec4b45c2faaeda7bd9e2f79105e2ca2e" kindref="member">Timer_Params</ref> *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+<para>Function to initialize a given timer peripheral specified by the index argument. The Timer_Params specifies which mode the timer will operate. The accuracy of the desired period is limited by the the clock. For example, a 100 MHz clock will have a tick resolution of 10 nanoseconds. This function takes care of timer resource allocation. If the particular timer is available to use, the timer driver owns it and returns a Timer_Handle. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="pre"><para><ref refid="_timer_8h_1ace12508d33b354c0194b6f72cfc3bf12" kindref="member">Timer_init()</ref> has been called.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Logical peripheral number for the timer indexed into the Timer_config table.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>params</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to an parameter block, if NULL it will use default values.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Timer_Handle upon success or NULL. If the desired period results in overflow, or saturation, of the timer, NULL is returned. If the timer resource is already in use, NULL is returned.</para></simplesect>
+<simplesect kind="see"><para><ref refid="_timer_8h_1ace12508d33b354c0194b6f72cfc3bf12" kindref="member">Timer_init()</ref> </para></simplesect>
+<simplesect kind="see"><para><ref refid="_timer_8h_1a826779747913a65d4f683a627fd0759f" kindref="member">Timer_close()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="487" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_timer_8h_1ae5309d35d8dfc6b2f0b24c7eec556dec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Timer_Params_init</definition>
+        <argsstring>(Timer_Params *params)</argsstring>
+        <name>Timer_Params_init</name>
+        <param>
+          <type><ref refid="_timer_8h_1aec4b45c2faaeda7bd9e2f79105e2ca2e" kindref="member">Timer_Params</ref> *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+<para>Function to initialize the Timer_Params struct to its defaults. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>params</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to Timer_Params structure for initialization.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+Defaults values are: timerMode = Timer_ONESHOT_BLOCKING periodUnit = Timer_PERIOD_COUNTS timerCallback = NULL period = (uint16_t) ~0 </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="501" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_timer_8h_1ae2f09cd2a7f7251e5fffade75378c332" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int32_t</type>
+        <definition>int32_t Timer_start</definition>
+        <argsstring>(Timer_Handle handle)</argsstring>
+        <name>Timer_start</name>
+        <param>
+          <type><ref refid="_timer_8h_1a20f0a8998127dfcff910d15393f564a7" kindref="member">Timer_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <briefdescription>
+<para>Function to start the timer. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="pre"><para><ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref> has been called.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A Timer_Handle returned from <ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Timer_STATUS_SUCCESS or Timer_STATUS_ERROR.</para></simplesect>
+<simplesect kind="see"><para><ref refid="_timer_8h_1a3b951947aeec93b4610f87ba7b8a8621" kindref="member">Timer_stop()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="514" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_timer_8h_1a3b951947aeec93b4610f87ba7b8a8621" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Timer_stop</definition>
+        <argsstring>(Timer_Handle handle)</argsstring>
+        <name>Timer_stop</name>
+        <param>
+          <type><ref refid="_timer_8h_1a20f0a8998127dfcff910d15393f564a7" kindref="member">Timer_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <briefdescription>
+<para>Function to stop timer. If the timer is already stopped, this function has no effect. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="pre"><para><ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref> has been called.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A Timer_Handle returned from <ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="see"><para><ref refid="_timer_8h_1ae2f09cd2a7f7251e5fffade75378c332" kindref="member">Timer_start()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="526" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Timer driver interface. </para>    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+</para><para>The timer header file should be included in an application as follows: <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/Timer.h&gt;</highlight></codeline>
+</programlisting></para><para><heading level="1">Overview</heading>
+</para><para>The timer driver serves as the main interface for a typical RTOS application. Its purpose is to redirect the timer APIs to device specific implementations which are specified using a pointer to a <ref refid="_timer_8h_1a97afbdd9735ae145134ecdb530a08cf4" kindref="member">Timer_FxnTable</ref>. The device specific implementations are responsible for creating all the RTOS specific primitives to allow for thead-safe operation. This driver does not have PWM or capture functionalities. These functionalities are addressed in both the capture and PWM driver.</para><para>The timer driver also handles the general purpose timer resource allocation. For each driver that requires use of a general purpose timer, it calls <ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref> to occupy the specified timer, and calls <ref refid="_timer_8h_1a826779747913a65d4f683a627fd0759f" kindref="member">Timer_close()</ref> to release the occupied timer resource.</para><para><heading level="1">Usage</heading>
+</para><para>The following example code opens a timer in continuous callback mode. The period is set to 1000 Hz.</para><para><programlisting><codeline><highlight class="normal">Timer_Handle<sp/><sp/><sp/><sp/>handle;</highlight></codeline>
+<codeline><highlight class="normal">Timer_Params<sp/><sp/><sp/><sp/>params;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Timer_Params_init(&amp;params);</highlight></codeline>
+<codeline><highlight class="normal">params.periodUnits<sp/>=<sp/>Timer_PERIOD_HZ;</highlight></codeline>
+<codeline><highlight class="normal">params.period<sp/>=<sp/>1000;</highlight></codeline>
+<codeline><highlight class="normal">params.timerMode<sp/><sp/>=<sp/>Timer_CONTINUOUS_CALLBACK;</highlight></codeline>
+<codeline><highlight class="normal">params.timerCallback<sp/>=<sp/>UserCallbackFunction;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">handle<sp/>=<sp/>Timer_open(Board_TIMER0,<sp/>&amp;params);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">if<sp/>(handle<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Timer_open()<sp/>failed</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>while<sp/>(1);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">status<sp/>=<sp/>Timer_start(handle);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">if<sp/>(status<sp/>==<sp/>Timer_STATUS_ERROR)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//Timer_start()<sp/>failed</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>while<sp/>(1);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">sleep(10000);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Timer_stop(handle);</highlight></codeline>
+</programlisting></para><para><heading level="3">Timer Driver Configuration</heading>
+</para><para>In order to use the timer APIs, the application is required to provide device specific timer configuration in the Board.c file. The timer driver interface defines a configuration data structure:</para><para><programlisting><codeline><highlight class="normal">typedef<sp/>struct<sp/>Timer_Config_<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Timer_FxnTable<sp/>const<sp/>*fxnTablePtr;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*object;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>*hwAttrs;</highlight></codeline>
+<codeline><highlight class="normal">}<sp/>Timer_Config;</highlight></codeline>
+</programlisting></para><para>The application must declare an array of Timer_Config elements, named Timer_config[]. Each element of Timer_config[] are populated with pointers to a device specific timer driver implementation&apos;s function table, driver object, and hardware attributes. The hardware attributes define properties such as the timer peripheral&apos;s base address, interrupt number and interrupt priority. Each element in Timer_config[] corresponds to a timer instance, and none of the elements should have NULL pointers. There is no correlation between the index and the peripheral designation (such as TIMER0 or TIMER1). For example, it is possible to use Timer_config[0] for TIMER1.</para><para>You will need to check the device specific timer driver implementation&apos;s header file for example configuration.</para><para><heading level="3">Initializing the Timer Driver</heading>
+</para><para><ref refid="_timer_8h_1ace12508d33b354c0194b6f72cfc3bf12" kindref="member">Timer_init()</ref> must be called before any other timer APIs. This function calls the device implementation&apos;s timer initialization function, for each element of Timer_config[].</para><para><heading level="3">Modes of Operation</heading>
+</para><para>The timer driver supports four modes of operation which may be specified in the Timer_Params. The device specific implementation may configure the timer peripheral as an up or down counter. In any case, <ref refid="_timer_8h_1a29ed26e8d3139f8ac21746c14d8b7abc" kindref="member">Timer_getCount()</ref> will return a value characteristic of an up counter.</para><para><ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3a01f0c06391bb2ea1ec530ba502a795a5" kindref="member">Timer_ONESHOT_CALLBACK</ref> is non-blocking. After <ref refid="_timer_8h_1ae2f09cd2a7f7251e5fffade75378c332" kindref="member">Timer_start()</ref> is called, the calling thread will continue execution. When the timer interrupt is triggered, the specified callback function will be called. The timer will not generate another interrupt unless <ref refid="_timer_8h_1ae2f09cd2a7f7251e5fffade75378c332" kindref="member">Timer_start()</ref> is called again. Calling <ref refid="_timer_8h_1a3b951947aeec93b4610f87ba7b8a8621" kindref="member">Timer_stop()</ref> or <ref refid="_timer_8h_1a826779747913a65d4f683a627fd0759f" kindref="member">Timer_close()</ref> after <ref refid="_timer_8h_1ae2f09cd2a7f7251e5fffade75378c332" kindref="member">Timer_start()</ref> but, before the timer interrupt, will prevent the specified callback from ever being invoked.</para><para><ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3ac93d728c52e809e9c179ff8da526ca00" kindref="member">Timer_ONESHOT_BLOCKING</ref> is a blocking call. A semaphore is used to block the calling thread&apos;s execution until the timer generates an interrupt. If <ref refid="_timer_8h_1a3b951947aeec93b4610f87ba7b8a8621" kindref="member">Timer_stop()</ref> is called, the calling thread will become unblocked immediately. The behavior of the timer in this mode is similar to a sleep function.</para><para><ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3ae8bfe2f9b37749ebc20b9905a459843b" kindref="member">Timer_CONTINUOUS_CALLBACK</ref> is non-blocking. After <ref refid="_timer_8h_1ae2f09cd2a7f7251e5fffade75378c332" kindref="member">Timer_start()</ref> is called, the calling thread will continue execution. When the timer interrupt is treiggered, the specified callback function will be called. The timer is automatically restarted and will continue to periodically generate interrupts until <ref refid="_timer_8h_1a3b951947aeec93b4610f87ba7b8a8621" kindref="member">Timer_stop()</ref> is called.</para><para><ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3a90581a353ae32c561dfbc6c60b9ec49e" kindref="member">Timer_FREE_RUNNING</ref> is non-blocking. After <ref refid="_timer_8h_1ae2f09cd2a7f7251e5fffade75378c332" kindref="member">Timer_start()</ref> is called, the calling thread will continue execution. The timer will not generate an interrupt in this mode. The timer hardware will run until <ref refid="_timer_8h_1a3b951947aeec93b4610f87ba7b8a8621" kindref="member">Timer_stop()</ref> is called.</para><para><heading level="1">Implementation</heading>
+</para><para>The timer driver interface module is joined (at link time) to an array of Timer_Config data structures named <emphasis>Timer_config</emphasis>. Timer_config is implemented in the application with each entry being an instance of a timer peripheral. Each entry in <emphasis>Timer_config</emphasis> contains a:<itemizedlist>
+<listitem><para>(Timer_FxnTable *) to a set of functions that implement a timer peripheral</para></listitem><listitem><para>(void *) data object that is associated with the Timer_FxnTable</para></listitem><listitem><para>(void *) hardware attributes that are associated with the Timer_FxnTable</para></listitem></itemizedlist>
+</para><para>The timer APIs are redirected to the device specific implementations using the Timer_FxnTable pointer of the Timer_config entry. In order to use device specific functions of the timer driver directly, link in the correct driver library for your device and include the device specific timer driver header file (which in turn includes <ref refid="_timer_8h" kindref="compound">Timer.h</ref>). For example, for the MSP432 family of devices, you would include the following header file:</para><para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/timer/TimerMSP432.h&gt;</highlight></codeline>
+</programlisting> <hruler/>
+ </para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2016-2018,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>are<sp/>met:</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>Texas<sp/>Instruments<sp/>Incorporated<sp/>nor<sp/>the<sp/>names<sp/>of</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>its<sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>from<sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>THIS<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>BY<sp/>THE<sp/>COPYRIGHT<sp/>HOLDERS<sp/>AND<sp/>CONTRIBUTORS<sp/>&quot;AS<sp/>IS&quot;</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>AND<sp/>ANY<sp/>EXPRESS<sp/>OR<sp/>IMPLIED<sp/>WARRANTIES,<sp/>INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>THE<sp/>IMPLIED<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY<sp/>AND<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>PURPOSE<sp/>ARE<sp/>DISCLAIMED.<sp/>IN<sp/>NO<sp/>EVENT<sp/>SHALL<sp/>THE<sp/>COPYRIGHT<sp/>OWNER<sp/>OR</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>CONTRIBUTORS<sp/>BE<sp/>LIABLE<sp/>FOR<sp/>ANY<sp/>DIRECT,<sp/>INDIRECT,<sp/>INCIDENTAL,<sp/>SPECIAL,</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>EXEMPLARY,<sp/>OR<sp/>CONSEQUENTIAL<sp/>DAMAGES<sp/>(INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>PROCUREMENT<sp/>OF<sp/>SUBSTITUTE<sp/>GOODS<sp/>OR<sp/>SERVICES;<sp/>LOSS<sp/>OF<sp/>USE,<sp/>DATA,<sp/>OR<sp/>PROFITS;</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>OR<sp/>BUSINESS<sp/>INTERRUPTION)<sp/>HOWEVER<sp/>CAUSED<sp/>AND<sp/>ON<sp/>ANY<sp/>THEORY<sp/>OF<sp/>LIABILITY,</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>WHETHER<sp/>IN<sp/>CONTRACT,<sp/>STRICT<sp/>LIABILITY,<sp/>OR<sp/>TORT<sp/>(INCLUDING<sp/>NEGLIGENCE<sp/>OR</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>OTHERWISE)<sp/>ARISING<sp/>IN<sp/>ANY<sp/>WAY<sp/>OUT<sp/>OF<sp/>THE<sp/>USE<sp/>OF<sp/>THIS<sp/>SOFTWARE,</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>EVEN<sp/>IF<sp/>ADVISED<sp/>OF<sp/>THE<sp/>POSSIBILITY<sp/>OF<sp/>SUCH<sp/>DAMAGE.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">/*!*****************************************************************************</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/><sp/>@file<sp/><sp/><sp/><sp/><sp/><sp/><sp/>Timer.h</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>Timer<sp/>driver<sp/>interface</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>timer<sp/>header<sp/>file<sp/>should<sp/>be<sp/>included<sp/>in<sp/>an<sp/>application<sp/>as<sp/>follows:</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&lt;ti/drivers/Timer.h&gt;</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/><sp/>#<sp/>Overview<sp/>#</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>timer<sp/>driver<sp/>serves<sp/>as<sp/>the<sp/>main<sp/>interface<sp/>for<sp/>a<sp/>typical<sp/>RTOS</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/><sp/>application.<sp/>Its<sp/>purpose<sp/>is<sp/>to<sp/>redirect<sp/>the<sp/>timer<sp/>APIs<sp/>to<sp/>device<sp/>specific</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/><sp/>implementations<sp/>which<sp/>are<sp/>specified<sp/>using<sp/>a<sp/>pointer<sp/>to<sp/>a<sp/>#Timer_FxnTable.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>device<sp/>specific<sp/>implementations<sp/>are<sp/>responsible<sp/>for<sp/>creating<sp/>all<sp/>the</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/><sp/>RTOS<sp/>specific<sp/>primitives<sp/>to<sp/>allow<sp/>for<sp/>thead-safe<sp/>operation.<sp/>This<sp/>driver</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/><sp/>does<sp/>not<sp/>have<sp/>PWM<sp/>or<sp/>capture<sp/>functionalities.<sp/>These<sp/>functionalities<sp/>are</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/><sp/>addressed<sp/>in<sp/>both<sp/>the<sp/>capture<sp/>and<sp/>PWM<sp/>driver.</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>timer<sp/>driver<sp/>also<sp/>handles<sp/>the<sp/>general<sp/>purpose<sp/>timer<sp/>resource<sp/>allocation.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/><sp/>For<sp/>each<sp/>driver<sp/>that<sp/>requires<sp/>use<sp/>of<sp/>a<sp/>general<sp/>purpose<sp/>timer,<sp/>it<sp/>calls</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/><sp/>Timer_open()<sp/>to<sp/>occupy<sp/>the<sp/>specified<sp/>timer,<sp/>and<sp/>calls<sp/>Timer_close()<sp/>to</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/><sp/>release<sp/>the<sp/>occupied<sp/>timer<sp/>resource.</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/><sp/>#<sp/>Usage<sp/>#</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>following<sp/>example<sp/>code<sp/>opens<sp/>a<sp/>timer<sp/>in<sp/>continuous<sp/>callback<sp/>mode.<sp/>The</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/><sp/>period<sp/>is<sp/>set<sp/>to<sp/>1000<sp/>Hz.</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*<sp/><sp/>Timer_Handle<sp/><sp/><sp/><sp/>handle;</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/><sp/>Timer_Params<sp/><sp/><sp/><sp/>params;</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/><sp/>Timer_Params_init(&amp;params);</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/><sp/>params.periodUnits<sp/>=<sp/>Timer_PERIOD_HZ;</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/><sp/>params.period<sp/>=<sp/>1000;</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*<sp/><sp/>params.timerMode<sp/><sp/>=<sp/>Timer_CONTINUOUS_CALLBACK;</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/><sp/>params.timerCallback<sp/>=<sp/>UserCallbackFunction;</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*<sp/><sp/>handle<sp/>=<sp/>Timer_open(Board_TIMER0,<sp/>&amp;params);</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*<sp/><sp/>if<sp/>(handle<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Timer_open()<sp/>failed</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>while<sp/>(1);</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*<sp/><sp/>status<sp/>=<sp/>Timer_start(handle);</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*<sp/><sp/>if<sp/>(status<sp/>==<sp/>Timer_STATUS_ERROR)<sp/>{</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//Timer_start()<sp/>failed</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>while<sp/>(1);</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/>*<sp/><sp/>sleep(10000);</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>*<sp/><sp/>Timer_stop(handle);</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>Timer<sp/>Driver<sp/>Configuration<sp/>#</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>order<sp/>to<sp/>use<sp/>the<sp/>timer<sp/>APIs,<sp/>the<sp/>application<sp/>is<sp/>required<sp/>to<sp/>provide</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/>*<sp/><sp/>device<sp/>specific<sp/>timer<sp/>configuration<sp/>in<sp/>the<sp/>Board.c<sp/>file.<sp/>The<sp/>timer<sp/>driver</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/>*<sp/><sp/>interface<sp/>defines<sp/>a<sp/>configuration<sp/>data<sp/>structure:</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/>*<sp/><sp/>typedef<sp/>struct<sp/>Timer_Config_<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Timer_FxnTable<sp/>const<sp/>*fxnTablePtr;</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>void<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*object;</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>void<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>*hwAttrs;</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"><sp/>*<sp/><sp/>}<sp/>Timer_Config;</highlight></codeline>
+<codeline lineno="100"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>application<sp/>must<sp/>declare<sp/>an<sp/>array<sp/>of<sp/>Timer_Config<sp/>elements,<sp/>named</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/>*<sp/><sp/>Timer_config[].<sp/>Each<sp/>element<sp/>of<sp/>Timer_config[]<sp/>are<sp/>populated<sp/>with</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/>*<sp/><sp/>pointers<sp/>to<sp/>a<sp/>device<sp/>specific<sp/>timer<sp/>driver<sp/>implementation&apos;s<sp/>function</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/>*<sp/><sp/>table,<sp/>driver<sp/>object,<sp/>and<sp/>hardware<sp/>attributes.<sp/>The<sp/>hardware<sp/>attributes</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/>*<sp/><sp/>define<sp/>properties<sp/>such<sp/>as<sp/>the<sp/>timer<sp/>peripheral&apos;s<sp/>base<sp/>address,<sp/>interrupt</highlight></codeline>
+<codeline lineno="107"><highlight class="comment"><sp/>*<sp/><sp/>number<sp/>and<sp/>interrupt<sp/>priority.<sp/>Each<sp/>element<sp/>in<sp/>Timer_config[]<sp/>corresponds</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"><sp/>*<sp/><sp/>to<sp/>a<sp/>timer<sp/>instance,<sp/>and<sp/>none<sp/>of<sp/>the<sp/>elements<sp/>should<sp/>have<sp/>NULL<sp/>pointers.</highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/>*<sp/><sp/>There<sp/>is<sp/>no<sp/>correlation<sp/>between<sp/>the<sp/>index<sp/>and<sp/>the<sp/>peripheral<sp/>designation</highlight></codeline>
+<codeline lineno="110"><highlight class="comment"><sp/>*<sp/><sp/>(such<sp/>as<sp/>TIMER0<sp/>or<sp/>TIMER1).<sp/>For<sp/>example,<sp/>it<sp/>is<sp/>possible<sp/>to<sp/>use</highlight></codeline>
+<codeline lineno="111"><highlight class="comment"><sp/>*<sp/><sp/>Timer_config[0]<sp/>for<sp/>TIMER1.</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="113"><highlight class="comment"><sp/>*<sp/><sp/>You<sp/>will<sp/>need<sp/>to<sp/>check<sp/>the<sp/>device<sp/>specific<sp/>timer<sp/>driver<sp/>implementation&apos;s</highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/>*<sp/><sp/>header<sp/>file<sp/>for<sp/>example<sp/>configuration.</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>Initializing<sp/>the<sp/>Timer<sp/>Driver<sp/>#</highlight></codeline>
+<codeline lineno="117"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/>*<sp/><sp/>Timer_init()<sp/>must<sp/>be<sp/>called<sp/>before<sp/>any<sp/>other<sp/>timer<sp/>APIs.<sp/>This<sp/>function</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/>*<sp/><sp/>calls<sp/>the<sp/>device<sp/>implementation&apos;s<sp/>timer<sp/>initialization<sp/>function,<sp/>for<sp/>each</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/>*<sp/><sp/>element<sp/>of<sp/>Timer_config[].</highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="122"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>Modes<sp/>of<sp/>Operation<sp/>#</highlight></codeline>
+<codeline lineno="123"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="124"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>timer<sp/>driver<sp/>supports<sp/>four<sp/>modes<sp/>of<sp/>operation<sp/>which<sp/>may<sp/>be<sp/>specified<sp/>in</highlight></codeline>
+<codeline lineno="125"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>Timer_Params.<sp/>The<sp/>device<sp/>specific<sp/>implementation<sp/>may<sp/>configure<sp/>the<sp/>timer</highlight></codeline>
+<codeline lineno="126"><highlight class="comment"><sp/>*<sp/><sp/>peripheral<sp/>as<sp/>an<sp/>up<sp/>or<sp/>down<sp/>counter.<sp/>In<sp/>any<sp/>case,<sp/>Timer_getCount()<sp/>will</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"><sp/>*<sp/><sp/>return<sp/>a<sp/>value<sp/>characteristic<sp/>of<sp/>an<sp/>up<sp/>counter.</highlight></codeline>
+<codeline lineno="128"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="129"><highlight class="comment"><sp/>*<sp/><sp/>#Timer_ONESHOT_CALLBACK<sp/>is<sp/>non-blocking.<sp/>After<sp/>Timer_start()<sp/>is<sp/>called,</highlight></codeline>
+<codeline lineno="130"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>calling<sp/>thread<sp/>will<sp/>continue<sp/>execution.<sp/>When<sp/>the<sp/>timer<sp/>interrupt</highlight></codeline>
+<codeline lineno="131"><highlight class="comment"><sp/>*<sp/><sp/>is<sp/>triggered,<sp/>the<sp/>specified<sp/>callback<sp/>function<sp/>will<sp/>be<sp/>called.<sp/>The<sp/>timer</highlight></codeline>
+<codeline lineno="132"><highlight class="comment"><sp/>*<sp/><sp/>will<sp/>not<sp/>generate<sp/>another<sp/>interrupt<sp/>unless<sp/>Timer_start()<sp/>is<sp/>called<sp/>again.</highlight></codeline>
+<codeline lineno="133"><highlight class="comment"><sp/>*<sp/><sp/>Calling<sp/>Timer_stop()<sp/>or<sp/>Timer_close()<sp/>after<sp/>Timer_start()<sp/>but,<sp/>before<sp/>the</highlight></codeline>
+<codeline lineno="134"><highlight class="comment"><sp/>*<sp/><sp/>timer<sp/>interrupt,<sp/>will<sp/>prevent<sp/>the<sp/>specified<sp/>callback<sp/>from<sp/>ever<sp/>being</highlight></codeline>
+<codeline lineno="135"><highlight class="comment"><sp/>*<sp/><sp/>invoked.</highlight></codeline>
+<codeline lineno="136"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="137"><highlight class="comment"><sp/>*<sp/><sp/>#Timer_ONESHOT_BLOCKING<sp/>is<sp/>a<sp/>blocking<sp/>call.<sp/>A<sp/>semaphore<sp/>is<sp/>used<sp/>to<sp/>block</highlight></codeline>
+<codeline lineno="138"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>calling<sp/>thread&apos;s<sp/>execution<sp/>until<sp/>the<sp/>timer<sp/>generates<sp/>an<sp/>interrupt.<sp/>If</highlight></codeline>
+<codeline lineno="139"><highlight class="comment"><sp/>*<sp/><sp/>Timer_stop()<sp/>is<sp/>called,<sp/>the<sp/>calling<sp/>thread<sp/>will<sp/>become<sp/>unblocked</highlight></codeline>
+<codeline lineno="140"><highlight class="comment"><sp/>*<sp/><sp/>immediately.<sp/>The<sp/>behavior<sp/>of<sp/>the<sp/>timer<sp/>in<sp/>this<sp/>mode<sp/>is<sp/>similar<sp/>to<sp/>a<sp/>sleep</highlight></codeline>
+<codeline lineno="141"><highlight class="comment"><sp/>*<sp/><sp/>function.</highlight></codeline>
+<codeline lineno="142"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="143"><highlight class="comment"><sp/>*<sp/><sp/>#Timer_CONTINUOUS_CALLBACK<sp/>is<sp/>non-blocking.<sp/>After<sp/>Timer_start()<sp/>is<sp/>called,</highlight></codeline>
+<codeline lineno="144"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>calling<sp/>thread<sp/>will<sp/>continue<sp/>execution.<sp/>When<sp/>the<sp/>timer<sp/>interrupt<sp/>is</highlight></codeline>
+<codeline lineno="145"><highlight class="comment"><sp/>*<sp/><sp/>treiggered,<sp/>the<sp/>specified<sp/>callback<sp/>function<sp/>will<sp/>be<sp/>called.<sp/>The<sp/>timer<sp/>is</highlight></codeline>
+<codeline lineno="146"><highlight class="comment"><sp/>*<sp/><sp/>automatically<sp/>restarted<sp/>and<sp/>will<sp/>continue<sp/>to<sp/>periodically<sp/>generate</highlight></codeline>
+<codeline lineno="147"><highlight class="comment"><sp/>*<sp/><sp/>interrupts<sp/>until<sp/>Timer_stop()<sp/>is<sp/>called.</highlight></codeline>
+<codeline lineno="148"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="149"><highlight class="comment"><sp/>*<sp/><sp/>#Timer_FREE_RUNNING<sp/>is<sp/>non-blocking.<sp/>After<sp/>Timer_start()<sp/>is<sp/>called,</highlight></codeline>
+<codeline lineno="150"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>calling<sp/>thread<sp/>will<sp/>continue<sp/>execution.<sp/>The<sp/>timer<sp/>will<sp/>not</highlight></codeline>
+<codeline lineno="151"><highlight class="comment"><sp/>*<sp/><sp/>generate<sp/>an<sp/>interrupt<sp/>in<sp/>this<sp/>mode.<sp/>The<sp/>timer<sp/>hardware<sp/>will<sp/>run<sp/>until</highlight></codeline>
+<codeline lineno="152"><highlight class="comment"><sp/>*<sp/><sp/>Timer_stop()<sp/>is<sp/>called.</highlight></codeline>
+<codeline lineno="153"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="154"><highlight class="comment"><sp/>*<sp/><sp/>#<sp/>Implementation<sp/>#</highlight></codeline>
+<codeline lineno="155"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="156"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>timer<sp/>driver<sp/>interface<sp/>module<sp/>is<sp/>joined<sp/>(at<sp/>link<sp/>time)<sp/>to<sp/>an</highlight></codeline>
+<codeline lineno="157"><highlight class="comment"><sp/>*<sp/><sp/>array<sp/>of<sp/>Timer_Config<sp/>data<sp/>structures<sp/>named<sp/>*Timer_config*.</highlight></codeline>
+<codeline lineno="158"><highlight class="comment"><sp/>*<sp/><sp/>Timer_config<sp/>is<sp/>implemented<sp/>in<sp/>the<sp/>application<sp/>with<sp/>each<sp/>entry<sp/>being<sp/>an</highlight></codeline>
+<codeline lineno="159"><highlight class="comment"><sp/>*<sp/><sp/>instance<sp/>of<sp/>a<sp/>timer<sp/>peripheral.<sp/>Each<sp/>entry<sp/>in<sp/>*Timer_config*<sp/>contains<sp/>a:</highlight></codeline>
+<codeline lineno="160"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>(Timer_FxnTable<sp/>*)<sp/>to<sp/>a<sp/>set<sp/>of<sp/>functions<sp/>that<sp/>implement<sp/>a<sp/>timer<sp/>peripheral</highlight></codeline>
+<codeline lineno="161"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>(void<sp/>*)<sp/>data<sp/>object<sp/>that<sp/>is<sp/>associated<sp/>with<sp/>the<sp/>Timer_FxnTable</highlight></codeline>
+<codeline lineno="162"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>(void<sp/>*)<sp/>hardware<sp/>attributes<sp/>that<sp/>are<sp/>associated<sp/>with<sp/>the<sp/>Timer_FxnTable</highlight></codeline>
+<codeline lineno="163"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="164"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>timer<sp/>APIs<sp/>are<sp/>redirected<sp/>to<sp/>the<sp/>device<sp/>specific<sp/>implementations</highlight></codeline>
+<codeline lineno="165"><highlight class="comment"><sp/>*<sp/><sp/>using<sp/>the<sp/>Timer_FxnTable<sp/>pointer<sp/>of<sp/>the<sp/>Timer_config<sp/>entry.</highlight></codeline>
+<codeline lineno="166"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>order<sp/>to<sp/>use<sp/>device<sp/>specific<sp/>functions<sp/>of<sp/>the<sp/>timer<sp/>driver<sp/>directly,</highlight></codeline>
+<codeline lineno="167"><highlight class="comment"><sp/>*<sp/><sp/>link<sp/>in<sp/>the<sp/>correct<sp/>driver<sp/>library<sp/>for<sp/>your<sp/>device<sp/>and<sp/>include<sp/>the</highlight></codeline>
+<codeline lineno="168"><highlight class="comment"><sp/>*<sp/><sp/>device<sp/>specific<sp/>timer<sp/>driver<sp/>header<sp/>file<sp/>(which<sp/>in<sp/>turn<sp/>includes<sp/>Timer.h).</highlight></codeline>
+<codeline lineno="169"><highlight class="comment"><sp/>*<sp/><sp/>For<sp/>example,<sp/>for<sp/>the<sp/>MSP432<sp/>family<sp/>of<sp/>devices,<sp/>you<sp/>would<sp/>include<sp/>the</highlight></codeline>
+<codeline lineno="170"><highlight class="comment"><sp/>*<sp/><sp/>following<sp/>header<sp/>file:</highlight></codeline>
+<codeline lineno="171"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="172"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="173"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&lt;ti/drivers/timer/TimerMSP432.h&gt;</highlight></codeline>
+<codeline lineno="174"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="175"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="176"><highlight class="comment"><sp/>*<sp/><sp/>============================================================================</highlight></codeline>
+<codeline lineno="177"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ti_drivers_Timer__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_drivers_Timer__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200" refid="_timer_8h_1ae07d04d02a6ddc6e02271084a71a365e" refkind="member"><highlight class="preprocessor">#define<sp/>Timer_CMD_RESERVED<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(32)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213" refid="_timer_8h_1a904cb478987bb4d1747d39280ab5727e" refkind="member"><highlight class="preprocessor">#define<sp/>Timer_STATUS_RESERVED<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(-32)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="218" refid="_timer_8h_1ac8686101a9b8fbee4eacc2b40ff708e7" refkind="member"><highlight class="preprocessor">#define<sp/>Timer_STATUS_SUCCESS<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="223" refid="_timer_8h_1aaa10cf27200f356b47e6f8a4088d37f8" refkind="member"><highlight class="preprocessor">#define<sp/>Timer_STATUS_ERROR<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(-1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight></codeline>
+<codeline lineno="232" refid="_timer_8h_1a45b37be0a813d7d501da46578fd5f6b2" refkind="member"><highlight class="preprocessor">#define<sp/>Timer_STATUS_UNDEFINEDCMD<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(-2)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight></codeline>
+<codeline lineno="237" refid="_timer_8h_1a20f0a8998127dfcff910d15393f564a7" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_timer___config__" kindref="compound">Timer_Config_</ref><sp/>*<ref refid="_timer_8h_1a20f0a8998127dfcff910d15393f564a7" kindref="member">Timer_Handle</ref>;</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"></highlight></codeline>
+<codeline lineno="244" refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3" kindref="member">Timer_Mode_</ref><sp/>{</highlight></codeline>
+<codeline lineno="245" refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3a01f0c06391bb2ea1ec530ba502a795a5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3a01f0c06391bb2ea1ec530ba502a795a5" kindref="member">Timer_ONESHOT_CALLBACK</ref>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="249" refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3ac93d728c52e809e9c179ff8da526ca00" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3ac93d728c52e809e9c179ff8da526ca00" kindref="member">Timer_ONESHOT_BLOCKING</ref>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="251" refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3ae8bfe2f9b37749ebc20b9905a459843b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3ae8bfe2f9b37749ebc20b9905a459843b" kindref="member">Timer_CONTINUOUS_CALLBACK</ref>,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="254" refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3a90581a353ae32c561dfbc6c60b9ec49e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a9b6be3dc32e47334a0692abc3bf7adc3a90581a353ae32c561dfbc6c60b9ec49e" kindref="member">Timer_FREE_RUNNING</ref></highlight></codeline>
+<codeline lineno="255"><highlight class="normal">}<sp/><ref refid="_timer_8h_1a9bdf0bac4961e11704f2bf087eefed4e" kindref="member">Timer_Mode</ref>;</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"></highlight></codeline>
+<codeline lineno="263" refid="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6" kindref="member">Timer_PeriodUnits_</ref><sp/>{</highlight></codeline>
+<codeline lineno="264" refid="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6a03cfd261fae09a76a370acd8240181b1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6a03cfd261fae09a76a370acd8240181b1" kindref="member">Timer_PERIOD_US</ref>,<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="265" refid="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6afe77ce02e894805812fd4b497b2ba41c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6afe77ce02e894805812fd4b497b2ba41c" kindref="member">Timer_PERIOD_HZ</ref>,<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="267" refid="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6ac22836849686dc6b10a6cdf2c689d142" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1ab3b1ab8e3491f68c26cc854d1bd749d6ac22836849686dc6b10a6cdf2c689d142" kindref="member">Timer_PERIOD_COUNTS</ref><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="269"><highlight class="normal">}<sp/><ref refid="_timer_8h_1a446e5578acbc8ed7bcbc1bee3e2a2c61" kindref="member">Timer_PeriodUnits</ref>;</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"></highlight></codeline>
+<codeline lineno="280" refid="_timer_8h_1a051eb2c54ff6e078655c8bf575384cc4" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="_timer_8h_1a051eb2c54ff6e078655c8bf575384cc4" kindref="member">Timer_CallBackFxn</ref>)(Timer_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight></codeline>
+<codeline lineno="289" refid="struct_timer___params__" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_timer___params__" kindref="compound">Timer_Params_</ref><sp/>{</highlight></codeline>
+<codeline lineno="291" refid="struct_timer___params___1acbd0800347b3889705854fd42b82e63e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Timer_Mode<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer___params___1acbd0800347b3889705854fd42b82e63e" kindref="member">timerMode</ref>;</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"></highlight></codeline>
+<codeline lineno="294" refid="struct_timer___params___1a2291a900661115e74b080097c28a8bd2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Timer_PeriodUnits<sp/><sp/><sp/><sp/><ref refid="struct_timer___params___1a2291a900661115e74b080097c28a8bd2" kindref="member">periodUnits</ref>;</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"></highlight></codeline>
+<codeline lineno="298" refid="struct_timer___params___1adcae30dfe0fa2814ccff9a1240a60048" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a051eb2c54ff6e078655c8bf575384cc4" kindref="member">Timer_CallBackFxn</ref><sp/><sp/><sp/><sp/><ref refid="struct_timer___params___1adcae30dfe0fa2814ccff9a1240a60048" kindref="member">timerCallback</ref>;</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"></highlight></codeline>
+<codeline lineno="301" refid="struct_timer___params___1a21488dc924c057d099792e8be4a41251" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer___params___1a21488dc924c057d099792e8be4a41251" kindref="member">period</ref>;</highlight></codeline>
+<codeline lineno="302"><highlight class="normal">}<sp/><ref refid="_timer_8h_1aec4b45c2faaeda7bd9e2f79105e2ca2e" kindref="member">Timer_Params</ref>;</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"></highlight></codeline>
+<codeline lineno="308" refid="_timer_8h_1a965461a1bad38b7c19e37e3b337096e0" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>(*<ref refid="_timer_8h_1a965461a1bad38b7c19e37e3b337096e0" kindref="member">Timer_ControlFxn</ref>)(Timer_Handle<sp/>handle,</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/>uint_fast16_t<sp/>cmd,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*arg);</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"></highlight></codeline>
+<codeline lineno="315" refid="_timer_8h_1a7418a314c1c025febfd2ea43fd55c740" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="_timer_8h_1a7418a314c1c025febfd2ea43fd55c740" kindref="member">Timer_CloseFxn</ref>)(Timer_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"></highlight></codeline>
+<codeline lineno="321" refid="_timer_8h_1a99b9c3330524ba12bdcf9f4159bac7dc" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>uint32_t<sp/>(*<ref refid="_timer_8h_1a99b9c3330524ba12bdcf9f4159bac7dc" kindref="member">Timer_GetCountFxn</ref>)(Timer_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"></highlight></codeline>
+<codeline lineno="327" refid="_timer_8h_1a67ab2fce64b3252b4499d22d89679604" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="_timer_8h_1a67ab2fce64b3252b4499d22d89679604" kindref="member">Timer_InitFxn</ref>)(Timer_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="328"><highlight class="normal"></highlight></codeline>
+<codeline lineno="333" refid="_timer_8h_1ad833d510ee86d5b5c8cca2f23a9dbf9e" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/><ref refid="_timer_8h_1a20f0a8998127dfcff910d15393f564a7" kindref="member">Timer_Handle</ref><sp/>(*<ref refid="_timer_8h_1ad833d510ee86d5b5c8cca2f23a9dbf9e" kindref="member">Timer_OpenFxn</ref>)(Timer_Handle<sp/>handle,</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_timer___params__" kindref="compound">Timer_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight></codeline>
+<codeline lineno="340" refid="_timer_8h_1aa4cb84a48be15b66d2666239b06072d8" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>int32_t<sp/>(*<ref refid="_timer_8h_1aa4cb84a48be15b66d2666239b06072d8" kindref="member">Timer_StartFxn</ref>)(Timer_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"></highlight></codeline>
+<codeline lineno="346" refid="_timer_8h_1a681079e95179fd797e04a7fc1e68bb6e" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="_timer_8h_1a681079e95179fd797e04a7fc1e68bb6e" kindref="member">Timer_StopFxn</ref>)(Timer_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"></highlight></codeline>
+<codeline lineno="353" refid="struct_timer___fxn_table__" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_timer___fxn_table__" kindref="compound">Timer_FxnTable_</ref><sp/>{</highlight></codeline>
+<codeline lineno="355" refid="struct_timer___fxn_table___1ab1dccf97e68a8c65c432bbb73f01a218" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a7418a314c1c025febfd2ea43fd55c740" kindref="member">Timer_CloseFxn</ref><sp/><ref refid="struct_timer___fxn_table___1ab1dccf97e68a8c65c432bbb73f01a218" kindref="member">closeFxn</ref>;</highlight></codeline>
+<codeline lineno="356"><highlight class="normal"></highlight></codeline>
+<codeline lineno="358" refid="struct_timer___fxn_table___1a3db7ee58fde12d9c6bc79b4cbcebbdbf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a965461a1bad38b7c19e37e3b337096e0" kindref="member">Timer_ControlFxn</ref><sp/><ref refid="struct_timer___fxn_table___1a3db7ee58fde12d9c6bc79b4cbcebbdbf" kindref="member">controlFxn</ref>;</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"></highlight></codeline>
+<codeline lineno="361" refid="struct_timer___fxn_table___1aaa3c8ec644b0ebe411cc79228ce51663" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a99b9c3330524ba12bdcf9f4159bac7dc" kindref="member">Timer_GetCountFxn</ref><sp/><ref refid="struct_timer___fxn_table___1aaa3c8ec644b0ebe411cc79228ce51663" kindref="member">getCountFxn</ref>;</highlight></codeline>
+<codeline lineno="362"><highlight class="normal"></highlight></codeline>
+<codeline lineno="364" refid="struct_timer___fxn_table___1a08d03c458aba13c89caef766a1ceaab5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a67ab2fce64b3252b4499d22d89679604" kindref="member">Timer_InitFxn</ref><sp/><ref refid="struct_timer___fxn_table___1a08d03c458aba13c89caef766a1ceaab5" kindref="member">initFxn</ref>;</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"></highlight></codeline>
+<codeline lineno="367" refid="struct_timer___fxn_table___1a27f01f2cbc4fcefbe4ee2b10bc25f12d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1ad833d510ee86d5b5c8cca2f23a9dbf9e" kindref="member">Timer_OpenFxn</ref><sp/><ref refid="struct_timer___fxn_table___1a27f01f2cbc4fcefbe4ee2b10bc25f12d" kindref="member">openFxn</ref>;</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"></highlight></codeline>
+<codeline lineno="370" refid="struct_timer___fxn_table___1a429ee8fba8690ad965022b3ce72861f6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1aa4cb84a48be15b66d2666239b06072d8" kindref="member">Timer_StartFxn</ref><sp/><ref refid="struct_timer___fxn_table___1a429ee8fba8690ad965022b3ce72861f6" kindref="member">startFxn</ref>;</highlight></codeline>
+<codeline lineno="371"><highlight class="normal"></highlight></codeline>
+<codeline lineno="373" refid="struct_timer___fxn_table___1ac1f203044d5be19ecc07a5de02c4af1d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a681079e95179fd797e04a7fc1e68bb6e" kindref="member">Timer_StopFxn</ref><sp/><ref refid="struct_timer___fxn_table___1ac1f203044d5be19ecc07a5de02c4af1d" kindref="member">stopFxn</ref>;</highlight></codeline>
+<codeline lineno="374"><highlight class="normal">}<sp/><ref refid="_timer_8h_1a97afbdd9735ae145134ecdb530a08cf4" kindref="member">Timer_FxnTable</ref>;</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"></highlight></codeline>
+<codeline lineno="387" refid="struct_timer___config__" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_timer___config__" kindref="compound">Timer_Config_</ref><sp/>{</highlight></codeline>
+<codeline lineno="389" refid="struct_timer___config___1ad729580a94414d8dddf43fa91e2a570a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_timer___fxn_table__" kindref="compound">Timer_FxnTable</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>*<ref refid="struct_timer___config___1ad729580a94414d8dddf43fa91e2a570a" kindref="member">fxnTablePtr</ref>;</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"></highlight></codeline>
+<codeline lineno="392" refid="struct_timer___config___1adbf31e859dbb61b99d9ca845ab9923da" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_timer___config___1adbf31e859dbb61b99d9ca845ab9923da" kindref="member">object</ref>;</highlight></codeline>
+<codeline lineno="393"><highlight class="normal"></highlight></codeline>
+<codeline lineno="395" refid="struct_timer___config___1aec53bedfd4e8ccfc12b337ea13a2914e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>*<ref refid="struct_timer___config___1aec53bedfd4e8ccfc12b337ea13a2914e" kindref="member">hwAttrs</ref>;</highlight></codeline>
+<codeline lineno="396"><highlight class="normal">}<sp/><ref refid="_timer_8h_1a4c61ce326e1836cd5a5f9d9a728c1ac4" kindref="member">Timer_Config</ref>;</highlight></codeline>
+<codeline lineno="397"><highlight class="normal"></highlight></codeline>
+<codeline lineno="408"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_timer_8h_1a826779747913a65d4f683a627fd0759f" kindref="member">Timer_close</ref>(Timer_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="409"><highlight class="normal"></highlight></codeline>
+<codeline lineno="429"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/><ref refid="_timer_8h_1ab27a6e779a8f6872cff60fdeab349700" kindref="member">Timer_control</ref>(Timer_Handle<sp/>handle,<sp/>uint_fast16_t<sp/>cmd,</highlight></codeline>
+<codeline lineno="430"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*arg);</highlight></codeline>
+<codeline lineno="431"><highlight class="normal"></highlight></codeline>
+<codeline lineno="448"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="_timer_8h_1a29ed26e8d3139f8ac21746c14d8b7abc" kindref="member">Timer_getCount</ref>(Timer_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="449"><highlight class="normal"></highlight></codeline>
+<codeline lineno="450"><highlight class="normal"></highlight></codeline>
+<codeline lineno="461"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_timer_8h_1ace12508d33b354c0194b6f72cfc3bf12" kindref="member">Timer_init</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="462"><highlight class="normal"></highlight></codeline>
+<codeline lineno="487"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>Timer_Handle<sp/><ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open</ref>(uint_least8_t<sp/>index,<sp/><ref refid="struct_timer___params__" kindref="compound">Timer_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="488"><highlight class="normal"></highlight></codeline>
+<codeline lineno="501"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_timer_8h_1ae5309d35d8dfc6b2f0b24c7eec556dec" kindref="member">Timer_Params_init</ref>(<ref refid="struct_timer___params__" kindref="compound">Timer_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="502"><highlight class="normal"></highlight></codeline>
+<codeline lineno="514"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int32_t<sp/><ref refid="_timer_8h_1ae2f09cd2a7f7251e5fffade75378c332" kindref="member">Timer_start</ref>(Timer_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="515"><highlight class="normal"></highlight></codeline>
+<codeline lineno="526"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_timer_8h_1a3b951947aeec93b4610f87ba7b8a8621" kindref="member">Timer_stop</ref>(Timer_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="527"><highlight class="normal"></highlight></codeline>
+<codeline lineno="528"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>The<sp/>following<sp/>are<sp/>included<sp/>for<sp/>backwards<sp/>compatibility.<sp/>These<sp/>should<sp/>not<sp/>be</highlight></codeline>
+<codeline lineno="529"><highlight class="comment"><sp/>*<sp/>used<sp/>by<sp/>the<sp/>application.</highlight></codeline>
+<codeline lineno="530"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="531" refid="_timer_8h_1a7ad974822ac9cde9191164664133c3b7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TIMER_CMD_RESERVED<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Timer_CMD_RESERVED</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="532" refid="_timer_8h_1ab7625e81516eccb35541a882c13a305a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TIMER_STATUS_RESERVED<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Timer_STATUS_RESERVED</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="533" refid="_timer_8h_1ad42f3f8c71bc912c8ff5d377807f9084" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TIMER_STATUS_SUCCESS<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Timer_STATUS_SUCCESS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="534" refid="_timer_8h_1a9a2642f0a8979c6201c292c0457fd7f3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TIMER_STATUS_ERROR<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Timer_STATUS_ERROR</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="535" refid="_timer_8h_1aadbe9198cfc62e217a5891db6431ee13" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TIMER_STATUS_UNDEFINEDCMD<sp/><sp/><sp/><sp/>Timer_STATUS_UNDEFINEDCMD</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="536" refid="_timer_8h_1a0918ad5776d4e92a39d14e08512a0dac" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TIMER_ONESHOT_CB<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Timer_ONESHOT_CALLBACK</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="537" refid="_timer_8h_1a9d843173e769ce21d39bf5ba167f626d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TIMER_ONESHOT_BLOCK<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Timer_ONESHOT_BLOCKING</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="538" refid="_timer_8h_1aaae1bd7f982aeb8868b474abebaab925" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TIMER_CONTINUOUS_CB<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Timer_CONTINUOUS_CALLBACK</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="539" refid="_timer_8h_1a6ed963f9cd8d7543e3f1dee52803671b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TIMER_MODE_FREE_RUNNING<sp/><sp/><sp/><sp/><sp/><sp/>Timer_FREE_RUNNING</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="540" refid="_timer_8h_1a8e62e41f3683652130e337638553bf53" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TIMER_PERIOD_US<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Timer_PERIOD_US</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="541" refid="_timer_8h_1afe6d63af0b190509afd3e7a6127b4cb0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TIMER_PERIOD_HZ<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Timer_PERIOD_HZ</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="542" refid="_timer_8h_1aa6ef3e588041df60af164324a4a2aef3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TIMER_PERIOD_COUNTS<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Timer_PERIOD_COUNTS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="543" refid="_timer_8h_1a7bb9f00454595961d5b81e2626ae3cf6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>Timer_Period_Units<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Timer_PeriodUnits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="544"><highlight class="normal"></highlight></codeline>
+<codeline lineno="545"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="546"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="547"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="548"><highlight class="normal"></highlight></codeline>
+<codeline lineno="549"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_Timer__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h"/>
+  </compounddef>
+</doxygen>

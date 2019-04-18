@@ -1,0 +1,138 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!doctype html>
+<html>
+<head>
+    <title>ti-widget-dial demo</title>
+
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script>
+        if ('registerElement' in document
+                && 'createShadowRoot' in HTMLElement.prototype
+                && 'import' in document.createElement('link')
+                && 'content' in document.createElement('template')) {
+            // We're using a browser with native WC support!
+        } else {
+            document.write('<script src="../webcomponentsjs/webcomponents.js"><\/script>');
+        }
+    </script>
+    <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+    <link rel="import" href="../ti-widget-analoggauge/ti-widget-analoggauge.html">
+    <link rel="import" href="../ti-widget-dial/ti-widget-dial.html">
+
+
+
+    <style>
+        :host {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        #ti_widget_dial {
+            width: 177px;
+            height: 177px;
+            left: 130px;
+            top: 170px;
+            position: absolute;
+        }
+        #ti_widget_dial  /deep/ .pointer {
+            color: orange;
+        }
+        #ti_widget_dial /deep/ .knob {
+            background-color: #f3f3f3;
+        }
+        #ti_widget_dial /deep/ .frame {
+            background-color: white;
+            color: black;
+        }
+        #ti_widget_dial2 {
+            width: 177px;
+            height: 177px;
+            left: 130px;
+            top: 450px;
+            position: absolute;
+        }
+        #ti_widget_dial2  /deep/ .pointer {
+            color: #c00;
+        }
+        #ti_widget_dial2 /deep/ .knob {
+            background-color: #fff;
+        }
+        #ti_widget_dial2 /deep/ .frame {
+            background-color: #222;
+            color: #fff;
+        }
+        #ti_widget_analoggauge {
+            width: 177px;
+            height: 177px;
+            left: 490px;
+            top: 170px;
+            position: absolute;
+        }
+        #ti_widget_analoggauge  /deep/ .needle {
+            color: orange;
+        }
+        #ti_widget_analoggauge /deep/ .frame {
+            color: white;
+            border-color: transparent;
+        }
+        #ti_widget_analoggauge /deep/ .face {
+            background-color: #fff;
+            color: black;
+        }
+        #ti_widget_analoggauge2 {
+            width: 177px;
+            height: 177px;
+            left: 490px;
+            top: 450px;
+            position: absolute;
+        }
+        #ti_widget_analoggauge2  /deep/ .needle {
+            color: #c00;
+        }
+        #ti_widget_analoggauge2 /deep/ .frame {
+            color: #222;
+        }
+        #ti_widget_analoggauge2 /deep/ .face {
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+<body unresolved>
+<!-- Polymer's data binding mustache notation only works inside of templates.  In order to avoid having to create
+ a new custom element every time you wish to data bind to a component, you can define the template in the
+ body of the page and set is="auto-binding" to automatically bind the template and add it to the DOMs list of children
+ See https://www.polymer-project.org/docs/polymer/databinding-advanced.html#autobinding -->
+<div style="text-align:center">
+    <h2>ti-widget-dial demo</h2>
+    <br/>
+    Each ti-widget-analoggauge's value property is bound to the value property of the dial to its left.<br/>
+    CSS styles control how the gauges and dials are displayed.
+</div>
+
+<template id="dial-demo" is="auto-binding">
+    <ti-widget-dial value="20" id="ti_widget_dial" ></ti-widget-dial>
+    <ti-widget-analoggauge value="{{ $.ti_widget_dial.value }}" id="ti_widget_analoggauge" "></ti-widget-analoggauge>
+    <p>&nbsp</p>
+    <ti-widget-dial value="20" id="ti_widget_dial2"></ti-widget-dial>
+    <ti-widget-analoggauge value="{{ $.ti_widget_dial2.value }}" id="ti_widget_analoggauge2" ></ti-widget-analoggauge>
+</template>
+
+
+<script>
+</script>
+
+</body>
+</html>
+

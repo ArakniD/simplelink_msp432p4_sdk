@@ -1,0 +1,104 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../ti-widget-instruments/ti-widget-base-gauge.html">
+<link rel="import" href="../ti-widget-common/ti-widget-ruler.html">
+
+<polymer-element name="ti-widget-thermometer" extends="ti-widget-base-gauge" attributes="value labels minorTicks">
+    <template>
+        <style>
+            :host 
+            {
+                display: inline-block;
+                font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            }
+            #image {
+                overflow: visible;
+                position: relative;
+                height: 100%;
+                transform: translateX(-50%);
+            }
+            #thermometer {
+                position: relative;
+            }
+            #container {
+                top: 9%;
+                bottom: 22%;
+                position: absolute;
+                left: 50%;
+            }
+            #ruler {
+                width: 1em;
+                height: 100%;
+                position: relative;
+                left: 0px;
+                top: 0px;
+                color: #555;
+            }
+            #title {
+                color: #555;
+                font-size: large;
+                white-space: normal;
+                text-align: center;
+                padding: 0px;
+            }
+            #displayValue {
+                color: #555;
+                font-size: xx-large;
+                font-weight: bold;
+            }
+            #units {
+	            color: #777;
+	            font-size: small;
+                font-weight: bold;
+                position: absolute;
+                left: 100%;
+                top: 0px;
+            }
+            #topContainer {
+	            width: 100%;
+	            height: 100%;
+            }
+        </style>
+        
+        <div id="topContainer" layout vertical> 
+	        <label id="title">{{titleLabel}}</label>
+	        <div id="thermometer" flex>
+	        	<div id="container" horizontal layout center-justified start>
+					<svg id="image" height="100%" viewBox="0 0 25 280" preserveAspectRatio="xMidYMid meet">
+						<path stroke="none" fill="#edebeb" id="stroke" d="M-12.5,300a35,35,0,1,0,50,0l0,-300a25,25,0,0,0,-50,0Z"></path>
+						<path stroke="none" fill="red" id="fill" d="M-1.5,305a24,24,0,1,0,28,0l0,-300l-28,0Z"></path>
+					</svg>
+					<ti-widget-ruler labels="{{labels}}" minorticks="{{minorTicks}}" orientation="vertical" id="ruler"></ti-widget-ruler>
+		        </div>
+	        </div>
+	        <div layout horizontal center-justified center>
+	            <div style="position: relative;">
+	            	<label id="displayValue">{{_displayValue}}</label>
+	   				<label id="units">&deg;C</label>
+	            </div>
+	        </div>
+        </div>
+        
+    </template>
+    
+    <script>
+        Polymer ('ti-widget-thermometer', 
+        {
+            labels: "",
+            minorTicks: 0,
+            
+            _percentColors : ["#559cd7", "#c2c212", "#ef4040"],
+            
+            updateGauge: function(pct)
+            {
+                var offset = 280*pct;
+                
+                var path = this.$.fill;
+                var segments = path.pathSegList;
+                segments.getItem(2).y = -(offset + 25);
+                
+                var color = this.getColorForPercentage(pct, this._percentColors);
+                path.setAttribute('fill', color);
+            }
+        });
+    </script>
+</polymer-element>

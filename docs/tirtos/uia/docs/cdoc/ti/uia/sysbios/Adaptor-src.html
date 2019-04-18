@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.sysbios.Adaptor</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012-2016, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> *  ======== Adaptor.xdc ========
+</span>    35    <span class="comment"> */</span>
+    36    
+    37    <span class=key>package</span> ti.uia.sysbios;
+    38    
+    39    import xdc.runtime.Assert;
+    40    import xdc.rov.ViewInfo;
+    41    import ti.uia.runtime.UIAPacket;
+    42    import ti.sysbios.knl.Clock;
+    43    import ti.sysbios.knl.Task;
+    44    import ti.sysbios.knl.Event;
+    45    import ti.sysbios.knl.Semaphore;
+    46    import ti.sysbios.knl.Queue;
+    47    import ti.sysbios.syncs.SyncEvent;
+    48    
+    49    <span class="xdoc">/*!
+</span>    50    <span class="xdoc"> *  ======== Adaptor ========
+</span>    51    <span class="xdoc"> *  Single core IServiceMgrSupport implementation
+</span>    52    <span class="xdoc"> *
+</span>    53    <span class="xdoc"> *  This module implements the IServiceMgrSupport interface
+</span>    54    <span class="xdoc"> *  and is used by the ServiceMgr on single cores. This module
+</span>    55    <span class="xdoc"> *  routes UIA data between the instrumentation host and the services
+</span>    56    <span class="xdoc"> *  via the {<b>@link</b> Transport} implementations. It maintains lists of
+</span>    57    <span class="xdoc"> *  free events and contrl message buffers via BIOS Semaphores and Queues.
+</span>    58    <span class="xdoc"> *
+</span>    59    <span class="xdoc"> *  There is a Transfer Agent task (transferAgentTaskFxn). This task
+</span>    60    <span class="xdoc"> *  sends data to the instrumentation host. This task uses the
+</span>    61    <span class="xdoc"> *  {<b>@link</b> ServiceMgr#transportFxns} functions communicate to the host. These functions
+</span>    62    <span class="xdoc"> *  are setup by default based on the device.
+</span>    63    <span class="xdoc"> *
+</span>    64    <span class="xdoc"> *  If {<b>@link</b> ti.uia.runtime.ServiceMgr#supportControl} is true, this module
+</span>    65    <span class="xdoc"> *  also creates the Receive Task (rxTaskFxn). The Receive Task receives
+</span>    66    <span class="xdoc"> *  control messages from the instrumentation host via the
+</span>    67    <span class="xdoc"> *  {<b>@link</b> ServiceMgr#transportFxns} functions. This task is not needed if no control
+</span>    68    <span class="xdoc"> *  messages are coming from the host.
+</span>    69    <span class="xdoc"> *
+</span>    70    <span class="xdoc"> *  The majority of the configuration parameters are defined in the ServiceMgr.
+</span>    71    <span class="xdoc"> *  For example, the {<b>@link</b> ti.uia.runtime.ServiceMgr#transferAgentPriority}
+</span>    72    <span class="xdoc"> *  dictates priority of the Adaptor's Transfer Agent task. Here is the list of
+</span>    73    <span class="xdoc"> *  the ServiceMgr parameter used by the Adaptor module:
+</span>    74    <span class="xdoc"> *  <b>@p(blist)</b>
+</span>    75    <span class="xdoc"> *  - numEventPacketBufs
+</span>    76    <span class="xdoc"> *  - maxEventPacketSize
+</span>    77    <span class="xdoc"> *  - transferAgentStackSection
+</span>    78    <span class="xdoc"> *  - transferAgentStackSize
+</span>    79    <span class="xdoc"> *  - transferAgentPriority
+</span>    80    <span class="xdoc"> *  - supportControl
+</span>    81    <span class="xdoc"> *  - maxCtrlPacketSize
+</span>    82    <span class="xdoc"> *  - numIncomingCtrlPacketBufs
+</span>    83    <span class="xdoc"> *  - numOutgoingCtrlPacketBufs
+</span>    84    <span class="xdoc"> *  - rxTaskStackSize
+</span>    85    <span class="xdoc"> *  - rxTaskStackSection
+</span>    86    <span class="xdoc"> *  - rxTaskPriority
+</span>    87    <span class="xdoc"> *  <b>@p</b>
+</span>    88    <span class="xdoc"> */</span>
+    89    
+    90    @ModuleStartup      <span class="comment">/* Initialize static instances */</span>
+    91    
+    92    <span class=key>module</span> Adaptor <span class=key>inherits</span> ti.uia.runtime.IServiceMgrSupport
+    93    {
+    94    
+    95        <span class="xdoc">/*!
+</span>    96    <span class="xdoc">     *  ======== packetSection ========
+</span>    97    <span class="xdoc">     *  Memory section for UIA packets.
+</span>    98    <span class="xdoc">     *
+</span>    99    <span class="xdoc">     *  If this parameter is not set then the
+</span>   100    <span class="xdoc">     *  ServiceMgr.transferAgentStackSection parameter is used for the events
+</span>   101    <span class="xdoc">     *  and the ServiceMgr.rxTaskStackSection parameter is used for the control
+</span>   102    <span class="xdoc">     *  messages.
+</span>   103    <span class="xdoc">     */</span>
+   104        <span class=key>metaonly</span> <span class=key>config</span> String packetSection;
+   105    
+   106        <span class="xdoc">/*!
+</span>   107    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   108    <span class="xdoc">     *  ======== rxTaskFxn ========
+</span>   109    <span class="xdoc">     *  Function used for the Receive Task.
+</span>   110    <span class="xdoc">     */</span>
+   111        @DirectCall
+   112        Void rxTaskFxn(UArg arg0, UArg arg1);
+   113    
+   114        <span class="xdoc">/*!
+</span>   115    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   116    <span class="xdoc">     *  ======== transferAgentFxn ========
+</span>   117    <span class="xdoc">     *  Function used for the transfer agent Task.
+</span>   118    <span class="xdoc">     */</span>
+   119        @DirectCall
+   120        Void transferAgentTaskFxn(UArg arg0, UArg arg1);
+   121    
+   122        <span class="xdoc">/*!
+</span>   123    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   124    <span class="xdoc">     *  ======== clockFxn ========
+</span>   125    <span class="xdoc">     *  Function used to drive transfer agent's event polling
+</span>   126    <span class="xdoc">     */</span>
+   127        @DirectCall
+   128        Void clockFxn(UArg arg0);
+   129    
+   130    <span class=key>internal</span>:
+   131    
+   132        <span class="xdoc">/*!
+</span>   133    <span class="xdoc">     *  ======== Entry ========
+</span>   134    <span class="xdoc">     *  Structure used to place packets on a free queues
+</span>   135    <span class="xdoc">     */</span>
+   136        <span class=key>struct</span> Entry {
+   137            Queue.Elem     elem;
+   138            UIAPacket.Hdr  packet;
+   139        }
+   140    
+   141        <span class="xdoc">/*!
+</span>   142    <span class="xdoc">     *  ======== eventBuf ========
+</span>   143    <span class="xdoc">     *  Buffer of event packets
+</span>   144    <span class="xdoc">     */</span>
+   145        <span class=key>config</span> Char eventBuf[];
+   146    
+   147        <span class="xdoc">/*!
+</span>   148    <span class="xdoc">     *  ======== msgBuf ========
+</span>   149    <span class="xdoc">     *  Buffer of control message packets
+</span>   150    <span class="xdoc">     */</span>
+   151        <span class=key>config</span> Char msgBuf[];
+   152    
+   153        <span class="xdoc">/*!
+</span>   154    <span class="xdoc">     *  ======== giveEnergy ========
+</span>   155    <span class="xdoc">     *  Internal helper function
+</span>   156    <span class="xdoc">     */</span>
+   157        @DirectCall
+   158        Void giveEnergy();
+   159    
+   160        <span class="xdoc">/*!
+</span>   161    <span class="xdoc">     *  ======== sendToHost ========
+</span>   162    <span class="xdoc">     *  Internal helper function
+</span>   163    <span class="xdoc">     */</span>
+   164        @DirectCall
+   165        Bool sendToHost(UIAPacket.Hdr *packet);
+   166    
+   167        <span class="xdoc">/*!
+</span>   168    <span class="xdoc">     *  ======== sendToService ========
+</span>   169    <span class="xdoc">     *  Internal helper function
+</span>   170    <span class="xdoc">     */</span>
+   171        @DirectCall
+   172        Void sendToService(Entry *entry);
+   173    
+   174        <span class="xdoc">/*!
+</span>   175    <span class="xdoc">     *  ======== runScheduledServices ========
+</span>   176    <span class="xdoc">     *  Internal helper function
+</span>   177    <span class="xdoc">     */</span>
+   178        @DirectCall
+   179        Void runScheduledServices();
+   180    
+   181        <span class="xdoc">/*!
+</span>   182    <span class="xdoc">     *  ======== Module_State ========
+</span>   183    <span class="xdoc">     *  The four queues are used as following:
+</span>   184    <span class="xdoc">     *  freeEventQ: holds "free" event packets
+</span>   185    <span class="xdoc">     *  freeMsgQ:   holds "free" control message packets (both
+</span>   186    <span class="xdoc">     *              incoming and outgoing ones)
+</span>   187    <span class="xdoc">     *  incomingQ:  holds all filled-in incoming messages
+</span>   188    <span class="xdoc">     *  outgoingQ:  holds all filled-in outgoing messages
+</span>   189    <span class="xdoc">     */</span>
+   190        <span class=key>struct</span> Module_State {
+   191            Event.Handle            event;
+   192            Clock.Handle            clock;
+   193            Semaphore.Handle        freeEventSem;
+   194            Semaphore.Handle        freeMsgSem;
+   195            Semaphore.Handle        incomingSem;
+   196            Queue.Handle            freeEventQ;
+   197            Queue.Handle            freeMsgQ;
+   198            Queue.Handle            incomingQ;
+   199            Queue.Handle            outgoingQ;
+   200            SyncEvent.Handle        syncEvent01;
+   201            Task.Handle             transferAgentHandle;
+   202            Ptr                     transportMsgHandle;
+   203            Ptr                     transportEventHandle;
+   204            Int                     numMsgPacketsSent;
+   205            Int                     numMsgPacketsFailed;
+   206            Int                     numEventPacketsSent;
+   207            Int                     numEventPacketsFailed;
+   208            UInt32                  period[];
+   209            UInt32                  scheduled[];
+   210            Bool                    reqEnergy[];
+   211        };
+   212    }
+</pre>
+</body></html>

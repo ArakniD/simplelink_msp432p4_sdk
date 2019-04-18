@@ -1,0 +1,29 @@
+; *************************************************************
+; *** Scatter-Loading Description File for SRAM execution   ***
+; *** and division of SRAM to turn off unused banks         ***
+; *************************************************************
+
+LR_IROM1 0x00000000 0x00040000  
+{    
+  ; load region size_region
+  ER_IROM1 0x00000000 0x00040000  
+  {  
+   ; load address = execution address
+   *.o (RESET, +First)
+   *(InRoot$$Sections)
+   .ANY (+RO)
+  }
+  ER_IRAM1 0x01001200 0x00000600
+  {
+    ; load address does not equal execution address
+	main.o (.TI.ramFunk)
+  }
+  RW_IRAM1 0x20000000 0x00001200  
+  {  ; RW data
+   .ANY (+RW +ZI)
+  }
+  RW_IRAM2 0x20001800 0x00004800
+  {
+   *(.bss.myData)
+  }
+}

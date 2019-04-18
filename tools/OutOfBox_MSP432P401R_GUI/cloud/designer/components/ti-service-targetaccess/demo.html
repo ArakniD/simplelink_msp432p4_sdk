@@ -1,0 +1,324 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+    Copyright (c) 2014, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+        its contributors may be used to endorse or promote products derived
+        from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<!doctype html>
+<html>
+<head>
+    <title>ti-service-targetaccess</title>
+
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!--[if gte IE 6]>
+    <script type="text/javascript">
+        // this is IE greater than or equal to 6
+        var isInternetExplorer=true;
+    </script>
+    <![endif]-->
+
+    <script>
+        var isIE =   ((navigator.appName == 'Microsoft Internet Explorer') ||
+        ((navigator.appName == 'Netscape') &&
+        (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)));
+        if (window.isInternetExplorer) {
+            isIE =  true;
+        }
+
+        if ( isIE ){
+            var object = document.createElement("object");
+            object.setAttribute("id", "ticloudagentlauncher");
+            object.setAttribute("type", "application/x-ticloudagentlauncher");
+            object.setAttribute("width", "0");
+            object.setAttribute("height", "0");
+            document.head.appendChild( object );
+            window.TICloudAgent_HACK = {};
+            window. TICloudAgent_HACK.plugin = document.getElementById("ticloudagentlauncher");
+        }
+    </script>
+    <link rel="import" href="../polymer/polymer.html">
+    <script src="../webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+    <link rel="import" href="../ti-core-backplane/ti-core-backplane.html">
+    <link rel="import" href="../ti-widget-statusbar/ti-widget-statusbar.html">
+    <link rel="import" href="../ti-core-icons/ti-core-icons.html">
+    <link rel="import" href="../ti-service-serialio/ti-service-serialio.html">
+    <link rel="import" href="../ti-widget-menubar/ti-widget-menubar.html"/>
+    <link rel="import" href="../ti-widget-menubar/ti-widget-optionsmenu.html"/>
+
+    <link rel="import" href="ti-service-targetaccess.html">
+    <style type="text/css" media="screen, print, projection">
+        body,
+        html {
+            margin:0;
+            padding:0;
+            align:center;
+        }
+
+    </style>
+    <style shim-shadowdom>
+
+        body {
+            font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+            margin: 0;
+            padding: 24px;
+        }
+
+        ti-core-backplane {
+            display: block;
+            width: 100%;
+            padding: 25px 0;
+        }
+
+
+    </style>
+
+</head>
+<body unresolved>
+    <ti-widget-menubar id="MenuBar">
+        <ti-widget-optionsmenu></ti-widget-optionsmenu>
+    </ti-widget-menubar>
+<h2 align="center">ti-service-targetaccess demo</h2>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p><b><div id="boardName"></div></b><p></p>
+<p></p>Device: <select id="deviceList" onchange="onDeviceSelectedHdlr()" style="width:400px"></select>
+&nbsp;
+
+<div id="connectBtnDiv" >
+    <button  id="btnConnect"   onclick="onBtnConnectClicked();"  >Connect</button><p></p>
+</div>
+
+<div id="disconnectBtnDiv" style="display:none">
+    <button  id="btnDisconnect"  onclick="onBtnDisconnectClicked();"  >Disconnect</button><p></p>
+</div>
+
+<input id="chkboxAutoConnect" type="checkbox" onchange="onAutoConnectChanged();" label="Auto-connect" checked="false"/> Auto-connect upon Device Selection<p>&nbsp;</p>
+
+<div id="main" >
+    <div id="status"></div><p>&nbsp;</p>
+    <!-- set hidden="false" if you wish to monitor the state changes here...-->
+    <div id="currentState"></div><p>&nbsp;</p>
+    Evaluate:<input type="text" name="expression" id="expression" value="ErrorCount" />&nbsp;
+    <button id="btnGetEvalResult" onclick="onBtnSubmitClicked();">Submit</button>&nbsp;<div id="evalResult"></div>
+
+</div>
+    <ti-core-backplane id="backplane" statusChanged="myStatusChangedHdlr()"></ti-core-backplane>
+    <ti-service-targetaccess id="targetaccess" statusChanged="myStatusChangedHdlr()" ></ti-service-targetaccess>
+<script>
+    var backplane;
+    var targetAccessService;
+    var currentAction = 0;
+    var currentStateDiv = document.getElementById("currentState");
+    var statusDiv = document.getElementById('status');
+    var evalResultDiv = document.getElementById("evalResult");
+    var deviceList = document.getElementById('deviceList');
+    var connectionList = document.getElementById('connectionList');
+    var connectBtnDiv = document.getElementById("connectBtnDiv");
+    var btnConnect = document.getElementById("btnConnect");
+    var disconnectBtnDiv = document.getElementById("disconnectBtnDiv");
+    var btnDisconnet = document.getElementById("btnDisconnect");
+
+    // Note: see TICloudAgent/supported_devices.json for ccxml strings used when running in Node-webkit.
+    // see ti-core-backplane/supported_devices.json  for ccxml strings used when running online.
+    var myDevices = [
+        {
+            boardName: 'MSP430F2617',
+            deviceName: 'MSP430F2617',
+            fileName: 'DRV8880EVM_v0p1.out',
+            fileFolderName: 'components/ti-service-targetaccess/targetprograms/',
+            runTargetToReadMemory: true,
+            startBtnName: 'P1.1',
+            msgWaitingForData: "Press the Start Button (S1 on your MSP430F2617 Launchpad) to start the monitor - the Green LED should turn on.",
+            msgConnectDevice: "Please connect your MSP430F2617 Launchpad to a USB port of your computer and then click Connect.",
+            defaultEvalText: 'G_FIRMWARE_VERSION'
+        },
+        {    boardName: 'MSP-EXP430G2 v1.5',
+            deviceName: 'MSP430G2553',
+            fileName: 'MSP2553_uart_monitor.out',
+            fileFolderName: 'components/ti-service-targetaccess/targetprograms/',
+            runTargetToReadMemory: false,
+            startBtnName: 'P1.3',
+            msgWaitingForData: "Press the Start Button (P1.3 on your MSP-EXP430G2 Launchpad) to start reading the temperature - the Green LED should turn on.",
+            msgConnectDevice: "Please connect your MSP-EXP430G2 Launchpad to a USB port of your computer and then click Connect.",
+            defaultEvalText: 'ErrorCount'
+        }
+
+    ];
+
+    var selectedBoardIndex = 1;
+    var selectedConnectionIndex = 0;
+
+    var setStateMachine = function(strEvent) {
+        if (backplane) {
+            backplane.updateStateMachine(strEvent);
+        }
+    };
+    var onBtnConnectClicked = function() {
+        if (backplane) {
+            backplane.updateStateMachine('onConnectBtnClicked');
+        }
+    };
+    var onBtnDisconnectClicked = function() {
+        if (backplane) {
+            backplane.updateStateMachine('onDisconnectBtnClicked');
+        }
+    };
+    var onAutoConnectChanged = function() {
+        if (targetAccessService){
+            targetAccessService.autoConnect = document.getElementById("chkboxAutoConnect").checked;
+        }
+    };
+    var onConnectionSelectedHdlr = function(e) {
+        var index = connectionList.selectedIndex;
+        console.log('User selected connection['+ index);
+        selectedConnectionIndex = index;
+        switch (index){
+            case 1: // copy MSP430.default file to MSP430.ccxml
+                break;
+            case 2: // copy MSP430.uart file to MSP430.ccxml
+                break;
+        }
+    };
+    var evalCompleteCallback = function(arguments) {
+        var err,value,type,location;
+        if (arguments !== undefined){
+            location = arguments.location;
+            type = arguments.type;
+            value = arguments.value;
+            if (arguments.error !== undefined) {
+                err = arguments.error;
+            } else {
+                err = 'OK';
+            }
+        }
+
+        var displayStr = "<list><li>error result="+err+"</li><li> value="+value+"</li><li>type="+type+"</li><li>location = "+location+"</li></list>";
+        var evalResultDiv = document.getElementById("evalResult");
+        evalResultDiv.innerHTML = displayStr;
+    };
+    var onBtnSubmitClicked = function(e){
+        var evalStr = document.getElementById("expression").value;
+        targetAccessService.evaluate(evalStr,evalCompleteCallback);
+    };
+    var onDeviceSelectedHdlr = function(e) {
+        var index = deviceList.selectedIndex;
+        console.log('User selected device['+ index+'] '+myDevices[index].boardName+', deviceName='+ myDevices[index].deviceName);
+        selectedBoardIndex = index;
+        backplane.selectedDevice = myDevices[index];
+        targetAccessService.selectedDevice = myDevices[index];
+        document.getElementById("expression").value = myDevices[index].defaultEvalText;
+        targetAccessService.autoConnect = document.getElementById("chkboxAutoConnect").checked;
+    };
+
+    var myStatusChangedHdlr = function(e){
+        //var backplane = e.currentTarget;
+
+        statusDiv.innerHTML = "<b>Target Status:</b> "+ e.currentTarget.status;
+
+    };
+    var myCurrentStateChangedHdlr = function(e){
+        //var backplane = e.currentTarget;
+        currentStateDiv.innerHTML = "<b>TargetAccess State:</b> "+e.currentTarget.currentState.name;
+    };
+    var myConnectionStatusChangedHdlr = function(e){
+    };
+
+
+    var myBtnVisibilityChangedHdlr = function(){
+        if (backplane) {
+
+            if (backplane.isConnectBtnVisible) {
+                connectBtnDiv.style.display ='';
+            } else {
+                connectBtnDiv.style.display ='none';
+            }
+
+            if (backplane.isDisconnectBtnVisible) {
+                disconnectBtnDiv.style.display = '';
+            } else {
+                disconnectBtnDiv.style.display ='none';
+            }
+
+        }
+    };
+
+
+    addEventListener('polymer-ready', function() {
+        console.log("ABOUT TO START DEMO!");
+        var i;
+        //backplane = document.getElementById("10");
+        targetAccessService = document.querySelector('ti-service-targetaccess');
+        backplane = targetAccessService.backplane;
+        //backplane.addEventListener("statusMsgUpdated",myStatusChangedHdlr);
+
+        backplane.addEventListener("connectionStatusChanged",myConnectionStatusChangedHdlr);
+        backplane.addEventListener("btnVisibilityChanged", myBtnVisibilityChangedHdlr);
+        // Wait for user to select the device in order to allow demonstration of the autoConnect functionality
+        // targetAccessService.selectedDevice = myDevices[selectedBoardIndex];
+        targetAccessService.addEventListener("statusMsgUpdated",myStatusChangedHdlr);
+        targetAccessService.addEventListener("currentStateUpdated",myCurrentStateChangedHdlr);
+
+
+        while (deviceList.firstChild) {
+            deviceList.removeChild(deviceList.firstChild);
+        }
+        var html = "";
+        for (var i = 0; i < myDevices.length; i++) {
+            var device = myDevices[i];
+            html += "<option value=\"" + device.boardName + " ("+device.fileName+")"+"\">" + device.boardName + " ("+device.fileName+")"+"</option>\n";
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.text = device.boardName + " ("+device.fileName+")";
+            //opt.innerHTML = i;
+
+            deviceList.appendChild(opt);
+            if (i == selectedBoardIndex) {
+                deviceList.options[i].selected = true;
+            }
+            deviceList.selectedIndex = 0;
+        }
+        //$("#formData").html(html);
+        deviceList.value = myDevices[selectedBoardIndex];
+        targetAccessService.autoConnect = false;
+
+    });
+</script>
+
+</body>
+</html>
+

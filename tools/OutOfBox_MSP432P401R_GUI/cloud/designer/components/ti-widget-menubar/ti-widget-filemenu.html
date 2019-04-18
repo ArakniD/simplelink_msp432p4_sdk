@@ -1,0 +1,170 @@
+<!--
+`ti-widget-filemenu` a sub menu item that performs an action.
+    - 
+Example:
+
+    <ti-widget-menubar>
+        <ti-widget-menuitem></ti-widget-menuitem>
+        <ti-widget-menuitem></ti-widget-menuitem>
+        <ti-widget-menuitem></ti-widget-menuitem>
+    </ti-widget-menubar>
+
+See ../demo.html for a full working example of how to use this component.
+
+@group TI Widget
+@element ti-widget-filemenu
+@homepage https://gitorious.design.ti.com/guicomposer-nw/ti-widget-filemenu
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../ti-widget-menubar/ti-widget-abstractmenu.html">
+<link rel="import" href="../ti-widget-menubar/ti-widget-menuitem.html">
+<link rel="import" href="../ti-widget-menubar/ti-widget-menuaction.html">
+<link rel="import" href="../ti-service-programloader/ti-service-programloader.html">
+<link rel="import" href="../ti-service-programloader/ti-service-programloader-dialog.html">
+
+<script type='text/javascript' src="../ti-core-assets/scripts/q.js"></script>
+<script src='src/file.js'></script>
+
+<polymer-element name="ti-widget-filemenu"extends="ti-widget-abstractmenu">
+    <template>
+        <ti-service-programloader-dialog id="programLoaderDialog" style="width:660px;height:300px"></ti-service-programloader-dialog>
+
+        <ti-widget-menuitem id="FileMenu" name="{{name}}">
+            <input style="display:none" type="file" id="fileLoadDialog" />
+            <input style="display:none" type="file" id="fileSaveDialog" nwsaveas="settings.json"/>
+            <ti-widget-menuaction id="FileLoad" icon="folder-open" name="Load" description="Load settings from file."></ti-widget-menuaction>
+            <ti-widget-menuaction id="FileSave" icon="save" name="Save" description="Store settings to a file."></ti-widget-menuaction>
+            <ti-widget-menuaction id="FileProgram" icon="file-download" name="Program Device..."  description="Download target program."></ti-widget-menuaction>
+            <content></content>
+        </ti-widget-menuitem>
+    </template>
+    <script>
+
+        Polymer('ti-widget-filemenu',
+                {
+                    name : 'File',
+                    getMenuItem : function() { return this.$.FileMenu; },
+                    _programLoader: undefined,
+                    _programLoaderDialog: undefined,
+                    _programDeviceDisabled: false,
+                    publish: {
+                        loadSaveDisabled: false
+                    },
+                    loadSaveDisabledChanged: function(){
+                        if (this.loadSaveDisabled) {
+                            this.$.FileLoad.style.display='none';
+                            this.$.FileSave.style.display='none'
+                        } else {
+                            this.$.FileLoad.style.display='';
+                            this.$.FileSave.style.display=''
+                        }
+                    },
+                    _programDeviceDisabledChanged: function(){
+                        if (this._programDeviceDisabled) {
+                            this.$.FileProgram.style.display='none';
+                        } else {
+                            this.$.FileProgram.style.display='';
+                        }
+                    },
+                    _disconnected: true,
+                    _disconnectedChanged: function(){
+                        if (this._disconnected) {
+                            gc.nav.disableAction('FileProgram');
+
+                        } else {
+                            gc.nav.enableAction('FileProgram');
+                        }
+                    },
+                    _backplane: undefined,
+                    _backplaneChangedHdlr: function(e){
+                        if (this._backplane !== undefined){
+                            this._backplane.removeEventListener("connectionStatusChanged");
+                        }
+                        this._backplane = this._programLoader.backplane;
+                        if (this._backplane !== undefined) {
+                            this._backplane.addEventListener("connectionStatusChanged", this.connectionStatusChangedHdlr);
+                            this._disconnected = !this._backplane.isConnectedToCloudAgent;
+                        }
+                    },
+                    backplaneChangedHdlr: undefined,
+                    _connectionStatusChangedHdlr: function(e){
+                        if (this._backplane !== undefined) {
+                            this._disconnected = !this._backplane.isConnectedToCloudAgent;
+                        } else {
+                            this._disconnected = true;
+                        }
+                    },
+                    connectionStatusChangedHdlr: undefined,
+                    findComponent: function(componentName){
+                        var result = undefined;
+                        if (document !== undefined){
+                            result = document.querySelector(componentName);
+                        }
+                        if ((document === undefined) || (result === undefined)){
+                            if (window.document === undefined){
+                                throw "window.document is not defined"
+                            }
+                            result = window.document.querySelector(componentName);
+                        }
+                        return result;
+                    },
+                    ready : function() {
+                        gc.File.registerLoadDialog(this.$.fileLoadDialog);
+                        gc.File.registerSaveDialog(this.$.fileSaveDialog);
+                        gc.File.registerProgramDialog(this.$.fileProgramDialog);
+                        gc.nav.disableAction('FileProgram');
+                        this.backplaneChangedHdlr = this._backplaneChangedHdlr.bind(this);
+                        this.connectionStatusChangedHdlr = this._connectionStatusChangedHdlr.bind(this);
+                    },
+                    domReady: function(){
+                    	this.super();
+                    	
+                        this._programLoader = this.findComponent('ti-service-programloader');
+                        if ((this._programLoader !== undefined) && (this._programLoader !== null)) {
+                            this._backplaneChangedHdlr();
+                            this._programLoader.addEventListener("programDownloadUIVisibilityChanged",this.connectionStatusChangedHdlr);
+                            this._programLoader.addEventListener("backplaneChanged",this.backplaneChangedHdlr);
+                            this._programLoaderDialog = this.$.FileMenu.parentNode.querySelector('ti-service-programloader-dialog');
+                            this._programDeviceDisabled = false;
+                        } else {
+                            this._programDeviceDisabled = true;
+                            console.log('ti-widget-filemenu: could not find ti-service-programloader');
+                        }
+                        this.loadSaveDisabledChanged();
+
+                    }
+                });
+
+    </script>
+</polymer-element>
+    

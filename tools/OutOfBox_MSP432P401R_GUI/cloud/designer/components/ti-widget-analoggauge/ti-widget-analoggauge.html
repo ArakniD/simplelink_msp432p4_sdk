@@ -1,0 +1,398 @@
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+`ti-widget-analoggauge` displays the current value from a range of values 
+with a display modeled after an anolog meter.  The analog nature of the gauge makes it a 
+great choice for monitoring things with varying intensity levels, such as volume, 
+brightness, or color saturation.
+
+Example:
+
+    <ti-widget-analoggauge></ti-widget-analoggauge>
+
+Use `minValue` and `maxValue` to specify the dial range.  Default is 0 to 100.
+
+Example:
+
+    <ti-widget-analoggauge minValue="10" maxValue="200" value="110"></ti-widget-analoggauge>
+
+Styling ti-widget-analoggauge:
+The skin attribute allows the user to choose between three meter styles: brushedStainless (default), gold and carbon.
+
+
+@group TI Widgets
+@element ti-widget-analoggauge
+@homepage ../ti-guicomposer-helpindex/demo.html
+-->
+<link rel="import" href="../polymer/polymer.html">
+<script src="../ti-core-assets/scripts/steelseries.js"></script>
+<script src="analoggauge.js"></script>
+<polymer-element name="ti-widget-analoggauge" >
+    <template>
+        <style>
+            :host {
+                display: inline;
+            }
+        </style>
+
+
+        <div id="gaugeDiv" style="text-align:center;">
+            <canvas id="gaugeCanvas"  style="width:100%;height:100%;background: transparent;" ></canvas>
+        </div>
+		<div class="needle" id="needle" style="display:none;"></div>
+		<div class="frame" id="frame" style="display:none;" ></div>
+		<div class="face" id="face" style="display:none;" ></div>
+    </template>
+    <script>
+
+        Polymer('ti-widget-analoggauge', {
+            gaugeObj: undefined,
+            _checkDivSizeTimeout: undefined,
+            publish: {
+                /**
+                 * The number that represents the current value.
+                 *
+                 * @attribute value
+                 * @type number
+                 * @default 0
+                 */
+                value: 0,
+                /**
+                 * The name of the visual style to be applied to the gauge.
+                 *
+                 * @attribute skin
+                 * @type string
+                 * @default flat
+                 */
+                skin: 'flat',
+                /**
+                 * The diameter of the gauge in pixels.
+                 *
+                 * @attribute size
+                 * @type number
+                 * @default 175
+                 */
+                size: 175,
+                /**
+                 * The number that represents the minimum value that can be displayed.
+                 *
+                 * @attribute minValue
+                 * @type number
+                 * @default 0
+                 */
+                minValue: 0,
+                /**
+                 * The number that represents the maximum value that can be displayed.
+                 *
+                 * @attribute maxValue
+                 * @type number
+                 * @default 100
+                 */
+                maxValue: 100,
+                /**
+                 * if a 'flat' skin is selected, this determines whether the colors are specified by CSS or by 
+				 * the colors specified by the user in the designer
+                 *
+                 * @attribute overrideCssColors
+                 * @type boolean
+                 * @default false
+                 */
+				overrideCssColors: false,				
+                /**
+                 * if a 'flat' skin is selected, this color determines what color the frame will be
+                 *
+                 * @attribute flatFrameColor
+                 * @type color
+                 * @default White
+                 */
+                flatFrameColor: '#000000',
+                /**
+                 * if a 'flat' skin is selected, this color determines what color the face will be
+                 *
+                 * @attribute flatFrameColor
+                 * @type color
+                 * @default White
+                 */
+                flatFaceColor: '#FFFFFF',
+                /**
+                 * if a 'flat' skin is selected, this color determines what color the font will be
+                 *
+                 * @attribute flatFontColor
+                 * @type color
+                 * @default Black
+                 */
+                flatFontColor: '#000000',
+                /**
+                 * @attribute pointerType
+                 * @type number
+                 * @default 1
+                 */
+                pointerType: 14,
+                /**
+                 * if a 'flat' skin is selected, this color determines what color the font will be
+                 *
+                 * @attribute pointerColor
+                 * @type color
+                 * @default Red
+                 */
+                pointerColor: '#1E88E5',
+                /**
+                 * Configures how numbers on the gauge dial are displayed: [standard, scientific, fractional]
+                 *
+                 * @attribute numberFormat
+                 * @type string
+                 * @default 'standard'
+                 */
+                numberFormat: 'standard',
+                /**
+                 * Configures how many digits to the right of the decimal place are displayed for values on the dial
+                 *
+                 * @attribute fractionalScaleDecimals
+                 * @type number
+                 * @default 1
+                 */
+                fractionalScaleDecimals: 1
+            },
+            ready: function() {
+                this.checkDivSize = this._checkDivSize.bind(this);
+                this.enteredView();
+            },
+            valueChanged: function() {
+                //console.log('ti-widget-analoggauge.valueChanged function called. value='+this.value+'for this.skin='+this.skin);
+                //console.log('this.$.gauge='+this.$.gauge+', this.$.gauge.name = '+this.$.gauge.name);
+                //this.$.gauge.value = this.value;
+                if (this.gaugeObj !== undefined){
+                    this.gaugeObj.setValue(this.value);
+                    //console.log('updated gaugeObj: this.gaugeObj.value = '+this.gaugeObj.value);
+                }
+            },
+            numberFormatChanged: function(){
+				if (this.canvas){
+					console.log('ti-widget-analoggauge.numberFormatChanged function called');
+					this.domReady();
+				}
+            },
+            fractionalScaleDecimalsChanged: function(){
+				if (this.canvas){		
+					console.log('ti-widget-analoggauge.fractionalScaleDecimalsChanged function called');
+					this.domReady();
+				}
+            },
+            skinChanged: function() {
+				if (this.canvas){
+					console.log('ti-widget-analoggauge.skinChanged function called');
+					this.domReady();
+				}
+            },
+            flatFrameColorChanged: function() {
+				if ((this.canvas)&&(this.overrideCssColors)){
+					console.log('ti-widget-analoggauge.flatFrameColorChanged function called');
+					this.domReady();
+				}
+            },
+            flatFaceColorChanged: function() {
+				if ((this.canvas)&&(this.overrideCssColors)){
+					console.log('ti-widget-analoggauge.flatFaceColorChanged function called');
+					this.domReady();
+				}
+            },
+            flatFontColorChanged: function() {
+				if ((this.canvas)&&(this.overrideCssColors)){
+					console.log('ti-widget-analoggauge.flatFontColorChanged function called');
+					this.domReady();
+				}
+            },
+            pointerTypeChanged: function(){
+				if (this.canvas){
+					console.log('ti-widget-analoggauge.pointerTypeChanged function called');
+					this.domReady();
+				}
+            },
+            pointerColorChanged: function(){
+				if ((this.canvas)&&(this.overrideCssColors)){
+					console.log('ti-widget-analoggauge.pointerTypeChanged function called');
+					this.domReady();
+				}
+            },
+            sizeChanged: function() {
+				if (this.canvas){
+					console.log('ti-widget-analoggauge.sizeChanged function called');
+					this.domReady();
+				}
+            },
+
+
+//	  valueChanged: function() {
+//	    console.log('ti-widget-analoggauge.valueChanged function called.  this.value='+this.value);
+            //this.canvas.className = 'value:' + this.value+':'+this.minValue+':'+this.maxValue;
+            //if ((this.$ !== undefined) && (this.$.gauge !== undefined) && (this.value !== undefined)) {
+            //this.$.gauge.setValue(this.value);
+            //}
+            //this.super();
+            //this.setValue(this.value);
+//      },
+            minValueChanged: function() {
+				if (this.canvas){
+					console.log('ti-widget-analoggauge.minValueChanged function called');
+					this.domReady();
+				}
+            },
+            maxValueChanged: function() {
+				if (this.canvas){
+					console.log('ti-widget-analoggauge.maxValueChanged function called');
+					this.domReady();
+				}
+            },
+			overrideCssColorsChanged: function() {
+				if (this.canvas){
+					console.log('ti-widget-dial.overrideCssColorsChanged function called');
+					this.domReady();
+				}
+			},
+            getSteelSeriesClassName: function(){
+                var className = 'SteelSeries:' + this.skin+':'+
+                        this.size+':'+
+                        this.minValue+':'+
+                        this.maxValue+':'+
+                        this.flatFrameColor+':'+
+                        this.flatFaceColor+':'+
+                        this.flatFontColor+':'+
+                        'type'+this.pointerType.toString()+':'+
+                        this.pointerColor+':'+
+                        this.numberFormat+':'+
+                        this.fractionalScaleDecimals;
+                return className;
+            },
+            enteredView: function() {
+            },
+			parseColorStyle: function(colorStyle) {
+			    var leftBracketIndex = colorStyle.indexOf('(');
+				var rightBracketIndex = colorStyle.indexOf(')');
+			 	var r = 0;
+				var g = 0;
+				var b = 0;
+				if (leftBracketIndex < 0){
+					// hexadecimal input #112233
+					b = parseInt(colorStyle.substr(5, 2), 16);
+					g = parseInt(colorStyle.substr(3, 2), 16);
+					r = parseInt(colorStyle.substr(1, 2), 16);
+
+				} else {
+
+					var arguments = colorStyle.substr(leftBracketIndex+1,rightBracketIndex-leftBracketIndex-1);
+					var commaIndex1 = arguments.indexOf(',');
+					var commaIndex2 = arguments.lastIndexOf(',');
+					if ((commaIndex1 >= 0) && (commaIndex2 >= 0)){
+						r = parseInt(arguments.substr(0,commaIndex1).trim());
+						g = parseInt(arguments.substr(commaIndex1+1,commaIndex2).trim());
+						b = parseInt(arguments.substr(commaIndex2+1,arguments.length).trim());
+					}
+				}
+				var range = function (value, limit) {
+					var result = (value < 0 ? 0 : (value > limit ? limit : value));
+					return result;
+				};
+				var to8bHexStr = function(value){
+				    var result = range(value,255).toString(16);
+					while (result.length < 2){
+						result = '0'+result;
+					}
+					return result;
+				}
+
+				var red = to8bHexStr(r);
+				var green = to8bHexStr(g);
+				var blue = to8bHexStr(b);
+				
+				return '#' + red + green + blue;
+			},
+			domReady: function(){
+				if (!this.overrideCssColors){
+					var faceStyles = window.getComputedStyle(this.$.face);
+					if (faceStyles !== undefined){
+						this.flatFaceColor = this.parseColorStyle(faceStyles.backgroundColor);
+						this.flatFontColor = this.parseColorStyle(faceStyles.color);
+					}
+					var frameStyles = window.getComputedStyle(this.$.frame);
+					if (frameStyles !== undefined){
+						this.flatFrameColor = this.parseColorStyle(frameStyles.color);
+					}
+					var needleStyles = window.getComputedStyle(this.$.needle);
+					if (needleStyles !== undefined){
+						this.pointerColor = this.parseColorStyle(needleStyles.color);
+					}
+				}
+
+                if (!this.skin) {
+                    var skins = Object.keys(AnalogGauge.config.skins);
+                    var i = Math.floor(Math.random() * skins.length);
+                    i = 0; // override to use swiss rail
+                    this.skin = skins[i];
+
+                    console.log('AnalogGauge skin[0] ='+skins[0]);
+                    console.log('AnalogGauge skin[1] ='+skins[1]);
+                }
+                if (!this.canvas){
+                    this.canvas = this.$.gaugeCanvas;//document.createElement('canvas');
+                    console.log('canvas configured: this.canvas.className = '+this.canvas.className);
+                };
+                this.canvas.className = this.getSteelSeriesClassName();
+                //this.$.gauge.appendChild(this.canvas);
+                // if not specified, choose a random skin
+
+                var _self = this;
+                this.async(function() {
+
+                    _self.gaugeObj = AnalogGauge.findAndCreateGauges(_self.$.gaugeDiv);
+                    console.log('created gaugeObj: this.gaugeObj.maxValue = '+_self.gaugeObj.maxValue);
+                    var isInDesigner = _self.isInDesigner(_self);
+                    if (isInDesigner){
+                        if (_self._checkDivSizeTimeout){
+                            window.clearTimeout(_self._checkDivSizeTimeout);
+                        }
+                        _self.checkDivSize();
+                    }
+                });
+			},
+            isInDesigner: function(node) {
+                var result = false;
+				// a parent node with a local name of design-host or design-canvas indicates we are in the designer.
+                while ((node) && (!node.__designHost) && (node.localName !== null) && (node.localName.indexOf('design-') !== 0)) {
+                    node = node.parentNode;
+                }
+
+                if ((node !== null)&& (node.localName !== null) && (node.localName.indexOf('design-') === 0)){
+                    result = true;
+                }
+                return result;
+            },
+            _checkDivSize: function(){
+
+                //var rect = this.getBoundingClientRect();
+				var rect = this.$.gaugeDiv.getBoundingClientRect();
+                var diameter = rect.width;
+                if (diameter > rect.height){
+                    diameter = rect.height;
+                }
+                if (diameter !== this.size){
+                    this.size = diameter;  // triggers sizeChanged function 
+                } else {
+					var _self = this;
+					var isInDesigner = _self.isInDesigner(_self);
+					if (isInDesigner){
+						var delay = 500;  // check to see if size has changed twice per second
+						this._checkDivSizeTimeout = window.setTimeout(_self.checkDivSize,delay);
+					}
+				}
+            },
+            checkDivSize: undefined
+        });
+    </script>
+</polymer-element>

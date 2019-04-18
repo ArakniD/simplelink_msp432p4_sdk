@@ -1,0 +1,167 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!doctype html>
+<html>
+<head>
+    <title>ti-widget-analoggauge</title>
+
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script>
+        if ('registerElement' in document
+                && 'createShadowRoot' in HTMLElement.prototype
+                && 'import' in document.createElement('link')
+                && 'content' in document.createElement('template')) {
+            // We're using a browser with native WC support!
+        } else {
+            document.write('<script src="../webcomponentsjs/webcomponents.js"><\/script>');
+        }
+    </script>
+
+    <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+    <link rel="import" href="ti-widget-analoggauge.html">
+
+
+    <style shim-shadowdom>
+
+        body {
+            margin: 0;
+            padding: 24px;
+        }
+        /* The following CSS styles only take effect when the skin = flat */
+        ti-widget-analoggauge  /deep/ .needle {
+            color: #c00;
+        }
+        ti-widget-analoggauge /deep/ .frame {
+            color: #222;
+        }
+        ti-widget-analoggauge /deep/ .face {
+            background-color: white;
+            color: black;
+        }
+    </style>
+
+</head>
+<body unresolved>
+<table>
+    <tr align="center" style="height:300px;">
+        <td width='180px'>
+            <ti-widget-analoggauge skin="brushedStainless" value="0" id="10"  style="padding:5px;"></ti-widget-analoggauge>
+        </td>
+        <td width='180px'>
+            <ti-widget-analoggauge  skin="flat" id="20" minValue="50" maxValue="500"  style="padding:5px;"></ti-widget-analoggauge>
+        </td>
+        <td width='180px'>
+            <ti-widget-analoggauge skin="carbon" value="20" id="30" minValue="20" maxValue="200"  style="padding:5px;"></ti-widget-analoggauge>
+        </td>
+    </tr>
+    <tr align='center'>
+        <td>skin='brushedStainless'</td>
+        <td>skin = 'flat'</td>
+        <td>skin='carbon'</td>
+    </tr>
+    <tr>
+        <td align='center' >
+            <p>
+                <button  id="11" onclick="startDemo(0);"  type="button"
+                         class="btn btn-default" style="width: 30%; ">Start</button>
+        </td>
+        <td align='center'>
+            <p>
+                <button  id="21"  onclick="startDemo(1);" type="button"
+                         class="btn btn-default" style="width: 30%;">Start</button>
+        </td>
+        <td align='center'>
+            <p>
+                <button  id="31"  onclick="startDemo(2);" type="button"
+                         class="btn btn-default" style="width: 30%;">Start</button>
+        </td>
+    </tr>
+
+</table>
+
+<script>
+    var numGauges = 3;
+    var gauges = [undefined,undefined,undefined];
+    var btns = [undefined,undefined,undefined];
+    var nextValueFns = [nextValueSilver,nextValueGold,nextValueBlack];
+    var values = [0,0,0];
+    var stepSizes = [1,2,3];
+    var repeatCnts= [0,0,0];
+    var animatingFlags = [false,false,false];
+    var	maxRepeatCnts = [2,4,6];
+
+    function nextValueSilver() {
+        nextValue(0);
+    }
+    function nextValueGold(){
+        nextValue(1);
+    }
+    function nextValueBlack(){
+        nextValue(2);
+    }
+
+    function nextValue(index) {
+
+        animatingFlags[index] = true;
+
+        if (((values[index] + stepSizes[index])> gauges[index].maxValue) ||
+                ((values[index] + stepSizes[index])< gauges[index].minValue)){
+            stepSizes[index] = -1*stepSizes[index];
+            repeatCnts[index] += 1;
+            if (repeatCnts[index] >= maxRepeatCnts[index]){
+                animatingFlags[index] = false;
+                btns[index].disabled = false;
+            }
+        };
+        values[index] = values[index] + stepSizes[index];
+        gauges[index].value = values[index];
+        //console.log('demo.html; setValue('+silverValue+')');
+        if (animatingFlags[index]) {
+            gauges[index].async(nextValueFns[index]);
+        }
+    };
+
+
+    startDemo = function(index) {
+
+        repeatCnts[index] = 0;
+        if (gauges[index] !== undefined) {
+            console.log("STARTING DEMO: index="+index+",gauges[index].value="+gauges[index].value);//+", gauge.getMaxValue()="+gauge.getMaxValue());
+            if (!animatingFlags[index]) {
+                btns[index].disabled = true;
+                nextValueFns[index]();
+            }
+        }
+    };
+
+    addEventListener('polymer-ready', function() {
+        console.log("ABOUT TO START DEMO!");
+        var i;
+        for (i=0;i<numGauges;i++){
+            var strIndex = ""+(10*(i+1));
+            console.log("strIndex = "+strIndex);
+            gauges[i] = document.getElementById(strIndex);
+            console.log("gauges["+i+"]="+gauges[i]);
+            values[i] = gauges[i].minValue;
+            strIndex = ""+(10*(i+1) + 1);
+            console.log("strIndex = "+strIndex);
+
+            btns[i]= document.getElementById(strIndex);
+        }
+        //startDemo();
+    });
+
+</script>
+
+</body>
+</html>
+

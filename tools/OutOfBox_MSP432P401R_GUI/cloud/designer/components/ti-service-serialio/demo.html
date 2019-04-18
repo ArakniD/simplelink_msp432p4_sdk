@@ -1,0 +1,556 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+Copyright (c) 2014, Texas Instruments Incorporated
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+*   Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+*   Neither the name of Texas Instruments Incorporated nor the names of
+its contributors may be used to endorse or promote products derived
+from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--[if gte IE 6]>
+    <script type="text/javascript">
+        // this is IE greater than or equal to 6
+        var isInternetExplorer=true;
+    </script>
+    <![endif]-->
+
+    <script>
+        var isIE =   ((navigator.appName == 'Microsoft Internet Explorer') ||
+        ((navigator.appName == 'Netscape') &&
+        (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)));
+        if (window.isInternetExplorer) {
+            isIE =  true;
+        }
+
+        if ( isIE ){
+            var object = document.createElement("object");
+            object.setAttribute("id", "ticloudagentlauncher");
+            object.setAttribute("type", "application/x-ticloudagentlauncher");
+            object.setAttribute("width", "0");
+            object.setAttribute("height", "0");
+            document.head.appendChild( object );
+            window.TICloudAgent_HACK = {};
+            window. TICloudAgent_HACK.plugin = document.getElementById("ticloudagentlauncher");
+        }
+    </script>
+    <link rel="import" href="../polymer/polymer.html">
+    <script src="../webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+    <link rel="import" href="../ti-core-backplane/ti-core-backplane.html">
+    <link rel="import" href="ti-service-serialio.html">
+    <link rel="import" href="../ti-widget-menubar/ti-widget-menubar.html"/>
+    <link rel="import" href="../ti-widget-menubar/ti-widget-optionsmenu.html"/>
+    <style type="text/css" media="screen, print, projection">
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+        }
+
+        #wrap {
+            width: 650px;
+            height: 375px;
+            margin: 0 auto;
+        }
+
+        #sidebar {
+            float: left;
+            width: 218px;
+            padding: 0px;
+        }
+
+        #main {
+            float: right;
+            width: 410px;
+            padding: 11px;
+        }
+
+        #footer {
+            clear: both;
+            padding: 0px;
+        }
+
+        #footer p {
+            margin: 0;
+        }
+
+        * html #footer {
+            height: 1px;
+        }
+
+    </style>
+    <style shim-shadowdom>
+
+        body {
+            margin: 0;
+            padding: 24px;
+        }
+
+        ti-core-backplane {
+            display: block;
+            width: 100%;
+            padding: 25px 0;
+        }
+
+
+    </style>
+
+</head>
+<body unresolved>
+<ti-widget-menubar id="MenuBar">
+    <ti-widget-optionsmenu></ti-widget-optionsmenu>
+</ti-widget-menubar>
+<div id="wrap">
+<div id="sidebar" align="center">
+    <p></p><b>
+    <div id="boardName"></div>
+</b>
+
+
+    <p></p>Device: <select id="deviceList" onchange="onDeviceSelectedHdlr()" style="width:110px"></select>
+    <p></p>
+    <div id="connectBtnDiv">
+        <button id="btnConnect" onclick="onBtnConnectClicked();">Connect</button>
+        <p></p>
+    </div>
+
+    <div id="disconnectBtnDiv" style="display:none">
+        <button id="btnDisconnect" onclick="onBtnDisconnectClicked();">Disconnect</button>
+        <p></p>
+    </div>
+    <div id="portInfo" style="display:none">
+
+        <p></p><button id="btnOpenSerialPort" onclick="openSerialPort();" >Open Serial Port</button>
+        <button id="btnCloseSerialPort" onclick="closeSerialPort();" style="display:none">Close Serial Port</button>
+
+    </div>
+</div>
+<div id="main">
+    <h3>ti-service-serialio demo</h3>
+
+    <div id="status"></div>
+    <!-- set hidden="false" if you wish to monitor the state changes here...-->
+    <div id="currentState" style="display:none"></div>
+
+    <div id="downloadInstallerBtnDiv" style="display:none">
+        <p></p>If you have not already done so, please download and install TI Cloud Agent.<p></p>
+        <button id="btnDownloadInstaller" onclick="onBtnDownloadInstallerClicked();">
+            <img src="../ti-core-backplane/images/download16x19.png"/>&nbsp;Download TI Cloud Agent</button>
+        <div id="firefoxInfo" style="display:none"><p></p>For Firefox browsers, you also need to import an SSL certificate.
+            Please click <a href="http://processors.wiki.ti.com/index.php/TI_Cloud_Agent_Troubleshooting_Guide#Fire_Fox" target="_blank">here</a> for instructions on how to do this.</div>
+        <p>&nbsp;</p>If you have already installed TI Cloud Agent, please:
+        <ul><li>close any other windows that are running this demo</li><li>close any applications such as mspdebug or Energia that are connected to your Launchpad.</li></ul>
+        <p>&nbsp;</p>If you are still having trouble connecting, please see the <a href="http://processors.wiki.ti.com/index.php/TI_Cloud_Agent_Troubleshooting_Guide" target="_blank">TI Cloud Agent wiki page</a>.
+        <p></p>
+    </div>
+    <div id="replugNotice" style="display:none"></div>
+    <div id="serialPortIO" style="display:none">
+        <p></p><h3><div id="temperature"></div></h3>
+
+        <input type="text" id="serialTx"> <button onclick="serialSend()">Send</button> <br>
+        <button onclick="clearSerial();">Clear</button> <br>
+        <textarea  id="serialRx" rows="120" cols="80">
+
+        </textarea>
+    </div>
+</div>
+<div id="footer" align="right">
+    <ti-core-backplane id="backplane" statusChanged="myStatusChangedHdlr()"></ti-core-backplane>
+    <ti-service-serialio id='serialIO'></ti-service-serialio>
+</div>
+</div>
+<script>
+"use strict";
+var backplane;
+var serialIO;
+var currentAction = 0;
+var currentStateDiv = document.getElementById("currentState");
+var statusDiv = document.getElementById('status');
+var connectBtnDiv = document.getElementById("connectBtnDiv");
+var portInfoDiv = document.getElementById('portInfo');
+var deviceList = document.getElementById('deviceList');
+var replugNoticeDiv = document.getElementById('replugNotice');
+var btnConnect = document.getElementById("btnConnect");
+var disconnectBtnDiv = document.getElementById("disconnectBtnDiv");
+var btnDisconnect = document.getElementById("btnDisconnect");
+var downloadInstallerBtnDiv = document.getElementById('downloadInstallerBtnDiv');
+var firefoxInfoDiv = document.getElementById("firefoxInfo");
+var serialPortIODiv = document.getElementById("serialPortIO");
+var rxTextArea = document.getElementById("serialRx");
+var temperatureDiv = document.getElementById("temperature");
+var btnOpenSerialPort = document.getElementById("btnOpenSerialPort");
+var btnCloseSerialPort = document.getElementById("btnCloseSerialPort");
+var dataFromSerialPort = [];
+var rxDataCount = 0;
+var unusedChars = '';
+var numBadValues = 0;
+var lastTempDisplayUpdateTime = Date.now();
+// Note: see TICloudAgent/supported_devices.json for ccxml strings used when running in Node-webkit.
+// see ti-core-backplane/supported_devices.json  for ccxml strings used when running online.
+var myDevices = [
+    {   boardName: 'MSP-EXP430G2 v1.5',
+        deviceName: 'MSP430G2553',
+        fileName: 'ReadTempAndSendToSerialPort.cpp.hex',
+        fileFolderName: 'demo/binfiles/',
+        startBtnName: 'P1.3',
+        msgWaitingForData: "Press the Start Button (P1.3 on your MSP-EXP430G2 Launchpad) to start reading the temperature - the Green LED should turn on.",
+        msgConnectDevice: "Please connect your MSP-EXP430G2 Launchpad to a USB port of your computer and then click Connect.",
+        boardImage:'launchpad-mspexp430g2-02.jpg',
+        startBtnImage:'startbutton-mspexp430g2-02.jpg',
+        imageFolderName:'demo/images/'
+    },
+    {
+        boardName: 'MSP-EXP430F5529LP',
+        deviceName: 'MSP430F5529',
+        fileName: 'ReadTemp_5529.cpp.hex',
+        fileFolderName: 'demo/binfiles/',
+        startBtnName: 'P1.1',
+        msgWaitingForData: "Press the Start Button (P1.1 on your MSP-EXP430F5529LP Launchpad) to start reading the temperature - the Green LED should turn on.",
+        msgConnectDevice: "Please connect your MSP-EXP430F5529LP Launchpad to a USB port of your computer and then click Connect.",
+        boardImage: 'msp430f5529.jpg',
+        startBtnImage: 'startbutton-msp430f5529.jpg',
+        imageFolderName:'demo/images/'
+    },
+    {
+        boardName: 'MSP430F2617',
+        deviceName: 'MSP430F2617',
+        fileName: 'Monitor_2617.hex',
+        fileFolderName: 'demo/binfiles/',
+        startBtnName: 'P1.1',
+        msgWaitingForData: "Press the Start Button (S1 on your MSP430F2617 Launchpad) to start the monitor - the Green LED should turn on.",
+        msgConnectDevice: "Please connect your MSP430F2617 Launchpad to a USB port of your computer and then click Connect.",
+        boardImage: 'msp430f2617.jpg',
+        startBtnImage: 'startbutton-msp430f2617.jpg',
+        imageFolderName:'demo/images/'
+    }
+];
+
+var myTextStrings = {
+
+};
+var selectedBoardIndex = 1;
+var boardName = myDevices[selectedBoardIndex].boardName;
+
+ var setStateMachine = function (strEvent) {
+    if (backplane) {
+        backplane.updateStateMachine(strEvent);
+    }
+};
+
+var onDeviceSelectedHdlr = function(e) {
+    var index = deviceList.selectedIndex;
+    console.log('User selected device['+ index+'] '+myDevices[index].boardName+', deviceName='+ myDevices[index].deviceName);
+    selectedBoardIndex = index;
+    serialIO.selectedDevice = myDevices[index];
+};
+
+var    openSerialPort = function(e) {
+        serialIO.updateStateMachine('userOpenSerialPort');
+        btnOpenSerialPort.style.display = 'none';
+        btnCloseSerialPort.style.display = '';
+    };
+
+var    closeSerialPort = function(e) {
+        serialIO.updateStateMachine('userCloseSerialPort');
+        btnOpenSerialPort.style.display = '';
+        btnCloseSerialPort.style.display = 'none';
+    };
+var onBtnConnectClicked = function() {
+    if (backplane) {
+        backplane.updateStateMachine('onConnectBtnClicked');
+    }
+};
+var onBtnDisconnectClicked = function () {
+    if (backplane) {
+        backplane.updateStateMachine('onDisconnectBtnClicked');
+    }
+};
+var onBtnDownloadInstallerClicked = function () {
+    if (backplane) {
+        backplane.downloadTICloudAgentInstaller();
+    }
+};
+var myStatusChangedHdlr = function (e) {
+    //var backplane = e.currentTarget;
+    if ((e.currentTarget.tagName == 'TI-SERVICE-SERIALIO') && (backplane.isDisconnectBtnVisible)) {
+        statusDiv.innerHTML = "<b>Target Status:</b> " + serialIO.status;
+    } else {
+        statusDiv.innerHTML = "<b>Target Status:</b> " + backplane.status;
+    }
+
+    currentStateDiv.innerHTML = "Current State: " + backplane.currentState.name;
+
+};
+var myCurrentStateChangedHdlr = function (e) {
+    //var backplane = e.currentTarget;
+    currentStateDiv.innerHTML = backplane.currentState.name;
+    switch (backplane.currentState.name) {
+        case 'downloadTICloudAgent':
+            if ((!backplane.isAutoDownloadEnabled) && (!backplane.isProgramDownloadDisabled)) {
+                downloadInstallerBtnDiv.style.display = '';  //hidden = false
+                if (backplane.isFireFox()){
+                    firefoxInfoDiv.style.display='';
+                } else {
+                    firefoxInfoDiv.style.display='none';
+                }
+            }
+            break;
+        default:
+            downloadInstallerBtnDiv.style.display = 'none';  //hidden = true
+            break;
+    }
+};
+var myConnectionStatusChangedHdlr = function (e) {
+
+
+};
+
+var mySerialPortVisibilityChangedHdlr = function (e) {
+
+    if (serialIO.isSerialPortUIVisible) {
+        portInfoDiv.style.display = '';
+        serialPortIODiv.style.display = ''; // not hidden
+        rxTextArea.rows = "10";  // 10 rows of text
+        if (serialIO.hasOpenSerialPortBeenCalled) {
+            btnOpenSerialPort.style.display = 'none';
+            btnCloseSerialPort.style.display = '';
+        } else {
+            btnOpenSerialPort.style.display ='';
+            btnCloseSerialPort.style.display = 'none';
+
+        }
+
+    } else {
+        portInfoDiv.style.display = 'none';
+        serialPortIODiv.style.display = 'none'; // not hidden
+        btnOpenSerialPort.style.display = 'none';
+        btnCloseSerialPort.style.display = 'none';
+
+    }
+
+};
+
+
+
+var myReplugNoticeHdlr = function(e){
+    if (serialIO.isReplugNoticeVisible) {
+        // the innerHTML will be generated by the ti-app-framework custom element.
+        replugNoticeDiv.innerHTML = "Please connect your "+ e.target.selectedDevice.boardName+" to a USB port of your computer and then click Connect.";
+        replugNoticeDiv.style.display = '';
+    } else {
+        replugNoticeDiv.style.display = 'none';
+    }
+};
+
+var serialSend = function(){
+    serialIO.serialSend(serialTx.value);
+}
+
+var clearSerial = function(){
+    rxTextArea.value="";
+}
+
+
+var mySerialPortOutputHdlr = {
+    text: function (message,buffer) {
+                //$scope.serialOut += message;
+        var n = 0;
+        //debugPrint('in $scope.serialPortOutput: message = '+message);
+
+        var debugStr = '';
+        var newValue = '';
+        var NUM_VALUES_TO_PLOT = 256;//512;
+
+        var data = [];
+        if (unusedChars !== undefined){
+            data = data.concat(unusedChars);
+        }
+        data = data.concat(buffer);
+        rxTextArea.value = message;
+        unusedChars = [];
+        var c = '';
+        //debugPrint('in $scope.serialPortOutput: message = ' + message);
+
+        //$scope.temperature = "Temperature: "+message+"&degF";
+
+        //debugPrint('in $scope.serialPortOutput: data.length = '+data.length+',data = '+data);
+        while (n < data.length) {
+            //debugPrint('in $scope.serialPortOutput: n = '+n+',datavalue[4] = '+data[4]);
+            c = String.fromCharCode(data[n]);
+            var charCode = c.charCodeAt(0);
+            if (((charCode >= 0x30 ) && (charCode <= 0x39)) || (charCode == '.'.charCodeAt(0))) {
+
+                //if (data[n] != 10) {
+                //debugStr += '[' + data[n] + ']';
+                newValue += c;
+                if (newValue.length == 4) {
+                    if (newValue[2] != '.') {
+                        console.log('in $scope.serialPortOutput: n = ' + n + ',newValue = ' + newValue + ', discarding character ' + newValue.charCodeAt(0));
+                        newValue = newValue.substring(1, newValue.length);
+                    } else {
+                        //debugPrint('in $scope.serialPortOutput: n = ' + n + ',newValue = ' + newValue + ', from ' + debugStr);
+                        // prevent bad values (e.g. 0) from being plotted
+
+                        if (parseFloat(newValue) <= 60) {
+                            numBadValues++;
+                            //console.log('Discarding bad value ('+newValue+').  Total number of bad values = '+$scope.numBadValues);
+                        } else {
+                            var t = Date.now();
+
+                            dataFromSerialPort.push([t, newValue]);
+                            rxDataCount++;
+
+                            if ((rxDataCount % 256) == 0) {
+                                console.log('rxDataCount = ' + rxDataCount + ', numBadValues=' + numBadValues);
+                            }
+                            //debugPrint('plotData.length  = '+$scope.plotData.length);
+                            if ((t - lastTempDisplayUpdateTime) > 1000) {
+                                //debugPrint('newValue = '+newValue+', t='+t);
+                                // document.getElementById("temperature").innerHTML="Temperature: "+newValue+' &degF';
+                                //$scope.temperature = "Temperature: "+newValue+' &degF';
+                                temperatureDiv.innerHTML = "Temperature: " + newValue + ' &degF';
+                                lastTempDisplayUpdateTime = t;
+                            }
+                            if (dataFromSerialPort.length > NUM_VALUES_TO_PLOT) {
+                                dataFromSerialPort.shift();
+
+
+                            }
+
+
+                            newValue = '';
+
+                            if ((data.length - n) < 5){
+                                for (var k=n+1; k<data.length;k++) {
+                                    unusedChars.push(data[k]);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                //}
+            }
+            n++;
+        }
+
+    }
+
+};
+
+var myBtnVisibilityChangedHdlr = function () {
+    if (backplane) {
+
+        if (backplane.isConnectBtnVisible) {
+            connectBtnDiv.style.display = '';
+            btnOpenSerialPort.style.display = 'none';
+            btnCloseSerialPort.style.display = 'none';
+        } else {
+            connectBtnDiv.style.display = 'none';
+        }
+
+        if (backplane.isDisconnectBtnVisible) {
+            disconnectBtnDiv.style.display = '';
+        } else {
+            disconnectBtnDiv.style.display = 'none';
+        }
+
+        if (backplane.isCloudAgentDownloadBtnVisible) {
+            downloadInstallerBtnDiv.style.display = '';
+            btnOpenSerialPort.style.display = 'none';
+            btnCloseSerialPort.style.display = 'none';
+        } else {
+            downloadInstallerBtnDiv.style.display = 'none';
+
+        }
+    }
+};
+
+
+addEventListener('polymer-ready', function () {
+    console.log("ABOUT TO START DEMO!");
+    var i;
+
+    backplane = document.getElementById("backplane");
+    backplane.selectedDevice = myDevices[selectedBoardIndex];
+    serialIO = document.getElementById("serialIO");
+    serialIO.backplane = backplane;
+    // can't use document.querySelector for backplane because it is in its own ShadowDOM
+    // which is not accessible from here.
+    // for more info, see http://stackoverflow.com/questions/24646081/polymer-document-queryselector-not-working-as-expected
+    serialIO.selectedDevice = myDevices[selectedBoardIndex];
+
+    serialIO.serialPortTextOutputHdlr = mySerialPortOutputHdlr;
+
+
+    backplane.addEventListener("statusMsgUpdated", myStatusChangedHdlr);
+    backplane.addEventListener("currentStateUpdated", myCurrentStateChangedHdlr);
+    backplane.addEventListener("connectionStatusChanged", myConnectionStatusChangedHdlr);
+    backplane.addEventListener("btnVisibilityChanged", myBtnVisibilityChangedHdlr);
+    serialIO.addEventListener("statusMsgUpdated", myStatusChangedHdlr);
+   // serialIO.addEventListener('serialPortListUpdated', mySerialPortListHdlr);
+    serialIO.addEventListener('replugNoticeVisibilityChanged', myReplugNoticeHdlr);
+    serialIO.addEventListener("serialPortUIVisibilityChanged", mySerialPortVisibilityChangedHdlr);
+
+    deviceList = document.getElementById("deviceList");
+    while (deviceList.firstChild) {
+        deviceList.removeChild(deviceList.firstChild);
+    }
+    var html = "";
+    for (var i = 0; i < myDevices.length; i++) {
+        var device = myDevices[i];
+        html += "<option value=\"" + device.deviceName + "\">" + device.deviceName + "</option>\n";
+        var opt = document.createElement('option');
+        opt.value = i;
+        opt.text = device.deviceName;
+        //opt.innerHTML = i;
+
+        deviceList.appendChild(opt);
+        if (i == selectedBoardIndex) {
+            deviceList.options[i].selected = true;
+        }
+    }
+    //$("#formData").html(html);
+   deviceList.value = myDevices[selectedBoardIndex];
+
+
+});
+</script>
+
+</body>
+</html>
+

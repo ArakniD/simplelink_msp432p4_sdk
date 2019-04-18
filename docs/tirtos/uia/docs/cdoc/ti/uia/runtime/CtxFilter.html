@@ -1,0 +1,565 @@
+<html>
+<head>
+<title>module ti.uia.runtime.CtxFilter</title>
+<meta name="description" content="Context-aware Instrumentation Event Filtering infrastructure">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.runtime.</span><span class="xdoc-id">CtxFilter</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/IUIATransfer.html" title="interface IUIATransfer"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/package.html" title="package ti.uia.runtime"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html">index URL</a></div>
+<p class="xdocHdrSummary">Context-aware Instrumentation Event Filtering infrastructure</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/CtxFilter-src.html"><span class="xdocLabelFile">ti/uia/runtime/CtxFilter.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/runtime/CtxFilter.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Functions</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#is.Ctx.Enabled"><span class="xdoc-id">CtxFilter_isCtxEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a>();</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#is.Logging.Enabled.For.App.Ctx"><span class="xdoc-id">CtxFilter_isLoggingEnabledForAppCtx</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;optional function to enable context-aware filtering based on application context</span></span></a>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">newAppCtx</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#is.Logging.Enabled.For.Chan.Ctx"><span class="xdoc-id">CtxFilter_isLoggingEnabledForChanCtx</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;optional function to enable context-aware filtering based on channel context</span></span></a>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">newChanId</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#is.Logging.Enabled.For.Frame.Ctx"><span class="xdoc-id">CtxFilter_isLoggingEnabledForFrameCtx</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;optional function to enable context-aware filtering based on frame context</span></span></a>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">newFrameId</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#is.Logging.Enabled.For.Thread.Ctx"><span class="xdoc-id">CtxFilter_isLoggingEnabledForThreadCtx</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;optional function to enable context-aware filtering based on user context</span></span></a>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">newThreadId</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#is.Logging.Enabled.For.User.Ctx"><span class="xdoc-id">CtxFilter_isLoggingEnabledForUserCtx</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;optional function to enable context-aware filtering based on user context</span></span></a>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">newUserCtx</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#set.Context.Filter.Flags"><span class="xdoc-id">CtxFilter_setContextFilterFlags</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;sets the context filter flags</span></span></a>(<span class="xdoc-kw2">Bits16</span>&nbsp;<span class="xdoc-id">flags</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#set.Ctx.Enabled"><span class="xdoc-id">CtxFilter_setCtxEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a>(<span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">value</span>);</div></td></tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">CtxFilter_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">CtxFilter_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">CtxFilter_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">CtxFilter_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">CtxFilter_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">CtxFilter_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Defines</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw3">#define</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.A.L.W.A.Y.S_.E.N.A.B.L.E.D"><span class="xdoc-id">CtxFilter_ALWAYS_ENABLED</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Event logging is not qualified by context</span></span></a>  (<i><a class="xdoc-link" href="../../../ti/uia/runtime/CtxFilter.html#.Mask" title="ti.uia.runtime.CtxFilter.Mask">CtxFilter_Mask</a></i>)0x0000</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw3">#define</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.C.O.N.T.E.X.T_.D.I.S.A.B.L.E.D"><span class="xdoc-id">CtxFilter_CONTEXT_DISABLED</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Disable logging at the call site</span></span></a>  (<i><a class="xdoc-link" href="../../../ti/uia/runtime/CtxFilter.html#.Mask" title="ti.uia.runtime.CtxFilter.Mask">CtxFilter_Mask</a></i>)<span class="xdoc-kw2">false</span></div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw3">#define</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.C.O.N.T.E.X.T_.E.N.A.B.L.E.D"><span class="xdoc-id">CtxFilter_CONTEXT_ENABLED</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable logging at the call site (subject to Diags.Mask)</span></span></a>  (<i><a class="xdoc-link" href="../../../ti/uia/runtime/CtxFilter.html#.Mask" title="ti.uia.runtime.CtxFilter.Mask">CtxFilter_Mask</a></i>)<span class="xdoc-kw2">true</span></div></td></tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Typedefs</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw2">Bits16</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Mask"><span class="xdoc-id">CtxFilter_Mask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Type used to specify bits in the context mask</span></span></a>;</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".A.L.W.A.Y.S_.E.N.A.B.L.E.D"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">const</span> <span class="xdoc-id">CtxFilter_</span><span class="xdoc-id">ALWAYS_ENABLED</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#.A.L.W.A.Y.S_.E.N.A.B.L.E.D">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Event logging is not qualified by context</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw3">#define</span> <span class="xdoc-id">CtxFilter_ALWAYS_ENABLED</span>  (<i><a class="xdoc-link" href="../../../ti/uia/runtime/CtxFilter.html#.Mask" title="ti.uia.runtime.CtxFilter.Mask">CtxFilter_Mask</a></i>)0x0000
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".C.O.N.T.E.X.T_.D.I.S.A.B.L.E.D"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">const</span> <span class="xdoc-id">CtxFilter_</span><span class="xdoc-id">CONTEXT_DISABLED</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#.C.O.N.T.E.X.T_.D.I.S.A.B.L.E.D">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Disable logging at the call site</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw3">#define</span> <span class="xdoc-id">CtxFilter_CONTEXT_DISABLED</span>  (<i><a class="xdoc-link" href="../../../ti/uia/runtime/CtxFilter.html#.Mask" title="ti.uia.runtime.CtxFilter.Mask">CtxFilter_Mask</a></i>)<span class="xdoc-kw2">false</span>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".C.O.N.T.E.X.T_.E.N.A.B.L.E.D"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">const</span> <span class="xdoc-id">CtxFilter_</span><span class="xdoc-id">CONTEXT_ENABLED</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#.C.O.N.T.E.X.T_.E.N.A.B.L.E.D">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable logging at the call site (subject to Diags.Mask)</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw3">#define</span> <span class="xdoc-id">CtxFilter_CONTEXT_ENABLED</span>  (<i><a class="xdoc-link" href="../../../ti/uia/runtime/CtxFilter.html#.Mask" title="ti.uia.runtime.CtxFilter.Mask">CtxFilter_Mask</a></i>)<span class="xdoc-kw2">true</span>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Mask"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">typedef</span> <span class="xdoc-id">CtxFilter_</span><span class="xdoc-id">Mask</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#.Mask">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Type used to specify bits in the context mask</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw2">Bits16</span>&nbsp;<span class="xdoc-id">CtxFilter_Mask</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Ctx.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">CtxFilter_</span><span class="xdoc-id">isCtxEnabled</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#is.Ctx.Enabled">index URL</a></div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">CtxFilter_isCtxEnabled</span>();
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Logging.Enabled.For.App.Ctx"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">CtxFilter_</span><span class="xdoc-id">isLoggingEnabledForAppCtx</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#is.Logging.Enabled.For.App.Ctx">index URL</a></div>
+<p class="xdocHdrSummaryDcl">optional function to enable context-aware filtering based on application context</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">CtxFilter_isLoggingEnabledForAppCtx</span>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">newAppCtx</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">newAppCtx</span>
+<span class="xdocChildSum">&#151;&nbsp;the new application context id that has just been switched to</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Configure the ti.uia.events.UIAAppCtx.IsLoggingEnabledFxn with the
+ address of this function in order to enable context-aware filtering based on
+ application context.  Alternatively, you can write your own isLoggingEnabled function
+ that provides additional filtering and logging capabilities (e.g. it can log
+ sync points whenever the context changes).</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">RETURN</div>
+<div class="xdocText">true if logging is enabled for this user context.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Logging.Enabled.For.Chan.Ctx"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">CtxFilter_</span><span class="xdoc-id">isLoggingEnabledForChanCtx</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#is.Logging.Enabled.For.Chan.Ctx">index URL</a></div>
+<p class="xdocHdrSummaryDcl">optional function to enable context-aware filtering based on channel context</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">CtxFilter_isLoggingEnabledForChanCtx</span>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">newChanId</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">newChanId</span>
+<span class="xdocChildSum">&#151;&nbsp;the new channel ID that has just been switched to</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Configure the ti.uia.events.UIAChanCtx.IsLoggingEnabledFxn with the
+ address of this function in order to enable context-aware filtering based on
+ channel context.  Alternatively, you can write your own isLoggingEnabled function
+ that provides additional filtering and logging capabilities (e.g. it can log
+ sync points whenever the context changes).</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">RETURN</div>
+<div class="xdocText">true if logging is enabled for this user context.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Logging.Enabled.For.Frame.Ctx"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">CtxFilter_</span><span class="xdoc-id">isLoggingEnabledForFrameCtx</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#is.Logging.Enabled.For.Frame.Ctx">index URL</a></div>
+<p class="xdocHdrSummaryDcl">optional function to enable context-aware filtering based on frame context</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">CtxFilter_isLoggingEnabledForFrameCtx</span>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">newFrameId</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">newFrameId</span>
+<span class="xdocChildSum">&#151;&nbsp;the new Frame ID that has just been switched to</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Configure the ti.uia.events.UIAFrameCtx.IsLoggingEnabledFxn with the
+ address of this function in order to enable context-aware filtering based on
+ frame context.  Alternatively, you can write your own isLoggingEnabled function
+ that provides additional filtering and logging capabilities (e.g. it can log
+ sync points whenever the context changes).</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">RETURN</div>
+<div class="xdocText">true if logging is enabled for this user context.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Logging.Enabled.For.Thread.Ctx"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">CtxFilter_</span><span class="xdoc-id">isLoggingEnabledForThreadCtx</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#is.Logging.Enabled.For.Thread.Ctx">index URL</a></div>
+<p class="xdocHdrSummaryDcl">optional function to enable context-aware filtering based on user context</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">CtxFilter_isLoggingEnabledForThreadCtx</span>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">newThreadId</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">newThreadId</span>
+<span class="xdocChildSum">&#151;&nbsp;the new thread ID that has just been switched to</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Configure the ti.uia.events.UIAThreadCtx.IsLoggingEnabledFxn with the
+ address of this function in order to enable context-aware filtering based on
+ thread context.  Alternatively, you can write your own isLoggingEnabled function
+ that provides additional filtering and logging capabilities (e.g. it can log
+ sync points whenever the context changes).</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">RETURN</div>
+<div class="xdocText">true if logging is enabled for this user context.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Logging.Enabled.For.User.Ctx"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">CtxFilter_</span><span class="xdoc-id">isLoggingEnabledForUserCtx</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#is.Logging.Enabled.For.User.Ctx">index URL</a></div>
+<p class="xdocHdrSummaryDcl">optional function to enable context-aware filtering based on user context</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">CtxFilter_isLoggingEnabledForUserCtx</span>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">newUserCtx</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">newUserCtx</span>
+<span class="xdocChildSum">&#151;&nbsp;the new user context that has just been switched to</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Configure the ti.uia.events.UIAUserCtx.IsLoggingEnabledFxn with the
+ address of this function in order to enable context-aware filtering based on
+ user context.  Alternatively, you can write your own isLoggingEnabled function
+ that provides additional filtering and logging capabilities (e.g. it can log
+ sync points whenever the context changes).</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">RETURN</div>
+<div class="xdocText">true if logging is enabled for this user context.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="set.Context.Filter.Flags"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">CtxFilter_</span><span class="xdoc-id">setContextFilterFlags</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#set.Context.Filter.Flags">index URL</a></div>
+<p class="xdocHdrSummaryDcl">sets the context filter flags</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">CtxFilter_setContextFilterFlags</span>(<span class="xdoc-kw2">Bits16</span>&nbsp;<span class="xdoc-id">flags</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">flags</span>
+<span class="xdocChildSum">&#151;&nbsp;bitfield of flags, one per context filter type</span>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="set.Ctx.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">CtxFilter_</span><span class="xdoc-id">setCtxEnabled</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#set.Ctx.Enabled">index URL</a></div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">CtxFilter_setCtxEnabled</span>(<span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">value</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">CtxFilter_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">CtxFilter_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">CtxFilter_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">CtxFilter_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">CtxFilter_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">CtxFilter_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/CtxFilter-src.html"><span class="xdocLabelFile">ti/uia/runtime/CtxFilter.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> CtxFilter = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.runtime.CtxFilter'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide constants & types</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.A.L.W.A.Y.S_.E.N.A.B.L.E.D">CtxFilter.<span class="xdoc-id">ALWAYS_ENABLED</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Event logging is not qualified by context</span></span></a> = 0x0000;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.C.O.N.T.E.X.T_.D.I.S.A.B.L.E.D">CtxFilter.<span class="xdoc-id">CONTEXT_DISABLED</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Disable logging at the call site</span></span></a> = <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.C.O.N.T.E.X.T_.E.N.A.B.L.E.D">CtxFilter.<span class="xdoc-id">CONTEXT_ENABLED</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable logging at the call site (subject to Diags.Mask)</span></span></a> = <span class="xdoc-kw2">true</span>;
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">CtxFilter.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.A.L.W.A.Y.S_.E.N.A.B.L.E.D"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">const</span> <span class="xdoc-id">CtxFilter.</span><span class="xdoc-id">ALWAYS_ENABLED</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#.A.L.W.A.Y.S_.E.N.A.B.L.E.D">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Event logging is not qualified by context</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">const</span> CtxFilter.<span class="xdoc-id">ALWAYS_ENABLED</span> = 0x0000;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.A.L.W.A.Y.S_.E.N.A.B.L.E.D" title="CtxFilter_ALWAYS_ENABLED">CtxFilter_ALWAYS_ENABLED</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.C.O.N.T.E.X.T_.D.I.S.A.B.L.E.D"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">const</span> <span class="xdoc-id">CtxFilter.</span><span class="xdoc-id">CONTEXT_DISABLED</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#.C.O.N.T.E.X.T_.D.I.S.A.B.L.E.D">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Disable logging at the call site</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">const</span> CtxFilter.<span class="xdoc-id">CONTEXT_DISABLED</span> = <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.C.O.N.T.E.X.T_.D.I.S.A.B.L.E.D" title="CtxFilter_CONTEXT_DISABLED">CtxFilter_CONTEXT_DISABLED</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.C.O.N.T.E.X.T_.E.N.A.B.L.E.D"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">const</span> <span class="xdoc-id">CtxFilter.</span><span class="xdoc-id">CONTEXT_ENABLED</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#.C.O.N.T.E.X.T_.E.N.A.B.L.E.D">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable logging at the call site (subject to Diags.Mask)</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">const</span> CtxFilter.<span class="xdoc-id">CONTEXT_ENABLED</span> = <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.C.O.N.T.E.X.T_.E.N.A.B.L.E.D" title="CtxFilter_CONTEXT_ENABLED">CtxFilter_CONTEXT_ENABLED</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">CtxFilter.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/CtxFilter.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>CtxFilter.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:15 GMT</div>
+</div></div></body>
+</html>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectSpec>
+    <applicability>
+        <when>
+            <context
+                deviceFamily="MSP432"
+                deviceId="MSP432P401R"
+            />
+        </when>
+    </applicability>
+
+    <import spec="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/builds/MSP_EXP432P401R/release/ccs/tirtos_builds_MSP_EXP432P401R_release_ccs.projectspec"/>
+
+    <project
+        title="outOfBox_msp432p401r"
+        name="outofbox_msp432p401r_MSP_EXP432P401R_tirtos_ccs"
+        toolChain="TI"
+        connection="TIXDS110_Connection.xml"
+        device="MSP432P401R"
+        ignoreDefaultDeviceSettings="true"
+        ignoreDefaultCCSSettings="true"
+        references="tirtos_builds_MSP_EXP432P401R_release_ccs"
+        compilerBuildOptions=" -I${PROJECT_ROOT} -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include -D__MSP432P401R__ -DDeviceFamily_MSP432P401x --advice:power=none -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/posix/ccs --silicon_version=7M4 --code_state=16 --little_endian --display_error_number --diag_warning=255 --diag_wrap=off --gen_func_subsections=on --float_support=FPv4SPD16 --symdebug:dwarf -I${CG_TOOL_ROOT}/include"
+        linkerBuildOptions=" -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source -lti/display/lib/display.aem4f -lti/grlib/lib/ccs/m4f/grlib.a -lthird_party/spiffs/lib/ccs/m4f/spiffs.a -lti/drivers/lib/drivers_msp432p401x.aem4f -lthird_party/fatfs/lib/ccs/m4f/fatfs.a -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages -lti/dpl/lib/dpl_msp432p401x.aem4f -l${GENERATED_LIBRARIES} -lti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib --warn_sections --display_error_number --diag_wrap=off --rom_model -i${CG_TOOL_ROOT}/lib -llibc.a"
+        description="TODO: Write description">
+
+        <property name="buildProfile" value="release"/>
+        <property name="isHybrid" value="true"/>
+        <group id="outofbox_msp432p401r.SIMPLELINK_MSP432_SDK.MSP_EXP432P401R.demos.TI"/>
+        <file path="../../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../Board.html" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../overview.rov.json" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../tirtos/main_tirtos.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../tirtos/ccs/MSP_EXP432P401R_TIRTOS.cmd" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../MSP_EXP432P401R.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../uart_thread.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../Board.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../MSP_EXP432P401R.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../callbacks.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../uart_thread.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../callbacks.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../led_thread.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../led_thread.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+    </project>
+</projectSpec>
+

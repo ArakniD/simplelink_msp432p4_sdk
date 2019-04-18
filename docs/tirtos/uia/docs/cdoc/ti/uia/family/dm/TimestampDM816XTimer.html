@@ -1,0 +1,2075 @@
+<html>
+<head>
+<title>module ti.uia.family.dm.TimestampDM816XTimer</title>
+<meta name="description" content="Implementation of ITimestampProvider using DM General purpose 32b timer. NOTE: for ARM devices, address values should be virtual addresses as seen by the CPU">
+<link rel="stylesheet" type="text/css" href="../../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.family.dm.</span><span class="xdoc-id">TimestampDM816XTimer</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/package.html" title="package ti.uia.family.dm"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html">index URL</a></div>
+<p class="xdocHdrSummary">Implementation of <tt><a class="xdoc-link" href="ITimestampProvider.html" title="ITimestampProvider">ITimestampProvider</a></tt> using DM General purpose
+  32b timer.  NOTE: for ARM devices, address values should be virtual
+  addresses as seen by the CPU</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer-src.html"><span class="xdocLabelFile">ti/uia/family/dm/TimestampDM816XTimer.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/family/dm/TimestampDM816XTimer.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Functions</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#set.M.S.W"><span class="xdoc-id">TimestampDM816XTimer_setMSW</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">value</span>);</div></td></tr>
+<tr><td colspan="2"><div class="xdocSynFxnCat">Functions common to all ITimestampClient modules</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bits32</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get32"><span class="xdoc-id">TimestampDM816XTimer_get32</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Return a 32-bit timestamp</span></span></a>();</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get64"><span class="xdoc-id">TimestampDM816XTimer_get64</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Return a 64-bit timestamp</span></span></a>(<a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">Types_Timestamp64</a>&nbsp;*<span class="xdoc-id">result</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get.Freq"><span class="xdoc-id">TimestampDM816XTimer_getFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get the timestamp timer's frequency (in Hz)</span></span></a>(<a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;*<span class="xdoc-id">freq</span>);</div></td></tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">TimestampDM816XTimer_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">TimestampDM816XTimer_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">TimestampDM816XTimer_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">TimestampDM816XTimer_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">TimestampDM816XTimer_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">TimestampDM816XTimer_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Typedefs</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Base.Adrs"><span class="xdoc-id">TimestampDM816XTimer_BaseAdrs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enumeration that defines the base addresses for each timer instance
+  of the DM8168 device</span></span></a> ...</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Prcm.Clk.Mux.Base.Adrs"><span class="xdoc-id">TimestampDM816XTimer_PrcmClkMuxBaseAdrs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;PRCM CM_TIMERX_CLKSEL Timer clock mux select line</span></span></a> ...</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Tclr"><span class="xdoc-id">TimestampDM816XTimer_Tclr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Timer Control Register (TCLR)</span></span></a> ...</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Tier"><span class="xdoc-id">TimestampDM816XTimer_Tier</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Timer IRQENABLE CLR (IRQENABLE_CLR)</span></span></a> ...</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Timer.Instance"><span class="xdoc-id">TimestampDM816XTimer_TimerInstance</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a> ...</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Tiocp.Cfg"><span class="xdoc-id">TimestampDM816XTimer_TiocpCfg</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Timer OCP Configuration Register (TIOCP_CFG) - L4 interface Configuration</span></span></a> ...</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Tsicr"><span class="xdoc-id">TimestampDM816XTimer_Tsicr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;L4 Interface Synchronization Control Register (TSICR)</span></span></a> ...</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Twer"><span class="xdoc-id">TimestampDM816XTimer_Twer</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Timer IRQ WAKEUP ENABLE (IRQWAKEEN)</span></span></a> ...</div></td></tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Constants</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#auto.Start"><span class="xdoc-id">TimestampDM816XTimer_autoStart</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Controls whether the module initializes the timer or not</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#max.Bus.Clock.Freq"><span class="xdoc-id">TimestampDM816XTimer_maxBusClockFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The highest bus clock frequency used to drive the timer</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#max.Timer.Clock.Freq"><span class="xdoc-id">TimestampDM816XTimer_maxTimerClockFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The highest timer clock frequency</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Ptr</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#prcm.Clk.Mux.Base.Adrs"><span class="xdoc-id">TimestampDM816XTimer_prcmClkMuxBaseAdrs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Base address of the PRCM register used to select the timer clock source</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#prcm.Clk.Mux.Init.Value"><span class="xdoc-id">TimestampDM816XTimer_prcmClkMuxInitValue</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Value to write into the prcmClkMux register in order to configure timer clock</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tclr" title="ti.uia.family.dm.TimestampDM816XTimer.Tclr">TimestampDM816XTimer_Tclr</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#tclr"><span class="xdoc-id">TimestampDM816XTimer_tclr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tier" title="ti.uia.family.dm.TimestampDM816XTimer.Tier">TimestampDM816XTimer_Tier</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#tier"><span class="xdoc-id">TimestampDM816XTimer_tier</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Ptr</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#timer.Base.Adrs"><span class="xdoc-id">TimestampDM816XTimer_timerBaseAdrs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Base address of the timer to be used as the global timer</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Timer.Instance" title="ti.uia.family.dm.TimestampDM816XTimer.TimerInstance">TimestampDM816XTimer_TimerInstance</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#timer.Number"><span class="xdoc-id">TimestampDM816XTimer_timerNumber</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of the timer to use as the global timer</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tiocp.Cfg" title="ti.uia.family.dm.TimestampDM816XTimer.TiocpCfg">TimestampDM816XTimer_TiocpCfg</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#tiocp.Cfg"><span class="xdoc-id">TimestampDM816XTimer_tiocpCfg</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tsicr" title="ti.uia.family.dm.TimestampDM816XTimer.Tsicr">TimestampDM816XTimer_Tsicr</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#tsicr"><span class="xdoc-id">TimestampDM816XTimer_tsicr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Default value of tsicr to use when configuring the timer</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Twer" title="ti.uia.family.dm.TimestampDM816XTimer.Twer">TimestampDM816XTimer_Twer</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#twer"><span class="xdoc-id">TimestampDM816XTimer_twer</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a>;</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Base.Adrs"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.A.R.M_.Timer4"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.A.R.M_.Timer5"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.A.R.M_.Timer6"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.A.R.M_.Timer7"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.C6000_.Timer4"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.C6000_.Timer5"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.C6000_.Timer6"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.C6000_.Timer7"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">BaseAdrs</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Base.Adrs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enumeration that defines the base addresses for each timer instance
+  of the DM8168 device</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> <span class="xdoc-id">TimestampDM816XTimer_BaseAdrs</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_BaseAdrs_ARM_Timer4</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_BaseAdrs_ARM_Timer5</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_BaseAdrs_ARM_Timer6</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_BaseAdrs_ARM_Timer7</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_BaseAdrs_C6000_Timer4</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_BaseAdrs_C6000_Timer5</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_BaseAdrs_C6000_Timer6</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_BaseAdrs_C6000_Timer7</span>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">TimestampDM816XTimer_BaseAdrs</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Prcm.Clk.Mux.Base.Adrs"></a>
+<a class="xdocAnchor" id=".Prcm.Clk.Mux.Base.Adrs_.Timer4"></a>
+<a class="xdocAnchor" id=".Prcm.Clk.Mux.Base.Adrs_.Timer5"></a>
+<a class="xdocAnchor" id=".Prcm.Clk.Mux.Base.Adrs_.Timer6"></a>
+<a class="xdocAnchor" id=".Prcm.Clk.Mux.Base.Adrs_.Timer7"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">PrcmClkMuxBaseAdrs</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Prcm.Clk.Mux.Base.Adrs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">PRCM CM_TIMERX_CLKSEL Timer clock mux select line</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> <span class="xdoc-id">TimestampDM816XTimer_PrcmClkMuxBaseAdrs</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_PrcmClkMuxBaseAdrs_Timer4</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_PrcmClkMuxBaseAdrs_Timer5</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_PrcmClkMuxBaseAdrs_Timer6</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_PrcmClkMuxBaseAdrs_Timer7</span>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">TimestampDM816XTimer_PrcmClkMuxBaseAdrs</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The following enum provides the physical
+ addresses of the PRCM Clock Mux register
+ used for Timers 4,5,6 and 7.
+ If the virtual address of the register
+ is not the same as the physical address,
+ AND the autostart config option is true,
+ the prcmClkMuxBaseAdrs must be configured
+ with the virtual address of the register.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Timer.Instance"></a>
+<a class="xdocAnchor" id=".Timer.Instance_.User.Configured"></a>
+<a class="xdocAnchor" id=".Timer.Instance_.Timer4"></a>
+<a class="xdocAnchor" id=".Timer.Instance_.Timer5"></a>
+<a class="xdocAnchor" id=".Timer.Instance_.Timer6"></a>
+<a class="xdocAnchor" id=".Timer.Instance_.Timer7"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">TimerInstance</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Timer.Instance">index URL</a></div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> <span class="xdoc-id">TimestampDM816XTimer_TimerInstance</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_TimerInstance_UserConfigured</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_TimerInstance_Timer4</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_TimerInstance_Timer5</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_TimerInstance_Timer6</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampDM816XTimer_TimerInstance_Timer7</span>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">TimestampDM816XTimer_TimerInstance</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Tclr"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">Tclr</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Tclr">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Timer Control Register (TCLR)</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer_Tclr</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits32</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">ptv</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Trigger output mode</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">pre</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Prescalar enable</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">ce</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Compare enable</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">scpwm</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Pulse-width modulation</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits16</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">tcm</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Transition capture mode</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits16</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">trg</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Trigger output mode</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">pt</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Pulse or toggle select bit</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">captmode</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Capture mode select bit</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">gpocfg</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;PWM output/event detection input pin</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">TimestampDM816XTimer_Tclr</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Tier"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">Tier</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Tier">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Timer IRQENABLE CLR (IRQENABLE_CLR)</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer_Tier</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">mat_it_ena</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Enable match interrupt</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">ovf_it_ena</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Enable overflow interrupt</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">tcar_it_ena</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Enable capture interrupt</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">TimestampDM816XTimer_Tier</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Tiocp.Cfg"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">TiocpCfg</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Tiocp.Cfg">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Timer OCP Configuration Register (TIOCP_CFG) - L4 interface Configuration</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer_TiocpCfg</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">idlemode</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;0=force-idle;1=no-idle;2=Smart-idle;3=Smart-idle</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">emufree</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;0=counter frozen; 1=counter free-running</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">softreset</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;0=normal mode; 1=soft reset</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">TimestampDM816XTimer_TiocpCfg</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Tsicr"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">Tsicr</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Tsicr">index URL</a></div>
+<p class="xdocHdrSummaryDcl">L4 Interface Synchronization Control Register (TSICR)</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer_Tsicr</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">sft</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Reset software functional registers</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">posted</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Posted mode selection</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">TimestampDM816XTimer_Tsicr</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Twer"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">Twer</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Twer">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Timer IRQ WAKEUP ENABLE (IRQWAKEEN)</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer_Twer</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">mat_wup_ena</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Enable match wake-up</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">ovf_wup_ena</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Enable overflow wake-up</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits8</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">tcar_wup_ena</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Enable capture wake-up</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">TimestampDM816XTimer_Twer</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="auto.Start"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">autoStart</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#auto.Start">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Controls whether the module initializes the timer or not</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_autoStart</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Must be set to true for one and only one CPU in the device</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="max.Bus.Clock.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">maxBusClockFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#max.Bus.Clock.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The highest bus clock frequency used to drive the timer</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_maxBusClockFreq</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the cyclesPerTick config parameter.</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the cyclesPerTick config parameter.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">the 32 MSBs of the highest bus clock frequency used to drive
+    the timer.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="max.Timer.Clock.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">maxTimerClockFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#max.Timer.Clock.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The highest timer clock frequency</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_maxTimerClockFreq</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the cyclesPerTick config parameter.</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the cyclesPerTick config parameter.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">the 32 LSBs of the highest timer clock frequency
+   (i.e. ticksPerSecond).</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="prcm.Clk.Mux.Base.Adrs"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">prcmClkMuxBaseAdrs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#prcm.Clk.Mux.Base.Adrs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Base address of the PRCM register used to select the timer clock source</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_prcmClkMuxBaseAdrs</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If the virtual address of the register is not the same as the
+ physical address, AND the autostart config option is true,
+ the prcmClkMuxBaseAdrs must be configured with the virtual
+ address of the register.  Otherwise set to null to allow
+ module to automatically use the physical address for the
+ specified timer.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="prcm.Clk.Mux.Init.Value"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">prcmClkMuxInitValue</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#prcm.Clk.Mux.Init.Value">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Value to write into the prcmClkMux register in order to configure timer clock</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_prcmClkMuxInitValue</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If autoStart is TRUE and prcmClkMuxBaseAdrs is not null
+ OR timerNumber is set to a value other than UserConfigured
+ the module will writh the prcmClkMuxInitValue into the
+ PRCM clock mux register upon startup.</div>
+<div class="xdocText">By default, the value written, sets CLKSEL to SYS_CLK (b24 = 0) and sets
+ MODULEMODE to 2 (Module is enabled).</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="tclr"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">tclr</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#tclr">index URL</a></div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tclr" title="ti.uia.family.dm.TimestampDM816XTimer.Tclr">TimestampDM816XTimer_Tclr</a>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_tclr</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="tier"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">tier</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#tier">index URL</a></div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tier" title="ti.uia.family.dm.TimestampDM816XTimer.Tier">TimestampDM816XTimer_Tier</a>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_tier</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="timer.Base.Adrs"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">timerBaseAdrs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#timer.Base.Adrs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Base address of the timer to be used as the global timer</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_timerBaseAdrs</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If the virtual address of the timer is not the same as the
+ physical address, AND the autostart config option is true,
+ the timerBaseAdrs must be configured with the virtual
+ address of the timer.  Otherwise set to null to allow
+ module to automatically use the physical address for the
+ specified timer.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="timer.Number"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">timerNumber</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#timer.Number">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of the timer to use as the global timer</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Timer.Instance" title="ti.uia.family.dm.TimestampDM816XTimer.TimerInstance">TimestampDM816XTimer_TimerInstance</a>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_timerNumber</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The global timer provides a common time reference for all CPUs.
+ This configuration parameter specifies which timer to use
+ as the global timer.  All CPUs on the device must be
+ configured to use the same timer as the global timer.
+ Must be a value of TimerInstance_Timer4,5,6,7 or
+  TimerInstance_UserConfigured.
+ If configured as TimerInstance_UserConfigured, then
+  the module's timerBaseAdrs must be configured with
+  the timer's virtual address and the module's
+  prcmClkMuxBaseAdrs must be configured with the
+  PRCM clock mux register's virtual address.
+ Note: Timers 0-2 are reserved for Linux.
+       Timer 3 is reserved for the DSP.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="tiocp.Cfg"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">tiocpCfg</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#tiocp.Cfg">index URL</a></div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tiocp.Cfg" title="ti.uia.family.dm.TimestampDM816XTimer.TiocpCfg">TimestampDM816XTimer_TiocpCfg</a>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_tiocpCfg</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="tsicr"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">tsicr</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#tsicr">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Default value of tsicr to use when configuring the timer</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tsicr" title="ti.uia.family.dm.TimestampDM816XTimer.Tsicr">TimestampDM816XTimer_Tsicr</a>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_tsicr</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Only used if autoStart is true</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="twer"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">twer</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#twer">index URL</a></div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Twer" title="ti.uia.family.dm.TimestampDM816XTimer.Twer">TimestampDM816XTimer_Twer</a>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_twer</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get32"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">get32</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#get32">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Return a 32-bit timestamp</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits32</span>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_get32</span>();
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">Returns a 32-bit timestamp value.  
+  Use <tt><a class="xdoc-link" href="TimestampDM816XTimer.html#get.Freq" title="getFreq">getFreq</a></tt> to convert this value into units of real time.</div>
+<div class="xdocText">Returns a 32-bit timestamp value.
+  Use <tt><a class="xdoc-link" href="TimestampDM816XTimer.html#get.Freq" title="getFreq">getFreq</a></tt> to convert this value into units of real time.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="TimestampDM816XTimer.html#get64" title="get64">get64</a>, <a class="xdoc-link" href="TimestampDM816XTimer.html#get64" title="get64">get64</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get64"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">get64</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#get64">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Return a 64-bit timestamp</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_get64</span>(<a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">Types_Timestamp64</a>&nbsp;*<span class="xdoc-id">result</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">result</span>
+<span class="xdocChildSum">&#151;&nbsp;pointer to 64-bit result</span>
+</div>
+<div class="xdocChildText">This parameter is a pointer to a structure representing a 64-bit
+      wide timestamp value where the current timestamp is written.</div>
+<div class="xdocChildText">If the underlying hardware does not support 64-bit resolution, the
+      <tt>hi</tt> field of <tt>result</tt> is always set to 0; see
+      <tt><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">xdc.runtime.Types.Timestamp64</a></tt>.  So, it is possible for 
+      the <tt>lo</tt> field to wrap around without any change to the <tt>hi</tt> field.
+      Use <tt><a class="xdoc-link" href="TimestampDM816XTimer.html#get.Freq" title="getFreq">getFreq</a></tt> to convert this value into units of real 
+      time.</div>
+<div class="xdocChildText">pointer to 64-bit result</div>
+<div class="xdocChildText">This parameter is a pointer to a structure representing a 64-bit
+      wide timestamp value where the current timestamp is written.</div>
+<div class="xdocChildText">If the underlying hardware does not support 64-bit resolution, the
+      <tt>hi</tt> field of <tt>result</tt> is always set to 0; see
+      <tt><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">xdc.runtime.Types.Timestamp64</a></tt>.  So, it is possible for
+      the <tt>lo</tt> field to wrap around without any change to the <tt>hi</tt> field.
+      Use <tt><a class="xdoc-link" href="TimestampDM816XTimer.html#get.Freq" title="getFreq">getFreq</a></tt> to convert this value into units of real
+      time.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="TimestampDM816XTimer.html#get32" title="get32">get32</a>, <a class="xdoc-link" href="TimestampDM816XTimer.html#get32" title="get32">get32</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">getFreq</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#get.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Get the timestamp timer's frequency (in Hz)</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_getFreq</span>(<a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;*<span class="xdoc-id">freq</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">freq</span>
+<span class="xdocChildSum">&#151;&nbsp;pointer to a 64-bit result</span>
+</div>
+<div class="xdocChildText">This parameter is a pointer to a structure representing a 64-bit
+      wide frequency value where the timer's frequency (in Hz)
+      is written; see <tt><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">xdc.runtime.Types.FreqHz</a></tt>.
+      This function provides a way of converting timestamp 
+      values into units of real time.</div>
+<div class="xdocChildText">pointer to a 64-bit result</div>
+<div class="xdocChildText">This parameter is a pointer to a structure representing a 64-bit
+      wide frequency value where the timer's frequency (in Hz)
+      is written; see <tt><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">xdc.runtime.Types.FreqHz</a></tt>.
+      This function provides a way of converting timestamp
+      values into units of real time.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="TimestampDM816XTimer.html#get32" title="get32">get32</a>, <a class="xdoc-link" href="TimestampDM816XTimer.html#get64" title="get64">get64</a>, <a class="xdoc-link" href="TimestampDM816XTimer.html#get32" title="get32">get32</a>, <a class="xdoc-link" href="TimestampDM816XTimer.html#get64" title="get64">get64</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="set.M.S.W"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">TimestampDM816XTimer_</span><span class="xdoc-id">setMSW</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#set.M.S.W">index URL</a></div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">TimestampDM816XTimer_setMSW</span>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">value</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">TimestampDM816XTimer_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">TimestampDM816XTimer_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">TimestampDM816XTimer_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">TimestampDM816XTimer_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">TimestampDM816XTimer_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">TimestampDM816XTimer_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer-src.html"><span class="xdocLabelFile">ti/uia/family/dm/TimestampDM816XTimer.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> TimestampDM816XTimer = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.family.dm.TimestampDM816XTimer'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide constants & types</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><i>values of type <a class="xdocSynGo" href="#meta.Base.Adrs">TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enumeration that defines the base addresses for each timer instance
+  of the DM8168 device</span></span></a></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Base.Adrs" title="ti.uia.family.dm.TimestampDM816XTimer.BaseAdrs">TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_ARM_Timer4</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Base.Adrs" title="ti.uia.family.dm.TimestampDM816XTimer.BaseAdrs">TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_ARM_Timer5</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Base.Adrs" title="ti.uia.family.dm.TimestampDM816XTimer.BaseAdrs">TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_ARM_Timer6</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Base.Adrs" title="ti.uia.family.dm.TimestampDM816XTimer.BaseAdrs">TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_ARM_Timer7</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Base.Adrs" title="ti.uia.family.dm.TimestampDM816XTimer.BaseAdrs">TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_C6000_Timer4</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Base.Adrs" title="ti.uia.family.dm.TimestampDM816XTimer.BaseAdrs">TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_C6000_Timer5</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Base.Adrs" title="ti.uia.family.dm.TimestampDM816XTimer.BaseAdrs">TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_C6000_Timer6</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Base.Adrs" title="ti.uia.family.dm.TimestampDM816XTimer.BaseAdrs">TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_C6000_Timer7</span></a>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><i>values of type <a class="xdocSynGo" href="#meta.Prcm.Clk.Mux.Base.Adrs">TimestampDM816XTimer.<span class="xdoc-id">PrcmClkMuxBaseAdrs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;PRCM CM_TIMERX_CLKSEL Timer clock mux select line</span></span></a></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Prcm.Clk.Mux.Base.Adrs" title="ti.uia.family.dm.TimestampDM816XTimer.PrcmClkMuxBaseAdrs">TimestampDM816XTimer.<span class="xdoc-id">PrcmClkMuxBaseAdrs_Timer4</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Prcm.Clk.Mux.Base.Adrs" title="ti.uia.family.dm.TimestampDM816XTimer.PrcmClkMuxBaseAdrs">TimestampDM816XTimer.<span class="xdoc-id">PrcmClkMuxBaseAdrs_Timer5</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Prcm.Clk.Mux.Base.Adrs" title="ti.uia.family.dm.TimestampDM816XTimer.PrcmClkMuxBaseAdrs">TimestampDM816XTimer.<span class="xdoc-id">PrcmClkMuxBaseAdrs_Timer6</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Prcm.Clk.Mux.Base.Adrs" title="ti.uia.family.dm.TimestampDM816XTimer.PrcmClkMuxBaseAdrs">TimestampDM816XTimer.<span class="xdoc-id">PrcmClkMuxBaseAdrs_Timer7</span></a>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><i>values of type <a class="xdocSynGo" href="#meta.Timer.Instance">TimestampDM816XTimer.<span class="xdoc-id">TimerInstance</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Timer.Instance" title="ti.uia.family.dm.TimestampDM816XTimer.TimerInstance">TimestampDM816XTimer.<span class="xdoc-id">TimerInstance_UserConfigured</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Timer.Instance" title="ti.uia.family.dm.TimestampDM816XTimer.TimerInstance">TimestampDM816XTimer.<span class="xdoc-id">TimerInstance_Timer4</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Timer.Instance" title="ti.uia.family.dm.TimestampDM816XTimer.TimerInstance">TimestampDM816XTimer.<span class="xdoc-id">TimerInstance_Timer5</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Timer.Instance" title="ti.uia.family.dm.TimestampDM816XTimer.TimerInstance">TimestampDM816XTimer.<span class="xdoc-id">TimerInstance_Timer6</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Timer.Instance" title="ti.uia.family.dm.TimestampDM816XTimer.TimerInstance">TimestampDM816XTimer.<span class="xdoc-id">TimerInstance_Timer7</span></a>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> <a class="xdocSynGo" href="#meta.Tclr">TimestampDM816XTimer.<span class="xdoc-id">Tclr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Timer Control Register (TCLR)</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tclr"><span class="xdoc-id">ptv</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Trigger output mode</span></span></a> = <i><span class="xdoc-kw2">Bits32</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tclr"><span class="xdoc-id">pre</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Prescalar enable</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tclr"><span class="xdoc-id">ce</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Compare enable</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tclr"><span class="xdoc-id">scpwm</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Pulse-width modulation</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tclr"><span class="xdoc-id">tcm</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Transition capture mode</span></span></a> = <i><span class="xdoc-kw2">Bits16</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tclr"><span class="xdoc-id">trg</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Trigger output mode</span></span></a> = <i><span class="xdoc-kw2">Bits16</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tclr"><span class="xdoc-id">pt</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Pulse or toggle select bit</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tclr"><span class="xdoc-id">captmode</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Capture mode select bit</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tclr"><span class="xdoc-id">gpocfg</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;PWM output/event detection input pin</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> <a class="xdocSynGo" href="#meta.Tier">TimestampDM816XTimer.<span class="xdoc-id">Tier</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Timer IRQENABLE CLR (IRQENABLE_CLR)</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tier"><span class="xdoc-id">mat_it_ena</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable match interrupt</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tier"><span class="xdoc-id">ovf_it_ena</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable overflow interrupt</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tier"><span class="xdoc-id">tcar_it_ena</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable capture interrupt</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> <a class="xdocSynGo" href="#meta.Tiocp.Cfg">TimestampDM816XTimer.<span class="xdoc-id">TiocpCfg</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Timer OCP Configuration Register (TIOCP_CFG) - L4 interface Configuration</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tiocp.Cfg"><span class="xdoc-id">idlemode</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;0=force-idle;1=no-idle;2=Smart-idle;3=Smart-idle</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tiocp.Cfg"><span class="xdoc-id">emufree</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;0=counter frozen; 1=counter free-running</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tiocp.Cfg"><span class="xdoc-id">softreset</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;0=normal mode; 1=soft reset</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> <a class="xdocSynGo" href="#meta.Tsicr">TimestampDM816XTimer.<span class="xdoc-id">Tsicr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;L4 Interface Synchronization Control Register (TSICR)</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tsicr"><span class="xdoc-id">sft</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Reset software functional registers</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Tsicr"><span class="xdoc-id">posted</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Posted mode selection</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> <a class="xdocSynGo" href="#meta.Twer">TimestampDM816XTimer.<span class="xdoc-id">Twer</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Timer IRQ WAKEUP ENABLE (IRQWAKEEN)</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Twer"><span class="xdoc-id">mat_wup_ena</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable match wake-up</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Twer"><span class="xdoc-id">ovf_wup_ena</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable overflow wake-up</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Twer"><span class="xdoc-id">tcar_wup_ena</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable capture wake-up</span></span></a> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaauto.Start">TimestampDM816XTimer.<span class="xdoc-id">autoStart</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Controls whether the module initializes the timer or not</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metamax.Bus.Clock.Freq">TimestampDM816XTimer.<span class="xdoc-id">maxBusClockFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The highest bus clock frequency used to drive the timer</span></span></a> = <i><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types.FreqHz</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>lo: 27000000,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>hi: 0
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metamax.Timer.Clock.Freq">TimestampDM816XTimer.<span class="xdoc-id">maxTimerClockFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The highest timer clock frequency</span></span></a> = <i><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types.FreqHz</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>lo: 27000000,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>hi: 0
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaprcm.Clk.Mux.Base.Adrs">TimestampDM816XTimer.<span class="xdoc-id">prcmClkMuxBaseAdrs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Base address of the PRCM register used to select the timer clock source</span></span></a> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaprcm.Clk.Mux.Init.Value">TimestampDM816XTimer.<span class="xdoc-id">prcmClkMuxInitValue</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Value to write into the prcmClkMux register in order to configure timer clock</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> 0x0000002;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metatclr">TimestampDM816XTimer.<span class="xdoc-id">tclr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a> = <i><a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tclr" title="ti.uia.family.dm.TimestampDM816XTimer.Tclr">TimestampDM816XTimer.Tclr</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>ptv: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>pre: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>ce: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>scpwm: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>tcm: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>trg: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>pt: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>captmode: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>gpocfg: 0
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metatier">TimestampDM816XTimer.<span class="xdoc-id">tier</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a> = <i><a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tier" title="ti.uia.family.dm.TimestampDM816XTimer.Tier">TimestampDM816XTimer.Tier</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mat_it_ena: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>ovf_it_ena: 1,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>tcar_it_ena: 0
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metatimer.Base.Adrs">TimestampDM816XTimer.<span class="xdoc-id">timerBaseAdrs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Base address of the timer to be used as the global timer</span></span></a> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metatimer.Number">TimestampDM816XTimer.<span class="xdoc-id">timerNumber</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of the timer to use as the global timer</span></span></a> = <i><a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Timer.Instance" title="ti.uia.family.dm.TimestampDM816XTimer.TimerInstance">TimestampDM816XTimer.TimerInstance</a></i> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Timer.Instance_.Timer7" title="ti.uia.family.dm.TimestampDM816XTimer.TimerInstance_Timer7">TimestampDM816XTimer.TimerInstance_Timer7</a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metatiocp.Cfg">TimestampDM816XTimer.<span class="xdoc-id">tiocpCfg</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a> = <i><a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tiocp.Cfg" title="ti.uia.family.dm.TimestampDM816XTimer.TiocpCfg">TimestampDM816XTimer.TiocpCfg</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>idlemode: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>emufree: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>softreset: 1
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metatsicr">TimestampDM816XTimer.<span class="xdoc-id">tsicr</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Default value of tsicr to use when configuring the timer</span></span></a> = <i><a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tsicr" title="ti.uia.family.dm.TimestampDM816XTimer.Tsicr">TimestampDM816XTimer.Tsicr</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>sft: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>posted: 1
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metatwer">TimestampDM816XTimer.<span class="xdoc-id">twer</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a> = <i><a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Twer" title="ti.uia.family.dm.TimestampDM816XTimer.Twer">TimestampDM816XTimer.Twer</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mat_wup_ena: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>ovf_wup_ena: 0,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>tcar_wup_ena: 0
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#can.Cpu.Cycles.Per.Tick.Be.Changed">TimestampDM816XTimer.<span class="xdoc-id">canCpuCyclesPerTickBeChanged</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Indicates whether the timer's cycles per tick divide down ratio can be
+    changed or not</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#can.Frequency.Be.Changed">TimestampDM816XTimer.<span class="xdoc-id">canFrequencyBeChanged</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Indicates whether the timer frequency can be changed or not</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">TimestampDM816XTimer.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#cpu.Cycles.Per.Tick">TimestampDM816XTimer.<span class="xdoc-id">cpuCyclesPerTick</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The number of CPU cycles each tick of the timestamp corresponds to</span></span></a> = <i><span class="xdoc-kw2">UInt32</span></i> 0;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Base.Adrs"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.A.R.M_.Timer4"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.A.R.M_.Timer5"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.A.R.M_.Timer6"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.A.R.M_.Timer7"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.C6000_.Timer4"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.C6000_.Timer5"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.C6000_.Timer6"></a>
+<a class="xdocAnchor" id=".Base.Adrs_.C6000_.Timer7"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">BaseAdrs</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Base.Adrs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enumeration that defines the base addresses for each timer instance
+  of the DM8168 device</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>values of type TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs</span></i>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_ARM_Timer4</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_ARM_Timer5</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_ARM_Timer6</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_ARM_Timer7</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_C6000_Timer4</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_C6000_Timer5</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_C6000_Timer6</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">BaseAdrs_C6000_Timer7</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Base.Adrs" title="TimestampDM816XTimer_BaseAdrs">TimestampDM816XTimer_BaseAdrs</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Prcm.Clk.Mux.Base.Adrs"></a>
+<a class="xdocAnchor" id=".Prcm.Clk.Mux.Base.Adrs_.Timer4"></a>
+<a class="xdocAnchor" id=".Prcm.Clk.Mux.Base.Adrs_.Timer5"></a>
+<a class="xdocAnchor" id=".Prcm.Clk.Mux.Base.Adrs_.Timer6"></a>
+<a class="xdocAnchor" id=".Prcm.Clk.Mux.Base.Adrs_.Timer7"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">PrcmClkMuxBaseAdrs</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Prcm.Clk.Mux.Base.Adrs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">PRCM CM_TIMERX_CLKSEL Timer clock mux select line</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>values of type TimestampDM816XTimer.<span class="xdoc-id">PrcmClkMuxBaseAdrs</span></i>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">PrcmClkMuxBaseAdrs_Timer4</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">PrcmClkMuxBaseAdrs_Timer5</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">PrcmClkMuxBaseAdrs_Timer6</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">PrcmClkMuxBaseAdrs_Timer7</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The following enum provides the physical
+ addresses of the PRCM Clock Mux register
+ used for Timers 4,5,6 and 7.
+ If the virtual address of the register
+ is not the same as the physical address,
+ AND the autostart config option is true,
+ the prcmClkMuxBaseAdrs must be configured
+ with the virtual address of the register.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Prcm.Clk.Mux.Base.Adrs" title="TimestampDM816XTimer_PrcmClkMuxBaseAdrs">TimestampDM816XTimer_PrcmClkMuxBaseAdrs</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Timer.Instance"></a>
+<a class="xdocAnchor" id=".Timer.Instance_.User.Configured"></a>
+<a class="xdocAnchor" id=".Timer.Instance_.Timer4"></a>
+<a class="xdocAnchor" id=".Timer.Instance_.Timer5"></a>
+<a class="xdocAnchor" id=".Timer.Instance_.Timer6"></a>
+<a class="xdocAnchor" id=".Timer.Instance_.Timer7"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">TimerInstance</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Timer.Instance">index URL</a></div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>values of type TimestampDM816XTimer.<span class="xdoc-id">TimerInstance</span></i>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">TimerInstance_UserConfigured</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">TimerInstance_Timer4</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">TimerInstance_Timer5</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">TimerInstance_Timer6</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampDM816XTimer.<span class="xdoc-id">TimerInstance_Timer7</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Timer.Instance" title="TimestampDM816XTimer_TimerInstance">TimestampDM816XTimer_TimerInstance</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Tclr"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">Tclr</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Tclr">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Timer Control Register (TCLR)</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> TimestampDM816XTimer.<span class="xdoc-id">Tclr</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">ptv</span> = <i><span class="xdoc-kw2">Bits32</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Trigger output mode</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">pre</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Prescalar enable</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">ce</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Compare enable</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">scpwm</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Pulse-width modulation</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">tcm</span> = <i><span class="xdoc-kw2">Bits16</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Transition capture mode</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">trg</span> = <i><span class="xdoc-kw2">Bits16</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Trigger output mode</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">pt</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Pulse or toggle select bit</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">captmode</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Capture mode select bit</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">gpocfg</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;PWM output/event detection input pin</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Tclr" title="TimestampDM816XTimer_Tclr">TimestampDM816XTimer_Tclr</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Tier"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">Tier</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Tier">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Timer IRQENABLE CLR (IRQENABLE_CLR)</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> TimestampDM816XTimer.<span class="xdoc-id">Tier</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">mat_it_ena</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Enable match interrupt</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">ovf_it_ena</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Enable overflow interrupt</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">tcar_it_ena</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Enable capture interrupt</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Tier" title="TimestampDM816XTimer_Tier">TimestampDM816XTimer_Tier</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Tiocp.Cfg"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">TiocpCfg</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Tiocp.Cfg">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Timer OCP Configuration Register (TIOCP_CFG) - L4 interface Configuration</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> TimestampDM816XTimer.<span class="xdoc-id">TiocpCfg</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">idlemode</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;0=force-idle;1=no-idle;2=Smart-idle;3=Smart-idle</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">emufree</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;0=counter frozen; 1=counter free-running</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">softreset</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;0=normal mode; 1=soft reset</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Tiocp.Cfg" title="TimestampDM816XTimer_TiocpCfg">TimestampDM816XTimer_TiocpCfg</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Tsicr"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">Tsicr</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Tsicr">index URL</a></div>
+<p class="xdocHdrSummaryDcl">L4 Interface Synchronization Control Register (TSICR)</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> TimestampDM816XTimer.<span class="xdoc-id">Tsicr</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">sft</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Reset software functional registers</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">posted</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Posted mode selection</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Tsicr" title="TimestampDM816XTimer_Tsicr">TimestampDM816XTimer_Tsicr</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Twer"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">Twer</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#.Twer">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Timer IRQ WAKEUP ENABLE (IRQWAKEEN)</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> TimestampDM816XTimer.<span class="xdoc-id">Twer</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">mat_wup_ena</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Enable match wake-up</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">ovf_wup_ena</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Enable overflow wake-up</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">tcar_wup_ena</span> = <i><span class="xdoc-kw2">Bits8</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Enable capture wake-up</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Twer" title="TimestampDM816XTimer_Twer">TimestampDM816XTimer_Twer</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaauto.Start"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">autoStart</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#auto.Start">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Controls whether the module initializes the timer or not</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">autoStart</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Must be set to true for one and only one CPU in the device</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#auto.Start" title="TimestampDM816XTimer_autoStart">TimestampDM816XTimer_autoStart</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metamax.Bus.Clock.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">maxBusClockFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#max.Bus.Clock.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The highest bus clock frequency used to drive the timer</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">maxBusClockFreq</span> = <i><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types.FreqHz</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>lo: 27000000,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>hi: 0
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the cyclesPerTick config parameter.</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the cyclesPerTick config parameter.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">the 32 MSBs of the highest bus clock frequency used to drive
+    the timer.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#max.Bus.Clock.Freq" title="TimestampDM816XTimer_maxBusClockFreq">TimestampDM816XTimer_maxBusClockFreq</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metamax.Timer.Clock.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">maxTimerClockFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#max.Timer.Clock.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The highest timer clock frequency</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">maxTimerClockFreq</span> = <i><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types.FreqHz</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>lo: 27000000,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>hi: 0
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the cyclesPerTick config parameter.</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the cyclesPerTick config parameter.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">the 32 LSBs of the highest timer clock frequency
+   (i.e. ticksPerSecond).</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#max.Timer.Clock.Freq" title="TimestampDM816XTimer_maxTimerClockFreq">TimestampDM816XTimer_maxTimerClockFreq</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaprcm.Clk.Mux.Base.Adrs"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">prcmClkMuxBaseAdrs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#prcm.Clk.Mux.Base.Adrs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Base address of the PRCM register used to select the timer clock source</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">prcmClkMuxBaseAdrs</span> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If the virtual address of the register is not the same as the
+ physical address, AND the autostart config option is true,
+ the prcmClkMuxBaseAdrs must be configured with the virtual
+ address of the register.  Otherwise set to null to allow
+ module to automatically use the physical address for the
+ specified timer.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#prcm.Clk.Mux.Base.Adrs" title="TimestampDM816XTimer_prcmClkMuxBaseAdrs">TimestampDM816XTimer_prcmClkMuxBaseAdrs</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaprcm.Clk.Mux.Init.Value"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">prcmClkMuxInitValue</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#prcm.Clk.Mux.Init.Value">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Value to write into the prcmClkMux register in order to configure timer clock</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">prcmClkMuxInitValue</span> = <i><span class="xdoc-kw2">Int</span></i> 0x0000002;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If autoStart is TRUE and prcmClkMuxBaseAdrs is not null
+ OR timerNumber is set to a value other than UserConfigured
+ the module will writh the prcmClkMuxInitValue into the
+ PRCM clock mux register upon startup.</div>
+<div class="xdocText">By default, the value written, sets CLKSEL to SYS_CLK (b24 = 0) and sets
+ MODULEMODE to 2 (Module is enabled).</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#prcm.Clk.Mux.Init.Value" title="TimestampDM816XTimer_prcmClkMuxInitValue">TimestampDM816XTimer_prcmClkMuxInitValue</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metatclr"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">tclr</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#tclr">index URL</a></div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">tclr</span> = <i><a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tclr" title="ti.uia.family.dm.TimestampDM816XTimer.Tclr">TimestampDM816XTimer.Tclr</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>ptv: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>pre: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>ce: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>scpwm: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>tcm: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>trg: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>pt: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>captmode: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>gpocfg: 0
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#tclr" title="TimestampDM816XTimer_tclr">TimestampDM816XTimer_tclr</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metatier"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">tier</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#tier">index URL</a></div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">tier</span> = <i><a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tier" title="ti.uia.family.dm.TimestampDM816XTimer.Tier">TimestampDM816XTimer.Tier</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mat_it_ena: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>ovf_it_ena: 1,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>tcar_it_ena: 0
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#tier" title="TimestampDM816XTimer_tier">TimestampDM816XTimer_tier</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metatimer.Base.Adrs"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">timerBaseAdrs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#timer.Base.Adrs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Base address of the timer to be used as the global timer</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">timerBaseAdrs</span> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If the virtual address of the timer is not the same as the
+ physical address, AND the autostart config option is true,
+ the timerBaseAdrs must be configured with the virtual
+ address of the timer.  Otherwise set to null to allow
+ module to automatically use the physical address for the
+ specified timer.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#timer.Base.Adrs" title="TimestampDM816XTimer_timerBaseAdrs">TimestampDM816XTimer_timerBaseAdrs</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metatimer.Number"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">timerNumber</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#timer.Number">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of the timer to use as the global timer</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">timerNumber</span> = <i><a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Timer.Instance" title="ti.uia.family.dm.TimestampDM816XTimer.TimerInstance">TimestampDM816XTimer.TimerInstance</a></i> <a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Timer.Instance_.Timer7" title="ti.uia.family.dm.TimestampDM816XTimer.TimerInstance_Timer7">TimestampDM816XTimer.TimerInstance_Timer7</a>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The global timer provides a common time reference for all CPUs.
+ This configuration parameter specifies which timer to use
+ as the global timer.  All CPUs on the device must be
+ configured to use the same timer as the global timer.
+ Must be a value of TimerInstance_Timer4,5,6,7 or
+  TimerInstance_UserConfigured.
+ If configured as TimerInstance_UserConfigured, then
+  the module's timerBaseAdrs must be configured with
+  the timer's virtual address and the module's
+  prcmClkMuxBaseAdrs must be configured with the
+  PRCM clock mux register's virtual address.
+ Note: Timers 0-2 are reserved for Linux.
+       Timer 3 is reserved for the DSP.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#timer.Number" title="TimestampDM816XTimer_timerNumber">TimestampDM816XTimer_timerNumber</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metatiocp.Cfg"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">tiocpCfg</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#tiocp.Cfg">index URL</a></div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">tiocpCfg</span> = <i><a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tiocp.Cfg" title="ti.uia.family.dm.TimestampDM816XTimer.TiocpCfg">TimestampDM816XTimer.TiocpCfg</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>idlemode: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>emufree: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>softreset: 1
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#tiocp.Cfg" title="TimestampDM816XTimer_tiocpCfg">TimestampDM816XTimer_tiocpCfg</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metatsicr"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">tsicr</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#tsicr">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Default value of tsicr to use when configuring the timer</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">tsicr</span> = <i><a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Tsicr" title="ti.uia.family.dm.TimestampDM816XTimer.Tsicr">TimestampDM816XTimer.Tsicr</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>sft: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>posted: 1
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Only used if autoStart is true</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#tsicr" title="TimestampDM816XTimer_tsicr">TimestampDM816XTimer_tsicr</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metatwer"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">twer</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#twer">index URL</a></div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">twer</span> = <i><a class="xdoc-link" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html#.Twer" title="ti.uia.family.dm.TimestampDM816XTimer.Twer">TimestampDM816XTimer.Twer</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mat_wup_ena: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>ovf_wup_ena: 0,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>tcar_wup_ena: 0
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#twer" title="TimestampDM816XTimer_twer">TimestampDM816XTimer_twer</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="can.Cpu.Cycles.Per.Tick.Be.Changed"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">canCpuCyclesPerTickBeChanged</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#can.Cpu.Cycles.Per.Tick.Be.Changed">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Indicates whether the timer's cycles per tick divide down ratio can be
+    changed or not</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">canCpuCyclesPerTickBeChanged</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">true if the timer's CPU cycles per tick can be changed</div>
+<div class="xdocText">true if the timer's CPU cycles per tick can be changed</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="can.Frequency.Be.Changed"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">canFrequencyBeChanged</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#can.Frequency.Be.Changed">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Indicates whether the timer frequency can be changed or not</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">canFrequencyBeChanged</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">true if the timer's clock frequency can be changed</div>
+<div class="xdocText">true if the timer's clock frequency can be changed</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="cpu.Cycles.Per.Tick"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampDM816XTimer.</span><span class="xdoc-id">cpuCyclesPerTick</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/family/dm/TimestampDM816XTimer.html" title="module TimestampDM816XTimer"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/family/dm/TimestampDM816XTimer.html#cpu.Cycles.Per.Tick">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The number of CPU cycles each tick of the timestamp corresponds to</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampDM816XTimer.<span class="xdoc-id">cpuCyclesPerTick</span> = <i><span class="xdoc-kw2">UInt32</span></i> 0;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">A value of 0 indicates that no conversion between the timer's tick count
+ and CPU cycles is possible.</div>
+<div class="xdocText">A value of 0 indicates that no conversion between the timer's tick count
+ and CPU cycles is possible.</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:12 GMT</div>
+</div></div></body>
+</html>

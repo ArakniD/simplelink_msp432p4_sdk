@@ -1,0 +1,490 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="_u_d_m_a_m_s_p432_8h" kind="file" language="C++">
+    <compoundname>UDMAMSP432.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includes local="no">stdbool.h</includes>
+    <includes local="no">ti/drivers/dpl/HwiP.h</includes>
+    <includedby refid="_a_d_c_buf_m_s_p432_8h" local="no">ADCBufMSP432.h</includedby>
+    <includedby refid="_s_p_i_m_s_p432_d_m_a_8h" local="no">SPIMSP432DMA.h</includedby>
+    <incdepgraph>
+      <node id="322">
+        <label>stdbool.h</label>
+      </node>
+      <node id="321">
+        <label>stdint.h</label>
+      </node>
+      <node id="323">
+        <label>ti/drivers/dpl/HwiP.h</label>
+      </node>
+      <node id="320">
+        <label>UDMAMSP432.h</label>
+        <link refid="_u_d_m_a_m_s_p432_8h"/>
+        <childnode refid="321" relation="include">
+        </childnode>
+        <childnode refid="322" relation="include">
+        </childnode>
+        <childnode refid="323" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="326">
+        <label>SPIMSP432DMA.h</label>
+        <link refid="_s_p_i_m_s_p432_d_m_a_8h"/>
+      </node>
+      <node id="325">
+        <label>ADCBufMSP432.h</label>
+        <link refid="_a_d_c_buf_m_s_p432_8h"/>
+      </node>
+      <node id="324">
+        <label>UDMAMSP432.h</label>
+        <link refid="_u_d_m_a_m_s_p432_8h"/>
+        <childnode refid="325" relation="include">
+        </childnode>
+        <childnode refid="326" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="struct_u_d_m_a_m_s_p432___h_w_attrs" prot="public">UDMAMSP432_HWAttrs</innerclass>
+    <innerclass refid="struct_u_d_m_a_m_s_p432___config" prot="public">UDMAMSP432_Config</innerclass>
+    <innerclass refid="struct_u_d_m_a_m_s_p432___object" prot="public">UDMAMSP432_Object</innerclass>
+    <innerclass refid="struct_u_d_m_a_m_s_p432___transfer" prot="public">UDMAMSP432_Transfer</innerclass>
+    <innerclass refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer" prot="public">UDMAMSP432_PingPongTransfer</innerclass>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_u_d_m_a_m_s_p432_8h_1ae10044349e7dae992caec9f0c95b8f08" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* UDMAMSP432_ErrorFxn) (uintptr_t arg)</definition>
+        <argsstring>)(uintptr_t arg)</argsstring>
+        <name>UDMAMSP432_ErrorFxn</name>
+        <briefdescription>
+<para>UDMA error function pointer. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="68" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_u_d_m_a_m_s_p432_8h_1abfea50d1aa4c2eda57b9309c91753e3e" prot="public" static="no">
+        <type>struct <ref refid="struct_u_d_m_a_m_s_p432___h_w_attrs" kindref="compound">UDMAMSP432_HWAttrs</ref></type>
+        <definition>typedef struct UDMAMSP432_HWAttrs  UDMAMSP432_HWAttrs</definition>
+        <argsstring></argsstring>
+        <name>UDMAMSP432_HWAttrs</name>
+        <briefdescription>
+<para>UDMAMSP432 Hardware attributes. </para>        </briefdescription>
+        <detaileddescription>
+<para>This structure contains the base address of the uDMA control table, and uDMA error interrupt attributes.</para><para>The control table is used by the uDMA controller to store channel control structures. The control table can be located anywhere in system memory, but must be contiguous and aligned on a 1024-byte boundary.</para><para>dmaErrorFxn is the uDMA peripheral&apos;s error interrupt handler.</para><para>intPriority is priority of the uDMA peripheral&apos;s error interrupt, as defined by the underlying OS. It is passed unmodified to the underlying OS&apos;s interrupt handler creation code, so you need to refer to the OS documentation for usage. If the driver uses the ti.dpl interface instead of making OS calls directly, then the HwiP port handles the interrupt priority in an OS specific way. In the case of the SYS/BIOS port, intPriority is passed unmodified to Hwi_create().</para><para>A sample structure is shown below: <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/devices/msp432p4xx/driverlib/udma.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">static<sp/>tDMAControlTable<sp/>dmaControlTable[64]<sp/>__attribute__<sp/>((aligned<sp/>(1024)));</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/dma/UDMAMSP432.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">UDMAMSP432_Object<sp/>udmaMSP432Object;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">const<sp/>UDMAMSP432_HWAttrs<sp/>udmaMSP432HWAttrs<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.controlBaseAddr<sp/>=<sp/>(void<sp/>*)dmaControlTable,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.dmaErrorFxn<sp/>=<sp/>UDMAMSP432_errorFxn,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_UDMAERR,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>(~0)</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="116" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_u_d_m_a_m_s_p432_8h_1a5227adb6042351e8167e416c00535af9" prot="public" static="no">
+        <type>struct <ref refid="struct_u_d_m_a_m_s_p432___config" kindref="compound">UDMAMSP432_Config</ref></type>
+        <definition>typedef struct UDMAMSP432_Config  UDMAMSP432_Config</definition>
+        <argsstring></argsstring>
+        <name>UDMAMSP432_Config</name>
+        <briefdescription>
+<para>UDMAMSP432 Global configuration. </para>        </briefdescription>
+        <detaileddescription>
+<para>The <ref refid="struct_u_d_m_a_m_s_p432___config" kindref="compound">UDMAMSP432_Config</ref> structure contains pointers used by the UDMAMSP432 driver.</para><para>This structure needs to be defined before calling <ref refid="_u_d_m_a_m_s_p432_8h_1ae40c04086fef24a842242051767f5d34" kindref="member">UDMAMSP432_init()</ref> and it must not be changed thereafter. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="130" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_u_d_m_a_m_s_p432_8h_1aacfe060f32e8dd8baa5c6262a50ca310" prot="public" static="no">
+        <type>struct <ref refid="struct_u_d_m_a_m_s_p432___config" kindref="compound">UDMAMSP432_Config</ref> *</type>
+        <definition>typedef struct UDMAMSP432_Config* UDMAMSP432_Handle</definition>
+        <argsstring></argsstring>
+        <name>UDMAMSP432_Handle</name>
+        <briefdescription>
+<para>A handle that is returned from a <ref refid="_u_d_m_a_m_s_p432_8h_1aaf348ae644551d6b1233929bc71a3e8a" kindref="member">UDMAMSP432_open()</ref> call. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="135" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_u_d_m_a_m_s_p432_8h_1a9c00a6c0efe6398c6c5db820f9b2e00d" prot="public" static="no">
+        <type>struct <ref refid="struct_u_d_m_a_m_s_p432___object" kindref="compound">UDMAMSP432_Object</ref></type>
+        <definition>typedef struct UDMAMSP432_Object  UDMAMSP432_Object</definition>
+        <argsstring></argsstring>
+        <name>UDMAMSP432_Object</name>
+        <briefdescription>
+<para>UDMAMSP432 object. </para>        </briefdescription>
+        <detaileddescription>
+<para>The application must not access any member variables of this structure! </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="144" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_u_d_m_a_m_s_p432_8h_1a42559f3ddb510d28c579ba125e5e3c2d" prot="public" static="no">
+        <type>struct <ref refid="struct_u_d_m_a_m_s_p432___transfer" kindref="compound">UDMAMSP432_Transfer</ref></type>
+        <definition>typedef struct UDMAMSP432_Transfer  UDMAMSP432_Transfer</definition>
+        <argsstring></argsstring>
+        <name>UDMAMSP432_Transfer</name>
+        <briefdescription>
+<para>UDMAMSP432 Transfer configuration. </para>        </briefdescription>
+        <detaileddescription>
+<para>The <ref refid="struct_u_d_m_a_m_s_p432___transfer" kindref="compound">UDMAMSP432_Transfer</ref> structure contains parameters for initializing a DMA transfer using a given DMA channel number.</para><para>This struct is used in <ref refid="_u_d_m_a_m_s_p432_8h_1a2d30df7ef59882ae920b017bf637bf7f" kindref="member">UDMAMSP432_setupTransfer()</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="162" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_u_d_m_a_m_s_p432_8h_1a0fcd7c9e446baf1da33268a2b529a906" prot="public" static="no">
+        <type>struct <ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer" kindref="compound">UDMAMSP432_PingPongTransfer</ref></type>
+        <definition>typedef struct UDMAMSP432_PingPongTransfer  UDMAMSP432_PingPongTransfer</definition>
+        <argsstring></argsstring>
+        <name>UDMAMSP432_PingPongTransfer</name>
+        <briefdescription>
+<para>UDMAMSP432 Ping Pong Transfer configuration. </para>        </briefdescription>
+        <detaileddescription>
+<para>The <ref refid="struct_u_d_m_a_m_s_p432___transfer" kindref="compound">UDMAMSP432_Transfer</ref> structure contains parameters for initializing a DMA ping pong transfer using a given DMA channel number.</para><para>This struct is used in <ref refid="_u_d_m_a_m_s_p432_8h_1aa21e23f39982008f7d65931b03ba0d79" kindref="member">UDMAMSP432_setupPingPongTransfer()</ref> and <ref refid="_u_d_m_a_m_s_p432_8h_1ab562c19730dc6bd92c052f550ae3d64b" kindref="member">UDMAMSP432_PingPongToggleBuffer()</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="181" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_u_d_m_a_m_s_p432_8h_1a76ee23b43026354e4e7501d8fd678503" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void UDMAMSP432_close</definition>
+        <argsstring>(UDMAMSP432_Handle handle, uint32_t channelNum, uint8_t intNum)</argsstring>
+        <name>UDMAMSP432_close</name>
+        <param>
+          <type><ref refid="_u_d_m_a_m_s_p432_8h_1aacfe060f32e8dd8baa5c6262a50ca310" kindref="member">UDMAMSP432_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>channelNum</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>intNum</declname>
+        </param>
+        <briefdescription>
+<para>Function to close the DMA driver. </para>        </briefdescription>
+        <detaileddescription>
+<para>Close a DMA handle returned from <ref refid="_u_d_m_a_m_s_p432_8h_1aaf348ae644551d6b1233929bc71a3e8a" kindref="member">UDMAMSP432_open()</ref>.</para><para><simplesect kind="pre"><para><ref refid="_u_d_m_a_m_s_p432_8h_1aaf348ae644551d6b1233929bc71a3e8a" kindref="member">UDMAMSP432_open()</ref> has to be called first. Calling context: Task</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A UDMAMSP432_Handle returned from <ref refid="_u_d_m_a_m_s_p432_8h_1aaf348ae644551d6b1233929bc71a3e8a" kindref="member">UDMAMSP432_open()</ref> </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channelNum</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A DMA channel defined in dma.h (e.g. DMA_CH0_EUSCIB0TX0) </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>intNum</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DMA_INT0 - DMA_INT3 associated with the channelNum</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>none</para></simplesect>
+<simplesect kind="see"><para><ref refid="_u_d_m_a_m_s_p432_8h_1aaf348ae644551d6b1233929bc71a3e8a" kindref="member">UDMAMSP432_open</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="199" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_u_d_m_a_m_s_p432_8h_1ae40c04086fef24a842242051767f5d34" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void UDMAMSP432_init</definition>
+        <argsstring>()</argsstring>
+        <name>UDMAMSP432_init</name>
+        <briefdescription>
+<para>Function to initialize the MSP432 DMA driver. </para>        </briefdescription>
+        <detaileddescription>
+<para>The function will set the isOpen flag to false, and should be called prior to opening the DMA driver.</para><para><simplesect kind="return"><para>none</para></simplesect>
+<simplesect kind="see"><para><ref refid="_u_d_m_a_m_s_p432_8h_1aaf348ae644551d6b1233929bc71a3e8a" kindref="member">UDMAMSP432_open()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="210" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_u_d_m_a_m_s_p432_8h_1aaf348ae644551d6b1233929bc71a3e8a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_u_d_m_a_m_s_p432_8h_1aacfe060f32e8dd8baa5c6262a50ca310" kindref="member">UDMAMSP432_Handle</ref></type>
+        <definition>UDMAMSP432_Handle UDMAMSP432_open</definition>
+        <argsstring>(uint32_t channelNum, uint8_t intNum, uint32_t priority, void(*hwiFxn)(uintptr_t), uintptr_t arg)</argsstring>
+        <name>UDMAMSP432_open</name>
+        <param>
+          <type>uint32_t</type>
+          <declname>channelNum</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>intNum</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>priority</declname>
+        </param>
+        <param>
+          <type>void(*)(uintptr_t)</type>
+          <declname>hwiFxn</declname>
+        </param>
+        <param>
+          <type>uintptr_t</type>
+          <declname>arg</declname>
+        </param>
+        <briefdescription>
+<para>Function to initialize the MSP432 DMA peripheral and corresponding interrupt. </para>        </briefdescription>
+        <detaileddescription>
+<para><ref refid="_u_d_m_a_m_s_p432_8h_1aaf348ae644551d6b1233929bc71a3e8a" kindref="member">UDMAMSP432_open()</ref> opens the DMA peripheral. It calls UDMAMSP432_setupInterrupt() This function can be called multiple times. <simplesect kind="pre"><para><ref refid="_u_d_m_a_m_s_p432_8h_1ae40c04086fef24a842242051767f5d34" kindref="member">UDMAMSP432_init()</ref> has to be called first. Calling context: Task</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>channelNum</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A DMA channel defined in dma.h (e.g. DMA_CH0_EUSCIB0TX0) </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>intNum</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The DMA interrupt to be used for the module (DMA_INT0 - DMA_INT3) </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>priority</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The interrupt priority used in the module </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>hwiFxn</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to the desired ISR to call </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>arg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to a struct of args for the ISR</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>UDMAMSP432_Handle on success or NULL if an error has occurred.</para></simplesect>
+<simplesect kind="see"><para><ref refid="_u_d_m_a_m_s_p432_8h_1a76ee23b43026354e4e7501d8fd678503" kindref="member">UDMAMSP432_close()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="230" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_u_d_m_a_m_s_p432_8h_1a2d30df7ef59882ae920b017bf637bf7f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool UDMAMSP432_setupTransfer</definition>
+        <argsstring>(UDMAMSP432_Transfer *transfer)</argsstring>
+        <name>UDMAMSP432_setupTransfer</name>
+        <param>
+          <type><ref refid="struct_u_d_m_a_m_s_p432___transfer" kindref="compound">UDMAMSP432_Transfer</ref> *</type>
+          <declname>transfer</declname>
+        </param>
+        <briefdescription>
+<para>Function to set up a DMA channel for data transfer. </para>        </briefdescription>
+        <detaileddescription>
+<para>The function will set the channel control, set the channel transfer, assign the channel, and enable the channel.</para><para><simplesect kind="pre"><para><ref refid="_u_d_m_a_m_s_p432_8h_1aaf348ae644551d6b1233929bc71a3e8a" kindref="member">UDMAMSP432_open()</ref> has to be called first.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>transfer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to a <ref refid="struct_u_d_m_a_m_s_p432___transfer" kindref="compound">UDMAMSP432_Transfer</ref> param struct</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true on success or false if an error has occurred </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="245" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_u_d_m_a_m_s_p432_8h_1aa21e23f39982008f7d65931b03ba0d79" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool UDMAMSP432_setupPingPongTransfer</definition>
+        <argsstring>(UDMAMSP432_PingPongTransfer *transfer)</argsstring>
+        <name>UDMAMSP432_setupPingPongTransfer</name>
+        <param>
+          <type><ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer" kindref="compound">UDMAMSP432_PingPongTransfer</ref> *</type>
+          <declname>transfer</declname>
+        </param>
+        <briefdescription>
+<para>Function to set up a DMA channel for ping pong data transfer. </para>        </briefdescription>
+        <detaileddescription>
+<para>The function will set the channel control, set the channel transfer, assign the channel, and enable the channel. It will also set up the alternate data structure for use with ping pong mode. For continuous transfering, set transfer.transferMode = UDMA_MODE_PING_PONG. For one-shot across two buffers, set transfer.transferMode = UDMA_MODE_BASIC.</para><para><simplesect kind="pre"><para><ref refid="_u_d_m_a_m_s_p432_8h_1aaf348ae644551d6b1233929bc71a3e8a" kindref="member">UDMAMSP432_open()</ref> has to be called first.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>transfer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to a <ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer" kindref="compound">UDMAMSP432_PingPongTransfer</ref> param struct</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true on success or false if an error has occurred </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="262" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_u_d_m_a_m_s_p432_8h_1ab562c19730dc6bd92c052f550ae3d64b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void UDMAMSP432_PingPongToggleBuffer</definition>
+        <argsstring>(UDMAMSP432_PingPongTransfer *transfer)</argsstring>
+        <name>UDMAMSP432_PingPongToggleBuffer</name>
+        <param>
+          <type><ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer" kindref="compound">UDMAMSP432_PingPongTransfer</ref> *</type>
+          <declname>transfer</declname>
+        </param>
+        <briefdescription>
+<para>Function to toggle between two buffers during ping pong mode. </para>        </briefdescription>
+        <detaileddescription>
+<para>The function will alternate setting the destination buffer between transfer&apos;s dmaTransferDestinationOne and dmaTransferDestinationTwo parameters. This should be called in the ISR that the peripheral using DMA is using.</para><para><simplesect kind="pre"><para><ref refid="_u_d_m_a_m_s_p432_8h_1aa21e23f39982008f7d65931b03ba0d79" kindref="member">UDMAMSP432_setupPingPongTransfer()</ref> has to be called first.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>transfer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to a <ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer" kindref="compound">UDMAMSP432_PingPongTransfer</ref> param struct </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="275" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>uDMA driver implementation for MSP432. </para>    </briefdescription>
+    <detaileddescription>
+<para>============================================================================</para><para>This driver is intended for use only by drivers that use the uDMA peripheral (e.g., SPI). This driver is mainly used for management of the control table base address of the UDMA peripheral, and to create the DMA error Hwi.</para><para>The application should only define the memory for the control table and set up the <ref refid="struct_u_d_m_a_m_s_p432___h_w_attrs" kindref="compound">UDMAMSP432_HWAttrs</ref> and <ref refid="struct_u_d_m_a_m_s_p432___config" kindref="compound">UDMAMSP432_Config</ref> structures.</para><para>The UDMAMSP432 header file should be included in an application as follows: <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/dma/UDMAMSP432.h&gt;</highlight></codeline>
+</programlisting> <hruler/>
+ </para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2016-2018,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>are<sp/>met:</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>Texas<sp/>Instruments<sp/>Incorporated<sp/>nor<sp/>the<sp/>names<sp/>of</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>its<sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>from<sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>THIS<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>BY<sp/>THE<sp/>COPYRIGHT<sp/>HOLDERS<sp/>AND<sp/>CONTRIBUTORS<sp/>&quot;AS<sp/>IS&quot;</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>AND<sp/>ANY<sp/>EXPRESS<sp/>OR<sp/>IMPLIED<sp/>WARRANTIES,<sp/>INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>THE<sp/>IMPLIED<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY<sp/>AND<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>PURPOSE<sp/>ARE<sp/>DISCLAIMED.<sp/>IN<sp/>NO<sp/>EVENT<sp/>SHALL<sp/>THE<sp/>COPYRIGHT<sp/>OWNER<sp/>OR</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>CONTRIBUTORS<sp/>BE<sp/>LIABLE<sp/>FOR<sp/>ANY<sp/>DIRECT,<sp/>INDIRECT,<sp/>INCIDENTAL,<sp/>SPECIAL,</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>EXEMPLARY,<sp/>OR<sp/>CONSEQUENTIAL<sp/>DAMAGES<sp/>(INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>PROCUREMENT<sp/>OF<sp/>SUBSTITUTE<sp/>GOODS<sp/>OR<sp/>SERVICES;<sp/>LOSS<sp/>OF<sp/>USE,<sp/>DATA,<sp/>OR<sp/>PROFITS;</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>OR<sp/>BUSINESS<sp/>INTERRUPTION)<sp/>HOWEVER<sp/>CAUSED<sp/>AND<sp/>ON<sp/>ANY<sp/>THEORY<sp/>OF<sp/>LIABILITY,</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>WHETHER<sp/>IN<sp/>CONTRACT,<sp/>STRICT<sp/>LIABILITY,<sp/>OR<sp/>TORT<sp/>(INCLUDING<sp/>NEGLIGENCE<sp/>OR</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>OTHERWISE)<sp/>ARISING<sp/>IN<sp/>ANY<sp/>WAY<sp/>OUT<sp/>OF<sp/>THE<sp/>USE<sp/>OF<sp/>THIS<sp/>SOFTWARE,</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>EVEN<sp/>IF<sp/>ADVISED<sp/>OF<sp/>THE<sp/>POSSIBILITY<sp/>OF<sp/>SUCH<sp/>DAMAGE.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*/</highlight></codeline>
+<codeline lineno="53"><highlight class="preprocessor">#ifndef<sp/>ti_drivers_dma_UDMAMSP432__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_drivers_dma_UDMAMSP432__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/HwiP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="_u_d_m_a_m_s_p432_8h_1ae10044349e7dae992caec9f0c95b8f08" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="_u_d_m_a_m_s_p432_8h_1ae10044349e7dae992caec9f0c95b8f08" kindref="member">UDMAMSP432_ErrorFxn</ref>)(uintptr_t<sp/>arg);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="struct_u_d_m_a_m_s_p432___h_w_attrs" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_u_d_m_a_m_s_p432___h_w_attrs" kindref="compound">UDMAMSP432_HWAttrs</ref><sp/>{</highlight></codeline>
+<codeline lineno="112" refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1ac9ce4c14d303e7d4c1d43b963e168f1b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1ac9ce4c14d303e7d4c1d43b963e168f1b" kindref="member">controlBaseAddr</ref>;<sp/></highlight></codeline>
+<codeline lineno="113" refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1acf128a036c67db1e04bb5207212c5ad0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_u_d_m_a_m_s_p432_8h_1ae10044349e7dae992caec9f0c95b8f08" kindref="member">UDMAMSP432_ErrorFxn</ref><sp/><ref refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1acf128a036c67db1e04bb5207212c5ad0" kindref="member">dmaErrorFxn</ref>;<sp/></highlight></codeline>
+<codeline lineno="114" refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1aab7c32775f601e31e0e111896502957c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1aab7c32775f601e31e0e111896502957c" kindref="member">intNum</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="115" refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1a85427dcd94ddd89e60ffb5637eb55312" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1a85427dcd94ddd89e60ffb5637eb55312" kindref="member">intPriority</ref>;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="116"><highlight class="normal">}<sp/><ref refid="_u_d_m_a_m_s_p432_8h_1abfea50d1aa4c2eda57b9309c91753e3e" kindref="member">UDMAMSP432_HWAttrs</ref>;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127" refid="struct_u_d_m_a_m_s_p432___config" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_u_d_m_a_m_s_p432___config" kindref="compound">UDMAMSP432_Config</ref><sp/>{</highlight></codeline>
+<codeline lineno="128" refid="struct_u_d_m_a_m_s_p432___config_1a9a8e14fed43aa50bde34512643781e8b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_u_d_m_a_m_s_p432___config_1a9a8e14fed43aa50bde34512643781e8b" kindref="member">object</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="129" refid="struct_u_d_m_a_m_s_p432___config_1abfcea381d8bcd6a1612ca6a54bd1bd17" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_u_d_m_a_m_s_p432___config_1abfcea381d8bcd6a1612ca6a54bd1bd17" kindref="member">hwAttrs</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="130"><highlight class="normal">}<sp/><ref refid="_u_d_m_a_m_s_p432_8h_1a5227adb6042351e8167e416c00535af9" kindref="member">UDMAMSP432_Config</ref>;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135" refid="_u_d_m_a_m_s_p432_8h_1aacfe060f32e8dd8baa5c6262a50ca310" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_u_d_m_a_m_s_p432___config" kindref="compound">UDMAMSP432_Config</ref><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="_u_d_m_a_m_s_p432_8h_1aacfe060f32e8dd8baa5c6262a50ca310" kindref="member">UDMAMSP432_Handle</ref>;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142" refid="struct_u_d_m_a_m_s_p432___object" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_u_d_m_a_m_s_p432___object" kindref="compound">UDMAMSP432_Object</ref><sp/>{</highlight></codeline>
+<codeline lineno="143" refid="struct_u_d_m_a_m_s_p432___object_1accc1834592cb917320579e67e1c2cf90" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_u_d_m_a_m_s_p432___object_1accc1834592cb917320579e67e1c2cf90" kindref="member">unused</ref>;</highlight></codeline>
+<codeline lineno="144"><highlight class="normal">}<sp/><ref refid="_u_d_m_a_m_s_p432_8h_1a9c00a6c0efe6398c6c5db820f9b2e00d" kindref="member">UDMAMSP432_Object</ref>;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154" refid="struct_u_d_m_a_m_s_p432___transfer" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_u_d_m_a_m_s_p432___transfer" kindref="compound">UDMAMSP432_Transfer</ref><sp/>{</highlight></codeline>
+<codeline lineno="155" refid="struct_u_d_m_a_m_s_p432___transfer_1ad53b9a864e3420e398407f11a8531175" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_d_m_a_m_s_p432___transfer_1ad53b9a864e3420e398407f11a8531175" kindref="member">dmaChannel</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="156" refid="struct_u_d_m_a_m_s_p432___transfer_1a3170ac35de983465e26e490918546f34" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_d_m_a_m_s_p432___transfer_1a3170ac35de983465e26e490918546f34" kindref="member">structSelect</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="157" refid="struct_u_d_m_a_m_s_p432___transfer_1a78f1bf944ddc878bd98662d179bac4ff" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_d_m_a_m_s_p432___transfer_1a78f1bf944ddc878bd98662d179bac4ff" kindref="member">ctlOptions</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="158" refid="struct_u_d_m_a_m_s_p432___transfer_1af06f2fea0a791a3c7eefe4204fd48e03" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_d_m_a_m_s_p432___transfer_1af06f2fea0a791a3c7eefe4204fd48e03" kindref="member">transferMode</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="159" refid="struct_u_d_m_a_m_s_p432___transfer_1ad07b13a129a5d0b3bb40fb15d93139c4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_u_d_m_a_m_s_p432___transfer_1ad07b13a129a5d0b3bb40fb15d93139c4" kindref="member">dmaTransferSource</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="160" refid="struct_u_d_m_a_m_s_p432___transfer_1a40ed70a1c0e214e596dc3861238f81ce" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_u_d_m_a_m_s_p432___transfer_1a40ed70a1c0e214e596dc3861238f81ce" kindref="member">dmaTransferDestination</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="161" refid="struct_u_d_m_a_m_s_p432___transfer_1a74d0c3f6df0fa304e2187259f984e26f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_d_m_a_m_s_p432___transfer_1a74d0c3f6df0fa304e2187259f984e26f" kindref="member">transferSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="162"><highlight class="normal">}<sp/><ref refid="_u_d_m_a_m_s_p432_8h_1a42559f3ddb510d28c579ba125e5e3c2d" kindref="member">UDMAMSP432_Transfer</ref>;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173" refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer" kindref="compound">UDMAMSP432_PingPongTransfer</ref><sp/>{</highlight></codeline>
+<codeline lineno="174" refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1a6768b96352cf36714850e8a99e9d257f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1a6768b96352cf36714850e8a99e9d257f" kindref="member">dmaChannel</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="175" refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1a2c218983c0c4cfb6f1ab94e81e90a05f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1a2c218983c0c4cfb6f1ab94e81e90a05f" kindref="member">ctlOptions</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="176" refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1ab8af74086bc86aeac51c73b33aa63b40" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1ab8af74086bc86aeac51c73b33aa63b40" kindref="member">transferMode</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="177" refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1a53fdc84007551a021d181e954be1f0a1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1a53fdc84007551a021d181e954be1f0a1" kindref="member">dmaTransferSource</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="178" refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1a21099ad9794d484c649370be92aa61da" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1a21099ad9794d484c649370be92aa61da" kindref="member">dmaPrimaryDestination</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="179" refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1a18cf64acada7cdc4f11edf6a9ce7834c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1a18cf64acada7cdc4f11edf6a9ce7834c" kindref="member">dmaAlternateDestination</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="180" refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1a8435040eaceba022cdbd110245579038" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer_1a8435040eaceba022cdbd110245579038" kindref="member">transferSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="181"><highlight class="normal">}<sp/><ref refid="_u_d_m_a_m_s_p432_8h_1a0fcd7c9e446baf1da33268a2b529a906" kindref="member">UDMAMSP432_PingPongTransfer</ref>;</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_u_d_m_a_m_s_p432_8h_1a76ee23b43026354e4e7501d8fd678503" kindref="member">UDMAMSP432_close</ref>(UDMAMSP432_Handle<sp/>handle,<sp/>uint32_t<sp/>channelNum,<sp/>uint8_t<sp/><ref refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1aab7c32775f601e31e0e111896502957c" kindref="member">intNum</ref>);</highlight></codeline>
+<codeline lineno="210"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_u_d_m_a_m_s_p432_8h_1ae40c04086fef24a842242051767f5d34" kindref="member">UDMAMSP432_init</ref>();</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>UDMAMSP432_Handle<sp/><ref refid="_u_d_m_a_m_s_p432_8h_1aaf348ae644551d6b1233929bc71a3e8a" kindref="member">UDMAMSP432_open</ref>(uint32_t<sp/>channelNum,<sp/>uint8_t<sp/><ref refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1aab7c32775f601e31e0e111896502957c" kindref="member">intNum</ref>,<sp/>uint32_t<sp/>priority,</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*hwiFxn)(uintptr_t),<sp/>uintptr_t<sp/>arg);</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_u_d_m_a_m_s_p432_8h_1a2d30df7ef59882ae920b017bf637bf7f" kindref="member">UDMAMSP432_setupTransfer</ref>(<ref refid="struct_u_d_m_a_m_s_p432___transfer" kindref="compound">UDMAMSP432_Transfer</ref><sp/>*transfer);</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_u_d_m_a_m_s_p432_8h_1aa21e23f39982008f7d65931b03ba0d79" kindref="member">UDMAMSP432_setupPingPongTransfer</ref>(<ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer" kindref="compound">UDMAMSP432_PingPongTransfer</ref><sp/>*transfer);</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight></codeline>
+<codeline lineno="275"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_u_d_m_a_m_s_p432_8h_1ab562c19730dc6bd92c052f550ae3d64b" kindref="member">UDMAMSP432_PingPongToggleBuffer</ref>(<ref refid="struct_u_d_m_a_m_s_p432___ping_pong_transfer" kindref="compound">UDMAMSP432_PingPongTransfer</ref><sp/>*transfer);</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"></highlight></codeline>
+<codeline lineno="277"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="278"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="280"><highlight class="normal"></highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_dma_UDMAMSP432__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h"/>
+  </compounddef>
+</doxygen>

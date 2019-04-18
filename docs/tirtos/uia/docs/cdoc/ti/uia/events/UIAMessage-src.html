@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.events.UIAMessage</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> * ======== UIAMessage.xdc ========
+</span>    35    <span class="comment"> */</span>
+    36    
+    37    import xdc.runtime.Diags;
+    38    
+    39    <span class="xdoc">/*!
+</span>    40    <span class="xdoc"> * UIA Message Events
+</span>    41    <span class="xdoc"> *
+</span>    42    <span class="xdoc"> * The UIAMessage module defines events that allow
+</span>    43    <span class="xdoc"> * tooling to monitor messages between tasks and CPUs.
+</span>    44    <span class="xdoc"> *
+</span>    45    <span class="xdoc"> *  The generation of UIAMessage events is controlled by a module's diagnostics
+</span>    46    <span class="xdoc"> *  mask, which is described in details in `{<b>@link</b> xdc.runtime.Diags}`.
+</span>    47    <span class="xdoc"> * `UIAMessage` info events are generated only when the Diags.INFO bit is set
+</span>    48    <span class="xdoc"> *  in the module's diagnostics mask.
+</span>    49    <span class="xdoc"> *
+</span>    50    <span class="xdoc"> *  The following configuration script demonstrates how to enable use of
+</span>    51    <span class="xdoc"> *  UIAMessage events within an application. The Diags.INFO bitmust be explicitly set
+</span>    52    <span class="xdoc"> *  in order to enable these events.
+</span>    53    <span class="xdoc"> *
+</span>    54    <span class="xdoc"> *  This is part of the XDC configuration file for the application:
+</span>    55    <span class="xdoc"> *
+</span>    56    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    57    <span class="xdoc"> *  var UIAMessage = xdc.useModule('ti.uia.events.UIAMessage');
+</span>    58    <span class="xdoc"> *  var Diags = xdc.useModule('xdc.runtime.Diags');
+</span>    59    <span class="xdoc"> *  var LoggerSys = xdc.useModule('xdc.runtime.LoggerSys');
+</span>    60    <span class="xdoc"> *  var Defaults = xdc.useModule('xdc.runtime.Defaults');
+</span>    61    <span class="xdoc"> *  var logger = LoggerSys.create();
+</span>    62    <span class="xdoc"> *
+</span>    63    <span class="xdoc"> *  Defaults.common$.logger = logger;
+</span>    64    <span class="xdoc"> *  Defaults.common$.diags_INFO = Diags.ALWAYS_ON;
+</span>    65    <span class="xdoc"> *  <b>@p</b>
+</span>    66    <span class="xdoc"> *
+</span>    67    <span class="xdoc"> *  <b>@p(html)</b>
+</span>    68    <span class="xdoc"> *  &lt;hr /&gt;
+</span>    69    <span class="xdoc"> *  <b>@p</b>
+</span>    70    <span class="xdoc"> *
+</span>    71    <span class="xdoc"> *  Example 2: The following example configures a module to support logging
+</span>    72    <span class="xdoc"> *  of STATUS events and INFO events, but defers the actual activation and deactivation of the
+</span>    73    <span class="xdoc"> *  logging until runtime. See the `{<b>@link</b> Diags#setMask Diags_setMask()}`
+</span>    74    <span class="xdoc"> *  function for details on specifying the control string.
+</span>    75    <span class="xdoc"> *
+</span>    76    <span class="xdoc"> *  This is a part of the XDC configuration file for the application:
+</span>    77    <span class="xdoc"> *
+</span>    78    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    79    <span class="xdoc"> *  var UIAMessage = xdc.useModule('ti.uia.events.UIAMessage');
+</span>    80    <span class="xdoc"> *  var Diags = xdc.useModule('xdc.runtime.Diags');
+</span>    81    <span class="xdoc"> *  var Mod = xdc.useModule('my.pkg.Mod');
+</span>    82    <span class="xdoc"> *
+</span>    83    <span class="xdoc"> *  Mod.common$.diags_STATUS = Diags.RUNTIME_OFF;
+</span>    84    <span class="xdoc"> *  Mod.common$.diags_INFO = Diags.RUNTIME_OFF;
+</span>    85    <span class="xdoc"> *  <b>@p</b>
+</span>    86    <span class="xdoc"> *
+</span>    87    <span class="xdoc"> *  This is a part of the C code for the application:
+</span>    88    <span class="xdoc"> *
+</span>    89    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    90    <span class="xdoc"> *  // turn on logging of STATUS events (S) and INFO events (F)
+</span>    91    <span class="xdoc"> *  // in the module
+</span>    92    <span class="xdoc"> *  Diags_setMask("my.pkg.Mod+SF");
+</span>    93    <span class="xdoc"> *
+</span>    94    <span class="xdoc"> *  // turn off logging of STATUS events and INFO events in the module
+</span>    95    <span class="xdoc"> *  Diags_setMask("my.pkg.Mod-SF");
+</span>    96    <span class="xdoc"> *  <b>@p</b>
+</span>    97    <span class="xdoc"> */</span>
+    98    <span class=key>module</span> UIAMessage <span class=key>inherits</span> IUIAEvent {
+    99    
+   100        <span class="xdoc">/*! ======= msgSent ======
+</span>   101    <span class="xdoc">     * Message Sent event
+</span>   102    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   103    <span class="xdoc">     *   The following C code shows how to log a msgSent event
+</span>   104    <span class="xdoc">     *
+</span>   105    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   106    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   107    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAMessage.h&gt;
+</span>   108    <span class="xdoc">     *  ...
+</span>   109    <span class="xdoc">     *  Log_write7(UIAMessage_msgSent, numBytes,flags,msgId,destProcId,replyProcId,srcProcId,heapId);
+</span>   110    <span class="xdoc">     *  ...
+</span>   111    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   112    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   113    <span class="xdoc">     *  "Msg Sent [NumBytes]0x32 [Flags]0xF [MsgId]0x8357 [Dest(ProcID)]0x2 [Reply(ProcID)]0x3 [Src(ProcID)]0x1 [HeapId]0x56"
+</span>   114    <span class="xdoc">     *
+</span>   115    <span class="xdoc">     * <b>@param(NumBytes)</b> length of the message in bytes
+</span>   116    <span class="xdoc">     * <b>@param(Flags)</b> any flags associated with the message
+</span>   117    <span class="xdoc">     * <b>@param(MsgId)</b> the message ID for the message
+</span>   118    <span class="xdoc">     * <b>@param(Destination ProcID)</b> the procID for the message destination
+</span>   119    <span class="xdoc">     * <b>@param(Reply ProcID)</b> the procID that the reply will be sent to
+</span>   120    <span class="xdoc">     * <b>@param(Source ProcID)</b> the procID of the message sender
+</span>   121    <span class="xdoc">     * <b>@param(HeapId)</b> the HeapID associated with the message
+</span>   122    <span class="xdoc">     */</span>
+   123        <span class=key>config</span> xdc.runtime.Log.Event msgSent = {
+   124            mask: Diags.INFO,
+   125            msg: <span class="string">"Msg Sent [NumBytes]0x%x [Flags]0x%x [MsgId]0x%x [Dest(ProcID)]0x%x [Reply(ProcID)]0x%x [Src(ProcID)]0x%x [HeapId]0x%x"</span>
+   126        };
+   127    
+   128        <span class="xdoc">/*! ======= msgReceived ======
+</span>   129    <span class="xdoc">     * Message Received event
+</span>   130    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   131    <span class="xdoc">     *   The following C code shows how to log a msgReceived event
+</span>   132    <span class="xdoc">     *
+</span>   133    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   134    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   135    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAMessage.h&gt;
+</span>   136    <span class="xdoc">     *  ...
+</span>   137    <span class="xdoc">     *  Log_write7(UIAMessage_msgReceived, numBytes,flags,msgId,destProcId,replyProcId,srcProcId,heapId);
+</span>   138    <span class="xdoc">     *  ...
+</span>   139    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   140    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   141    <span class="xdoc">     *  "Msg Received [NumBytes]0x32 [Flags]0xF [MsgId]0x8357 [Dest(ProcID)]0x2 [Reply(ProcID)]0x3 [Src(ProcID)]0x1 [HeapId]0x56"
+</span>   142    <span class="xdoc">     *
+</span>   143    <span class="xdoc">     * <b>@param(NumBytes)</b> length of the message in bytes
+</span>   144    <span class="xdoc">     * <b>@param(Flags)</b> any flags associated with the message
+</span>   145    <span class="xdoc">     * <b>@param(MsgId)</b> the message ID for the message
+</span>   146    <span class="xdoc">     * <b>@param(Destination ProcID)</b> the procID for the message destination
+</span>   147    <span class="xdoc">     * <b>@param(Reply ProcID)</b> the procID that the reply will be sent to
+</span>   148    <span class="xdoc">     * <b>@param(Source ProcID)</b> the procID of the message sender
+</span>   149    <span class="xdoc">     * <b>@param(HeapId)</b> the HeapID associated with the message
+</span>   150    <span class="xdoc">     */</span>
+   151        <span class=key>config</span> xdc.runtime.Log.Event msgReceived = {
+   152            mask: Diags.INFO,
+   153            msg: <span class="string">"Msg Received [NumBytes]0x%x [Flags]0x%x [MsgId]0x%x [Dest(ProcID)]0x%x [Reply(ProcID)]0x%x [Src(ProcID)]0x%x [HeapId]0x%x"</span>
+   154        };
+   155    
+   156        <span class="xdoc">/*! ======= replySent ======
+</span>   157    <span class="xdoc">     * Reply Sent event
+</span>   158    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   159    <span class="xdoc">     *   The following C code shows how to log a msgSent event
+</span>   160    <span class="xdoc">     *
+</span>   161    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   162    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   163    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAMessage.h&gt;
+</span>   164    <span class="xdoc">     *  ...
+</span>   165    <span class="xdoc">     *  Log_write7(UIAMessage_replySent, numBytes,flags,msgId,destProcId,replyProcId,srcProcId,heapId);
+</span>   166    <span class="xdoc">     *  ...
+</span>   167    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   168    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   169    <span class="xdoc">     *  "Reply Sent [NumBytes]0x32 [Flags]0xF [MsgId]0x8357 [Dest(ProcID)]0x2 [Reply(ProcID)]0x3 [Src(ProcID)]0x1 [HeapId]0x56"
+</span>   170    <span class="xdoc">     *
+</span>   171    <span class="xdoc">
+</span>   172    <span class="xdoc">     * <b>@param(NumBytes)</b> length of the message in bytes
+</span>   173    <span class="xdoc">     * <b>@param(Flags)</b> any flags associated with the message
+</span>   174    <span class="xdoc">     * <b>@param(MsgId)</b> the message ID for the message
+</span>   175    <span class="xdoc">     * <b>@param(Destination ProcID)</b> the procID for the message destination
+</span>   176    <span class="xdoc">     * <b>@param(Reply ProcID)</b> the procID that the reply will be sent to
+</span>   177    <span class="xdoc">     * <b>@param(Source ProcID)</b> the procID of the message sender
+</span>   178    <span class="xdoc">     * <b>@param(HeapId)</b> the HeapID associated with the message
+</span>   179    <span class="xdoc">     */</span>
+   180        <span class=key>config</span> xdc.runtime.Log.Event replySent = {
+   181            mask: Diags.INFO,
+   182            msg: <span class="string">"Reply Sent [NumBytes]0x%x [Flags]0x%x [MsgId]0x%x [Dest(ProcID)]0x%x [Reply(ProcID)]0x%x [Src(ProcID)]0x%x [HeapId]0x%x"</span>
+   183        };
+   184    
+   185        <span class="xdoc">/*! ======= replyReceived ======
+</span>   186    <span class="xdoc">     * Reply Received event
+</span>   187    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   188    <span class="xdoc">     *   The following C code shows how to log a msgSent event
+</span>   189    <span class="xdoc">     *
+</span>   190    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   191    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   192    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAMessage.h&gt;
+</span>   193    <span class="xdoc">     *  ...
+</span>   194    <span class="xdoc">     *  Log_write5(UIAMessage_replyReceived,msgId,replyId,numBytes,senderProcId,destProcId);
+</span>   195    <span class="xdoc">     *  ...
+</span>   196    <span class="xdoc">     *  <b>@p</b>  The following text is an example of what will be displayed for the event:
+</span>   197    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   198    <span class="xdoc">     *  "Msg Sent [MsgId]0x8357 [NumBytes]0x32 [Flags]0xF [Dest(ProcID)]0x2 [Reply(ProcID)]0x3 [Src(ProcID)]0x1 [HeapId]0x56"
+</span>   199    <span class="xdoc">     *
+</span>   200    <span class="xdoc">     * <b>@param(MsgId)</b> the message ID for the message
+</span>   201    <span class="xdoc">     * <b>@param(ReplyId)</b> the reply's message ID
+</span>   202    <span class="xdoc">     * <b>@param(NumBytes)</b> length of the message in bytes
+</span>   203    <span class="xdoc">     * <b>@param(Sender ProcID)</b> the procID that the reply will be sent to
+</span>   204    <span class="xdoc">     * <b>@param(Destination ProcID)</b> the procID for the message destination
+</span>   205    <span class="xdoc">     */</span>
+   206        <span class=key>config</span> xdc.runtime.Log.Event replyReceived = {
+   207            mask: Diags.INFO,
+   208            msg: <span class="string">"Reply Recieved [MsgId]0x%x [ReplyId]0x%x [NumBytes]0x%x [Sender]0x%x [Dest]0x%x "</span>
+   209        };
+   210    
+   211    }
+</pre>
+</body></html>

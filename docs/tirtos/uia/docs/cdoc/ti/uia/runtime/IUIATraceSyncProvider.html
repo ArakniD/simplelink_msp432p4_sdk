@@ -1,0 +1,284 @@
+<html>
+<head>
+<title>interface ti.uia.runtime.IUIATraceSyncProvider</title>
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">interface</span> <span class="xdoc-id">ti.uia.runtime.</span><span class="xdoc-id">IUIATraceSyncProvider</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/IUIATraceSyncClient.html" title="interface IUIATraceSyncClient"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/package.html" title="package ti.uia.runtime"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/IUIATransfer.html" title="interface IUIATransfer"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/IUIATraceSyncProvider.html">index URL</a></div>
+<ul class="xdocToc">
+</ul>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id">XDCspec</span></tt> summary</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/IUIATraceSyncProvider-src.html"><span class="xdocLabelFile">ti/uia/runtime/IUIATraceSyncProvider.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynX">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">interface</span> <span class="xdoc-id">IUIATraceSyncProvider</span> {<b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt>//&nbsp;inherits <a class="xdoc-link" href="../../../ti/uia/events/IUIAMetaProvider.html" title="ti.uia.events.IUIAMetaProvider">ti.uia.events.IUIAMetaProvider</a></div>
+<div class='xdocSynSum'><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;inherits <a class="xdoc-link" href="../../../xdc/runtime/IModule.html" title="xdc.runtime.IModule">xdc.runtime.IModule</a></div>
+</div>
+<span id='spec-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id">XDCspec</span></tt> declarations</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/IUIATraceSyncProvider-src.html"><span class="xdocLabelFile">ti/uia/runtime/IUIATraceSyncProvider.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynX">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">package</span> <a class="xdoc-link" href="../../../ti/uia/runtime/package.html" title="ti.uia.runtime">ti.uia.runtime</a>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">interface</span> <span class="xdoc-id">IUIATraceSyncProvider</span><span class="xdoc-kw1"> inherits </span><a class="xdoc-link" href="../../../ti/uia/events/IUIAMetaProvider.html" title="ti.uia.events.IUIAMetaProvider">IUIAMetaProvider</a> {
+</div>
+<div class='xdocSynHdr'>module-wide constants & types</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">enum</span> <a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enumeration of the various types of packet headers.
+ Stored in a 4 bit bitfield (b31-b28) of the first word in the packet</span></span></a> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_Reserved0</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_SyncPoint</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Sync Point event serial number</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_ContextChange</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Context Change event serial number</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_Snapshot</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Snapshot event Snapshot ID</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_Reserved4</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_Reserved5</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_Reserved6</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_Reserved7</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_Reserved8</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_Reserved9</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_Reserved10</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_Reserved11</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_Reserved12</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_Reserved13</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_Global32bTimestamp</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;32b Global Timestamp</span></span></a>, 
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdocSynGo" href="#.Context.Type"><span class="xdoc-id">ContextType_User</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;User defined data</span></span></a>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a>&nbsp;<a class="xdocSynGo" href="#common$"><span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a>;
+</div>
+<div class='xdocSynHdr'>module-wide functions</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<a class="xdocSynGo" href="#inject.Into.Trace"><span class="xdoc-id">injectIntoTrace</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Inject syncPoint info into GEM Trace</span></span></a>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">serialNum</span>, <a class="xdoc-link" href="../../../ti/uia/runtime/IUIATraceSyncProvider.html#.Context.Type" title="ti.uia.runtime.IUIATraceSyncProvider.ContextType">IUIATraceSyncProvider.ContextType</a>&nbsp;<span class="xdoc-id">ctxType</span>);
+</div>
+<div class="xdocSynCode">
+<tt></tt>}
+</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Context.Type"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved0"></a>
+<a class="xdocAnchor" id=".Context.Type_.Sync.Point"></a>
+<a class="xdocAnchor" id=".Context.Type_.Context.Change"></a>
+<a class="xdocAnchor" id=".Context.Type_.Snapshot"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved4"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved5"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved6"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved7"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved8"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved9"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved10"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved11"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved12"></a>
+<a class="xdocAnchor" id=".Context.Type_.Reserved13"></a>
+<a class="xdocAnchor" id=".Context.Type_.Global32b.Timestamp"></a>
+<a class="xdocAnchor" id=".Context.Type_.User"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">IUIATraceSyncProvider.</span><span class="xdoc-id">ContextType</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/IUIATraceSyncProvider.html" title="interface IUIATraceSyncProvider"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/IUIATraceSyncProvider.html#.Context.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enumeration of the various types of packet headers.
+ Stored in a 4 bit bitfield (b31-b28) of the first word in the packet</p>
+<span id='spec-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-iddcl">XDCspec</span></tt> declarations</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/IUIATraceSyncProvider-src.html"><span class="xdocLabelFile">ti/uia/runtime/IUIATraceSyncProvider.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynXdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">enum</span> <span class="xdoc-id">ContextType</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_Reserved0</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_SyncPoint</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Sync Point event serial number</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_ContextChange</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Context Change event serial number</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_Snapshot</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Snapshot event Snapshot ID</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_Reserved4</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_Reserved5</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_Reserved6</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_Reserved7</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_Reserved8</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_Reserved9</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_Reserved10</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_Reserved11</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_Reserved12</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_Reserved13</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_Global32bTimestamp</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;32b Global Timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ContextType_User</span>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;User defined data</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">IUIATraceSyncProvider.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/IUIATraceSyncProvider.html" title="interface IUIATraceSyncProvider"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/IUIATraceSyncProvider.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='spec-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-iddcl">XDCspec</span></tt> declarations</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/IUIATraceSyncProvider-src.html"><span class="xdocLabelFile">ti/uia/runtime/IUIATraceSyncProvider.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynXdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a>&nbsp;<span class="xdoc-id">common$</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="inject.Into.Trace"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">IUIATraceSyncProvider.</span><span class="xdoc-id">injectIntoTrace</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/IUIATraceSyncProvider.html" title="interface IUIATraceSyncProvider"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/IUIATraceSyncProvider.html#inject.Into.Trace">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Inject syncPoint info into GEM Trace</p>
+<span id='spec-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-iddcl">XDCspec</span></tt> declarations</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/IUIATraceSyncProvider-src.html"><span class="xdocLabelFile">ti/uia/runtime/IUIATraceSyncProvider.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynXdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">injectIntoTrace</span>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">serialNum</span>, <a class="xdoc-link" href="../../../ti/uia/runtime/IUIATraceSyncProvider.html#.Context.Type" title="ti.uia.runtime.IUIATraceSyncProvider.ContextType">IUIATraceSyncProvider.ContextType</a>&nbsp;<span class="xdoc-id">ctxType</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">serialNum</span>
+<span class="xdocChildSum">&#151;&nbsp;the serial number that is to be injected</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">ctxType</span>
+<span class="xdocChildSum">&#151;&nbsp;the context type ID to be injected into the trace</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This method logs a sync point event and injects
+ correlation info into the trace stream (if available)
+ to enable correlation between software events and hardware trace.</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:15 GMT</div>
+</div></div></body>
+</html>

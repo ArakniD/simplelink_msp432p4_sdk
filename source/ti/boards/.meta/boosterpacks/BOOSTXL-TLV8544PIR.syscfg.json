@@ -1,0 +1,162 @@
+/*
+ * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ *  ======== BOOSTXL-TLV8544PIR.syscfg.json ========
+ */
+
+/*
+ * The I2C address for the INA226 is determinable via by the BoosterPack
+ * schematics [1] and section "7.5.5.1 Serial Bus Address" of the INA226
+ * data sheet [2].
+ *
+ * Address pin A1 of the INA226 is tied to ground and A0 is tied to pin 27
+ * of the standard BoosterPack 40 pin header and is, therefore, controllable
+ * by the connected LaunchPad.  For this configuration, the INA226 datasheet
+ * documents the I2C address to be either
+ *     o 0x40 if pin 27 is driven to ground, or
+ *     o 0x41 if pin 27 is driven high
+ *
+ * Note: The BoosterPack standard normally requires pin 27 to be used for
+ *       Analog input.
+ *
+ * Section 7.5.5.2 Serial Interface states 
+ *     "The INA226 supports the transmission protocol for fast mode (1 kHz
+ *     to 400 kHz) and high-speed mode (1 kHz to 2.94 MHz). All data bytes
+ *     are transmitted most significant byte first."
+ *     
+ * [1] http://www.ti.com/lit/pdf/snou148
+ * [2] http://www.ti.com/lit/ds/symlink/ina226.pdf
+ */
+{
+    "name": "BOOSTXL_TLV8544PIR", /* must be C identifier */
+    "displayName": "TLV8544PIR Motion Detection BoosterPack",
+    "headerType": "BoosterPack 40 pin",
+    "components": {
+        "OLED": {
+            "type": "DOUT",
+            "displayName": "Green LED",
+            "definition": "/ti/boards/components/led.json",
+            "connections": {
+                "output": 28
+            }
+        },
+        "RLED": {
+            "type": "DOUT",
+            "displayName": "Red LED",
+            "definition": "/ti/boards/components/led.json",
+            "connections": {
+                "output": 29
+            }
+        },
+        "YLED": {
+            "type": "DOUT",
+            "displayName": "Yellow LED",
+            "definition": "/ti/boards/components/led.json",
+            "connections": {
+                "output": 30
+            }
+        },
+
+        "PIR_SGL_AOUT": {
+            "type": "AIN",
+            "displayName": "PIR_SGL_AOUT",
+            "definition": "/ti/boards/components/analogInput.json",
+            "connections": {
+                "input": 6
+            }
+        },
+        "1STAG_AOUT": {
+            "type": "AIN",
+            "displayName": "1STAG_AOUT",
+            "definition": "/ti/boards/components/analogInput.json",
+            "connections": {
+                "input": 2
+            }
+        },
+        "PIR_OUT_HI": {
+            "type": "AIN",
+            "displayName": "PIR_OUT_HI",
+            "definition": "/ti/boards/components/digitalInput.json",
+            "connections": {
+                "input": 25
+            }
+        },
+        "PIR_OUT_LO": {
+            "type": "AIN",
+            "displayName": "PIR_OUT_LO",
+            "definition": "/ti/boards/components/digitalInput.json",
+            "connections": {
+                "input": 26
+            }
+        },
+
+        "PIR_I2C": {
+            "isBus": true,
+            "type": "I2C",
+            "displayName": "PIR I2C",
+
+            "signals": {
+                "SCL": { "type": "I2C_SCL" },
+                "SDA": { "type": "I2C_SDA" }
+            },
+            "connections": {
+                "SCL":  9, /* MSP P6.5 (31 MSP P3.7 is also SCL) */
+                "SDA": 10  /* MSP P6.4 (11 MSP P3.6 is also SDA) */
+            }
+        },
+
+        "INA226": {
+            "type": "INA226",
+            "displayName": "INA226 Current/Power Sensor",
+
+            "settings": {
+                "address": [64, 65], /* 0x40 = 64, 0x41 = 65 */
+                "maxSpeed": 2940     /* 2.94 Mbps (high-speed mode) */
+            },
+            "subComponents": {
+                "I2C": {
+                    "link": "PIR_I2C"
+                },
+
+                "A0": {
+                    "type": "DOUT",
+                    "signals": {
+                        /* I2C address is 0x40 or 0x41 (see comments above) */
+                        "A0": { "type": "DOUT", "connection": 27 }
+                    }
+                }
+            }
+        }
+    }
+}

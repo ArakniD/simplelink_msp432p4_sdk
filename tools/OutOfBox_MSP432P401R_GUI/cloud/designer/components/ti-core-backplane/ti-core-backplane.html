@@ -1,0 +1,1008 @@
+<!--
+`ti-core-backplane` establishes communication between the browser and TI Cloud Agent
+    - used to start/stop services on TI Cloud Agent
+    - provides TI Cloud Agent installation files for Windows, Linux and Mac
+    - handles discovery process and websocket port negotiation with TI Cloud Agent
+    - provides events to tell application when to display connect / disconnect / download TI Cloud Agent buttons
+    - provides APIs for application to call in order to initiate connect / disconnect actions
+
+Example:
+
+    <ti-core-backplane></ti-core-backplane>
+
+See demo for a full working example of how to use this component.
+
+@group TI Core
+@element ti-core-backplane
+@homepage ../ti-guicomposer-helpindex/demo.html
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+        its contributors may be used to endorse or promote products derived
+        from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+
+<script type='text/javascript' src="../ti-core-assets/scripts/q.js"></script>
+<script type="text/javascript" src="/ticloudagent/agent.js"></script>
+<!-- Alternate sources for agent.js for debugging purposes:
+<script type="text/javascript" src="agent.js"></script>
+<script src="http://mandeep-cloud.am.dhcp.ti.com/ticloudagent/getAgentJS?ver=1.0"></script>
+<script src="/ticloudagent/getAgentJS?ver=1.0"></script>
+-->
+<link rel="import" href="ti-core-backplane-installdialog.html">
+
+<link rel="import" href="../ti-widget-statusbar/ti-widget-statusbar.html">
+<link rel="import" href="../core-icons/core-icons.html">
+
+<link rel="import" href="../paper-progress/paper-progress.html">
+<link rel="import" href="../core-tooltip/core-tooltip.html">
+
+<script type='text/javascript' src="FileSaver.js"></script>
+
+<polymer-element name="ti-core-backplane">
+    <template id="backplaneTemplate">
+        <ti-core-backplane-installdialog id="installDialog" style="width:660px;height:300px"></ti-core-backplane-installdialog>
+    </template>
+    <script>
+        function reloadPage() {
+            window.location.reload(true);
+        }
+        Polymer('ti-core-backplane',
+                {
+                    _self: undefined,
+                    agent: undefined,
+                    ds: undefined,
+                    file: null,
+                    isDebugServerConfigured: false,
+                    cores: undefined,
+                    core: undefined,
+                    portFailure: null,
+                    portRequested: false,
+                    deleteStatusBarUponDetach: false,
+                    myTimeout: null,
+                    progressPercent: 0,
+                    statusBar: undefined,
+                    _target: undefined,
+                    supportedDevices: undefined,
+                    selectedDevicCcxmlString: undefined,
+                    states: [
+                        {
+                            'name': 'disconnected',
+                            'statusString': 'Disconnected.',
+                            'waitForUser': true,
+                            'caption': 'Connect',
+                            'skip': false,
+                            'events': {
+                                'gotoNextState': 'connectingToCloudAgent',
+                                'onConnectBtnClicked': 'connectingToCloudAgent',
+                                'onCloudAgentConnected': 'ready',
+                                'onFailedToConnect': 'downloadTICloudAgent',
+                                'onDisconnectBtnClicked': 'disconnected'
+                            }
+                        },
+                        {
+                            'name': 'connectingToCloudAgent',
+                            'statusString': 'Connecting...',
+                            'caption': 'Disconnect',
+
+                            'waitForUser': false,
+                            'skip': false,
+                            'events': {
+                                'gotoNextState': 'ready',
+                                'onCloudAgentConnected': 'ready',
+                                'onFailedToConnect': 'downloadTICloudAgent',
+                                'onDisconnectBtnClicked': 'disconnect'
+                            }
+                        },
+                        {
+                            'name': 'ready',
+                            'statusString': ( (typeof process !== "undefined") ? "Connected." :"Connected to TI Cloud Agent."),
+                            'caption': 'Ready',
+                            'waitForUser': true,
+                            'skip': false,
+                            'events': {
+                                'gotoNextState': 'disconnect',
+                                'onFailedToConnect': 'downloadTICloudAgent',
+                                'onDisconnectBtnClicked': 'disconnect'
+                            }
+                        },
+                        {
+                            'name': 'downloadTICloudAgent',
+                            'statusString': ( (typeof process !== "undefined") ? "Timeout waiting for connection to debug agent:" :"Could not connect to target:"),
+                            'caption': ( (typeof process !== "undefined") ?'Timeout waiting for connection to agent':'Download TI Cloud Agent'),
+                            'waitForUser': true,
+                            'skip': false,
+                            'events': {
+                                'gotoNextState': 'disconnect',
+                                'onInstallerDownloaded': 'disconnected',
+                                'onFailedToConnect': 'downloadTICloudAgent',
+                                'onDisconnectBtnClicked': 'disconnect',
+                                'onConnectBtnClicked': 'connectingToCloudAgent'
+                            }
+                        },
+                        {
+                            'name': 'disconnect',
+                            'statusString': 'Disconnect',
+                            'caption': 'Disconnect',
+                            'waitForUser': true,
+                            'skip': false,
+                            'events': {
+                                'gotoNextState': 'disconnected',
+                                'onDisconnectBtnClicked': 'disconnected',
+                                'onFailedToConnect': 'downloadTICloudAgent',
+                                'disconnectComplete': 'disconnected'
+                            }
+                        }
+
+                    ],
+                    userActions: ['onConnectBtnClicked', 'onUserSaysDevicePluggedIn', 'onInstallerDownloadBtnClicked', 'onDisconnectBtnClicked','onFailedToConnect'],
+                    stateIndexes: {},
+                    prevState: undefined,
+
+
+                    // For info on Polymer published properties, please see https://groups.google.com/forum/#!msg/polymer-dev/IX_gvSQT78Y/UtxDo-M2H6MJ
+                    // and http://stackoverflow.com/questions/23861029/how-does-data-binding-in-polymer-work
+
+                    /**
+                     * Fired when the currentState changes.
+                     *
+                     * @event currentStateChanged
+                     */
+                    /**
+                     * Fired when the status caption changes.
+                     *
+                     * @event statusMessageChanged
+                     */
+                    /**
+                     * Fired when the client needs to show a 'unplug device and plug it back in' message.
+                     *
+                     * @event onReplugNeeded
+                     */
+                    /**
+                     * Fired when the client needs to show the Download TI Cloud Agent button
+                     *
+                     * @event onShowTICloudAgentDownloadBtn
+                     */
+                    /**
+                     * Fired when the visibility of one of the buttons in the application that is associated
+                     * with ti-core-cloudagent needs to be changed
+                     *
+                     * @event btnVisibilityChanged
+                     */
+                    /**
+                     * Fired when the client has timed out trying to connect with the cloud agent
+                     *
+                     * @event onTimeoutWaitingForCloudAgent
+                     */
+                    publish: {
+                        /**
+                         * An object that represents the device that is being interacted with.
+                         * The object must have the following fields:
+                         *  <p> {<br/>
+                         *   boardName:     'MSP-EXP430G2 v1.5',<br/>
+                         *   deviceName:      'MSP430G2553',<br/>
+                         *   fileName:      'ReadTempAndSendToSerialPort.cpp.hex',<br/>
+                         *   ccxmlString:   'the target ccxml file serialized as a string'<br/>
+                         *   ccxmlFileName: 'name to use for the ccxml file to be used by TICloudAgent'
+                         *   runTargetToReadMemory: 'true if a monitor on the target is used to read target memory'
+                         *
+                         *   }<br/>
+                         *   <p>Additional fields can be added for other device-specific information.  e.g.
+                         *   {
+                         *   startBtnName:  'Name of button to press to start target running: e.g. P1.3',<br/>
+                         *   boardImage:    'Name of image file of target board to display e.g. launchpad-mspexp430g2-02.jpg',<br/>
+                         *   startBtnImage  'Name of image file showing location of start button e.g. startbutton-mspexp430g2-02.jpg'<br/>
+                         *   }<br/>
+                         * <p>
+                         *
+                         * @attribute selectedDevice
+                         * @type object
+                         * @default undefined
+                         */
+                        selectedDevice: undefined,
+                        /**
+                         * Controls whether the progress bar is visible or not.
+                         *
+                         * @attribute progressBarEnabled
+                         * @type boolean
+                         * @default false
+                         */
+                        progressBarEnabled: false,
+                        /**
+                         * A value (0-100) that represents the percentage complete to show in the progress bar.
+                         *
+                         * @attribute progress
+                         * @type number
+                         * @default 0
+                         */
+                        progress: {value: 0, reflect: true},
+                        /**
+                         * Determines whether ti-core-backplane automatically hides the status bar upon
+                         * connection to the TICloudAgent (true) or whether it leaves this up to external code (false)
+                         *
+                         * @attribute autoHideProgressBar
+                         * @type boolean
+                         * @default true
+                         */
+                        autoHideProgressBar: true,
+                        /**
+                         * The first status string to display in the status bar text field
+                         *
+                         * @attribute statusString1
+                         * @type string
+                         * @default ""
+                         */
+                        statusString1: '',
+                        /**
+                         * The tooltip text for the first status string to display in the status bar text field
+                         *
+                         * @attribute tooltipStatusString1
+                         * @type string
+                         * @default ""
+                         */
+                        tooltipStatusString1: '',
+                        /**
+                         * The second status string to display in the status bar text field
+                         *
+                         * @attribute statusString2
+                         * @type string
+                         * @default ""
+                         */
+                        statusString2: '',
+                        /**
+                         * The tooltip text for the second status string to display in the status bar text field
+                         *
+                         * @attribute tooltipStatusString2
+                         * @type string
+                         * @default ""
+                         */
+                        tooltipStatusString2: '',
+                        /**
+                         * The third status string to display in the status bar text field
+                         *
+                         * @attribute statusString3
+                         * @type string
+                         * @default ""
+                         */
+                        statusString3: '',
+                        /**
+                         * The tooltip text for the third status string to display in the status bar text field
+                         *
+                         * @attribute tooltipStatusString3
+                         * @type string
+                         * @default ""
+                         */
+                        tooltipStatusString3: '',
+
+                        /**
+                         * The string to display as a tooltip when the mouse hovers over the icon.  empty to display nothing
+                         *
+                         * @attribute tooltipIconImage
+                         * @type string
+                         * @default ""
+                         */
+                        tooltipIconImage: '',
+                        /**
+                         * the current state of the backplane's state machine.
+                         *
+                         * @attribute currentState
+                         * @type object
+                         * @default undefined
+                         */
+                        currentState: undefined,
+                        /**
+                         * if true, uses wss:// secure websocket communication protocol, else uses normal ws://
+                         *
+                         * @attribute isSecureWebPage
+                         * @type boolean
+                         * @default 'false.'
+                         */
+                        isSecureWebPage: true,
+
+                        /**
+                         * a string representing the current status of the interactions with the target device.
+                         *
+                         * @attribute status
+                         * @type string
+                         * @default 'Disconnected.'
+                         */
+                        status: {value: '', reflect: false},
+
+                        /**
+                         * isConnectedToCloudAgent is false when not connected to TI Cloud Agent.
+                         * If your application has a 'connect' button, it should show 'Connect' as the
+                         * caption when isConnectedToCloudAgent is false, and 'Disconnect' when
+                         * isConnectedToCloudAgent is true.
+                         *
+                         * @attribute isConnectedToCloudAgent
+                         * @type boolean
+                         * @default false
+                         */
+                        isConnectedToCloudAgent: false,
+                        /**
+                         * isConnectBtnVisible indicates whether a button labeled 'Connect' with an on-click handler
+                         * of onConnectBtnClicked should be displayed or not.
+                         *
+                         * @attribute isConnectBtnVisible
+                         * @type boolean
+                         * @default true
+                         */
+                        isConnectBtnVisible: true,
+                        /**
+                         * isDisonnectBtnVisible indicates whether a button labeled 'Cisconnect' with an on-click handler
+                         * of onDisconnectBtnClicked should be displayed or not.
+                         *
+                         * @attribute isDisconnectBtnVisible
+                         * @type boolean
+                         * @default false
+                         */
+                        isDisconnectBtnVisible: false,
+                        /**
+                         * isCloudAgentDownloadBtnVisible indicates whether a button labeled 'Download TI Cloud Agent' with an on-click handler
+                         * of onCloudAgentDownloadBtnClicked should be displayed or not.
+                         *
+                         * @attribute isCloudAgentDownloadBtnVisible
+                         * @type boolean
+                         * @default false
+                         */
+                        isCloudAgentDownloadBtnVisible: false,
+                        /**
+                         * isNodeWebkitApp indicates whether the application is being hosted by node-webkit (true)
+                         * or a web server such as Resource Explorer (false).
+                         *
+                         * @attribute isNodeWebkitApp
+                         * @type boolean
+                         * @default false
+                         */
+                        isNodeWebkitApp: ( (typeof process !== "undefined") ? true : false)
+                    },
+                    _progressBarEnabledChanged: function() {
+                        console.log("ti-core-backplane: showProgressBar = "+this.progressBarEnabled);
+                        if (!this.progressBarEnabled){
+                            this.hideProgressBar();
+                        } else {
+                            this.statusBar.progressBarEnabled = true;
+                        }
+                    },
+                    progressBarEnabledChanged: undefined,
+                    _hideProgressBar: function()  {
+                        if (this.myTimeout) {
+                            window.clearTimeout(this.myTimeout);
+                        }
+                        this.progressPercent = 0.0;
+                        this.statusBar.progress = 0;
+                        this.progressBarEnabled = false;
+                        this.statusBar.progressBarEnabled = false; //hide the progress bar
+                    },
+                    hideProgressBar: undefined,
+                    statusString1Changed: function(){
+                        this.statusBar.statusString1 = this.statusString1;
+                    },
+                    statusString2Changed: function(){
+                        // Filter out messages that have already been displayed in statusString1
+                        // e.g. status messages that have been propagated to services
+                        if ((this.statusString2 !== this.statusString1) || (this.statusString2.length === 0)) {
+                            this.statusBar.statusString2 = this.statusString2;
+                        }
+                    },
+                    statusString3Changed: function(){
+                        this.statusBar.statusString3 = this.statusString3;
+                    },
+                    selectedDeviceChanged: function(){
+                        // for backwards compatibility with older application code htat uses chipName instead of deviceName:
+                        if ((this.selectedDevice.deviceName === undefined) && (this.selectedDevice.chipName !== undefined)){
+                            this.selectedDevice.deviceName = this.selectedDevice.chipName;
+                            this.selectedDevice.xmlDeviceName = this.selectedDevice.deviceName;
+                        }
+                        if (this.selectedDevice.boardName === undefined) {
+                            this.selectedDevice.boardName = this.selectedDevice.deviceName;
+                        }
+                        this.setSelectedDevice(this.selectedDevice.deviceName);
+                    },
+                    _setStatus: function (strStatus) {
+                        this.status = strStatus;
+                        this.fire('statusMsgUpdated');
+                    },
+                    setStatus: undefined,
+                    _connect: function(){
+                        if (this.currentState.name === 'disconnected') {
+                            this.updateStateMachine('onConnectBtnClicked');
+                        }
+                    },
+                    connect: undefined,
+                    _disconnect: function(){
+                        this.updateStateMachine('onDisconnectBtnClicked');
+                    },
+                    disconnect: undefined,
+                    //provided for testing purposes
+                    /* returns true if state changed, false otherwise */
+                    _updateStateMachine: function (strEventName) {
+                        var result = false;
+                        var origStateName = this.currentState.name;
+                        var newStateName = this.currentState.events[strEventName];
+                        if (newStateName) {
+                            console.log('ti-core-backplane: updateStateMachine event = ' + strEventName);
+                            if (newStateName !== origStateName) {
+                                this.prevState = this.currentState;
+                                var newIndex = this.stateIndexes[newStateName];
+                                this.currentState = this.states[newIndex];
+                                console.log('ti-core-backplane: state change from ' + origStateName + ' to ' + newStateName);
+                            }
+                            result = true;
+                        } else {
+                            console.log('OUT OF SEQUENCE updateStateMachine event: ' + strEventName)
+                            console.log(this.currentState.events.length + ' valid event names for state=' + this.currentState.name + ':');
+                            for (var i = 0; i < this.currentState.events.length; i++) {
+                                console.log('event[' + i + ']=' + this.currentState.events[i].name);
+                            }
+                        }
+
+                        return (result);
+                    },
+                    updateStateMachine: undefined,
+                    _updateProgress: function() {
+                        if (this.statusBar.progressBarEnabled) {
+                            this.progressPercent += 0.5;
+                            if (this.progressPercent > 100.0) {
+                                this.statusBar.progress = 100.0;
+                            } else {
+                                this.statusBar.progress = this.progressPercent;
+                            }
+
+                            var _self = this;
+                            if (this.progressPercent < 300) {
+                                this.myTimeout = window.setTimeout(function () {
+                                    _self.updateProgress()
+                                }, 60);
+                            } else {
+                                this.hideProgressBar();
+                                this.fire('onTimeoutWaitingForCloudAgent');
+                            }
+                        }
+                    },
+                    updateProgress: undefined,
+
+                    _currentStateChanged: function () {
+                        console.log('onCurrentStateChanged: currentState.name=' + this.currentState.name);
+                        this.setStatus(this.currentState.statusString);
+                        console.log('onCurrentStateChanged: status=' + this.status);
+                        this.prevState = this.currentState;
+                        switch (this.currentState.name) {
+                            case 'disconnected':
+                                this.isCloudAgentDownloadBtnVisible = false;
+                                this.hideProgressBar();
+                                if (this.isConnectedToCloudAgent) {
+                                    this.isConnectedToCloudAgent = false;
+                                }
+                                this.isConnectBtnVisible = true;
+                                this.isDisconnectBtnVisible = false;
+                                this.statusString1 = "Disconnected."
+                                this.statusBar.iconImagePath = this.resolvePath("./images/notconnected.gif");
+                                this.statusBar.iconName = 'ti-core-icons:nolink';
+                                this.fire('btnVisibilityChanged');
+                                this.fire('connectionStatusChanged');
+                                break;
+
+                            case 'connectingToCloudAgent':
+                                this.isCloudAgentDownloadBtnVisible = false;
+                                this.isConnectBtnVisible = false;
+                                this.isDisconnectBtnVisible = true;
+                                this.statusString1 = "Connecting to TI Cloud Agent..."
+                                this.statusString2 = "";
+                                this.fire('btnVisibilityChanged');
+                                this.progressPercent = 0.0;
+                                this.statusBar.progress = 0;
+                                this.statusBar.progressBarEnabled = true;
+                                var _self = this;
+                                this.myTimeout = window.setTimeout(function(){
+                                    _self.updateProgress();
+                                }, 60);
+                                this.initAgent(function (error) {
+                                    if (error) {
+                                        console.log('ti-core-backplane: "Call to initAgent returned an error."');
+                                        _self.setStatus("Could not communicate with TI Cloud Agent.");
+                                        _self.updateStateMachine('onFailedToConnect');
+
+                                    } else {
+                                        console.log('ti-core-backplane: Call to initAgent succeeded. this.currentState.name=' + _self.currentState.name);
+                                        _self.updateStateMachine("onCloudAgentConnected");
+                                    }
+                                });
+
+                                break;
+
+                            /* ready: in this state, we have connected to the TI Cloud Agent.  The initDS function can be called at this point
+                             to connect to the debug server and target.
+                             */
+                            case 'ready':
+                                if (this.autoHideProgressBar) {
+                                    this.hideProgressBar();
+                                }
+                                this.statusBar.iconImagePath = this.resolvePath("./images/connected.gif");
+                                this.statusBar.iconName = 'ti-core-icons:link';
+                                this.isCloudAgentDownloadBtnVisible = false;
+                                this.isConnectBtnVisible = false;
+                                this.isDisconnectBtnVisible = true;
+                                this.isConnectedToCloudAgent = true;
+                                this.statusString1 = "Connected to TI Cloud Agent."
+                                this.fire('connectionStatusChanged');
+                                this.fire('btnVisibilityChanged');
+                                break;
+
+                            case 'downloadTICloudAgent':
+                                if (typeof process === 'undefined') {
+                                    if (this.ds !== undefined) {
+                                        this.ds = undefined;
+                                    }
+                                    this.isConnectBtnVisible = true;
+                                    this.isDisconnectBtnVisible = false;
+                                    this.isConnectedToCloudAgent = false;
+                                    this.isCloudAgentDownloadBtnVisible = true;
+                                    this.statusBar.progressBarEnabled = false;
+                                    this.statusBar.iconImagePath = this.resolvePath("./images/notconnected.gif");
+                                    this.statusBar.iconName = 'ti-core-icons:nolink';
+
+                                    this.statusString1 = "";
+                                    this.hideProgressBar();
+                                    if ((this.$.installDialog.errors !== undefined)&&(this.$.installDialog.errors !== null) && (this.$.installDialog.errors.length > 0)) {
+                                        this.$.installDialog.toggle();
+                                    }
+
+                                    this.fire('btnVisibilityChanged');
+                                } else {
+                                    // in node-webkit, so we will never have to download the TI Cloud Agent.
+                                    // simply go to disconnect state.
+                                    this.updateStateMachine('gotoNextState');
+                                }
+                                break;
+
+                            case 'disconnect':
+                                this.isDisconnectBtnVisible = false;
+                                var _self = this;
+                                if ((this.ds !== undefined) && (this.ds !== null) && (this.isDebugServerConfigured)){
+                                    console.log('ti-core-backplane.disconnect: about to deConfigure...');
+                                    this.ds.deConfigure().fin(function(){
+                                        this.isDebugServerConfigured = false;
+                                        this.ds = undefined;
+                                        this.core = undefined;
+                                        console.log("ds.deConfigure callback successful. Disconnect OK.")
+                                        _self.updateStateMachine('disconnectComplete');
+                                    });
+                                    /*.fail(function(error){
+                                     console.log("Failed to disconnect: error.message = "+error.message);
+                                     window.location.reload(true);
+                                     });
+                                     */
+                                } else {
+                                    _self.updateStateMachine('disconnectComplete');
+                                }
+                                break;
+                        }
+                        if (this.currentState.waitForUser) {
+                            this.fire('currentStateUpdated');
+                        }
+                    },
+                    currentStateChanged: undefined,
+                    _downloadTICloudAgentInstaller: function () {
+                        if (this.selectedDevice !== undefined) {
+                            //this.$.installDialog.errors = [TICloudAgent.AgentNotStarted];
+                            this.$.installDialog.errors = [];
+                            this.$.installDialog.errors.push(TICloudAgent.InvalidAgentVersion)
+                            this.updateStateMachine('onFailedToConnect');
+                        } else {
+                            this.status = "Error - no device name specified.  Could not download installer.";
+                            console.log("ti-core-backplane.downloadTICloudAgentInstaller: CONFIGURATION ERROR: selectedDevice property is undefined. ");
+                        }
+                    },
+                    downloadTICloudAgentInstaller: undefined,
+                    _installBrowserExtension: function() {
+                        if (this.selectedDevice !== undefined) {
+                            this.$.installDialog.errors = [];
+                            this.$.installDialog.errors.push(TICloudAgent.MissingExtension);
+                            this.updateStateMachine('onFailedToConnect');
+                        } else {
+                            this.status = "Error - no device name specified.  Could not install browser extension.";
+                            console.log("ti-core-backplane._installBrowserExtension: CONFIGURATION ERROR: selectedDevice property is undefined.");
+                        }
+                    },
+                    installBrowserExtension: undefined,
+                    _initAgent: function( callback) {
+
+                        var _self = this;
+                        var pathToCcxmlFile = undefined;
+                        // only call TICloudAgent.Init() once.
+                        // Note: use Q.Promise so that .fail is supported (causes exception if you just use Promise)
+                        var agentPromise = Q.Promise.resolve(this.agent);
+                        if ((this.agent === undefined) || (this.agent === null)) {
+                            agentPromise = TICloudAgent.Init();
+                        }
+
+                        console.log("ti-core-backplane: Starting TI Cloud Agent...");
+                        agentPromise.then(function(newAgent) {
+                            if ((_self.agent === undefined) || (_self.agent === null)) {
+                                _self.agent = newAgent;
+                            }
+                            return _self.agent.getSubModule("File");
+                        }).then(function(fileObj) {
+                            _self.file = fileObj;
+                            console.log("ti-core-backplane: agent.getSubModule(File) completed");
+                            // At this point, it's ok to have %SERIALPORT% in the .ccxml file, as it is only used
+                            // to determine the target device/cpu name and connection type
+                            return TICloudAgent.Util.encodeAsBase64(_self.selectedDeviceCcxmlString);
+                        }).then(function (data) {
+                            return _self.file.write(_self.selectedDevice.deviceName+".ccxml", data)
+                        }).then(function (filePath) {
+                            pathToCcxmlFile = filePath.path;
+                            return _self.agent.getSubModule("TargetSupport");
+                        }).then(function(targetSupport1) {
+                            console.log("ti-core-backplane: agent.getSubModule(TargetSupport) completed");
+                            var retObj;
+                            if (typeof process !== 'undefined') {
+                                // Don't call TargetSupport.add if working in node-webkit environment.
+                                // This removes the need to support .ccxmlString values that reference cpus
+                                // instead of devices.  See win32/TICLoudAgent/src/installer/installer.js and ccxml.js
+                                // If this test is node done, then the key that is generated for cpus is
+                                // null_uart_connection which is not found in win32/TICloudAgent/db/Targets.json
+                                retObj = Q.Promise.resolve(true);
+                            } else {
+                                retObj = targetSupport1.add(pathToCcxmlFile);
+                            }
+                            return retObj;
+                        }).then(function(promiseObj) {
+                            if (typeof process === 'undefined') {
+                                console.log("ti-core-backplane: TargetSupport.add(" + _self.selectedDevice.deviceName + "/" + _self.selectedDevice.xmlDeviceName + ") completed");
+                            }
+                            // return _self.agent.getSubModule("DS", _self.selectedDevice.deviceName);
+                            return _self.agent.getSubModule("DS");
+                        }).then(function(ds1) {
+                            _self.ds = ds1;
+                            console.log("agent.getSubModule(DS) completed. initAgent successful.");
+                            if ((callback !== undefined)&&(callback !== null)){
+                                callback(null);
+                            }
+                        }).fail(function(error) {
+
+                            var msg = error;
+                            if (error !== undefined) {
+                                if (error.message !== undefined){
+                                    msg = error.message;
+                                } else if (error.msg !== undefined){
+                                    msg = error.msg;
+                                }
+                            }
+                            console.log("Fail to initAgent. error.message="+msg);
+                            _self.$.installDialog.errors = [];
+                            if (Array.isArray(error)){
+                                _self.$.installDialog.errors = _self.$.installDialog.errors.concat(error);
+                            } else {
+                                _self.$.installDialog.errors.push(error);
+                            }
+                            if (_self.$.installDialog.errors.length >= 1){
+
+                                if (_self.$.installDialog.errors[0] instanceof TICloudAgent.MissingExtension){
+                                    console.log("Failed to init agent: Missing Extension");
+                                } else if (_self.$.installDialog.errors[0] instanceof TICloudAgent.AgentNotStarted) {
+                                    console.log("Failed to init agent: " + "Agent Not Started " );
+                                } else {
+                                    console.log("Failed to init agent:  " + "Unknown Error " + msg);
+                                }
+                            } else {
+                                console.log("Failed to init agent:  " + "Unknown Error " + msg);
+                            }
+                            if ((callback !== undefined)&&(callback !== null)) {
+                                callback(error);
+                            }
+
+                        });
+
+
+                    },
+                    initAgent: undefined,
+                    _setIcon: function(name){
+                        this.statusBar.iconName = name;
+                    },
+                    setIcon: undefined,
+                    _getIcon: function(){
+                        return this.statusBar.iconName;
+                    },
+                    getIcon: undefined,
+                    _restoreIcon: function(){
+                        if (this.isConnectedToCloudAgent){
+                            this.setIcon('link');
+                        } else {
+                            this.setIcon('ti-core-icons:nolink');
+                        }
+                    },
+                    restoreIcon: undefined,
+                    /**
+                     * configureDebugServer: initialize the debug server and connect to the target.
+                     * @param ccxmlFileName: name to use when storing the ccxml string in the local file system (no path)
+                     * @param ccxmlString: content of the ccxml file.  For UART, must contain resolved serial port to use
+                     * @param autorun: if true, target will run free automatically after connecting to the target
+                     * @param callback: callback function that takes an 'error' parameter.
+                     *           error===null indicates success, error.message contains error text.
+                     */
+                    _configureDebugServer: function (ccxmlFileName, ccxmlString, autorun, callback) {
+                        var _self = this;
+                        // use new to ensure that the callback function is bound to the backplane object's 'this'
+                        if (this.agent === undefined){
+                            console.log('ti-core-backplane: "TI Cloud Agent not initialized"');
+                            this.setStatus("Could not communicate with TI Cloud Agent.");
+                            //    Unable to communicate with TI Cloud Agent running on your computer.
+                            // if ((_self.myTimeout !== undefined)&&(_self.myTimeout !== null)){
+                            //     window.clearTimeout(_self.myTimeout);
+                            // }
+                            this.updateStateMachine('onFailedToConnect');
+
+                        } else {
+                            if (ccxmlString.indexOf('%SERIALPORT%') < 0) {
+                                // if the debug server has previously been configured, deConfigure it to avoid throwing an error
+                                var firstPromise = Q.Promise.resolve(true);
+                                if ((this.ds !== undefined) && (this.ds !== null) && (this.isDebugServerConfigured)) {
+                                    firstPromise = this.ds.deConfigure();
+                                }
+                                // .fin is the same as finally, i.e. it executes even if there is an error
+                                firstPromise.fin(function () {
+                                    _self.isDebugServerConfigured = false;
+                                    TICloudAgent.Util.encodeAsBase64(ccxmlString).then(function (data) {
+                                        return _self.file.write(ccxmlFileName, data)
+                                    }).then(function (retObj) {
+                                        return _self.ds.configure(retObj.path);
+                                    }).then(function (retObj) {
+                                        _self.isDebugServerConfigured = true;
+                                        _self.cores = retObj.cores;
+                                        return _self.ds.getSubModule(_self.cores[0]);
+                                    }).then(function (core1) {
+                                        _self.core = core1;
+                                        return _self.core.targetState.connect();
+                                    }).then(function (retObj) {
+                                        var promiseObj = Q.Promise.resolve(true);
+                                        if (autorun) {
+                                            promiseObj = _self.core.targetState.run(true); // true specifies runFree
+                                        }
+                                        return promiseObj;
+                                    }).then(function (retObj) {
+                                        _self.statusString1 = "Connected to target.";
+                                        _self.setIcon("link");
+                                        if (callback !== undefined) {
+                                            callback(null);
+                                        }
+                                    }).fail(function (err) {
+                                        if ((err) && (err.message !== undefined)) {
+                                            if ((err.message.indexOf("already configured") >= 0) || (err.message.indexOf("already connected") >= 0)) {
+                                                _self.updateStateMachine("onCloudAgentConnected");
+                                                callback(null);
+                                            } else {
+                                                _self.isDebugServerConfigured = false;
+                                                console.log("Error configuring ds: err=" + err.message);
+                                                _self.setIcon("error");
+                                                _self.statusString1 = err.message;
+                                                callback(err);
+                                            }
+                                        } else {
+                                            _self.isDebugServerConfigured = false;
+                                            console.log("Error configuring ds: unknown error");
+                                            callback(err);
+                                        }
+
+                                    });
+                                });
+                            } else {
+
+                                console.log('ti-core-backplane.configureDebugServer: ERROR - ccxml string contains %SERIALPORT% - must resolve before calling.')
+                                callback('ccxml string contains %SERIALPORT% - must resolve before calling');
+
+                            }
+                        }
+                    },
+                    configureDebugServer: undefined,
+                    getOS: function(){
+                        var os = TICloudAgent.OS.LINUX;
+                        if (navigator.appVersion.indexOf("Mac")!=-1) os=TICloudAgent.OS.OSX;
+                        if (navigator.appVersion.indexOf("Win")!=-1) os=TICloudAgent.OS.WIN;
+                        return os;
+                    },
+                    _onStatusBarClickHdlr: function(event){
+                        console.log('ti-core-backplane: statusBar pointer up event received.');
+                        this.statusString1 = '';
+                        this.statusString2 = '';
+                        if (this.currentState.name === 'disconnected') {
+                            this.updateStateMachine('onConnectBtnClicked');
+                        } else {
+                            if ((this.currentState.name === 'ready') || (this.currentState.name === 'downloadTICloudAgent')) {
+                                this.updateStateMachine('onDisconnectBtnClicked');
+                            }
+                        }
+                    },
+                    onStatusBarClickHdlr: undefined,
+                    httpGet: function (theUrl) {
+                        var xmlHttp =  new XMLHttpRequest();
+                        xmlHttp.open("GET", theUrl, false);
+                        xmlHttp.send(null);
+                        return xmlHttp.responseText;
+                    },
+                    isFireFox: function(){
+                        return navigator.userAgent.indexOf("Firefox") !== -1;
+                    },
+                    initComplete: false,
+                    _reset: function() {
+                        this.localServerInfo = {
+                            port: null,
+                            version: "0"
+                        };
+                        this.portFailure = null;
+                        this.portRequested = false;
+                        this.ds = null;
+                    },
+                    reset: undefined,
+                    setSelectedDevice: function(deviceName){
+                        var deviceName_UC = deviceName.toUpperCase();
+                        var fileContents = '';
+                        if (this.isNodeWebkitApp){
+                            var path = require('path');
+                            var fs = require('fs');
+                            var osDir = 'win32';
+                            switch (this.getOS()){
+                                case TICloudAgent.OS.WIN: osDir = 'win32'; break;
+                                case TICloudAgent.OS.LINUX: osDir = 'linux'; break;
+                                case TICloudAgent.OS.OSX: osDir = 'mac'; break;
+                            }
+                            var baseDir = '';
+                            if ((document.gcGlobal !== undefined)&&(document.gcGlobal.workspaceFolder !== undefined)) {
+                                baseDir = document.gcGlobal.workspaceFolder;
+                            } else {
+                                // the working dir is the splash folder for the project.  Find the
+                                // runtime folder by going back two folder levels
+                                var workingDir = path.normalize(process.cwd());
+                                baseDir = path.join(workingDir,'..','..');
+                            }
+                            var jsonFilePath = path.join(baseDir,osDir,'TICloudAgent','supported_devices.json');
+                            fileContents = fs.readFileSync(jsonFilePath,'utf8');
+
+                        } else {
+                            var scriptUrl = this.ownerDocument.baseURI;
+                            var relativeUrl = '';
+                            var index = scriptUrl.indexOf('/components/ti-');
+                            if (index > 0){
+                                // document is likely a demo program within the components folder
+                                scriptUrl = scriptUrl.substring(index+'/components/'.length,scriptUrl.length);
+                                for (var i=0;i<scriptUrl.length;i++){
+                                    if (scriptUrl[i] === '/'){
+                                        relativeUrl += '../';
+                                    }
+                                }
+
+                            } else {
+                                // document is likely at the same level as the designer folder
+                                relativeUrl = '../designer/components/';
+                            }
+                            relativeUrl += "ti-core-backplane/supported_devices.json";
+                            console.log('relativeUrl = '+relativeUrl);
+                            fileContents = this.httpGet(relativeUrl);
+                        }
+                        this.supportedDevices = JSON.parse(fileContents);
+                        // get the ccxml contents for the selected device
+                        if (this.supportedDevices.devices[deviceName_UC] !== undefined){
+
+                            this.selectedDevice.deviceName = deviceName_UC;
+                            this.selectedDevice.connectionID  = this.supportedDevices.devices[deviceName_UC].connectionID;
+                            this.selectedDevice.runTargetToReadMemory = this.supportedDevices.devices[deviceName_UC].runTargetToReadMemory;
+                            var ccxmlName = this.supportedDevices.devices[deviceName_UC].ccxml;
+                            var xmlDeviceName = this.supportedDevices.devices[deviceName_UC].xmlDeviceName;
+                            this.selectedDevice.xmlDeviceName = xmlDeviceName;
+                            this.selectedDeviceCcxmlString = this.supportedDevices[ccxmlName].join('\n');
+                            this.selectedDeviceCcxmlString = this.selectedDeviceCcxmlString.replace(/\%DEVICE\%/g,xmlDeviceName);
+                        }
+                    },
+                    ready: function () {
+                        console.log('ti-core-backplane ready function called');
+
+                        this.enteredView();
+                        // this.addEventListener("valueChanged",dialValueChangedHandler,false);
+
+
+                    },
+
+                    // see https://groups.google.com/forum/#!searchin/polymer-dev/binding/polymer-dev/wzfxU9vVAg0/1sFyrmnxy5EJ for info on why initialization is not
+                    // considered complete until either enteredView or created is called
+                    enteredView: function () {
+                        this.progress = 0;
+                        this.style.position = 'static';
+                        var _self = this;
+                        this.target = {
+                            getName: function() {
+                                return _self.selectedDevice.deviceName;
+                            },
+                            getSizeOfInt: function() {
+                                return "2";
+                            },
+                            getCCXMLFileName: function() {
+                                return _self.selectedDevice.deviceName+".ccxml";
+                            }
+                        };
+                        if (!this.initComplete) {
+                            this.initComplete = true;
+                            this.stateIndexes = {};
+                            for (var i = 0; i < this.states.length; i++) {
+                                this.stateIndexes[this.states[i].name] = i;
+                            }
+                            this.currentState = this.states[0];
+                            this.prevState = this.currentState;
+                            // Ensure that 'this' in the following functions is bound to the backplane object:
+                            this.updateProgress = this._updateProgress.bind(this);
+                            this.progressBarEnabledChanged = this._progressBarEnabledChanged.bind(this);
+                            this.hideProgressBar = this._hideProgressBar.bind(this);
+                            this.updateStateMachine = this._updateStateMachine.bind(this);
+                            this.setStatus = this._setStatus.bind(this);
+                            this.currentStateChanged = this._currentStateChanged.bind(this);
+                            this.configureDebugServer = this._configureDebugServer.bind(this);
+                            this.downloadTICloudAgentInstaller = this._downloadTICloudAgentInstaller.bind(this);
+                            this.installBrowserExtension = this._installBrowserExtension.bind(this);
+                            this.initAgent = this._initAgent.bind(this);
+                            this.onStatusBarClickHdlr = this._onStatusBarClickHdlr.bind(this);
+                            this.connect = this._connect.bind(this);
+                            this.disconnect = this._disconnect.bind(this);
+                            this.reset = this._reset.bind(this);
+                            this.setIcon = this._setIcon.bind(this);
+                            this.getIcon = this._getIcon.bind(this);
+                            this.restoreIcon = this._restoreIcon.bind(this);
+
+                            if ((this.parentNode !== undefined) && (this.parentNode !== null)) {
+                                this.statusBar = this.parentNode.querySelector("ti-widget-statusbar");
+                                if ((this.statusBar === undefined) || (!this.statusBar)) {
+                                    this.statusBar = document.createElement("ti-widget-statusbar");
+                                    var body = document.querySelector("body");
+                                    if (body) {
+                                        body.appendChild(this.statusBar);
+                                        this.deleteStatusBarUponDetach = true;
+                                    }
+                                }
+                            } else {
+                                this.statusBar = document.querySelector("ti-widget-statusbar");
+                                if ((this.statusBar === undefined) || (!this.statusBar)) {
+                                    this.statusBar = document.createElement("ti-widget-statusbar");
+                                    var body = document.querySelector("body");
+                                    if (body){
+                                        body.appendChild(this.statusBar);
+                                        this.deleteStatusBarUponDetach = true;
+                                    }
+                                }
+                            }
+
+                            this.statusBar.showProgressPercentString = false;
+                            this.statusBar.addEventListener("iconclicked",this.onStatusBarClickHdlr);
+                            this.statusBar.iconImagePath = this.resolvePath("./images/notconnected.gif");
+                            this.statusBar.iconName = 'ti-core-icons:nolink';
+
+                        }
+
+                    }
+                });
+
+
+    </script>
+</polymer-element>

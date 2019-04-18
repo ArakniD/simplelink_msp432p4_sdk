@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>interface ti.uia.runtime.IUIATimestampProvider</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    <span class=key>package</span> ti.uia.runtime;
+    33    
+    34    import xdc.runtime.Types;
+    35    
+    36    <span class="xdoc">/*!
+</span>    37    <span class="xdoc"> *  ======== IUIATimestampProvider ========
+</span>    38    <span class="xdoc"> *  UIA timestamp provider interface
+</span>    39    <span class="xdoc"> *
+</span>    40    <span class="xdoc"> *  This interface is implemented by platform-specific modules that
+</span>    41    <span class="xdoc"> *  "provide" underlying timestamp services that allow 64b timestamp values
+</span>    42    <span class="xdoc"> *  to be read directly into event parameters.
+</span>    43    <span class="xdoc"> *
+</span>    44    <span class="xdoc"> *  Note that the implementation is typically not thread safe - it
+</span>    45    <span class="xdoc"> *  is up to the caller to ensure that the get64() API is protected from
+</span>    46    <span class="xdoc"> *  preemption by another thread or another CPU core in order to ensure
+</span>    47    <span class="xdoc"> *  that a coherent 64b result is returned.  For timers that are a shared
+</span>    48    <span class="xdoc"> *  resource, some form of system-level lock (e.g. Lampart's bakery algorithm,
+</span>    49    <span class="xdoc"> *  spinlock or Peterson lock) or IPC round-robin mechanism may be required in
+</span>    50    <span class="xdoc"> *  order to ensure that there are no race conditions.
+</span>    51    <span class="xdoc"> */</span>
+    52    <span class=key>interface</span> IUIATimestampProvider <span class=key>inherits</span> xdc.runtime.ITimestampProvider {
+    53    
+    54        <span class="xdoc">/*!
+</span>    55    <span class="xdoc">     * ======== maxTimerClockFreqLSW =========
+</span>    56    <span class="xdoc">     * The highest timer clock frequency.
+</span>    57    <span class="xdoc">     *
+</span>    58    <span class="xdoc">     * The default ticks per second rate of the timer is calculated by dividing
+</span>    59    <span class="xdoc">     * the timer's bus clock frequency by the cyclesPerTick config parameter.
+</span>    60    <span class="xdoc">     *
+</span>    61    <span class="xdoc">     * <b>@a(returns)</b> the 32 LSBs of the highest timer clock frequency
+</span>    62    <span class="xdoc">     *   (i.e. ticksPerSecond).
+</span>    63    <span class="xdoc">     */</span>
+    64        <span class=key>config</span> Types.FreqHz maxTimerClockFreq;
+    65    
+    66        <span class="xdoc">/*!
+</span>    67    <span class="xdoc">     * ======== maxBusClockFreqMSW =========
+</span>    68    <span class="xdoc">     * The highest bus clock frequency used to drive the timer.
+</span>    69    <span class="xdoc">     *
+</span>    70    <span class="xdoc">     * The default ticks per second rate of the timer is calculated by dividing
+</span>    71    <span class="xdoc">     * the timer's bus clock frequency by the cyclesPerTick config parameter.
+</span>    72    <span class="xdoc">     *
+</span>    73    <span class="xdoc">     * <b>@a(returns)</b> the 32 MSBs of the highest bus clock frequency used to drive
+</span>    74    <span class="xdoc">     *    the timer.
+</span>    75    <span class="xdoc">     */</span>
+    76        <span class=key>config</span> Types.FreqHz maxBusClockFreq;
+    77    
+    78        <span class="xdoc">/*!
+</span>    79    <span class="xdoc">     * ======== canFrequencyBeChanged =========
+</span>    80    <span class="xdoc">     * Indicates whether the timer frequency can be changed or not
+</span>    81    <span class="xdoc">     *
+</span>    82    <span class="xdoc">     * <b>@a(returns)</b> true if the timer's clock frequency can be changed
+</span>    83    <span class="xdoc">     */</span>
+    84        <span class=key>metaonly</span> <span class=key>config</span> Bool canFrequencyBeChanged = <span class=key>false</span>;
+    85    
+    86        <span class="xdoc">/*!
+</span>    87    <span class="xdoc">     * ======== cpuCyclesPerTick =========
+</span>    88    <span class="xdoc">     * The number of CPU cycles each tick of the timestamp corresponds to
+</span>    89    <span class="xdoc">     *
+</span>    90    <span class="xdoc">     * A value of 0 indicates that no conversion between the timer's tick count
+</span>    91    <span class="xdoc">     * and CPU cycles is possible.
+</span>    92    <span class="xdoc">     */</span>
+    93        <span class=key>metaonly</span> <span class=key>config</span> UInt32 cpuCyclesPerTick = 0;
+    94    
+    95        <span class="xdoc">/*!
+</span>    96    <span class="xdoc">     * ======== canCpuCyclesPerTickBeChanged =========
+</span>    97    <span class="xdoc">     * Indicates whether the timer's cycles per tick divide down ratio can be
+</span>    98    <span class="xdoc">     * changed or not
+</span>    99    <span class="xdoc">     *
+</span>   100    <span class="xdoc">     * <b>@a(returns)</b> true if the timer's CPU cycles per tick can be changed
+</span>   101    <span class="xdoc">     */</span>
+   102        <span class=key>metaonly</span> <span class=key>config</span> Bool canCpuCyclesPerTickBeChanged = <span class=key>false</span>;
+   103    }
+</pre>
+</body></html>

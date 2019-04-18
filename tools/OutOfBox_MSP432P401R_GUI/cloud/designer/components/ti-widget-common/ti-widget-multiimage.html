@@ -1,0 +1,195 @@
+<!--
+`ti-widget-multiimage`
+
+Status bar widget - can display an icon image, status text and a progress bar, aligned along the bottom of the page.
+
+@group TI Widgets
+@element ti-widget-multiimage
+-->
+<!--
+    Copyright (c) 2014, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../ti-widget-common/ti-widget-base.html">
+<link rel="import" href="../ti-widget-common/ti-widget-image.html">
+<polymer-element name="ti-widget-multiimage" extends="ti-widget-base" attributes="imagePaths imageFolder lockAspectRatio hoverEffect selectedIndex selectedValue values initialIndex">
+
+	<template>
+	   <style>
+           :host {
+               display : inline-block;
+           }
+
+	       #imageWidget {
+	           width: 100%;
+	           height: 100%;
+	       }
+	   </style>
+        <ti-widget-image id="imageWidget" imagePath="{{_imagePath}}" lockAspectRatio="{{lockAspectRatio}}" hoverEffect="{{hoverEffect}}" 
+                        on-click="{{onClickHandler}}" tooltip={{tooltip}}>
+        </ti-widget-image>	
+	</template>
+    <script>
+	    Polymer ('ti-widget-multiimage', 
+	    {
+            /**
+             * Fired when the image is selected with a click action.  use on-click={{myHandler}} to receive callback
+             *
+             * @event click
+             */
+
+		    /**
+	        * the comma-separated list of images to select from.
+	        *
+	        * @attribute imagePaths
+	        * @type string
+	        */
+	        imagePaths : "",
+	        
+	        /**
+	        * A common image folder for all imagePaths.  This is a convenience if all of you images start with the
+	        * same prefix path; for example, "my/images".  In this case imagePath can be "image1.svg, special/image2.svg" 
+	        * instead of "my/images/image1.svg, my/images/special/image2.svg".
+	        *
+	        * @attribute imageFolder
+	        * @type string
+	        */
+	        imageFolder : "",
+	        
+	        lockAspectRatio : false,
+	        hoverEffect : "no",
+            initialIndex : undefined,
+            selectedIndex : 0,
+            selectedValue : undefined,
+            values : undefined,
+            
+            _imagePath : "",
+            _imagePathnames : [],
+            _imageValues : [],
+            _lastIndex : 0,
+
+			imagePathsChanged : function() 
+			{
+				this._imagePathnames = this.parseArray(this.imagePaths);
+				this.updateImage();
+			},
+			imageFolderChanged : function()
+			{
+				this.updateImage();
+			},
+			selectedIndexChanged : function()
+			{
+				if (this._lastIndex != this.selectedIndex)
+				{
+					this._lastIndex = +this.selectedIndex;
+					
+	                this._desired = "index";
+					this.updateImage();
+				}
+			},
+			selectedValueChanged : function()
+			{
+				if (this._lastValue != this.selectedValue)
+				{
+					this._lastValue = this.selectedValue;
+					this._desired = "value";
+					this.updateImage();
+				}
+			},
+			valuesChanged : function()
+			{
+				this._imageValues = this.parseArray(this.values);
+				this.updateImage();
+			},
+			updateImage : function()
+			{
+				// update selectedIndex based on value
+				if (this._desired === "value")
+				{
+					// lookup index by value
+					for(var i = this._imageValues.length; i --> 0; )
+					{
+						if (this._imageValues[i] == this.selectedValue)
+						{
+							if (this.selectedIndex !== i)
+							{
+								this._lastIndex = i;
+								this.selectedIndex = i;
+							}
+							break;  
+						}
+					}
+				}
+				else if (this._desired === undefined && this.initialIndex !== undefined)
+				{
+					// update index with the initialIndex (and convert to number incase specified as string)
+					this._lastIndex = +this.initialIndex;
+					this.selectedIndex = this._lastIndex;
+				}
+				
+                // update selectedValue based on index
+                var sel = this._lastIndex;
+                if (this._desired === 'index')
+                {
+                    var newValue = (sel >= 0 && sel < this._imageValues.length) ? this._imageValues[sel] : undefined; 
+                    if (newValue !== this.selectedValue)
+                    {
+                    	this._lastValue = newValue;
+                        this.selectedValue = newValue;
+                    }
+                }
+				// update the image)
+				if (sel >= 0 && sel < this._imagePathnames.length)
+				{
+					// only update image if it's a valid selection.  We're going to assume invalid selections are temporary
+					// and another binding will change soon to fix things.  For example, index is set first, then imagePaths is set 
+					// later.
+					var path = this._imagePathnames[sel];
+					if (this.imageFolder != "")
+					{
+						path = this.imageFolder + '/' + path;
+					}
+					if (this._imagePath !== path)
+					{
+						// we have a new image to show
+						this._imagePath = path;
+					}
+				}
+			},
+            getElement : function()
+            {
+                return this.$.imageWidget;
+            },
+            ready : function()
+            {
+            	// kickstart update in case 
+            	this.updateImage();
+            }
+        });
+	</script>
+</polymer-element>

@@ -1,0 +1,829 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="_g_p_i_o_8h" kind="file" language="C++">
+    <compoundname>GPIO.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includedby refid="_g_p_i_o_m_s_p432_8h" local="no">GPIOMSP432.h</includedby>
+    <incdepgraph>
+      <node id="95">
+        <label>stdint.h</label>
+      </node>
+      <node id="94">
+        <label>GPIO.h</label>
+        <link refid="_g_p_i_o_8h"/>
+        <childnode refid="95" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="97">
+        <label>GPIOMSP432.h</label>
+        <link refid="_g_p_i_o_m_s_p432_8h"/>
+      </node>
+      <node id="96">
+        <label>GPIO.h</label>
+        <link refid="_g_p_i_o_8h"/>
+        <childnode refid="97" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+      <sectiondef kind="user-defined">
+      <header>GPIO_STATUS_* macros are general status codes returned by GPIO driver APIs.</header>
+      <memberdef kind="define" id="_g_p_i_o_8h_1a9338b76015f438019f21c32922f3308e" prot="public" static="no">
+        <name>GPIO_STATUS_RESERVED</name>
+        <initializer>(-32)</initializer>
+        <briefdescription>
+<para>Common GPIO status code reservation offset. </para>        </briefdescription>
+        <detaileddescription>
+<para>GPIO driver implementations should offset status codes with GPIO_STATUS_RESERVED growing negatively.</para><para>Example implementation specific status codes: <programlisting><codeline><highlight class="normal">#define<sp/>GPIOTXYZ_STATUS_ERROR1<sp/><sp/><sp/><sp/>GPIO_STATUS_RESERVED<sp/>-<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>GPIOTXYZ_STATUS_ERROR0<sp/><sp/><sp/><sp/>GPIO_STATUS_RESERVED<sp/>-<sp/>0</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>GPIOTXYZ_STATUS_ERROR2<sp/><sp/><sp/><sp/>GPIO_STATUS_RESERVED<sp/>-<sp/>2</highlight></codeline>
+</programlisting> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="245" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="245" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_g_p_i_o_8h_1acef3ff21200e0cff860ddd2b64adac07" prot="public" static="no">
+        <name>GPIO_STATUS_SUCCESS</name>
+        <initializer>(0)</initializer>
+        <briefdescription>
+<para>Successful status code returned by GPI_setConfig(). </para>        </briefdescription>
+        <detaileddescription>
+<para>GPI_setConfig() returns GPIO_STATUS_SUCCESS if the API was executed successfully. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="253" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="253" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_g_p_i_o_8h_1a9128d9c1019c04160cfd76af9dff919a" prot="public" static="no">
+        <name>GPIO_STATUS_ERROR</name>
+        <initializer>(-1)</initializer>
+        <briefdescription>
+<para>Generic error status code returned by GPI_setConfig(). </para>        </briefdescription>
+        <detaileddescription>
+<para>GPI_setConfig() returns GPIO_STATUS_ERROR if the API was not executed successfully. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="261" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="261" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>GPIO_PinConfig output pin configuration macros</header>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1gaad0c4b9c093f1d57fd03061b7456193a" prot="public" static="no">
+        <name>GPIO_CFG_OUTPUT</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Pin is an output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="299" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="299" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1gac52528c42a8eb3be193f49de5ed7d820" prot="public" static="no">
+        <name>GPIO_CFG_OUT_STD</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Output pin is actively driven high and low </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="300" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="300" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1gae660060d38901c2370d8f104fbb842a2" prot="public" static="no">
+        <name>GPIO_CFG_OUT_OD_NOPULL</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Output pin is Open Drain </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="301" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="301" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1ga16cfdcae58be5f77932b36f43e7c1d2f" prot="public" static="no">
+        <name>GPIO_CFG_OUT_OD_PU</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Output pin is Open Drain w/ pull up </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="302" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="302" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1gaf4e7be1d009ff2c25a048ab7fe401d88" prot="public" static="no">
+        <name>GPIO_CFG_OUT_OD_PD</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Output pin is Open Drain w/ pull dn </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="303" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="303" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1ga2917f431dff7eb7f5559643bd8df251d" prot="public" static="no">
+        <name>GPIO_CFG_OUT_STR_LOW</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set output pin strength to low </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="305" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="305" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1gac1d2c5bf8f2359d26d28abc8aa393b3a" prot="public" static="no">
+        <name>GPIO_CFG_OUT_STR_MED</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set output pin strength to medium </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="306" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="306" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1ga25609d59d41f081ae9759d5862dc9dd9" prot="public" static="no">
+        <name>GPIO_CFG_OUT_STR_HIGH</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set output pin strength to high </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="307" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="307" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1gae86eb6dc677c962a9ad94bdad6752dc0" prot="public" static="no">
+        <name>GPIO_CFG_OUT_HIGH</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set pin&apos;s output to 1. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="309" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="309" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1gad4fd3be9a7bec74d862cb1caecc5d4be" prot="public" static="no">
+        <name>GPIO_CFG_OUT_LOW</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set pin&apos;s output to 0. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="310" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="310" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>GPIO_PinConfig input pin configuration macros</header>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1ga874e34de3bef2d9415b4311dd6bed234" prot="public" static="no">
+        <name>GPIO_CFG_INPUT</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Pin is an input. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="316" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="316" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1gad2e8d27bfc96ef0de4dd35db10055412" prot="public" static="no">
+        <name>GPIO_CFG_IN_NOPULL</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Input pin with no internal PU/PD </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="317" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="317" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1ga4fb7b60751481b6988049fe8fa94a7d7" prot="public" static="no">
+        <name>GPIO_CFG_IN_PU</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Input pin with internal PU </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="318" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="318" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1gad09e6716ad1b54cb6509b8c92a6567c6" prot="public" static="no">
+        <name>GPIO_CFG_IN_PD</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Input pin with internal PD </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="319" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="319" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>GPIO_PinConfig interrupt configuration macros</header>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1ga666c6995ed5737b43a707d1cacd9fe69" prot="public" static="no">
+        <name>GPIO_CFG_IN_INT_NONE</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>No Interrupt </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="325" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="325" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1ga7a69ee26049dc2f8b5059b00a24b9f74" prot="public" static="no">
+        <name>GPIO_CFG_IN_INT_FALLING</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Interrupt on falling edge </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="326" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="326" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1ga4a9f53e525d1f1659b485274d08ff91f" prot="public" static="no">
+        <name>GPIO_CFG_IN_INT_RISING</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Interrupt on rising edge </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="327" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="327" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1ga0829900a2dd949219edc6ddc8d928f3c" prot="public" static="no">
+        <name>GPIO_CFG_IN_INT_BOTH_EDGES</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Interrupt on both edges </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="328" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="328" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1gab0f05c331bb66230f175e574d0d317a6" prot="public" static="no">
+        <name>GPIO_CFG_IN_INT_LOW</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Interrupt on low level </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="329" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="329" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1ga669d2e840e0f934426670a069a5efe0e" prot="public" static="no">
+        <name>GPIO_CFG_IN_INT_HIGH</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Interrupt on high level </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="330" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="330" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Special GPIO_PinConfig configuration macros</header>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1gac8df4b49e09cb612275ed7d00e8cc1cf" prot="public" static="no">
+        <name>GPIO_CFG_IN_INT_ONLY</name>
+        <briefdescription>
+<para>&apos;Or&apos; in this <ref refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" kindref="member">GPIO_PinConfig</ref> definition to inform <ref refid="_g_p_i_o_8h_1a015b75143cc3b8914cc298c5c4fc097e" kindref="member">GPIO_setConfig()</ref> to only configure the interrupt attributes of a GPIO input pin. </para>        </briefdescription>
+        <detaileddescription>
+<para>configure interrupt only </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="341" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="341" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___g_p_i_o___pin_config_settings_1ga0974eb3af57b7bccef9ac749d4cf23a7" prot="public" static="no">
+        <name>GPIO_DO_NOT_CONFIG</name>
+        <briefdescription>
+<para>Use this <ref refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" kindref="member">GPIO_PinConfig</ref> definition to inform <ref refid="_g_p_i_o_8h_1a7aaec489dca5ac4d278d2eb3ae38a2d2" kindref="member">GPIO_init()</ref> NOT to configure the corresponding pin. </para>        </briefdescription>
+        <detaileddescription>
+<para>Do not configure this Pin </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="347" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="347" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" prot="public" static="no">
+        <type>uint32_t</type>
+        <definition>typedef uint32_t GPIO_PinConfig</definition>
+        <argsstring></argsstring>
+        <name>GPIO_PinConfig</name>
+        <briefdescription>
+<para>GPIO pin configuration settings. </para>        </briefdescription>
+        <detaileddescription>
+<para>The upper 16 bits of the 32 bit PinConfig is reserved for pin configuration settings.</para><para>The lower 16 bits are reserved for device-specific port/pin identifications </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="273" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="273" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_g_p_i_o_8h_1a46b0c9afbe998c88539abc92082a1173" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* GPIO_CallbackFxn) (uint_least8_t index)</definition>
+        <argsstring>)(uint_least8_t index)</argsstring>
+        <name>GPIO_CallbackFxn</name>
+        <briefdescription>
+<para>GPIO callback function type. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>GPIO index. This is the same index that was passed to <ref refid="_g_p_i_o_8h_1a24c401f32e65f60f11a1594fdafb9d2a" kindref="member">GPIO_setCallback()</ref>. This allows you to use the same callback function for multiple GPIO interrupts, by using the index to identify the GPIO that caused the interrupt. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="361" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" bodystart="361" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_g_p_i_o_8h_1a870cd0b05ac6fae2a930c4ea3298b570" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GPIO_clearInt</definition>
+        <argsstring>(uint_least8_t index)</argsstring>
+        <name>GPIO_clearInt</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>Clear a GPIO pin interrupt flag. </para>        </briefdescription>
+        <detaileddescription>
+<para>Clears the GPIO interrupt for the specified index.</para><para>Note: It is not necessary to call this API within a callback assigned to a pin.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>GPIO index </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="373" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_g_p_i_o_8h_1a33005dec4e3a9a58322dd33779990a86" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GPIO_disableInt</definition>
+        <argsstring>(uint_least8_t index)</argsstring>
+        <name>GPIO_disableInt</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>Disable a GPIO pin interrupt. </para>        </briefdescription>
+        <detaileddescription>
+<para>Disables interrupts for the specified GPIO index.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>GPIO index </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="382" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_g_p_i_o_8h_1a31c4e65b3855424418262e35521c7051" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GPIO_enableInt</definition>
+        <argsstring>(uint_least8_t index)</argsstring>
+        <name>GPIO_enableInt</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>Enable a GPIO pin interrupt. </para>        </briefdescription>
+        <detaileddescription>
+<para>Enables GPIO interrupts for the selected index to occur.</para><para>Note: Prior to enabling a GPIO pin interrupt, make sure that a corresponding callback function has been provided. Use the <ref refid="_g_p_i_o_8h_1a24c401f32e65f60f11a1594fdafb9d2a" kindref="member">GPIO_setCallback()</ref> API for this purpose at runtime. Alternatively, the callback function can be statically configured in the GPIO_CallbackFxn array provided.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>GPIO index </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="397" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_g_p_i_o_8h_1adf0153b2f2ab21828521aec8eb568d39" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GPIO_getConfig</definition>
+        <argsstring>(uint_least8_t index, GPIO_PinConfig *pinConfig)</argsstring>
+        <name>GPIO_getConfig</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>index</declname>
+        </param>
+        <param>
+          <type><ref refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" kindref="member">GPIO_PinConfig</ref> *</type>
+          <declname>pinConfig</declname>
+        </param>
+        <briefdescription>
+<para>Get the current configuration for a gpio pin. </para>        </briefdescription>
+        <detaileddescription>
+<para>The pin configuration is provided in the static GPIO_PinConfig array, but can be changed with <ref refid="_g_p_i_o_8h_1a015b75143cc3b8914cc298c5c4fc097e" kindref="member">GPIO_setConfig()</ref>. <ref refid="_g_p_i_o_8h_1adf0153b2f2ab21828521aec8eb568d39" kindref="member">GPIO_getConfig()</ref> gets the current pin configuration.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>GPIO index </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pinConfig</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Location to store device specific pin configuration settings </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="410" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_g_p_i_o_8h_1a7aaec489dca5ac4d278d2eb3ae38a2d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GPIO_init</definition>
+        <argsstring>()</argsstring>
+        <name>GPIO_init</name>
+        <briefdescription>
+<para>Initializes the GPIO module. </para>        </briefdescription>
+        <detaileddescription>
+<para>The pins defined in the application-provided <emphasis>GPIOXXX_config</emphasis> structure are initialized accordingly.</para><para><simplesect kind="pre"><para>The GPIO_config structure must exist and be persistent before this function can be called. This function must also be called before any other GPIO driver APIs. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="422" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_g_p_i_o_8h_1a39deeae6a6b28d3c56693a668601177e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint_fast8_t</type>
+        <definition>uint_fast8_t GPIO_read</definition>
+        <argsstring>(uint_least8_t index)</argsstring>
+        <name>GPIO_read</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>Reads the value of a GPIO pin. </para>        </briefdescription>
+        <detaileddescription>
+<para>The value returned will either be zero or one depending on the state of the pin.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>GPIO index</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>0 or 1, depending on the state of the pin. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="434" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_g_p_i_o_8h_1a24c401f32e65f60f11a1594fdafb9d2a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GPIO_setCallback</definition>
+        <argsstring>(uint_least8_t index, GPIO_CallbackFxn callback)</argsstring>
+        <name>GPIO_setCallback</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>index</declname>
+        </param>
+        <param>
+          <type><ref refid="_g_p_i_o_8h_1a46b0c9afbe998c88539abc92082a1173" kindref="member">GPIO_CallbackFxn</ref></type>
+          <declname>callback</declname>
+        </param>
+        <briefdescription>
+<para>Bind a callback function to a GPIO pin interrupt. </para>        </briefdescription>
+        <detaileddescription>
+<para>Associate a callback function with a particular GPIO pin interrupt.</para><para>Callbacks can be changed at any time, making it easy to switch between efficient, state-specific interrupt handlers.</para><para>Note: The callback function is called within the context of an interrupt handler.</para><para>Note: This API does not enable the GPIO pin interrupt. Use <ref refid="_g_p_i_o_8h_1a31c4e65b3855424418262e35521c7051" kindref="member">GPIO_enableInt()</ref> and <ref refid="_g_p_i_o_8h_1a33005dec4e3a9a58322dd33779990a86" kindref="member">GPIO_disableInt()</ref> to enable and disable the pin interrupt as necessary.</para><para>Note: it is not necessary to call <ref refid="_g_p_i_o_8h_1a870cd0b05ac6fae2a930c4ea3298b570" kindref="member">GPIO_clearInt()</ref> within a callback. That operation is performed internally before the callback is invoked.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>GPIO index </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>callback</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>address of the callback function </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="457" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_g_p_i_o_8h_1a015b75143cc3b8914cc298c5c4fc097e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int_fast16_t</type>
+        <definition>int_fast16_t GPIO_setConfig</definition>
+        <argsstring>(uint_least8_t index, GPIO_PinConfig pinConfig)</argsstring>
+        <name>GPIO_setConfig</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>index</declname>
+        </param>
+        <param>
+          <type><ref refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" kindref="member">GPIO_PinConfig</ref></type>
+          <declname>pinConfig</declname>
+        </param>
+        <briefdescription>
+<para>Configure the gpio pin. </para>        </briefdescription>
+        <detaileddescription>
+<para>Dynamically configure a gpio pin to a device specific setting. For many applications, the pin configurations provided in the static GPIO_PinConfig array is sufficient.</para><para>For input pins with interrupt configurations, a corresponding interrupt object will be created as needed.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>GPIO index </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pinConfig</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>device specific pin configuration settings </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="472" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_g_p_i_o_8h_1a202292e331e2eb9ccf97f4caab2e97aa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GPIO_toggle</definition>
+        <argsstring>(uint_least8_t index)</argsstring>
+        <name>GPIO_toggle</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>Toggles the current state of a GPIO. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>GPIO index </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="480" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_g_p_i_o_8h_1adf697825b43c26c0126173780e57eb58" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GPIO_write</definition>
+        <argsstring>(uint_least8_t index, unsigned int value)</argsstring>
+        <name>GPIO_write</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>index</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Writes the value to a GPIO pin. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>GPIO index </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be either 0 or 1 </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h" line="488" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>GPIO driver. </para>    </briefdescription>
+    <detaileddescription>
+<para>============================================================================</para><para>The GPIO header file should be included in an application as follows: <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/GPIO.h&gt;</highlight></codeline>
+</programlisting></para><para><heading level="1">Overview</heading>
+</para><para>The GPIO module allows you to manage General Purpose I/O pins via simple and portable APIs. GPIO pin behavior is usually configured statically, but can also be configured or reconfigured at runtime.</para><para>Because of its simplicity, the GPIO driver does not follow the model of other TI-RTOS drivers in which a driver application interface has separate device-specific implementations. This difference is most apparent in the GPIOxxx_Config structure, which does not require you to specify a particular function table or object.</para><para><heading level="1">Usage</heading>
+</para><para>The following code example demonstrates how to configure a GPIO pin to generate an interrupt and how to toggle an an LED on and off within the registered interrupt callback function.</para><para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;stdint.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;stddef.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Driver<sp/>Header<sp/>file</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/GPIO.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Example/Board<sp/>Header<sp/>file</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&quot;Board.h&quot;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">main()</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Call<sp/>GPIO<sp/>driver<sp/>init<sp/>function</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GPIO_init();</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Turn<sp/>on<sp/>user<sp/>LED</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GPIO_write(Board_GPIO_LED0,<sp/>Board_GPIO_LED_ON);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>install<sp/>Button<sp/>callback</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GPIO_setCallback(Board_GPIO_BUTTON0,<sp/>gpioButtonFxn0);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Enable<sp/>interrupts</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GPIO_enableInt(Board_GPIO_BUTTON0);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//</highlight></codeline>
+<codeline><highlight class="normal">//<sp/><sp/>========<sp/>gpioButtonFxn0<sp/>========</highlight></codeline>
+<codeline><highlight class="normal">//<sp/><sp/>Callback<sp/>function<sp/>for<sp/>the<sp/>GPIO<sp/>interrupt<sp/>on<sp/>Board_GPIO_BUTTON0.</highlight></codeline>
+<codeline><highlight class="normal">//</highlight></codeline>
+<codeline><highlight class="normal">void<sp/>gpioButtonFxn0(uint_least8_t<sp/>index)</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Toggle<sp/>the<sp/>LED</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GPIO_toggle(Board_GPIO_LED0);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para><para>Details for the example code above are described in the following subsections.</para><para><heading level="3">GPIO Driver Configuration</heading>
+</para><para>In order to use the GPIO APIs, the application is required to provide 3 structures in the Board.c file:<orderedlist>
+<listitem><para>An array of <ref refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" kindref="member">GPIO_PinConfig</ref> elements that defines the initial configuration of each pin used by the application. A pin is referenced in the application by its corresponding index in this array. The pin type (that is, INPUT/OUTPUT), its initial state (that is OUTPUT_HIGH or LOW), interrupt behavior (RISING/FALLING edge, etc.), and device specific pin identification are configured in each element of this array (see <ref refid="group___g_p_i_o___pin_config_settings" kindref="compound">Macros used to configure GPIO pins</ref>). Below is an MSP432 device specific example of the GPIO_PinConfig array: <programlisting><codeline><highlight class="normal">//</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>Array<sp/>of<sp/>Pin<sp/>configurations</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>NOTE:<sp/>The<sp/>order<sp/>of<sp/>the<sp/>pin<sp/>configurations<sp/>must<sp/>coincide<sp/>with<sp/>what<sp/>was</highlight></codeline>
+<codeline><highlight class="normal">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>defined<sp/>in<sp/>MSP_EXP432P401R.h</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>NOTE:<sp/>Pins<sp/>not<sp/>used<sp/>for<sp/>interrupts<sp/>should<sp/>be<sp/>placed<sp/>at<sp/>the<sp/>end<sp/>of<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>array.<sp/><sp/>Callback<sp/>entries<sp/>can<sp/>be<sp/>omitted<sp/>from<sp/>callbacks<sp/>array<sp/>to</highlight></codeline>
+<codeline><highlight class="normal">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>reduce<sp/>memory<sp/>usage.</highlight></codeline>
+<codeline><highlight class="normal">//</highlight></codeline>
+<codeline><highlight class="normal">GPIO_PinConfig<sp/>gpioPinConfigs[]<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Input<sp/>pins</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>MSP_EXP432P401R_GPIO_S1</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GPIOMSP432_P1_1<sp/>|<sp/>GPIO_CFG_IN_PU<sp/>|<sp/>GPIO_CFG_IN_INT_FALLING,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>MSP_EXP432P401R_GPIO_S2</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GPIOMSP432_P1_4<sp/>|<sp/>GPIO_CFG_IN_PU<sp/>|<sp/>GPIO_CFG_IN_INT_FALLING,</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Output<sp/>pins</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>MSP_EXP432P401R_GPIO_LED1</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GPIOMSP432_P1_0<sp/>|<sp/>GPIO_CFG_OUT_STD<sp/>|<sp/>GPIO_CFG_OUT_STR_HIGH<sp/>|<sp/>GPIO_CFG_OUT_LOW,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>MSP_EXP432P401R_GPIO_LED_RED</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GPIOMSP432_P2_0<sp/>|<sp/>GPIO_CFG_OUT_STD<sp/>|<sp/>GPIO_CFG_OUT_STR_HIGH<sp/>|<sp/>GPIO_CFG_OUT_LOW,</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting></para></listitem><listitem><para>An array of <ref refid="_g_p_i_o_8h_1a46b0c9afbe998c88539abc92082a1173" kindref="member">GPIO_CallbackFxn</ref> elements that is used to store callback function pointers for GPIO pins configured with interrupts. The indexes for these array elements correspond to the pins defined in the GPIO_pinConfig array. These function pointers can be defined statically by referencing the callback function name in the array element, or dynamically, by setting the array element to NULL and using <ref refid="_g_p_i_o_8h_1a24c401f32e65f60f11a1594fdafb9d2a" kindref="member">GPIO_setCallback()</ref> at runtime to plug the callback entry. Pins not used for interrupts can be omitted from the callback array to reduce memory usage (if they are placed at the end of GPIO_pinConfig array). The callback function syntax should match the following: <programlisting><codeline><highlight class="normal">void<sp/>(*GPIO_CallbackFxn)(uint_least8_t<sp/>index);</highlight></codeline>
+</programlisting> The index parameter is the same index that was passed to <ref refid="_g_p_i_o_8h_1a24c401f32e65f60f11a1594fdafb9d2a" kindref="member">GPIO_setCallback()</ref>. This allows the same callback function to be used for multiple GPIO interrupts, by using the index to identify the GPIO that caused the interrupt. Keep in mind that the callback functions will be called in the context of an interrupt service routine and should be designed accordingly. When an interrupt is triggered, the interrupt status of all (interrupt enabled) pins on a port will be read, cleared, and the respective callbacks will be executed. Callbacks will be called in order from least significant bit to most significant bit. Below is an MSP432 device specific example of the GPIO_CallbackFxn array: <programlisting><codeline><highlight class="normal">//</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>Array<sp/>of<sp/>callback<sp/>function<sp/>pointers</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>NOTE:<sp/>The<sp/>order<sp/>of<sp/>the<sp/>pin<sp/>configurations<sp/>must<sp/>coincide<sp/>with<sp/>what<sp/>was</highlight></codeline>
+<codeline><highlight class="normal">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>defined<sp/>in<sp/>MSP_EXP432P401R.h</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>NOTE:<sp/>Pins<sp/>not<sp/>used<sp/>for<sp/>interrupts<sp/>can<sp/>be<sp/>omitted<sp/>from<sp/>callbacks<sp/>array</highlight></codeline>
+<codeline><highlight class="normal">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>to<sp/>reduce<sp/>memory<sp/>usage<sp/>(if<sp/>placed<sp/>at<sp/>end<sp/>of<sp/>gpioPinConfigs</highlight></codeline>
+<codeline><highlight class="normal">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>array).</highlight></codeline>
+<codeline><highlight class="normal">//</highlight></codeline>
+<codeline><highlight class="normal">GPIO_CallbackFxn<sp/>gpioCallbackFunctions[]<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>MSP_EXP432P401R_GPIO_S1</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>NULL,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>MSP_EXP432P401R_GPIO_S2</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>NULL</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting></para></listitem><listitem><para>A device specific GPIOxxx_Config structure that tells the GPIO driver where the two aforementioned arrays are and the number of elements in each. The interrupt priority of all pins configured to generate interrupts is also specified here. Values for the interrupt priority are device-specific. You should be well-acquainted with the interrupt controller used in your device before setting this parameter to a non-default value. The sentinel value of (~0) (the default value) is used to indicate that the lowest possible priority should be used. Below is an MSP432 device specific example of a GPIOxxx_Config structure: <programlisting><codeline><highlight class="normal">//</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>MSP432<sp/>specific<sp/>GPIOxxx_Config<sp/>structure</highlight></codeline>
+<codeline><highlight class="normal">//</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>GPIOMSP432_Config<sp/>GPIOMSP432_config<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.pinConfigs<sp/>=<sp/>(GPIO_PinConfig<sp/>*)gpioPinConfigs,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.callbacks<sp/>=<sp/>(GPIO_CallbackFxn<sp/>*)gpioCallbackFunctions,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.numberOfPinConfigs<sp/>=<sp/>sizeof(gpioPinConfigs)/sizeof(GPIO_PinConfig),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.numberOfCallbacks<sp/>=<sp/>sizeof(gpioCallbackFunctions)/sizeof(GPIO_CallbackFxn),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>(~0)</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting></para></listitem></orderedlist>
+</para><para><heading level="3">Initializing the GPIO Driver</heading>
+</para><para><ref refid="_g_p_i_o_8h_1a7aaec489dca5ac4d278d2eb3ae38a2d2" kindref="member">GPIO_init()</ref> must be called before any other GPIO APIs. This function configures each GPIO pin in the user-provided <ref refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" kindref="member">GPIO_PinConfig</ref> array according to the defined settings. The user can also reconfigure a pin dynamically after <ref refid="_g_p_i_o_8h_1a7aaec489dca5ac4d278d2eb3ae38a2d2" kindref="member">GPIO_init()</ref> is called by using the <ref refid="_g_p_i_o_8h_1a015b75143cc3b8914cc298c5c4fc097e" kindref="member">GPIO_setConfig()</ref>, and <ref refid="_g_p_i_o_8h_1a24c401f32e65f60f11a1594fdafb9d2a" kindref="member">GPIO_setCallback()</ref> APIs.</para><para><heading level="1">Implementation</heading>
+</para><para>Unlike most other TI-RTOS drivers, the GPIO driver has no generic function table with pointers to device-specific API implementations. All the generic GPIO APIs are implemented by the device-specific GPIO driver module. Additionally, there is no notion of an instance &apos;handle&apos; with the GPIO driver. GPIO pins are referenced by their numeric index in the GPIO_PinConfig array. This design approach was used to enhance runtime and memory efficiency. <hruler/>
+ </para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2018,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>are<sp/>met:</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>Texas<sp/>Instruments<sp/>Incorporated<sp/>nor<sp/>the<sp/>names<sp/>of</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>its<sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>from<sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>THIS<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>BY<sp/>THE<sp/>COPYRIGHT<sp/>HOLDERS<sp/>AND<sp/>CONTRIBUTORS<sp/>&quot;AS<sp/>IS&quot;</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>AND<sp/>ANY<sp/>EXPRESS<sp/>OR<sp/>IMPLIED<sp/>WARRANTIES,<sp/>INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>THE<sp/>IMPLIED<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY<sp/>AND<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>PURPOSE<sp/>ARE<sp/>DISCLAIMED.<sp/>IN<sp/>NO<sp/>EVENT<sp/>SHALL<sp/>THE<sp/>COPYRIGHT<sp/>OWNER<sp/>OR</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>CONTRIBUTORS<sp/>BE<sp/>LIABLE<sp/>FOR<sp/>ANY<sp/>DIRECT,<sp/>INDIRECT,<sp/>INCIDENTAL,<sp/>SPECIAL,</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>EXEMPLARY,<sp/>OR<sp/>CONSEQUENTIAL<sp/>DAMAGES<sp/>(INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>PROCUREMENT<sp/>OF<sp/>SUBSTITUTE<sp/>GOODS<sp/>OR<sp/>SERVICES;<sp/>LOSS<sp/>OF<sp/>USE,<sp/>DATA,<sp/>OR<sp/>PROFITS;</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>OR<sp/>BUSINESS<sp/>INTERRUPTION)<sp/>HOWEVER<sp/>CAUSED<sp/>AND<sp/>ON<sp/>ANY<sp/>THEORY<sp/>OF<sp/>LIABILITY,</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>WHETHER<sp/>IN<sp/>CONTRACT,<sp/>STRICT<sp/>LIABILITY,<sp/>OR<sp/>TORT<sp/>(INCLUDING<sp/>NEGLIGENCE<sp/>OR</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>OTHERWISE)<sp/>ARISING<sp/>IN<sp/>ANY<sp/>WAY<sp/>OUT<sp/>OF<sp/>THE<sp/>USE<sp/>OF<sp/>THIS<sp/>SOFTWARE,</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>EVEN<sp/>IF<sp/>ADVISED<sp/>OF<sp/>THE<sp/>POSSIBILITY<sp/>OF<sp/>SUCH<sp/>DAMAGE.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*/</highlight></codeline>
+<codeline lineno="218"><highlight class="preprocessor">#ifndef<sp/>ti_drivers_GPIO__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_drivers_GPIO__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight></codeline>
+<codeline lineno="245" refid="_g_p_i_o_8h_1a9338b76015f438019f21c32922f3308e" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_STATUS_RESERVED<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(-32)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="246"><highlight class="normal"></highlight></codeline>
+<codeline lineno="253" refid="_g_p_i_o_8h_1acef3ff21200e0cff860ddd2b64adac07" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_STATUS_SUCCESS<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight></codeline>
+<codeline lineno="261" refid="_g_p_i_o_8h_1a9128d9c1019c04160cfd76af9dff919a" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_STATUS_ERROR<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(-1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight></codeline>
+<codeline lineno="273" refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" kindref="member">GPIO_PinConfig</ref>;</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"></highlight></codeline>
+<codeline lineno="279"><highlight class="preprocessor">#define<sp/>GPIO_CFG_IO_MASK<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0x00ff0000</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="280"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GPIO_CFG_IO_LSB<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>16</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_TYPE_MASK<sp/><sp/><sp/><sp/><sp/>0x00060000</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="282"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_TYPE_LSB<sp/><sp/><sp/><sp/><sp/><sp/>17</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GPIO_CFG_IN_TYPE_MASK<sp/><sp/><sp/><sp/><sp/><sp/>0x00060000</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GPIO_CFG_IN_TYPE_LSB<sp/><sp/><sp/><sp/><sp/><sp/><sp/>17</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="285"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_STRENGTH_MASK<sp/>0x00f00000</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="286"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_STRENGTH_LSB<sp/><sp/>20</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="287"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GPIO_CFG_INT_MASK<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0x07000000</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="288"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GPIO_CFG_INT_LSB<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>24</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="289"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_BIT<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>19</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="290"><highlight class="normal"></highlight></codeline>
+<codeline lineno="299" refid="group___g_p_i_o___pin_config_settings_1gaad0c4b9c093f1d57fd03061b7456193a" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUTPUT<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>0)<sp/>&lt;&lt;<sp/>GPIO_CFG_IO_LSB)<sp/></highlight></codeline>
+<codeline lineno="300" refid="group___g_p_i_o___pin_config_settings_1gac52528c42a8eb3be193f49de5ed7d820" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_STD<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>0)<sp/>&lt;&lt;<sp/>GPIO_CFG_IO_LSB)<sp/></highlight></codeline>
+<codeline lineno="301" refid="group___g_p_i_o___pin_config_settings_1gae660060d38901c2370d8f104fbb842a2" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_OD_NOPULL<sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>2)<sp/>&lt;&lt;<sp/>GPIO_CFG_IO_LSB)<sp/></highlight></codeline>
+<codeline lineno="302" refid="group___g_p_i_o___pin_config_settings_1ga16cfdcae58be5f77932b36f43e7c1d2f" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_OD_PU<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>4)<sp/>&lt;&lt;<sp/>GPIO_CFG_IO_LSB)<sp/></highlight></codeline>
+<codeline lineno="303" refid="group___g_p_i_o___pin_config_settings_1gaf4e7be1d009ff2c25a048ab7fe401d88" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_OD_PD<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>6)<sp/>&lt;&lt;<sp/>GPIO_CFG_IO_LSB)<sp/></highlight></codeline>
+<codeline lineno="305" refid="group___g_p_i_o___pin_config_settings_1ga2917f431dff7eb7f5559643bd8df251d" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_STR_LOW<sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>0)<sp/>&lt;&lt;<sp/>GPIO_CFG_OUT_STRENGTH_LSB)<sp/></highlight></codeline>
+<codeline lineno="306" refid="group___g_p_i_o___pin_config_settings_1gac1d2c5bf8f2359d26d28abc8aa393b3a" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_STR_MED<sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>1)<sp/>&lt;&lt;<sp/>GPIO_CFG_OUT_STRENGTH_LSB)<sp/></highlight></codeline>
+<codeline lineno="307" refid="group___g_p_i_o___pin_config_settings_1ga25609d59d41f081ae9759d5862dc9dd9" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_STR_HIGH<sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>2)<sp/>&lt;&lt;<sp/>GPIO_CFG_OUT_STRENGTH_LSB)<sp/></highlight></codeline>
+<codeline lineno="309" refid="group___g_p_i_o___pin_config_settings_1gae86eb6dc677c962a9ad94bdad6752dc0" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_HIGH<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>1)<sp/>&lt;&lt;<sp/>GPIO_CFG_OUT_BIT)<sp/></highlight></codeline>
+<codeline lineno="310" refid="group___g_p_i_o___pin_config_settings_1gad4fd3be9a7bec74d862cb1caecc5d4be" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_OUT_LOW<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>0)<sp/>&lt;&lt;<sp/>GPIO_CFG_OUT_BIT)<sp/></highlight></codeline>
+<codeline lineno="316" refid="group___g_p_i_o___pin_config_settings_1ga874e34de3bef2d9415b4311dd6bed234" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_INPUT<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>1)<sp/>&lt;&lt;<sp/>GPIO_CFG_IO_LSB)<sp/></highlight></codeline>
+<codeline lineno="317" refid="group___g_p_i_o___pin_config_settings_1gad2e8d27bfc96ef0de4dd35db10055412" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_IN_NOPULL<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>1)<sp/>&lt;&lt;<sp/>GPIO_CFG_IO_LSB)<sp/></highlight></codeline>
+<codeline lineno="318" refid="group___g_p_i_o___pin_config_settings_1ga4fb7b60751481b6988049fe8fa94a7d7" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_IN_PU<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>3)<sp/>&lt;&lt;<sp/>GPIO_CFG_IO_LSB)<sp/></highlight></codeline>
+<codeline lineno="319" refid="group___g_p_i_o___pin_config_settings_1gad09e6716ad1b54cb6509b8c92a6567c6" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_IN_PD<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>5)<sp/>&lt;&lt;<sp/>GPIO_CFG_IO_LSB)<sp/></highlight></codeline>
+<codeline lineno="325" refid="group___g_p_i_o___pin_config_settings_1ga666c6995ed5737b43a707d1cacd9fe69" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_IN_INT_NONE<sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>0)<sp/>&lt;&lt;<sp/>GPIO_CFG_INT_LSB)<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="326" refid="group___g_p_i_o___pin_config_settings_1ga7a69ee26049dc2f8b5059b00a24b9f74" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_IN_INT_FALLING<sp/><sp/><sp/><sp/>(((uint32_t)<sp/>1)<sp/>&lt;&lt;<sp/>GPIO_CFG_INT_LSB)<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="327" refid="group___g_p_i_o___pin_config_settings_1ga4a9f53e525d1f1659b485274d08ff91f" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_IN_INT_RISING<sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>2)<sp/>&lt;&lt;<sp/>GPIO_CFG_INT_LSB)<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="328" refid="group___g_p_i_o___pin_config_settings_1ga0829900a2dd949219edc6ddc8d928f3c" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_IN_INT_BOTH_EDGES<sp/>(((uint32_t)<sp/>3)<sp/>&lt;&lt;<sp/>GPIO_CFG_INT_LSB)<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="329" refid="group___g_p_i_o___pin_config_settings_1gab0f05c331bb66230f175e574d0d317a6" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_IN_INT_LOW<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>4)<sp/>&lt;&lt;<sp/>GPIO_CFG_INT_LSB)<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="330" refid="group___g_p_i_o___pin_config_settings_1ga669d2e840e0f934426670a069a5efe0e" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_IN_INT_HIGH<sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>5)<sp/>&lt;&lt;<sp/>GPIO_CFG_INT_LSB)<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="341" refid="group___g_p_i_o___pin_config_settings_1gac8df4b49e09cb612275ed7d00e8cc1cf" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_CFG_IN_INT_ONLY<sp/><sp/><sp/><sp/><sp/><sp/><sp/>(((uint32_t)<sp/>1)<sp/>&lt;&lt;<sp/>27)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="347" refid="group___g_p_i_o___pin_config_settings_1ga0974eb3af57b7bccef9ac749d4cf23a7" refkind="member"><highlight class="preprocessor">#define<sp/>GPIO_DO_NOT_CONFIG<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0x40000000<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="361" refid="_g_p_i_o_8h_1a46b0c9afbe998c88539abc92082a1173" refkind="member"><highlight class="preprocessor">typedef<sp/>void<sp/>(*GPIO_CallbackFxn)(uint_least8_t<sp/>index);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="362"><highlight class="normal"></highlight></codeline>
+<codeline lineno="373"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_g_p_i_o_8h_1a870cd0b05ac6fae2a930c4ea3298b570" kindref="member">GPIO_clearInt</ref>(uint_least8_t<sp/>index);</highlight></codeline>
+<codeline lineno="374"><highlight class="normal"></highlight></codeline>
+<codeline lineno="382"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_g_p_i_o_8h_1a33005dec4e3a9a58322dd33779990a86" kindref="member">GPIO_disableInt</ref>(uint_least8_t<sp/>index);</highlight></codeline>
+<codeline lineno="383"><highlight class="normal"></highlight></codeline>
+<codeline lineno="397"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_g_p_i_o_8h_1a31c4e65b3855424418262e35521c7051" kindref="member">GPIO_enableInt</ref>(uint_least8_t<sp/>index);</highlight></codeline>
+<codeline lineno="398"><highlight class="normal"></highlight></codeline>
+<codeline lineno="410"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_g_p_i_o_8h_1adf0153b2f2ab21828521aec8eb568d39" kindref="member">GPIO_getConfig</ref>(uint_least8_t<sp/>index,<sp/>GPIO_PinConfig<sp/>*pinConfig);</highlight></codeline>
+<codeline lineno="411"><highlight class="normal"></highlight></codeline>
+<codeline lineno="422"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_g_p_i_o_8h_1a7aaec489dca5ac4d278d2eb3ae38a2d2" kindref="member">GPIO_init</ref>();</highlight></codeline>
+<codeline lineno="423"><highlight class="normal"></highlight></codeline>
+<codeline lineno="434"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>uint_fast8_t<sp/><ref refid="_g_p_i_o_8h_1a39deeae6a6b28d3c56693a668601177e" kindref="member">GPIO_read</ref>(uint_least8_t<sp/>index);</highlight></codeline>
+<codeline lineno="435"><highlight class="normal"></highlight></codeline>
+<codeline lineno="457"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_g_p_i_o_8h_1a24c401f32e65f60f11a1594fdafb9d2a" kindref="member">GPIO_setCallback</ref>(uint_least8_t<sp/>index,<sp/><ref refid="_g_p_i_o_8h_1a46b0c9afbe998c88539abc92082a1173" kindref="member">GPIO_CallbackFxn</ref><sp/>callback);</highlight></codeline>
+<codeline lineno="458"><highlight class="normal"></highlight></codeline>
+<codeline lineno="472"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/><ref refid="_g_p_i_o_8h_1a015b75143cc3b8914cc298c5c4fc097e" kindref="member">GPIO_setConfig</ref>(uint_least8_t<sp/>index,</highlight></codeline>
+<codeline lineno="473"><highlight class="normal"><sp/><sp/><sp/><sp/>GPIO_PinConfig<sp/>pinConfig);</highlight></codeline>
+<codeline lineno="474"><highlight class="normal"></highlight></codeline>
+<codeline lineno="480"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_g_p_i_o_8h_1a202292e331e2eb9ccf97f4caab2e97aa" kindref="member">GPIO_toggle</ref>(uint_least8_t<sp/>index);</highlight></codeline>
+<codeline lineno="481"><highlight class="normal"></highlight></codeline>
+<codeline lineno="488"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_g_p_i_o_8h_1adf697825b43c26c0126173780e57eb58" kindref="member">GPIO_write</ref>(uint_least8_t<sp/>index,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="489"><highlight class="normal"></highlight></codeline>
+<codeline lineno="490"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="491"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="492"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="493"><highlight class="normal"></highlight></codeline>
+<codeline lineno="494"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_GPIO__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="exports/tidrivers_msp432/source/ti/drivers/GPIO.h"/>
+  </compounddef>
+</doxygen>

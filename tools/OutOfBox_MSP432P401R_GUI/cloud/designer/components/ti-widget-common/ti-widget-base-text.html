@@ -1,0 +1,61 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-base.html">
+<polymer-element name="ti-widget-base-text" extends="ti-widget-base" attributes="textAlign textDecoration fontWeight fontStyle fontColor fontSize">
+
+    <script>
+        Polymer ('ti-widget-base-text', 
+        {
+            textAlign : "left",
+            textDecoration: "none",
+            fontWeight: "normal",
+            fontStyle: "normal",
+            fontColor: "",
+            fontSize: "inherit",
+            
+            textAlignChanged : function()
+            {
+                this.getTextElement().style['textAlign'] = this.textAlign;
+            },
+            textDecorationChanged : function()
+            {
+                this.getTextElement().style['text-decoration'] = this.textDecoration;
+            },
+            fontWeightChanged : function()
+            {
+                this.getTextElement().style['font-weight'] = this.fontWeight;
+            },
+            fontStyleChanged : function()
+            {
+                this.getTextElement().style['font-style'] = this.fontStyle;
+            },
+            fontColorChanged : function()
+            {
+                this.getTextElement().style['color'] = this.fontColor;
+            },
+            fontSizeChanged : function()
+            {
+                this.getTextElement().style['font-size'] = this.fontSize;
+            },
+            focusHandler : function()
+            {
+                this._hasFocus = true;
+                if (this.selectOnClick)
+                {
+                    this.getTextElement().select();
+                }
+            },
+            blurHandler : function()
+            {
+                this._hasFocus = false;
+            },
+            hasFocus : function()
+            {
+                return this._hasFocus;
+            },
+            getTextElement : function()
+            {
+            	return this.getElement();
+            }
+        });
+    </script>
+</polymer-element>

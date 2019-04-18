@@ -1,0 +1,121 @@
+<!--
+`ti-widget-button` is a bindable version of the Paper-button component.
+
+Example:
+
+    <ti-widget-button></ti-widget-button>
+
+See demo for a full working example of how to use this component.
+
+@group TI Widgets
+@element ti-widget-button
+@homepage https://gitorious.design.ti.com/guicomposer-nw/ti-widget-common
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+        its contributors may be used to endorse or promote products derived
+        from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-a11y-keys/core-a11y-keys.html" >
+<link rel="import" href="../core-tooltip/core-tooltip.html" >
+<link rel="import" href="../core-icon-button/core-icon-button.html" >
+<link rel="import" href="../paper-button/paper-button.html" >
+-->
+<polymer-element name="ti-widget-button" extends="paper-button" attributes="{raised}" >
+    <script>
+        Polymer ('ti-widget-button', {
+            publish: {
+                /**
+                 * Controls the button rendering based on css selected theme.
+                 *
+                 * @attribute buttonType
+                 * @type string
+                 * @default primary
+                 */
+                buttonType: "default",
+                fontColor: undefined
+            },
+            fontColorChanged: function(){
+               if ((this.fontColor !== undefined)&&(this.style !== undefined)){
+                   this.style.color=this.fontColor;
+               }
+            },
+            buttonTypeChanged: function() {
+                if (this.buttonType.trim().length > 0) {
+                    var numAttributes = 0;
+                    if (this.attributes !== undefined) {
+                        numAttributes = this.attributes.length;
+                    }
+                    var found = false;
+                    var i = 0;
+                    while ((!found) && (i < numAttributes)) {
+                        var attr = this.attributes[i].name;
+                        switch (attr) {
+                            case "primary":
+                            case "secondary":
+                            case "success":
+                            case "info":
+                            case "warning":
+                            case "error":
+                            case "link":
+                                this.removeAttribute(attr);
+                                found = true;
+                                break;
+                        }
+                        i++;
+                    }
+                    if (this.buttonType !== "default") {
+                        this.setAttribute(this.buttonType.toLowerCase(), "");
+                    }
+                }
+            },
+            btnClickHdlr: undefined,
+            logevent:   function(event) {
+                console.log('ti-widget-button: clicked. id='+event.target.id);
+            },
+            ready: function() {
+                this.buttonTypeChanged();
+            },
+            domReady: function() {
+                if (this.style !== undefined) {
+                    this.fontColor = this.style.color;
+                }
+            },
+            toggleChanged: function() {
+                this.super();
+                if (this.toggle) {
+                    // we need noink attribute to work around a bug in paper-button for toggle button operation.
+                    this.setAttribute('noink', '');
+                }
+                else {
+                    this.removeAttribute('noink');
+                }
+            }
+        });
+    </script>
+</polymer-element>

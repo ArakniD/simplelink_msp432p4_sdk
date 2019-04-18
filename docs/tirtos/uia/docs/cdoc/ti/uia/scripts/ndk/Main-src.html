@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.scripts.ndk.Main</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="xdoc">/*!
+</span>     2    <span class="xdoc"> *  ======== Main ========
+</span>     3    <span class="xdoc"> *  Tool for reading and decoding UIA data over ethernet.
+</span>     4    <span class="xdoc"> */</span>
+     5    <span class=key>metaonly</span> <span class=key>module</span> Main <span class=key>inherits</span> xdc.tools.ICmd {
+     6    
+     7        <span class=key>override</span> <span class=key>config</span> String usage[] = [
+     8            <span class="string">' '</span>,
+     9            <span class="string">'Usage'</span>,
+    10            <span class="string">'[-p] [-h] [-m] [-e executable] [-x RTA XML file] [-o output text file] [-c delimter character]'</span>,
+    11            <span class="string">'[--help]'</span>,
+    12            <span class="string">' '</span>,
+    13        ];
+    14    
+    15    <span class=key>instance</span>:
+    16    
+    17        <span class="xdoc">/*!
+</span>    18    <span class="xdoc">     *  ======== printToScreen ========
+</span>    19    <span class="xdoc">     *  Whether to print the decoded records to the console.
+</span>    20    <span class="xdoc">     *
+</span>    21    <span class="xdoc">     *  You may use this tool to simply print the decoded records, or you
+</span>    22    <span class="xdoc">     *  may have them redirected to a file to be processed elsewhere.
+</span>    23    <span class="xdoc">     */</span>
+    24        @CommandOption(<span class="string">'p'</span>)
+    25        <span class=key>config</span> Bool printToScreen = <span class=key>false</span>;
+    26    
+    27        <span class="xdoc">/*!
+</span>    28    <span class="xdoc">     *  ======== suppressHeader ========
+</span>    29    <span class="xdoc">     *  Don't print the header when printing the decoded records.
+</span>    30    <span class="xdoc">     */</span>
+    31        @CommandOption(<span class="string">'h'</span>)
+    32        <span class=key>config</span> Bool suppressHeader = <span class=key>false</span>;
+    33    
+    34        <span class="xdoc">/*!
+</span>    35    <span class="xdoc">     *  ======== more ========
+</span>    36    <span class="xdoc">     *  Wait for the user to press enter before displaying the next packet.
+</span>    37    <span class="xdoc">     *
+</span>    38    <span class="xdoc">     *  Without this flag, the tool will simply print all of the records in the
+</span>    39    <span class="xdoc">     *  data file to the screen. If this flag is set, then the tool will wait
+</span>    40    <span class="xdoc">     *  the user to press enter in between displaying each packet.
+</span>    41    <span class="xdoc">     */</span>
+    42        @CommandOption(<span class="string">'m'</span>)
+    43        <span class=key>config</span> Bool more = <span class=key>false</span>;
+    44    
+    45        <span class="xdoc">/*!
+</span>    46    <span class="xdoc">     *  ======== executable ========
+</span>    47    <span class="xdoc">     *  Path to the executable which was used to generate the data file.
+</span>    48    <span class="xdoc">     */</span>
+    49        @CommandOption(<span class="string">'e'</span>)
+    50        <span class=key>config</span> String executable = <span class="string">""</span>;
+    51    
+    52        <span class="xdoc">/*!
+</span>    53    <span class="xdoc">     *  ======== rtaXml ========
+</span>    54    <span class="xdoc">     *  Optional path to the RTA XML file.
+</span>    55    <span class="xdoc">     */</span>
+    56        @CommandOption(<span class="string">'x'</span>)
+    57        <span class=key>config</span> String rtaXml = <span class="string">""</span>;
+    58    
+    59        <span class="xdoc">/*!
+</span>    60    <span class="xdoc">     *  ======== outputFile ========
+</span>    61    <span class="xdoc">     *  Optional path to an output file to write the decoded records to.
+</span>    62    <span class="xdoc">     *
+</span>    63    <span class="xdoc">     *  The tool will write the decoded records out as text to the specified
+</span>    64    <span class="xdoc">     *  out file. The record properties will be separated with a delimeter
+</span>    65    <span class="xdoc">     *  character so that they can be imported into a spreadsheet such as
+</span>    66    <span class="xdoc">     *  Excel.
+</span>    67    <span class="xdoc">     */</span>
+    68        @CommandOption(<span class="string">'o'</span>)
+    69        <span class=key>config</span> String outputFile = <span class="string">""</span>;
+    70    
+    71        <span class="xdoc">/*!
+</span>    72    <span class="xdoc">     *  ======== loadFile ========
+</span>    73    <span class="xdoc">     *  // TODO
+</span>    74    <span class="xdoc">     *  [-l output file for load data]
+</span>    75    <span class="xdoc">     */</span>
+    76    
+    77        <span class="xdoc">/*!
+</span>    78    <span class="xdoc">     *  ======== delimiter ========
+</span>    79    <span class="xdoc">     *  Delimiter character to use when writing out the file.
+</span>    80    <span class="xdoc">     *
+</span>    81    <span class="xdoc">     *  The character specified here will be inserted between each of the
+</span>    82    <span class="xdoc">     *  record fields so that the file can be imported into a spreadsheet
+</span>    83    <span class="xdoc">     *  such as excel.
+</span>    84    <span class="xdoc">     */</span>
+    85        @CommandOption(<span class="string">'c'</span>)
+    86        <span class=key>config</span> String delimiter = <span class="string">"|"</span>;
+    87    
+    88    }
+</pre>
+</body></html>

@@ -1,0 +1,367 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-input/core-input.html">
+<link rel="import" href="../ti-widget-common/ti-widget-droplist.html">
+<link rel="import" href="../ti-widget-common/ti-widget-spinner.html">
+<link rel="import" href="../paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icon/core-icon.html">
+<link rel="import" href="../core-icon-button/core-icon-button.html">
+
+<polymer-element name="ti-widget-propertygrid">
+    <script  type='text/javascript'  src='../ti-core-assets/scripts/resizable-tables.js'></script>
+    <template >
+        <style>
+            :host {
+                display: inline-block;
+                position: static;
+                font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+                background-color: white;
+                border-color: grey;
+                border-width: 1px;
+
+                padding: 0px;
+            }
+
+        </style>
+        <table id="table_propertygrid" class="resizable" width="width:{{colWidthProperty+colWidthValue+3}}px" style="border:{{_borderStyle}}; border-collapse: collapse;">
+            <template id="tableHeader" if="{{!frameless}}">
+                <tr ><th style="border:{{_borderStyle}};">{{titleForPropertyCol}}</th><th style="border:{{_borderStyle}};">{{titleForValueCol}}</th></tr>
+            </template>
+            <template id="tableTemplate" repeat="{{row,rowIndex in rows}}" >
+                <tr style="height:28px;">
+                    <td  width="{{colWidthProperty}}px" style=";border:{{_borderStyle}}; padding:5px;" align="{{_propertyAlign}}">
+                        <section>{{row.name}}</section></td>
+                    <template if="{{row.widgetType === 'input'}}">
+                        <td  width="{{colWidthValue}}px" style="border{{_borderStyle}}; padding:5px;"><section style="width:100%;" on-click={{valueSelected}} on-keyup="{{valueSelected}}">
+                            <input is="core-input" id="row{{row.index}}" placeholder="{{row.label}}" value="{{row.value}}" style="width:100%;background-color:{{_inputBgColor}};" />
+                        </section></td>
+                    </template>
+                    <template if="{{row.widgetType === 'spinner'}}">
+                        <td  width="{{colWidthValue}}px" style="border{{_borderStyle}}; padding:5px;"><section style="width:100%;" on-click={{valueSelected}} on-keyup="{{valueSelected}}">
+                            <ti-widget-spinner id="numeric_row{{row.index}}" value="{{row.value}}" style="width:100%" />
+                        </section></td>
+                    </template>
+                    <template if="{{row.widgetType === 'selector'}}">
+                        <td  width="{{colWidthValue}}px" style="border:{{_borderStyle}}; padding:5px;"><section style="width:100%;" on-click={{valueSelected}} on-keyup="{{valueSelected}}">
+                            <ti-widget-droplist  id="selector_row{{row.index}}" labels="{{row.label}}" selectedIndex="{{row.value}}" style="width:100%" />
+                        </section></td>
+                    </template>
+                    <template if="{{row.widgetType === 'checkbox'}}">
+                        <td  width="{{colWidthValue}}px" style="border:{{_borderStyle}}; padding:5px;"><section style="width:100%;" on-click={{valueSelected}} on-keyup="{{valueSelected}}">
+                            <paper-checkbox  id="checkbox_row{{row.index}}" items="{{row.label}}" value="{{row.value}}" style="color:grey;padding:0px;align:left;" />
+                        </section></td>
+                    </template>
+                    <template if="{{row.widgetType === 'icon'}}">
+                        <td  width="{{colWidthValue}}px" style="border{{_borderStyle}}; padding:5px;"><section style="width:100%;" on-click={{valueSelected}} on-keyup="{{valueSelected}}">
+                            <input is="core-input" id="icon_row{{row.index}}" placeholder="{{row.label}}" value="{{row.value}}" style="width:{{colWidthValue-38}}px;background-color:{{_inputBgColor}};" />
+                            <core-icon-button icon="{{row.icon}}"  id="btn_row{{row.index}}"  on-tap="{{iconClickedHdlr}}" style="vertical-align:middle;padding:0;width:28px;height:20px;float:right;" ></core-icon-button>
+                        </section></td>
+                    </template>
+                </tr>
+
+            </template>
+        </table>
+
+    </template>
+    <script>
+        Polymer ('ti-widget-propertygrid', {
+            textDecoration: "none",
+            fontWeight: "normal",
+            fontStyle: "normal",
+            _borderStyle: "none",
+            _propertyAlign: "right",
+            _inputBgColor: "#f2f2f2",
+            publish: {
+                rows: undefined,  // NOTE: DO NOT do rows: [] as this will create a global variable for the array.
+                pendingValues: undefined,
+                colWidthProperty:"175",
+                colWidthValue:"225",
+                textAlign: "center",
+                fontColor: "black",
+                fontSize: "small",
+                /**
+                 * Properties are set using a comma-seperated string containing
+                 * the property names and seed values for each property.  The type
+                 * of input used to display the value is determined by the seed value
+                 * that is passed in, as follows:  <br/>
+                 *   numeric spinner:  value is a valid number,<br/>
+                 *   selection list:   value contains a list of strings separated by the | (pipe) character<br/>
+                 *   clickable icon:   [ICON NAME]{{ICON CLICKED HANDLER}}LABEL <br/>
+                 *   checkbox:         value is true or false,<br/>
+                 *  text input:       if none of the above
+                 * <p>
+                 *
+                 * Note: you must call the configure() method from domReady in order to
+                 * complete creation of the propertygrid instance.
+                 *
+                 * @attribute nameValuePairs
+                 * @type string
+                 * @default 'property1,value1,property2,222,property3,value3A|value3B'
+                 */
+                nameValuePairs: "String property,value1,Numeric property,222,Selection property,value3A|value3B,Boolean property,false",
+                titleForPropertyCol: "Property",
+                titleForValueCol: "Value",
+                /**
+                 * frameless = false causes the property grid to be drawn as a table with cell borders and left-justified property names
+                 * Set true to turn off cell borders and right-justify property names
+                 *
+                 * @attribute frameless
+                 * @type boolean
+                 * @default true
+                 */
+                frameless: true
+
+
+            },
+            titleForPropertyColChanged: function(){
+                console.log("ti-widget-propertygrid: change property column title to "+this.titleForPropertyCol);
+
+            },
+            _nameValuePairsChanged: function(){
+                var propArray = this.nameValuePairs.split(',');
+                if (this.rows === undefined){
+                    this.rows =[];
+                }
+                if (this.rows.length > 0){
+                    this.rows.length = 0;
+                }
+                var i=0;
+                var rowCount = 0;
+                while (i < propArray.length){
+                    if ((propArray.length - i) >= 2) {
+                        var row = {
+                            "name":propArray[i++],
+                            "label":propArray[i++],
+                            "value":null,
+                            "icon":null,
+                            "iconClickHdlrId":null,
+                            "pendingValue":null,
+                            "widgetType":"input",
+                            "id":"row"+ rowCount.toString(),
+                            "inputObj":null,
+                            "index":rowCount
+                        };
+                        if (row.label.indexOf('|')>0){
+                            row.widgetType = "selector";
+                            row.id ="selector_row"+ rowCount.toString();
+                        } else {
+                            var lcLabel = row.label.toLowerCase();
+                            if ((lcLabel === 'true')||(lcLabel === 'false')){
+                                row.widgetType = "checkbox";
+                                row.id = "checkbox_row"+rowCount.toString();
+                                row.value = false;
+                                if (lcLabel === 'true'){
+                                    row.value = true;
+                                }
+                            } else {
+                                if (row.label[0] === '[') {
+                                    // icon row format: [ICON NAME]{{ICON CLICKED HANDLER}}LABEL"
+                                    row.widgetType = "icon";
+                                    row.id = "icon_row"+rowCount.toString();
+                                    row.icon = row.label.substring(1,row.label.indexOf(']'));
+                                    row.iconClickHdlrId = row.label.substring(row.label.indexOf('{{')+2,row.label.indexOf('}}'));
+                                    row.label = row.label.substring(row.label.indexOf('}}')+2,row.label.length);
+                                } else {
+
+                                    if (!isNaN(row.label)) {
+                                        row.widgetType = "spinner";
+                                        row.id = "numeric_row" + rowCount.toString();
+                                    }
+                                }
+                            }
+                        }
+                        this.rows.push(row);
+                        if (this.pendingValues === undefined){
+                            this.pendingValues = [];
+                        }
+                        if (rowCount <= this.pendingValues.length) {
+                            this.pendingValues.push[null];
+                        }
+                        rowCount++;
+                    } else {
+                        break;
+                    }
+                };
+                //if (this.rows.length > 0) {
+                //    this.$.tableTemplate.model = this.eoqa;
+                //}
+            },
+            _iconClickedHdlr: function(event, detail, target) {
+                console.log("iconClickedHdlr");
+                var index = 0;
+                var id = "";
+
+                var iconClickHdlrId = "";
+                if ((target !== undefined) && (target !== null)) {
+                    id = target.id;
+                    if (id.indexOf('btn_row') == 0) {
+                        index = parseInt(id.substr(7, id.length));
+                        if ((index < this.rows.length) && (index >= 0)) {
+                            iconClickHdlrId = this.rows[index].iconClickHdlrId;
+                            console.log('ti-widget-propertygrid: iconClickedHdlr: index = ' + index + ', name=' + this.rows[index].name+", clickHdlrId="+iconClickHdlrId);
+                            var clickHdlrFunction = document.querySelector(iconClickHdlrId);
+                            if (clickHdlrFunction !== undefined) {
+                                clickHdlrFunction.click();
+                            } else {
+                                console.log("ERROR: ti-widget-propertygrid.iconClickedHdlr: querySelector("+iconClickHdlrId+") === undefined");
+                            }
+                        }
+                    }
+                }
+            },
+            iconClickedHdlr: undefined,
+            nameValuePairsChanged: undefined,
+            _findRow: function(searchStr){
+                var result = -1;
+                var lcSearchStr = searchStr.toLowerCase();
+                for (var i = 0; i < this.rows.length; i++) {
+                    if (this.rows[i].name.toLowerCase().indexOf(lcSearchStr) >= 0) {
+                        result = i;
+                        break;
+                    }
+                }
+                return result;
+            },
+            findRow: undefined,
+            _setValue: function(rowNumber,value){
+                if ((rowNumber >= 0)&&(rowNumber < this.rows.length)){
+
+                    if (this.rows[rowNumber].inputObj === null){
+                        var obj = this.$.table_propertygrid.querySelector('#'+this.rows[rowNumber].id);
+                        if ((obj !== undefined) && (obj !== null)) {
+                            this.rows[rowNumber].inputObj = obj;
+                        }
+                    }
+                    if (this.rows[rowNumber].inputObj !== null){
+                        if (this.rows[rowNumber].widgetType === 'selector'){
+                            //accept either a number to set the value or a string to look up in the list of items
+                            var options = this.rows[rowNumber].inputObj._options;
+                            var found = false;
+                            for (var i=0;i<options.length;i++){
+                                if (options[i].text === value){
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (found) {
+                                this.rows[rowNumber].inputObj.selectedText = value;
+                            } else {
+                                this.rows[rowNumber].inputObj.value = value;
+                            }
+                        } else {
+                            this.rows[rowNumber].inputObj.value = value;
+                        }
+                    } else {
+                        while (this.pendingValues.length <= rowNumber){
+                            this.pendingValues.push(null);
+                        }
+                        this.pendingValues[rowNumber] = value;
+
+                    }
+
+                }
+            },
+            setValue: undefined,
+            _valueSelected: function(event, detail, target){
+                var index = 0;
+                var id = "";
+                var inputObj = undefined;
+                var strValue = "";
+                if ((target !== undefined) && (target !== null)) {
+                    inputObj = target.firstElementChild;
+                    if ((inputObj !== undefined) && (inputObj !== null)){
+                        id = target.firstElementChild.id;
+                        if (id.indexOf('row') == 0) {
+                            index = parseInt(id.substr(3,id.length));
+                            if ((index < this.rows.length)&&(index >= 0)) {
+                                this.rows[index].inputObj = inputObj;
+                                strValue = inputObj.value;
+                                //console.log('ti-widget-propertygrid: value selected: index = ' + index + ', name=' + this.rows[index].name+", value="+strValue);
+                            }
+                        }
+                    }
+                }
+            },
+            valueSelected: undefined,
+            _getJSON: function(){
+                var result = [];
+
+                for (var i=0; i< this.rows.length;i++){
+                    var rowObj = {"name":"","label":"","index":i,"value":""};
+                    var row = this.rows[i];
+                    if ((row.inputObj !== null)&&(row.inputObj !== undefined)) {
+                        if (row.widgetType === 'selector'){
+                            rowObj.value = row.inputObj.selectedText;
+                        } else {
+                            rowObj.value = row.inputObj.value;
+                        }
+                    } else {
+                        rowObj.value = this.rows[i].value;
+                    }
+                    rowObj.name = row.name;
+                    rowObj.label = row.label;
+                    rowObj.index = row.index;
+
+                    result.push(rowObj);
+                }
+                return result;
+            },
+            getJSON: undefined,
+            framelessChanged: function(){
+                if (!this.frameless){
+                    this._borderStyle = "solid grey 1px";
+                    this._propertyAlign = "left";
+                    this._inputBgColor = "white";
+                }  else {
+                    this._borderStyle = "none";
+                    this._propertyAlign = "right";
+                    this._inputBgColor = "#f2f2f2";
+                }
+            },
+            ready: function(){
+
+                this.getJSON = this._getJSON.bind(this);
+                this.valueSelected = this._valueSelected.bind(this);
+                this.setValue = this._setValue.bind(this);
+                this.findRow = this._findRow.bind(this);
+                this.iconClickedHdlr = this._iconClickedHdlr.bind(this);
+                this.nameValuePairsChanged = this._nameValuePairsChanged.bind(this);
+                this.configure = this._configure.bind(this);
+
+                if (!this.frameless) {
+                    ColumnResize(this.$.table_propertygrid);
+                }
+
+            },
+            _configured: false,
+            _configure: function(){
+                if ((this.rows === undefined) || (this.rows.length === 0)) {
+                    // use the default values if none have been externally supplied
+                    console.log("ti-widget-propertygrid.configure:  using default values...");
+                    this.nameValuePairsChanged();
+                }
+                if (this.rows !== undefined) {
+                    console.log("ti-widget-propertygrid.configure:  numRows = " + this.rows.length);
+
+                    var r = 0;
+                    while (r < this.rows.length) {
+
+                        this.rows[r].inputObj = this.$.table_propertygrid.querySelector('#' + this.rows[r].id);
+
+                        if ((this.rows[r].inputObj !== undefined) && (this.rows[r].inputObj !== null)) {
+                            if ((this.pendingValues[r] !== undefined) && (this.pendingValues[r] !== null)) {
+                                console.log("ti-widget-propertygrid: Setting rows[" + r + "] " + this.rows[r].name + " = " + this.pendingValues[r]);
+                                this.rows[r].inputObj.value = this.pendingValues[r];
+                            }
+                        }
+                        r++;
+                    }
+                    this.configured = true;
+                }
+            },
+            configure: undefined
+
+
+        });
+    </script>
+</polymer-element>

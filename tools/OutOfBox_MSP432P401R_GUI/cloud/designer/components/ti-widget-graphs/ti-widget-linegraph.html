@@ -1,0 +1,593 @@
+<!--
+'ti-widget-linegraph' plots series of data in line form.
+... to be completed ...
+
+@group TI Widgets
+@element ti-widget-linegraph
+@homepage ../ti-guicomposer-helpindex/demo.html
+-->
+<!--
+    Copyright (c) 2014 Texas Instruments Inc. All rights reserved.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-resizable/core-resizable.html">
+  <link rel="import" href="../ti-widget-common/ti-widget-base.html">
+
+  <script language="javascript" type="text/javascript" src="assets/flot/jquery.js"></script>
+  <script language="javascript" type="text/javascript" src="assets/flot/jquery.flot.js"></script>
+<!--
+  <script language="javascript" type="text/javascript" src="assets/flot/jquery.flot.time.js"></script>
+  <script language="javascript" type="text/javascript" src="assets/flot/jquery.flot.navigate.js"></script>
+-->  
+
+<polymer-element name="ti-widget-linegraph" extends="ti-widget-base">
+  <template>
+    <style>
+     :host {
+        transition:width 0.01s, height 0.01s;
+      }
+	</style>
+	
+    <!-- -->
+	<div id="chart" style="height:100%; width:100%; background-color:{{backgroundColor}}; " onresize="{{this.onResize}}" ></div>
+	
+  </template>
+  
+  <script>
+    // global variable here, common to all instances
+      _debug = false;
+
+	// register to polymer
+    Polymer( Polymer.mixin({
+	  _plotObj: undefined,
+      _plotOptions: undefined,
+      _nChannels: 2,
+      _dataArray0: undefined,
+      _dataArray1: undefined,
+      _redrawOnValuesChange: true,
+      _redrawOnOptionsChange: true,
+      _delayingPlot: false,
+      _delayPlotWaitTime: 250,    //
+
+      publish: {
+        /**
+         * The label of data series 0.
+         *
+         * @attribute series_0_Label
+         * @type string
+         * @default undefined
+         */
+        series_0_Label: undefined,
+        /**
+         * The color of data series 0.
+         *
+         * @attribute series_0_Color
+         * @type string
+         * @default undefined
+         */
+        series_0_Color: undefined,
+        /**
+         * The fixed minimum value of data series 0.
+         *
+         * @attribute series_0_Min
+         * @type number
+         * @default undefined
+         */
+        series_0_Min: undefined,
+        /**
+         * The fixed maximum value of data series 0.
+         *
+         * @attribute series_0_Max
+         * @type number
+         * @default undefined
+         */
+        series_0_Max: undefined,
+        /**
+         * The array represent data series 0. X+Y pair or Y-Only.
+         *
+         * @attribute series_0_Values 
+         * @type string
+         * @default undefined
+         */
+        series_0_Values: undefined,
+        /**
+         * The label of data series 1.
+         *
+         * @attribute series_1_Label
+         * @type string
+         * @default undefined
+         */
+        series_1_Label: undefined,
+        /**
+         * The color of data series 1.
+         *
+         * @attribute series_1_Color
+         * @type string
+         * @default undefined
+         */
+        series_1_Color: undefined,
+        /**
+         * The fixed minimum value of data series 1.
+         *
+         * @attribute series_1_Min
+         * @type number
+         * @default undefined
+         */
+        series_1_Min: undefined,
+        /**
+         * The fixed maximum value of data series 1.
+         *
+         * @attribute series_1_Max
+         * @type number
+         * @default undefined
+         */
+        series_1_Max: undefined,
+        /**
+         *  The array represent data series 1. X+Y pair or Y-Only.
+         *
+         * @attribute series_1_Values 
+         * @type array
+         * @default undefined
+         */
+        series_1_Values: undefined,
+        /**
+         * The fixed-scale flag.
+         *
+         * @attribute fixedScale
+         * @type boolean
+         * @default false
+         */
+        fixedScale: false,
+        /**
+         * The hide x-axis flag.
+         *
+         * @attribute hideXAxis
+         * @type boolean
+         * @default false
+         */
+        hideXAxis: false,
+        /**
+         * The hide y-axis flag.
+         *
+         * @attribute hideYAxis
+         * @type boolean
+         * @default false
+         */
+        hideYAxis: false,
+        /**
+         * The hide legend flag.
+         *
+         * @attribute hideLegend
+         * @type boolean
+         * @default false
+         */
+        hideLegend: false,
+        /**
+         * The hide border flag.
+         *
+         * @attribute hideBorder
+         * @type boolean
+         * @default false
+         */
+        hideBorder: false,
+        /**
+         * The visible flag.
+         *
+         * @attribute visible
+         * @type boolean
+         * @default true
+         */
+        //visible: true,
+        /**
+         * The disabled flag.
+         *
+         * @attribute disabled
+         * @type boolean
+         * @default false
+         */
+        //disabled: false,
+        /**
+         * The show points flag
+         * 
+         * @attribute showPoints
+         * @type boolean
+         * @default false
+         */
+        showPoints: false,
+        /**
+         * The show bars flag - show as bar graph
+         * 
+         * @attribute showBars
+         * @type boolean
+         * @default false
+         */
+        showBars: false,
+//        series_0_values_string: undefined,
+        /**
+         * The fill flag - fill area between line and 0
+         * 
+         * @attribute fill
+         * @type boolean
+         * @default false
+         */
+        fill: false,
+        /**
+         * The background color.
+         *
+         * @attribute backgroundColor
+         * @type string
+         * @default undefined
+         */
+        backgroundColor: undefined,
+        /**
+         * The plot counter.
+         *
+         * @attribute plotCounter
+         * @type number
+         * @default 0
+         */
+        plotCounter: 0,
+
+        // To be implemented
+        graphTitle: undefined,    // TBI
+        xAxisLabel: undefined,    // TBI
+        yAxisLabel: undefined,    // TBI
+      },
+      
+      observe: {
+        fixedScale: 'onOptionsChange',
+        hideXAxis: 'onOptionsChange',
+        hideYAxis: 'onOptionsChange',
+        hideLegend: 'onOptionsChange',
+        hideBorder: 'onOptionsChange',
+        disabled: 'onOptionsChange',
+        
+        // style change will affect the canvas for drawing 
+        backgroundColor: 'onOptionsChange',
+        //visible: 'onOptionsChange',
+        showPoints: 'onOptionsChange',
+        showBars: 'onOptionsChange',
+        fill: 'onOptionsChange',
+        series_0_Min: 'onOptionsChange',
+        series_0_Max: 'onOptionsChange',
+        series_1_Min: 'onOptionsChange',
+        series_1_Max: 'onOptionsChange',
+        
+        series_0_Values: 'onValuesChange',
+        series_1_Values: 'onValuesChange',
+      },
+      
+      created: function() {
+        this._debugLog("created()");
+      },
+      
+	  enteredView: function() {
+        this._debugLog("enteredView()");
+	  },
+	  
+	  ready: function() {
+        this._debugLog("ready()");
+
+	    // will be called when the instant is ready
+
+        // notify listeners chart is ready so properties can be set
+        this.fire("ready");
+
+        // initialize plot options after client set properties
+        // use async call to prevent intermittent effects
+        this.asyncInitOptions();
+
+	  },
+      
+      update: function() {
+        //console.log("update()");
+      },
+
+      attached: function () {
+        this.resizableAttachedHandler();
+        this.addEventListener("transitionend",function(e){
+          //console.log("transition handler");
+          this.onResize();
+        })
+      },
+      detached:function(){
+        this.resizableDetachedHandler();
+      },
+      eventDelegates: {
+        'core-resize': 'onResize'
+      },
+
+      _debugLog: function(msg) {
+        if(_debug) {
+          console.log(msg);
+        }
+      },
+
+      getElement : function() {
+        return this.$.chart;
+      },
+      
+      asyncInitOptions: function() {
+        this.async(function() {
+          this.initOptions();
+        }, null, 0);
+      },
+      
+      initOptions: function() {
+        this._debugLog("initOptions()");
+        
+        if(this.$.chart.clientHeight <= 0 || this.$.chart.clientWidth <= 0) {
+          return;
+        }
+        switch(this._nChannels){
+          case 2:
+            this._plotOptions = {
+              xaxes: [ { 
+                mode: null,
+              }],
+              yaxes: [ {
+                alignTicksWithAxis: 1,
+                position: "left",
+                zoomRange: null,
+              },
+              {
+                alignTicksWithAxis: 1,
+                position: "right",
+              }],
+              series: {shadowSize: 0, lines: {show:true}, points: {show:false}, bars: {show:false}},
+              colors: ['#00bbcc'],
+              grid: {borderWidth:2},
+            };
+            // 
+            if(this.hideXAxis) {
+              this._plotOptions.xaxes[0].show = false;
+            }
+            if(this.hideYAxis) {
+              this._plotOptions.yaxes[0].show = false;
+              this._plotOptions.yaxes[1].show = false;
+            }
+            //
+            if(this.series_0_Color !== undefined || this.series_1_Color !== undefined) {
+              this._plotOptions.colors = [this.series_0_Color, this.series_1_Color];
+            }
+            //
+            if(this.fixedScale) {
+              this._plotOptions.yaxes[0].min = this.series_0_Min;
+              this._plotOptions.yaxes[0].max = this.series_0_Max;
+              this._plotOptions.yaxes[1].min = this.series_1_Min;
+              this._plotOptions.yaxes[1].max = this.series_1_Max;
+            }
+            //
+            /*
+            if(this.hideGrid) {
+              this._plotOptions.grid = {show:false};
+            }
+            */
+            if(this.hideBorder) {
+              this._plotOptions.grid.borderWidth = 0;
+            }
+            //
+            if(this.showPoints) {
+              this._plotOptions.series.points.show = true;
+            }
+            else {
+              this._plotOptions.series.points.show = false;
+              this._plotOptions.series.points.radius = 0;
+              this._plotOptions.series.points.lineWidth = 0;
+            }
+            //
+            if(this.showBars) {
+              this._plotOptions.series.bars.show = true;
+              this._plotOptions.series.lines.show = false;
+            }
+            else {
+              this._plotOptions.series.bars.show = false;
+              this._plotOptions.series.lines.show = true;
+            }
+            //
+            if(this.fill) {
+              this._plotOptions.series.lines.fill = true;
+            }
+            //
+            var label0 = undefined;
+            var label1 = undefined;
+            if(!this.hideLegend) {
+                this._plotOptions.legend = { position: "nw", backgroundColor:"null" };
+                label0=this.series_0_Label;
+                label1=this.series_1_Label;
+            }
+            this.preprocessData();
+	        this._plotObj = $.plot(this.$.chart,[
+		      {data: this._dataArray0, label: label0},
+		      {data: this._dataArray1, label: label1, yaxis: 2}
+		    ], this._plotOptions);
+          break;
+          default:
+            // for vary channel numbers
+          break;
+        }
+      },
+      
+      reset: function() {
+        this._dataArray0 = undefined;
+        this._dataArray1 = undefined;
+      },
+      
+      genXSeries: function(ySeries, start, delta) {
+        var darry = [];
+        for(i=0, x=start; i<ySeries.length; i++, x+=delta) {
+          darry.push([x,ySeries[i]]);
+        }
+        return darry;
+      },
+      
+      stringToNumberArray: function(str) {
+        var result = [];
+        var isXY = false;
+        
+        if( typeof str !== 'string') {
+          return result;
+        }
+        
+        var points = str.split(";");
+        for(var i=0; i<points.length; i++) {
+          var point = points[i];
+          var xy = point.split(",");
+          if(xy.length > 1) {
+            isXY = true;
+            var x = parseFloat(xy[0]);
+            var y = parseFloat(xy[1]);
+            if( !isNaN(x)  && !isNaN(y) ) {
+              result.push([x,y]);
+            }
+          }
+          else {
+            var y = parseFloat(xy);
+            if( !isNaN(y) ) {
+              result.push(y);
+            }
+          }
+        }
+        return result;
+      },
+      
+      preprocessData: function() {
+        this._dataArray0 = undefined;
+        this._dataArray1 = undefined;
+
+        var varray = undefined;
+        if(this.series_0_Values !== undefined) {
+          varray = this.series_0_Values;
+          if( typeof this.series_0_Values === 'string' ) {
+            // string type
+            varray = this.stringToNumberArray(this.series_0_Values);
+          }
+          
+          if(varray.length > 0) {
+            var nElements = varray[0].length;
+            if(nElements === undefined || nElements == 1) {
+              this._dataArray0 = this.genXSeries(varray, 0, 1);
+            }
+            else if(nElements == 2) {
+              this._dataArray0 = varray;
+            }
+            else {
+            }
+          }
+        }
+
+        var varray1 = undefined;
+        if(this.series_1_Values !== undefined) {
+          varray1 = this.series_1_Values;
+          if( typeof this.series_1_Values === 'string' ) {
+            // string type
+            varray1 = this.stringToNumberArray(this.series_1_Values);
+          }
+          
+          if(varray1.length > 0) {
+            nElements = varray1[0].length;
+            if(nElements === undefined || nElements == 1) {
+              this._dataArray1 = this.genXSeries(varray1, 0, 1);
+            }
+            else if(nElements == 2) {
+              this._dataArray1 = varray1;
+            }
+            else {
+            }
+          }
+        }
+      },
+      
+	  plotData: function() {
+        if(this.disabled) {
+          //this.plotDone();
+          return;
+        }
+        this._debugLog("plotData()");
+        
+        this.preprocessData();
+        switch(this._nChannels) {
+          case 2:
+            var label0 = undefined;
+            var label1 = undefined;
+            if(!this.hideLegend) {
+              label0 = this.series_0_Label;
+              label1 = this.series_1_Label;
+            }
+            //this._plotObj.setData([{data:this.series_0_Values, label:label0}, {data:this.series_1_Values, label:label1, yaxis:2}]);
+            this._plotObj.setData([{data:this._dataArray0, label:label0}, {data:this._dataArray1, label:label1, yaxis:2}]);
+            // recalculate ranges and scale
+            this._plotObj.setupGrid();
+            // draw
+            this._plotObj.draw();
+          break;
+          default:
+            // for vary channel numbers
+          break;
+        }
+        //this.plotDone();
+	  },
+
+      delayPlot: function() {
+        // Prevent multiple plot while data is being updated
+        if(this._delayingPlot) {
+          //console.log("skip plotting ... " + this._delayingPlot);
+          return;
+        }
+        this._delayingPlot = true;
+        
+        this.job('delayPlot', function() {
+          this.plotData();
+          this._delayingPlot = false;
+        }, this._delayPlotWaitTime);
+      },
+      
+	  updateGraph: function() {
+		this.plotData();
+	  },
+
+      plotCounterChanged: function() {
+        this._debugLog("plotCounterChanged("+this.plotCounter+")");
+        
+        this.plotData();
+      },
+      
+      onValuesChange: function(oldVal, newVal) {
+        if(this._redrawOnValuesChange) {
+          this.delayPlot();
+        }
+      },
+
+      /*
+      series_0_ValuesChanged: function() {
+        //console.log("series_0_ValuesChanged()");
+        if( typeof this.series_0_Values === 'string' ) {
+          this.series_0_Values = this.stringToNumberArray(this.series_0_Values);
+        }
+        this.onValuesChange();
+      },
+      series_1_ValuesChanged: function() {
+        //console.log("series_1_ValuesChanged()");
+        if( typeof this.series_1_Values === 'string' ) {
+          this.series_1_Values = this.stringToNumberArray(this.series_1_Values);
+        }
+        this.onValuesChange();
+      },
+      */
+
+      onOptionsChange: function(oldVal, newVal, a, b, c) {
+        this._debugLog("onOptionsChange()");
+        if(this._redrawOnOptionsChange) {
+          // reinitialize options afterward
+          this.asyncInitOptions();
+        }
+      },
+      
+      onResize: function() {
+        //console.log("linegraph.onResize");
+        this.asyncInitOptions();
+      },
+      
+	},Polymer.CoreResizable));
+  </script>
+</polymer-element>

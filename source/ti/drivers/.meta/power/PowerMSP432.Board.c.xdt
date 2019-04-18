@@ -1,0 +1,186 @@
+%%{
+/*
+ * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ *  ======== PowerMSP432.Board.c.xdt ========
+ */
+
+    let POWER                 = args[0];
+    let pow                   = POWER.$static;
+    let enablePolicy          = pow.enablePolicy;
+    let enablePerf            = pow.enablePerfLevels;
+    let resumeShutdownHookFxn = pow.resumeShutdownHookFunction;
+
+    let enableParking    = enablePolicy ? pow.enablePinParking  : false;
+    let policyInitFxn    = enablePolicy ? pow.policyInitFunction  : 'NULL';
+    let policyFxn        = enablePolicy ? pow.policyFunction : 'NULL';
+    let initialPerfLevel = enablePerf ? pow.initialPerfLevel : 0;
+    let customLevels     = enablePerf ? pow.customPerfLevels : 0;
+    let predefLevels     = 4;
+    let useExtendedPerf  = pow.advancedConfiguration;
+    let onHFXT           = useExtendedPerf ? pow.enableHFXTClock : false;
+    let hfxtFreq         = onHFXT ? freqNameHFXT(pow.hfxtFrequency) : '0';
+    let bypassHFXT       = onHFXT ? pow.bypassHFXT : false;
+    let onLFXT           = useExtendedPerf ? pow.enableLFXTClock : false;
+    let bypassLFXT       = onLFXT ? pow.bypassLFXT : false;
+    let LFXTDRIVE        = onLFXT ? pow.lfxtDriveLevel  : 0;
+    let isrCS            = pow.isrClockSystem;
+    let intrCS           = (isrCS !== 'NULL');
+    let priCS            = intrCS ? pow.clockSystemInterruptPriority : 'default';
+    let customLevName    = (customLevels > 0) ? 'customPerfLevels' :'NULL';
+
+    priCS = (priCS === 'default') ? '(~0)' : priCS;
+
+    if (resumeShutdownHookFxn == '') {
+       resumeShutdownHookFxn = 'NULL';
+    }
+
+    if (isrCS == '' || !useExtendedPerf) {
+        isrCS = 'NULL';
+    }
+
+    if (policyInitFxn === 'Custom') {
+        policyInitFxn = pow.policyInitCustomFunction;
+    }
+
+    if (policyFxn === 'Custom') {
+        policyFxn = pow.policyCustomFunction;
+    }
+
+    function freqNameDCO(freq) {
+        if (freq == 1500000) {
+            return 'CS_DCO_FREQUCNCY_1_5';
+        }
+        freq /= 1000000;
+        return 'CS_DCO_FREQUENCY_' + freq;
+    }
+
+    function selectName(clk) {
+        if (clk == 'MODOSC') {
+            return 'CS_MODOSC_SELECT';
+        }
+        return 'CS_' + clk + 'CLK_SELECT';
+    }
+
+    function freqNameHFXT(freq) {
+        if (freq == 0) {
+            return freq;
+        }
+        if (freq == 1500000) {
+            return 'CS_15MHZ';
+        }
+
+        freq /= 1000000;
+        return 'CS_' + freq + 'MHZ';
+    }
+%%}
+/*
+ *  =============================== Power ===============================
+ */
+
+#include <ti/drivers/Power.h>
+#include <ti/drivers/power/PowerMSP432.h>
+
+% if (customLevels > 0) {
+#include <ti/devices/msp432p4xx/driverlib/cs.h>
+#include <ti/devices/msp432p4xx/driverlib/pcm.h>
+
+PowerMSP432_PerfLevel customPerfLevels[] = {
+% for (let lev = predefLevels; lev < (predefLevels + customLevels); lev++) {
+%    let levName = 'perfLevel'+lev;
+%    let levDef  = pow[levName];
+%    let dcoName = freqNameDCO(levDef.dcoFrequencyRangeSelection);
+%    let vcore   = levDef.coreVoltageLevel == "VCORE0" ? 0 : 1;
+%    let selm    = selectName(levDef.mclkSource);
+%    let sels    = selectName(levDef.smclkSharedSource);
+%    let selb    = selectName(levDef.bclkSource);
+%    let sela    = selectName(levDef.aclkSource);
+    {
+        .activeState       = PCM_AM_`levDef.activeState`_VCORE`vcore`,
+        .VCORE             = `vcore`,
+        .DCORESEL          = `dcoName`,
+        .SELM              = `selm`,
+        .DIVM              = CS_CLOCK_DIVIDER_`levDef.mclkDivider`,
+        .SELS              = `sels`,
+        .DIVHS             = CS_CLOCK_DIVIDER_`levDef.hsmclkDivider`,
+        .DIVS              = CS_CLOCK_DIVIDER_`levDef.smclkDivider`,
+        .SELB              = `selb`,
+        .SELA              = `sela`,
+        .DIVA              = CS_CLOCK_DIVIDER_`levDef.aclkDivider`,
+        .flashWaitStates   = `levDef.flashWaitStates`,
+        .enableFlashBuffer = `levDef.enableFlashBuffer`,
+        .MCLK              = `levDef.mclk`,
+        .HSMCLK            = `levDef.hsmclk`,
+        .SMCLK             = `levDef.smclk`,
+        .BCLK              = `levDef.bclk`,
+        .ACLK              = `levDef.aclk`
+    },
+% }
+};
+% }
+
+% if (policyInitFxn !== 'NULL') {
+extern void `policyInitFxn`(void);
+% }
+% if (policyFxn !== 'NULL') {
+extern void `policyFxn`(void);
+% }
+% if (resumeShutdownHookFxn !== 'NULL') {
+extern void `resumeShutdownHookFxn`(void);
+% }
+% if (isrCS !== 'NULL') {
+extern void `isrCS`(void);
+% }
+
+const PowerMSP432_ConfigV1 PowerMSP432_config = {
+    .policyInitFxn         = `policyInitFxn`,
+    .policyFxn             = `policyFxn`,
+    .initialPerfLevel      = `initialPerfLevel`,
+    .enablePolicy          = `enablePolicy`,
+    .enablePerf            = `enablePerf`,
+    .enableParking         = `enableParking`,
+    .resumeShutdownHookFxn = `resumeShutdownHookFxn`,
+    .customPerfLevels      = `customLevName`,
+    .numCustom             = `customLevels`,
+    .useExtendedPerf       = `useExtendedPerf`,
+    .configurePinHFXT      = `onHFXT`,
+    .HFXTFREQ              = `hfxtFreq`,
+    .bypassHFXT            = `bypassHFXT`,
+    .configurePinLFXT      = `onLFXT`,
+    .bypassLFXT            = `bypassLFXT`,
+    .LFXTDRIVE             = `LFXTDRIVE`,
+    .enableInterruptsCS    = `intrCS`,
+    .priorityInterruptsCS  = `priCS`,
+    .isrCS                 = `isrCS`
+};

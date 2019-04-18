@@ -1,0 +1,40 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-base-numberbox.html">
+<polymer-element name="ti-widget-numberbox" extends="ti-widget-base-numberbox" attributes="value decimalPlaces">
+
+    <template>
+        <style>
+            :host 
+            {
+                padding: 0px;
+            }
+            #numberbox 
+            {
+                width: 100%;
+                vert-align:middle; 
+            }
+        </style>
+
+        <input type="text" id="numberbox" on-change="{{onChangeHandler}}" on-input="{{onIntermediateChangeHandler}}" 
+                on-focus="{{focusHandler}}" on-blur="{{blurHandler}}"></input>
+        <shadow></shadow>
+    </template>
+    
+    <script>
+        Polymer ('ti-widget-numberbox', 
+        {
+            decimalPlaces : 0,
+            _roundDecimalPlaces : 0,    // default, round to nearest integer.
+            decimalPlacesChanged : function()
+            {
+                this._roundDecimalPlaces = Math.round(+this.decimalPlaces);   // make sure its an integer.
+                
+                this.refreshValue();  // decimal points changed so 
+            },
+            getElement : function()
+            {
+                return this.$.numberbox;
+            }
+        });
+    </script>
+</polymer-element>

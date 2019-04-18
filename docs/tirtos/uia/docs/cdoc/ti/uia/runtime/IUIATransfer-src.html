@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>interface ti.uia.runtime.IUIATransfer</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="xdoc">/*!
+</span>    34    <span class="xdoc"> *  ======== IUIATransfer ========
+</span>    35    <span class="xdoc"> */</span>
+    36    <span class=key>interface</span> IUIATransfer <span class=key>inherits</span> xdc.runtime.IFilterLogger {
+    37    
+    38        <span class=key>enum</span> TransferType {
+    39            TransferType_RELIABLE = 0,
+    40            TransferType_LOSSY = 1
+    41        }
+    42    
+    43        <span class="xdoc">/*!  <b>@_nodoc</b>
+</span>    44    <span class="xdoc">     * ======== Logger Priority enumeration ========
+</span>    45    <span class="xdoc">     */</span>
+    46        <span class=key>enum</span> Priority {
+    47            Priority_LOW = 0,       <span class="xdoc">/*! low priority */</span>
+    48            Priority_STANDARD = 1,  <span class="xdoc">/*! default priority */</span>
+    49            Priority_HIGH = 2,      <span class="xdoc">/*! use for critical errors, etc. */</span>
+    50            Priority_SYNC = 3       <span class="xdoc">/*! used only by LogSync's logger */</span>
+    51        };
+    52    
+    53        <span class="xdoc">/*!
+</span>    54    <span class="xdoc">     * ======== getPtrToQueueDescriptorMeta ========
+</span>    55    <span class="xdoc">     * Each logger instance has a unique queue descriptor address that is
+</span>    56    <span class="xdoc">     * stored in the Event Record header to identify itself to the host.
+</span>    57    <span class="xdoc">     * This metaonly configuration parameter allows the UIA Metadata to
+</span>    58    <span class="xdoc">     * determine what the address is for each statically created logger instance
+</span>    59    <span class="xdoc">     * in order to emit XML code to allow the host to look up information about
+</span>    60    <span class="xdoc">     * the logger instance (such as its name) based on the queue descriptor
+</span>    61    <span class="xdoc">     * address that is stored in the event record header.
+</span>    62    <span class="xdoc">     *
+</span>    63    <span class="xdoc">     * The pointer is returned per instance of the logger module. The
+</span>    64    <span class="xdoc">     *  instance object is passed to the function as the first argument.
+</span>    65    <span class="xdoc">     */</span>
+    66         <span class=key>metaonly</span> <span class=key>function</span> getPtrToQueueDescriptorMeta(inst);
+    67        <span class="xdoc">/*!
+</span>    68    <span class="xdoc">     * ======== setPtrToQueueDescriptorMeta ========
+</span>    69    <span class="xdoc">     * Sets the queue descriptor address in the logger's object instance data.
+</span>    70    <span class="xdoc">     */</span>
+    71         <span class=key>metaonly</span> <span class=key>function</span> setPtrToQueueDescriptorMeta(inst,queueDescriptorAdrs);
+    72         <span class="xdoc">/*!
+</span>    73    <span class="xdoc">     *  ======== getLoggerInstanceId ========
+</span>    74    <span class="xdoc">     *  returns the id of this logger instance.
+</span>    75    <span class="xdoc">     */</span>
+    76        <span class=key>metaonly</span> <span class=key>function</span> getLoggerInstanceId(inst);
+    77    
+    78        <span class="xdoc">/*! <b>@_nodoc</b>
+</span>    79    <span class="xdoc">     *  ======== getLoggerPriority ========
+</span>    80    <span class="xdoc">     *  returns the priority of this logger instance.
+</span>    81    <span class="xdoc">     */</span>
+    82        <span class=key>metaonly</span> <span class=key>function</span> getLoggerPriority(inst);
+    83    
+    84        <span class="xdoc">/*! <b>@_nodoc</b>
+</span>    85    <span class="xdoc">     *  ======== setLoggerPriority ========
+</span>    86    <span class="xdoc">     *  sets the priority of this logger instance.
+</span>    87    <span class="xdoc">     */</span>
+    88        <span class=key>metaonly</span> <span class=key>function</span> setLoggerPriority(inst, priority);
+    89    
+    90        <span class="xdoc">/*!
+</span>    91    <span class="xdoc">     *  ======== MetaData ========
+</span>    92    <span class="xdoc">     *  This data is added to the RTA MetaData file to support stop mode RTA.
+</span>    93    <span class="xdoc">     */</span>
+    94        @XmlDtd <span class=key>metaonly</span> <span class=key>struct</span> MetaData {
+    95            Int instanceId;
+    96            Int priority;
+    97        }
+    98    
+    99    <span class=key>instance</span>:
+   100        <span class=key>config</span> TransferType transferType = TransferType_LOSSY;
+   101        TransferType getTransferType();
+   102    
+   103        <span class="xdoc">/*!
+</span>   104    <span class="xdoc">     *  ======== getContents =========
+</span>   105    <span class="xdoc">     *  Fills buffer that is passed in with unread data, up to size bytes
+</span>   106    <span class="xdoc">     *  in length.
+</span>   107    <span class="xdoc">     *
+</span>   108    <span class="xdoc">     *  The logger is responsible for ensuring that no partial event records
+</span>   109    <span class="xdoc">     *  are stored in the buffer.  Bytes are in target endianness.
+</span>   110    <span class="xdoc">     *
+</span>   111    <span class="xdoc">     *  <b>@param(hdrBuf)</b>   Ptr to a buffer that is at least &lt;size&gt; bytes in length
+</span>   112    <span class="xdoc">     *  <b>@param(size)</b>     The max number of bytes to be read into the buffer
+</span>   113    <span class="xdoc">     *  <b>@param(cpSize)</b>   The number of bytes actually copied
+</span>   114    <span class="xdoc">     *
+</span>   115    <span class="xdoc">     *  <b>@a(return)</b>       returns false if logger has no more records to read
+</span>   116    <span class="xdoc">     */</span>
+   117        @DirectCall
+   118        Bool getContents(Ptr hdrBuf, SizeT size, SizeT *cpSize);
+   119    
+   120        <span class="xdoc">/*!
+</span>   121    <span class="xdoc">     *  ======== isEmpty =========
+</span>   122    <span class="xdoc">     *  Returns true if the transfer buffer has no unread data
+</span>   123    <span class="xdoc">     *
+</span>   124    <span class="xdoc">     *  <b>@a(return)</b>  true if no unread data
+</span>   125    <span class="xdoc">     */</span>
+   126        @DirectCall
+   127        Bool isEmpty();
+   128    
+   129        <span class="xdoc">/*!
+</span>   130    <span class="xdoc">     *  ======== getMaxLength =========
+</span>   131    <span class="xdoc">     */</span>
+   132        @DirectCall
+   133        SizeT getMaxLength();
+   134    
+   135        <span class="xdoc">/*!
+</span>   136    <span class="xdoc">     *  ======== getInstanceId ========
+</span>   137    <span class="xdoc">     *  Returns an ID value that uniquely identifies this instance of the logger.
+</span>   138    <span class="xdoc">     *
+</span>   139    <span class="xdoc">     *  Note that a value of 0 is reserved to indicate that the instance ID has
+</span>   140    <span class="xdoc">     *  not been initialized yet and a unique value needs to be generated.
+</span>   141    <span class="xdoc">     */</span>
+   142        @DirectCall
+   143        UInt16 getInstanceId();
+   144    
+   145        <span class="xdoc">/*! <b>@_nodoc</b>
+</span>   146    <span class="xdoc">     *  ======== priority ========
+</span>   147    <span class="xdoc">     *  The priority of the logger is used to detrmine which event packets to
+</span>   148    <span class="xdoc">     *  transfer to the host first.
+</span>   149    <span class="xdoc">     *
+</span>   150    <span class="xdoc">     *  A value of Priority_STANDARD (default) indicates normal priority.
+</span>   151    <span class="xdoc">     *  Higher values indicate higher priority.
+</span>   152    <span class="xdoc">     *  <b>@see</b> #Priority
+</span>   153    <span class="xdoc">     */</span>
+   154        <span class=key>config</span> IUIATransfer.Priority priority = Priority_STANDARD;
+   155    
+   156        <span class="xdoc">/*! <b>@_nodoc</b>
+</span>   157    <span class="xdoc">     *  ======== getPriority ========
+</span>   158    <span class="xdoc">     *  Returns a 2b value that identifies the relative priority of the event
+</span>   159    <span class="xdoc">     *  log.
+</span>   160    <span class="xdoc">     *
+</span>   161    <span class="xdoc">     *  A value of 1 (default) indicates normal priority.  Higher values indicate
+</span>   162    <span class="xdoc">     *  higher priority.
+</span>   163    <span class="xdoc">     *  <b>@see</b> #Priority
+</span>   164    <span class="xdoc">     */</span>
+   165        @DirectCall
+   166        Priority getPriority();
+   167    
+   168    
+   169        <span class="xdoc">/*! <b>@_nodoc</b>
+</span>   170    <span class="xdoc">     *  ======== setPriority ========
+</span>   171    <span class="xdoc">     *  Sets a 2b value that identifies the relative priority of the event
+</span>   172    <span class="xdoc">     *  log.
+</span>   173    <span class="xdoc">     *
+</span>   174    <span class="xdoc">     *  A value of 1 (default) indicates normal priority.  Higher values indicate
+</span>   175    <span class="xdoc">     *  higher priority.
+</span>   176    <span class="xdoc">     *  <b>@see</b> #Priority
+</span>   177    <span class="xdoc">     */</span>
+   178        @DirectCall
+   179        Void setPriority(Priority priority);
+   180    
+   181        <span class="xdoc">/*!
+</span>   182    <span class="xdoc">     *  ======== reset ========
+</span>   183    <span class="xdoc">     *  Reset a log to empty state and enable it
+</span>   184    <span class="xdoc">     *
+</span>   185    <span class="xdoc">     *  <b>@a(WARNING)</b>  This method is not synchronized with other instance
+</span>   186    <span class="xdoc">     *  methods and, as a result, it must never be called when there is a
+</span>   187    <span class="xdoc">     *  chance that another instance method is currently in operation or
+</span>   188    <span class="xdoc">     *  when another method on this instance may preempt this call.
+</span>   189    <span class="xdoc">     */</span>
+   190        Void reset();
+   191    
+   192        <span class=key>metaonly</span> <span class=key>config</span> Ptr ptrToQueueDescriptorMeta = <span class=key>null</span>;
+   193    }
+</pre>
+</body></html>

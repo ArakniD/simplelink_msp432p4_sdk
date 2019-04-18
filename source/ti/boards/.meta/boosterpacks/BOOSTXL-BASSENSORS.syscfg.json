@@ -1,0 +1,214 @@
+/*
+ * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ *  ======== BOOSTXL-BASSENSORS.syscfg.json ========
+ */
+
+{
+    "name": "BOOSTXL_BASSENSORS",
+    "displayName": "BAS Sensors BoosterPack",
+    "headerType": "BoosterPack 40 pin",
+    "components": {
+        "SENSORS_I2C": {
+            "isBus": true,
+            "type": "I2C",
+            "displayName": "BAS Sensors I2C",
+            "signals": {
+                "SDA": {"type": "I2C_SDA", "connection": 10},
+                "SCL": {"type": "I2C_SCL", "connection":  9}
+            }
+        },
+
+        "LED_G": {
+            "displayName": "Green LED",
+            "definition": "/ti/boards/components/led_dimmable.json",
+            "connections": { "output" : 40 }
+        },
+
+        "LED_R": {
+            "displayName": "Red LED",
+            "definition": "/ti/boards/components/led_dimmable.json",
+            "connections": { "output" : 39 }
+        },
+
+        "TMP116": {
+            "type": "TMP116",
+            "displayName": "TMP116 Temperature Sensor",
+            "settings": {
+                "address":  72,  /* 0x48 */
+                "maxSpeed": 400  /* 400 kbit/s */
+            },
+            "subComponents": {
+                "I2C": {
+                    "link": "SENSORS_I2C"
+                },
+                "TMP_INT": {
+                    "type": "SENSOR_INT",
+                    "displayName": "TMP116 Interrupt",
+                    "signals": {
+                        "TMP_INT": {
+                            "type": "DIN",
+                            "settings": {
+                                "interruptTrigger": "Rising Edge",
+                                "callbackFunction": "NULL"
+                            },
+                            "connection": 26
+                        }
+                    }
+                },
+                "TMP_POWER": {
+                    "displayName": "TMP116 Power",
+                    "signals": {
+                        "TMP_POWER": {
+                            "type": "DOUT",
+                            "settings": {
+                                "mode": "Output",
+                                "initialOutputState": "High"
+                            },
+                            "connection": 28
+                        }
+                    }
+                }
+            }
+        },
+
+        "OPT3001": {
+            "type": "OPT3001",
+            "displayName": "OPT3001 Sensor",
+            "settings": {
+                "address":  68,   /* 0x44 */
+                "maxSpeed": 2600  /* 2600 kbit/s */
+            },
+            "subComponents": {
+                "I2C": {
+                    "link": "SENSORS_I2C"
+                },
+                "OPT_INT": {
+                    "type": "SENSOR_INT",
+                    "displayName": "OPT3001 Interrupt",
+                    "signals": {
+                        "OPT_INT": {
+                            "type": "DIN",
+                            "settings": {
+                                "interruptTrigger": "Rising Edge",
+                                "callbackFunction": "NULL"
+                            },
+                            "connection": 25
+                        }
+                    }
+                },
+                "OPT_POWER": {
+                    "displayName": "OPT3001 Power",
+                    "signals": {
+                        "OPT_Power": {
+                            "type": "DOUT",
+                            "settings": {
+                                "mode": "Output",
+                                "initialOutputState": "High"
+                            },
+                            "connection": 27
+                        }
+                    }
+                }
+            }
+        },
+
+        "HDC2010": {
+            "type": "HDC2010",
+            "displayName": "HDC2010 Humidity & Temperature Sensor",
+            "settings": {
+                "address":  64,  /* 0x40 */
+                "maxSpeed": 400  /* 400 kbit/s */
+            },
+            "subComponents": {
+                "I2C": {
+                    "link": "SENSORS_I2C"
+                },
+                "HDC_INT": {
+                    "type": "SENSOR_INT",
+                    "displayName": "HDC2010 Interrupt",
+                    "signals": {
+                        "HDC_INT": {
+                            "type": "DIN",
+                            "settings": {
+                                "interruptTrigger": "Rising Edge",
+                                "callbackFunction": "NULL"
+                            },
+                            "connection": 23
+                        }
+                    }
+                },
+                "HDC_POWER": {
+                    "displayName": "HDC2010 Power",
+                    "signals": {
+                        "HDC_POWER": {
+                            "type": "DOUT",
+                            "settings": {
+                                "mode": "Output",
+                                "initialOutputState": "Low"
+                            },
+                            "connection": 6
+                        }
+                    }
+                }
+            }
+        },
+
+        "DRV5055": {
+            "type": "DRV5055",
+            "displayName": "DRV5055 Analog Hall Effect Sensor",
+            "subComponents": {
+                "DRV_OUT": {
+                    "type": "AIN",
+                    "displayName": "DRV5055 Output",
+                    "signals"     : { "input": { "type": "AIN" } },
+                    "connections" : { "input": 2 }
+                },
+                "DRV_POWER": {
+                    "displayName": "DRV5055 Power",
+                    "signals": {
+                        "HDC_POWER": {
+                            "type": "DOUT",
+                            "settings": {
+                                "mode": "Output",
+                                "initialOutputState": "Low"
+                            },
+                            "connection": 24
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

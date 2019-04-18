@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="struct_u_d_m_a_m_s_p432___h_w_attrs" kind="struct" language="C++" prot="public">
+    <compoundname>UDMAMSP432_HWAttrs</compoundname>
+    <includes refid="_u_d_m_a_m_s_p432_8h" local="no">UDMAMSP432.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_u_d_m_a_m_s_p432___h_w_attrs_1ac9ce4c14d303e7d4c1d43b963e168f1b" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* UDMAMSP432_HWAttrs::controlBaseAddr</definition>
+        <argsstring></argsstring>
+        <name>controlBaseAddr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>uDMA control registers base address </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="112" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_u_d_m_a_m_s_p432___h_w_attrs_1acf128a036c67db1e04bb5207212c5ad0" prot="public" static="no" mutable="no">
+        <type><ref refid="_u_d_m_a_m_s_p432_8h_1ae10044349e7dae992caec9f0c95b8f08" kindref="member">UDMAMSP432_ErrorFxn</ref></type>
+        <definition>UDMAMSP432_ErrorFxn UDMAMSP432_HWAttrs::dmaErrorFxn</definition>
+        <argsstring></argsstring>
+        <name>dmaErrorFxn</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>uDMA error interrupt handler </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="113" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_u_d_m_a_m_s_p432___h_w_attrs_1aab7c32775f601e31e0e111896502957c" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t UDMAMSP432_HWAttrs::intNum</definition>
+        <argsstring></argsstring>
+        <name>intNum</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>uDMA error interrupt number </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="114" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_u_d_m_a_m_s_p432___h_w_attrs_1a85427dcd94ddd89e60ffb5637eb55312" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t UDMAMSP432_HWAttrs::intPriority</definition>
+        <argsstring></argsstring>
+        <name>intPriority</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>uDMA error interrupt priority. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="115" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>UDMAMSP432 Hardware attributes. </para>    </briefdescription>
+    <detaileddescription>
+<para>This structure contains the base address of the uDMA control table, and uDMA error interrupt attributes.</para><para>The control table is used by the uDMA controller to store channel control structures. The control table can be located anywhere in system memory, but must be contiguous and aligned on a 1024-byte boundary.</para><para>dmaErrorFxn is the uDMA peripheral&apos;s error interrupt handler.</para><para>intPriority is priority of the uDMA peripheral&apos;s error interrupt, as defined by the underlying OS. It is passed unmodified to the underlying OS&apos;s interrupt handler creation code, so you need to refer to the OS documentation for usage. If the driver uses the ti.dpl interface instead of making OS calls directly, then the HwiP port handles the interrupt priority in an OS specific way. In the case of the SYS/BIOS port, intPriority is passed unmodified to Hwi_create().</para><para>A sample structure is shown below: <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/devices/msp432p4xx/driverlib/udma.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">static<sp/>tDMAControlTable<sp/>dmaControlTable[64]<sp/>__attribute__<sp/>((aligned<sp/>(1024)));</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/dma/UDMAMSP432.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">UDMAMSP432_Object<sp/>udmaMSP432Object;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">const<sp/>UDMAMSP432_HWAttrs<sp/>udmaMSP432HWAttrs<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.controlBaseAddr<sp/>=<sp/>(void<sp/>*)dmaControlTable,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.dmaErrorFxn<sp/>=<sp/>UDMAMSP432_errorFxn,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_UDMAERR,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>(~0)</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting> </para>    </detaileddescription>
+    <location file="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" line="111" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/dma/UDMAMSP432.h" bodystart="111" bodyend="116"/>
+    <listofallmembers>
+      <member refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1ac9ce4c14d303e7d4c1d43b963e168f1b" prot="public" virt="non-virtual"><scope>UDMAMSP432_HWAttrs</scope><name>controlBaseAddr</name></member>
+      <member refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1acf128a036c67db1e04bb5207212c5ad0" prot="public" virt="non-virtual"><scope>UDMAMSP432_HWAttrs</scope><name>dmaErrorFxn</name></member>
+      <member refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1aab7c32775f601e31e0e111896502957c" prot="public" virt="non-virtual"><scope>UDMAMSP432_HWAttrs</scope><name>intNum</name></member>
+      <member refid="struct_u_d_m_a_m_s_p432___h_w_attrs_1a85427dcd94ddd89e60ffb5637eb55312" prot="public" virt="non-virtual"><scope>UDMAMSP432_HWAttrs</scope><name>intPriority</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

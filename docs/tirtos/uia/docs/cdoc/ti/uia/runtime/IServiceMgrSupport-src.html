@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>interface ti.uia.runtime.IServiceMgrSupport</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="xdoc">/*!
+</span>    34    <span class="xdoc"> *  ======== IServiceMgrSupport ========
+</span>    35    <span class="xdoc"> *  Interface defining the ServiceMgr's proxy
+</span>    36    <span class="xdoc"> *
+</span>    37    <span class="xdoc"> *  This module defines the interface that the ServiceMgr
+</span>    38    <span class="xdoc"> *  support proxy must adhere to.
+</span>    39    <span class="xdoc"> */</span>
+    40    <span class=key>interface</span> IServiceMgrSupport  {
+    41    
+    42        <span class="xdoc">/*!
+</span>    43    <span class="xdoc">     *  ======== newService ========
+</span>    44    <span class="xdoc">     *  Function called within ServiceMgr_register
+</span>    45    <span class="xdoc">     *
+</span>    46    <span class="xdoc">     *  All services must call ServiceMgr.register. The ServiceMgr
+</span>    47    <span class="xdoc">     *  manages the processFxn callback. It then calls the proxy's
+</span>    48    <span class="xdoc">     *  newService function.
+</span>    49    <span class="xdoc">     *
+</span>    50    <span class="xdoc">     *  <b>@param(id)</b>         Id of the new service
+</span>    51    <span class="xdoc">     *  <b>@param(periodInMs)</b> Period requested by the service (in millisecond)
+</span>    52    <span class="xdoc">     */</span>
+    53        <span class=key>metaonly</span> Void newService(Int id, UInt32 periodInMs);
+    54    
+    55        <span class="xdoc">/*!
+</span>    56    <span class="xdoc">     *  ======== freePacket ========
+</span>    57    <span class="xdoc">     *  Function called within ServiceMgr_freePacket
+</span>    58    <span class="xdoc">     *
+</span>    59    <span class="xdoc">     *  This function can be used to return an unused packet back to the
+</span>    60    <span class="xdoc">     *  module. It must only return packets that were obtained via
+</span>    61    <span class="xdoc">     *  the {<b>@link</b> #getFreePacket} function.
+</span>    62    <span class="xdoc">     *
+</span>    63    <span class="xdoc">     *  <b>@param(packet)</b>  Pointer to a UIAPacket
+</span>    64    <span class="xdoc">     */</span>
+    65        @DirectCall
+    66        Void freePacket(UIAPacket.Hdr *packet);
+    67    
+    68        <span class="xdoc">/*!
+</span>    69    <span class="xdoc">     *  ======== getFreePacket ========
+</span>    70    <span class="xdoc">     *  Function called within ServiceMgr_getFreePacket
+</span>    71    <span class="xdoc">     *
+</span>    72    <span class="xdoc">     *  The service can specify what type of packet it wants with the
+</span>    73    <span class="xdoc">     *  first parameter.
+</span>    74    <span class="xdoc">     *
+</span>    75    <span class="xdoc">     *  The function fills in the HdrType field of the packet automatically
+</span>    76    <span class="xdoc">     *  for the service. All other fields are un-initialized.
+</span>    77    <span class="xdoc">     *
+</span>    78    <span class="xdoc">     *  <b>@param(type)</b>    Requested type of packet
+</span>    79    <span class="xdoc">     *  <b>@param(timeout)</b> return after this many system time units
+</span>    80    <span class="xdoc">     *
+</span>    81    <span class="xdoc">     *  <b>@b(returns)</b>     Point to the free UIA packet. NULL if not successful.
+</span>    82    <span class="xdoc">     */</span>
+    83        @DirectCall
+    84        UIAPacket.Hdr *getFreePacket(UIAPacket.HdrType type, UInt timeout);
+    85    
+    86        <span class="xdoc">/*!
+</span>    87    <span class="xdoc">     *  ======== requestEnergy ========
+</span>    88    <span class="xdoc">     *  Function called within ServiceMgr_requestEnergy
+</span>    89    <span class="xdoc">     *
+</span>    90    <span class="xdoc">     *  Generally services do not maintain an active thread. Services may
+</span>    91    <span class="xdoc">     *  request the ServiceMgr module to call the {<b>@link</b> #ProcessCallback}
+</span>    92    <span class="xdoc">     *  in the context of the transfer agent. This can be accomplished via
+</span>    93    <span class="xdoc">     *  this function.
+</span>    94    <span class="xdoc">     *
+</span>    95    <span class="xdoc">     *  <b>@param(id)</b>     Id of the service
+</span>    96    <span class="xdoc">     */</span>
+    97         @DirectCall
+    98         Void requestEnergy(Int id);
+    99    
+   100        <span class="xdoc">/*!
+</span>   101    <span class="xdoc">     *  ======== sendPacket ========
+</span>   102    <span class="xdoc">     *  Function called within ServiceMgr_sendPacket
+</span>   103    <span class="xdoc">     *
+</span>   104    <span class="xdoc">     *  All UIAPacket fields except for SenderAdrs must be filled in.
+</span>   105    <span class="xdoc">     *
+</span>   106    <span class="xdoc">     *  The caller loses ownership of the packet once it is successfully sent.
+</span>   107    <span class="xdoc">     *  If this function fails, the caller still owns the packet.
+</span>   108    <span class="xdoc">     *
+</span>   109    <span class="xdoc">     *  <b>@param(packet)</b>  UIAPacket to be sent
+</span>   110    <span class="xdoc">     *
+</span>   111    <span class="xdoc">     *  <b>@b(returns)</b>     TRUE denotes success and the packet is
+</span>   112    <span class="xdoc">     *                  no longer owned by the caller. FALSE denotes
+</span>   113    <span class="xdoc">     *                  failure and the packet is still owned by the caller.
+</span>   114    <span class="xdoc">     */</span>
+   115        @DirectCall
+   116        Bool sendPacket(UIAPacket.Hdr *packet);
+   117    
+   118        <span class="xdoc">/*!
+</span>   119    <span class="xdoc">     *  ======== setPeriod ========
+</span>   120    <span class="xdoc">     *  Function called within ServiceMgr_setPeriod
+</span>   121    <span class="xdoc">     *
+</span>   122    <span class="xdoc">     *  Services period should be a multiple of the ServiceMgr's period
+</span>   123    <span class="xdoc">     *  ({<b>@link</b> #periodInMs}). If it is not, they will called at the rounded
+</span>   124    <span class="xdoc">     *  up period. For example, if ServiceMgr.periodInMs = 100 and a service sets
+</span>   125    <span class="xdoc">     *  its period to 250. That service will be called every 300 milliseconds.
+</span>   126    <span class="xdoc">     *
+</span>   127    <span class="xdoc">     *  <b>@param(id)</b>         Service id of the service
+</span>   128    <span class="xdoc">     *
+</span>   129    <span class="xdoc">     *  <b>@param(periodInMs)</b> Requested period in milliseconds
+</span>   130    <span class="xdoc">     */</span>
+   131         @DirectCall
+   132         Void setPeriod(Int id, UInt32 periodInMs);
+   133    }
+</pre>
+</body></html>

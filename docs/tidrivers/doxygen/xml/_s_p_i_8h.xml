@@ -1,0 +1,1460 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="_s_p_i_8h" kind="file" language="C++">
+    <compoundname>SPI.h</compoundname>
+    <includes local="no">stdbool.h</includes>
+    <includes local="no">stddef.h</includes>
+    <includes local="no">stdint.h</includes>
+    <includedby refid="_n_v_s_s_p_i25_x_8h" local="no">NVSSPI25X.h</includedby>
+    <includedby refid="_s_d_s_p_i_8h" local="no">SDSPI.h</includedby>
+    <includedby refid="_s_p_i_m_s_p432_d_m_a_8h" local="no">SPIMSP432DMA.h</includedby>
+    <includedby refid="_display_sharp_8h" local="no">DisplaySharp.h</includedby>
+    <includedby refid="_sharp_gr_lib_8h" local="no">SharpGrLib.h</includedby>
+    <incdepgraph>
+      <node id="245">
+        <label>stdbool.h</label>
+      </node>
+      <node id="247">
+        <label>stdint.h</label>
+      </node>
+      <node id="246">
+        <label>stddef.h</label>
+      </node>
+      <node id="244">
+        <label>SPI.h</label>
+        <link refid="_s_p_i_8h"/>
+        <childnode refid="245" relation="include">
+        </childnode>
+        <childnode refid="246" relation="include">
+        </childnode>
+        <childnode refid="247" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="252">
+        <label>DisplaySharp.h</label>
+        <link refid="_display_sharp_8h"/>
+      </node>
+      <node id="253">
+        <label>SharpGrLib.h</label>
+        <link refid="_sharp_gr_lib_8h"/>
+      </node>
+      <node id="248">
+        <label>SPI.h</label>
+        <link refid="_s_p_i_8h"/>
+        <childnode refid="249" relation="include">
+        </childnode>
+        <childnode refid="250" relation="include">
+        </childnode>
+        <childnode refid="251" relation="include">
+        </childnode>
+        <childnode refid="252" relation="include">
+        </childnode>
+        <childnode refid="253" relation="include">
+        </childnode>
+      </node>
+      <node id="250">
+        <label>SDSPI.h</label>
+        <link refid="_s_d_s_p_i_8h"/>
+      </node>
+      <node id="251">
+        <label>SPIMSP432DMA.h</label>
+        <link refid="_s_p_i_m_s_p432_d_m_a_8h"/>
+      </node>
+      <node id="249">
+        <label>NVSSPI25X.h</label>
+        <link refid="_n_v_s_s_p_i25_x_8h"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="struct_s_p_i___transaction__" prot="public">SPI_Transaction_</innerclass>
+    <innerclass refid="struct_s_p_i___params__" prot="public">SPI_Params_</innerclass>
+    <innerclass refid="struct_s_p_i___fxn_table__" prot="public">SPI_FxnTable_</innerclass>
+    <innerclass refid="struct_s_p_i___config__" prot="public">SPI_Config_</innerclass>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="group___s_p_i___c_o_n_t_r_o_l_1ga3d23d16525ee76f77276472d8dea80b0" prot="public" static="no">
+        <name>SPI_CMD_RESERVED</name>
+        <initializer>(32)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Common SPI_control command code reservation offset. SPI driver implementations should offset command codes with SPI_CMD_RESERVED growing positively</para><para>Example implementation specific command codes: <programlisting><codeline><highlight class="normal">#define<sp/>SPIXYZ_CMD_COMMAND0<sp/><sp/><sp/><sp/><sp/>SPI_CMD_RESERVED<sp/>+<sp/>0</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>SPIXYZ_CMD_COMMAND1<sp/><sp/><sp/><sp/><sp/>SPI_CMD_RESERVED<sp/>+<sp/>1</highlight></codeline>
+</programlisting> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="454" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="454" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___s_p_i___c_o_n_t_r_o_l_1gae1af8c6ebf5e8fe481649f65e37b1b9f" prot="public" static="no">
+        <name>SPI_STATUS_RESERVED</name>
+        <initializer>(-32)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Common SPI_control status code reservation offset. SPI driver implementations should offset status codes with SPI_STATUS_RESERVED growing negatively.</para><para>Example implementation specific status codes: <programlisting><codeline><highlight class="normal">#define<sp/>SPIXYZ_STATUS_ERROR0<sp/><sp/><sp/><sp/>SPI_STATUS_RESERVED<sp/>-<sp/>0</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>SPIXYZ_STATUS_ERROR1<sp/><sp/><sp/><sp/>SPI_STATUS_RESERVED<sp/>-<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>SPIXYZ_STATUS_ERROR2<sp/><sp/><sp/><sp/>SPI_STATUS_RESERVED<sp/>-<sp/>2</highlight></codeline>
+</programlisting> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="468" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="468" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___s_p_i___s_t_a_t_u_s_1gab38fa90ff62128dbc98b2ecd84ca106f" prot="public" static="no">
+        <name>SPI_STATUS_SUCCESS</name>
+        <initializer>(0)</initializer>
+        <briefdescription>
+<para>Successful status code returned by <ref refid="_s_p_i_8h_1a1b3fafc9892141b7bab1bc9c19ede9ef" kindref="member">SPI_control()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+<para><ref refid="_s_p_i_8h_1a1b3fafc9892141b7bab1bc9c19ede9ef" kindref="member">SPI_control()</ref> returns SPI_STATUS_SUCCESS if the control code was executed successfully. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="483" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="483" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___s_p_i___s_t_a_t_u_s_1ga2d0020dd673cc28a9e1c20b0ff101073" prot="public" static="no">
+        <name>SPI_STATUS_ERROR</name>
+        <initializer>(-1)</initializer>
+        <briefdescription>
+<para>Generic error status code returned by <ref refid="_s_p_i_8h_1a1b3fafc9892141b7bab1bc9c19ede9ef" kindref="member">SPI_control()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+<para><ref refid="_s_p_i_8h_1a1b3fafc9892141b7bab1bc9c19ede9ef" kindref="member">SPI_control()</ref> returns SPI_STATUS_ERROR if the control code was not executed successfully. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="491" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="491" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group___s_p_i___s_t_a_t_u_s_1gacfcd15e1eecdb99b4867adc7592a8d6e" prot="public" static="no">
+        <name>SPI_STATUS_UNDEFINEDCMD</name>
+        <initializer>(-2)</initializer>
+        <briefdescription>
+<para>An error status code returned by <ref refid="_s_p_i_8h_1a1b3fafc9892141b7bab1bc9c19ede9ef" kindref="member">SPI_control()</ref> for undefined command codes. </para>        </briefdescription>
+        <detaileddescription>
+<para><ref refid="_s_p_i_8h_1a1b3fafc9892141b7bab1bc9c19ede9ef" kindref="member">SPI_control()</ref> returns SPI_STATUS_UNDEFINEDCMD if the control code is not recognized by the driver implementation. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="500" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="500" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_s_p_i_8h_1a7cab73b936e6e08392882196df41277e" prot="public" static="no">
+        <name>SPI_WAIT_FOREVER</name>
+        <initializer>(~(0U))</initializer>
+        <briefdescription>
+<para>Wait forever define. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="520" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="520" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588" prot="public" static="no">
+        <name>SPI_Status_</name>
+        <enumvalue id="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588abb35466595b950df7e3e3d880336502b" prot="public">
+          <name>SPI_TRANSFER_COMPLETED</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>SPI transfer completed </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588ad5266453aecb2fdedc0c23cd90921627" prot="public">
+          <name>SPI_TRANSFER_STARTED</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>SPI transfer started and in progress </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588a78957da92681e8400d84d9d3ede55836" prot="public">
+          <name>SPI_TRANSFER_CANCELED</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>SPI transfer was canceled </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588ac01b83da31c34da13025a5b987ef013f" prot="public">
+          <name>SPI_TRANSFER_FAILED</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>SPI transfer failed </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588aa363cddc53c1f44ca73aa661e6535816" prot="public">
+          <name>SPI_TRANSFER_CSN_DEASSERT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>SPI chip select was de-asserted </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588ad9c52e5a8cefc5b6926e19a8dd62125b" prot="public">
+          <name>SPI_TRANSFER_PEND_CSN_ASSERT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>SPI transfer is pending until the chip select is asserted </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588a296a4fda0015070e612ab8e1ee5bc287" prot="public">
+          <name>SPI_TRANSFER_QUEUED</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>SPI transfer added to transaction queue </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Status codes that are set by the SPI driver. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="530" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="530" bodyend="538"/>
+      </memberdef>
+      <memberdef kind="enum" id="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126" prot="public" static="no">
+        <name>SPI_Mode_</name>
+        <enumvalue id="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126a84379dc90398ca075038c8d5ee465f6a" prot="public">
+          <name>SPI_MASTER</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>SPI in master mode </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126abc98c1546fe12d3fceb1f86cf670faa9" prot="public">
+          <name>SPI_SLAVE</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>SPI in slave mode </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Definitions for various SPI modes of operation. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="575" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="575" bodyend="578"/>
+      </memberdef>
+      <memberdef kind="enum" id="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666" prot="public" static="no">
+        <name>SPI_FrameFormat_</name>
+        <enumvalue id="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666a0396d8c01166ff94e94e0c200261eba3" prot="public">
+          <name>SPI_POL0_PHA0</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>SPI mode Polarity 0 Phase 0 </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666a340efc6d0f6f3b5be1151444c15faabf" prot="public">
+          <name>SPI_POL0_PHA1</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>SPI mode Polarity 0 Phase 1 </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666ace88daceb628498715aeda698541c95c" prot="public">
+          <name>SPI_POL1_PHA0</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>SPI mode Polarity 1 Phase 0 </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666a4441729b292511628cb1e9f102da9166" prot="public">
+          <name>SPI_POL1_PHA1</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>SPI mode Polarity 1 Phase 1 </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666ac3cb11b3a833e28368e267161551eb1d" prot="public">
+          <name>SPI_TI</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>TI mode (not supported on all implementations) </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666a34dc698e46fc5c1b2b1f0de19a44fdcb" prot="public">
+          <name>SPI_MW</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Micro-wire mode (not supported on all implementations) </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Definitions for various SPI data frame formats. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="584" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="584" bodyend="593"/>
+      </memberdef>
+      <memberdef kind="enum" id="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53a" prot="public" static="no">
+        <name>SPI_TransferMode_</name>
+        <enumvalue id="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa0dfb2358e008316426895e7237c398e8" prot="public">
+          <name>SPI_MODE_BLOCKING</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para><ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref> blocks execution. This mode can only be used when called within a Task context </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa5631e69925c47a62a261c78ebbda39fb" prot="public">
+          <name>SPI_MODE_CALLBACK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para><ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref> does not block code execution and will call a <ref refid="_s_p_i_8h_1a207e2d5a7e7ea5606b6995b6485ca015" kindref="member">SPI_CallbackFxn</ref>. This mode can be used in a Task, software or hardware interrupt context. </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>SPI transfer mode determines the whether the SPI controller operates synchronously or asynchronously. In <ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa0dfb2358e008316426895e7237c398e8" kindref="member">SPI_MODE_BLOCKING</ref> mode <ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref> blocks code execution until the SPI transaction has completed. In <ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa5631e69925c47a62a261c78ebbda39fb" kindref="member">SPI_MODE_CALLBACK</ref> <ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref> does not block code execution and instead calls a <ref refid="_s_p_i_8h_1a207e2d5a7e7ea5606b6995b6485ca015" kindref="member">SPI_CallbackFxn</ref> callback function when the transaction has completed. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="605" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="605" bodyend="617"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_s_p_i_8h_1a93072bc33543d36c9603198df25ee388" prot="public" static="no">
+        <type>struct <ref refid="struct_s_p_i___config__" kindref="compound">SPI_Config_</ref> *</type>
+        <definition>typedef struct SPI_Config_* SPI_Handle</definition>
+        <argsstring></argsstring>
+        <name>SPI_Handle</name>
+        <briefdescription>
+<para>A handle that is returned from a <ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref> call. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="525" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="525" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1a29664bd138f8bc577c507588da18d874" prot="public" static="no">
+        <type>enum <ref refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588" kindref="member">SPI_Status_</ref></type>
+        <definition>typedef enum SPI_Status_  SPI_Status</definition>
+        <argsstring></argsstring>
+        <name>SPI_Status</name>
+        <briefdescription>
+<para>Status codes that are set by the SPI driver. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="538" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1a8db1a57134d152fae8659739b6f37c71" prot="public" static="no">
+        <type>struct <ref refid="struct_s_p_i___transaction__" kindref="compound">SPI_Transaction_</ref></type>
+        <definition>typedef struct SPI_Transaction_  SPI_Transaction</definition>
+        <argsstring></argsstring>
+        <name>SPI_Transaction</name>
+        <briefdescription>
+<para>A <ref refid="_s_p_i_8h_1a8db1a57134d152fae8659739b6f37c71" kindref="member">SPI_Transaction</ref> data structure is used with <ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref>. It indicates how many <ref refid="_s_p_i_8h_1ad0f9402c803cdf9211e1db54da938f78" kindref="member">SPI_FrameFormat</ref> frames are sent and received from the buffers pointed to txBuf and rxBuf. The arg variable is an user-definable argument which gets passed to the <ref refid="_s_p_i_8h_1a207e2d5a7e7ea5606b6995b6485ca015" kindref="member">SPI_CallbackFxn</ref> when the SPI driver is in <ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa5631e69925c47a62a261c78ebbda39fb" kindref="member">SPI_MODE_CALLBACK</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="560" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1a207e2d5a7e7ea5606b6995b6485ca015" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* SPI_CallbackFxn) (SPI_Handle handle, SPI_Transaction *transaction)</definition>
+        <argsstring>)(SPI_Handle handle, SPI_Transaction *transaction)</argsstring>
+        <name>SPI_CallbackFxn</name>
+        <briefdescription>
+<para>The definition of a callback function used by the SPI driver when used in <ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa5631e69925c47a62a261c78ebbda39fb" kindref="member">SPI_MODE_CALLBACK</ref>. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>SPI_Handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>SPI_Handle </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>SPI_Transaction*</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>SPI_Transaction* </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="569" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="569" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1aaf545fda6ffd6648e2bc24d26cd26fc2" prot="public" static="no">
+        <type>enum <ref refid="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126" kindref="member">SPI_Mode_</ref></type>
+        <definition>typedef enum SPI_Mode_  SPI_Mode</definition>
+        <argsstring></argsstring>
+        <name>SPI_Mode</name>
+        <briefdescription>
+<para>Definitions for various SPI modes of operation. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="578" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1ad0f9402c803cdf9211e1db54da938f78" prot="public" static="no">
+        <type>enum <ref refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666" kindref="member">SPI_FrameFormat_</ref></type>
+        <definition>typedef enum SPI_FrameFormat_  SPI_FrameFormat</definition>
+        <argsstring></argsstring>
+        <name>SPI_FrameFormat</name>
+        <briefdescription>
+<para>Definitions for various SPI data frame formats. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="593" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1aacc66eaab730438e7866bd7c90d29b19" prot="public" static="no">
+        <type>enum <ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53a" kindref="member">SPI_TransferMode_</ref></type>
+        <definition>typedef enum SPI_TransferMode_  SPI_TransferMode</definition>
+        <argsstring></argsstring>
+        <name>SPI_TransferMode</name>
+        <briefdescription>
+<para>SPI transfer mode determines the whether the SPI controller operates synchronously or asynchronously. In <ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa0dfb2358e008316426895e7237c398e8" kindref="member">SPI_MODE_BLOCKING</ref> mode <ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref> blocks code execution until the SPI transaction has completed. In <ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa5631e69925c47a62a261c78ebbda39fb" kindref="member">SPI_MODE_CALLBACK</ref> <ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref> does not block code execution and instead calls a <ref refid="_s_p_i_8h_1a207e2d5a7e7ea5606b6995b6485ca015" kindref="member">SPI_CallbackFxn</ref> callback function when the transaction has completed. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="617" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1a6072d65e3caf8e677473b54d2bce7d35" prot="public" static="no">
+        <type>struct <ref refid="struct_s_p_i___params__" kindref="compound">SPI_Params_</ref></type>
+        <definition>typedef struct SPI_Params_  SPI_Params</definition>
+        <argsstring></argsstring>
+        <name>SPI_Params</name>
+        <briefdescription>
+<para>SPI Parameters. </para>        </briefdescription>
+        <detaileddescription>
+<para>SPI Parameters are used to with the <ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref> call. Default values for these parameters are set using <ref refid="_s_p_i_8h_1a9c3dd1748332fd6e31c79a6538a71642" kindref="member">SPI_Params_init()</ref>.</para><para><simplesect kind="see"><para><ref refid="_s_p_i_8h_1a9c3dd1748332fd6e31c79a6538a71642" kindref="member">SPI_Params_init()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="638" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1aa361d580eb0a5a052d0a1403e0aa5746" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* SPI_CloseFxn) (SPI_Handle handle)</definition>
+        <argsstring>)(SPI_Handle handle)</argsstring>
+        <name>SPI_CloseFxn</name>
+        <briefdescription>
+<para>A function pointer to a driver specific implementation of <ref refid="_s_p_i_8h_1a0e3448b30b88609fa120915e49560601" kindref="member">SPI_close()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="644" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="644" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1a0505b9eca5030ca4fc27959e2b5134ca" prot="public" static="no">
+        <type>int_fast16_t(*</type>
+        <definition>typedef int_fast16_t(* SPI_ControlFxn) (SPI_Handle handle, uint_fast16_t cmd, void *arg)</definition>
+        <argsstring>)(SPI_Handle handle, uint_fast16_t cmd, void *arg)</argsstring>
+        <name>SPI_ControlFxn</name>
+        <briefdescription>
+<para>A function pointer to a driver specific implementation of <ref refid="_s_p_i_8h_1a1b3fafc9892141b7bab1bc9c19ede9ef" kindref="member">SPI_control()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="650" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="650" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1aa3b32db8f017fd0ce92bf46a089659e6" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* SPI_InitFxn) (SPI_Handle handle)</definition>
+        <argsstring>)(SPI_Handle handle)</argsstring>
+        <name>SPI_InitFxn</name>
+        <briefdescription>
+<para>A function pointer to a driver specific implementation of <ref refid="_s_p_i_8h_1afd9b09f58917f0e2d14c61b956eba214" kindref="member">SPI_init()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="657" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="657" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1a7e0786f4c1487f9daec49adbc3ac1cf5" prot="public" static="no">
+        <type><ref refid="_s_p_i_8h_1a93072bc33543d36c9603198df25ee388" kindref="member">SPI_Handle</ref>(*</type>
+        <definition>typedef SPI_Handle(* SPI_OpenFxn) (SPI_Handle handle, SPI_Params *params)</definition>
+        <argsstring>)(SPI_Handle handle, SPI_Params *params)</argsstring>
+        <name>SPI_OpenFxn</name>
+        <briefdescription>
+<para>A function pointer to a driver specific implementation of <ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="663" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="663" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1a470d264d053b30edb0aaafcafd335c26" prot="public" static="no">
+        <type>bool(*</type>
+        <definition>typedef bool(* SPI_TransferFxn) (SPI_Handle handle, SPI_Transaction *transaction)</definition>
+        <argsstring>)(SPI_Handle handle, SPI_Transaction *transaction)</argsstring>
+        <name>SPI_TransferFxn</name>
+        <briefdescription>
+<para>A function pointer to a driver specific implementation of <ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="669" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="669" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1a33f5b214451ac89ea462083eeba0bf8c" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* SPI_TransferCancelFxn) (SPI_Handle handle)</definition>
+        <argsstring>)(SPI_Handle handle)</argsstring>
+        <name>SPI_TransferCancelFxn</name>
+        <briefdescription>
+<para>A function pointer to a driver specific implementation of <ref refid="_s_p_i_8h_1a6819f7761fc3505c4f885653ff8121f0" kindref="member">SPI_transferCancel()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="676" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/SPI.h" bodystart="676" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1a4e8e5691222e58e20960a9b82354a358" prot="public" static="no">
+        <type>struct <ref refid="struct_s_p_i___fxn_table__" kindref="compound">SPI_FxnTable_</ref></type>
+        <definition>typedef struct SPI_FxnTable_  SPI_FxnTable</definition>
+        <argsstring></argsstring>
+        <name>SPI_FxnTable</name>
+        <briefdescription>
+<para>The definition of a SPI function table that contains the required set of functions to control a specific SPI driver implementation. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="701" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_s_p_i_8h_1a9ce9680cc88c403db466864c02ee4733" prot="public" static="no">
+        <type>struct <ref refid="struct_s_p_i___config__" kindref="compound">SPI_Config_</ref></type>
+        <definition>typedef struct SPI_Config_  SPI_Config</definition>
+        <argsstring></argsstring>
+        <name>SPI_Config</name>
+        <briefdescription>
+<para>SPI Global configuration. </para>        </briefdescription>
+        <detaileddescription>
+<para>The SPI_Config structure contains a set of pointers used to characterize the SPI driver implementation.</para><para>This structure needs to be defined before calling <ref refid="_s_p_i_8h_1afd9b09f58917f0e2d14c61b956eba214" kindref="member">SPI_init()</ref> and it must not be changed thereafter.</para><para><simplesect kind="see"><para><ref refid="_s_p_i_8h_1afd9b09f58917f0e2d14c61b956eba214" kindref="member">SPI_init()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="723" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_s_p_i_8h_1a0e3448b30b88609fa120915e49560601" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SPI_close</definition>
+        <argsstring>(SPI_Handle handle)</argsstring>
+        <name>SPI_close</name>
+        <param>
+          <type><ref refid="_s_p_i_8h_1a93072bc33543d36c9603198df25ee388" kindref="member">SPI_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <briefdescription>
+<para>Function to close a SPI peripheral specified by the SPI handle. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="pre"><para><ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref> has to be called first.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A SPI handle returned from <ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref></para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="see"><para><ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="734" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_s_p_i_8h_1a1b3fafc9892141b7bab1bc9c19ede9ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int_fast16_t</type>
+        <definition>int_fast16_t SPI_control</definition>
+        <argsstring>(SPI_Handle handle, uint_fast16_t cmd, void *controlArg)</argsstring>
+        <name>SPI_control</name>
+        <param>
+          <type><ref refid="_s_p_i_8h_1a93072bc33543d36c9603198df25ee388" kindref="member">SPI_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <param>
+          <type>uint_fast16_t</type>
+          <declname>cmd</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>controlArg</declname>
+        </param>
+        <briefdescription>
+<para>Function performs implementation specific features on a given SPI_Handle. </para>        </briefdescription>
+        <detaileddescription>
+<para>Commands for SPI_control can originate from <ref refid="_s_p_i_8h" kindref="compound">SPI.h</ref> or from implementation specific SPI*.h (<emphasis>SPICC26XX.h</emphasis>, <emphasis>SPIMSP432.h</emphasis>, etc.. ) files. While commands from <ref refid="_s_p_i_8h" kindref="compound">SPI.h</ref> are API portable across driver implementations, not all implementations may support all these commands. Conversely, commands from driver implementation specific SPI*.h files add unique driver capabilities but are not API portable across all SPI driver implementations.</para><para>Commands supported by <ref refid="_s_p_i_8h" kindref="compound">SPI.h</ref> follow a SPI_CMD_&lt;cmd&gt; naming convention.<linebreak/>
+ Commands supported by SPI*.h follow a SPI*_CMD_&lt;cmd&gt; naming convention.<linebreak/>
+ Each control command defines <bold>arg</bold> differently. The types of <bold>arg</bold> are documented with each command.</para><para>See <ref refid="group___s_p_i___c_m_d" kindref="compound">SPI_control command codes</ref> for command codes.</para><para>See <ref refid="group___s_p_i___s_t_a_t_u_s" kindref="compound">SPI_control return status codes</ref> for status codes.</para><para><simplesect kind="pre"><para><ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref> has to be called first.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A SPI handle returned from <ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref></para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cmd</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="_s_p_i_8h" kindref="compound">SPI.h</ref> or SPI*.h commands.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>controlArg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An optional R/W (read/write) command argument accompanied with cmd</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Implementation specific return codes. Negative values indicate unsuccessful operations.</para></simplesect>
+<simplesect kind="see"><para><ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="773" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_s_p_i_8h_1afd9b09f58917f0e2d14c61b956eba214" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SPI_init</definition>
+        <argsstring>(void)</argsstring>
+        <name>SPI_init</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>This function initializes the SPI module. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="pre"><para>The SPI_config structure must exist and be persistent before this function can be called. This function must also be called before any other SPI driver APIs. This function call does not modify any peripheral registers. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="784" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_s_p_i_8h_1a93072bc33543d36c9603198df25ee388" kindref="member">SPI_Handle</ref></type>
+        <definition>SPI_Handle SPI_open</definition>
+        <argsstring>(uint_least8_t index, SPI_Params *params)</argsstring>
+        <name>SPI_open</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>index</declname>
+        </param>
+        <param>
+          <type><ref refid="_s_p_i_8h_1a6072d65e3caf8e677473b54d2bce7d35" kindref="member">SPI_Params</ref> *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+<para>This function opens a given SPI peripheral. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="pre"><para>SPI controller has been initialized using <ref refid="_s_p_i_8h_1afd9b09f58917f0e2d14c61b956eba214" kindref="member">SPI_init()</ref></para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Logical peripheral number for the SPI indexed into the SPI_config table</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>params</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to an parameter block, if NULL it will use default values. All the fields in this structure are RO (read-only).</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A SPI_Handle on success or a NULL on an error or if it has been opened already.</para></simplesect>
+<simplesect kind="see"><para><ref refid="_s_p_i_8h_1afd9b09f58917f0e2d14c61b956eba214" kindref="member">SPI_init()</ref> </para></simplesect>
+<simplesect kind="see"><para><ref refid="_s_p_i_8h_1a0e3448b30b88609fa120915e49560601" kindref="member">SPI_close()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="804" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_s_p_i_8h_1a9c3dd1748332fd6e31c79a6538a71642" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SPI_Params_init</definition>
+        <argsstring>(SPI_Params *params)</argsstring>
+        <name>SPI_Params_init</name>
+        <param>
+          <type><ref refid="_s_p_i_8h_1a6072d65e3caf8e677473b54d2bce7d35" kindref="member">SPI_Params</ref> *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+<para>Function to initialize the SPI_Params struct to its defaults. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>params</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An pointer to SPI_Params structure for initialization</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+Defaults values are: transferMode = SPI_MODE_BLOCKING transferTimeout = SPI_WAIT_FOREVER transferCallbackFxn = NULL mode = SPI_MASTER bitRate = 1000000 (Hz) dataSize = 8 (bits) frameFormat = SPI_POL0_PHA0 </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="821" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SPI_transfer</definition>
+        <argsstring>(SPI_Handle handle, SPI_Transaction *transaction)</argsstring>
+        <name>SPI_transfer</name>
+        <param>
+          <type><ref refid="_s_p_i_8h_1a93072bc33543d36c9603198df25ee388" kindref="member">SPI_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <param>
+          <type><ref refid="_s_p_i_8h_1a8db1a57134d152fae8659739b6f37c71" kindref="member">SPI_Transaction</ref> *</type>
+          <declname>transaction</declname>
+        </param>
+        <briefdescription>
+<para>Function to perform SPI transactions. </para>        </briefdescription>
+        <detaileddescription>
+<para>If the SPI is in <ref refid="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126a84379dc90398ca075038c8d5ee465f6a" kindref="member">SPI_MASTER</ref> mode, it will immediately start the transaction. If the SPI is in <ref refid="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126abc98c1546fe12d3fceb1f86cf670faa9" kindref="member">SPI_SLAVE</ref> mode, it prepares the driver for a transaction with a SPI master device. The device will then wait until the master begins the transfer.</para><para>In <ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa0dfb2358e008316426895e7237c398e8" kindref="member">SPI_MODE_BLOCKING</ref>, SPI_transfer() will block task execution until the transaction has completed or a timeout has occurred.</para><para>In <ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa5631e69925c47a62a261c78ebbda39fb" kindref="member">SPI_MODE_CALLBACK</ref>, SPI_transfer() does not block task execution, but calls a <ref refid="_s_p_i_8h_1a207e2d5a7e7ea5606b6995b6485ca015" kindref="member">SPI_CallbackFxn</ref> once the transfer has finished. This makes SPI_tranfer() safe to be used within a Task, software or hardware interrupt context. If queued transactions are supported SPI_Transfer may be called multiple times to queue multiple transactions. If the driver does not support this functionality additional calls will return false. Refer to device specific SPI driver documentation for support information.</para><para>From calling SPI_transfer() until transfer completion, the SPI_Transaction structure must stay persistent and must not be altered by application code. It is also forbidden to modify the content of the SPI_Transaction.txBuffer during a transaction, even though the physical transfer might not have started yet. Doing this can result in data corruption. This is especially important for slave operations where SPI_transfer() might be called a long time before the actual data transfer begins.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A SPI_Handle</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>transaction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to a SPI_Transaction. All of the fields within transaction except <ref refid="struct_s_p_i___transaction___1afddd181edfc742470340849cfdb2d9ca" kindref="member">SPI_Transaction.count</ref> and <ref refid="struct_s_p_i___transaction___1a75a5cdfb2c377190f45bda6359bccd99" kindref="member">SPI_Transaction.status</ref> are WO (write-only) unless otherwise noted in the driver implementations. If a transaction timeout has occurred, <ref refid="struct_s_p_i___transaction___1afddd181edfc742470340849cfdb2d9ca" kindref="member">SPI_Transaction.count</ref> will contain the number of frames that were transferred. Neither is it allowed to modify the transaction object nor the content of SPI_Transaction.txBuffer until the transfer has completed.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if started successfully; else <computeroutput>false</computeroutput> </para></simplesect>
+<simplesect kind="see"><para><ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open</ref> </para></simplesect>
+<simplesect kind="see"><para><ref refid="_s_p_i_8h_1a6819f7761fc3505c4f885653ff8121f0" kindref="member">SPI_transferCancel</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="867" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_s_p_i_8h_1a6819f7761fc3505c4f885653ff8121f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SPI_transferCancel</definition>
+        <argsstring>(SPI_Handle handle)</argsstring>
+        <name>SPI_transferCancel</name>
+        <param>
+          <type><ref refid="_s_p_i_8h_1a93072bc33543d36c9603198df25ee388" kindref="member">SPI_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <briefdescription>
+<para>Function to cancel SPI transactions. </para>        </briefdescription>
+        <detaileddescription>
+<para>In <ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa0dfb2358e008316426895e7237c398e8" kindref="member">SPI_MODE_BLOCKING</ref>, SPI_transferCancel has no effect.</para><para>In <ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa5631e69925c47a62a261c78ebbda39fb" kindref="member">SPI_MODE_CALLBACK</ref>, <ref refid="_s_p_i_8h_1a6819f7761fc3505c4f885653ff8121f0" kindref="member">SPI_transferCancel()</ref> will stop an SPI transfer if if one is in progress. If a transaction was in progress, its callback function will be called in context from which this API is called from. The <ref refid="_s_p_i_8h_1a207e2d5a7e7ea5606b6995b6485ca015" kindref="member">SPI_CallbackFxn</ref> function can determine if the transaction was successful or not by reading the <ref refid="_s_p_i_8h_1a29664bd138f8bc577c507588da18d874" kindref="member">SPI_Status</ref> status value in the <ref refid="_s_p_i_8h_1a8db1a57134d152fae8659739b6f37c71" kindref="member">SPI_Transaction</ref> structure.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A SPI_Handle</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="see"><para><ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open</ref> </para></simplesect>
+<simplesect kind="see"><para><ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h" line="886" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>SPI driver interface. </para>    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+</para><para>The SPI driver interface provides device independent APIs, data types, and macros. The SPI header file should be included in an application as follows: <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/SPI.h&gt;</highlight></codeline>
+</programlisting></para><para><heading level="1">Overview</heading>
+</para><para>The Serial Peripheral Interface (SPI) driver is a generic, full-duplex driver that transmits and receives data on a SPI bus. SPI is sometimes called SSI (Synchronous Serial Interface). The SPI protocol defines the format of a data transfer over the SPI bus, but it leaves flow control, data formatting, and handshaking mechanisms to higher-level software layers.</para><para>The APIs in this driver serve as an interface to a typical RTOS application. Its purpose is to redirect the SPI APIs to specific driver implementations which are specified using a pointer to a <ref refid="_s_p_i_8h_1a4e8e5691222e58e20960a9b82354a358" kindref="member">SPI_FxnTable</ref>. The specific SPI implementations are responsible for creating all the RTOS specific primitives to allow for thread-safe operation.</para><para>The SPI driver operates on some key definitions and assumptions:<itemizedlist>
+<listitem><para>The driver operates transparently from the chip select. Some SPI controllers feature a hardware chip select to assert SPI slave peripherals. See the specific peripheral implementations on chip select requirements.</para></listitem><listitem><para>The SPI protocol does not account for a built-in handshaking mechanism and neither does this SPI driver. Therefore, when operating in <ref refid="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126abc98c1546fe12d3fceb1f86cf670faa9" kindref="member">SPI_SLAVE</ref> mode, the application must provide such a mechanism to ensure that the SPI slave is ready for the SPI master. The SPI slave must call <ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref> <emphasis>before</emphasis> the SPI master starts transmitting. Some example application mechanisms could include:<itemizedlist>
+<listitem><para>Timed delays on the SPI master to guarantee the SPI slave is ready for a SPI transaction.</para></listitem><listitem><para>A form of GPIO flow control from the slave to the SPI master to notify the master when ready.</para></listitem></itemizedlist>
+</para></listitem></itemizedlist>
+</para><para><heading level="1">Usage</heading>
+</para><para>To use the SPI driver to send data over the SPI bus, the application calls the following APIs:<itemizedlist>
+<listitem><para><ref refid="_s_p_i_8h_1afd9b09f58917f0e2d14c61b956eba214" kindref="member">SPI_init()</ref>: Initialize the SPI driver.</para></listitem><listitem><para><ref refid="_s_p_i_8h_1a9c3dd1748332fd6e31c79a6538a71642" kindref="member">SPI_Params_init()</ref>: Initialize a <ref refid="_s_p_i_8h_1a6072d65e3caf8e677473b54d2bce7d35" kindref="member">SPI_Params</ref> structure with default values. Then change the parameters from non-default values as needed.</para></listitem><listitem><para><ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref>: Open an instance of the SPI driver, passing the initialized parameters, or NULL, and an index (described later).</para></listitem><listitem><para><ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref>: Transmit/receive data. This function takes a <ref refid="_s_p_i_8h_1a8db1a57134d152fae8659739b6f37c71" kindref="member">SPI_Transaction</ref> argument that specifies buffers for data to be transmitted/received.</para></listitem><listitem><para><ref refid="_s_p_i_8h_1a0e3448b30b88609fa120915e49560601" kindref="member">SPI_close()</ref>: De-initialize the SPI instance.</para></listitem></itemizedlist>
+</para><para>The following code example opens a SPI instance as a master SPI, and issues a transaction.</para><para><programlisting><codeline><highlight class="normal">SPI_Handle<sp/><sp/><sp/><sp/><sp/><sp/>spi;</highlight></codeline>
+<codeline><highlight class="normal">SPI_Params<sp/><sp/><sp/><sp/><sp/><sp/>spiParams;</highlight></codeline>
+<codeline><highlight class="normal">SPI_Transaction<sp/>spiTransaction;</highlight></codeline>
+<codeline><highlight class="normal">uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transmitBuffer[MSGSIZE];</highlight></codeline>
+<codeline><highlight class="normal">uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>receiveBuffer[MSGSIZE];</highlight></codeline>
+<codeline><highlight class="normal">bool<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transferOK;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">SPI_init();<sp/><sp/>//<sp/>Initialize<sp/>the<sp/>SPI<sp/>driver</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">SPI_Params_init(&amp;spiParams);<sp/><sp/>//<sp/>Initialize<sp/>SPI<sp/>parameters</highlight></codeline>
+<codeline><highlight class="normal">spiParams.dataSize<sp/>=<sp/>8;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>8-bit<sp/>data<sp/>size</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline><highlight class="normal">if<sp/>(spi<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>while<sp/>(1);<sp/><sp/>//<sp/>SPI_open()<sp/>failed</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Fill<sp/>in<sp/>transmitBuffer</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">spiTransaction.count<sp/>=<sp/>MSGSIZE;</highlight></codeline>
+<codeline><highlight class="normal">spiTransaction.txBuf<sp/>=<sp/>(void<sp/>*)transmitBuffer;</highlight></codeline>
+<codeline><highlight class="normal">spiTransaction.rxBuf<sp/>=<sp/>(void<sp/>*)receiveBuffer;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">transferOK<sp/>=<sp/>SPI_transfer(spi,<sp/>&amp;spiTransaction);</highlight></codeline>
+<codeline><highlight class="normal">if<sp/>(!transferOK)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>in<sp/>SPI<sp/>or<sp/>transfer<sp/>already<sp/>in<sp/>progress.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>while<sp/>(1);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para><para>More details on usage are provided in the following subsections.</para><para><heading level="3">SPI Driver Configuration</heading>
+</para><para>In order to use the SPI APIs, the application is required to provide device-specific SPI configuration in the Board.c file. The SPI driver interface defines a configuration data structure:</para><para><programlisting><codeline><highlight class="normal">typedef<sp/>struct<sp/>SPI_Config_<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>SPI_FxnTable<sp/><sp/>const<sp/><sp/><sp/><sp/>*fxnTablePtr;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*object;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/><sp/><sp/><sp/>*hwAttrs;</highlight></codeline>
+<codeline><highlight class="normal">}<sp/>SPI_Config;</highlight></codeline>
+</programlisting></para><para>The application must declare an array of SPI_Config elements, named SPI_config[]. Each element of SPI_config[] must be populated with pointers to a device specific SPI driver implementation&apos;s function table, driver object, and hardware attributes. The hardware attributes define properties such as the SPI peripheral&apos;s base address, and the MOSI and MISO pins. Each element in SPI_config[] corresponds to a SPI instance, and none of the elements should have NULL pointers. There is no correlation between the index and the peripheral designation (such as SPI0 or SPI1). For example, it is possible to use SPI_config[0] for SPI1.</para><para>Because the SPI configuration is very device dependent, you will need to check the doxygen for the device specific SPI implementation. There you will find a description of the SPI hardware attributes. Please also refer to the Board.c file of any of your examples to see the SPI configuration.</para><para><heading level="3">Initializing the SPI Driver</heading>
+</para><para><ref refid="_s_p_i_8h_1afd9b09f58917f0e2d14c61b956eba214" kindref="member">SPI_init()</ref> must be called before any other SPI APIs. This function iterates through the elements of the SPI_config[] array, calling the element&apos;s device implementation SPI initialization function.</para><para><heading level="3">SPI Parameters</heading>
+</para><para>The <ref refid="_s_p_i_8h_1a6072d65e3caf8e677473b54d2bce7d35" kindref="member">SPI_Params</ref> structure is passed to the <ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref> call. If NULL is passed for the parameters, <ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref> uses default parameters. A <ref refid="_s_p_i_8h_1a6072d65e3caf8e677473b54d2bce7d35" kindref="member">SPI_Params</ref> structure is initialized with default values by passing it to <ref refid="_s_p_i_8h_1a9c3dd1748332fd6e31c79a6538a71642" kindref="member">SPI_Params_init()</ref>. Some of the SPI parameters are described below. To see brief descriptions of all the parameters, see <ref refid="_s_p_i_8h_1a6072d65e3caf8e677473b54d2bce7d35" kindref="member">SPI_Params</ref>.</para><para><heading level="4">SPI Mode</heading>
+</para><para>The SPI driver operates in both SPI master and SPI slave modes. Logically, the implementation is identical, however the difference between these two modes is driven by hardware. The default mode is <ref refid="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126a84379dc90398ca075038c8d5ee465f6a" kindref="member">SPI_MASTER</ref>, but can be set to slave mode by setting <ref refid="struct_s_p_i___params___1a25568ccd4148ef231f31c81d17b3cf1f" kindref="member">SPI_Params.mode</ref> to <ref refid="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126abc98c1546fe12d3fceb1f86cf670faa9" kindref="member">SPI_SLAVE</ref> in the parameters passed to <ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref>. See <ulink url="#Master_Slave_Modes">Master/Slave Modes</ulink> for further details.</para><para><heading level="4">SPI Transfer Mode</heading>
+</para><para>The SPI driver supports two transfer modes of operation: blocking and callback. The transfer mode is determined by the transferMode parameter in the SPI_Params data structure. The SPI driver defaults to blocking mode, if the application does not set it. Once a SPI driver is opened, the only way to change the operation mode is to close and re-open the SPI instance with the new transfer mode.</para><para>In blocking mode, a task&apos;s code execution is blocked until a SPI transaction has completed or a timeout has occurred. This ensures that only one SPI transfer operates at a given time. Other tasks requesting SPI transfers while a transfer is currently taking place will receive a FALSE return value. If a timeout occurs the transfer is canceled, the task is unblocked &amp; will receive a FALSE return value. The transaction count field will have the amount of frames which were transferred successfully before the timeout. In blocking mode, transfers cannot be performed in software or hardware ISR context.</para><para>In callback mode, a SPI transaction functions asynchronously, which means that it does not block code execution. After a SPI transaction has been completed, the SPI driver calls a user-provided hook function. Callback mode is supported in the execution context of tasks and hardware interrupt routines. However, if a SPI transaction is requested while a transaction is taking place, <ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref> returns FALSE.</para><para><heading level="4">SPI Frame Formats and Data Size</heading>
+</para><para>The SPI driver can configure the device&apos;s SPI peripheral to transfer data in several SPI format options: SPI (with various polarity and phase settings), TI, and Micro-wire. The frame format is set with <ref refid="struct_s_p_i___params___1adb62fb7458d9bab667a686bbffbae3ac" kindref="member">SPI_Params.frameFormat</ref>. Some SPI implementations may not support all frame formats &amp; the SPI driver will fail to opened. Refer to the device specific implementation documentation for details on which frame formats are supported.</para><para>The smallest single unit of data transmitted onto the SPI bus is called a SPI frame and is of size <ref refid="struct_s_p_i___params___1a39376e78235d5329b958ca7561b9fea8" kindref="member">SPI_Params.dataSize</ref>. A series of SPI frames transmitted/received on a SPI bus is known as a SPI transaction.</para><para><heading level="3">Opening the SPI Driver</heading>
+</para><para>After initializing the SPI driver by calling <ref refid="_s_p_i_8h_1afd9b09f58917f0e2d14c61b956eba214" kindref="member">SPI_init()</ref>, the application can open a SPI instance by calling <ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref>. This function takes an index into the SPI_config[] array, and a SPI parameters data structure. The SPI instance is specified by the index of the SPI in SPI_config[]. Only one SPI index can be used at a time; calling <ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref> a second time with the same index previously passed to <ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref> will result in an error. You can, though, re-use the index if the instance is closed via <ref refid="_s_p_i_8h_1a0e3448b30b88609fa120915e49560601" kindref="member">SPI_close()</ref>.</para><para>If no SPI_Params structure is passed to <ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref>, default values are used. If the open call is successful, it returns a non-NULL value.</para><para>Example opening a SPI driver instance in blocking mode: <programlisting><codeline><highlight class="normal">SPI_Handle<sp/><sp/>spi;</highlight></codeline>
+<codeline><highlight class="normal">SPI_Params<sp/><sp/>spiParams;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">SPI_Params_init(&amp;spiParams);</highlight></codeline>
+<codeline><highlight class="normal">spiParams.transferMode<sp/>=<sp/>SPI_MODE_BLOCKING;</highlight></codeline>
+<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">if<sp/>(spi<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>opening<sp/>SPI</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>while(1);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para><para>Example opening a SPI driver instance in callback mode: <programlisting><codeline><highlight class="normal">SPI_Handle<sp/>spi;</highlight></codeline>
+<codeline><highlight class="normal">SPI_Params<sp/>spiParams;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">SPI_Params_init(&amp;spiParams);</highlight></codeline>
+<codeline><highlight class="normal">spiParams.transferMode<sp/>=<sp/>SPI_MODE_CALLBACK;</highlight></codeline>
+<codeline><highlight class="normal">spiParams.transferCallbackFxn<sp/>=<sp/>UserCallbackFxn;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline><highlight class="normal">if<sp/>(spi<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>opening<sp/>SPI</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>while<sp/>(1);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para><para><heading level="3">SPI Transactions</heading>
+</para><para>A SPI transaction consists of a series of SPI frames transmitted/received on a SPI bus. A SPI transaction is performed using <ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref>. <ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref> accepts a pointer to a <ref refid="_s_p_i_8h_1a8db1a57134d152fae8659739b6f37c71" kindref="member">SPI_Transaction</ref> structure that dictates the quantity of data to be sent and received. The <ref refid="struct_s_p_i___transaction___1a465018e5ce354ef4af029a5d19da27e0" kindref="member">SPI_Transaction.txBuf</ref> and <ref refid="struct_s_p_i___transaction___1ae1c4a4d5b0ebc2f38467fd52bd788525" kindref="member">SPI_Transaction.rxBuf</ref> are both pointers to data buffers. If txBuf is NULL, the driver sends SPI frames with all data set to the default value specified in the hardware attributes. If rxBuf is NULL, the driver discards all SPI frames received. <ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref> of a SPI transaction is performed atomically.</para><para><simplesect kind="warning"><para>The use of NULL as a sentinel txBuf or rxBuf value to determine whether the SPI transaction includes a tx or rx component implies that it is not possible to perform a transmit or receive transfer directly from/to a buffer with a base address of 0x00000000. To support this rare use-case, the application will have to manually copy the contents of location 0x00000000 to/from a temporary buffer before/after the tx/rx SPI transaction.</para></simplesect>
+When the SPI is opened, the dataSize value determines the element types of txBuf and rxBuf. If the dataSize is from 4 to 8 bits, the driver assumes the data buffers are of type uint8_t (unsigned char). If the dataSize is from 8 to 16 bits, the driver assumes the data buffers are of type uint16_t (unsigned short). If the dataSize is greater than 16 bits, the driver assumes the data buffers are uint32_t (unsigned long). Some SPI driver implementations may not support all data sizes; refer to device specific SPI implementation documentation for details on what data sizes are supported.</para><para>The optional <ref refid="struct_s_p_i___transaction___1a2be360dfbe81fe35cd01c3505642b51f" kindref="member">SPI_Transaction.arg</ref> variable can only be used when the SPI driver has been opened in callback mode. This variable is used to pass a user-defined value into the user-defined callback function.</para><para><ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer()</ref> always performs full-duplex SPI transactions. This means the SPI simultaneously receives data as it transmits data. The application is responsible for formatting the data to be transmitted as well as determining whether the data received is meaningful. Specifics about SPI frame formatting and data sizes are provided in device-specific data sheets and technical reference manuals.</para><para>The following code snippets perform SPI transactions.</para><para>Example transferring 6-bit SPI frames. The transmit and receive buffers are of type uint8_t. <programlisting><codeline><highlight class="normal">SPI_Transaction<sp/>spiTransaction;</highlight></codeline>
+<codeline><highlight class="normal">uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transmitBuffer[BUFSIZE];</highlight></codeline>
+<codeline><highlight class="normal">uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>receiveBuffer[BUFSIZE];</highlight></codeline>
+<codeline><highlight class="normal">bool<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transferOK;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">SPI_Params_init(&amp;spiParams);</highlight></codeline>
+<codeline><highlight class="normal">spiParams.dataSize<sp/>=<sp/>6;</highlight></codeline>
+<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">spiTransaction.count<sp/>=<sp/>someIntegerValue;</highlight></codeline>
+<codeline><highlight class="normal">spiTransaction.txBuf<sp/>=<sp/>transmitBuffer;</highlight></codeline>
+<codeline><highlight class="normal">spiTransaction.rxBuf<sp/>=<sp/>receiveBuffer;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">transferOK<sp/>=<sp/>SPI_transfer(spi,<sp/>&amp;spiTransaction);</highlight></codeline>
+<codeline><highlight class="normal">if<sp/>(!transferOK)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>in<sp/>SPI<sp/>or<sp/>transfer<sp/>already<sp/>in<sp/>progress.</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para><para>Example transferring 12-bit SPI frames. The transmit and receive buffers are of type uint16_t. <programlisting><codeline><highlight class="normal">SPI_Transaction<sp/>spiTransaction;</highlight></codeline>
+<codeline><highlight class="normal">uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transmitBuffer[BUFSIZE];</highlight></codeline>
+<codeline><highlight class="normal">uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>receiveBuffer[BUFSIZE];</highlight></codeline>
+<codeline><highlight class="normal">bool<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transferOK;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">SPI_Params_init(&amp;spiParams);</highlight></codeline>
+<codeline><highlight class="normal">spiParams.dataSize<sp/>=<sp/>12;</highlight></codeline>
+<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">spiTransaction.count<sp/>=<sp/>someIntegerValue;</highlight></codeline>
+<codeline><highlight class="normal">spiTransaction.txBuf<sp/>=<sp/>transmitBuffer;</highlight></codeline>
+<codeline><highlight class="normal">spiTransaction.rxBuf<sp/>=<sp/>receiveBuffer;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">transferOK<sp/>=<sp/>SPI_transfer(spi,<sp/>&amp;spiTransaction);</highlight></codeline>
+<codeline><highlight class="normal">if<sp/>(!transferOK)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>in<sp/>SPI<sp/>or<sp/>transfer<sp/>already<sp/>in<sp/>progress.</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para><para><heading level="3">Canceling a transaction</heading>
+</para><para><ref refid="_s_p_i_8h_1a6819f7761fc3505c4f885653ff8121f0" kindref="member">SPI_transferCancel()</ref> is used to cancel a SPI transaction when the driver is used in <ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa5631e69925c47a62a261c78ebbda39fb" kindref="member">SPI_MODE_CALLBACK</ref> mode.</para><para>Calling this API while no transfer is in progress has no effect. If a transfer is in progress, it is canceled and the callback functions is called. The <ref refid="_s_p_i_8h_1a29664bd138f8bc577c507588da18d874" kindref="member">SPI_Status</ref> status field in the <ref refid="_s_p_i_8h_1a8db1a57134d152fae8659739b6f37c71" kindref="member">SPI_Transaction</ref> structure can be examined within the callback to determine if the transaction succeeded.</para><para>Example: <programlisting><codeline><highlight class="normal">SPI_transferCancel(spi);</highlight></codeline>
+</programlisting></para><para><heading level="2"><anchor id="_1Master_Slave_Modes"/>Master/Slave Modes</heading>
+</para><para>This SPI driver functions in both SPI master and SPI slave modes. Logically, the implementation is identical, however the difference between these two modes is driven by hardware. As a SPI master, the peripheral is in control of the clock signal and therefore will commence communications to the SPI slave immediately. As a SPI slave, the SPI driver prepares the peripheral to transmit and receive data in a way such that the peripheral is ready to transfer data when the SPI master initiates a transaction.</para><para><heading level="3">Asserting on Chip Select</heading>
+</para><para>The SPI protocol requires that the SPI master asserts a SPI slave&apos;s chip select pin prior to starting a SPI transaction. While this protocol is generally followed, various types of SPI peripherals have different timing requirements as to when and for how long the chip select pin must remain asserted for a SPI transaction.</para><para>Commonly, the SPI master uses a hardware chip select to assert and de-assert the SPI slave for every data frame. In other cases, a SPI slave imposes the requirement of asserting the chip select over several SPI data frames. This is generally accomplished by using a regular, general-purpose output pin. Due to the complexity of such SPI peripheral implementations, this SPI driver has been designed to operate transparently to the SPI chip select. When the hardware chip select is used, the peripheral automatically selects/enables the peripheral. When using a software chip select, the application needs to handle the proper chip select and pin configuration. Chip select support will vary per SPI peripheral, refer to the device specific implementation documentation for details on chip select support.</para><para><itemizedlist>
+<listitem><para><emphasis>Hardware chip select</emphasis> No additional action by the application is required.</para></listitem><listitem><para><emphasis>Software chip select</emphasis> The application needs to handle the chip select assertion and de-assertion for the proper SPI peripheral.</para></listitem></itemizedlist>
+</para><para><heading level="1">Implementation</heading>
+</para><para>This module serves as the main interface for RTOS applications. Its purpose is to redirect the module&apos;s APIs to specific peripheral implementations which are specified using a pointer to a <ref refid="_s_p_i_8h_1a4e8e5691222e58e20960a9b82354a358" kindref="member">SPI_FxnTable</ref>.</para><para>The SPI driver interface module is joined (at link time) to an array of SPI_Config data structures named <emphasis>SPI_config</emphasis>. The SPI_config array is implemented in the application with each entry being an instance of a SPI peripheral. Each entry in <emphasis>SPI_config</emphasis> contains the following:<itemizedlist>
+<listitem><para>(SPI_FxnTable *) A pointer to a set of functions that implement a SPI peripheral.</para></listitem><listitem><para>(void *) A data object that is associated with the SPI_FxnTable.</para></listitem><listitem><para>(void *) The hardware attributes that are associated with the SPI_FxnTable. </para></listitem></itemizedlist>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2018,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>are<sp/>met:</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>Texas<sp/>Instruments<sp/>Incorporated<sp/>nor<sp/>the<sp/>names<sp/>of</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>its<sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>from<sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>THIS<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>BY<sp/>THE<sp/>COPYRIGHT<sp/>HOLDERS<sp/>AND<sp/>CONTRIBUTORS<sp/>&quot;AS<sp/>IS&quot;</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>AND<sp/>ANY<sp/>EXPRESS<sp/>OR<sp/>IMPLIED<sp/>WARRANTIES,<sp/>INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>THE<sp/>IMPLIED<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY<sp/>AND<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>PURPOSE<sp/>ARE<sp/>DISCLAIMED.<sp/>IN<sp/>NO<sp/>EVENT<sp/>SHALL<sp/>THE<sp/>COPYRIGHT<sp/>OWNER<sp/>OR</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>CONTRIBUTORS<sp/>BE<sp/>LIABLE<sp/>FOR<sp/>ANY<sp/>DIRECT,<sp/>INDIRECT,<sp/>INCIDENTAL,<sp/>SPECIAL,</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>EXEMPLARY,<sp/>OR<sp/>CONSEQUENTIAL<sp/>DAMAGES<sp/>(INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>PROCUREMENT<sp/>OF<sp/>SUBSTITUTE<sp/>GOODS<sp/>OR<sp/>SERVICES;<sp/>LOSS<sp/>OF<sp/>USE,<sp/>DATA,<sp/>OR<sp/>PROFITS;</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>OR<sp/>BUSINESS<sp/>INTERRUPTION)<sp/>HOWEVER<sp/>CAUSED<sp/>AND<sp/>ON<sp/>ANY<sp/>THEORY<sp/>OF<sp/>LIABILITY,</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>WHETHER<sp/>IN<sp/>CONTRACT,<sp/>STRICT<sp/>LIABILITY,<sp/>OR<sp/>TORT<sp/>(INCLUDING<sp/>NEGLIGENCE<sp/>OR</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>OTHERWISE)<sp/>ARISING<sp/>IN<sp/>ANY<sp/>WAY<sp/>OUT<sp/>OF<sp/>THE<sp/>USE<sp/>OF<sp/>THIS<sp/>SOFTWARE,</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>EVEN<sp/>IF<sp/>ADVISED<sp/>OF<sp/>THE<sp/>POSSIBILITY<sp/>OF<sp/>SUCH<sp/>DAMAGE.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">/*!*****************************************************************************</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/><sp/>@file<sp/><sp/><sp/><sp/><sp/><sp/><sp/>SPI.h</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>SPI<sp/>driver<sp/>interface</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI<sp/>driver<sp/>interface<sp/>provides<sp/>device<sp/>independent<sp/>APIs,<sp/>data<sp/>types,</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/>and<sp/>macros.<sp/>The<sp/>SPI<sp/>header<sp/>file<sp/>should<sp/>be<sp/>included<sp/>in<sp/>an<sp/>application<sp/>as</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/>follows:</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&lt;ti/drivers/SPI.h&gt;</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/><sp/>#<sp/>Overview<sp/>#</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>Serial<sp/>Peripheral<sp/>Interface<sp/>(SPI)<sp/>driver<sp/>is<sp/>a<sp/>generic,<sp/>full-duplex</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/><sp/>driver<sp/>that<sp/>transmits<sp/>and<sp/>receives<sp/>data<sp/>on<sp/>a<sp/>SPI<sp/>bus.<sp/><sp/>SPI<sp/>is<sp/>sometimes</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/><sp/>called<sp/>SSI<sp/>(Synchronous<sp/>Serial<sp/>Interface).</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI<sp/>protocol<sp/>defines<sp/>the<sp/>format<sp/>of<sp/>a<sp/>data<sp/>transfer<sp/>over<sp/>the<sp/>SPI<sp/>bus,</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/><sp/>but<sp/>it<sp/>leaves<sp/>flow<sp/>control,<sp/>data<sp/>formatting,<sp/>and<sp/>handshaking<sp/>mechanisms</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/><sp/>to<sp/>higher-level<sp/>software<sp/>layers.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>APIs<sp/>in<sp/>this<sp/>driver<sp/>serve<sp/>as<sp/>an<sp/>interface<sp/>to<sp/>a<sp/>typical<sp/>RTOS</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/><sp/>application.<sp/><sp/>Its<sp/>purpose<sp/>is<sp/>to<sp/>redirect<sp/>the<sp/>SPI<sp/>APIs<sp/>to<sp/>specific</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/><sp/>driver<sp/>implementations<sp/>which<sp/>are<sp/>specified<sp/>using<sp/>a<sp/>pointer<sp/>to<sp/>a</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/><sp/>#SPI_FxnTable.<sp/><sp/>The<sp/>specific<sp/>SPI<sp/>implementations<sp/>are<sp/>responsible<sp/>for</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/><sp/>creating<sp/>all<sp/>the<sp/>RTOS<sp/>specific<sp/>primitives<sp/>to<sp/>allow<sp/>for<sp/>thread-safe</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/><sp/>operation.</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI<sp/>driver<sp/>operates<sp/>on<sp/>some<sp/>key<sp/>definitions<sp/>and<sp/>assumptions:</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>The<sp/>driver<sp/>operates<sp/>transparently<sp/>from<sp/>the<sp/>chip<sp/>select.<sp/>Some<sp/>SPI</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>controllers<sp/>feature<sp/>a<sp/>hardware<sp/>chip<sp/>select<sp/>to<sp/>assert<sp/>SPI<sp/>slave</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>peripherals.<sp/>See<sp/>the<sp/>specific<sp/>peripheral<sp/>implementations<sp/>on<sp/>chip</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>select<sp/>requirements.</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>The<sp/>SPI<sp/>protocol<sp/>does<sp/>not<sp/>account<sp/>for<sp/>a<sp/>built-in<sp/>handshaking<sp/>mechanism</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>and<sp/>neither<sp/>does<sp/>this<sp/>SPI<sp/>driver.<sp/>Therefore,<sp/>when<sp/>operating<sp/>in</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>::SPI_SLAVE<sp/>mode,<sp/>the<sp/>application<sp/>must<sp/>provide<sp/>such<sp/>a<sp/>mechanism<sp/>to</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>ensure<sp/>that<sp/>the<sp/>SPI<sp/>slave<sp/>is<sp/>ready<sp/>for<sp/>the<sp/>SPI<sp/>master.<sp/>The<sp/>SPI<sp/>slave</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>must<sp/>call<sp/>SPI_transfer()<sp/>*before*<sp/>the<sp/>SPI<sp/>master<sp/>starts<sp/>transmitting.</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>Some<sp/>example<sp/>application<sp/>mechanisms<sp/>could<sp/>include:</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>Timed<sp/>delays<sp/>on<sp/>the<sp/>SPI<sp/>master<sp/>to<sp/>guarantee<sp/>the<sp/>SPI<sp/>slave<sp/>is<sp/>ready</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>a<sp/>SPI<sp/>transaction.</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>A<sp/>form<sp/>of<sp/>GPIO<sp/>flow<sp/>control<sp/>from<sp/>the<sp/>slave<sp/>to<sp/>the<sp/>SPI<sp/>master<sp/>to<sp/>notify</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>the<sp/>master<sp/>when<sp/>ready.</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*<sp/><sp/>#<sp/>Usage<sp/>#</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*<sp/><sp/>To<sp/>use<sp/>the<sp/>SPI<sp/>driver<sp/>to<sp/>send<sp/>data<sp/>over<sp/>the<sp/>SPI<sp/>bus,<sp/>the<sp/>application</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*<sp/><sp/>calls<sp/>the<sp/>following<sp/>APIs:</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>SPI_init():<sp/>Initialize<sp/>the<sp/>SPI<sp/>driver.</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>SPI_Params_init():<sp/><sp/>Initialize<sp/>a<sp/>#SPI_Params<sp/>structure<sp/>with<sp/>default</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>values.<sp/><sp/>Then<sp/>change<sp/>the<sp/>parameters<sp/>from<sp/>non-default<sp/>values<sp/>as</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>needed.</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>SPI_open():<sp/><sp/>Open<sp/>an<sp/>instance<sp/>of<sp/>the<sp/>SPI<sp/>driver,<sp/>passing<sp/>the</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>initialized<sp/>parameters,<sp/>or<sp/>NULL,<sp/>and<sp/>an<sp/>index<sp/>(described<sp/>later).</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>SPI_transfer():<sp/><sp/>Transmit/receive<sp/>data.<sp/><sp/>This<sp/>function<sp/>takes<sp/>a</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>#SPI_Transaction<sp/>argument<sp/>that<sp/>specifies<sp/>buffers<sp/>for<sp/>data<sp/>to<sp/>be</highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>transmitted/received.</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>SPI_close():<sp/><sp/>De-initialize<sp/>the<sp/>SPI<sp/>instance.</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>following<sp/>code<sp/>example<sp/>opens<sp/>a<sp/>SPI<sp/>instance<sp/>as<sp/>a<sp/>master<sp/>SPI,</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/>*<sp/><sp/>and<sp/>issues<sp/>a<sp/>transaction.</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Handle<sp/><sp/><sp/><sp/><sp/><sp/>spi;</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Params<sp/><sp/><sp/><sp/><sp/><sp/>spiParams;</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Transaction<sp/>spiTransaction;</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/>*<sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transmitBuffer[MSGSIZE];</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"><sp/>*<sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>receiveBuffer[MSGSIZE];</highlight></codeline>
+<codeline lineno="100"><highlight class="comment"><sp/>*<sp/><sp/>bool<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transferOK;</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/>*<sp/><sp/>SPI_init();<sp/><sp/>//<sp/>Initialize<sp/>the<sp/>SPI<sp/>driver</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Params_init(&amp;spiParams);<sp/><sp/>//<sp/>Initialize<sp/>SPI<sp/>parameters</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/>*<sp/><sp/>spiParams.dataSize<sp/>=<sp/>8;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>8-bit<sp/>data<sp/>size</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="107"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"><sp/>*<sp/><sp/>if<sp/>(spi<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>while<sp/>(1);<sp/><sp/>//<sp/>SPI_open()<sp/>failed</highlight></codeline>
+<codeline lineno="110"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
+<codeline lineno="111"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/>*<sp/><sp/>//<sp/>Fill<sp/>in<sp/>transmitBuffer</highlight></codeline>
+<codeline lineno="113"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/>*<sp/><sp/>spiTransaction.count<sp/>=<sp/>MSGSIZE;</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/>*<sp/><sp/>spiTransaction.txBuf<sp/>=<sp/>(void<sp/>*)transmitBuffer;</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/>*<sp/><sp/>spiTransaction.rxBuf<sp/>=<sp/>(void<sp/>*)receiveBuffer;</highlight></codeline>
+<codeline lineno="117"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/>*<sp/><sp/>transferOK<sp/>=<sp/>SPI_transfer(spi,<sp/>&amp;spiTransaction);</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/>*<sp/><sp/>if<sp/>(!transferOK)<sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>in<sp/>SPI<sp/>or<sp/>transfer<sp/>already<sp/>in<sp/>progress.</highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>while<sp/>(1);</highlight></codeline>
+<codeline lineno="122"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
+<codeline lineno="123"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="124"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="125"><highlight class="comment"><sp/>*<sp/><sp/>More<sp/>details<sp/>on<sp/>usage<sp/>are<sp/>provided<sp/>in<sp/>the<sp/>following<sp/>subsections.</highlight></codeline>
+<codeline lineno="126"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>SPI<sp/>Driver<sp/>Configuration<sp/>#</highlight></codeline>
+<codeline lineno="128"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="129"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>order<sp/>to<sp/>use<sp/>the<sp/>SPI<sp/>APIs,<sp/>the<sp/>application<sp/>is<sp/>required</highlight></codeline>
+<codeline lineno="130"><highlight class="comment"><sp/>*<sp/><sp/>to<sp/>provide<sp/>device-specific<sp/>SPI<sp/>configuration<sp/>in<sp/>the<sp/>Board.c<sp/>file.</highlight></codeline>
+<codeline lineno="131"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI<sp/>driver<sp/>interface<sp/>defines<sp/>a<sp/>configuration<sp/>data<sp/>structure:</highlight></codeline>
+<codeline lineno="132"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="133"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="134"><highlight class="comment"><sp/>*<sp/><sp/>typedef<sp/>struct<sp/>SPI_Config_<sp/>{</highlight></codeline>
+<codeline lineno="135"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>SPI_FxnTable<sp/><sp/>const<sp/><sp/><sp/><sp/>*fxnTablePtr;</highlight></codeline>
+<codeline lineno="136"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>void<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*object;</highlight></codeline>
+<codeline lineno="137"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>void<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/><sp/><sp/><sp/>*hwAttrs;</highlight></codeline>
+<codeline lineno="138"><highlight class="comment"><sp/>*<sp/><sp/>}<sp/>SPI_Config;</highlight></codeline>
+<codeline lineno="139"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="140"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="141"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>application<sp/>must<sp/>declare<sp/>an<sp/>array<sp/>of<sp/>SPI_Config<sp/>elements,<sp/>named</highlight></codeline>
+<codeline lineno="142"><highlight class="comment"><sp/>*<sp/><sp/>SPI_config[].<sp/><sp/>Each<sp/>element<sp/>of<sp/>SPI_config[]<sp/>must<sp/>be<sp/>populated<sp/>with</highlight></codeline>
+<codeline lineno="143"><highlight class="comment"><sp/>*<sp/><sp/>pointers<sp/>to<sp/>a<sp/>device<sp/>specific<sp/>SPI<sp/>driver<sp/>implementation&apos;s<sp/>function</highlight></codeline>
+<codeline lineno="144"><highlight class="comment"><sp/>*<sp/><sp/>table,<sp/>driver<sp/>object,<sp/>and<sp/>hardware<sp/>attributes.<sp/><sp/>The<sp/>hardware<sp/>attributes</highlight></codeline>
+<codeline lineno="145"><highlight class="comment"><sp/>*<sp/><sp/>define<sp/>properties<sp/>such<sp/>as<sp/>the<sp/>SPI<sp/>peripheral&apos;s<sp/>base<sp/>address,<sp/>and</highlight></codeline>
+<codeline lineno="146"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>MOSI<sp/>and<sp/>MISO<sp/>pins.<sp/><sp/>Each<sp/>element<sp/>in<sp/>SPI_config[]<sp/>corresponds<sp/>to</highlight></codeline>
+<codeline lineno="147"><highlight class="comment"><sp/>*<sp/><sp/>a<sp/>SPI<sp/>instance,<sp/>and<sp/>none<sp/>of<sp/>the<sp/>elements<sp/>should<sp/>have<sp/>NULL<sp/>pointers.</highlight></codeline>
+<codeline lineno="148"><highlight class="comment"><sp/>*<sp/><sp/>There<sp/>is<sp/>no<sp/>correlation<sp/>between<sp/>the<sp/>index<sp/>and<sp/>the</highlight></codeline>
+<codeline lineno="149"><highlight class="comment"><sp/>*<sp/><sp/>peripheral<sp/>designation<sp/>(such<sp/>as<sp/>SPI0<sp/>or<sp/>SPI1).<sp/><sp/>For<sp/>example,<sp/>it<sp/>is</highlight></codeline>
+<codeline lineno="150"><highlight class="comment"><sp/>*<sp/><sp/>possible<sp/>to<sp/>use<sp/>SPI_config[0]<sp/>for<sp/>SPI1.</highlight></codeline>
+<codeline lineno="151"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="152"><highlight class="comment"><sp/>*<sp/><sp/>Because<sp/>the<sp/>SPI<sp/>configuration<sp/>is<sp/>very<sp/>device<sp/>dependent,<sp/>you<sp/>will<sp/>need<sp/>to</highlight></codeline>
+<codeline lineno="153"><highlight class="comment"><sp/>*<sp/><sp/>check<sp/>the<sp/>doxygen<sp/>for<sp/>the<sp/>device<sp/>specific<sp/>SPI<sp/>implementation.<sp/><sp/>There<sp/>you</highlight></codeline>
+<codeline lineno="154"><highlight class="comment"><sp/>*<sp/><sp/>will<sp/>find<sp/>a<sp/>description<sp/>of<sp/>the<sp/>SPI<sp/>hardware<sp/>attributes.<sp/><sp/>Please<sp/>also</highlight></codeline>
+<codeline lineno="155"><highlight class="comment"><sp/>*<sp/><sp/>refer<sp/>to<sp/>the<sp/>Board.c<sp/>file<sp/>of<sp/>any<sp/>of<sp/>your<sp/>examples<sp/>to<sp/>see<sp/>the<sp/>SPI</highlight></codeline>
+<codeline lineno="156"><highlight class="comment"><sp/>*<sp/><sp/>configuration.</highlight></codeline>
+<codeline lineno="157"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="158"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>Initializing<sp/>the<sp/>SPI<sp/>Driver<sp/>#</highlight></codeline>
+<codeline lineno="159"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="160"><highlight class="comment"><sp/>*<sp/><sp/>SPI_init()<sp/>must<sp/>be<sp/>called<sp/>before<sp/>any<sp/>other<sp/>SPI<sp/>APIs.<sp/><sp/>This<sp/>function</highlight></codeline>
+<codeline lineno="161"><highlight class="comment"><sp/>*<sp/><sp/>iterates<sp/>through<sp/>the<sp/>elements<sp/>of<sp/>the<sp/>SPI_config[]<sp/>array,<sp/>calling</highlight></codeline>
+<codeline lineno="162"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>element&apos;s<sp/>device<sp/>implementation<sp/>SPI<sp/>initialization<sp/>function.</highlight></codeline>
+<codeline lineno="163"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="164"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>SPI<sp/>Parameters</highlight></codeline>
+<codeline lineno="165"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="166"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>#SPI_Params<sp/>structure<sp/>is<sp/>passed<sp/>to<sp/>the<sp/>SPI_open()<sp/>call.<sp/><sp/>If<sp/>NULL</highlight></codeline>
+<codeline lineno="167"><highlight class="comment"><sp/>*<sp/><sp/>is<sp/>passed<sp/>for<sp/>the<sp/>parameters,<sp/>SPI_open()<sp/>uses<sp/>default<sp/>parameters.</highlight></codeline>
+<codeline lineno="168"><highlight class="comment"><sp/>*<sp/><sp/>A<sp/>#SPI_Params<sp/>structure<sp/>is<sp/>initialized<sp/>with<sp/>default<sp/>values<sp/>by<sp/>passing</highlight></codeline>
+<codeline lineno="169"><highlight class="comment"><sp/>*<sp/><sp/>it<sp/>to<sp/>SPI_Params_init().</highlight></codeline>
+<codeline lineno="170"><highlight class="comment"><sp/>*<sp/><sp/>Some<sp/>of<sp/>the<sp/>SPI<sp/>parameters<sp/>are<sp/>described<sp/>below.<sp/><sp/>To<sp/>see<sp/>brief<sp/>descriptions</highlight></codeline>
+<codeline lineno="171"><highlight class="comment"><sp/>*<sp/><sp/>of<sp/>all<sp/>the<sp/>parameters,<sp/>see<sp/>#SPI_Params.</highlight></codeline>
+<codeline lineno="172"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="173"><highlight class="comment"><sp/>*<sp/><sp/>####<sp/>SPI<sp/>Mode</highlight></codeline>
+<codeline lineno="174"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI<sp/>driver<sp/>operates<sp/>in<sp/>both<sp/>SPI<sp/>master<sp/>and<sp/>SPI<sp/>slave<sp/>modes.</highlight></codeline>
+<codeline lineno="175"><highlight class="comment"><sp/>*<sp/><sp/>Logically,<sp/>the<sp/>implementation<sp/>is<sp/>identical,<sp/>however<sp/>the<sp/>difference</highlight></codeline>
+<codeline lineno="176"><highlight class="comment"><sp/>*<sp/><sp/>between<sp/>these<sp/>two<sp/>modes<sp/>is<sp/>driven<sp/>by<sp/>hardware.<sp/><sp/>The<sp/>default<sp/>mode<sp/>is</highlight></codeline>
+<codeline lineno="177"><highlight class="comment"><sp/>*<sp/><sp/>::SPI_MASTER,<sp/>but<sp/>can<sp/>be<sp/>set<sp/>to<sp/>slave<sp/>mode<sp/>by<sp/>setting<sp/>::SPI_Params.mode</highlight></codeline>
+<codeline lineno="178"><highlight class="comment"><sp/>*<sp/><sp/>to<sp/>::SPI_SLAVE<sp/>in<sp/>the<sp/>parameters<sp/>passed<sp/>to<sp/>SPI_open().<sp/><sp/>See</highlight></codeline>
+<codeline lineno="179"><highlight class="comment"><sp/>*<sp/><sp/>&lt;a<sp/>href=&quot;#Master_Slave_Modes&quot;&gt;<sp/>Master/Slave<sp/>Modes&lt;/a&gt;<sp/>for<sp/>further</highlight></codeline>
+<codeline lineno="180"><highlight class="comment"><sp/>*<sp/><sp/>details.</highlight></codeline>
+<codeline lineno="181"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="182"><highlight class="comment"><sp/>*<sp/><sp/>####<sp/>SPI<sp/>Transfer<sp/>Mode</highlight></codeline>
+<codeline lineno="183"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI<sp/>driver<sp/>supports<sp/>two<sp/>transfer<sp/>modes<sp/>of<sp/>operation:<sp/>blocking<sp/>and</highlight></codeline>
+<codeline lineno="184"><highlight class="comment"><sp/>*<sp/><sp/>callback.<sp/>The<sp/>transfer<sp/>mode<sp/>is<sp/>determined<sp/>by<sp/>the<sp/>transferMode<sp/>parameter</highlight></codeline>
+<codeline lineno="185"><highlight class="comment"><sp/>*<sp/><sp/>in<sp/>the<sp/>SPI_Params<sp/>data<sp/>structure.<sp/>The<sp/>SPI<sp/>driver</highlight></codeline>
+<codeline lineno="186"><highlight class="comment"><sp/>*<sp/><sp/>defaults<sp/>to<sp/>blocking<sp/>mode,<sp/>if<sp/>the<sp/>application<sp/>does<sp/>not<sp/>set<sp/>it.</highlight></codeline>
+<codeline lineno="187"><highlight class="comment"><sp/>*<sp/><sp/>Once<sp/>a<sp/>SPI<sp/>driver<sp/>is<sp/>opened,<sp/>the<sp/>only<sp/>way<sp/>to<sp/>change<sp/>the<sp/>operation<sp/>mode</highlight></codeline>
+<codeline lineno="188"><highlight class="comment"><sp/>*<sp/><sp/>is<sp/>to<sp/>close<sp/>and<sp/>re-open<sp/>the<sp/>SPI<sp/>instance<sp/>with<sp/>the<sp/>new<sp/>transfer<sp/>mode.</highlight></codeline>
+<codeline lineno="189"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="190"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>blocking<sp/>mode,<sp/>a<sp/>task&apos;s<sp/>code<sp/>execution<sp/>is<sp/>blocked<sp/>until<sp/>a<sp/>SPI</highlight></codeline>
+<codeline lineno="191"><highlight class="comment"><sp/>*<sp/><sp/>transaction<sp/>has<sp/>completed<sp/>or<sp/>a<sp/>timeout<sp/>has<sp/>occurred.<sp/>This<sp/>ensures</highlight></codeline>
+<codeline lineno="192"><highlight class="comment"><sp/>*<sp/><sp/>that<sp/>only<sp/>one<sp/>SPI<sp/>transfer<sp/>operates<sp/>at<sp/>a<sp/>given<sp/>time.<sp/>Other<sp/>tasks<sp/>requesting</highlight></codeline>
+<codeline lineno="193"><highlight class="comment"><sp/>*<sp/><sp/>SPI<sp/>transfers<sp/>while<sp/>a<sp/>transfer<sp/>is<sp/>currently<sp/>taking<sp/>place<sp/>will<sp/>receive</highlight></codeline>
+<codeline lineno="194"><highlight class="comment"><sp/>*<sp/><sp/>a<sp/>FALSE<sp/>return<sp/>value.<sp/><sp/>If<sp/>a<sp/>timeout<sp/>occurs<sp/>the<sp/>transfer<sp/>is<sp/>canceled,<sp/>the</highlight></codeline>
+<codeline lineno="195"><highlight class="comment"><sp/>*<sp/><sp/>task<sp/>is<sp/>unblocked<sp/>&amp;<sp/>will<sp/>receive<sp/>a<sp/>FALSE<sp/>return<sp/>value.<sp/>The<sp/>transaction</highlight></codeline>
+<codeline lineno="196"><highlight class="comment"><sp/>*<sp/><sp/>count<sp/>field<sp/>will<sp/>have<sp/>the<sp/>amount<sp/>of<sp/>frames<sp/>which<sp/>were<sp/>transferred</highlight></codeline>
+<codeline lineno="197"><highlight class="comment"><sp/>*<sp/><sp/>successfully<sp/>before<sp/>the<sp/>timeout.<sp/><sp/>In<sp/>blocking<sp/>mode,<sp/>transfers<sp/>cannot<sp/>be</highlight></codeline>
+<codeline lineno="198"><highlight class="comment"><sp/>*<sp/><sp/>performed<sp/>in<sp/>software<sp/>or<sp/>hardware<sp/>ISR<sp/>context.</highlight></codeline>
+<codeline lineno="199"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="200"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>callback<sp/>mode,<sp/>a<sp/>SPI<sp/>transaction<sp/>functions<sp/>asynchronously,<sp/>which</highlight></codeline>
+<codeline lineno="201"><highlight class="comment"><sp/>*<sp/><sp/>means<sp/>that<sp/>it<sp/>does<sp/>not<sp/>block<sp/>code<sp/>execution.<sp/>After<sp/>a<sp/>SPI<sp/>transaction</highlight></codeline>
+<codeline lineno="202"><highlight class="comment"><sp/>*<sp/><sp/>has<sp/>been<sp/>completed,<sp/>the<sp/>SPI<sp/>driver<sp/>calls<sp/>a<sp/>user-provided<sp/>hook<sp/>function.</highlight></codeline>
+<codeline lineno="203"><highlight class="comment"><sp/>*<sp/><sp/>Callback<sp/>mode<sp/>is<sp/>supported<sp/>in<sp/>the<sp/>execution<sp/>context<sp/>of<sp/>tasks<sp/>and</highlight></codeline>
+<codeline lineno="204"><highlight class="comment"><sp/>*<sp/><sp/>hardware<sp/>interrupt<sp/>routines.<sp/><sp/>However,<sp/>if<sp/>a<sp/>SPI<sp/>transaction<sp/>is</highlight></codeline>
+<codeline lineno="205"><highlight class="comment"><sp/>*<sp/><sp/>requested<sp/>while<sp/>a<sp/>transaction<sp/>is<sp/>taking<sp/>place,<sp/>SPI_transfer()<sp/>returns</highlight></codeline>
+<codeline lineno="206"><highlight class="comment"><sp/>*<sp/><sp/>FALSE.</highlight></codeline>
+<codeline lineno="207"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="208"><highlight class="comment"><sp/>*<sp/><sp/>####<sp/>SPI<sp/>Frame<sp/>Formats<sp/>and<sp/>Data<sp/>Size</highlight></codeline>
+<codeline lineno="209"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI<sp/>driver<sp/>can<sp/>configure<sp/>the<sp/>device&apos;s<sp/>SPI<sp/>peripheral<sp/>to<sp/>transfer</highlight></codeline>
+<codeline lineno="210"><highlight class="comment"><sp/>*<sp/><sp/>data<sp/>in<sp/>several<sp/>SPI<sp/>format<sp/>options:<sp/>SPI<sp/>(with<sp/>various<sp/>polarity<sp/>and<sp/>phase</highlight></codeline>
+<codeline lineno="211"><highlight class="comment"><sp/>*<sp/><sp/>settings),<sp/>TI,<sp/>and<sp/>Micro-wire.<sp/>The<sp/>frame<sp/>format<sp/>is<sp/>set<sp/>with</highlight></codeline>
+<codeline lineno="212"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Params.frameFormat.<sp/>Some<sp/>SPI<sp/>implementations<sp/>may<sp/>not<sp/>support<sp/>all<sp/>frame</highlight></codeline>
+<codeline lineno="213"><highlight class="comment"><sp/>*<sp/><sp/>formats<sp/>&amp;<sp/>the<sp/>SPI<sp/>driver<sp/>will<sp/>fail<sp/>to<sp/>opened.<sp/><sp/>Refer<sp/>to<sp/>the<sp/>device<sp/>specific</highlight></codeline>
+<codeline lineno="214"><highlight class="comment"><sp/>*<sp/><sp/>implementation<sp/>documentation<sp/>for<sp/>details<sp/>on<sp/>which<sp/>frame<sp/>formats<sp/>are</highlight></codeline>
+<codeline lineno="215"><highlight class="comment"><sp/>*<sp/><sp/>supported.</highlight></codeline>
+<codeline lineno="216"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="217"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>smallest<sp/>single<sp/>unit<sp/>of<sp/>data<sp/>transmitted<sp/>onto<sp/>the<sp/>SPI<sp/>bus<sp/>is<sp/>called</highlight></codeline>
+<codeline lineno="218"><highlight class="comment"><sp/>*<sp/><sp/>a<sp/>SPI<sp/>frame<sp/>and<sp/>is<sp/>of<sp/>size<sp/>SPI_Params.dataSize.<sp/><sp/>A<sp/>series<sp/>of<sp/>SPI<sp/>frames</highlight></codeline>
+<codeline lineno="219"><highlight class="comment"><sp/>*<sp/><sp/>transmitted/received<sp/>on<sp/>a<sp/>SPI<sp/>bus<sp/>is<sp/>known<sp/>as<sp/>a<sp/>SPI<sp/>transaction.</highlight></codeline>
+<codeline lineno="220"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="221"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>Opening<sp/>the<sp/>SPI<sp/>Driver<sp/>#</highlight></codeline>
+<codeline lineno="222"><highlight class="comment"><sp/>*<sp/><sp/>After<sp/>initializing<sp/>the<sp/>SPI<sp/>driver<sp/>by<sp/>calling<sp/>SPI_init(),<sp/>the<sp/>application</highlight></codeline>
+<codeline lineno="223"><highlight class="comment"><sp/>*<sp/><sp/>can<sp/>open<sp/>a<sp/>SPI<sp/>instance<sp/>by<sp/>calling<sp/>SPI_open().<sp/><sp/>This<sp/>function</highlight></codeline>
+<codeline lineno="224"><highlight class="comment"><sp/>*<sp/><sp/>takes<sp/>an<sp/>index<sp/>into<sp/>the<sp/>SPI_config[]<sp/>array,<sp/>and<sp/>a<sp/>SPI<sp/>parameters<sp/>data</highlight></codeline>
+<codeline lineno="225"><highlight class="comment"><sp/>*<sp/><sp/>structure.<sp/><sp/><sp/>The<sp/>SPI<sp/>instance<sp/>is<sp/>specified<sp/>by<sp/>the<sp/>index<sp/>of<sp/>the<sp/>SPI<sp/>in</highlight></codeline>
+<codeline lineno="226"><highlight class="comment"><sp/>*<sp/><sp/>SPI_config[].<sp/><sp/>Only<sp/>one<sp/>SPI<sp/>index<sp/>can<sp/>be<sp/>used<sp/>at<sp/>a<sp/>time;</highlight></codeline>
+<codeline lineno="227"><highlight class="comment"><sp/>*<sp/><sp/>calling<sp/>SPI_open()<sp/>a<sp/>second<sp/>time<sp/>with<sp/>the<sp/>same<sp/>index<sp/>previously</highlight></codeline>
+<codeline lineno="228"><highlight class="comment"><sp/>*<sp/><sp/>passed<sp/>to<sp/>SPI_open()<sp/>will<sp/>result<sp/>in<sp/>an<sp/>error.<sp/><sp/>You<sp/>can,</highlight></codeline>
+<codeline lineno="229"><highlight class="comment"><sp/>*<sp/><sp/>though,<sp/>re-use<sp/>the<sp/>index<sp/>if<sp/>the<sp/>instance<sp/>is<sp/>closed<sp/>via<sp/>SPI_close().</highlight></codeline>
+<codeline lineno="230"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="231"><highlight class="comment"><sp/>*<sp/><sp/>If<sp/>no<sp/>SPI_Params<sp/>structure<sp/>is<sp/>passed<sp/>to<sp/>SPI_open(),<sp/>default<sp/>values<sp/>are</highlight></codeline>
+<codeline lineno="232"><highlight class="comment"><sp/>*<sp/><sp/>used.<sp/>If<sp/>the<sp/>open<sp/>call<sp/>is<sp/>successful,<sp/>it<sp/>returns<sp/>a<sp/>non-NULL<sp/>value.</highlight></codeline>
+<codeline lineno="233"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="234"><highlight class="comment"><sp/>*<sp/><sp/>Example<sp/>opening<sp/>a<sp/>SPI<sp/>driver<sp/>instance<sp/>in<sp/>blocking<sp/>mode:</highlight></codeline>
+<codeline lineno="235"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="236"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Handle<sp/><sp/>spi;</highlight></codeline>
+<codeline lineno="237"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Params<sp/><sp/>spiParams;</highlight></codeline>
+<codeline lineno="238"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="239"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Params_init(&amp;spiParams);</highlight></codeline>
+<codeline lineno="240"><highlight class="comment"><sp/>*<sp/><sp/>spiParams.transferMode<sp/>=<sp/>SPI_MODE_BLOCKING;</highlight></codeline>
+<codeline lineno="241"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline lineno="242"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="243"><highlight class="comment"><sp/>*<sp/><sp/>if<sp/>(spi<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="244"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>opening<sp/>SPI</highlight></codeline>
+<codeline lineno="245"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>while(1);</highlight></codeline>
+<codeline lineno="246"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
+<codeline lineno="247"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="248"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="249"><highlight class="comment"><sp/>*<sp/><sp/>Example<sp/>opening<sp/>a<sp/>SPI<sp/>driver<sp/>instance<sp/>in<sp/>callback<sp/>mode:</highlight></codeline>
+<codeline lineno="250"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="251"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Handle<sp/>spi;</highlight></codeline>
+<codeline lineno="252"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Params<sp/>spiParams;</highlight></codeline>
+<codeline lineno="253"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="254"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Params_init(&amp;spiParams);</highlight></codeline>
+<codeline lineno="255"><highlight class="comment"><sp/>*<sp/><sp/>spiParams.transferMode<sp/>=<sp/>SPI_MODE_CALLBACK;</highlight></codeline>
+<codeline lineno="256"><highlight class="comment"><sp/>*<sp/><sp/>spiParams.transferCallbackFxn<sp/>=<sp/>UserCallbackFxn;</highlight></codeline>
+<codeline lineno="257"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="258"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline lineno="259"><highlight class="comment"><sp/>*<sp/><sp/>if<sp/>(spi<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="260"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>opening<sp/>SPI</highlight></codeline>
+<codeline lineno="261"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>while<sp/>(1);</highlight></codeline>
+<codeline lineno="262"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
+<codeline lineno="263"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="264"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="265"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="266"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>SPI<sp/>Transactions<sp/>#</highlight></codeline>
+<codeline lineno="267"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="268"><highlight class="comment"><sp/>*<sp/><sp/>A<sp/>SPI<sp/>transaction<sp/>consists<sp/>of<sp/>a<sp/>series<sp/>of<sp/>SPI<sp/>frames</highlight></codeline>
+<codeline lineno="269"><highlight class="comment"><sp/>*<sp/><sp/>transmitted/received<sp/>on<sp/>a<sp/>SPI<sp/>bus.<sp/><sp/>A<sp/>SPI<sp/>transaction<sp/>is<sp/>performed</highlight></codeline>
+<codeline lineno="270"><highlight class="comment"><sp/>*<sp/><sp/>using<sp/>SPI_transfer().<sp/>SPI_transfer()<sp/>accepts<sp/>a<sp/>pointer<sp/>to<sp/>a</highlight></codeline>
+<codeline lineno="271"><highlight class="comment"><sp/>*<sp/><sp/>#SPI_Transaction<sp/>structure<sp/>that<sp/>dictates<sp/>the<sp/>quantity<sp/>of<sp/>data<sp/>to<sp/>be</highlight></codeline>
+<codeline lineno="272"><highlight class="comment"><sp/>*<sp/><sp/>sent<sp/>and<sp/>received.</highlight></codeline>
+<codeline lineno="273"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI_Transaction.txBuf<sp/>and<sp/>SPI_Transaction.rxBuf<sp/>are<sp/>both<sp/>pointers</highlight></codeline>
+<codeline lineno="274"><highlight class="comment"><sp/>*<sp/><sp/>to<sp/>data<sp/>buffers.<sp/><sp/>If<sp/>txBuf<sp/>is<sp/>NULL,<sp/>the<sp/>driver<sp/>sends<sp/>SPI<sp/>frames<sp/>with<sp/>all</highlight></codeline>
+<codeline lineno="275"><highlight class="comment"><sp/>*<sp/><sp/>data<sp/>set<sp/>to<sp/>the<sp/>default<sp/>value<sp/>specified<sp/>in<sp/>the<sp/>hardware<sp/>attributes.<sp/>If</highlight></codeline>
+<codeline lineno="276"><highlight class="comment"><sp/>*<sp/><sp/>rxBuf<sp/>is<sp/>NULL,<sp/>the<sp/>driver<sp/>discards<sp/>all<sp/>SPI<sp/>frames<sp/>received.<sp/>SPI_transfer()</highlight></codeline>
+<codeline lineno="277"><highlight class="comment"><sp/>*<sp/><sp/>of<sp/>a<sp/>SPI<sp/>transaction<sp/>is<sp/>performed<sp/>atomically.</highlight></codeline>
+<codeline lineno="278"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="279"><highlight class="comment"><sp/>*<sp/><sp/>@warning<sp/>The<sp/>use<sp/>of<sp/>NULL<sp/>as<sp/>a<sp/>sentinel<sp/>txBuf<sp/>or<sp/>rxBuf<sp/>value<sp/>to<sp/>determine</highlight></codeline>
+<codeline lineno="280"><highlight class="comment"><sp/>*<sp/><sp/>whether<sp/>the<sp/>SPI<sp/>transaction<sp/>includes<sp/>a<sp/>tx<sp/>or<sp/>rx<sp/>component<sp/>implies</highlight></codeline>
+<codeline lineno="281"><highlight class="comment"><sp/>*<sp/><sp/>that<sp/>it<sp/>is<sp/>not<sp/>possible<sp/>to<sp/>perform<sp/>a<sp/>transmit<sp/>or<sp/>receive<sp/>transfer</highlight></codeline>
+<codeline lineno="282"><highlight class="comment"><sp/>*<sp/><sp/>directly<sp/>from/to<sp/>a<sp/>buffer<sp/>with<sp/>a<sp/>base<sp/>address<sp/>of<sp/>0x00000000.<sp/>To<sp/>support</highlight></codeline>
+<codeline lineno="283"><highlight class="comment"><sp/>*<sp/><sp/>this<sp/>rare<sp/>use-case,<sp/>the<sp/>application<sp/>will<sp/>have<sp/>to<sp/>manually<sp/>copy<sp/>the</highlight></codeline>
+<codeline lineno="284"><highlight class="comment"><sp/>*<sp/><sp/>contents<sp/>of<sp/>location<sp/>0x00000000<sp/>to/from<sp/>a<sp/>temporary<sp/>buffer<sp/>before/after</highlight></codeline>
+<codeline lineno="285"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>tx/rx<sp/>SPI<sp/>transaction.</highlight></codeline>
+<codeline lineno="286"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="287"><highlight class="comment"><sp/>*<sp/><sp/>When<sp/>the<sp/>SPI<sp/>is<sp/>opened,<sp/>the<sp/>dataSize<sp/>value<sp/>determines<sp/>the<sp/>element<sp/>types</highlight></codeline>
+<codeline lineno="288"><highlight class="comment"><sp/>*<sp/><sp/>of<sp/>txBuf<sp/>and<sp/>rxBuf.<sp/>If<sp/>the<sp/>dataSize<sp/>is<sp/>from<sp/>4<sp/>to<sp/>8<sp/>bits,<sp/>the<sp/>driver</highlight></codeline>
+<codeline lineno="289"><highlight class="comment"><sp/>*<sp/><sp/>assumes<sp/>the<sp/>data<sp/>buffers<sp/>are<sp/>of<sp/>type<sp/>uint8_t<sp/>(unsigned<sp/>char).<sp/>If<sp/>the</highlight></codeline>
+<codeline lineno="290"><highlight class="comment"><sp/>*<sp/><sp/>dataSize<sp/>is<sp/>from<sp/>8<sp/>to<sp/>16<sp/>bits,<sp/>the<sp/>driver<sp/>assumes<sp/>the<sp/>data<sp/>buffers<sp/>are</highlight></codeline>
+<codeline lineno="291"><highlight class="comment"><sp/>*<sp/><sp/>of<sp/>type<sp/>uint16_t<sp/>(unsigned<sp/>short).<sp/><sp/>If<sp/>the<sp/>dataSize<sp/>is<sp/>greater<sp/>than</highlight></codeline>
+<codeline lineno="292"><highlight class="comment"><sp/>*<sp/><sp/>16<sp/>bits,<sp/>the<sp/>driver<sp/>assumes<sp/>the<sp/>data<sp/>buffers<sp/>are<sp/>uint32_t<sp/>(unsigned<sp/>long).</highlight></codeline>
+<codeline lineno="293"><highlight class="comment"><sp/>*<sp/><sp/>Some<sp/>SPI<sp/>driver<sp/>implementations<sp/>may<sp/>not<sp/>support<sp/>all<sp/>data<sp/>sizes;<sp/>refer</highlight></codeline>
+<codeline lineno="294"><highlight class="comment"><sp/>*<sp/><sp/>to<sp/>device<sp/>specific<sp/>SPI<sp/>implementation<sp/>documentation<sp/>for<sp/>details<sp/>on</highlight></codeline>
+<codeline lineno="295"><highlight class="comment"><sp/>*<sp/><sp/>what<sp/>data<sp/>sizes<sp/>are<sp/>supported.</highlight></codeline>
+<codeline lineno="296"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="297"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>optional<sp/>SPI_Transaction.arg<sp/>variable<sp/>can<sp/>only<sp/>be<sp/>used<sp/>when<sp/>the</highlight></codeline>
+<codeline lineno="298"><highlight class="comment"><sp/>*<sp/><sp/>SPI<sp/>driver<sp/>has<sp/>been<sp/>opened<sp/>in<sp/>callback<sp/>mode.<sp/>This<sp/>variable<sp/>is<sp/>used<sp/>to</highlight></codeline>
+<codeline lineno="299"><highlight class="comment"><sp/>*<sp/><sp/>pass<sp/>a<sp/>user-defined<sp/>value<sp/>into<sp/>the<sp/>user-defined<sp/>callback<sp/>function.</highlight></codeline>
+<codeline lineno="300"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="301"><highlight class="comment"><sp/>*<sp/><sp/>SPI_transfer()<sp/>always<sp/>performs<sp/>full-duplex<sp/>SPI<sp/>transactions.<sp/>This<sp/>means</highlight></codeline>
+<codeline lineno="302"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>SPI<sp/>simultaneously<sp/>receives<sp/>data<sp/>as<sp/>it<sp/>transmits<sp/>data.<sp/>The<sp/>application</highlight></codeline>
+<codeline lineno="303"><highlight class="comment"><sp/>*<sp/><sp/>is<sp/>responsible<sp/>for<sp/>formatting<sp/>the<sp/>data<sp/>to<sp/>be<sp/>transmitted<sp/>as<sp/>well<sp/>as</highlight></codeline>
+<codeline lineno="304"><highlight class="comment"><sp/>*<sp/><sp/>determining<sp/>whether<sp/>the<sp/>data<sp/>received<sp/>is<sp/>meaningful.</highlight></codeline>
+<codeline lineno="305"><highlight class="comment"><sp/>*<sp/><sp/>Specifics<sp/>about<sp/>SPI<sp/>frame<sp/>formatting<sp/>and<sp/>data<sp/>sizes<sp/>are<sp/>provided<sp/>in</highlight></codeline>
+<codeline lineno="306"><highlight class="comment"><sp/>*<sp/><sp/>device-specific<sp/>data<sp/>sheets<sp/>and<sp/>technical<sp/>reference<sp/>manuals.</highlight></codeline>
+<codeline lineno="307"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="308"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>following<sp/>code<sp/>snippets<sp/>perform<sp/>SPI<sp/>transactions.</highlight></codeline>
+<codeline lineno="309"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="310"><highlight class="comment"><sp/>*<sp/><sp/>Example<sp/>transferring<sp/>6-bit<sp/>SPI<sp/>frames.<sp/><sp/>The<sp/>transmit<sp/>and<sp/>receive</highlight></codeline>
+<codeline lineno="311"><highlight class="comment"><sp/>*<sp/><sp/>buffers<sp/>are<sp/>of<sp/>type<sp/>uint8_t.</highlight></codeline>
+<codeline lineno="312"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="313"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Transaction<sp/>spiTransaction;</highlight></codeline>
+<codeline lineno="314"><highlight class="comment"><sp/>*<sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transmitBuffer[BUFSIZE];</highlight></codeline>
+<codeline lineno="315"><highlight class="comment"><sp/>*<sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>receiveBuffer[BUFSIZE];</highlight></codeline>
+<codeline lineno="316"><highlight class="comment"><sp/>*<sp/><sp/>bool<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transferOK;</highlight></codeline>
+<codeline lineno="317"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="318"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Params_init(&amp;spiParams);</highlight></codeline>
+<codeline lineno="319"><highlight class="comment"><sp/>*<sp/><sp/>spiParams.dataSize<sp/>=<sp/>6;</highlight></codeline>
+<codeline lineno="320"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline lineno="321"><highlight class="comment"><sp/>*<sp/><sp/>...</highlight></codeline>
+<codeline lineno="322"><highlight class="comment"><sp/>*<sp/><sp/>spiTransaction.count<sp/>=<sp/>someIntegerValue;</highlight></codeline>
+<codeline lineno="323"><highlight class="comment"><sp/>*<sp/><sp/>spiTransaction.txBuf<sp/>=<sp/>transmitBuffer;</highlight></codeline>
+<codeline lineno="324"><highlight class="comment"><sp/>*<sp/><sp/>spiTransaction.rxBuf<sp/>=<sp/>receiveBuffer;</highlight></codeline>
+<codeline lineno="325"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="326"><highlight class="comment"><sp/>*<sp/><sp/>transferOK<sp/>=<sp/>SPI_transfer(spi,<sp/>&amp;spiTransaction);</highlight></codeline>
+<codeline lineno="327"><highlight class="comment"><sp/>*<sp/><sp/>if<sp/>(!transferOK)<sp/>{</highlight></codeline>
+<codeline lineno="328"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>in<sp/>SPI<sp/>or<sp/>transfer<sp/>already<sp/>in<sp/>progress.</highlight></codeline>
+<codeline lineno="329"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
+<codeline lineno="330"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="331"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="332"><highlight class="comment"><sp/>*<sp/><sp/>Example<sp/>transferring<sp/>12-bit<sp/>SPI<sp/>frames.<sp/><sp/>The<sp/>transmit<sp/>and<sp/>receive</highlight></codeline>
+<codeline lineno="333"><highlight class="comment"><sp/>*<sp/><sp/>buffers<sp/>are<sp/>of<sp/>type<sp/>uint16_t.</highlight></codeline>
+<codeline lineno="334"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="335"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Transaction<sp/>spiTransaction;</highlight></codeline>
+<codeline lineno="336"><highlight class="comment"><sp/>*<sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transmitBuffer[BUFSIZE];</highlight></codeline>
+<codeline lineno="337"><highlight class="comment"><sp/>*<sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>receiveBuffer[BUFSIZE];</highlight></codeline>
+<codeline lineno="338"><highlight class="comment"><sp/>*<sp/><sp/>bool<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>transferOK;</highlight></codeline>
+<codeline lineno="339"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="340"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Params_init(&amp;spiParams);</highlight></codeline>
+<codeline lineno="341"><highlight class="comment"><sp/>*<sp/><sp/>spiParams.dataSize<sp/>=<sp/>12;</highlight></codeline>
+<codeline lineno="342"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline lineno="343"><highlight class="comment"><sp/>*<sp/><sp/>...</highlight></codeline>
+<codeline lineno="344"><highlight class="comment"><sp/>*<sp/><sp/>spiTransaction.count<sp/>=<sp/>someIntegerValue;</highlight></codeline>
+<codeline lineno="345"><highlight class="comment"><sp/>*<sp/><sp/>spiTransaction.txBuf<sp/>=<sp/>transmitBuffer;</highlight></codeline>
+<codeline lineno="346"><highlight class="comment"><sp/>*<sp/><sp/>spiTransaction.rxBuf<sp/>=<sp/>receiveBuffer;</highlight></codeline>
+<codeline lineno="347"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="348"><highlight class="comment"><sp/>*<sp/><sp/>transferOK<sp/>=<sp/>SPI_transfer(spi,<sp/>&amp;spiTransaction);</highlight></codeline>
+<codeline lineno="349"><highlight class="comment"><sp/>*<sp/><sp/>if<sp/>(!transferOK)<sp/>{</highlight></codeline>
+<codeline lineno="350"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>in<sp/>SPI<sp/>or<sp/>transfer<sp/>already<sp/>in<sp/>progress.</highlight></codeline>
+<codeline lineno="351"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
+<codeline lineno="352"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="353"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="354"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>Canceling<sp/>a<sp/>transaction<sp/>#</highlight></codeline>
+<codeline lineno="355"><highlight class="comment"><sp/>*<sp/><sp/>SPI_transferCancel()<sp/>is<sp/>used<sp/>to<sp/>cancel<sp/>a<sp/>SPI<sp/>transaction<sp/>when<sp/>the<sp/>driver<sp/>is</highlight></codeline>
+<codeline lineno="356"><highlight class="comment"><sp/>*<sp/><sp/>used<sp/>in<sp/>::SPI_MODE_CALLBACK<sp/>mode.</highlight></codeline>
+<codeline lineno="357"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="358"><highlight class="comment"><sp/>*<sp/><sp/>Calling<sp/>this<sp/>API<sp/>while<sp/>no<sp/>transfer<sp/>is<sp/>in<sp/>progress<sp/>has<sp/>no<sp/>effect.<sp/>If<sp/>a</highlight></codeline>
+<codeline lineno="359"><highlight class="comment"><sp/>*<sp/><sp/>transfer<sp/>is<sp/>in<sp/>progress,<sp/>it<sp/>is<sp/>canceled<sp/>and<sp/>the<sp/>callback<sp/>functions<sp/>is</highlight></codeline>
+<codeline lineno="360"><highlight class="comment"><sp/>*<sp/><sp/>called.</highlight></codeline>
+<codeline lineno="361"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>::SPI_Status<sp/>status<sp/>field<sp/>in<sp/>the<sp/>::SPI_Transaction<sp/>structure</highlight></codeline>
+<codeline lineno="362"><highlight class="comment"><sp/>*<sp/><sp/>can<sp/>be<sp/>examined<sp/>within<sp/>the<sp/>callback<sp/>to<sp/>determine<sp/>if<sp/>the<sp/>transaction</highlight></codeline>
+<codeline lineno="363"><highlight class="comment"><sp/>*<sp/><sp/>succeeded.</highlight></codeline>
+<codeline lineno="364"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="365"><highlight class="comment"><sp/>*<sp/><sp/>Example:</highlight></codeline>
+<codeline lineno="366"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="367"><highlight class="comment"><sp/>*<sp/><sp/>SPI_transferCancel(spi);</highlight></codeline>
+<codeline lineno="368"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="369"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="370"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="371"><highlight class="comment"><sp/>*<sp/><sp/>&lt;h2&gt;&lt;a<sp/>NAME=&quot;Master_Slave_Modes&quot;&gt;Master/Slave<sp/>Modes&lt;/a&gt;&lt;/h2&gt;</highlight></codeline>
+<codeline lineno="372"><highlight class="comment"><sp/>*<sp/><sp/>This<sp/>SPI<sp/>driver<sp/>functions<sp/>in<sp/>both<sp/>SPI<sp/>master<sp/>and<sp/>SPI<sp/>slave<sp/>modes.</highlight></codeline>
+<codeline lineno="373"><highlight class="comment"><sp/>*<sp/><sp/>Logically,<sp/>the<sp/>implementation<sp/>is<sp/>identical,<sp/>however<sp/>the<sp/>difference<sp/>between</highlight></codeline>
+<codeline lineno="374"><highlight class="comment"><sp/>*<sp/><sp/>these<sp/>two<sp/>modes<sp/>is<sp/>driven<sp/>by<sp/>hardware.<sp/>As<sp/>a<sp/>SPI<sp/>master,<sp/>the<sp/>peripheral<sp/>is</highlight></codeline>
+<codeline lineno="375"><highlight class="comment"><sp/>*<sp/><sp/>in<sp/>control<sp/>of<sp/>the<sp/>clock<sp/>signal<sp/>and<sp/>therefore<sp/>will<sp/>commence<sp/>communications</highlight></codeline>
+<codeline lineno="376"><highlight class="comment"><sp/>*<sp/><sp/>to<sp/>the<sp/>SPI<sp/>slave<sp/>immediately.<sp/>As<sp/>a<sp/>SPI<sp/>slave,<sp/>the<sp/>SPI<sp/>driver<sp/>prepares</highlight></codeline>
+<codeline lineno="377"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>peripheral<sp/>to<sp/>transmit<sp/>and<sp/>receive<sp/>data<sp/>in<sp/>a<sp/>way<sp/>such<sp/>that<sp/>the</highlight></codeline>
+<codeline lineno="378"><highlight class="comment"><sp/>*<sp/><sp/>peripheral<sp/>is<sp/>ready<sp/>to<sp/>transfer<sp/>data<sp/>when<sp/>the<sp/>SPI<sp/>master<sp/>initiates<sp/>a</highlight></codeline>
+<codeline lineno="379"><highlight class="comment"><sp/>*<sp/><sp/>transaction.</highlight></codeline>
+<codeline lineno="380"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="381"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>Asserting<sp/>on<sp/>Chip<sp/>Select</highlight></codeline>
+<codeline lineno="382"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI<sp/>protocol<sp/>requires<sp/>that<sp/>the<sp/>SPI<sp/>master<sp/>asserts<sp/>a<sp/>SPI<sp/>slave&apos;s<sp/>chip</highlight></codeline>
+<codeline lineno="383"><highlight class="comment"><sp/>*<sp/><sp/>select<sp/>pin<sp/>prior<sp/>to<sp/>starting<sp/>a<sp/>SPI<sp/>transaction.<sp/>While<sp/>this<sp/>protocol<sp/>is</highlight></codeline>
+<codeline lineno="384"><highlight class="comment"><sp/>*<sp/><sp/>generally<sp/>followed,<sp/>various<sp/>types<sp/>of<sp/>SPI<sp/>peripherals<sp/>have<sp/>different</highlight></codeline>
+<codeline lineno="385"><highlight class="comment"><sp/>*<sp/><sp/>timing<sp/>requirements<sp/>as<sp/>to<sp/>when<sp/>and<sp/>for<sp/>how<sp/>long<sp/>the<sp/>chip<sp/>select<sp/>pin<sp/>must</highlight></codeline>
+<codeline lineno="386"><highlight class="comment"><sp/>*<sp/><sp/>remain<sp/>asserted<sp/>for<sp/>a<sp/>SPI<sp/>transaction.</highlight></codeline>
+<codeline lineno="387"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="388"><highlight class="comment"><sp/>*<sp/><sp/>Commonly,<sp/>the<sp/>SPI<sp/>master<sp/>uses<sp/>a<sp/>hardware<sp/>chip<sp/>select<sp/>to<sp/>assert<sp/>and</highlight></codeline>
+<codeline lineno="389"><highlight class="comment"><sp/>*<sp/><sp/>de-assert<sp/>the<sp/>SPI<sp/>slave<sp/>for<sp/>every<sp/>data<sp/>frame.<sp/>In<sp/>other<sp/>cases,<sp/>a<sp/>SPI<sp/>slave</highlight></codeline>
+<codeline lineno="390"><highlight class="comment"><sp/>*<sp/><sp/>imposes<sp/>the<sp/>requirement<sp/>of<sp/>asserting<sp/>the<sp/>chip<sp/>select<sp/>over<sp/>several<sp/>SPI</highlight></codeline>
+<codeline lineno="391"><highlight class="comment"><sp/>*<sp/><sp/>data<sp/>frames.<sp/>This<sp/>is<sp/>generally<sp/>accomplished<sp/>by<sp/>using<sp/>a<sp/>regular,</highlight></codeline>
+<codeline lineno="392"><highlight class="comment"><sp/>*<sp/><sp/>general-purpose<sp/>output<sp/>pin.<sp/>Due<sp/>to<sp/>the<sp/>complexity<sp/>of<sp/>such<sp/>SPI<sp/>peripheral</highlight></codeline>
+<codeline lineno="393"><highlight class="comment"><sp/>*<sp/><sp/>implementations,<sp/>this<sp/>SPI<sp/>driver<sp/>has<sp/>been<sp/>designed<sp/>to<sp/>operate</highlight></codeline>
+<codeline lineno="394"><highlight class="comment"><sp/>*<sp/><sp/>transparently<sp/>to<sp/>the<sp/>SPI<sp/>chip<sp/>select.<sp/>When<sp/>the<sp/>hardware<sp/>chip</highlight></codeline>
+<codeline lineno="395"><highlight class="comment"><sp/>*<sp/><sp/>select<sp/>is<sp/>used,<sp/>the<sp/>peripheral<sp/>automatically<sp/>selects/enables<sp/>the</highlight></codeline>
+<codeline lineno="396"><highlight class="comment"><sp/>*<sp/><sp/>peripheral.<sp/>When<sp/>using<sp/>a<sp/>software<sp/>chip<sp/>select,<sp/>the<sp/>application<sp/>needs<sp/>to</highlight></codeline>
+<codeline lineno="397"><highlight class="comment"><sp/>*<sp/><sp/>handle<sp/>the<sp/>proper<sp/>chip<sp/>select<sp/>and<sp/>pin<sp/>configuration.<sp/><sp/>Chip<sp/>select<sp/>support</highlight></codeline>
+<codeline lineno="398"><highlight class="comment"><sp/>*<sp/><sp/>will<sp/>vary<sp/>per<sp/>SPI<sp/>peripheral,<sp/>refer<sp/>to<sp/>the<sp/>device<sp/>specific<sp/>implementation</highlight></codeline>
+<codeline lineno="399"><highlight class="comment"><sp/>*<sp/><sp/>documentation<sp/>for<sp/>details<sp/>on<sp/>chip<sp/>select<sp/>support.</highlight></codeline>
+<codeline lineno="400"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="401"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>_Hardware<sp/>chip<sp/>select_<sp/><sp/>No<sp/>additional<sp/>action<sp/>by<sp/>the<sp/>application<sp/>is</highlight></codeline>
+<codeline lineno="402"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>required.</highlight></codeline>
+<codeline lineno="403"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>_Software<sp/>chip<sp/>select_<sp/><sp/>The<sp/>application<sp/>needs<sp/>to<sp/>handle<sp/>the<sp/>chip<sp/>select</highlight></codeline>
+<codeline lineno="404"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>assertion<sp/>and<sp/>de-assertion<sp/>for<sp/>the<sp/>proper<sp/>SPI<sp/>peripheral.</highlight></codeline>
+<codeline lineno="405"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="406"><highlight class="comment"><sp/>*<sp/><sp/>#<sp/>Implementation<sp/>#</highlight></codeline>
+<codeline lineno="407"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="408"><highlight class="comment"><sp/>*<sp/><sp/>This<sp/>module<sp/>serves<sp/>as<sp/>the<sp/>main<sp/>interface<sp/>for<sp/>RTOS<sp/>applications.<sp/>Its</highlight></codeline>
+<codeline lineno="409"><highlight class="comment"><sp/>*<sp/><sp/>purpose<sp/>is<sp/>to<sp/>redirect<sp/>the<sp/>module&apos;s<sp/>APIs<sp/>to<sp/>specific<sp/>peripheral</highlight></codeline>
+<codeline lineno="410"><highlight class="comment"><sp/>*<sp/><sp/>implementations<sp/>which<sp/>are<sp/>specified<sp/>using<sp/>a<sp/>pointer<sp/>to<sp/>a<sp/>#SPI_FxnTable.</highlight></codeline>
+<codeline lineno="411"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="412"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI<sp/>driver<sp/>interface<sp/>module<sp/>is<sp/>joined<sp/>(at<sp/>link<sp/>time)<sp/>to<sp/>an</highlight></codeline>
+<codeline lineno="413"><highlight class="comment"><sp/>*<sp/><sp/>array<sp/>of<sp/>SPI_Config<sp/>data<sp/>structures<sp/>named<sp/>*SPI_config*.</highlight></codeline>
+<codeline lineno="414"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI_config<sp/>array<sp/>is<sp/>implemented<sp/>in<sp/>the<sp/>application<sp/>with<sp/>each<sp/>entry</highlight></codeline>
+<codeline lineno="415"><highlight class="comment"><sp/>*<sp/><sp/>being<sp/>an<sp/>instance<sp/>of<sp/>a<sp/>SPI<sp/>peripheral.<sp/>Each<sp/>entry<sp/>in<sp/>*SPI_config*<sp/>contains</highlight></codeline>
+<codeline lineno="416"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>following:</highlight></codeline>
+<codeline lineno="417"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>(SPI_FxnTable<sp/>*)<sp/><sp/>A<sp/>pointer<sp/>to<sp/>a<sp/>set<sp/>of<sp/>functions<sp/>that<sp/>implement<sp/>a</highlight></codeline>
+<codeline lineno="418"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>SPI<sp/>peripheral.</highlight></codeline>
+<codeline lineno="419"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>(void<sp/>*)<sp/><sp/>A<sp/>data<sp/>object<sp/>that<sp/>is<sp/>associated<sp/>with<sp/>the<sp/>SPI_FxnTable.</highlight></codeline>
+<codeline lineno="420"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>(void<sp/>*)<sp/><sp/>The<sp/>hardware<sp/>attributes<sp/>that<sp/>are<sp/>associated<sp/>with<sp/>the</highlight></codeline>
+<codeline lineno="421"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>SPI_FxnTable.</highlight></codeline>
+<codeline lineno="422"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="423"><highlight class="comment"><sp/>*******************************************************************************</highlight></codeline>
+<codeline lineno="424"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="425"><highlight class="normal"></highlight></codeline>
+<codeline lineno="426"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ti_drivers_SPI__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="427"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_drivers_SPI__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="428"><highlight class="normal"></highlight></codeline>
+<codeline lineno="429"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="430"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="431"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="432"><highlight class="normal"></highlight></codeline>
+<codeline lineno="433"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="434"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stddef.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="435"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="436"><highlight class="normal"></highlight></codeline>
+<codeline lineno="454" refid="group___s_p_i___c_o_n_t_r_o_l_1ga3d23d16525ee76f77276472d8dea80b0" refkind="member"><highlight class="preprocessor">#define<sp/>SPI_CMD_RESERVED<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(32)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="455"><highlight class="normal"></highlight></codeline>
+<codeline lineno="468" refid="group___s_p_i___c_o_n_t_r_o_l_1gae1af8c6ebf5e8fe481649f65e37b1b9f" refkind="member"><highlight class="preprocessor">#define<sp/>SPI_STATUS_RESERVED<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(-32)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="469"><highlight class="normal"></highlight></codeline>
+<codeline lineno="483" refid="group___s_p_i___s_t_a_t_u_s_1gab38fa90ff62128dbc98b2ecd84ca106f" refkind="member"><highlight class="preprocessor">#define<sp/>SPI_STATUS_SUCCESS<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="484"><highlight class="normal"></highlight></codeline>
+<codeline lineno="491" refid="group___s_p_i___s_t_a_t_u_s_1ga2d0020dd673cc28a9e1c20b0ff101073" refkind="member"><highlight class="preprocessor">#define<sp/>SPI_STATUS_ERROR<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(-1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="492"><highlight class="normal"></highlight></codeline>
+<codeline lineno="500" refid="group___s_p_i___s_t_a_t_u_s_1gacfcd15e1eecdb99b4867adc7592a8d6e" refkind="member"><highlight class="preprocessor">#define<sp/>SPI_STATUS_UNDEFINEDCMD<sp/><sp/><sp/><sp/>(-2)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="501"><highlight class="normal"></highlight></codeline>
+<codeline lineno="511"><highlight class="comment">/*<sp/>Add<sp/>SPI_CMD_&lt;commands&gt;<sp/>here<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="512"><highlight class="normal"></highlight></codeline>
+<codeline lineno="520" refid="_s_p_i_8h_1a7cab73b936e6e08392882196df41277e" refkind="member"><highlight class="preprocessor">#define<sp/>SPI_WAIT_FOREVER<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(~(0U))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="521"><highlight class="normal"></highlight></codeline>
+<codeline lineno="525" refid="_s_p_i_8h_1a93072bc33543d36c9603198df25ee388" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_s_p_i___config__" kindref="compound">SPI_Config_</ref><sp/><sp/><sp/><sp/>*<ref refid="_s_p_i_8h_1a93072bc33543d36c9603198df25ee388" kindref="member">SPI_Handle</ref>;</highlight></codeline>
+<codeline lineno="526"><highlight class="normal"></highlight></codeline>
+<codeline lineno="530" refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588" kindref="member">SPI_Status_</ref><sp/>{</highlight></codeline>
+<codeline lineno="531" refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588abb35466595b950df7e3e3d880336502b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588abb35466595b950df7e3e3d880336502b" kindref="member">SPI_TRANSFER_COMPLETED</ref><sp/>=<sp/>0,<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="532" refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588ad5266453aecb2fdedc0c23cd90921627" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588ad5266453aecb2fdedc0c23cd90921627" kindref="member">SPI_TRANSFER_STARTED</ref>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="533" refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588a78957da92681e8400d84d9d3ede55836" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588a78957da92681e8400d84d9d3ede55836" kindref="member">SPI_TRANSFER_CANCELED</ref>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="534" refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588ac01b83da31c34da13025a5b987ef013f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588ac01b83da31c34da13025a5b987ef013f" kindref="member">SPI_TRANSFER_FAILED</ref>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="535" refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588aa363cddc53c1f44ca73aa661e6535816" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588aa363cddc53c1f44ca73aa661e6535816" kindref="member">SPI_TRANSFER_CSN_DEASSERT</ref>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="536" refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588ad9c52e5a8cefc5b6926e19a8dd62125b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588ad9c52e5a8cefc5b6926e19a8dd62125b" kindref="member">SPI_TRANSFER_PEND_CSN_ASSERT</ref>,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="537" refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588a296a4fda0015070e612ab8e1ee5bc287" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1af4c3e24be43bce84209e2ca643ed2588a296a4fda0015070e612ab8e1ee5bc287" kindref="member">SPI_TRANSFER_QUEUED</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="538"><highlight class="normal">}<sp/><ref refid="_s_p_i_8h_1a29664bd138f8bc577c507588da18d874" kindref="member">SPI_Status</ref>;</highlight></codeline>
+<codeline lineno="539"><highlight class="normal"></highlight></codeline>
+<codeline lineno="548" refid="struct_s_p_i___transaction__" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_s_p_i___transaction__" kindref="compound">SPI_Transaction_</ref><sp/>{</highlight></codeline>
+<codeline lineno="549"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>User<sp/>input<sp/>(write-only)<sp/>fields<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="550" refid="struct_s_p_i___transaction___1afddd181edfc742470340849cfdb2d9ca" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___transaction___1afddd181edfc742470340849cfdb2d9ca" kindref="member">count</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="551" refid="struct_s_p_i___transaction___1a465018e5ce354ef4af029a5d19da27e0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_s_p_i___transaction___1a465018e5ce354ef4af029a5d19da27e0" kindref="member">txBuf</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="552" refid="struct_s_p_i___transaction___1ae1c4a4d5b0ebc2f38467fd52bd788525" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_s_p_i___transaction___1ae1c4a4d5b0ebc2f38467fd52bd788525" kindref="member">rxBuf</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="553" refid="struct_s_p_i___transaction___1a2be360dfbe81fe35cd01c3505642b51f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_s_p_i___transaction___1a2be360dfbe81fe35cd01c3505642b51f" kindref="member">arg</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="555"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>User<sp/>output<sp/>(read-only)<sp/>fields<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="556" refid="struct_s_p_i___transaction___1a75a5cdfb2c377190f45bda6359bccd99" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>SPI_Status<sp/><ref refid="struct_s_p_i___transaction___1a75a5cdfb2c377190f45bda6359bccd99" kindref="member">status</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="558" refid="struct_s_p_i___transaction___1adb1e960f20f45d637a3f91c2242439f7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="struct_s_p_i___transaction___1adb1e960f20f45d637a3f91c2242439f7" kindref="member">nextPtr</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="560"><highlight class="normal">}<sp/><ref refid="_s_p_i_8h_1a8db1a57134d152fae8659739b6f37c71" kindref="member">SPI_Transaction</ref>;</highlight></codeline>
+<codeline lineno="561"><highlight class="normal"></highlight></codeline>
+<codeline lineno="569" refid="_s_p_i_8h_1a207e2d5a7e7ea5606b6995b6485ca015" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="_s_p_i_8h_1a207e2d5a7e7ea5606b6995b6485ca015" kindref="member">SPI_CallbackFxn</ref>)<sp/>(SPI_Handle<sp/>handle,</highlight></codeline>
+<codeline lineno="570"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___transaction__" kindref="compound">SPI_Transaction</ref><sp/>*transaction);</highlight></codeline>
+<codeline lineno="575" refid="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126" kindref="member">SPI_Mode_</ref><sp/>{</highlight></codeline>
+<codeline lineno="576" refid="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126a84379dc90398ca075038c8d5ee465f6a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126a84379dc90398ca075038c8d5ee465f6a" kindref="member">SPI_MASTER</ref><sp/>=<sp/>0,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="577" refid="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126abc98c1546fe12d3fceb1f86cf670faa9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1a68904f4e636afb6c4c35caa611388126abc98c1546fe12d3fceb1f86cf670faa9" kindref="member">SPI_SLAVE</ref><sp/><sp/>=<sp/>1<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="578"><highlight class="normal">}<sp/><ref refid="_s_p_i_8h_1aaf545fda6ffd6648e2bc24d26cd26fc2" kindref="member">SPI_Mode</ref>;</highlight></codeline>
+<codeline lineno="579"><highlight class="normal"></highlight></codeline>
+<codeline lineno="584" refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666" kindref="member">SPI_FrameFormat_</ref><sp/>{</highlight></codeline>
+<codeline lineno="585" refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666a0396d8c01166ff94e94e0c200261eba3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666a0396d8c01166ff94e94e0c200261eba3" kindref="member">SPI_POL0_PHA0</ref><sp/>=<sp/>0,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="586" refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666a340efc6d0f6f3b5be1151444c15faabf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666a340efc6d0f6f3b5be1151444c15faabf" kindref="member">SPI_POL0_PHA1</ref><sp/>=<sp/>1,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="587" refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666ace88daceb628498715aeda698541c95c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666ace88daceb628498715aeda698541c95c" kindref="member">SPI_POL1_PHA0</ref><sp/>=<sp/>2,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="588" refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666a4441729b292511628cb1e9f102da9166" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666a4441729b292511628cb1e9f102da9166" kindref="member">SPI_POL1_PHA1</ref><sp/>=<sp/>3,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="589" refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666ac3cb11b3a833e28368e267161551eb1d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666ac3cb11b3a833e28368e267161551eb1d" kindref="member">SPI_TI</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>4,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="591" refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666a34dc698e46fc5c1b2b1f0de19a44fdcb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1ad15a8f39c27d5cf8596204f9eb1ed666a34dc698e46fc5c1b2b1f0de19a44fdcb" kindref="member">SPI_MW</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>5<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="593"><highlight class="normal">}<sp/><ref refid="_s_p_i_8h_1ad0f9402c803cdf9211e1db54da938f78" kindref="member">SPI_FrameFormat</ref>;</highlight></codeline>
+<codeline lineno="594"><highlight class="normal"></highlight></codeline>
+<codeline lineno="605" refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53a" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53a" kindref="member">SPI_TransferMode_</ref><sp/>{</highlight></codeline>
+<codeline lineno="610" refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa0dfb2358e008316426895e7237c398e8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa0dfb2358e008316426895e7237c398e8" kindref="member">SPI_MODE_BLOCKING</ref>,</highlight></codeline>
+<codeline lineno="616" refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa5631e69925c47a62a261c78ebbda39fb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1a274f8af064c15a3d850feba06415b53aa5631e69925c47a62a261c78ebbda39fb" kindref="member">SPI_MODE_CALLBACK</ref></highlight></codeline>
+<codeline lineno="617"><highlight class="normal">}<sp/><ref refid="_s_p_i_8h_1aacc66eaab730438e7866bd7c90d29b19" kindref="member">SPI_TransferMode</ref>;</highlight></codeline>
+<codeline lineno="618"><highlight class="normal"></highlight></codeline>
+<codeline lineno="627" refid="struct_s_p_i___params__" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_s_p_i___params__" kindref="compound">SPI_Params_</ref><sp/>{</highlight></codeline>
+<codeline lineno="628" refid="struct_s_p_i___params___1a22e3d8ea8b484e9a7f395b3de4dc1e9f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>SPI_TransferMode<sp/><ref refid="struct_s_p_i___params___1a22e3d8ea8b484e9a7f395b3de4dc1e9f" kindref="member">transferMode</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="629" refid="struct_s_p_i___params___1af71d2aab4b84dc919868406f1bcbe94f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___params___1af71d2aab4b84dc919868406f1bcbe94f" kindref="member">transferTimeout</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="631" refid="struct_s_p_i___params___1a903bd2850a123da2463d9665d4a362bc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1a207e2d5a7e7ea5606b6995b6485ca015" kindref="member">SPI_CallbackFxn</ref><sp/><sp/><ref refid="struct_s_p_i___params___1a903bd2850a123da2463d9665d4a362bc" kindref="member">transferCallbackFxn</ref>;</highlight></codeline>
+<codeline lineno="632" refid="struct_s_p_i___params___1a25568ccd4148ef231f31c81d17b3cf1f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1aaf545fda6ffd6648e2bc24d26cd26fc2" kindref="member">SPI_Mode</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___params___1a25568ccd4148ef231f31c81d17b3cf1f" kindref="member">mode</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="633" refid="struct_s_p_i___params___1af2c41cd6a89fb7bbcbf0b2a07808929c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___params___1af2c41cd6a89fb7bbcbf0b2a07808929c" kindref="member">bitRate</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="634" refid="struct_s_p_i___params___1a39376e78235d5329b958ca7561b9fea8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___params___1a39376e78235d5329b958ca7561b9fea8" kindref="member">dataSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="635" refid="struct_s_p_i___params___1adb62fb7458d9bab667a686bbffbae3ac" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1ad0f9402c803cdf9211e1db54da938f78" kindref="member">SPI_FrameFormat</ref><sp/><sp/><ref refid="struct_s_p_i___params___1adb62fb7458d9bab667a686bbffbae3ac" kindref="member">frameFormat</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="636" refid="struct_s_p_i___params___1aa48d022d69dc1335cfda261b59736c91" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_s_p_i___params___1aa48d022d69dc1335cfda261b59736c91" kindref="member">custom</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="638"><highlight class="normal">}<sp/><ref refid="_s_p_i_8h_1a6072d65e3caf8e677473b54d2bce7d35" kindref="member">SPI_Params</ref>;</highlight></codeline>
+<codeline lineno="639"><highlight class="normal"></highlight></codeline>
+<codeline lineno="644" refid="_s_p_i_8h_1aa361d580eb0a5a052d0a1403e0aa5746" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="_s_p_i_8h_1aa361d580eb0a5a052d0a1403e0aa5746" kindref="member">SPI_CloseFxn</ref>)<sp/>(SPI_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="645"><highlight class="normal"></highlight></codeline>
+<codeline lineno="650" refid="_s_p_i_8h_1a0505b9eca5030ca4fc27959e2b5134ca" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>(*<ref refid="_s_p_i_8h_1a0505b9eca5030ca4fc27959e2b5134ca" kindref="member">SPI_ControlFxn</ref>)<sp/>(SPI_Handle<sp/>handle,<sp/>uint_fast16_t<sp/>cmd,</highlight></codeline>
+<codeline lineno="651"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="struct_s_p_i___transaction___1a2be360dfbe81fe35cd01c3505642b51f" kindref="member">arg</ref>);</highlight></codeline>
+<codeline lineno="652"><highlight class="normal"></highlight></codeline>
+<codeline lineno="657" refid="_s_p_i_8h_1aa3b32db8f017fd0ce92bf46a089659e6" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="_s_p_i_8h_1aa3b32db8f017fd0ce92bf46a089659e6" kindref="member">SPI_InitFxn</ref>)<sp/>(SPI_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="658"><highlight class="normal"></highlight></codeline>
+<codeline lineno="663" refid="_s_p_i_8h_1a7e0786f4c1487f9daec49adbc3ac1cf5" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/><ref refid="_s_p_i_8h_1a93072bc33543d36c9603198df25ee388" kindref="member">SPI_Handle</ref><sp/>(*<ref refid="_s_p_i_8h_1a7e0786f4c1487f9daec49adbc3ac1cf5" kindref="member">SPI_OpenFxn</ref>)<sp/>(SPI_Handle<sp/>handle,<sp/><ref refid="struct_s_p_i___params__" kindref="compound">SPI_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="664"><highlight class="normal"></highlight></codeline>
+<codeline lineno="669" refid="_s_p_i_8h_1a470d264d053b30edb0aaafcafd335c26" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>bool<sp/>(*<ref refid="_s_p_i_8h_1a470d264d053b30edb0aaafcafd335c26" kindref="member">SPI_TransferFxn</ref>)<sp/>(SPI_Handle<sp/>handle,</highlight></codeline>
+<codeline lineno="670"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___transaction__" kindref="compound">SPI_Transaction</ref><sp/>*transaction);</highlight></codeline>
+<codeline lineno="671"><highlight class="normal"></highlight></codeline>
+<codeline lineno="676" refid="_s_p_i_8h_1a33f5b214451ac89ea462083eeba0bf8c" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="_s_p_i_8h_1a33f5b214451ac89ea462083eeba0bf8c" kindref="member">SPI_TransferCancelFxn</ref>)<sp/>(SPI_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="677"><highlight class="normal"></highlight></codeline>
+<codeline lineno="683" refid="struct_s_p_i___fxn_table__" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_s_p_i___fxn_table__" kindref="compound">SPI_FxnTable_</ref><sp/>{</highlight></codeline>
+<codeline lineno="685" refid="struct_s_p_i___fxn_table___1a698772cb89c82b9a7f2dd787ebd0e354" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1aa361d580eb0a5a052d0a1403e0aa5746" kindref="member">SPI_CloseFxn</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___fxn_table___1a698772cb89c82b9a7f2dd787ebd0e354" kindref="member">closeFxn</ref>;</highlight></codeline>
+<codeline lineno="686"><highlight class="normal"></highlight></codeline>
+<codeline lineno="688" refid="struct_s_p_i___fxn_table___1ab1f571d9cff9aa49e0ab6d1d483cd1d3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1a0505b9eca5030ca4fc27959e2b5134ca" kindref="member">SPI_ControlFxn</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___fxn_table___1ab1f571d9cff9aa49e0ab6d1d483cd1d3" kindref="member">controlFxn</ref>;</highlight></codeline>
+<codeline lineno="689"><highlight class="normal"></highlight></codeline>
+<codeline lineno="691" refid="struct_s_p_i___fxn_table___1a4fb616b0d61599d4376fb550bd29d65f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1aa3b32db8f017fd0ce92bf46a089659e6" kindref="member">SPI_InitFxn</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___fxn_table___1a4fb616b0d61599d4376fb550bd29d65f" kindref="member">initFxn</ref>;</highlight></codeline>
+<codeline lineno="692"><highlight class="normal"></highlight></codeline>
+<codeline lineno="694" refid="struct_s_p_i___fxn_table___1a2a7ec9136a10925725d28c2d44e2f068" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1a7e0786f4c1487f9daec49adbc3ac1cf5" kindref="member">SPI_OpenFxn</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___fxn_table___1a2a7ec9136a10925725d28c2d44e2f068" kindref="member">openFxn</ref>;</highlight></codeline>
+<codeline lineno="695"><highlight class="normal"></highlight></codeline>
+<codeline lineno="697" refid="struct_s_p_i___fxn_table___1a8fe002c6341dd23263c32c00b1cab56b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1a470d264d053b30edb0aaafcafd335c26" kindref="member">SPI_TransferFxn</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___fxn_table___1a8fe002c6341dd23263c32c00b1cab56b" kindref="member">transferFxn</ref>;</highlight></codeline>
+<codeline lineno="698"><highlight class="normal"></highlight></codeline>
+<codeline lineno="700" refid="struct_s_p_i___fxn_table___1ac15ad1a4264e96d7d98d7477b0f3fa7b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1a33f5b214451ac89ea462083eeba0bf8c" kindref="member">SPI_TransferCancelFxn</ref><sp/><ref refid="struct_s_p_i___fxn_table___1ac15ad1a4264e96d7d98d7477b0f3fa7b" kindref="member">transferCancelFxn</ref>;</highlight></codeline>
+<codeline lineno="701"><highlight class="normal">}<sp/><ref refid="_s_p_i_8h_1a4e8e5691222e58e20960a9b82354a358" kindref="member">SPI_FxnTable</ref>;</highlight></codeline>
+<codeline lineno="702"><highlight class="normal"></highlight></codeline>
+<codeline lineno="714" refid="struct_s_p_i___config__" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_s_p_i___config__" kindref="compound">SPI_Config_</ref><sp/>{</highlight></codeline>
+<codeline lineno="716" refid="struct_s_p_i___config___1a422fb4ed4cc7ceb4d8f7d03d9f37639f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___fxn_table__" kindref="compound">SPI_FxnTable</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>*<ref refid="struct_s_p_i___config___1a422fb4ed4cc7ceb4d8f7d03d9f37639f" kindref="member">fxnTablePtr</ref>;</highlight></codeline>
+<codeline lineno="717"><highlight class="normal"></highlight></codeline>
+<codeline lineno="719" refid="struct_s_p_i___config___1a99ceb1a7284c7f76c6ce19f599721df3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_s_p_i___config___1a99ceb1a7284c7f76c6ce19f599721df3" kindref="member">object</ref>;</highlight></codeline>
+<codeline lineno="720"><highlight class="normal"></highlight></codeline>
+<codeline lineno="722" refid="struct_s_p_i___config___1aa0e01417e2e18ecf220f5f580882b94e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>*<ref refid="struct_s_p_i___config___1aa0e01417e2e18ecf220f5f580882b94e" kindref="member">hwAttrs</ref>;</highlight></codeline>
+<codeline lineno="723"><highlight class="normal">}<sp/><ref refid="_s_p_i_8h_1a9ce9680cc88c403db466864c02ee4733" kindref="member">SPI_Config</ref>;</highlight></codeline>
+<codeline lineno="724"><highlight class="normal"></highlight></codeline>
+<codeline lineno="734"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_s_p_i_8h_1a0e3448b30b88609fa120915e49560601" kindref="member">SPI_close</ref>(SPI_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="735"><highlight class="normal"></highlight></codeline>
+<codeline lineno="773"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/><ref refid="_s_p_i_8h_1a1b3fafc9892141b7bab1bc9c19ede9ef" kindref="member">SPI_control</ref>(SPI_Handle<sp/>handle,<sp/>uint_fast16_t<sp/>cmd,</highlight></codeline>
+<codeline lineno="774"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*controlArg);</highlight></codeline>
+<codeline lineno="775"><highlight class="normal"></highlight></codeline>
+<codeline lineno="784"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_s_p_i_8h_1afd9b09f58917f0e2d14c61b956eba214" kindref="member">SPI_init</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="785"><highlight class="normal"></highlight></codeline>
+<codeline lineno="804"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>SPI_Handle<sp/><ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open</ref>(uint_least8_t<sp/>index,<sp/><ref refid="struct_s_p_i___params__" kindref="compound">SPI_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="805"><highlight class="normal"></highlight></codeline>
+<codeline lineno="821"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_s_p_i_8h_1a9c3dd1748332fd6e31c79a6538a71642" kindref="member">SPI_Params_init</ref>(<ref refid="struct_s_p_i___params__" kindref="compound">SPI_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="822"><highlight class="normal"></highlight></codeline>
+<codeline lineno="867"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_s_p_i_8h_1a989e17f96b54fcc3dc2cac5f8ac6bdb2" kindref="member">SPI_transfer</ref>(SPI_Handle<sp/>handle,<sp/><ref refid="struct_s_p_i___transaction__" kindref="compound">SPI_Transaction</ref><sp/>*transaction);</highlight></codeline>
+<codeline lineno="868"><highlight class="normal"></highlight></codeline>
+<codeline lineno="886"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_s_p_i_8h_1a6819f7761fc3505c4f885653ff8121f0" kindref="member">SPI_transferCancel</ref>(SPI_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="887"><highlight class="normal"></highlight></codeline>
+<codeline lineno="888"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="889"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="890"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="891"><highlight class="normal"></highlight></codeline>
+<codeline lineno="892"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_SPI__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="exports/tidrivers_msp432/source/ti/drivers/SPI.h"/>
+  </compounddef>
+</doxygen>

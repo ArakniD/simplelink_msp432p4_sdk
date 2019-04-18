@@ -1,0 +1,287 @@
+<!--
+`ti-widget-colorwheel`
+
+Color Wheel widget - displays currently selected color in a color wheel showing all possible colors.
+                   - allows users to select a color by clicking on the color wheel
+
+@group TI GUIComposer
+@element ti-widget-colorwheel
+@homepage ../ti-guicomposer-helpindex/demo.html
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+
+<polymer-element name="ti-widget-colorwheel">
+
+    <template id="ti-widget-colorwheel">
+
+        <style>
+            :host {
+                display: block;
+                position: static;
+            }
+
+        </style>
+        <div id="colorSelectorWheelDiv" >
+
+            <div style="text-align:center;">
+                <canvas id="canvas"  style="width:100%;height:100%;background: transparent;" on-mouseup="{{mUp}}" on-mousedown="{{mDown}}"></canvas>
+            </div>
+
+        </div>
+    </template>
+    <script>
+        Polymer ('ti-widget-colorwheel', {
+            ctx: undefined,
+            p: undefined,
+            radius: undefined,
+            scalingFactor: undefined,
+            _redSetByUser: undefined,
+            _greenSetByUser: undefined,
+            _blusSetByUser: undefined,
+
+            /**
+             * Fired when the color selected by the user changes.
+             *
+             * @event colorchanged
+             */
+            publish: {
+                /**
+                 * the red value of the currently selected color
+                 *
+                 * @attribute red
+                 * @type number
+                 * @default 0
+                 */
+                red:  {value: 0, reflect: true},
+                /**
+                 * the green value of the currently selected color
+                 *
+                 * @attribute green
+                 * @type number
+                 * @default 0
+                 */
+                green:  {value: 0, reflect: true},
+                /**
+                 * the blue value of the currently selected color
+                 *
+                 * @attribute blue
+                 * @type number
+                 * @default 0
+                 */
+                blue:  {value: 0, reflect: true}
+            },
+            _redChanged: function(){
+                if (this.red !== this._redSetByUser){
+                    this._redSetByUser = this.red;
+                    this.updateColor();
+                }
+            },
+            redChanged: undefined,
+            _greenChanged: function(){
+                if (this.green !== this._greenSetByUser){
+                    this._greenSetByUser = this.green;
+                    this.updateColor();
+                }
+            },
+            greenChanged: undefined,
+            _blueChanged: function(){
+                if (this.blue !== this._blueSetByUser){
+                    this._blueSetByUser = this.blue;
+                    this.updateColor();
+                }
+            },
+            blueChanged: undefined,
+            updateColor: function(){
+                console.log("ti-widget-colorwheel.updateColor: r="+this.red+',g='+this.green+',b='+this.blue);
+                this.fire('colorchanged');
+            },
+            _drawColorWheel: function(){
+                if (this.ctx !== undefined) {
+                    var     start = Math.PI,
+                            end = start + Math.PI * 2,
+                            step = Math.PI / 180,
+                            grad,
+                            ang,
+                            pct = 0;
+
+                    this.radius = this.$.canvas.height*0.43;
+                    if (this.$.canvas.width < this.$.canvas.height){
+                        this.radius = this.$.canvas.width*0.43;
+                    }
+                    var thickness = this.radius - 5;
+                    this.ctx.clearRect(0 - this.p.x, 0 - this.p.y, this.$.canvas.width, this.$.canvas.height);
+
+                    //Color wheel edge (black)
+                    this.ctx.beginPath();
+                    this.ctx.arc(0, 0, this.radius + 5, 0, 2 * Math.PI);
+                    this.ctx.fillStyle = 'black';
+                    this.ctx.fill();
+
+                    //Color wheel gradient
+                    for (ang = start; ang <= end; ang += step) {
+                        this.ctx.save();
+                        this.ctx.rotate(-ang);
+                        grad = this.ctx.createLinearGradient(0, this.radius - thickness, 0, this.radius);
+                        grad.addColorStop(1, 'black');
+
+                        var hue = 360 - (ang - start) / (end - start) * 360;
+                        var saturation = '100%';
+                        var light = '50%';
+
+                        grad.addColorStop(.5, 'hsl(' + [hue, saturation, light].join() + ')');
+                        grad.addColorStop(0, 'white');
+                        this.ctx.fillStyle = grad;
+
+                        this.ctx.fillRect(0,this.radius - thickness, 5, thickness);
+                        this.ctx.restore();
+                    }
+
+                    //Color wheel center (white)
+                    this.ctx.beginPath();
+                    this.ctx.arc(0, 0, this.radius - thickness, 0, 2 * Math.PI);
+                    this.ctx.fillStyle = 'white';
+                    this.ctx.fill();
+                    console.log("drew colorwheel");
+                }
+            },
+            drawColorWheel: undefined,
+            _drawCircle: function(x, y, rgba) {
+                this.ctx.beginPath();
+                this.ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                this.ctx.lineWidth = 4;
+                //var color = r;
+                //if (r <= 5)
+                //  color = 5;
+                //else if (r >= 260)
+                //  color = 260;
+                //color -= 5;
+                //color = Math.round(color);
+                //console.log(color);
+                this.ctx.strokeStyle = 'rgb(' + [255 - rgba[0], 255 - rgba[1], 255 - rgba[2]] + ')';
+                this.ctx.stroke();
+                console.log("drew circle at x="+x*this.scalingFactor+', y='+y*this.scalingFactor);
+            },
+            drawCircle: undefined,
+
+            _mDown: function (event) {
+                this.getPosition(event);
+                this.$.canvas.addEventListener("mousemove", this.getPosition, false);
+                event.preventDefault();
+                return false;
+            },
+            mDown: undefined,
+            _mUp: function(event) {
+                this.$.canvas.removeEventListener("mousemove", this.getPosition, false);
+                console.log('ti-widget-colorwheel.mUp: x='+event.clientX+',y='+event.clientY);
+                event.preventDefault();
+                return false;
+            },
+            mUp: undefined,
+            _getPosition: function (event) {
+                console.log('ti-widget-colorwheel.getPosition: x='+event.clientX+',y='+event.clientY);
+
+                this.drawColorWheel();
+                var x = event.clientX;
+                var y = event.clientY;
+
+
+                var box = this.$.canvas.getBoundingClientRect();
+
+                x -= box.left;
+                y -= box.top;
+
+                //console.log(x+", " + y);
+                var minDimension = this.$.canvas.scrollWidth;
+                if (this.$.canvas.scrollHeight < this.$.canvas.scrollWidth){
+                    minDimension = this.$.canvas.scrollHeight;
+                }
+                this.scalingFactor = minDimension / this.$.canvas.width;
+
+                var clickRadius = (Math.sqrt(Math.pow((minDimension/2) - x, 2) + Math.pow((minDimension/2) - y, 2)));
+
+                if (!(clickRadius > this.radius*this.scalingFactor)) {
+                    var rgba = this.ctx.getImageData(x/this.scalingFactor, y/this.scalingFactor, 1, 1).data;
+                    this.drawCircle(x/this.scalingFactor - this.p.x, y/this.scalingFactor - this.p.y, rgba);
+                    this.red = rgba[0];
+                    this.green = rgba[1];
+                    this.blue = rgba[2];
+
+                    this.updateColor();
+                }
+
+                event.preventDefault();
+            },
+            getPosition: undefined,
+            _resizeEventHdlr: function(e) {
+            },
+
+            ready: function() {
+                // see https://github.com/Polymer/polymer/issues/329
+                this.enteredView();
+            },
+
+
+            resizeEventHdlr: undefined,
+            enteredView: function() {
+                this.resizeEventHdlr = this._resizeEventHdlr.bind(this);
+                this.mUp = this._mUp.bind(this);
+                this.mDown = this._mDown.bind(this);
+                this.redChanged = this._redChanged.bind(this);
+                this.greenChanged = this._greenChanged.bind(this);
+                this.blueChanged = this._blueChanged.bind(this);
+                this.getPosition = this._getPosition.bind(this);
+                this.drawCircle = this._drawCircle.bind(this);
+                this.drawColorWheel = this._drawColorWheel.bind(this);
+            },
+            domReady: function(){
+                var _self = this;
+                window.onresize = function(e){
+                    console.log("Got a resize Event!");
+                    _self.resizeEventHdlr();
+                };
+                this.red = 0;
+                this.green = 0;
+                this.blue = 0;
+                this.$.canvas.width = this.getBoundingClientRect().width;
+                this.$.canvas.height = this.getBoundingClientRect().height;
+                this.ctx = this.$.canvas.getContext('2d');
+                this.p = {
+                    x: this.$.canvas.width / 2,
+                    y: this.$.canvas.height / 2
+                };
+
+                this.ctx.translate(this.p.x, this.p.y);
+
+                this.drawColorWheel();
+            }
+        });
+    </script>
+</polymer-element>

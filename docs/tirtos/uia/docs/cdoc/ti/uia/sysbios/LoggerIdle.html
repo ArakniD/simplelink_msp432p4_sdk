@@ -1,0 +1,1354 @@
+<html>
+<head>
+<title>module ti.uia.sysbios.LoggerIdle</title>
+<meta name="description" content="A logger which routes Log events to a users transport function">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.sysbios.</span><span class="xdoc-id">LoggerIdle</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/IpcMP.html" title="module IpcMP"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/package.html" title="package ti.uia.sysbios"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerStreamer.html" title="module LoggerStreamer"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html">index URL</a></div>
+<p class="xdocHdrSummary">A logger which routes <tt>Log</tt> events to a users transport function</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-1">DETAILS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-2">EXAMPLES</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+This logger processes log events as they are generated, stores them in
+  a buffer and during idle sends a section of the buffer to the user's
+  transport function.  If you are seeing no log events or dropping too
+  many events check that you are not logging too often and have enough idle
+  time to send. LoggerIdle is compatable with StellarisWare and MWare
+  devices. Example transports for UART (B92 and F28M35x) and USB (F28M35x)
+  as well as initialization functions are included in the evmF28M35x.c files
+  under the device folder in the ti.examples directory.
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/sysbios/LoggerIdle-src.html"><span class="xdocLabelFile">ti/uia/sysbios/LoggerIdle.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/sysbios/LoggerIdle.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Functions</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_creation"><span class="xdoc-id">LoggerIdle_construct</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Initialize a new instance object inside the provided structure</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Struct">LoggerIdle_Struct</a> *structP, <span class="xdoc-kw1">const</span> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_config_parameters" title="ti.uia.sysbios.LoggerIdle.Params">LoggerIdle_Params</a> *params);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_creation"><span class="xdoc-id">LoggerIdle_create</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Allocate and initialize a new instance object and return its handle</span></span></a>(<span class="xdoc-kw1">const</span> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_config_parameters" title="ti.uia.sysbios.LoggerIdle.Params">LoggerIdle_Params</a> *params, <a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Block" title="xdc.runtime.Error.Block">Error_Block</a> *eb);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_deletion"><span class="xdoc-id">LoggerIdle_delete</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Finalize and free this previously allocated instance object, setting the referenced handle to NULL</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> *handleP);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_deletion"><span class="xdoc-id">LoggerIdle_destruct</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Finalize the instance object inside the provided structure</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Struct">LoggerIdle_Struct</a> *structP);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#flush"><span class="xdoc-id">LoggerIdle_flush</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Call the transport function to empty out the LoggerIdle buffer</span></span></a>();</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_config_parameters"><span class="xdoc-id">LoggerIdle_Params_init</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Initialize this config-params structure with supplier-specified defaults before instance creation</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_config_parameters" title="ti.uia.sysbios.LoggerIdle.Params">LoggerIdle_Params</a> *params);</div></td></tr>
+<tr><td colspan="2"><div class="xdocSynFxnCat">Functions common to all ILogger modules</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#disable"><span class="xdoc-id">LoggerIdle_disable</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Disable a log</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#enable"><span class="xdoc-id">LoggerIdle_enable</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable a log</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write0"><span class="xdoc-id">LoggerIdle_write0</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Process a log event with 0 arguments</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write1"><span class="xdoc-id">LoggerIdle_write1</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Process a log event with 1 arguments</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write2"><span class="xdoc-id">LoggerIdle_write2</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Process a log event with 2 arguments</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write4"><span class="xdoc-id">LoggerIdle_write4</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Process a log event with up to 4 arguments</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a3</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a4</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write8"><span class="xdoc-id">LoggerIdle_write8</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Process a log event with up to 8 arguments</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a3</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a4</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a5</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a6</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a7</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a8</span>);</div></td></tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target instances</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LoggerIdle_handle</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Convert this instance structure pointer into an instance handle</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_convertors"><span class="xdoc-id">LoggerIdle_Handle_downCast</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;conditionally move one level down the inheritance hierarchy; NULL upon failure</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerIdle_Handle_label</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The label associated with this instance object</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerIdle_Handle_name</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The name of this instance object</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_convertors"><span class="xdoc-id">LoggerIdle_Handle_upCast</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;unconditionally move one level up the inheritance hierarchy</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerIdle_Object_count</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The number of statically-created instance objects</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerIdle_Object_first</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The handle of the first dynamically-created instance object, or NULL</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerIdle_Object_get</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The handle of the i-th statically-created instance object (array == NULL)</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerIdle_Object_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap used to allocate dynamically-created instance objects</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerIdle_Object_next</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The handle of the next dynamically-created instance object, or NULL</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LoggerIdle_struct</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Convert this instance handle into an instance structure pointer</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LoggerIdle_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LoggerIdle_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LoggerIdle_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LoggerIdle_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LoggerIdle_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LoggerIdle_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Typedefs</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Object">LoggerIdle_Object</a> *</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LoggerIdle_Handle</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Client reference to an instance object</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl">(*<a class="xdocSynGo" href="#.Logger.Fxn"><span class="xdoc-id">LoggerIdle_LoggerFxn</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Typedef for the transport function pointer</span></span></a>)(<span class="xdoc-kw2">UChar</span>*,<span class="xdoc-kw2">Int</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LoggerIdle_Object</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Opaque internal representation of an instance object</span></span></a> <span class="xdoc-id">LoggerIdle_Object</span>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_config_parameters"><span class="xdoc-id">LoggerIdle_Params</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Instance config-params structure</span></span></a> ...</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LoggerIdle_Struct</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Opaque client structure large enough to hold an instance object</span></span></a> <span class="xdoc-id">LoggerIdle_Struct</span>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Transport.Type"><span class="xdoc-id">LoggerIdle_TransportType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Used to specify the type of transport to use</span></span></a> ...</div></td></tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Constants</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">SizeT</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#buffer.Size"><span class="xdoc-id">LoggerIdle_bufferSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;LoggerIdle buffer size in 32-bit words</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">String</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#custom.Transport.Type"><span class="xdoc-id">LoggerIdle_customTransportType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Custom transport used to send the records to an instrumentation host</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#is.Timestamp.Enabled"><span class="xdoc-id">LoggerIdle_isTimestampEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable or disable logging the 64b local CPU timestamp
+  at the start of each event</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#.Logger.Fxn" title="ti.uia.sysbios.LoggerIdle.LoggerFxn">LoggerIdle_LoggerFxn</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#transport.Fxn"><span class="xdoc-id">LoggerIdle_transportFxn</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;User defined transport function responsible for transmitting the records</span></span></a>;</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This logger processes log events as they are generated, stores them in
+  a buffer and during idle sends a section of the buffer to the user's
+  transport function.  If you are seeing no log events or dropping too
+  many events check that you are not logging too often and have enough idle
+  time to send. LoggerIdle is compatable with StellarisWare and MWare
+  devices. Example transports for UART (B92 and F28M35x) and USB (F28M35x)
+  as well as initialization functions are included in the evmF28M35x.c files
+  under the device folder in the ti.examples directory.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLES</div>
+<div class="xdocText">Configuration example: The following XDC configuration statements
+  create a logger module, and assign it as the default logger for all
+  modules.</div>
+<div class="xdocText"><PRE class="Example">  var Defaults = xdc.useModule('xdc.runtime.Defaults');
+  var Diags = xdc.useModule('xdc.runtime.Diags');
+  var LoggerIdle = xdc.useModule('ti.uia.sysbios.LoggerIdle');
+
+  LoggerIdle.bufferSize = 60;
+  LoggerIdle.timestamp = false;
+  LoggerIdle.transportType = LoggerIdle.TransportType_UART;
+  LoggerIdle.transportFxn = '&amp;LoggerIdle_uartSend';
+  var LoggerIdleParams = new LoggerIdle.Params();
+  Defaults.common$.logger = LoggerIdle.create(LoggerIdleParams);
+</PRE></div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Transport.Type"></a>
+<a class="xdocAnchor" id=".Transport.Type_.U.A.R.T"></a>
+<a class="xdocAnchor" id=".Transport.Type_.U.S.B"></a>
+<a class="xdocAnchor" id=".Transport.Type_.E.T.H.E.R.N.E.T"></a>
+<a class="xdocAnchor" id=".Transport.Type_.C.U.S.T.O.M"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">TransportType</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#.Transport.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Used to specify the type of transport to use</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> <span class="xdoc-id">LoggerIdle_TransportType</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">LoggerIdle_TransportType_UART</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">LoggerIdle_TransportType_USB</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">LoggerIdle_TransportType_ETHERNET</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">LoggerIdle_TransportType_CUSTOM</span>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">LoggerIdle_TransportType</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This enum is used by the instrumentation host to determine what
+  the transport is. It is not used by the target code.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Logger.Fxn"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">typedef</span> <span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">LoggerFxn</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#.Logger.Fxn">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Typedef for the transport function pointer</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw2">Int</span>&nbsp;(*<span class="xdoc-id">LoggerIdle_LoggerFxn</span>)(<span class="xdoc-kw2">UChar</span>*,<span class="xdoc-kw2">Int</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="buffer.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">bufferSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#buffer.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">LoggerIdle buffer size in 32-bit words</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">LoggerIdle_bufferSize</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="custom.Transport.Type"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">customTransportType</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#custom.Transport.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Custom transport used to send the records to an instrumentation host</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">LoggerIdle_customTransportType</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If the desired transport is not in the <tt><a class="xdoc-link" href="LoggerIdle.html#.Transport.Type" title="TransportType">TransportType</a></tt> enum,
+  and <tt><a class="xdoc-link" href="LoggerIdle.html#transport.Type" title="transportType">transportType</a></tt> is set to <tt><a class="xdoc-link" href="LoggerIdle.html#.Transport.Type_.C.U.S.T.O.M" title="TransportType_CUSTOM">TransportType_CUSTOM</a></tt>,
+  this parameter must be filled in with the correct transport name.</div>
+<div class="xdocText">If <tt><a class="xdoc-link" href="LoggerIdle.html#transport.Type" title="transportType">transportType</a></tt> is NOT set to
+  <tt><a class="xdoc-link" href="LoggerIdle.html#.Transport.Type_.C.U.S.T.O.M" title="TransportType_CUSTOM">TransportType_CUSTOM</a></tt>, this parameter is ignored.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Timestamp.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">isTimestampEnabled</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#is.Timestamp.Enabled">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable or disable logging the 64b local CPU timestamp
+  at the start of each event</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LoggerIdle_isTimestampEnabled</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Having a timestamp allows an instrumentation host (e.g.
+  System Analyzer) to display events with the correct system time.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="transport.Fxn"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">transportFxn</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#transport.Fxn">index URL</a></div>
+<p class="xdocHdrSummaryDcl">User defined transport function responsible for transmitting the records</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#.Logger.Fxn" title="ti.uia.sysbios.LoggerIdle.LoggerFxn">LoggerIdle_LoggerFxn</a>&nbsp;<span class="xdoc-id">LoggerIdle_transportFxn</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="flush"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">flush</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#flush">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Call the transport function to empty out the LoggerIdle buffer</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LoggerIdle_flush</span>();
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This API is not intended for general use, but could be used for
+  example, in an exception handler to recover the most recent Log
+  data that was written after the last run of the idle loop.</div>
+<div class="xdocText">NOTE:  Calling LoggerIdle_flush() when the idle task was in the
+  middle of outputting data can result in lost data.  Since the idle
+  function only outputs one Log record at a time, so at most one record
+  could be lost.</div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">LoggerIdle_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">LoggerIdle_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">LoggerIdle_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">LoggerIdle_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">LoggerIdle_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LoggerIdle_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+<a class="xdocAnchor" id="per-instance_object_types"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Object Types</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#per-instance_object_types">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">LoggerIdle_Object</span> <span class="xdoc-id">LoggerIdle_Object</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Opaque internal representation of an instance object</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Object">LoggerIdle_Object</a> *<span class="xdoc-id">LoggerIdle_Handle</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Client reference to an instance object</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">LoggerIdle_Struct</span> <span class="xdoc-id">LoggerIdle_Struct</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Opaque client structure large enough to hold an instance object</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> <span class="xdoc-id">LoggerIdle_handle</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Struct">LoggerIdle_Struct</a> *structP);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Convert this instance structure pointer into an instance handle</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Struct">LoggerIdle_Struct</a> *<span class="xdoc-id">LoggerIdle_struct</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Convert this instance handle into an instance structure pointer</div>
+</div>
+<a class="xdocAnchor" id="per-instance_config_parameters"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Config Parameters</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#per-instance_config_parameters">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">LoggerIdle_Params</span> {
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Instance config-params structure</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdoc-link" href="../../../xdc/runtime/IInstance.html#per-instance_config_parameters" title="xdc.runtime.IInstance.Params">IInstance_Params</a> *instance;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Common per-instance configs</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">LoggerIdle_Params</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LoggerIdle_Params_init</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_config_parameters" title="ti.uia.sysbios.LoggerIdle.Params">LoggerIdle_Params</a> *params);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Initialize this config-params structure with supplier-specified defaults before instance creation</div>
+</div>
+<a class="xdocAnchor" id="per-instance_creation"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Runtime Instance Creation</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#per-instance_creation">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> <span class="xdoc-id">LoggerIdle_create</span>(<span class="xdoc-kw1">const</span> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_config_parameters" title="ti.uia.sysbios.LoggerIdle.Params">LoggerIdle_Params</a> *params, <a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Block" title="xdc.runtime.Error.Block">Error_Block</a> *eb);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Allocate and initialize a new instance object and return its handle</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LoggerIdle_construct</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Struct">LoggerIdle_Struct</a> *structP, <span class="xdoc-kw1">const</span> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_config_parameters" title="ti.uia.sysbios.LoggerIdle.Params">LoggerIdle_Params</a> *params);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Initialize a new instance object inside the provided structure</div>
+</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">params</span>
+<span class="xdocChildSum">&#151;&nbsp;per-instance config params, or <tt>NULL</tt> to select default values (target-domain only)</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">eb</span>
+<span class="xdocChildSum">&#151;&nbsp;active error-handling block, or <tt>NULL</tt> to select default policy (target-domain only)</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The logger instance will route all log events it receives to
+  the Uart.</div>
+<a class="xdocAnchor" id="per-instance_deletion"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Deletion</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#per-instance_deletion">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LoggerIdle_delete</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> *handleP);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Finalize and free this previously allocated instance object, setting the referenced handle to NULL</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LoggerIdle_destruct</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Struct">LoggerIdle_Struct</a> *structP);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Finalize the instance object inside the provided structure</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="disable"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">disable</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#disable">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Disable a log</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LoggerIdle_disable</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerIdle</tt> instance object</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Events written to a disabled log are silently discarded.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">The function returns the state of the log (<tt>TRUE</tt> if enabled,
+  <tt>FALSE</tt> if disabled) before the call. This return value allows 
+  clients to restore the previous state.
+  Note: not thread safe.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="enable"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">enable</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#enable">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable a log</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LoggerIdle_enable</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerIdle</tt> instance object</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">The function returns the state of the log (<tt>TRUE</tt> if enabled,
+  <tt>FALSE</tt> if disabled) before the call. This return value allows 
+  clients to restore the previous state.  
+  Note: not thread safe.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write0"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">write0</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#write0">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Process a log event with 0 arguments</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LoggerIdle_write0</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerIdle</tt> instance object</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Same as <tt>write4</tt> except with 0 arguments rather than 4.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="ILogger.html#write4" title="ILogger.write4">ILogger.write4()</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write1"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">write1</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#write1">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Process a log event with 1 arguments</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LoggerIdle_write1</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerIdle</tt> instance object</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Same as <tt>write4</tt> except with 1 arguments rather than 4.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="ILogger.html#write4" title="ILogger.write4">ILogger.write4()</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write2"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">write2</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#write2">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Process a log event with 2 arguments</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LoggerIdle_write2</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerIdle</tt> instance object</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Same as <tt>write4</tt> except with 2 arguments rather than 4.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="ILogger.html#write4" title="ILogger.write4">ILogger.write4()</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write4"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">write4</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#write4">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Process a log event with up to 4 arguments</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LoggerIdle_write4</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a3</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a4</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerIdle</tt> instance object</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">evt</span>
+<span class="xdocChildSum">&#151;&nbsp;event to be logged</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">mid</span>
+<span class="xdocChildSum">&#151;&nbsp;module ID of the module which logged the event</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">a1</span>
+<span class="xdocChildSum">&#151;&nbsp;arbitrary argument passed by caller</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The <tt>evt</tt> argument is of type Log.Event, which encodes the 
+  <tt><a class="xdoc-link" href="Log.html#.Event.Id" title="Log.EventId">Log.EventId</a></tt>, the <tt><a class="xdoc-link" href="Diags.html#.Mask" title="Diags.Mask">Diags.Mask</a></tt>, and the 
+  <tt><a class="xdoc-link" href="Diags.html#.Event.Level" title="Diags.EventLevel">Diags.EventLevel</a></tt> of the event. The event ID can be obtained
+  via <tt><a class="xdoc-link" href="Types.html#get.Event.Id" title="Types.getEventId">Types.getEventId</a>(evt)</tt>, the Diags mask can be obtained via
+  <tt><a class="xdoc-link" href="Diags.html#get.Mask" title="Diags.getMask">Diags.getMask</a>(evt)</tt>, and the event level can be obtained via
+  <tt><a class="xdoc-link" href="Diags.html#get.Level" title="Diags.getLevel">Diags.getLevel</a>(evt)</tt>.</div>
+<div class="xdocText">The <tt>modId</tt> argument is the module ID of the module that logged the
+  event.</div>
+<div class="xdocText">The event information can be used by the logger to handle different 
+  events specially. For example, the event ID can be used to compare 
+  against other known <tt>Log.Event</tt>s.</div>
+<div class="xdocText"><PRE class="Example">      if (Log_getEventId(MY_EVENT) == Log_getEventId(evt)) {
+          :
+      }
+</PRE></div>
+<div class="xdocText">The Diags mask and event level can be used for filtering of events 
+  based on event level (see <a class="xdoc-link" href="IFilterLogger.html" title="IFilterLogger">IFilterLogger</a>), or even routing 
+  events to separate loggers based on diags category (see, for example, 
+  <a class="xdoc-link" href="LoggerBuf.html#status.Logger" title="LoggerBuf.statusLogger">LoggerBuf.statusLogger</a>).</div>
+<div class="xdocText">The Diags mask and event level are useful for handling the event, but 
+  are generally not recorded by the logger because they are not needed in
+  decoding and displaying the event. A more suitable value to record is a
+  <tt><a class="xdoc-link" href="Types.html#.Event" title="Types.Event">Types.Event</a></tt>, which encodes the event ID and module ID. For
+  example, the <tt><a class="xdoc-link" href="Log.html#.Event.Rec" title="Log.EventRec">Log.EventRec</a></tt> type stores a <tt><a class="xdoc-link" href="Types.html#.Event" title="Types.Event">Types.Event</a></tt>
+  in its record definition. A <tt><a class="xdoc-link" href="Types.html#.Event" title="Types.Event">Types.Event</a></tt> can be created using
+  the <tt><a class="xdoc-link" href="Types.html#make.Event" title="Types.makeEvent">Types.makeEvent</a></tt> API given the event ID and module ID.</div>
+<div class="xdocText">The event ID value of <tt>0</tt> is used to indicate an event triggered by a
+  call to one of the <tt><a class="xdoc-link" href="Log.html#print0" title="Log.print0">Log_print[0-6]</a></tt> methods. These
+  methods take a format string rather than a <tt>Log_Event</tt> argument and,
+  as a result, the event ID encoded in <tt>evt</tt> is <tt>0</tt> and the parameter 
+  <tt>a1</tt> is the format string.</div>
+<div class="xdocText">Non-zero event IDs can also be used to access the <tt>msg</tt> string
+  associated with the <tt><a class="xdoc-link" href="Log.html#.Event.Desc" title="Log.EventDesc">Log.EventDesc</a></tt> that originally
+  defined the <tt>Log</tt> event.</div>
+<div class="xdocText"><PRE class="Example">      Log_EventId id = Log_getEventId(evt));
+      if (id != 0) {
+          String msg = Text_ropeText(id);
+          System_aprintf(msg, a1, a2, a3, a4);
+      }
+</PRE></div>
+<div class="xdocText">This works because an event's ID is simply an offset into a table
+  of characters (maintained by the <tt><a class="xdoc-link" href="Text.html" title="Text">Text</a></tt> module)
+  containing the event's msg string.</div>
+<div class="xdocText">The arguments a1, a2, etc. are parameters that are to be interpreted
+  according to the message format string associated with <tt>evt</tt>.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="Log.html#.Event" title="Log.Event">Log.Event</a>, <a class="xdoc-link" href="Log.html#.Event.Desc" title="Log.EventDesc">Log.EventDesc</a>, <a class="xdoc-link" href="Text.html#rope.Text" title="Text.ropeText">Text.ropeText</a>, <a class="xdoc-link" href="Log.html#get.Event.Id" title="Log.getEventId">Log.getEventId</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write8"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerIdle_</span><span class="xdoc-id">write8</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#write8">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Process a log event with up to 8 arguments</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LoggerIdle_write8</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a3</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a4</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a5</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a6</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a7</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a8</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerIdle</tt> instance object</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Same as <tt>write4</tt> except with 8 arguments rather than 4.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="ILogger.html#write4" title="ILogger.write4">ILogger.write4()</a></div>
+<a class="xdocAnchor" id="per-instance_convertors"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Convertors</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#per-instance_convertors">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/ILogger.html#per-instance_object_types" title="xdc.runtime.ILogger.Handle">ILogger_Handle</a> <span class="xdoc-id">LoggerIdle_Handle_upCast</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;unconditionally move one level up the inheritance hierarchy</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> <span class="xdoc-id">LoggerIdle_Handle_downCast</span>(<a class="xdoc-link" href="../../../xdc/runtime/ILogger.html#per-instance_object_types" title="xdc.runtime.ILogger.Handle">ILogger_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;conditionally move one level down the inheritance hierarchy; NULL upon failure</div>
+</div>
+<a class="xdocAnchor" id="per-instance_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#per-instance_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Int</span> <span class="xdoc-id">LoggerIdle_Object_count</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The number of statically-created instance objects</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> <span class="xdoc-id">LoggerIdle_Object_get</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Object">LoggerIdle_Object</a> *array, <span class="xdoc-kw2">Int</span> i);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The handle of the i-th statically-created instance object (array == NULL)</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> <span class="xdoc-id">LoggerIdle_Object_first</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The handle of the first dynamically-created instance object, or NULL</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> <span class="xdoc-id">LoggerIdle_Object_next</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The handle of the next dynamically-created instance object, or NULL</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">LoggerIdle_Object_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap used to allocate dynamically-created instance objects</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Label" title="xdc.runtime.Types.Label">Types_Label</a> *<span class="xdoc-id">LoggerIdle_Handle_label</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Label" title="xdc.runtime.Types.Label">Types_Label</a> *buf);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The label associated with this instance object</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">String</span> <span class="xdoc-id">LoggerIdle_Handle_name</span>(<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#per-instance_object_types" title="ti.uia.sysbios.LoggerIdle.Handle">LoggerIdle_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The name of this instance object</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/sysbios/LoggerIdle-src.html"><span class="xdocLabelFile">ti/uia/sysbios/LoggerIdle.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> LoggerIdle = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.sysbios.LoggerIdle'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide constants & types</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><i>values of type <a class="xdocSynGo" href="#meta.Transport.Type">LoggerIdle.<span class="xdoc-id">TransportType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Used to specify the type of transport to use</span></span></a></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Transport.Type" title="ti.uia.sysbios.LoggerIdle.TransportType">LoggerIdle.<span class="xdoc-id">TransportType_UART</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Transport.Type" title="ti.uia.sysbios.LoggerIdle.TransportType">LoggerIdle.<span class="xdoc-id">TransportType_USB</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Transport.Type" title="ti.uia.sysbios.LoggerIdle.TransportType">LoggerIdle.<span class="xdoc-id">TransportType_ETHERNET</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Transport.Type" title="ti.uia.sysbios.LoggerIdle.TransportType">LoggerIdle.<span class="xdoc-id">TransportType_CUSTOM</span></a>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> <a class="xdocSynGo" href="#.Record.View">LoggerIdle.<span class="xdoc-id">RecordView</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">sequence</span></a> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">timestampRaw</span></a> = <i><span class="xdoc-kw2">Long</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">modName</span></a> = <i><span class="xdoc-kw2">String</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">text</span></a> = <i><span class="xdoc-kw2">String</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">eventId</span></a> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">eventName</span></a> = <i><span class="xdoc-kw2">String</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">arg0</span></a> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">arg1</span></a> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">arg2</span></a> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">arg3</span></a> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">arg4</span></a> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">arg5</span></a> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">arg6</span></a> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Record.View" title="ti.uia.sysbios.LoggerIdle.RecordView"><span class="xdoc-id">arg7</span></a> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> <a class="xdocSynGo" href="#.Rta.Data">LoggerIdle.<span class="xdoc-id">RtaData</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Data added to the RTA MetaData file to support System Analyzer</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Rta.Data" title="ti.uia.sysbios.LoggerIdle.RtaData"><span class="xdoc-id">instanceId</span></a> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metabuffer.Size">LoggerIdle.<span class="xdoc-id">bufferSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;LoggerIdle buffer size in 32-bit words</span></span></a> = <i><span class="xdoc-kw2">SizeT</span></i> 256;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metacustom.Transport.Type">LoggerIdle.<span class="xdoc-id">customTransportType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Custom transport used to send the records to an instrumentation host</span></span></a> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metais.Timestamp.Enabled">LoggerIdle.<span class="xdoc-id">isTimestampEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable or disable logging the 64b local CPU timestamp
+  at the start of each event</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metatransport.Fxn">LoggerIdle.<span class="xdoc-id">transportFxn</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;User defined transport function responsible for transmitting the records</span></span></a> = <i><span class="xdoc-kw2">Int</span>(*)(<span class="xdoc-kw2">UChar</span>*,<span class="xdoc-kw2">Int</span>)</i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">LoggerIdle.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#transport.Type">LoggerIdle.<span class="xdoc-id">transportType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Transport used to send the records to an instrumentation host</span></span></a> = <i><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#.Transport.Type" title="ti.uia.sysbios.LoggerIdle.TransportType">LoggerIdle.TransportType</a></i> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#.Transport.Type_.U.A.R.T" title="ti.uia.sysbios.LoggerIdle.TransportType_UART">LoggerIdle.TransportType_UART</a>;
+</div>
+<div class='xdocSynHdr'>module-wide functions</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#get.Meta.Args">LoggerIdle.<span class="xdoc-id">getMetaArgs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns any meta data needed to support RTA</span></span></a>(<i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">inst</span>, <i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">instNum</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+<div class='xdocSynHdr'>per-instance config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> LoggerIdle.<a class="xdocSynGo" href="#metaper-instance_config_parameters"><span class="xdoc-id">Params</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Instance config-params object</span></span></a>;
+</div>
+<div class='xdocSynHdr'>per-instance creation</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> inst = LoggerIdle.<a class="xdocSynGo" href="#metaper-instance_creation"><span class="xdoc-id">create</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Create an instance-object</span></span></a>(params);
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Transport.Type"></a>
+<a class="xdocAnchor" id=".Transport.Type_.U.A.R.T"></a>
+<a class="xdocAnchor" id=".Transport.Type_.U.S.B"></a>
+<a class="xdocAnchor" id=".Transport.Type_.E.T.H.E.R.N.E.T"></a>
+<a class="xdocAnchor" id=".Transport.Type_.C.U.S.T.O.M"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">LoggerIdle.</span><span class="xdoc-id">TransportType</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#.Transport.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Used to specify the type of transport to use</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>values of type LoggerIdle.<span class="xdoc-id">TransportType</span></i>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggerIdle.<span class="xdoc-id">TransportType_UART</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggerIdle.<span class="xdoc-id">TransportType_USB</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggerIdle.<span class="xdoc-id">TransportType_ETHERNET</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> LoggerIdle.<span class="xdoc-id">TransportType_CUSTOM</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This enum is used by the instrumentation host to determine what
+  the transport is. It is not used by the target code.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Transport.Type" title="LoggerIdle_TransportType">LoggerIdle_TransportType</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Record.View"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">struct</span> <span class="xdoc-id">LoggerIdle.</span><span class="xdoc-id">RecordView</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#.Record.View">index URL</a></div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> LoggerIdle.<span class="xdoc-id">RecordView</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">sequence</span> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">timestampRaw</span> = <i><span class="xdoc-kw2">Long</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">modName</span> = <i><span class="xdoc-kw2">String</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">text</span> = <i><span class="xdoc-kw2">String</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">eventId</span> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">eventName</span> = <i><span class="xdoc-kw2">String</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">arg0</span> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">arg1</span> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">arg2</span> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">arg3</span> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">arg4</span> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">arg5</span> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">arg6</span> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">arg7</span> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Rta.Data"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">struct</span> <span class="xdoc-id">LoggerIdle.</span><span class="xdoc-id">RtaData</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#.Rta.Data">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Data added to the RTA MetaData file to support System Analyzer</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> LoggerIdle.<span class="xdoc-id">RtaData</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">instanceId</span> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metabuffer.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerIdle.</span><span class="xdoc-id">bufferSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#buffer.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">LoggerIdle buffer size in 32-bit words</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerIdle.<span class="xdoc-id">bufferSize</span> = <i><span class="xdoc-kw2">SizeT</span></i> 256;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#buffer.Size" title="LoggerIdle_bufferSize">LoggerIdle_bufferSize</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metacustom.Transport.Type"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerIdle.</span><span class="xdoc-id">customTransportType</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#custom.Transport.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Custom transport used to send the records to an instrumentation host</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerIdle.<span class="xdoc-id">customTransportType</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If the desired transport is not in the <tt><a class="xdoc-link" href="LoggerIdle.html#.Transport.Type" title="TransportType">TransportType</a></tt> enum,
+  and <tt><a class="xdoc-link" href="LoggerIdle.html#transport.Type" title="transportType">transportType</a></tt> is set to <tt><a class="xdoc-link" href="LoggerIdle.html#.Transport.Type_.C.U.S.T.O.M" title="TransportType_CUSTOM">TransportType_CUSTOM</a></tt>,
+  this parameter must be filled in with the correct transport name.</div>
+<div class="xdocText">If <tt><a class="xdoc-link" href="LoggerIdle.html#transport.Type" title="transportType">transportType</a></tt> is NOT set to
+  <tt><a class="xdoc-link" href="LoggerIdle.html#.Transport.Type_.C.U.S.T.O.M" title="TransportType_CUSTOM">TransportType_CUSTOM</a></tt>, this parameter is ignored.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#custom.Transport.Type" title="LoggerIdle_customTransportType">LoggerIdle_customTransportType</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metais.Timestamp.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerIdle.</span><span class="xdoc-id">isTimestampEnabled</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#is.Timestamp.Enabled">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable or disable logging the 64b local CPU timestamp
+  at the start of each event</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerIdle.<span class="xdoc-id">isTimestampEnabled</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Having a timestamp allows an instrumentation host (e.g.
+  System Analyzer) to display events with the correct system time.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#is.Timestamp.Enabled" title="LoggerIdle_isTimestampEnabled">LoggerIdle_isTimestampEnabled</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metatransport.Fxn"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerIdle.</span><span class="xdoc-id">transportFxn</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#transport.Fxn">index URL</a></div>
+<p class="xdocHdrSummaryDcl">User defined transport function responsible for transmitting the records</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerIdle.<span class="xdoc-id">transportFxn</span> = <i><span class="xdoc-kw2">Int</span>(*)(<span class="xdoc-kw2">UChar</span>*,<span class="xdoc-kw2">Int</span>)</i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#transport.Fxn" title="LoggerIdle_transportFxn">LoggerIdle_transportFxn</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerIdle.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerIdle.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="transport.Type"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerIdle.</span><span class="xdoc-id">transportType</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#transport.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Transport used to send the records to an instrumentation host</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerIdle.<span class="xdoc-id">transportType</span> = <i><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#.Transport.Type" title="ti.uia.sysbios.LoggerIdle.TransportType">LoggerIdle.TransportType</a></i> <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#.Transport.Type_.U.A.R.T" title="ti.uia.sysbios.LoggerIdle.TransportType_UART">LoggerIdle.TransportType_UART</a>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This parameter is used to specify the transport that the
+  <tt><a class="xdoc-link" href="LoggerIdle.html#transport.Fxn" title="transportFxn">transportFxn</a></tt> function will use to send the buffer to
+  an instrumentation host (e.g. System Analyzer in CCS).</div>
+<div class="xdocText">This parameter is placed into the generated UIA XML file. The
+  instrumentation host can use the XML file to help it auto-detect as
+  much as possible and act accordingly.</div>
+<div class="xdocText">If the desired transport is not in the <tt><a class="xdoc-link" href="LoggerIdle.html#.Transport.Type" title="TransportType">TransportType</a></tt> enum,
+  select <tt><a class="xdoc-link" href="LoggerIdle.html#.Transport.Type_.C.U.S.T.O.M" title="TransportType_CUSTOM">TransportType_CUSTOM</a></tt> and set the
+  <tt><a class="xdoc-link" href="LoggerIdle.html#custom.Transport.Type" title="customTransportType">customTransportType</a></tt> string with the desired string.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get.Meta.Args"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-id">LoggerIdle.</span><span class="xdoc-id">getMetaArgs</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#get.Meta.Args">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Returns any meta data needed to support RTA</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerIdle.<span class="xdoc-id">getMetaArgs</span>(<i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">inst</span>, <i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">instNum</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This meta data should be returned in the form of a structure which
+  can be converted into XML. This data is added to the RTA XML file
+  during the application's configuration, and can be accessed later
+  through the xdc.rta.MetaData module.</div>
+<div class="xdocText">The MetaData is returned per instance of the ILogger module. The
+  instance object is passed to the function as the first argument.</div>
+<div class="xdocText">The second argument is the index of the instance in the list of 
+  the ILogger's static instances.</div>
+<a class="xdocAnchor" id="metaper-instance_config_parameters"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Config Parameters</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#per-instance_config_parameters">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> LoggerIdle.<span class="xdoc-id">Params</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Instance config-params object</div>
+</div>
+<a class="xdocAnchor" id="metaper-instance_creation"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Static Instance Creation</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/sysbios/LoggerIdle.html" title="module LoggerIdle"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/sysbios/LoggerIdle.html#per-instance_creation">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> LoggerIdle.<a class="xdoc-link" href="../../../ti/uia/sysbios/LoggerIdle.html#metaper-instance_config_parameters" title="ti.uia.sysbios.LoggerIdle.Params">Params</a>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Allocate instance config-params</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<i>config</i> = <b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Assign individual configs</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> inst = LoggerIdle.<span class="xdoc-id">create</span>(params);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Create an instance-object</div>
+</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">params</span>
+<span class="xdocChildSum">&#151;&nbsp;per-instance config params, or <tt>NULL</tt> to select default values (target-domain only)</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">eb</span>
+<span class="xdocChildSum">&#151;&nbsp;active error-handling block, or <tt>NULL</tt> to select default policy (target-domain only)</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The logger instance will route all log events it receives to
+  the Uart.</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:17 GMT</div>
+</div></div></body>
+</html>

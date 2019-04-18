@@ -1,0 +1,1216 @@
+<html>
+<head>
+<title>module ti.uia.runtime.LogSnapshot</title>
+<meta name="description" content="Snapshot Event logging manager for logging blocks of memory, strings in memory and names of dynamically created objects">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.runtime.</span><span class="xdoc-id">LogSnapshot</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/package.html" title="package ti.uia.runtime"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html">index URL</a></div>
+<p class="xdocHdrSummary">Snapshot Event logging manager for logging blocks of memory, strings in memory
+     and names of dynamically created objects</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-1">DETAILS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-2">EXAMPLES</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+<a class="xdoc-link" href="../../../ti/uia/events/UIASnapshot.html" title="ti.uia.events.UIASnapshot">Snapshot events</a> are used to log dynamic
+  target state information in order to
+  capture the execution context of the application at a particular moment in
+  time.  Types of information that can be logged include:
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/LogSnapshot-src.html"><span class="xdocLabelFile">ti/uia/runtime/LogSnapshot.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/runtime/LogSnapshot.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Functions</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#do.Print"><span class="xdoc-id">LogSnapshot_doPrint</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Render an event as text via <tt><span class="xdoc-link" href="System.html#printf" title="System.printf">System_printf</span></tt></span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LogSnapshot.html#.Event.Rec" title="ti.uia.runtime.LogSnapshot.EventRec">LogSnapshot_EventRec</a>&nbsp;*<span class="xdoc-id">er</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">UArg</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get.Snapshot.Id"><span class="xdoc-id">LogSnapshot_getSnapshotId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;returns a unique ID to use to group a set of snapshot event logs together</span></span></a>();</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#put.Memory.Range"><span class="xdoc-id">LogSnapshot_putMemoryRange</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Unconditionally put the specified <tt>Types</tt> event.
+  Supports both writeMemoryRange and writeString</span></span></a>(<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Event" title="xdc.runtime.Types.Event">Types_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fileName</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">lineNum</span>, <span class="xdoc-kw2">UArg</span>&nbsp;<span class="xdoc-id">snapshotID</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">startAdrs</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">lengthInMAUs</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write.Memory.Block"><span class="xdoc-id">LogSnapshot_writeMemoryBlock</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Generate a <tt>LogSnapshot</tt> event for a block of memory</span></span></a>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">snapshotID</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">pMemoryRange</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">lengthInMAUs</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write.Memory.Block.With.Id.Tag"><span class="xdoc-id">LogSnapshot_writeMemoryBlockWithIdTag</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Generate a <tt>LogSnapshot</tt> event for a block of memory</span></span></a>(<span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">idTag</span>, <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">snapshotID</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">pMemoryRange</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">lengthInMAUs</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write.Name.Of.Reference"><span class="xdoc-id">LogSnapshot_writeNameOfReference</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Used to log the contents of a dynamic string on the heap so that host-side
+  tooling can display this string as the name of handle / reference ID</span></span></a>(<span class="xdoc-kw2">UArg</span>&nbsp;<span class="xdoc-id">refID</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">pString</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">lengthInMAUs</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write.String"><span class="xdoc-id">LogSnapshot_writeString</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Generate a <tt>LogSnapshot</tt> event for a string in memory</span></span></a>(<span class="xdoc-kw2">UArg</span>&nbsp;<span class="xdoc-id">snapshotID</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">pString</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">lengthInMAUs</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write.String.With.Id.Tag"><span class="xdoc-id">LogSnapshot_writeStringWithIdTag</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Generate a <tt>LogSnapshot</tt> event for a string in memory</span></span></a>(<span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">idTag</span>, <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">snapshotID</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">pString</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">lengthInMAUs</span>);</div></td></tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogSnapshot_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogSnapshot_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogSnapshot_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogSnapshot_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogSnapshot_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogSnapshot_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Typedefs</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Event.Rec"><span class="xdoc-id">LogSnapshot_EventRec</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The target representation of a recorded event</span></span></a> ...</div></td></tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Constants</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../ti/uia/runtime/LoggerTypes.html#.Inject.Into.Trace.Fxn" title="ti.uia.runtime.LoggerTypes.InjectIntoTraceFxn">LoggerTypes_InjectIntoTraceFxn</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#inject.Into.Trace.Fxn"><span class="xdoc-id">LogSnapshot_injectIntoTraceFxn</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Callback function that handles injection of info such as serial numbers
+ of sync point events, context change events or snapshot events into a
+ hardware trace stream. (e.g. GEM CPU Trace, System Trace, etc.)</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#is.Timestamp.Enabled"><span class="xdoc-id">LogSnapshot_isTimestampEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;used to enable or disable logging the 64b local CPU timestamp
+  at the start of each event</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Ptr</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#logger.Obj"><span class="xdoc-id">LogSnapshot_loggerObj</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;handle of the logger that is to be used to log snapshot events</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#max.Length.In.M.A.Us"><span class="xdoc-id">LogSnapshot_maxLengthInMAUs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Maximum number of MAUs (miniumum addressable units, e.g. bytes)
+     supported by <tt>LogSnapshot</tt> events</span></span></a>;</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/events/UIASnapshot.html" title="ti.uia.events.UIASnapshot">Snapshot events</a> are used to log dynamic
+  target state information in order to
+  capture the execution context of the application at a particular moment in
+  time.  Types of information that can be logged include:</div>
+<div class="xdocText"><UL><LI> Blocks of memory (using the <a class="xdoc-link" href="LogSnapshot.html#write.Memory.Block" title="writeMemoryBlock">LogSnapshot_writeMemoryBlock</a> API)
+</LI><LI> Strings that reside in memory (using the <a class="xdoc-link" href="LogSnapshot.html#write.String" title="writeString">LogSnapshot_writeString</a> API)
+</LI><LI> Names of dynamically created objects (using the <a class="xdoc-link" href="LogSnapshot.html#write.Name.Of.Reference" title="writeNameOfReference">LogSnapshot_writeNameOfReference</a> API)
+</LI></UL></div>
+<div class="xdocText">The host-side tooling can be instructed to treat a series of LogSnapshot
+  events as representing the state of the target at the same moment in time by
+  using the same non-zero value in the <a class="xdoc-link" href="LogSnapshot.html#get.Snapshot.Id" title="getSnapshotId">snapshot ID</a> parameter
+  of each of the LogSnapshot events in the series.</div>
+<div class="xdocText">Snapshot events are logged by a logger that implements the
+  <a class="xdoc-link" href="../../../ti/uia/runtime/ILoggerSnapshot.html" title="ti.uia.runtime.ILoggerSnapshot">ILoggerSnapshot</a>
+  interface (e.g. <a class="xdoc-link" href="../../../ti/uia/loggers/LoggerStopMode.html" title="ti.uia.loggers.LoggerStopMode">LoggerStopMode</a>,
+  <a class="xdoc-link" href="../../../ti/uia/loggers/LoggerRunMode.html" title="ti.uia.loggers.LoggerRunMode">LoggerRunMode</a>).
+  Rather than invoking the logger's APIs directly, the APIs are
+  called indirectly via the LogSnapshot module's APIs so that different types
+  of loggers can be used without having to recompile the source code that is
+  logging the snapshot events.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLES</div>
+<div class="xdocText"></div>
+<div class="xdocText"><B>Example 1: A simple 2-line configuration script</B></div>
+<div class="xdocText">The following configuration script shows the simplest way
+ to configure an application to use log snapshot events:</div>
+<div class="xdocText"><PRE class="Example"> var LoggingSetup = xdc.useModule('ti.uia.sysbios.LoggingSetup');
+ var LogSnapshot   = xdc.useModule('ti.uia.runtime.LogSnapshot');
+</PRE></div>
+<div class="xdocText">The first line causes the <a class="xdoc-link" href="../../../ti/uia/sysbios/LoggingSetup.html" title="ti.uia.sysbios.LoggingSetup">LoggingSetup</a>
+ module's .xs script to automatically create a 32K Byte logger and assign it to
+ xdc.runtime.Main.common$.logger.  It also sets any unconfigured Diags masks
+ for the Main module to Diags.RUNTIME_ON, enabling the events to be logged.</div>
+<div class="xdocText">The second line causes the LogSnapshot .xs script to run during the configuration
+ process when building the application. The script detects that a logger has
+ not been assigned to the LogSnapshot module, so it checks if
+ a logger has been configured for either the Main module or the Defaults module.
+ Since there is a logger for the Main module, the script configures the LogSnapshot
+ module to log events to the same logger instance.</div>
+<div class="xdocText"><hr />
+  <B>Example 3: Using Diags masks to control snapshot events</B></div>
+<div class="xdocText">The generation of a 'Snapshot' event is controlled by a module's diagnostics
+  mask, which is described in details in the CDoc for xdc.runtime.Diags. Each
+  <a class="xdoc-link" href="../../../ti/uia/events/UIASnapshot.html" title="ti.uia.events.UIASnapshot">snapshot event</a> is controlled using the
+  Diags.ANALYSIS mask, and will only be logged when the diagnostics mask for
+  the module that is logging the code has the Diags.ANALYSIS bit
+  configured as either ALWAYS_ON or RUNTIME_ON.</div>
+<div class="xdocText">The <tt>LogSnapshot</tt> function call sites are implemented in such a way that an
+  optimizer can completely eliminate <tt>LogSnapshot</tt> code from the program if
+  the module's <tt>ANALYSIS</tt> events have been disabled at configuration time. If
+  the 'ANALYSIS' events are permanently turned on at configuration time,
+  then the optimizer can eliminate all runtime conditional checking and
+  simply invoke the 'LogSnapshot' functions directly. Runtime checking is
+  performed only when the ANALYSIS events are configured to be runtime
+  modifiable.</div>
+<div class="xdocText">The following is an example of the configuration script used
+ to configure the default mask for modules to have Analysis events such as
+ the UIASnapshot events always on.</div>
+<div class="xdocText"><PRE class="Example">  // Configure all modules to always log Analysis events
+  var Diags = xdc.useModule('xdc.runtime.Diags');
+  var Defaults = xdc.useModule('xdc.runtime.Defaults');
+  Defaults.common$.diags_ANALYSIS = Diags.ALWAYS_ON;
+</PRE></div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Event.Rec"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">LogSnapshot_</span><span class="xdoc-id">EventRec</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#.Event.Rec">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The target representation of a recorded event</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">LogSnapshot_EventRec</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">Types_Timestamp64</a>&nbsp;<span class="xdoc-id"><span class="xdoc-id">tstamp</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;time event was written</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bits32</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">serial</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;serial number of event</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Event" title="xdc.runtime.Types.Event">Types_Event</a>&nbsp;<span class="xdoc-id"><span class="xdoc-id">evt</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;target encoding of an Event</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">UArg</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">snapshotId</span></span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">fmt</span></span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">pData</span></span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">lengthInMAUs</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;arguments passed via Log_write/print</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">LogSnapshot_EventRec</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This structure defines how events are recorded on the target.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="inject.Into.Trace.Fxn"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSnapshot_</span><span class="xdoc-id">injectIntoTraceFxn</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#inject.Into.Trace.Fxn">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Callback function that handles injection of info such as serial numbers
+ of sync point events, context change events or snapshot events into a
+ hardware trace stream. (e.g. GEM CPU Trace, System Trace, etc.)</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../ti/uia/runtime/LoggerTypes.html#.Inject.Into.Trace.Fxn" title="ti.uia.runtime.LoggerTypes.InjectIntoTraceFxn">LoggerTypes_InjectIntoTraceFxn</a>&nbsp;<span class="xdoc-id">LogSnapshot_injectIntoTraceFxn</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Users can provide their own custom injectIntoTraceFxn to log whatever
+ additional information they wish to record when the hook function is called.
+ For example, event serial numbers can be injected into the CPU
+ trace stream and / or STM trace stream in order to enable correlation
+ of information logged in these streams with UIA software events.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLES</div>
+<div class="xdocText"></div>
+<div class="xdocText"><B>Example 1: Correlating events with C64X+ and C66 CPU Trace</B></div>
+<div class="xdocText">The following is an example of the configuration script used
+ to inject serial numbers of sync point events or context change events or
+ snapshot Ids associated with snapshot events.</div>
+<div class="xdocText">Note that the GemTraceSync module's .xs script takes care of finding
+ all modules that implement the IUIATraceSyncClient and assigning the
+ GemTraceSync_injectIntoTrace function pointer to those modules'
+ injectIntoTraceFxn config option.</div>
+<div class="xdocText"><PRE class="Example"> //The following 3 modules all implement the IUIATraceSyncClient interface
+ var LogSnapshot   = xdc.useModule('ti.uia.runtime.LogSnapshot');
+ var LogCtxChg   = xdc.useModule('ti.uia.runtime.LogCtxChg');
+ var LogSync   = xdc.useModule('ti.uia.runtime.LogSync');
+ //For C66 devices, replace the following line with
+ // var GemTraceSync = xdc.useModule('ti.uia.family.c66.GemTraceSync');
+ var GemTraceSync = xdc.useModule('ti.uia.family.c64p.GemTraceSync');
+</PRE></div>
+<div class="xdocText"><hr>
+ <B>Example 2: How to create a custom hook function
+ and assign it to the LogSnapshot module</B></div>
+<div class="xdocText">The following is an example of a 'C' code program that implements
+ a hook function that prints out the snapshot ID that is passed in
+ as the serialNumber</div>
+<div class="xdocText"><PRE class="Example"> #include &lt;xdc/std.h&gt;
+ #include &lt;xdc/runtime/Gate.h&gt;
+ #include &lt;ti/uia/runtime/IUIATraceSyncProvider.h&gt;
+ #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+ #include &lt;stdio.h&gt;
+ #include &lt;string.h&gt;
+ extern Void myHookFxn(UInt32 serialNumber, IUIATraceSyncProvider_ContextType ctxType);
+ Void Test();
+ char name[32]={"Bob"};
+ UInt32 newAppId = 0;
+ Void myHookFxn(UInt32 serialNumber, IUIATraceSyncProvider_ContextType ctxType){
+      volatile UInt32 syncWord;
+      IArg key = Gate_enterSystem();
+      printf("newAppId written with serialNumber %d and ctxType = %d\n",serialNumber,ctxType);
+      Gate_leaveSystem(key);
+ }
+ Void Test(){
+     // note that the hook function is triggered by calling LogSnapshot_getSnapshotId()
+     // since that is where the unique snapshot ID that is passed to the
+     // hook function is generated.
+     Int snapshotId = LogSnapshot_getSnapshotId();
+     LogSnapshot_writeString(snapshotId,"User-defined name=%s.",name, strlen(name));
+ }
+
+ Void main(){
+     while(TRUE){  Test();  }
+  }
+</PRE></div>
+<div class="xdocText">In order to have the above user-defined function called by the LogSnapshot
+ module whenever it writes an event, the following configuration script
+ is needed:</div>
+<div class="xdocText"><PRE class="Example"> var LoggingSetup = xdc.useModule('ti.uia.sysbios.LoggingSetup');
+ var LogSnapshot   = xdc.useModule('ti.uia.runtime.LogSnapshot');
+ var IUIATraceSyncClient = xdc.useModule('ti.uia.runtime.IUIATraceSyncClient');
+ LogSnapshot.injectIntoTraceFxn = $externFxn('myHookFxn');
+
+</PRE></div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="LoggerTypes.html#.Inject.Into.Trace.Fxn" title="LoggerTypes.InjectIntoTraceFxn">LoggerTypes.InjectIntoTraceFxn</a>, <a class="xdoc-link" href="LogSnapshot.html" title="LogSnapshot">LogSnapshot</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Timestamp.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSnapshot_</span><span class="xdoc-id">isTimestampEnabled</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#is.Timestamp.Enabled">index URL</a></div>
+<p class="xdocHdrSummaryDcl">used to enable or disable logging the 64b local CPU timestamp
+  at the start of each event</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LogSnapshot_isTimestampEnabled</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="logger.Obj"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSnapshot_</span><span class="xdoc-id">loggerObj</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#logger.Obj">index URL</a></div>
+<p class="xdocHdrSummaryDcl">handle of the logger that is to be used to log snapshot events</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">LogSnapshot_loggerObj</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="max.Length.In.M.A.Us"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSnapshot_</span><span class="xdoc-id">maxLengthInMAUs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#max.Length.In.M.A.Us">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Maximum number of MAUs (miniumum addressable units, e.g. bytes)
+     supported by <tt>LogSnapshot</tt> events</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">LogSnapshot_maxLengthInMAUs</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Attempting to write more than the maximum length results in the
+  multiple events being logged.  The maxLengthInMAUs must be
+  lower than the size of the buffer that the events are being logged to.
+  Must be less than 1400 in order to support streaming of event
+  data over UDP.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="do.Print"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSnapshot_</span><span class="xdoc-id">doPrint</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#do.Print">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Render an event as text via <tt><a class="xdoc-link" href="System.html#printf" title="System.printf">System_printf</a></tt></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogSnapshot_doPrint</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LogSnapshot.html#.Event.Rec" title="ti.uia.runtime.LogSnapshot.EventRec">LogSnapshot_EventRec</a>&nbsp;*<span class="xdoc-id">er</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">evRec</span>
+<span class="xdocChildSum">&#151;&nbsp;a non<tt>NULL</tt> pointer to an initialized <tt>
+     LogSnapshot_EventRec</tt>structure to be formated via
+     <a class="xdoc-link" href="System.html#printf" title="System.printf">System_printf</a>`.</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This method is not currently implemented.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get.Snapshot.Id"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSnapshot_</span><span class="xdoc-id">getSnapshotId</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#get.Snapshot.Id">index URL</a></div>
+<p class="xdocHdrSummaryDcl">returns a unique ID to use to group a set of snapshot event logs together</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">UArg</span>&nbsp;<span class="xdoc-id">LogSnapshot_getSnapshotId</span>();
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Allows tooling to treat a set of consecutive event logs as a unit and
+ display all of the relevent data together as a set</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log two snapshot events that capture
+   the target state of two different data structures, using a common unique
+   non-zero snapshot ID provided by the getSnapshotId to inform the host-side
+   tooling that the events represent the target state at the same point in time</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+  ...
+  MyStruct1 myStruct1;
+  MyStruct2 myStruct2;
+  UInt32 snapshotId;
+  ...
+  snapshotId = LogSnapshot_getSnapshotId();
+  LogSnapshot_writeMemoryBlock(snapshotId,"myStruct1 ptr=0x%x, numBytes=%d",(UInt32)&amp;myStruct1,sizeof(MyStruct1));
+  LogSnapshot_writeMemoryBlock(snapshotId,"myStruct2 ptr=0x%x, numBytes=%d",(UInt32)&amp;myStruct2,sizeof(MyStruct2));
+  ...
+</PRE></div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">RETURN</div>
+<div class="xdocText">a unique non-zero snapshot ID to pass in as a parameter to the
+    LogSnapshot APIs</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="put.Memory.Range"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSnapshot_</span><span class="xdoc-id">putMemoryRange</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#put.Memory.Range">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Unconditionally put the specified <tt>Types</tt> event.
+  Supports both writeMemoryRange and writeString</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogSnapshot_putMemoryRange</span>(<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Event" title="xdc.runtime.Types.Event">Types_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fileName</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">lineNum</span>, <span class="xdoc-kw2">UArg</span>&nbsp;<span class="xdoc-id">snapshotID</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">startAdrs</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">lengthInMAUs</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">evt</span>
+<span class="xdocChildSum">&#151;&nbsp;the <tt>Types</tt> event to put into the log</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">mid</span>
+<span class="xdocChildSum">&#151;&nbsp;the module ID of the caller</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">snapshotId</span>
+<span class="xdocChildSum">&#151;&nbsp;unique ID that binds together a series of events used to
+                      log a large memory range.  Upper 16b hold the ID Tag (0 for UIA)</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">fileName</span>
+<span class="xdocChildSum">&#151;&nbsp;the name of the file that the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">lineNum</span>
+<span class="xdocChildSum">&#151;&nbsp;the line number that the event was logged from</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">fmt</span>
+<span class="xdocChildSum">&#151;&nbsp;a user-specified print format string</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">startAdrs</span>
+<span class="xdocChildSum">&#151;&nbsp;the start address of the memory range to log</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">lengthInMAUs</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of minimum addressable units (e.g. bytes) to log</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This method unconditionally puts the specified memoryRange<tt><a class="xdoc-link" href="Types.html#.Event" title="Types.Event">Types.Event</a></tt>
+  <tt>evt</tt> into the log.  This type of event is created either implicitly
+  (and passed to an <tt><a class="xdoc-link" href="ISnapshotLogger.html" title="ISnapshotLogger">ISnapshotLogger</a></tt> implementation) or explicitly
+  via <tt><a class="xdoc-link" href="Types.html#make.Event" title="Types.makeEvent">Types.makeEvent()</a></tt>.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">RETURN</div>
+<div class="xdocText">value to use as snapshotId parameter for subsequent events</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write.Memory.Block"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSnapshot_</span><span class="xdoc-id">writeMemoryBlock</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#write.Memory.Block">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Generate a <tt>LogSnapshot</tt> event for a block of memory</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogSnapshot_writeMemoryBlock</span>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">snapshotID</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">pMemoryRange</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">lengthInMAUs</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">snapshotID</span>
+<span class="xdocChildSum">&#151;&nbsp;ID used to identify snapshot events taken at the same
+                     time. Set to 0 for first in series, set rest to return
+                     value of LogSnapshot API.  <a class="xdoc-link" href="LogSnapshot.html#get.Snapshot.Id" title="getSnapshotId">see getSnapshotId()</a></span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">fmt</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that provides a user-readable description
+                     of what information the event is capturing</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">pMemoryRange</span>
+<span class="xdocChildSum">&#151;&nbsp;the start address of the range of memory</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">lengthInMAUs</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of MAUs of data payload for the
+                     multi-event data record</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLES</div>
+<div class="xdocText">Example: The following C code shows how to log a snapshot event to
+   capture a block of memory.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+  ...
+  UInt32* pIntArray = (UInt32 *)malloc(sizeof(UInt32) * 200);
+  ...
+  LogSnapshot_writeMemoryBlock(0,"pIntArray ptr=0x%x, numBytes=%d",(UInt32)pIntArray,200);
+  ...
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event, if it was logged
+  from file demo.c at line 1234 and all 200 bytes were logged in the
+  same event.</div>
+<div class="xdocText"><PRE class="Example">  Memory Snapshot at [demo.c:1234] [snapshotID=0,adrs=0x80002000,
+    numMAUsDataInEvent=200,numMAUsDataInRecord=200] ptr=0x80002000, numBytes=200
+</PRE></div>
+<div class="xdocText">If the 200 bytes were spread across multiple events,
+  the numMAUsDataInRecord would indicate how many bytes were in the
+  memory block, and numMAUsDataInEvent would indicate how many bytes
+  were stored in that particular event.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write.Memory.Block.With.Id.Tag"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSnapshot_</span><span class="xdoc-id">writeMemoryBlockWithIdTag</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#write.Memory.Block.With.Id.Tag">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Generate a <tt>LogSnapshot</tt> event for a block of memory</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogSnapshot_writeMemoryBlockWithIdTag</span>(<span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">idTag</span>, <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">snapshotID</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">pMemoryRange</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">lengthInMAUs</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">idTag</span>
+<span class="xdocChildSum">&#151;&nbsp;ID used to identify who logged the event. Set to 0 for a
+                     standard UIA event.  Can be used to filter snapshot events on host.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">snapshotID</span>
+<span class="xdocChildSum">&#151;&nbsp;ID used to identify snapshot events taken at the same
+                     time. Set to 0 for first in series, set rest to return
+                     value of LogSnapshot API.  <a class="xdoc-link" href="LogSnapshot.html#get.Snapshot.Id" title="getSnapshotId">see getSnapshotId()</a></span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">fmt</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that provides a user-readable description
+                     of what information the event is capturing</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">pMemoryRange</span>
+<span class="xdocChildSum">&#151;&nbsp;the start address of the range of memory</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">lengthInMAUs</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of MAUs of data payload for the
+                     multi-event data record</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLES</div>
+<div class="xdocText">Example: The following C code shows how to log a snapshot event to
+   capture a block of memory.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+  ...
+  UInt32* pIntArray = (UInt32 *)malloc(sizeof(UInt32) * 200);
+  ...
+  UInt16 myCustomIdTag = 1;
+  LogSnapshot_writeMemoryBlockWithIdTag(myCustomIdTag,0,"pIntArray ptr=0x%x, numBytes=%d",(UInt32)pIntArray,200);
+  ...
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event, if it was logged
+  from file demo.c at line 1234 and all 200 bytes were logged in the
+  same event.</div>
+<div class="xdocText"><PRE class="Example">  Memory Snapshot at [demo.c:1234] [snapshotID=0,adrs=0x80002000,
+    numMAUsDataInEvent=200,numMAUsDataInRecord=200] ptr=0x80002000, numBytes=200
+</PRE></div>
+<div class="xdocText">If the 200 bytes were spread across multiple events,
+  the numMAUsDataInRecord would indicate how many bytes were in the
+  memory block, and numMAUsDataInEvent would indicate how many bytes
+  were stored in that particular event.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write.Name.Of.Reference"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSnapshot_</span><span class="xdoc-id">writeNameOfReference</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#write.Name.Of.Reference">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Used to log the contents of a dynamic string on the heap so that host-side
+  tooling can display this string as the name of handle / reference ID</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogSnapshot_writeNameOfReference</span>(<span class="xdoc-kw2">UArg</span>&nbsp;<span class="xdoc-id">refID</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">pString</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">lengthInMAUs</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">refID</span>
+<span class="xdocChildSum">&#151;&nbsp;reference ID (e.g. task handle) that the name is
+                       associated with</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">pString</span>
+<span class="xdocChildSum">&#151;&nbsp;the start address of the string on the heap</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">lengthInMAUs</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of MAUs to log (e.g. strlen(pString))</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">fmt</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that provides format specifiers
+                       describing the string</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a task name for use by task
+   execution graphs etc.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+  #include &lt;ti/sysbios/BIOS.h&gt;
+  #include &lt;ti/sysbios/knl/Task.h&gt;
+  ...
+  // Task create hook function that logs the task name.
+  // Notes: Task name is not trequired when creating a BIOS task. Please \
+  // make sure a name is provided in order for the host side analysis tool
+  // to work properly.
+  Void  tskCreateHook(Task_Handle hTask, Error_Block *eb) {
+          String name;
+          name = Task_Handle_name(hTask);
+          LogSnapshot_writeNameOfReference(hTask,"Task_create: name=%s",
+            name,strlen(name)+1);
+  }
+</PRE></div>
+<div class="xdocText">This event prints the Log call site (%$F) and a format string (%$S)
+  which describes what information the event is logging.
+  The following text will be displayed for the event:</div>
+<div class="xdocText"><PRE class="Example">  nameOfReference at  [demo.c:line 1234] [refID=0x80002000,adrs=0x80001234,40,40] Task_create: name=10msThread.
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write.String"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSnapshot_</span><span class="xdoc-id">writeString</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#write.String">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Generate a <tt>LogSnapshot</tt> event for a string in memory</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogSnapshot_writeString</span>(<span class="xdoc-kw2">UArg</span>&nbsp;<span class="xdoc-id">snapshotID</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">pString</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">lengthInMAUs</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">snapshotID</span>
+<span class="xdocChildSum">&#151;&nbsp;ID used to identify snapshot events taken at the same
+                     time. Set to 0 for first in series, set rest to return
+                     value of LogSnapshot API. <a class="xdoc-link" href="LogSnapshot.html#get.Snapshot.Id" title="getSnapshotId">see getSnapshotId()</a></span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">fmt</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that provides a user-readable description
+                     of what information the event is capturing</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">pString</span>
+<span class="xdocChildSum">&#151;&nbsp;the start address of the string in memory</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">lengthInMAUs</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of MAUs to log (e.g. strlen(pString))</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a snapshot event to log the
+   contents of a string in memory.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+  ...
+  Void myFunc(String name){
+     ...
+     LogSnapshot_writeString(0,"User-defined name=%s.",name, strlen(name));
+  }
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event, if it was logged
+  from file demo.c at line 1234 and all bytes in the 40 character string
+  was logged in the same event.</div>
+<div class="xdocText"><PRE class="Example">  String Snapshot at [../demo.c:1234] [snapshotID=0,adrs=0x80001234,40,40] User-defined name=ValueOfParm.
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write.String.With.Id.Tag"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogSnapshot_</span><span class="xdoc-id">writeStringWithIdTag</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#write.String.With.Id.Tag">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Generate a <tt>LogSnapshot</tt> event for a string in memory</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogSnapshot_writeStringWithIdTag</span>(<span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">idTag</span>, <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">snapshotID</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">pString</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">lengthInMAUs</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">idTag</span>
+<span class="xdocChildSum">&#151;&nbsp;ID used to identify who logged the event. Set to 0 for a
+                     standard UIA event.  Can be used to filter snapshot events on host.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">snapshotID</span>
+<span class="xdocChildSum">&#151;&nbsp;ID used to identify snapshot events taken at the same
+                     time. Set to 0 for first in series, set rest to return
+                     value of LogSnapshot API. <a class="xdoc-link" href="LogSnapshot.html#get.Snapshot.Id" title="getSnapshotId">see getSnapshotId()</a></span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">fmt</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that provides a user-readable description
+                     of what information the event is capturing</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">pString</span>
+<span class="xdocChildSum">&#151;&nbsp;the start address of the string in memory</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">lengthInMAUs</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of MAUs to log (e.g. strlen(pString))</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLE</div>
+<div class="xdocText">The following C code shows how to log a snapshot event to log the
+   contents of a string in memory.</div>
+<div class="xdocText"><PRE class="Example">  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+  ...
+  Void myFunc(String name){
+     ...
+     UInt16 myCustomIdTag = 1;
+     LogSnapshot_writeStringWithIdTag(myCustomIdTag,0,"User-defined name=%s.",name, strlen(name));
+  }
+</PRE></div>
+<div class="xdocText">The following text will be displayed for the event, if it was logged
+  from file demo.c at line 1234 and all bytes in the 40 character string
+  was logged in the same event.</div>
+<div class="xdocText"><PRE class="Example">  String Snapshot at [../demo.c:1234] [snapshotID=0,adrs=0x80001234,40,40] User-defined name=ValueOfParm.
+</PRE></div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">LogSnapshot_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">LogSnapshot_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">LogSnapshot_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">LogSnapshot_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">LogSnapshot_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LogSnapshot_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/LogSnapshot-src.html"><span class="xdocLabelFile">ti/uia/runtime/LogSnapshot.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> LogSnapshot = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.runtime.LogSnapshot'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide constants & types</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> <a class="xdocSynGo" href="#meta.Event.Rec">LogSnapshot.<span class="xdoc-id">EventRec</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The target representation of a recorded event</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Event.Rec"><span class="xdoc-id">tstamp</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;time event was written</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">Types.Timestamp64</a></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Event.Rec"><span class="xdoc-id">serial</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;serial number of event</span></span></a> = <i><span class="xdoc-kw2">Bits32</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Event.Rec"><span class="xdoc-id">evt</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;target encoding of an Event</span></span></a> = <i><span class="xdoc-kw2">Bits32</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Event.Rec" title="ti.uia.runtime.LogSnapshot.EventRec"><span class="xdoc-id">snapshotId</span></a> = <i><span class="xdoc-kw2">UArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Event.Rec" title="ti.uia.runtime.LogSnapshot.EventRec"><span class="xdoc-id">fmt</span></a> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Event.Rec" title="ti.uia.runtime.LogSnapshot.EventRec"><span class="xdoc-id">pData</span></a> = <i><span class="xdoc-kw2">Ptr</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Event.Rec"><span class="xdoc-id">lengthInMAUs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;arguments passed via Log_write/print</span></span></a> = <i><span class="xdoc-kw2">UInt16</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metainject.Into.Trace.Fxn">LogSnapshot.<span class="xdoc-id">injectIntoTraceFxn</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Callback function that handles injection of info such as serial numbers
+ of sync point events, context change events or snapshot events into a
+ hardware trace stream. (e.g. GEM CPU Trace, System Trace, etc.)</span></span></a> = <i><span class="xdoc-kw2">Void</span>(*)(<span class="xdoc-kw2">UInt32</span>,<a class="xdoc-link" href="../../../ti/uia/runtime/IUIATraceSyncProvider.html#.Context.Type" title="ti.uia.runtime.IUIATraceSyncProvider.ContextType">IUIATraceSyncProvider.ContextType</a>)</i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metais.Timestamp.Enabled">LogSnapshot.<span class="xdoc-id">isTimestampEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;used to enable or disable logging the 64b local CPU timestamp
+  at the start of each event</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metalogger.Obj">LogSnapshot.<span class="xdoc-id">loggerObj</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;handle of the logger that is to be used to log snapshot events</span></span></a> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metamax.Length.In.M.A.Us">LogSnapshot.<span class="xdoc-id">maxLengthInMAUs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Maximum number of MAUs (miniumum addressable units, e.g. bytes)
+     supported by <tt>LogSnapshot</tt> events</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> 512;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">LogSnapshot.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#id.To.Info">LogSnapshot.<span class="xdoc-id">idToInfo</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a> = <i><span class="xdoc-kw2">String</span>[<span class="xdoc-kw1">string</span>]</i> [ ];
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#is.Inject.Into.Trace.Enabled">LogSnapshot.<span class="xdoc-id">isInjectIntoTraceEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;set false to turn off injection of sync point info into trace even
+  if a module that implements IUIATraceSyncProvider is configured</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Event.Rec"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">LogSnapshot.</span><span class="xdoc-id">EventRec</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#.Event.Rec">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The target representation of a recorded event</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> LogSnapshot.<span class="xdoc-id">EventRec</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">tstamp</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">Types.Timestamp64</a></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;time event was written</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">serial</span> = <i><span class="xdoc-kw2">Bits32</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;serial number of event</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">evt</span> = <i><span class="xdoc-kw2">Bits32</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;target encoding of an Event</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">snapshotId</span> = <i><span class="xdoc-kw2">UArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">fmt</span> = <i><span class="xdoc-kw2">IArg</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">pData</span> = <i><span class="xdoc-kw2">Ptr</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">lengthInMAUs</span> = <i><span class="xdoc-kw2">UInt16</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;arguments passed via Log_write/print</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This structure defines how events are recorded on the target.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Event.Rec" title="LogSnapshot_EventRec">LogSnapshot_EventRec</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metainject.Into.Trace.Fxn"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSnapshot.</span><span class="xdoc-id">injectIntoTraceFxn</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#inject.Into.Trace.Fxn">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Callback function that handles injection of info such as serial numbers
+ of sync point events, context change events or snapshot events into a
+ hardware trace stream. (e.g. GEM CPU Trace, System Trace, etc.)</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSnapshot.<span class="xdoc-id">injectIntoTraceFxn</span> = <i><span class="xdoc-kw2">Void</span>(*)(<span class="xdoc-kw2">UInt32</span>,<a class="xdoc-link" href="../../../ti/uia/runtime/IUIATraceSyncProvider.html#.Context.Type" title="ti.uia.runtime.IUIATraceSyncProvider.ContextType">IUIATraceSyncProvider.ContextType</a>)</i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Users can provide their own custom injectIntoTraceFxn to log whatever
+ additional information they wish to record when the hook function is called.
+ For example, event serial numbers can be injected into the CPU
+ trace stream and / or STM trace stream in order to enable correlation
+ of information logged in these streams with UIA software events.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">EXAMPLES</div>
+<div class="xdocText"></div>
+<div class="xdocText"><B>Example 1: Correlating events with C64X+ and C66 CPU Trace</B></div>
+<div class="xdocText">The following is an example of the configuration script used
+ to inject serial numbers of sync point events or context change events or
+ snapshot Ids associated with snapshot events.</div>
+<div class="xdocText">Note that the GemTraceSync module's .xs script takes care of finding
+ all modules that implement the IUIATraceSyncClient and assigning the
+ GemTraceSync_injectIntoTrace function pointer to those modules'
+ injectIntoTraceFxn config option.</div>
+<div class="xdocText"><PRE class="Example"> //The following 3 modules all implement the IUIATraceSyncClient interface
+ var LogSnapshot   = xdc.useModule('ti.uia.runtime.LogSnapshot');
+ var LogCtxChg   = xdc.useModule('ti.uia.runtime.LogCtxChg');
+ var LogSync   = xdc.useModule('ti.uia.runtime.LogSync');
+ //For C66 devices, replace the following line with
+ // var GemTraceSync = xdc.useModule('ti.uia.family.c66.GemTraceSync');
+ var GemTraceSync = xdc.useModule('ti.uia.family.c64p.GemTraceSync');
+</PRE></div>
+<div class="xdocText"><hr>
+ <B>Example 2: How to create a custom hook function
+ and assign it to the LogSnapshot module</B></div>
+<div class="xdocText">The following is an example of a 'C' code program that implements
+ a hook function that prints out the snapshot ID that is passed in
+ as the serialNumber</div>
+<div class="xdocText"><PRE class="Example"> #include &lt;xdc/std.h&gt;
+ #include &lt;xdc/runtime/Gate.h&gt;
+ #include &lt;ti/uia/runtime/IUIATraceSyncProvider.h&gt;
+ #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+ #include &lt;stdio.h&gt;
+ #include &lt;string.h&gt;
+ extern Void myHookFxn(UInt32 serialNumber, IUIATraceSyncProvider_ContextType ctxType);
+ Void Test();
+ char name[32]={"Bob"};
+ UInt32 newAppId = 0;
+ Void myHookFxn(UInt32 serialNumber, IUIATraceSyncProvider_ContextType ctxType){
+      volatile UInt32 syncWord;
+      IArg key = Gate_enterSystem();
+      printf("newAppId written with serialNumber %d and ctxType = %d\n",serialNumber,ctxType);
+      Gate_leaveSystem(key);
+ }
+ Void Test(){
+     // note that the hook function is triggered by calling LogSnapshot_getSnapshotId()
+     // since that is where the unique snapshot ID that is passed to the
+     // hook function is generated.
+     Int snapshotId = LogSnapshot_getSnapshotId();
+     LogSnapshot_writeString(snapshotId,"User-defined name=%s.",name, strlen(name));
+ }
+
+ Void main(){
+     while(TRUE){  Test();  }
+  }
+</PRE></div>
+<div class="xdocText">In order to have the above user-defined function called by the LogSnapshot
+ module whenever it writes an event, the following configuration script
+ is needed:</div>
+<div class="xdocText"><PRE class="Example"> var LoggingSetup = xdc.useModule('ti.uia.sysbios.LoggingSetup');
+ var LogSnapshot   = xdc.useModule('ti.uia.runtime.LogSnapshot');
+ var IUIATraceSyncClient = xdc.useModule('ti.uia.runtime.IUIATraceSyncClient');
+ LogSnapshot.injectIntoTraceFxn = $externFxn('myHookFxn');
+
+</PRE></div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="LoggerTypes.html#.Inject.Into.Trace.Fxn" title="LoggerTypes.InjectIntoTraceFxn">LoggerTypes.InjectIntoTraceFxn</a>, <a class="xdoc-link" href="LogSnapshot.html" title="LogSnapshot">LogSnapshot</a></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#inject.Into.Trace.Fxn" title="LogSnapshot_injectIntoTraceFxn">LogSnapshot_injectIntoTraceFxn</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metais.Timestamp.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSnapshot.</span><span class="xdoc-id">isTimestampEnabled</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#is.Timestamp.Enabled">index URL</a></div>
+<p class="xdocHdrSummaryDcl">used to enable or disable logging the 64b local CPU timestamp
+  at the start of each event</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSnapshot.<span class="xdoc-id">isTimestampEnabled</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#is.Timestamp.Enabled" title="LogSnapshot_isTimestampEnabled">LogSnapshot_isTimestampEnabled</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metalogger.Obj"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSnapshot.</span><span class="xdoc-id">loggerObj</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#logger.Obj">index URL</a></div>
+<p class="xdocHdrSummaryDcl">handle of the logger that is to be used to log snapshot events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSnapshot.<span class="xdoc-id">loggerObj</span> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#logger.Obj" title="LogSnapshot_loggerObj">LogSnapshot_loggerObj</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metamax.Length.In.M.A.Us"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSnapshot.</span><span class="xdoc-id">maxLengthInMAUs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#max.Length.In.M.A.Us">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Maximum number of MAUs (miniumum addressable units, e.g. bytes)
+     supported by <tt>LogSnapshot</tt> events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSnapshot.<span class="xdoc-id">maxLengthInMAUs</span> = <i><span class="xdoc-kw2">Int</span></i> 512;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Attempting to write more than the maximum length results in the
+  multiple events being logged.  The maxLengthInMAUs must be
+  lower than the size of the buffer that the events are being logged to.
+  Must be less than 1400 in order to support streaming of event
+  data over UDP.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#max.Length.In.M.A.Us" title="LogSnapshot_maxLengthInMAUs">LogSnapshot_maxLengthInMAUs</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSnapshot.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSnapshot.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="id.To.Info"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSnapshot.</span><span class="xdoc-id">idToInfo</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#id.To.Info">index URL</a></div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSnapshot.<span class="xdoc-id">idToInfo</span> = <i><span class="xdoc-kw2">String</span>[<span class="xdoc-kw1">string</span>]</i> [ ];
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Inject.Into.Trace.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogSnapshot.</span><span class="xdoc-id">isInjectIntoTraceEnabled</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogSnapshot.html#is.Inject.Into.Trace.Enabled">index URL</a></div>
+<p class="xdocHdrSummaryDcl">set false to turn off injection of sync point info into trace even
+  if a module that implements IUIATraceSyncProvider is configured</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogSnapshot.<span class="xdoc-id">isInjectIntoTraceEnabled</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The XDCScript associated with a module that implements IUIATraceSyncProvider
+ is responsible for checking this config option for all IUIATraceSyncClient
+ modules before automatically configuring the client callback function.
+ This allows users to control which features have sync points injected
+ into the trace stream.  For example, a user may wish to configure
+ LogSync.isInjectIntoTraceEnabled = true and
+ LogCtxChg.isInjectIntoTraceEnabled = false in order to reduce the number
+ of sync point events injected into the trace stream.</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:15 GMT</div>
+</div></div></body>
+</html>

@@ -1,0 +1,238 @@
+<!doctype html>
+<!--
+Copyright 2014 - 2015. Texas Instruments Incorporated. All rights reserved.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+*   Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+*   Neither the name of Texas Instruments Incorporated nor the names of
+its contributors may be used to endorse or promote products derived
+from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<html>
+<head>
+    <title>TI Common Widgets - Checkbox Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <script src="../../../webcomponentsjs/webcomponents.js"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            height: 100%;
+            overflow-y: hidden;
+        }
+        
+        design-gist-element-preview {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body unresolved>
+<!-- ------------------------------------------------------------------------------------- -->
+<link rel="import" href="../../../ti-widget-common/ti-widget-label.html">
+<link rel="import" href="../../../paper-input/paper-input.html">
+<link rel="import" href="../../../ti-widget-common/ti-widget-droplist.html">
+<link rel="import" href="../../../paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../../ti-widget-common/ti-widget-checkbox.html">
+<link rel="import" href="../../../ti-core-stylesheets/ti-core-stylesheets.html">
+  <template id="template_obj" is="auto-binding">
+    <style>    
+      #ti_widget_label {
+        left: 50px;
+        top: 20px;
+        position: absolute;
+        width: 610px;
+        height: 40px;
+      }
+      #ti_widget_label1 {
+        left: 50px;
+        top: 150px;
+        position: absolute;
+      }
+      #ti_widget_label3 {
+        left: 90px;
+        top: 249px;
+        position: absolute;
+      }
+      #paper_input {
+        left: 140px;
+        top: 229px;
+        position: absolute;
+        width: 210px;
+        height: 40px;
+      }
+      #ti_widget_label5 {
+        left: 452px;
+        top: 251px;
+        position: absolute;
+      }
+      #textAlign {
+        width: 130px;
+        left: 170px;
+        top: 250px;
+        position: absolute;
+        height: 20px;
+      }
+      #ti_widget_label6 {
+        left: 452px;
+        top: 301px;
+        position: absolute;
+      }
+      #ti_widget_label7 {
+        left: 452px;
+        top: 401px;
+        position: absolute;
+      }
+      #ti_widget_label8 {
+        left: 452px;
+        top: 351px;
+        position: absolute;
+      }
+      #fontSize {
+        width: 130px;
+        left: 530px;
+        top: 250px;
+        position: absolute;
+        height: 20px;
+      }
+      #decoration {
+        width: 110px;
+        left: 562px;
+        top: 451px;
+        position: absolute;
+        height: 20px;
+      }
+      #input {
+        padding: 15px;
+        left: 150px;
+        top: 340px;
+        position: absolute;
+      }
+      #tooltip {
+        left: 150px;
+        top: 430px;
+        position: absolute;
+        width: 210px;
+        height: 40px;
+      }
+      #ti_widget_label9 {
+        left: 452px;
+        top: 451px;
+        position: absolute;
+      }
+      #fontStyle {
+        width: 130px;
+        left: 532px;
+        top: 351px;
+        position: absolute;
+        height: 20px;
+      }
+      #visibility {
+        left: 91px;
+        top: 400px;
+        position: absolute;
+      }
+      #ti_widget_label10 {
+        left: 90px;
+        top: 450px;
+        position: absolute;
+      }
+      #font_color {
+        left: 532px;
+        top: 281px;
+        position: absolute;
+        width: 130px;
+        height: 50px;
+      }
+      #fontWeight {
+        width: 110px;
+        left: 552px;
+        top: 401px;
+        position: absolute;
+        height: 20px;
+      }
+      #ti_widget_label4 {
+        left: 452px;
+        top: 201px;
+        position: absolute;
+      }
+      #ti_widget_checkbox {
+        left: 50px;
+        top: 90px;
+        position: absolute;
+        width: 290px;
+        height: 20px;
+      }
+      #checked {
+        left: 90px;
+        top: 200px;
+        position: absolute;
+      }
+      #disabled {
+        left: 91px;
+        top: 350px;
+        position: absolute;
+      }
+      #text_align {
+        width: 130px;
+        left: 530px;
+        top: 200px;
+        position: absolute;
+        height: 20px;
+      }
+      #wraplabeltext {
+        left: 90px;
+        top: 300px;
+        position: absolute;
+      }
+    </style>
+    <ti-core-stylesheets id="ti_core_stylesheets"></ti-core-stylesheets>
+    <ti-widget-label label="Demo of Checkbox Widget" textalign="center" textdecoration="underline" fontcolor="orange" fontsize="xx-large" id="ti_widget_label"></ti-widget-label>
+    <ti-widget-label label="Properties:" fontweight="bold" fontsize="large" id="ti_widget_label1"></ti-widget-label>
+    <ti-widget-label label="label:" id="ti_widget_label3"></ti-widget-label>
+    <paper-input label="Type something..." value="click me" committedvalue="click me" id="paper_input"></paper-input>
+    <ti-widget-label label="fontSize:" id="ti_widget_label5"></ti-widget-label>
+    <ti-widget-droplist selectedtext="small" labels="xx-small,x-small,small,medium,large,x-large,xx-large,smaller,larger" selectedindex="2" selectedvalue="3" initialindex="2" id="fontSize"></ti-widget-droplist>
+    <ti-widget-label label="fontColor:" id="ti_widget_label6"></ti-widget-label>
+    <ti-widget-label label="fontWeight:" id="ti_widget_label7"></ti-widget-label>
+    <ti-widget-label label="fontStyle:" id="ti_widget_label8"></ti-widget-label>
+    <ti-widget-droplist selectedtext="none" labels="none,underline,overline,line-through" id="decoration"></ti-widget-droplist>
+    <paper-input label="Type something..." id="tooltip"></paper-input>
+    <ti-widget-label label="textDecoration:" id="ti_widget_label9"></ti-widget-label>
+    <ti-widget-droplist selectedtext="normal" labels="normal,italic,inherit" id="fontStyle"></ti-widget-droplist>
+    <paper-checkbox checked label="visible" id="visibility"></paper-checkbox>
+    <ti-widget-label label="tooltip:" id="ti_widget_label10"></ti-widget-label>
+    <paper-input label="Type something..." value="black" committedvalue="black" id="font_color"></paper-input>
+    <ti-widget-droplist selectedtext="normal" labels="normal,bold,lighter,bolder,100,200,300,400,500,600,700,800,900,inherit" id="fontWeight"></ti-widget-droplist>
+    <ti-widget-label label="textAlign:" id="ti_widget_label4"></ti-widget-label>
+    <ti-widget-checkbox checked="{{ $.checked.checked }}" label="{{ $.paper_input.value }}" wrap="{{ $.wraplabeltext.checked }}" textalign="{{ $.text_align.selectedText }}" textdecoration="{{ $.decoration.selectedText }}" fontweight="{{ $.fontWeight.selectedText }}" fontstyle="{{ $.fontStyle.selectedText }}" fontcolor="{{ $.font_color.value }}" fontsize="{{ $.fontSize.selectedText }}" disabled="{{ $.disabled.checked }}" visible="{{ $.visibility.checked }}" tooltip="{{ $.tooltip.value }}" id="ti_widget_checkbox"></ti-widget-checkbox>
+    <ti-widget-checkbox label="checked" id="checked"></ti-widget-checkbox>
+    <ti-widget-checkbox label="disabled" id="disabled"></ti-widget-checkbox>
+    <ti-widget-droplist selectedtext="left" labels="left|center|right|justify" initialindex="0" id="text_align"></ti-widget-droplist>
+    <ti-widget-checkbox checked label="wrap" id="wraplabeltext"></ti-widget-checkbox>
+  </template>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!--
+`ti-widget-optionsmenu` a sub menu item that performs an action.
+    - 
+Example:
+
+    <ti-widget-menubar>
+        <ti-widget-menuitem></ti-widget-menuitem>
+        <ti-widget-menuitem></ti-widget-menuitem>
+        <ti-widget-menuitem></ti-widget-menuitem>
+    </ti-widget-menubar>
+
+See ../demo.html for a full working example of how to use this component.
+
+@group TI Widget
+@element ti-widget-optionsmenu
+@homepage https://gitorious.design.ti.com/guicomposer-nw/ti-widget-optionsmenu
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../ti-widget-menubar/ti-widget-abstractmenu.html">
+<link rel="import" href="../ti-widget-menubar/ti-widget-menuitem.html">
+<link rel="import" href="../ti-widget-menubar/ti-widget-menuaction.html">
+<link rel="import" href="../ti-service-serialio/ti-service-serialio.html">
+<link rel="import" href="../ti-service-serialio/ti-service-serialio-dialog.html">
+
+<link rel="import" href="../core-icons/core-icons.html">
+
+<polymer-element name="ti-widget-optionsmenu" extends="ti-widget-abstractmenu">
+    <template id="optionsmenuTemplate">
+        <style>
+            .menuDropdownAction {
+                padding:8px 16px 6px 16px;
+                cursor:pointer;
+                white-space:nowrap;
+            }
+        </style>
+
+        <ti-service-serialio-dialog id="serialConfigDialog" style="width:660px;height:300px"></ti-service-serialio-dialog>
+        <ti-widget-menuitem id="optionsmenu" name="{{name}}">
+            <ti-widget-menuaction id="ConfigureSerialPort" icon="swap-vert" name="Serial Port..." description="Configure Port and Baud Rate"></ti-widget-menuaction>
+            <content></content>
+        </ti-widget-menuitem>
+    </template>
+    <script>
+
+        Polymer('ti-widget-optionsmenu',
+                {
+                    name : 'Options',
+                    getMenuItem : function() {
+                        if (!this._dropDownActive) {
+                            return this.$.optionsmenu;
+                        } else {
+                            return null;
+                        }
+                    },
+                    _disconnected: true,
+                    _disconnectedChanged: function(){
+                        if (this._disconnected) {
+                            gc.nav.disableAction('ConfigureSerialPort');
+
+                        } else {
+                            gc.nav.enableAction('ConfigureSerialPort');
+                        }
+                    },
+                    _backplane: undefined,
+                    _backplaneChangedHdlr: function(e){
+                        if (this._backplane !== undefined){
+                            this._backplane.removeEventListener("connectionStatusChanged");
+                        }
+                        this._backplane = this._serialIO.backplane;
+                        if (this._backplane !== undefined) {
+                            this._backplane.addEventListener("connectionStatusChanged", this.connectionStatusChangedHdlr);
+                            this._disconnected = !this._backplane.isConnectedToCloudAgent;
+                        }
+                    },
+                    backplaneChangedHdlr: undefined,
+                    _connectionStatusChangedHdlr: function(e){
+                        if (this._backplane !== undefined) {
+                            this._disconnected = !this._backplane.isConnectedToCloudAgent;
+                        } else {
+                            this._disconnected = true;
+                        }
+                    },
+                    connectionStatusChangedHdlr: undefined,                    
+                    _serialIOFound: false,
+                    _serialIO: undefined,
+                    findComponent: function(componentName){
+                        var result = undefined;
+                        if (document !== undefined){
+                            result = document.querySelector(componentName);
+                        }
+                        if ((document === undefined) || (result === undefined)){
+                            if (window.document === undefined){
+                                throw "window.document is not defined"
+                            }
+                            result = window.document.querySelector(componentName);
+                        }
+                        return result;
+                    },
+                    attached: function() {
+                        this.backplaneChangedHdlr = this._backplaneChangedHdlr.bind(this);
+                        this.connectionStatusChangedHdlr = this._connectionStatusChangedHdlr.bind(this);
+                        this.disconnectedChanged = this._disconnectedChanged.bind(this);
+                    },
+                    domReady: function(){
+
+                    	this.super();
+                    	
+                        this._serialIO = this.findComponent('ti-service-serialio');
+                        if (this._serialIO === undefined){
+                            var targetAccess = this.findComponent('ti-service-targetaccess');
+                            if (targetAccess !== undefined){
+                                this._serialIO = targetAccess.serialIO;
+                            } else {
+                                var programModel = this.findComponent('ti-program-model');
+                                if (programModel !== undefined){
+                                    this._serialIO = programModel.targetAccess.serialIO;
+                                }
+                            }
+                        }
+                        if ((this._serialIO !== undefined) && (this._serialIO !== null)) {
+                            this._backplane = this._serialIO.backplane;
+                            this._backplaneChangedHdlr();
+                            this._serialIO.addEventListener("backplaneChanged", this.backplaneChangedHdlr);
+                            var _self = this;
+                            gc.nav.registerAction('ConfigureSerialPort', {
+                                run: function () {
+                                    try {
+                                        var menuItem = _self.getMenuItem();
+                                        var serialConfigDialog = menuItem.parentNode.querySelector('ti-service-serialio-dialog');
+                                        if ((serialConfigDialog !== undefined) && (serialConfigDialog !== null)) {
+                                            serialConfigDialog.toggle();
+                                        }
+                                    }
+                                    catch (ex) {
+                                        console.log("Exception in Configure Menu - Serial Port Setings: ex=" + ex.toString());
+                                    }
+                                }
+                            });
+                            gc.nav.disableAction('ConfigureSerialPort');
+
+                        } else {
+                            gc.nav.hideMenu('ConfigureSerialPort');
+                            console.log('ti-widget-optionsmenu: could not find ti-service-serialio');
+                        }
+                    }
+
+                });
+
+    </script>
+</polymer-element>
+    

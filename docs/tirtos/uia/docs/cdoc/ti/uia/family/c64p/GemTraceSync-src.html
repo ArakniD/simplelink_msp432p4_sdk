@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.family.c64p.GemTraceSync</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> * ======== GemTraceSync.xdc ========
+</span>    35    <span class="comment"> */</span>
+    36    <span class=key>package</span> ti.uia.family.c64p;
+    37    import ti.uia.runtime.IUIATraceSyncProvider;
+    38    import ti.uia.events.UIASync;
+    39    
+    40    <span class="xdoc">/*!
+</span>    41    <span class="xdoc"> *  ======== GemTraceSync.xdc ========
+</span>    42    <span class="xdoc"> *  C64X+ specific code for injecting sync point info into the GEM Trace stream
+</span>    43    <span class="xdoc"> *
+</span>    44    <span class="xdoc"> * The OVERLAY register (a.k.a. TSDR register) is an undocumented register
+</span>    45    <span class="xdoc"> * availble on C64X+ Full GEM targets.  Writes into this register are injected
+</span>    46    <span class="xdoc"> * into the trace stream.  The data that is written is used by the host to
+</span>    47    <span class="xdoc"> * determine what target-side context was active at the time the trace data
+</span>    48    <span class="xdoc"> * was recorded.
+</span>    49    <span class="xdoc"> *
+</span>    50    <span class="xdoc"> * The register only has 30 writable bits, so in order to inject a 32b value
+</span>    51    <span class="xdoc"> * into the trace stream  (e.g. the thread handle of the currently executing
+</span>    52    <span class="xdoc"> * thread), the 32b address needs to be split into two pieces and written into
+</span>    53    <span class="xdoc"> * the OVERLAY register in two successive write operations.  To make it possible
+</span>    54    <span class="xdoc"> * to use the OVERLAY register to inject different types of context info into
+</span>    55    <span class="xdoc"> * the trace stream, the following bit assignments need to be used when
+</span>    56    <span class="xdoc"> * writing data into the OVERLAY register:
+</span>    57    <span class="xdoc"> *
+</span>    58    <span class="xdoc"> * OVERLAY register bit assignments:
+</span>    59    <span class="xdoc"> * 2 LSBs fixed (011b)
+</span>    60    <span class="xdoc"> * 6 MSBs used to determine what type of data the OVERLAY register contains
+</span>    61    <span class="xdoc"> *
+</span>    62    <span class="xdoc"> * b31-b26  : a 6 bit ?type ID? that describes what context info the sync point
+</span>    63    <span class="xdoc"> *             contains
+</span>    64    <span class="xdoc"> * 000000b  : reserved
+</span>    65    <span class="xdoc"> * 000001b  : b25-b2 of OVERLAY register contains the 24 LSBs
+</span>    66    <span class="xdoc"> *             of the sequence number of the Sync Point event
+</span>    67    <span class="xdoc"> *             that contains correlation info.  Only 1 OVERLAY
+</span>    68    <span class="xdoc"> *             register write is required for this info.
+</span>    69    <span class="xdoc"> * 000010b  : b25-b2 of OVERLAY register contains the 24 LSBs
+</span>    70    <span class="xdoc"> *             of the sequence number of the Context Change event
+</span>    71    <span class="xdoc"> *             that contains context change info.  Only 1 OVERLAY
+</span>    72    <span class="xdoc"> *             register write is required for this info.
+</span>    73    <span class="xdoc"> *   . . .  : reserved
+</span>    74    <span class="xdoc"> * 000011b  : b25-b2 of OVERLAY register contains the 24 LSBs
+</span>    75    <span class="xdoc"> *             of the snapshot ID of the snapshot event
+</span>    76    <span class="xdoc"> *             that contains snapshot info.  Only 1 OVERLAY register
+</span>    77    <span class="xdoc"> *             write is required for this info.
+</span>    78    <span class="xdoc"> * 10XXXXb  : contains first word of a 2 word OVERLAY register sequence.
+</span>    79    <span class="xdoc"> * b25-b2   : the 24 MSBs of 32b context data.
+</span>    80    <span class="xdoc"> *
+</span>    81    <span class="xdoc"> * 11XXXXb:    contains second word of a 2 word OVERLAY register sequence.
+</span>    82    <span class="xdoc"> * b29-b10 contain the 20LSBs of the sequence number of an event that contains
+</span>    83    <span class="xdoc"> *             context info.
+</span>    84    <span class="xdoc"> * b9-b2 contain 8 LSBs of 32b context data.
+</span>    85    <span class="xdoc"> *
+</span>    86    <span class="xdoc"> * If the 2 word OVERLAY register protocol is being used and there is a sync
+</span>    87    <span class="xdoc"> * loss, then only the OVERLAY register data with b31-b30 = 11b will be
+</span>    88    <span class="xdoc"> * available since it was the last data written into the register.  Since this
+</span>    89    <span class="xdoc"> * contains a sequence number, it may be possible for the host to recover the
+</span>    90    <span class="xdoc"> * lost sync data by finding the context change event that has the same sequence
+</span>    91    <span class="xdoc"> * number.
+</span>    92    <span class="xdoc"> */</span>
+    93    
+    94    @Gated
+    95    <span class=key>module</span> GemTraceSync <span class=key>inherits</span> ti.uia.runtime.IUIATraceSyncProvider {
+    96    
+    97       <span class="xdoc">/*!
+</span>    98    <span class="xdoc">     * ====== injectIntoTrace ======
+</span>    99    <span class="xdoc">     * Inject syncPoint info into GEM Trace
+</span>   100    <span class="xdoc">     *
+</span>   101    <span class="xdoc">     * This method logs a sync point event and injects
+</span>   102    <span class="xdoc">     * correlation info into the trace stream (if available)
+</span>   103    <span class="xdoc">     * to enable correlation between software events and hardware trace.
+</span>   104    <span class="xdoc">     *
+</span>   105    <span class="xdoc">     * <b>@param(serialNumber)</b> a sync point serial number to inject into the trace
+</span>   106    <span class="xdoc">     *    stream
+</span>   107    <span class="xdoc">     * <b>@param(ctxType)</b> the CtxChg_ContextType constant that describes what
+</span>   108    <span class="xdoc">     *    context info the 2 words contain
+</span>   109    <span class="xdoc">     */</span>
+   110        @DirectCall
+   111        <span class=key>override</span> Void injectIntoTrace(UInt32 serialNum,
+   112                   IUIATraceSyncProvider.ContextType ctxType);
+   113    
+   114    }
+</pre>
+</body></html>

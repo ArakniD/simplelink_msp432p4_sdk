@@ -1,0 +1,478 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.events.UIASnapshot</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> * ======== UIASnapshot.xdc ========
+</span>    35    <span class="comment"> */</span>
+    36    
+    37    import xdc.runtime.Diags;
+    38    import xdc.runtime.Types;
+    39    import ti.uia.events.DvtTypes;
+    40    
+    41    <span class="xdoc">/*!
+</span>    42    <span class="xdoc"> * UIA Snapshot Events
+</span>    43    <span class="xdoc"> *
+</span>    44    <span class="xdoc"> * The UIASnapshot module defines events that allow
+</span>    45    <span class="xdoc"> * collection of dynamic information from the heap
+</span>    46    <span class="xdoc"> * such as memory ranges, strings, dynamically assigned names, etc.
+</span>    47    <span class="xdoc"> * Snapshot events can be aggregated together using a common snapshot ID
+</span>    48    <span class="xdoc"> * as an event parameter in order to build up a multi-event description of the
+</span>    49    <span class="xdoc"> * target state.  They are intended for use solely with the methods provided by
+</span>    50    <span class="xdoc"> * the {<b>@link</b> ti.uia.runtime.LogSnapshot ti.uia.runtime.LogSnapshot} module.
+</span>    51    <span class="xdoc"> *
+</span>    52    <span class="xdoc"> *  The generation of UIASnapshot events is controlled by a module's diagnostics
+</span>    53    <span class="xdoc"> *  mask, which is described in details in `{<b>@link</b> xdc.runtime.Diags}`.
+</span>    54    <span class="xdoc"> * `UIASnapshot` events are generated only when the Diags.ANALYSIS bit is set
+</span>    55    <span class="xdoc"> *  in the module's diagnostics mask.
+</span>    56    <span class="xdoc"> *
+</span>    57    <span class="xdoc"> * The following special formatting specifiers are used in the definitions of the
+</span>    58    <span class="xdoc"> * msg fields of the UIASnapshot events:
+</span>    59    <span class="xdoc"> * %$S - a string parameter that can provide additional formatting specifiers
+</span>    60    <span class="xdoc"> *       Note that $S use in strings passed in as a paramter is not supported.
+</span>    61    <span class="xdoc"> *<b>@p</b>
+</span>    62    <span class="xdoc"> * %$F - a specifier for a string parameter containing the file name (__FILE__) and
+</span>    63    <span class="xdoc"> *       an integer parameter containing the line number (__LINE__).
+</span>    64    <span class="xdoc"> *
+</span>    65    <span class="xdoc"> *  The following configuration script demonstrates how the application might
+</span>    66    <span class="xdoc"> *  control the logging of ANALYSIS events embedded in the `Mod` module at configuration
+</span>    67    <span class="xdoc"> *  time. In this case, the configuration script arranges for the `Log`
+</span>    68    <span class="xdoc"> *  statements within modules to always generate ANALYSIS events.
+</span>    69    <span class="xdoc"> *  Without these configuration statements, no ANALYSIS events would be generated
+</span>    70    <span class="xdoc"> *  by any modules.
+</span>    71    <span class="xdoc"> *
+</span>    72    <span class="xdoc"> * <b>@a(Examples)</b>
+</span>    73    <span class="xdoc"> * Example 1: This is part of the XDC configuration file for the application:
+</span>    74    <span class="xdoc"> * (Note that the UIASnapshot module is automatically included by the
+</span>    75    <span class="xdoc"> * LogSnapshot.xs script, and so does not need to be referenced in the
+</span>    76    <span class="xdoc"> * application's .cfg file)
+</span>    77    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    78    <span class="xdoc"> *  var LogSnapshot = xdc.useModule('ti.uia.runtime.LogSnapshot');
+</span>    79    <span class="xdoc"> *  var LoggerCircBuf = xdc.useModule('ti.uia.runtime.LoggerCircBuf');
+</span>    80    <span class="xdoc"> *  var LoggerCircBufParams = new LoggerCircBuf.Params;
+</span>    81    <span class="xdoc"> *  // set the logger buffer size in bytes
+</span>    82    <span class="xdoc"> *  LoggerCircBufParams.transferBufSize = 32768;
+</span>    83    <span class="xdoc"> *  var logger = LoggerCircBuf.create(LoggerCircBufParams);
+</span>    84    <span class="xdoc"> *
+</span>    85    <span class="xdoc"> *  // Configure all modules to always log Analysis events, including
+</span>    86    <span class="xdoc"> *  // UIASnapshot events
+</span>    87    <span class="xdoc"> *  var Diags = xdc.useModule('xdc.runtime.Diags');
+</span>    88    <span class="xdoc"> *  var Defaults = xdc.useModule('xdc.runtime.Defaults');
+</span>    89    <span class="xdoc"> *  Defaults.common$.diags_ANALYSIS = Diags.ALWAYS_ON;
+</span>    90    <span class="xdoc"> *  Defaults.common$.logger = logger;
+</span>    91    <span class="xdoc"> *
+</span>    92    <span class="xdoc"> *  <b>@p</b>
+</span>    93    <span class="xdoc"> *
+</span>    94    <span class="xdoc"> *  <b>@p(html)</b>
+</span>    95    <span class="xdoc"> *  &lt;hr /&gt;
+</span>    96    <span class="xdoc"> *  <b>@p</b>
+</span>    97    <span class="xdoc"> *
+</span>    98    <span class="xdoc"> *  Example 2: The following example configures a module to support logging
+</span>    99    <span class="xdoc"> *  of ANALYSIS events, but defers the actual activation and deactivation of the
+</span>   100    <span class="xdoc"> *  logging until runtime. See the `{<b>@link</b> Diags#setMask Diags_setMask()}`
+</span>   101    <span class="xdoc"> *  function for details on specifying the control string.
+</span>   102    <span class="xdoc"> *
+</span>   103    <span class="xdoc"> *  This is part of the XDC configuration file for the application:
+</span>   104    <span class="xdoc"> *  <b>@p(code)</b>
+</span>   105    <span class="xdoc"> *  var LogSnapshot = xdc.useModule('ti.uia.runtime.LogSnapshot');
+</span>   106    <span class="xdoc"> *  var Diags = xdc.useModule('xdc.runtime.Diags');
+</span>   107    <span class="xdoc"> *  var Mod = xdc.useModule('my.pkg.Mod');
+</span>   108    <span class="xdoc"> *
+</span>   109    <span class="xdoc"> *  Mod.common$.diags_ANALYSIS = Diags.RUNTIME_OFF;
+</span>   110    <span class="xdoc"> *  <b>@p</b>
+</span>   111    <span class="xdoc"> *
+</span>   112    <span class="xdoc"> *  This is a part of the C code for the application:
+</span>   113    <span class="xdoc"> *
+</span>   114    <span class="xdoc"> *  <b>@p(code)</b>
+</span>   115    <span class="xdoc"> *  // turn on logging of ANALYSIS events in the module
+</span>   116    <span class="xdoc"> *  Diags_setMask("my.pkg.Mod+Z");
+</span>   117    <span class="xdoc"> *
+</span>   118    <span class="xdoc"> *  // turn off logging of ANALYSIS events in the module
+</span>   119    <span class="xdoc"> *  Diags_setMask("my.pkg.Mod-Z");
+</span>   120    <span class="xdoc"> *  <b>@p</b>
+</span>   121    <span class="xdoc"> */</span>
+   122    <span class=key>module</span> UIASnapshot <span class=key>inherits</span> IUIAEvent {
+   123    
+   124        <span class="xdoc">/*!
+</span>   125    <span class="xdoc">     *  ======== memoryRange ========
+</span>   126    <span class="xdoc">     *  Analysis event posted when a memoryRange snapshot is logged.
+</span>   127    <span class="xdoc">     *
+</span>   128    <span class="xdoc">     *  This event is used internally by the
+</span>   129    <span class="xdoc">     *  {<b>@link</b> ti.uia.runtime.LogSnapshot#writeMemoryBlock LogSnapshot.writeMemoryBlock}
+</span>   130    <span class="xdoc">     *  API.
+</span>   131    <span class="xdoc">     *
+</span>   132    <span class="xdoc">     * <b>@a(Examples)</b>
+</span>   133    <span class="xdoc">     * Example: The following C code shows how to log a snapshot event to
+</span>   134    <span class="xdoc">     *   capture a block of memory.
+</span>   135    <span class="xdoc">     *
+</span>   136    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   137    <span class="xdoc">     *  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+</span>   138    <span class="xdoc">     *  ...
+</span>   139    <span class="xdoc">     *  UInt32* pIntArray = (UInt32 *)malloc(sizeof(UInt32) * 200);
+</span>   140    <span class="xdoc">     *  ...
+</span>   141    <span class="xdoc">     *  LogSnapshot_writeMemoryBlock(0,"pIntArray ptr=0x%x, numBytes=%d",(UInt32)pIntArray,200);
+</span>   142    <span class="xdoc">     *  ...
+</span>   143    <span class="xdoc">     *  <b>@p</b>
+</span>   144    <span class="xdoc">     *  This event prints the Log call site (%$F) and a format string (%$S)
+</span>   145    <span class="xdoc">     *  which describes what information the event is logging.
+</span>   146    <span class="xdoc">     *  The following text will be displayed for the event, if it was logged
+</span>   147    <span class="xdoc">     *  from file demo.c at line 1234 and all 200 bytes were logged in the
+</span>   148    <span class="xdoc">     *  same event.
+</span>   149    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   150    <span class="xdoc">     *  Memory Snapshot at [demo.c:1234] [snapshotID=0,adrs=0x80002000,
+</span>   151    <span class="xdoc">     *    numMAUsDataInEvent=200,numMAUsDataInRecord=200] ptr=0x80002000, numBytes=200
+</span>   152    <span class="xdoc">     *  <b>@p</b>
+</span>   153    <span class="xdoc">     *  If the 200 bytes were spread across multiple events,
+</span>   154    <span class="xdoc">     *  the numMAUsDataInRecord would indicate how many bytes were in the
+</span>   155    <span class="xdoc">     *  memory block, and numMAUsDataInEvent would indicate how many bytes
+</span>   156    <span class="xdoc">     *  were stored in that particular event.
+</span>   157    <span class="xdoc">     *  <b>@p</b>
+</span>   158    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the LogSnapshot call site was in (used by %$F)
+</span>   159    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line of code of the LogSnapshot call site (used by %$F)
+</span>   160    <span class="xdoc">     *  <b>@param(snapshotID)</b> ID used to identify snapshot events taken at the same
+</span>   161    <span class="xdoc">     *                     time. Set to 0 for first in series, set rest to return
+</span>   162    <span class="xdoc">     *                     value of LogSnapshot API.
+</span>   163    <span class="xdoc">     *  <b>@param(startAdrs)</b>  the start address of the range of memory
+</span>   164    <span class="xdoc">     *  <b>@param(numMAUsDataInEvent)</b> the number of MAUs of data payload for this event
+</span>   165    <span class="xdoc">     *  <b>@param(numMAUsDataInRecord)</b> the total number of MAUs of data payload for the
+</span>   166    <span class="xdoc">     *                     multi-event data record
+</span>   167    <span class="xdoc">     *  <b>@param(fmt)</b>        a constant string that provides a user-readable description
+</span>   168    <span class="xdoc">     *                     of what information the event is capturing
+</span>   169    <span class="xdoc">     */</span>
+   170        <span class=key>config</span> xdc.runtime.Log.Event memoryRange = {
+   171            mask: Diags.ANALYSIS,
+   172            msg: <span class="string">"Memory Snapshot at %$F% [snapshotID=%d,adrs=0x%x,numMAUsDataInEvent=%hd,numMAUsDataInRecord=%hd] %$S"</span>
+   173        };
+   174    
+   175        <span class="xdoc">/*!
+</span>   176    <span class="xdoc">     *  ======== metaEventMemoryRange ========
+</span>   177    <span class="xdoc">     *  Metadata description of the memoryRange event
+</span>   178    <span class="xdoc">     *
+</span>   179    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   180    <span class="xdoc">     */</span>
+   181        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventMemoryRange = {
+   182            versionId: <span class="string">"2.0"</span>,
+   183            analysisType: DvtTypes.DvtAnalysisType_MEMORYSNAPSHOT,
+   184            displayText: <span class="string">"Memory Snapshot"</span>,
+   185            tooltipText: <span class="string">"Memory Snapshot"</span>,
+   186            numParameters: 8,
+   187            paramInfo: [
+   188            {   name: <span class="string">'filename'</span>,
+   189                dataDesc: DvtTypes.DvtDataDesc_FILENAMESTR,
+   190                dataTypeName: <span class="string">'String'</span>,
+   191                units: <span class="string">'none'</span>,
+   192                isHidden: <span class=key>false</span>
+   193            },
+   194            {   name: <span class="string">'linenum'</span>,
+   195                dataDesc: DvtTypes.DvtDataDesc_LINENUM,
+   196                dataTypeName: <span class="string">'Int'</span>,
+   197                units: <span class="string">'none'</span>,
+   198                isHidden: <span class=key>false</span>
+   199            },
+   200            {   name: <span class="string">'snapshotID'</span>,
+   201                dataDesc: DvtTypes.DvtDataDesc_SNAPSHOTID,
+   202                dataTypeName: <span class="string">'UInt32'</span>,
+   203                units: <span class="string">'none'</span>,
+   204                isHidden: <span class=key>false</span>
+   205            },
+   206            {   name: <span class="string">'startAdrs'</span>,
+   207                dataDesc: DvtTypes.DvtDataDesc_DATAADRS,
+   208                dataTypeName: <span class="string">'Ptr'</span>,
+   209                units: <span class="string">'none'</span>,
+   210                isHidden: <span class=key>false</span>
+   211            },
+   212            {   name: <span class="string">'numMAUsDataInEvent'</span>,
+   213                dataDesc: DvtTypes.DvtDataDesc_LENGTHINMAUS,
+   214                dataTypeName: <span class="string">'Int16'</span>,
+   215                units: <span class="string">'none'</span>,
+   216                isHidden: <span class=key>false</span>,
+   217                lsb: 16
+   218            },
+   219            {   name: <span class="string">'numMAUsDataInRecord'</span>,
+   220                dataDesc: DvtTypes.DvtDataDesc_LENGTHINMAUS,
+   221                dataTypeName: <span class="string">'Int16'</span>,
+   222                units: <span class="string">'none'</span>,
+   223                isHidden: <span class=key>false</span>,
+   224                lsb: 0
+   225            },
+   226            {   name: <span class="string">'fmt'</span>,
+   227                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   228                dataTypeName: <span class="string">'String'</span>,
+   229                units: <span class="string">'none'</span>,
+   230                isHidden: <span class=key>false</span>
+   231            },
+   232            {   name: <span class="string">'data'</span>,
+   233                dataDesc: DvtTypes.DvtDataDesc_DATAARRAY,
+   234                dataTypeName: <span class="string">'Int32'</span>,
+   235                units: <span class="string">'none'</span>,
+   236                isHidden: <span class=key>false</span>
+   237            }
+   238            ]
+   239        };
+   240        <span class="xdoc">/*!
+</span>   241    <span class="xdoc">     *  ======== stringOnHeap ========
+</span>   242    <span class="xdoc">     *  Analysis event posted when a string snapshot is logged
+</span>   243    <span class="xdoc">     *
+</span>   244    <span class="xdoc">     *  This event is used internally by the
+</span>   245    <span class="xdoc">     *  {<b>@link</b> ti.uia.runtime.LogSnapshot#writeString LogSnapshot.writeString}
+</span>   246    <span class="xdoc">     *  API.
+</span>   247    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   248    <span class="xdoc">     *   The following C code shows how to log a snapshot event to capture a
+</span>   249    <span class="xdoc">     *   block of memory.
+</span>   250    <span class="xdoc">     *
+</span>   251    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   252    <span class="xdoc">     *  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+</span>   253    <span class="xdoc">     *  #include &lt;string.h&gt; // for strlen
+</span>   254    <span class="xdoc">     *  ...
+</span>   255    <span class="xdoc">     *  Void myFunc(String name){
+</span>   256    <span class="xdoc">     *     ...
+</span>   257    <span class="xdoc">     *     //Upload the memory contents of the dynamically allocated string 'name'
+</span>   258    <span class="xdoc">     *     LogSnapshot_stringOnHeap(0,"name",name, strlen(name));
+</span>   259    <span class="xdoc">     *     //Now that the string memory contents have been uploaded,
+</span>   260    <span class="xdoc">     *     //subsequent events that reference the string will be properly
+</span>   261    <span class="xdoc">     *     //rendered.
+</span>   262    <span class="xdoc">     *     Log_info1("User-defined name=%s.",name);
+</span>   263    <span class="xdoc">     *  }
+</span>   264    <span class="xdoc">     *  <b>@p</b>
+</span>   265    <span class="xdoc">     *  The following text will be displayed for the event, if LogSnapshot was called
+</span>   266    <span class="xdoc">     *  from file demo.c at line 1234 and the value of "name" was "aUserDefinedName".
+</span>   267    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   268    <span class="xdoc">     *  String Snapshot at [../demo.c:1234] [snapshotID=0,adrs=0x80001234,40,40] name.
+</span>   269    <span class="xdoc">     *  "demo.c", line 1235: User-defined name=aUserDefinedName.
+</span>   270    <span class="xdoc">     *  <b>@p</b>
+</span>   271    <span class="xdoc">     *
+</span>   272    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the LogSnapshot call site was in (used by %$F)
+</span>   273    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line of code of the LogSnapshot call site (used by %$F)
+</span>   274    <span class="xdoc">     *  <b>@param(snapshotID)</b> ID used to identify snapshot events taken at the same
+</span>   275    <span class="xdoc">     *                     time. Set to 0 for first in series, set rest to return
+</span>   276    <span class="xdoc">     *                     value of LogSnapshot API.
+</span>   277    <span class="xdoc">     *  <b>@param(adrs)</b>       the start address of the string in memory
+</span>   278    <span class="xdoc">     *  <b>@param(numMAUsDataInEvent)</b> the number of MAUs of data payload for this event
+</span>   279    <span class="xdoc">     *  <b>@param(numMAUsDataInRecord)</b> the total number of MAUs of data payload for the
+</span>   280    <span class="xdoc">     *                     multi-event data record
+</span>   281    <span class="xdoc">     *  <b>@param(fmt)</b>        a constant string that provides a user-readable description
+</span>   282    <span class="xdoc">     *                     of what information the event is capturing
+</span>   283    <span class="xdoc">     */</span>
+   284        <span class=key>config</span> xdc.runtime.Log.Event stringOnHeap = {
+   285            mask: Diags.ANALYSIS,
+   286            msg: <span class="string">"String Snapshot at %$F [snapshotID=%d,adrs=0x%x,numMAUsDataInEvent=%hd,numMAUsDataInRecord=%hd] %$S"</span>
+   287        };
+   288    
+   289        <span class="xdoc">/*!
+</span>   290    <span class="xdoc">     *  ======== metaEventStringOnHeap ========
+</span>   291    <span class="xdoc">     *  Metadata description of the stringOnHeap event
+</span>   292    <span class="xdoc">     *
+</span>   293    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   294    <span class="xdoc">     */</span>
+   295        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventStringOnHeap = {
+   296            versionId: <span class="string">"2.0"</span>,
+   297            analysisType: DvtTypes.DvtAnalysisType_STRINGSNAPSHOT,
+   298            displayText: <span class="string">"String Snapshot"</span>,
+   299            tooltipText: <span class="string">"String Snapshot"</span>,
+   300            numParameters: 8,
+   301            paramInfo: [
+   302            {   name: <span class="string">'filename'</span>,
+   303                dataDesc: DvtTypes.DvtDataDesc_FILENAMESTR,
+   304                dataTypeName: <span class="string">'String'</span>,
+   305                units: <span class="string">'none'</span>,
+   306                isHidden: <span class=key>false</span>
+   307            },
+   308            {   name: <span class="string">'linenum'</span>,
+   309                dataDesc: DvtTypes.DvtDataDesc_LINENUM,
+   310                dataTypeName: <span class="string">'Int'</span>,
+   311                units: <span class="string">'none'</span>,
+   312                isHidden: <span class=key>false</span>
+   313            },
+   314            {   name: <span class="string">'snapshotID'</span>,
+   315                dataDesc: DvtTypes.DvtDataDesc_SNAPSHOTID,
+   316                dataTypeName: <span class="string">'UInt32'</span>,
+   317                units: <span class="string">'none'</span>,
+   318                isHidden: <span class=key>false</span>
+   319            },
+   320            {   name: <span class="string">'startAdrs'</span>,
+   321                dataDesc: DvtTypes.DvtDataDesc_DATAADRS,
+   322                dataTypeName: <span class="string">'Ptr'</span>,
+   323                units: <span class="string">'none'</span>,
+   324                isHidden: <span class=key>false</span>
+   325            },
+   326            {   name: <span class="string">'numMAUsDataInEvent'</span>,
+   327                dataDesc: DvtTypes.DvtDataDesc_LENGTHINMAUS,
+   328                dataTypeName: <span class="string">'Int16'</span>,
+   329                units: <span class="string">'none'</span>,
+   330                isHidden: <span class=key>false</span>,
+   331                lsb: 16
+   332            },
+   333            {   name: <span class="string">'numMAUsDataInRecord'</span>,
+   334                dataDesc: DvtTypes.DvtDataDesc_LENGTHINMAUS,
+   335                dataTypeName: <span class="string">'Int16'</span>,
+   336                units: <span class="string">'none'</span>,
+   337                isHidden: <span class=key>false</span>,
+   338                lsb: 0
+   339            },
+   340            {   name: <span class="string">'fmt'</span>,
+   341                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   342                dataTypeName: <span class="string">'String'</span>,
+   343                units: <span class="string">'none'</span>,
+   344                isHidden: <span class=key>false</span>
+   345            },
+   346            {   name: <span class="string">'data'</span>,
+   347                dataDesc: DvtTypes.DvtDataDesc_DATAARRAY,
+   348                dataTypeName: <span class="string">'Int32'</span>,
+   349                units: <span class="string">'none'</span>,
+   350                isHidden: <span class=key>false</span>
+   351            }
+   352            ]
+   353        };
+   354        <span class="xdoc">/*!
+</span>   355    <span class="xdoc">     *  ======== nameOfReference ========
+</span>   356    <span class="xdoc">     *  Used to log the contents of a dynamic string on the heap so that host-side
+</span>   357    <span class="xdoc">     *  tooling can display this string as the name of handle / reference ID
+</span>   358    <span class="xdoc">     *
+</span>   359    <span class="xdoc">     *  This event is used internally by the
+</span>   360    <span class="xdoc">     *  {<b>@link</b> ti.uia.runtime.LogSnapshot#nameOfReference LogSnapshot.nameOfReference}
+</span>   361    <span class="xdoc">     *  API.
+</span>   362    <span class="xdoc">     *
+</span>   363    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   364    <span class="xdoc">     *   The following C code shows how to log a task name for use by task
+</span>   365    <span class="xdoc">     *   execution graphs etc.
+</span>   366    <span class="xdoc">     *
+</span>   367    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   368    <span class="xdoc">     *  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+</span>   369    <span class="xdoc">     *  #include &lt;ti/sysbios/BIOS.h&gt;
+</span>   370    <span class="xdoc">     *  #include &lt;ti/sysbios/knl/Task.h&gt;
+</span>   371    <span class="xdoc">     *  ...
+</span>   372    <span class="xdoc">     *  // Task create hook function that logs the task name.
+</span>   373    <span class="xdoc">     *  // Notes: Task name is not trequired when creating a BIOS task. Please \
+</span>   374    <span class="xdoc">     *  // make sure a name is provided in order for the host side analysis tool
+</span>   375    <span class="xdoc">     *  // to work properly.
+</span>   376    <span class="xdoc">     *  Void  tskCreateHook(Task_Handle hTask, Error_Block *eb) {
+</span>   377    <span class="xdoc">     *          String name;
+</span>   378    <span class="xdoc">     *          name = Task_Handle_name(hTask);
+</span>   379    <span class="xdoc">     *          LogSnapshot_writeNameOfReference(hTask,"Task_create name=%s",
+</span>   380    <span class="xdoc">     *            name,strlen(name)+1);
+</span>   381    <span class="xdoc">     *  }
+</span>   382    <span class="xdoc">     *  <b>@p</b>
+</span>   383    <span class="xdoc">     *  This event prints the Log call site (%$F) and a format string (%$S)
+</span>   384    <span class="xdoc">     *  which describes what information the event is logging.
+</span>   385    <span class="xdoc">     *  The following text will be displayed for the event:
+</span>   386    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   387    <span class="xdoc">     *  nameOfReference at [demo.c:line 1234] [refID=0x80002000,adrs=0x80001234,40,40] Task_create: name=10msThread.
+</span>   388    <span class="xdoc">     *  <b>@param(__FILE__)</b>   The file that the LogSnapshot call site was in (used by %$F)
+</span>   389    <span class="xdoc">     *  <b>@param(__LINE__)</b>   The line of code of the LogSnapshot call site (used by %$F)
+</span>   390    <span class="xdoc">     *  <b>@param(refID)</b>      reference ID (e.g. task handle) that the name is
+</span>   391    <span class="xdoc">     *                       associated with
+</span>   392    <span class="xdoc">     *  <b>@param(adrs)</b>       the start address of the string in memory
+</span>   393    <span class="xdoc">     *  <b>@param(numMAUsDataInEvent)</b> the number of MAUs of data payload for this event
+</span>   394    <span class="xdoc">     *  <b>@param(numMAUsDataInRecord)</b> the total number of MAUs of data payload for the
+</span>   395    <span class="xdoc">     *                     multi-event data record
+</span>   396    <span class="xdoc">     *  <b>@param(fmt)</b>        a constant string that provides a user-readable description
+</span>   397    <span class="xdoc">     *                     of what information the event is capturing
+</span>   398    <span class="xdoc">     */</span>
+   399        <span class=key>config</span> xdc.runtime.Log.Event nameOfReference = {
+   400            mask: Diags.ANALYSIS,
+   401            msg: <span class="string">"nameOfReference at %$F [refID=0x%x,adrs=0x%x,numMAUsDataInEvent=%hd numMAUsDataInRecord=%hd] %$S"</span>
+   402        };
+   403    
+   404        <span class="xdoc">/*!
+</span>   405    <span class="xdoc">     *  ======== metaEventNameOfReference ========
+</span>   406    <span class="xdoc">     *  Metadata description of the NameOfReference event
+</span>   407    <span class="xdoc">     *
+</span>   408    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   409    <span class="xdoc">     */</span>
+   410        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventNameOfReference = {
+   411            versionId: <span class="string">"2.0"</span>,
+   412            analysisType: DvtTypes.DvtAnalysisType_NAMESNAPSHOT,
+   413            displayText: <span class="string">"Name Of Reference ID"</span>,
+   414            tooltipText: <span class="string">"Name Of Reference ID"</span>,
+   415            numParameters: 8,
+   416            paramInfo: [
+   417            {   name: <span class="string">'filename'</span>,
+   418                dataDesc: DvtTypes.DvtDataDesc_FILENAMESTR,
+   419                dataTypeName: <span class="string">'String'</span>,
+   420                units: <span class="string">'none'</span>,
+   421                isHidden: <span class=key>false</span>
+   422            },
+   423            {   name: <span class="string">'linenum'</span>,
+   424                dataDesc: DvtTypes.DvtDataDesc_LINENUM,
+   425                dataTypeName: <span class="string">'Int'</span>,
+   426                units: <span class="string">'none'</span>,
+   427                isHidden: <span class=key>false</span>
+   428            },
+   429            {   name: <span class="string">'referenceID'</span>,
+   430                dataDesc: DvtTypes.DvtDataDesc_REFERENCEID,
+   431                dataTypeName: <span class="string">'UInt32'</span>,
+   432                units: <span class="string">'none'</span>,
+   433                isHidden: <span class=key>false</span>
+   434            },
+   435            {   name: <span class="string">'startAdrs'</span>,
+   436                dataDesc: DvtTypes.DvtDataDesc_DATAADRS,
+   437                dataTypeName: <span class="string">'Ptr'</span>,
+   438                units: <span class="string">'none'</span>,
+   439                isHidden: <span class=key>false</span>
+   440            },
+   441            {   name: <span class="string">'numMAUsDataInEvent'</span>,
+   442                dataDesc: DvtTypes.DvtDataDesc_LENGTHINMAUS,
+   443                dataTypeName: <span class="string">'Int16'</span>,
+   444                units: <span class="string">'none'</span>,
+   445                isHidden: <span class=key>false</span>,
+   446                lsb: 16
+   447            },
+   448            {   name: <span class="string">'numMAUsDataInRecord'</span>,
+   449                dataDesc: DvtTypes.DvtDataDesc_LENGTHINMAUS,
+   450                dataTypeName: <span class="string">'Int16'</span>,
+   451                units: <span class="string">'none'</span>,
+   452                isHidden: <span class=key>false</span>,
+   453                lsb: 0
+   454            },
+   455            {   name: <span class="string">'fmt'</span>,
+   456                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   457                dataTypeName: <span class="string">'String'</span>,
+   458                units: <span class="string">'none'</span>,
+   459                isHidden: <span class=key>false</span>
+   460            },
+   461            {   name: <span class="string">'data'</span>,
+   462                dataDesc: DvtTypes.DvtDataDesc_DATAARRAY,
+   463                dataTypeName: <span class="string">'Int32'</span>,
+   464                units: <span class="string">'none'</span>,
+   465                isHidden: <span class=key>false</span>
+   466            }
+   467            ]
+   468        };
+   469    }
+</pre>
+</body></html>

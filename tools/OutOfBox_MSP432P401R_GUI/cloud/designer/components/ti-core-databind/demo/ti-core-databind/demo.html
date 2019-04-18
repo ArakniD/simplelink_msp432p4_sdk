@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+    <title>ti-core-databind</title>
+      
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <script>
+        if ('registerElement' in document
+                && 'createShadowRoot' in HTMLElement.prototype
+                && 'import' in document.createElement('link')
+                && 'content' in document.createElement('template')) {
+            // We're using a browser with native WC support!
+        } else {
+            document.write('<script src="../../../webcomponentsjs/webcomponents.js"><\/script>');
+        }
+    </script>
+  
+    <link rel="import" href="../../../ti-core-stylesheets/ti-core-stylesheets.html">
+    <link rel="import" href="../../../ti-core-databind\ti-core-databind.html">
+    <link rel="import" href="../../../core-scaffold/core-scaffold.html">
+    <link rel="import" href="../../../core-header-panel/core-header-panel.html">
+    <link rel="import" href="../../../core-menu/core-menu.html">
+    <link rel="import" href="../../../core-item/core-item.html">
+    <link rel="import" href="../../../core-icon-button/core-icon-button.html">
+    <link rel="import" href="../../../core-toolbar/core-toolbar.html">
+    <link rel="import" href="../../../core-menu/core-submenu.html">
+    <link rel="import" href="../../../ti-widget-dial/ti-widget-dial.html">
+    <link rel="import" href="../../../ti-widget-analoggauge/ti-widget-analoggauge.html">
+
+    <style shim-shadowdom>    
+      body {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      #core_scaffold {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+      }
+      #core_header_panel {
+        background-color: rgb(255, 255, 255);
+      }
+      #core_toolbar {
+        color: rgb(255, 255, 255);
+        background-color: rgb(79, 125, 201);
+      }
+      #core_menu {
+        font-size: 16px;
+      }
+    </style>
+</head>
+<body unresolved>
+    <core-scaffold id="core_scaffold">
+      <core-header-panel mode="seamed" id="core_header_panel" navigation flex>
+        <core-toolbar id="core_toolbar"></core-toolbar>
+        <core-menu selected="Item1" valueattr="label" selectedindex="0" id="core_menu" theme="core-light-theme">
+          <core-item id="core_item" icon="settings" label="Item1" horizontal center layout active></core-item>
+          <core-item id="core_item1" icon="settings" label="Item2" horizontal center layout></core-item>
+        </core-menu>
+      </core-header-panel>
+      <div id="div" tool>Title</div>
+      <ti-widget-dial id="ti_dial_master"></ti-widget-dial>
+      <ti-widget-dial id="ti_dial_slave"></ti-widget-dial>
+      <ti-widget-analoggauge id="ti_gauge"></ti-widget-analoggauge>
+    </core-scaffold>
+</body>

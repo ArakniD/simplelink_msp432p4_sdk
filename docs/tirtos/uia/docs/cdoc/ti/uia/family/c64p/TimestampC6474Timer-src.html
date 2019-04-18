@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.family.c64p.TimestampC6474Timer</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> * ======== TimestampC6474Timer.xdc ========
+</span>    35    <span class="comment"> */</span>
+    36    <span class=key>package</span> ti.uia.family.c64p;
+    37    
+    38    import xdc.runtime.Types;
+    39    
+    40    <span class="xdoc">/*!
+</span>    41    <span class="xdoc"> *  ======== TimestampC6474Timer.xdc ========
+</span>    42    <span class="xdoc"> *  Implementation of `{<b>@link</b> ITimestampProvider}` using C6474 General purpose
+</span>    43    <span class="xdoc"> *    64b timer
+</span>    44    <span class="xdoc"> */</span>
+    45    @ModuleStartup
+    46    <span class=key>module</span> TimestampC6474Timer <span class=key>inherits</span> ti.uia.runtime.IUIATimestampProvider {
+    47    
+    48        <span class="xdoc">/*!
+</span>    49    <span class="xdoc">     * ======== TimerInstance ========
+</span>    50    <span class="xdoc">     * Enumeration that defines the base addresses for each timer instance
+</span>    51    <span class="xdoc">     *  of the TMS6474 device.
+</span>    52    <span class="xdoc">         * Timer2 is used by default.
+</span>    53    <span class="xdoc">     */</span>
+    54        <span class=key>enum</span> TimerInstance {
+    55        TimerInstance_Timer0 = 0x02910000,
+    56        TimerInstance_Timer1 = 0x02920000,
+    57        TimerInstance_Timer2 = 0x02930000,
+    58        TimerInstance_Timer3 = 0x02940000,
+    59        TimerInstance_Timer4 = 0x02950000,
+    60        TimerInstance_Timer5 = 0x02960000
+    61        };
+    62    
+    63        <span class="xdoc">/*!
+</span>    64    <span class="xdoc">     * ======== timerBaseAdrs ========
+</span>    65    <span class="xdoc">     * Base address of the timer to be used as the global timer that provides
+</span>    66    <span class="xdoc">     *  a common time reference for all CPUs.
+</span>    67    <span class="xdoc">     *
+</span>    68    <span class="xdoc">     * This timer will be used to enable multicore event correlation.
+</span>    69    <span class="xdoc">         * <b>@a(Example)</b>
+</span>    70    <span class="xdoc">         * Example showing .cfg script to configure the timerBaseAdrs:
+</span>    71    <span class="xdoc">     *  <b>@p(code)</b>
+</span>    72    <span class="xdoc">     *  var GlobalTimestampTimer =  xdc.useModule('ti.uia.family.c64p.TimestampC6474Timer');
+</span>    73    <span class="xdoc">     *  GlobalTimestampTimer.timerBaseAdrs = GlobalTimestampTimer.TimerInstance_Timer3;
+</span>    74    <span class="xdoc">         *  <b>@p</b>
+</span>    75    <span class="xdoc">     */</span>
+    76        <span class=key>config</span> TimerInstance timerBaseAdrs = TimerInstance_Timer2;
+    77    
+    78        <span class="xdoc">/*!
+</span>    79    <span class="xdoc">     * ======== maxTimerClockFreq =========
+</span>    80    <span class="xdoc">     * The highest timer clock frequency.
+</span>    81    <span class="xdoc">     *
+</span>    82    <span class="xdoc">     * The default ticks per second rate of the timer is calculated by dividing
+</span>    83    <span class="xdoc">     * the timer's bus clock frequency by the cyclesPerTick config parameter.
+</span>    84    <span class="xdoc">     */</span>
+    85        <span class=key>override</span> <span class=key>config</span> Types.FreqHz maxTimerClockFreq;
+    86    
+    87    
+    88        <span class="xdoc">/*!
+</span>    89    <span class="xdoc">     * ======== maxBusClockFreq =========
+</span>    90    <span class="xdoc">     * The highest bus clock frequency used to drive the timer.
+</span>    91    <span class="xdoc">     *
+</span>    92    <span class="xdoc">     * The default ticks per second rate of the timer is calculated by dividing
+</span>    93    <span class="xdoc">     * the timer's bus clock frequency by the cyclesPerTick config parameter.
+</span>    94    <span class="xdoc">     */</span>
+    95        <span class=key>override</span> <span class=key>config</span> Types.FreqHz maxBusClockFreq;
+    96    
+    97        <span class="xdoc">/*!
+</span>    98    <span class="xdoc">     * ======== canFrequencyBeChanged =========
+</span>    99    <span class="xdoc">     * Indicates whether the timer frequency can be changed or not
+</span>   100    <span class="xdoc">     *
+</span>   101    <span class="xdoc">     * <b>@a(returns)</b> true if the timer's clock frequency can be changed
+</span>   102    <span class="xdoc">     */</span>
+   103        <span class=key>override</span> <span class=key>metaonly</span> <span class=key>config</span> Bool canFrequencyBeChanged = <span class=key>false</span>;
+   104    
+   105        <span class="xdoc">/*!
+</span>   106    <span class="xdoc">     * ======== cpuCyclesPerTick =========
+</span>   107    <span class="xdoc">     * The number of CPU cycles each tick of the timestamp corresponds to
+</span>   108    <span class="xdoc">     *
+</span>   109    <span class="xdoc">     * A value of 0 indicates that no conversion between the timer's tick count
+</span>   110    <span class="xdoc">     * and CPU cycles is possible.
+</span>   111    <span class="xdoc">     */</span>
+   112        <span class=key>override</span> <span class=key>metaonly</span> <span class=key>config</span> UInt32 cpuCyclesPerTick = 6;
+   113    
+   114    
+   115        <span class="xdoc">/*!
+</span>   116    <span class="xdoc">     * ======== canCpuCyclesPerTickBeChanged =========
+</span>   117    <span class="xdoc">     * Indicates whether the timer's cycles per tick divide down ratio can be
+</span>   118    <span class="xdoc">     *    changed or not
+</span>   119    <span class="xdoc">     *
+</span>   120    <span class="xdoc">     * <b>@a(returns)</b> true if the timer's CPU cycles per tick can be changed
+</span>   121    <span class="xdoc">     */</span>
+   122        <span class=key>override</span> <span class=key>metaonly</span> <span class=key>config</span> Bool canCpuCyclesPerTickBeChanged = <span class=key>false</span>;
+   123        <span class="xdoc">/*!
+</span>   124    <span class="xdoc">     *  ======== get32 ========
+</span>   125    <span class="xdoc">     *  Return a 32-bit timestamp
+</span>   126    <span class="xdoc">     *
+</span>   127    <span class="xdoc">     *  <b>@a(returns)</b>
+</span>   128    <span class="xdoc">     *  Returns a 32-bit timestamp value.
+</span>   129    <span class="xdoc">     *  Use `{<b>@link</b> #getFreq}` to convert this value into units of real time.
+</span>   130    <span class="xdoc">     *
+</span>   131    <span class="xdoc">     *  <b>@see</b> #get64
+</span>   132    <span class="xdoc">     */</span>
+   133        @DirectCall
+   134        <span class=key>override</span> Bits32 get32();
+   135    
+   136        <span class="xdoc">/*!
+</span>   137    <span class="xdoc">     *  ======== get64 ========
+</span>   138    <span class="xdoc">     *  Return a 64-bit timestamp
+</span>   139    <span class="xdoc">     *
+</span>   140    <span class="xdoc">     *  <b>@param(result)</b>  pointer to 64-bit result
+</span>   141    <span class="xdoc">     *
+</span>   142    <span class="xdoc">     *      This parameter is a pointer to a structure representing a 64-bit
+</span>   143    <span class="xdoc">     *      wide timestamp value where the current timestamp is written.
+</span>   144    <span class="xdoc">     *
+</span>   145    <span class="xdoc">     *      If the underlying hardware does not support 64-bit resolution, the
+</span>   146    <span class="xdoc">     *      `hi` field of `result` is always set to 0; see
+</span>   147    <span class="xdoc">     *      `{<b>@link</b> xdc.runtime.Types#Timestamp64}`.  So, it is possible for
+</span>   148    <span class="xdoc">     *      the `lo` field to wrap around without any change to the `hi` field.
+</span>   149    <span class="xdoc">     *      Use `{<b>@link</b> #getFreq}` to convert this value into units of real
+</span>   150    <span class="xdoc">     *      time.
+</span>   151    <span class="xdoc">     *
+</span>   152    <span class="xdoc">     *  <b>@see</b> #get32
+</span>   153    <span class="xdoc">     */</span>
+   154        @DirectCall
+   155        <span class=key>override</span> Void get64(Types.Timestamp64 *result);
+   156    
+   157        <span class="xdoc">/*!
+</span>   158    <span class="xdoc">     *  ======== getFreq ========
+</span>   159    <span class="xdoc">     *  Get the timestamp timer's frequency (in Hz)
+</span>   160    <span class="xdoc">     *
+</span>   161    <span class="xdoc">     *  <b>@param(freq)</b>  pointer to a 64-bit result
+</span>   162    <span class="xdoc">     *
+</span>   163    <span class="xdoc">     *      This parameter is a pointer to a structure representing a 64-bit
+</span>   164    <span class="xdoc">     *      wide frequency value where the timer's frequency (in Hz)
+</span>   165    <span class="xdoc">     *      is written; see `{<b>@link</b> xdc.runtime.Types#FreqHz}`.
+</span>   166    <span class="xdoc">     *      This function provides a way of converting timestamp
+</span>   167    <span class="xdoc">     *      values into units of real time.
+</span>   168    <span class="xdoc">     *
+</span>   169    <span class="xdoc">     *  <b>@see</b> #get32
+</span>   170    <span class="xdoc">     *  <b>@see</b> #get64
+</span>   171    <span class="xdoc">     */</span>
+   172        @DirectCall
+   173        <span class=key>override</span> Void getFreq(Types.FreqHz *freq);
+   174    
+   175    <span class=key>instance</span>:
+   176    }
+   177    
+   178    <span class="comment">/*
+</span>   179    <span class="comment"> */</span>
+   180    <span class="comment">/*
+</span>   181    <span class="comment"> *  @(#) ti.uia.family.c64p; 1, 0, 0, 0,1; 10-7-2011 11:54:37; /db/vtree/brianc/uia-c23/uia/src/ a0850941
+</span>   182    <span class="comment">
+</span>   183    <span class="comment"> */</span>
+</pre>
+</body></html>

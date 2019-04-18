@@ -1,0 +1,979 @@
+<!--
+`ti-service-serialio`
+
+Example:
+<head>
+...
+    <link rel="import" href="../polymer/polymer.html">
+    <link rel="import" href="../ti-core-backplane/ti-core-backplane.html">
+    <link rel="import" href="../ti-service-serialio/ti-service-serialio.html">
+</head>
+<body unresolved>
+...
+    <ti-core-backplane id="guicomposer_backplane" statusChanged="myStatusChangedHdlr()" ></ti-core-backplane>
+    <ti-service-serialio id="guicomposer_serialio" backplane="backplane"></ti-service-serialio>
+ ...
+<script>
+...
+    var backplane;
+    var serialIO;
+    addEventListener('polymer-ready', function() {
+	  backplane = document.querySelector('ti-core-backplane');
+      serialIO = document.querySelector('ti-service-serialio');
+    }
+</script>
+</body>
+
+
+Use `comport` to specify the name of the serial communications port to use.  Default is auto-selected.
+
+Example:
+
+    <ti-service-serialio></ti-service-serialio>
+
+
+
+@group TI Core
+@element ti-service-serialio
+@homepage ../ti-guicomposer-helpindex/demo.html
+-->
+<!--
+    Copyright (c) 2014, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../ti-core-backplane/ti-core-backplane.html">
+<script type='text/javascript' src="../ti-core-backplane/FileSaver.js"></script>
+
+<polymer-element name="ti-service-serialio">
+    <template>
+        <style>
+            :host {
+                display: block;
+                width: 175px;
+                height: 175px;
+            }
+        </style>
+        <div></div>
+    </template>
+    <script>
+        function reloadPage() {
+            // window.location.reload(true);
+        }
+        Polymer('ti-service-serialio', {
+            _self: undefined,
+            deleteSerialioUponDetach: false,
+            initComplete: false,
+            ds: undefined,
+            agent: undefined,
+            rxDataCount: 0,
+            numDataWaitingTimeout: 0,
+            myTimeout: null,
+            numBadValues: 0,
+            numDataWaitingTimeouts: 0,
+            hasOpenSerialPortBeenCalled: false,
+            pendingDataToSend: null,
+            serialPortSelectionComplete: false,
+            basicWaitingMsg: undefined,
+            msgWaitingForData: undefined,
+            dataFromSerialPort: [],
+            states: [  // http://lamehacks.net/blog/implementing-a-state-machine-in-javascript/
+
+                {
+                    'name': 'disconnected',
+                    'statusString': '',
+                    'waitForUser': true,
+                    'caption': 'Connect',
+                    'skip': false,
+                    'events': {
+                        'gotoNextState': 'findingSerialPorts',
+                        'backplane_ready': 'findingSerialPorts',
+                        'backplane_connectionFailed': 'disconnected',
+                        'backplane_disconnected': 'disconnected'
+                    }
+                },
+                {
+                    'name': 'findingSerialPorts',
+                    'statusString': 'Scanning for serial ports...',
+                    'waitForUser': false,
+                    'skip': false,
+                    'events': {
+                        'gotoNextState': 'serialPortReady',
+                        'onPortFound': 'serialPortReady',
+                        'onComPortError': 'waitForDeviceToBePluggedIn',
+                        'onDebugServerError': 'waitForDeviceToBePluggedIn',
+                        'backplane_connectionFailed': 'disconnected',
+                        'backplane_disconnect': 'disconnected',
+                        'backplane_disconnected': 'disconnected'
+                    }
+                },
+
+                {
+                    'name': 'waitForDeviceToBePluggedIn',
+                    'statusString': '',
+                    'caption': '',
+                    'waitForUser': true,
+                    'skip': false,
+                    'events': {
+                        'gotoNextState': 'disconnected',
+                        //'onPortFound': 'waitForDeviceToBePluggedIn',
+                        'onComPortError': 'waitForDeviceToBePluggedIn',
+                        'onPortFound': 'serialPortReady',
+                        'disconnect':'disconnect',
+                        'onUserSaysDevicePluggedIn': 'disconnected',
+                        'backplane_connectionFailed': 'disconnected',
+                        'backplane_disconnect': 'disconnected',
+                        'backplane_disconnected': 'disconnected'
+                    }
+                },
+                {
+                    'name': 'serialPortReady',
+                    'caption': 'Disconnect',
+                    'statusString': 'Serial Port Ready to be opened',
+                    'waitForUser': true,
+                    'skip': false,
+                    'events': {
+                        'gotoNextState': 'openSerialPort',
+                        'userOpenSerialPort': 'openSerialPort',
+                        'userCloseSerialPort': 'closeSerialPort',
+                        'onPortOpen': 'running',
+                        //'onComPortError': 'waitForDeviceToBePluggedIn',
+                        'backplane_connectionFailed': 'disconnected',
+                        'backplane_disconnect': 'disconnected',
+                        'backplane_disconnected': 'disconnected'
+                    }
+                },
+                {
+                    'name': 'openSerialPort',
+                    'caption': 'Disconnect',
+                    'statusString': 'Opening Serial Port...',
+                    'waitForUser': true,
+                    'skip': false,
+                    'events': {
+                        'gotoNextState': 'running',
+                        'onPortOpen': 'running',
+                        'userCloseSerialPort': 'closeSerialPort',
+                        'onComPortError': 'waitForDeviceToBePluggedIn',
+                        'backplane_connectionFailed': 'disconnected',
+                        'backplane_disconnect': 'disconnected',
+                        'backplane_disconnected': 'disconnected'
+                    }
+                },
+                {
+                    'name': 'running',
+                    'statusString': "Serial Port Open.",
+                    'caption': 'Disconnect',
+                    'waitForUser': false,
+                    'skip': false,
+                    'events': {
+                        'gotoNextState': 'running',
+                        'onDataReady': 'running',
+                        'userCloseSerialPort': 'closeSerialPort',
+                        'backplane_connectionFailed': 'disconnected',
+                        'backplane_disconnect': 'disconnected',
+                        'backplane_disconnected': 'disconnected'
+                    }
+                },
+                {
+                    'name': 'closeSerialPort',
+                    'caption': 'Disconnect',
+                    'statusString': 'Closing Serial Port...',
+                    'waitForUser': false,
+                    'skip': false,
+                    'events': {
+                        'gotoNextState': 'disconnect',
+                        'onPortClosed': 'serialPortReady',
+                        'onComPortError': 'waitForDeviceToBePluggedIn',
+                        'backplane_connectionFailed': 'disconnected',
+                        'backplane_disconnect': 'disconnected',
+                        'backplane_disconnected': 'disconnected'
+                    }
+                },
+                {
+                    'name': 'disconnect',
+                    'statusString': 'Disconnect',
+                    'caption': 'Disconnect',
+                    'waitForUser': true,
+                    'skip': false,
+                    'events': {
+                        'gotoNextState': 'disconnected',
+                        'disconnectComplete': 'disconnected',
+                        'backplane_connectionFailed': 'disconnected',
+                        'backplane_disconnect': 'disconnected',
+                        'backplane_disconnected': 'disconnected'
+                    }
+                }
+
+            ],
+            userActions: ['onUserSaysDevicePluggedIn', 'onSerialPortSelected', 'onBaudRateSelected'],
+            stateIndexes: {},
+            prevState: undefined,
+
+            /**
+             * Fired when the currentState changes.
+             *
+             * @event currentStateChanged
+             */
+            /**
+             * Fired when the status caption changes.
+             *
+             * @event statusMessageChanged
+             */
+            /**
+             * Fired when the client needs to show a 'unplug device and plug it back in' message.
+             *
+             * @event onReplugNeeded
+             */
+
+            /**
+             * Fired when the list of available serial ports is ready to be displayed
+             *
+             * @event serialPortListUpdated
+             */
+            /**
+             * Fired when the visibility of one of the buttons in the application that is associated
+             * with ti-service-serialio needs to be changed
+             *
+             * @event serialPortUIVisibilityChanged
+             */
+            /**
+             * Fired when the serial port discovery process has completed successfully and a serial port
+             * can be safely opened.  Used by ti-service-programloader to deteremine when to display the
+             * program download button.
+             *
+             * @event serialPortsRreadyToBeOpened
+             */
+            publish: {
+                backplane: undefined,
+                /**
+                 * An object that represents the device that is being interacted with.
+                 * The object must have the following fields:
+                 *  <p> {<br/>
+                         *   boardName:     'MSP-EXP430G2 v1.5',<br/>
+                         *   deviceName:      'MSP430G2553',<br/>
+                         *   fileName:      'ReadTempAndSendToSerialPort.cpp.hex',<br/>
+                         *   ccxmlString:   'the target ccxml file serialized as a string'<br/>
+                         *   ccxmlFileName: 'name to use for the ccxml file to be used by TICloudAgent'
+                         *   runTargetToReadMemory: 'true if a monitor on the target is used to read target memory'
+                         *
+                         *   }<br/>
+                 *   <p>Additional fields can be added for other device-specific information.  e.g.
+                 *   {
+                         *   startBtnName:  'Name of button to press to start target running: e.g. P1.3',<br/>
+                         *   boardImage:    'Name of image file of target board to display e.g. launchpad-mspexp430g2-02.jpg',<br/>
+                         *   startBtnImage  'Name of image file showing location of start button e.g. startbutton-mspexp430g2-02.jpg'<br/>
+                         *   helpUrl:       'link to web page with more information on how to troubleshoot serial port problems'<br/>
+                         *   helpText:      'text to display with helpUrl'<br/>
+                         *   }<br/>
+                 * <p>
+                 *
+                 * @attribute selectedDevice
+                 * @type object
+                 * @default undefined
+                 */
+                selectedDevice: undefined,
+                /**
+                 * the name of the chip for the selectedDevice.  This is a two-way binding, allowing it
+                 * to be used within the application's html page
+                 * e.g. <div>{{ti-service-serialio.deviceName}}</div>
+                 *
+                 * @attribute deviceName
+                 * @type string
+                 * @default ''
+                 */
+                deviceName: {value: '', reflect: true},
+                /**
+                 * the name of the board for the selectedDevice.  This is a two-way binding, allowing it
+                 * to be used within the application's html page
+                 * e.g. <div>{{ti-service-serialio.boardName}}</div>
+                 *
+                 * @attribute deviceName
+                 * @type string
+                 * @default ''
+                 */
+                boardName: {value: '', reflect: true},
+                /**
+                 * The current state of this object's internal state machine.
+                 *
+                 * @attribute currentState
+                 * @type string
+                 * @default 'disconnected'
+                 */
+                currentState: {value: undefined, reflect: true},  // see https://groups.google.com/forum/#!msg/polymer-dev/IX_gvSQT78Y/UtxDo-M2H6MJ
+                // and http://stackoverflow.com/questions/23861029/how-does-data-binding-in-polymer-work
+
+                /**
+                 * a string representing the current status of the interactions with the target device.
+                 *
+                 * @attribute status
+                 * @type string
+                 * @default 'Disconnected.'
+                 */
+                status: {value: '', reflect: false},
+                /**
+                 * an array of objects that describe a particular baud rate that the COM port can be configured for.
+                 * This array is generated by ti-service-serialio, and can be displayed in a select box drop-down list
+                 * to allow the user to specify the baud rate that they wish to use to connect to the target via the COM
+                 * port.  The default value is identified by the selected property of the baud rate object.
+                 *
+                 * @attribute baudRates
+                 * @type object
+                 * @default undefined
+                 */
+                baudRates: {value: undefined, reflect: false},
+                /**
+                 * The object from the baudRates array that represents the baud rate that is
+                 * to be used for serial communication with the target.  After initialization, this
+                 * is set by ti-service-serialio to the default baud rate to be used for communication
+                 * unless the user specifies otherwise (typically 9600 baud)
+                 *
+                 * @attribute selectedBaudRate
+                 * @type object
+                 * @default undefined
+                 */
+                selectedBaudRate: {value: undefined, reflect: false},
+                /**
+                 * an array of objects that describe a COM port that is availabe on the user's computer.
+                 * This array is generated by ti-service-serialio, and can be displayed in a select box drop-down list
+                 * to allow the user to specify the COM Port that they wish to use to connect to the target with.
+                 * The default value is identified by the selected property of the baud rate object.
+                 *
+                 * @attribute serialPorts
+                 * @type object
+                 * @default undefined
+                 */
+                serialPorts: {value: undefined, reflect: false},
+                /**
+                 * The object from the serialPorts array that represents the COM Port that is
+                 * to be used for serial communication with the target.  After initialization, this
+                 * is set by ti-service-serialio to the default COM port to be used for communication
+                 * unless the user specifies otherwise (typically the COM port with manufacturer =
+                 * Texas Instruments and, if multiple ports, a pnpId string ending with 0002)
+                 *
+                 * @attribute selectedSerialPort
+                 * @type object
+                 * @default undefined
+                 */
+                selectedSerialPort: {value: {rate: '9600', comName: ''}, reflect: true},
+                /**
+                 * The function handler that is to be called by ti-service-serialio when it receives
+                 * text data over the serial port from the target.  This must be set by the application
+                 * code in order to receive and work with received serial port data.
+                 *
+                 * @attribute serialPortTextOutputHdlr
+                 * @type function
+                 * @default undefined
+                 */
+                serialPortTextOutputHdlr: {value: undefined, reflect: true},
+                /**
+                 * isSerialPortUIVisible indicates whether GUI elements associated with selecting and displaying
+                 * the COM port to use should be displayed or not.  Read in response to the serialPortUIVisibilityChanged
+                 * event being fired.
+                 *
+                 * @attribute isSerialPortUIVisible
+                 * @type boolean
+                 * @default false
+                 */
+                isSerialPortUIVisible: false,
+                /**
+                 * delayBeforeCallingAddTargetSupport determines how long to wait before calling ds.installer.addTargetSupport (value in ms).
+                 *
+                 * @attribute delayBeforeCallingAddTargetSupport
+                 * @type int
+                 * @default 3000
+                 */
+                delayBeforeCallingAddTargetSupport: 3000
+
+            },
+            _backplaneCurrentStateChangedHdlr: function(e) {
+                console.log('ti-service-serialio: backplaneCurrentState changed to ' + e.target.currentState.name);
+                this.updateStateMachine('backplane_' + e.target.currentState.name);
+            },
+            backplaneCurrentStateChangedHdlr: undefined,
+            _backplaneConnectionStatusChangedHdlr: function(e) {
+                console.log('ti-service-serialio: backplaneConnectionState changed .isConnectedToCloudAgent=' + e.target.isConnectedToCloudAgent);
+
+            },
+            backplaneConnectionStatusChangedHdlr: undefined,
+            _backplaneBtnVisibilityChangedHdlr: function(e) {
+                if (e.target.isDisconnectBtnVisible) {
+                    this.isReplugNoticeVisible = false;
+                }
+            },
+            backplaneBtnVisibilityChangedHdlr: undefined,
+            backplaneChanged: function() {
+                if (this.backplane !== undefined) {
+                    this.backplane.addEventListener("currentStateUpdated", this.backplaneCurrentStateChangedHdlr);
+                    this.backplane.addEventListener("connectionStatusChanged", this.backplaneConnectionStatusChangedHdlr);
+                    this.backplane.addEventListener("btnVisibilityChanged", this.backplaneBtnVisibilityChangedHdlr);
+                    if (this.selectedDevice !== undefined) {
+                        this.backplane.selectedDevice = this.selectedDevice;
+                    }
+                    if (this.backplane.currentState !== undefined) {
+                        console.log('ti-service-serialio: backplane event handlers initialized. backplane.currentState.name=' + this.backplane.currentState.name);
+                    }
+                }
+                this.fire('backplaneChanged');
+            },
+            selectedDeviceChanged: function() {
+                this.boardName = this.selectedDevice.boardName;
+                this.deviceName = this.selectedDevice.deviceName;
+                this.fileName = this.selectedDevice.fileName;
+                this.basicWaitingMsg = this.selectedDevice.msgWaitingForData;
+                this.msgWaitingForData = this.basicWaitingMsg;
+                // ensure same device is configured for the backplane
+                if (this.backplane !== undefined) {
+                    this.backplane.selectedDevice = this.selectedDevice;
+                }
+            },
+            selectedBaudRateChanged: function() {
+                console.log('selectedBaudRateChanged: new baud rate = ' + this.selectedBaudRate);
+                this.selectedSerialPort.baudRate = this.selectedBaudRate;
+            },
+            selectedSerialPortChanged: function() {
+                console.log('selectedSerialPortChanged: new COM Port = ' + this.selectedSerialPort.displayName);
+
+                for (var i = 0; i < this.serialPorts.length; ++i) {
+                    if (this.serialPorts[i].comName == this.selectedSerialPort.comName) {
+                        this.serialPorts[i].selected = true;
+                    } else {
+                        this.serialPorts[i].selected = false;
+                    }
+                }
+            },
+            _setStatus: function(strStatus) {
+                this.status = strStatus;
+                this.fire('statusMsgUpdated');
+            },
+            setStatus: undefined,
+            //provided for testing purposes
+            /* returns true if state changed, false otherwise */
+            _updateStateMachine: function(strEventName) {
+                var result = false;
+                var origStateName = this.currentState.name;
+                var newStateName = this.currentState.events[strEventName];
+                if (newStateName) {
+                    console.log('ti-service-serialio: updateStateMachine event = ' + strEventName);
+                    if (newStateName !== origStateName) {
+                        this.prevState = this.currentState;
+                        var newIndex = this.stateIndexes[newStateName];
+                        this.currentState = this.states[newIndex];
+                        console.log('ti-service-serialio: state change from ' + origStateName + ' to ' + newStateName);
+                    }
+                    result = true;
+                } else {
+                    console.log('OUT OF SEQUENCE updateStateMachine event: ' + strEventName)
+                    console.log(this.currentState.events.length + ' valid event names for state=' + this.currentState.name + ':');
+                    for (var i = 0; i < this.currentState.events.length; i++) {
+                        console.log('event[' + i + ']=' + this.currentState.events[i].name);
+                    }
+                }
+
+                return (result);
+            },
+            updateStateMachine: undefined,
+            _currentStateChanged: function() {
+                console.log('onCurrentStateChanged: currentState.name=' + this.currentState.name);
+                if (this.currentState.statusString.length > 0) {
+                    this.setStatus(this.currentState.statusString);
+                }
+                console.log('onCurrentStateChanged: status=' + this.status);
+                this.prevState = this.currentState;
+                switch (this.currentState.name) {
+                    case 'disconnected':
+                        this.isSerialPortUIVisible = false;
+                        this.disconnectFromSerialPort();
+                        this.fire('serialPortUIVisibilityChanged');
+                        break;
+                    case 'findingSerialPorts':
+                        this.isReplugNoticeVisible = false;
+                        this.fire('replugNoticeVisibilityChanged');
+                        this.setStatus('Scanning for serial ports...');
+                        this.listSerialPorts();
+                        break;
+                    case 'serialPortReady':
+                        this.isSerialPortUIVisible = true;
+                        this.fire('serialPortUIVisibilityChanged');
+                        this.fire('serialPortsReadyToBeOpened');
+                        break;
+                    case 'openSerialPort':
+                        this.connectToSerialPort();
+                        this.fire('serialPortUIVisibilityChanged');
+
+                        break;
+                    case 'closeSerialPort':
+                        this.disconnectFromSerialPort();
+                        this.fire('serialPortUIVisibilityChanged');
+                        this.updateStateMachine('onPortClosed')
+                        break;
+                    case 'running':
+                        this.setStatus('Serial Port Open: '+this.selectedSerialPort.comName + ', ' + this.selectedSerialPort.baudRate+' baud');
+                        this.fire('serialPortOpen');
+                        break;
+                    case 'waitForDeviceToBePluggedIn':
+                        this.isSerialPortUIVisible = false;
+                        this.isReplugNoticeVisible = true;
+                        this.fire('serialPortUIVisibilityChanged');
+                        //fire an event to notify the client that they need to show a 'unplug device and plug it back in' message.
+                        var statusStr = this.status;
+                            /* TODO: display status info in a nicer dialog:
+
+                        var msg = "\nPlease ensure that your "+this.boardName+" is properly connected to your computer's USB port..."
+
+                        var _self = this;
+                        var helpUrl = this.selectedDevice.helpUrl;
+                        var helpText = this.selectedDevice.helpText;
+                        if ((helpUrl === undefined) || (helpUrl === null) || (helpText === undefined) || (helpText === null)){
+                            helpUrl = '';
+                            helpText = '';
+                        }
+                        this.backplane.showAlertDialog('Please check your Serial Port Connections.',msg,helpUrl,helpText,'OK',function(){
+                            _self.backplane.disconnect();
+                        });
+                        */
+                        if ((statusStr.indexOf("Please") < 0) &&(statusStr.indexOf("Failed") < 0)){
+                            //statusStr += "\nPlease plug your "+this.boardName+" into your computer's USB port."
+                            //this.status = statusStr;
+                            this.backplane.updateStateMachine('onDisconnectBtnClicked');
+                        } else {
+                            this.backplane.updateStateMachine('onFailedToConnect');
+                        }
+                        this.backplane.statusString2 = "Please plug your "+this.boardName+ " into your computer's USB port and click the Connect icon at left";
+
+                        this.fire('replugNoticeVisibilityChanged');
+                        this.updateStateMachine('backplane_disconnected'); // force state machine to close serial ports and try again.
+                        break;
+                    case 'disconnect':
+                        this.ds = undefined;
+                        this.isSerialPortUIVisible = false;
+                        this.fire('serialPortUIVisibilityChanged');
+                        this.updateStateMachine('disconnectComplete');
+                        break;
+
+                }
+
+                //if (this.currentState.waitForUser) {
+                this.fire('currentStateUpdated');
+                //}
+
+
+            },
+            currentStateChanged: undefined,
+
+
+            setUserAction: function(e) {
+                console.log('setUserAction: ' + e);
+                if (this.currentState.events[e]) {
+                    this.currentState = this.states[this.stateIndexes[this.currentState.events[e]]];
+                    console.log('updated currentState to ' + this.currentState.name);
+                }
+            },
+            debugPrint: function(str) {
+                var isDebuggingEnabled = true;
+                if (isDebuggingEnabled) {
+                    console.log(str);
+                }
+            },
+            waitForSocketConnection: function(socket, callback) {
+                setTimeout(
+                        function() {
+                            if (socket.readyState === 1) {
+                                if (callback !== undefined) {
+                                    callback();
+                                }
+                                return;
+                            } else {
+                                // keep waiting if socket is connecting
+                                if (socket.readyState == 0) {
+                                    waitForSocketConnection(socket, callback);
+                                } else {
+                                    //TODO: handle case where socket is closing (2) or closed(3)
+                                    console.log("ERROR: webSocket readyState =" + socket.readyState + ', (2=closing, 3=closed)');
+                                }
+                            }
+                        }, 5);
+            },
+
+            /**
+             * Open serial port parameters
+             * @typedef {Object} openSerialParams
+             * @property {string} comName name of the port to open
+             * @property {string} baudrate baudrate
+             */
+
+            /**
+             * Open a connection to a serial port
+             * @param output console output object
+             * @param serialRxMsgHdlr serial port read output object. Only messages from the serial port are re-directed here.
+             * @param {openSerialParams} portInfo
+             * @param onOpenCallback callback to be called when serial port opened.  Takes 3 params: error, serialTxMsgHdlr
+             * @function
+             */
+            _openSerialPort: function(output, serialRxMsgHdlr, portInfo, onOpenCallback) {
+                // decorate the paramaters to pass along
+                portInfo.command = "serial.open";
+                this.serialRxMsgHdlr = serialRxMsgHdlr;  //bc NEW - persist callback function handle
+                var dataReceived = false;
+                var _self = this;
+
+                //this.serial.open(output,serialRxMsgHdlr, portInfo, onOpenCallback);
+                this.serial.addListener("serialout", serialRxMsgHdlr);
+                this.serial.open(portInfo).then(function(){
+
+                    // BC: TODO: hook in tx message handler somehow - see agent.js line 848 typeerror object is not a function event dispatch.
+                    onOpenCallback();
+                });
+
+            },
+            openSerialPort: undefined,
+            serial: undefined,
+            _listSerialPorts: function() {
+                var thisObj = this;
+                var _self = this;
+                var ports;
+
+                this.ds = this.backplane.ds;
+                this.agent = this.backplane.agent;
+                console.log('ti-service-serialio: ds =' + this.ds);
+                // Always get the user to unplug and then plug in their board in order to ensure
+                // the device's debugger is in a good / known state.
+                if ((this.ds === undefined) || (this.ds === null) || (this.agent === undefined) || (this.agent === null)) {
+                    this.setStatus('Failed to get Debug Server or agent.');
+                    this.backplane.reset();
+                    this.ds = undefined;
+                    this.updateStateMachine('onDebugServerError');
+                    return;
+                }
+                if ((_self.serialPortSelectionComplete) && (_self.serial !== undefined)) {
+                    console.log("ti-service-serialio: using previous port selections: "+this.selectedSerialPort.comName+':'+this.selectedSerialPort.baudRate);
+                    this.onSerialPortSelected(true);
+                    return;
+                }
+                console.log("ti-service-serialio: about to call this.agent.getSubModule(Serial). Target=" + this.deviceName + ")");
+                this.agent.getSubModule("Serial").then(function (serial1) {
+                    _self.serial = serial1;
+
+                        _self.serial.list().then(function (retObj) {
+                                    retObj.targetName = _self.backplane.selectedDevice.xmlDeviceName;
+                                    ports = retObj.ports;
+                                    return TICloudAgent.Util.selectDefaultPort(retObj)
+                                }
+                        ).then(function(found) {
+                                    if (found) {
+                                        return TICloudAgent.Util.getBaudRates();
+                                    } else {
+                                        throw "Default port not selected!";
+                                    }
+                                }).then(function(baudrates) {
+
+                                    // select the port and buadrate to open
+                                    for (var j = 0; j < ports.length; j++) {
+                                        var port = ports[j];
+                                        if (port.selected) {
+                                            if (_self.selectedBaudRate !== undefined) {
+                                                port.baudRate = _self.selectedBaudRate;
+                                                _self.selectedSerialPort = port;
+                                            } else {
+                                                for (var i = 0; i < baudrates.length; i++) {
+                                                    var baudrateObj = baudrates[i];
+                                                    if (baudrateObj.selected) {
+                                                        port.baudRate = baudrateObj.rate;
+                                                        _self.selectedBaudRate = baudrateObj.rate;
+                                                        _self.selectedSerialPort = port;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            portInfo = port;
+                                            break;
+                                        }
+                                    }
+
+                                    if ((ports !== undefined) && (ports !== null)) {
+                                        _self.serialPorts = ports;
+                                        _self.baudRates = baudrates;
+                                        console.log('ti-service-serialio.listSerialPorts: found ' + ports.length + ' ports.');
+                                        console.log('   selectedSerialPort=' + _self.selectedSerialPort.comName + ', baudRate=' + _self.selectedSerialPort.baudRate);
+                                    } else {
+                                        console.log('ti-service-serialio.listSerialPorts: error: ports = ' + ports);
+                                    }
+                                    //_self.onComPortListReady(null, {ports: ports, bauds: _self.getBaudRates()});
+
+                        _self.serialPortSelectionComplete = true;
+                        _self.onSerialPortSelected(true);
+
+                    }).fail(function (error) {
+                        if (error) {
+                            console.log('ti-service-serialio.listSerialPorts: error=' + error);
+                        }
+                        console.log('ti-service-serialio.listSerialPorts: error=' + error);
+                        _self.onComPortListReady(error,null);
+                    });
+
+                }).fail(function (error) {
+                    console.log('ti-service-serialio.listSerialPorts: failed: error.message='+error.message);
+                    _self.onComPortError(error.message);
+                    _self.updateStateMachine('backplane_disconnect');
+                });
+
+            },
+            listSerialPorts: undefined,
+
+            _onComPortListError: function(error, htmlText) {
+                this.setStatus(htmlText);
+                if (error) {
+                    console.log('ti-service-serialio.onComPortListError: error='+error);
+                    this.updateStateMachine('onComPortError');
+                }
+            },
+            onComPortListError: undefined,
+            _onComPortListReady: function(error, serialPortInfo) {
+                if ((error) || (serialPortInfo === undefined) || (serialPortInfo === null) || (serialPortInfo.ports.length <= 0)) {
+
+                    if (error) {
+                        console.log('listSerialPorts.onComPortListReady: error=' + error);
+                    }
+                    this.setStatus("Error: no serial ports found connected to your computer.  Please check your USB connections.");
+                    this.updateStateMachine('onComPortError');
+                }
+            },
+            onComPortListReady: undefined,
+            _onSerialPortSelected: function(foundPort) {
+                if (!foundPort) {
+                    this.setStatus("Please connect your " + this.selectedDevice.boardName + "  to a USB port of your computer.");
+                    this.updateStateMachine('onComPortError');
+                } else {
+                    this.setStatus("Connected.");
+                    for (var i = 0; i < this.serialPorts.length; i++) {
+                        if (this.serialPorts[i].selected) {
+                            this.selectedSerialPort.comName = this.serialPorts[i].comName;
+                            break;
+                        }
+                    }
+                    this.isSerialPortUIVisible = true;
+                    this.fire('serialPortUIVisibilityChanged');
+                    this.fire('serialPortListUpdated');
+
+                    this.updateStateMachine('onPortFound');
+                }
+
+            },
+            onSerialPortSelected: undefined,
+            _serialPortOutputListener: function(eventObj){
+
+                var message = '';
+                try{
+                    message = String.fromCharCode.apply( null, eventObj.buffer );
+                } catch(ex){
+                    console.log('ti-service-serialio.serialPortOutputListener: Exception converting buffer to text string');
+                }
+
+                if (this.myTimeout !== null) {
+                    window.clearTimeout(this.myTimeout);
+                    this.myTimeout = null;
+                }
+                this.rxDataCount++;
+                if ((this.rxDataCount % 256) == 0) {
+                    console.log('rxDataCount = ' + this.rxDataCount);
+                }
+
+                if (this.serialPortTextOutputHdlr !== undefined) {
+                    this.serialPortTextOutputHdlr.text(message,eventObj.buffer);
+                }
+            },
+            serialPortOutputListener: undefined,
+            isListeningToSerialPortOutput: false,
+            _reopenSerialPort: function() {
+                this.disconnectFromSerialPort();
+                this.connectToSerialPort();
+            },
+            reopenSerialPort: undefined,
+            _connectToSerialPort: function() {
+                if (this.hasOpenSerialPortBeenCalled)  return;
+                this.hasOpenSerialPortBeenCalled = true;
+                var _self = this;
+                this.setStatus('Connecting to ' + this.selectedDevice.deviceName + ' over ' + this.selectedSerialPort.comName + '...');
+
+                if ((this.ds !== undefined) && (this.ds !== null)) {
+                    var consoleOutput = {
+                        _text: function (message) {
+                            console.log('ti-service-serialio console output='+message);
+                            _self.setStatus(message);
+                        },
+                        text: undefined
+                    };
+                    consoleOutput.text = consoleOutput._text.bind(this);
+                    var portInfo = {
+                        comName: _self.selectedSerialPort.comName,
+                        baudrate: _self.selectedSerialPort.baudRate,
+                        command: "serial.open"
+                    };
+                    this.serial.open(portInfo).then(function(portInfoRetObj) {
+
+                        _self.serial.addListener("serialout", _self.serialPortOutputListener)
+                        _self.isListeningToSerialPortOutput = true;
+
+                        _self.debugPrint("Serial Port Opened Successfully");
+                        if (_self.backplane) {
+                            if (_self.selectedSerialPort.baudRate === undefined) {
+                                _self.selectedSerialPort.baudRate  = _self.selectedBaudRate;
+                            }
+                            _self.backplane.statusString1 = _self.selectedSerialPort.comName + ":" + _self.selectedSerialPort.baudRate;
+                        }
+
+                        _self.serialSend = function (strToSendToTarget) {
+                            _self.debugPrint('ti-service-serialio: serialSend called. strToSendToTarget' + strToSendToTarget)
+                            _self.serial.write(portInfoRetObj,strToSendToTarget);
+                        };
+
+                        _self.closeSerialPort = function () {
+                            _self.debugPrint('closeSerialPort called.');
+                            if (_self.myTimeout !== null) {
+                                window.clearTimeout(this.myTimeout);
+                                _self.myTimeout = null;
+                            }
+                            if (_self.isListeningToSerialPortOutput) {
+                                _self.isListeningToSerialPortOutput = false;
+                                _self.serial.removeListener("serialout",_self.serialPortOutputListener);
+                                _self.serial.close(portInfoRetObj).fail(function(error){
+                                    console.log("Failed to close serial port: error = "+error);
+                                });
+                            } else {
+                                _self.debugPrint('closeSerialPort found serialPortOutputListener === undefined.');
+                            }
+                            // if the current backplane.statusString1 is displaying a COM port : baud rate status, change it to 'Serial Port Closed'
+                            if ((_self.backplane) && (_self.backplane.statusString1.indexOf(':')>0)) {
+                                _self.backplane.statusString1 = "Serial Port Closed.";
+                            }
+                            _self.setStatus("Connection Closed.");
+                        }
+
+                        _self.updateStateMachine('onPortOpen');
+
+                    }).fail(function(error){
+                        if (error) {
+                            var errStr = error.message;
+                            if ((error.name)&&(error.name.length > 0)){
+                                errStr = error.name;
+                            }
+                            if ((error.msg) && (error.msg.length > 0)){
+                                errStr = errStr + ": message = "+error.msg;
+                            }
+                            console.log(error.message);
+                            _self.setStatus("openSerialPort error: " + errStr);
+                            _self.backplane.statusString1 = errStr;
+                            _self.backplane.setIcon("error");
+                            _self.hasOpenSerialPortBeenCalled = false;
+
+
+                        }
+                    });
+                }
+
+            }
+            ,
+            connectToSerialPort: undefined,
+            _disconnectFromSerialPort: function() {
+                this.hasOpenSerialPortBeenCalled = false;
+                if (this.activeSerialPortTxMsgHdlr !== undefined) {
+                    this.activeSerialPortTxMsgHdlr.close();
+                } else {
+                    this.debugPrint('closeSerialPort found activeSerialPort === undefined.');
+                }
+                if (this.closeSerialPort !== undefined) {
+                    this.closeSerialPort();
+                }
+                this.setStatus("Serial Port Closed.");
+                this.backplane.restoreIcon();
+            },
+            disconnectFromSerialPort: undefined,
+
+            ready: function() {
+                this.enteredView();
+            },
+
+            // see https://groups.google.com/forum/#!searchin/polymer-dev/binding/polymer-dev/wzfxU9vVAg0/1sFyrmnxy5EJ for info on why initialization is not
+            // considered complete until either enteredView or created is called
+            enteredView: function() {
+                this._self = this;
+                this.initComplete = true;
+
+                this.stateIndexes = {};
+                for (var i = 0; i < this.states.length; i++) {
+                    this.stateIndexes[this.states[i].name] = i;
+                }
+                this.currentState = this.states[0];
+                this.prevState = this.currentState;
+
+                this.numBadValues = 0;
+                this.rxDataCount = 0;
+
+                this.serialPortOutputListener = this._serialPortOutputListener.bind(this);
+                this.currentState = this.states[0];
+                this.setStatus = this._setStatus.bind(this);
+                this.updateStateMachine = this._updateStateMachine.bind(this);
+                this.currentStateChanged = this._currentStateChanged.bind(this);
+                this.listSerialPorts = this._listSerialPorts.bind(this);
+                this.openSerialPort = this._openSerialPort.bind(this);
+                this.connectToSerialPort = this._connectToSerialPort.bind(this);
+                this.disconnectFromSerialPort = this._disconnectFromSerialPort.bind(this);
+                this.reopenSerialPort = this._reopenSerialPort.bind(this);
+                this.backplaneCurrentStateChangedHdlr = this._backplaneCurrentStateChangedHdlr.bind(this);
+                this.backplaneConnectionStatusChangedHdlr = this._backplaneConnectionStatusChangedHdlr.bind(this);
+                this.backplaneBtnVisibilityChangedHdlr = this._backplaneBtnVisibilityChangedHdlr.bind(this);
+                this.onComPortListReady = this._onComPortListReady.bind(this);
+                this.onComPortListError = this._onComPortListError.bind(this);
+                this.onSerialPortSelected = this._onSerialPortSelected.bind(this);
+
+                if ((this.parentNode !== undefined) &&(this.parentNode !== null)) {
+                    this.backplane = this.parentNode.querySelector("ti-core-backplane");
+                    if ((this.backplane === undefined) || (!this.backplane)) {
+                        this.backplane = document.createElement("ti-core-backplane");
+                        var body = document.querySelector("body");
+                        if (body) {
+                            body.appendChild(this.backplane);
+                            this.deleteSerialioUponDetach = true;
+                        }
+                    }
+                } else {
+                    this.backplane = document.querySelector("ti-core-backplane");
+                    if ((this.backplane === undefined) || (!this.backplane)) {
+                        this.backplane = document.createElement("ti-core-backplane");
+                        var body = document.querySelector("body");
+                        if (body){
+                            body.appendChild(this.backplane);
+                            this.deleteSerialioUponDetach = true;
+
+                        }
+                    }
+                }
+            }
+        });
+
+
+    </script>
+</polymer-element>

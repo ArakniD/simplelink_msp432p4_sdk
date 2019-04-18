@@ -1,0 +1,1749 @@
+<html>
+<head>
+<title>module ti.uia.family.dm.dra7xx.TimestampProvider</title>
+<meta name="description" content="System-wide timestamp provider">
+<link rel="stylesheet" type="text/css" href="../../../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.family.dm.dra7xx.</span><span class="xdoc-id">TimestampProvider</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/package.html" title="package ti.uia.family.dm.dra7xx"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html">index URL</a></div>
+<p class="xdocHdrSummary">System-wide timestamp provider</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-1">DETAILS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-2">CONFIGURATION EXAMPLE</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-3">CPU FREQUENCY CONFIGURATION</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+This timestamp provider is used by UIA to provide a common time
+  base for all processors. This allows System Analyzer to correlate
+  the log events from all processors to a common time base. Event
+  correlation is required for the multi-core execution graph. Use
+  this module as the global timestamp proxy for the
+  <a class="xdoc-link" href="../../../../../ti/uia/runtime/LogSync.html" title="ti.uia.runtime.LogSync">ti.uia.runtime.LogSync</a> module.
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider-src.html"><span class="xdocLabelFile">ti/uia/family/dm/dra7xx/TimestampProvider.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/family/dm/dra7xx/TimestampProvider.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td colspan="2"><div class="xdocSynFxnCat">Functions common to all ITimestampClient modules</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bits32</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get32"><span class="xdoc-id">TimestampProvider_get32</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Return a 32-bit timestamp</span></span></a>();</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get64"><span class="xdoc-id">TimestampProvider_get64</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Return a 64-bit timestamp</span></span></a>(<a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">Types_Timestamp64</a>&nbsp;*<span class="xdoc-id">result</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get.Freq"><span class="xdoc-id">TimestampProvider_getFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get the timestamp timer's frequency (in Hz)</span></span></a>(<a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;*<span class="xdoc-id">freq</span>);</div></td></tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">TimestampProvider_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">TimestampProvider_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">TimestampProvider_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">TimestampProvider_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">TimestampProvider_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">TimestampProvider_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Typedefs</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Ledger"><span class="xdoc-id">TimestampProvider_Ledger</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Define a ledger used in the system</span></span></a> ...</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Role"><span class="xdoc-id">TimestampProvider_Role</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Define roles for each ledger instance</span></span></a> ...</div></td></tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Constants</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#cpu.Intr.Num"><span class="xdoc-id">TimestampProvider_cpuIntrNum</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Specify cpu interrupt to receive timer interrupt</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#est.Cpu.Freq"><span class="xdoc-id">TimestampProvider_estCpuFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Estimate the cpu frequency using timestamp sample buffer</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#event.Id"><span class="xdoc-id">TimestampProvider_eventId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Specify interrupt controller event to receive timer interrupt</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html#.Ledger" title="ti.uia.family.dm.dra7xx.TimestampProvider.Ledger">TimestampProvider_Ledger</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#ledgers"><span class="xdoc-id">TimestampProvider_ledgers</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Define the ledgers to be managed by this processor</span></span></a>[<span class="xdoc-kw2">length</span>];</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.L_latch"><span class="xdoc-id">TimestampProvider_L_latch</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log event raised at the end of the timer isr</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.L_suspend"><span class="xdoc-id">TimestampProvider_L_suspend</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log event raised when loggers are to be suspended</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#max.Bus.Clock.Freq"><span class="xdoc-id">TimestampProvider_maxBusClockFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The highest bus clock frequency used to drive the timer</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#max.Timer.Clock.Freq"><span class="xdoc-id">TimestampProvider_maxTimerClockFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The highest timer clock frequency</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#owner"><span class="xdoc-id">TimestampProvider_owner</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Determine ownership of the timer</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">UInt</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#sync.Interval"><span class="xdoc-id">TimestampProvider_syncInterval</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Specify the interval for logging sync events</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">UInt</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#timer.Id"><span class="xdoc-id">TimestampProvider_timerId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Identify which timer to use as the timestamp clock source</span></span></a>;</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This timestamp provider is used by UIA to provide a common time
+  base for all processors. This allows System Analyzer to correlate
+  the log events from all processors to a common time base. Event
+  correlation is required for the multi-core execution graph. Use
+  this module as the global timestamp proxy for the
+  <a class="xdoc-link" href="../../../../../ti/uia/runtime/LogSync.html" title="ti.uia.runtime.LogSync">ti.uia.runtime.LogSync</a> module.</div>
+<div class="xdocText">This module requires the use of a timer to provide a common system
+  tick. The timer needs to have access to the 32 KHz clock. Not all
+  timers are suitable for use by this module. See the <a class="xdoc-link" href="TimestampProvider.html#timer.Id" title="timerId">timerId</a>
+  configuration parameter for a list of recommended timers. Exactly one
+  processor must be the owner of the timer. See <a class="xdoc-link" href="TimestampProvider.html#owner" title="owner">owner</a> for details.</div>
+<div class="xdocText">Ledgers are used internally by this module to keep track of the
+  other processors in the system. The ledgers are shared across
+  processor boundaries. You must provide the base address of a ledger
+  so that all processors know where to find it. See the <a class="xdoc-link" href="TimestampProvider.html#ledgers" title="ledgers">ledgers</a>
+  configuration parameter for details. There are two types of ledgers:
+  a group ledger, and a private ledger. One group ledger is mandatory,
+  private ledgers are typically used by the EVE processors. Ledgers are
+  defined by the role used to access them. See the <a class="xdoc-link" href="TimestampProvider.html#.Role" title="Role">Role</a>
+  enumeration for details.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">CONFIGURATION EXAMPLE</div>
+<div class="xdocText"></div>
+<div class="xdocText">This is a four processor example: DSP1 DSP2 EVE1 EVE2. In this example,
+  DSP1 is to be the owner of the timer. Three ledgers will be used, one
+  group ledger and two private ledgers. The group ledger is used by DSP1
+  and DSP2. One private ledger is used by DSP1 and EVE1. The other private
+  ledger is used by DSP2 and EVE2.</div>
+<div class="xdocText">Add the following to your DSP1 configuration script.</div>
+<div class="xdocText"><PRE class="Example">  // add Timer3 (id=2) to SYS/BIOS available mask //
+  var TimerSupport = xdc.useModule('ti.sysbios.family.shared.vayu.TimerSupport');
+  TimerSupport.availMask |= (0x1 &lt;&lt; 2);
+
+  // configure timestamp proxy //
+  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+  TimestampProvider.timerId = 2;
+  TimestampProvider.owner = true;
+  TimestampProvider.eventId = 65;
+  TimestampProvider.cpuIntrNum = 13;
+  TimestampProvider.syncInterval = 33;
+
+  // group ledger
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Ledger_PEER,
+          base: 0x40500000,
+          size: 2, // DSP1 DSP2
+          index: 0 // DSP1
+      })
+ );
+
+  // eve1 ledger
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Role_USER,
+          base: 0x42020000
+      })
+  );
+
+  // enable event correlation
+  var LogSync = xdc.useModule('ti.uia.runtime.LogSync');
+  LogSync.GlobalTimestampProxy = TimestampProvider;
+  LogSync.enableEventCorrelationForJTAG = true;
+</PRE></div>
+<div class="xdocText">Add the following to your DSP2 configuration script.</div>
+<div class="xdocText"><PRE class="Example">  // configure timestamp proxy for event correlation
+  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+
+  TimestampProvider.timerId = 2;
+  TimestampProvider.owner = false; // DSP1 is owner
+  TimestampProvider.eventId = 65;
+  TimestampProvider.cpuIntrNum = 13;
+  TimestampProvider.syncInterval = 33;
+
+  // group ledger
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Role_PEER,
+          base: 0x40500000,
+          size: 2, // DSP1 DSP2
+          index: 1 // DSP2
+      })
+ );
+
+  // eve2 ledger
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Role_USER,
+          base: 0x42120000
+      })
+  );
+
+  // enable event correlation
+  var LogSync = xdc.useModule('ti.uia.runtime.LogSync');
+  LogSync.GlobalTimestampProxy = TimestampProvider;
+  LogSync.enableEventCorrelationForJTAG = true;
+</PRE></div>
+<div class="xdocText">Add the following to your EVE1 configuration script.</div>
+<div class="xdocText"><PRE class="Example">  // configure timestamp proxy for event correlation
+  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+
+  TimestampProvider.timerId = 2;
+  TimestampProvider.owner = false; // DSP1 is owner
+  TimestampProvider.eventId = 35;
+  TimestampProvider.cpuIntrNum = 9;
+  TimestampProvider.syncInterval = 33;
+
+  // use private ledger, role = owner
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Role_OWNER,
+          base: 0x40020000
+      })
+ );
+
+  // enable event correlation
+  var LogSync = xdc.useModule('ti.uia.runtime.LogSync');
+  LogSync.GlobalTimestampProxy = TimestampProvider;
+  LogSync.enableEventCorrelationForJTAG = true;
+</PRE></div>
+<div class="xdocText">Add the following to your EVE2 configuration script.</div>
+<div class="xdocText"><PRE class="Example">  // configure timestamp proxy for event correlation
+  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+
+  TimestampProvider.timerId = 2;
+  TimestampProvider.owner = false; // DSP1 is owner
+  TimestampProvider.eventId = 35;
+  TimestampProvider.cpuIntrNum = 9;
+  TimestampProvider.syncInterval = 33;
+
+  // use private ledger, role = owner
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Role_OWNER,
+          base: 0x40020000
+      })
+ );
+
+  // enable event correlation
+  var LogSync = xdc.useModule('ti.uia.runtime.LogSync');
+  LogSync.GlobalTimestampProxy = TimestampProvider;
+  LogSync.enableEventCorrelationForJTAG = true;
+</PRE></div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">CPU FREQUENCY CONFIGURATION</div>
+<div class="xdocText"></div>
+<div class="xdocText">In order for event correlation to be accurate, the cpu frequency must
+  be set as accurately as possible. This module can be used to determine
+  you actual cpu frequency.</div>
+<div class="xdocText">Enable the timestamp sample buffer with the <a class="xdoc-link" href="TimestampProvider.html#est.Cpu.Freq" title="estCpuFreq">estCpuFreq</a>
+  configuration parameter. Run your program continuously for 30 seconds.
+  Use ROV to view the cpu frequency in the TimestampProvider module view.</div>
+<div class="xdocText">Once you have determined your cpu frequency, use that value to configure
+  the SYS/BIOS cpu frequency.</div>
+<div class="xdocText"><PRE class="Example">  var BIOS = xdc.useModule('ti.sysbios.BIOS');
+  BIOS.cpuFreq = { hi: 0, lo: 609024002 };
+</PRE></div>
+<div class="xdocText">Hint: disable the <a class="xdoc-link" href="TimestampProvider.html#est.Cpu.Freq" title="estCpuFreq">estCpuFreq</a> when done to reduce your data
+  footprint.</div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Role"></a>
+<a class="xdocAnchor" id=".Role_.P.E.E.R"></a>
+<a class="xdocAnchor" id=".Role_.O.W.N.E.R"></a>
+<a class="xdocAnchor" id=".Role_.U.S.E.R"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">Role</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#.Role">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Define roles for each ledger instance</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> <span class="xdoc-id">TimestampProvider_Role</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampProvider_Role_PEER</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;shared by multiple processors</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampProvider_Role_OWNER</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;shared with one remote processor</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">TimestampProvider_Role_USER</span>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;shared with one remote processor</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">TimestampProvider_Role</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">There may be multiple ledger instances in a system. There are
+  two types of ledgers: 1. a group ledger, and 2. a private ledger.
+  A group ledger may have two or more users. A private ledger has
+  exactly two users. When a processor creates a private ledger,
+  that processor may not create any additional ledgers of any type.
+  A private ledger is typicaly used by the ARP32 processor.</div>
+<div class="xdocText">The ledger type is identified by the role used to access it.</div>
+<div class="xdocText"><div class="xdocText"><dl>
+  <dt>Role_PEER</dt>
+      <dd>
+      This role is used to access a group ledger instance. This
+      ledger instance is used by multiple processors. The ledger
+      is an array of GroupLedgerElem elements. Each processor
+      uses one entry in the ledger. The size of the ledger must
+      equal the number of users.<br><br>
+
+      All users of this ledger are peers. The ledger is not created
+      by any processor, it must be defined in the memory map.<br><br>
+      </dd>
+
+  <dt>Role_OWNER</dt>
+      <dd>
+      This role is used to access a private ledger. This ledger
+      is used by only two processors: the local processor (the
+      owner) and a remote processor (the user). The ledger is
+      allocated in the local processor's memory map. This same
+      ledger must be defined by a Role_USER role on one other
+      processor.<br><br>
+      </dd>
+
+  <dt>Role_USER</dt>
+      <dd>
+      This role is used to access a private ledger.  This role is the
+      complement of the Role_OWNER role. When using a private ledger,
+      the actual ledger is created by the other processor.<br><br>
+
+      A processor using the Role_USER role, will access the ledger with
+      the given address, but it does not allocate the ledger.<br><br>
+
+      It is possible to access multiple private ledgers from the
+      same processor. Each Role_USER corresponds to a private ledger
+      created by another processor.<br><br>
+      </dd>
+  </dl></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Ledger"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">Ledger</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#.Ledger">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Define a ledger used in the system</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampProvider_Ledger</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdoc-link" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html#.Role" title="ti.uia.family.dm.dra7xx.TimestampProvider.Role">TimestampProvider_Role</a>&nbsp;<span class="xdoc-id"><span class="xdoc-id">role</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;role used to access the ledger</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">base</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;base address of the ledger</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">size</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;number of users</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id"><span class="xdoc-id">index</span></span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;entry assigned to this processor</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">TimestampProvider_Ledger</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">FIELDS</div>
+<div class="xdocChild"><span class="xdocChildId">role</span>
+<span class="xdocChildSum">&#151;&nbsp;Defines how this processor will be using the ledger. The role
+  also implicitly defines which type of ledger is created. See
+  the <a class="xdoc-link" href="TimestampProvider.html#.Role" title="Role">Role</a> enumeration for details.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">base</span>
+<span class="xdocChildSum">&#151;&nbsp;The base address of the ledger as seen by the local processor.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">size</span>
+<span class="xdocChildSum">&#151;&nbsp;The number of users of the current ledger. When adding a new
+  user to a ledger, be sure to update this value for all processors
+  using the same ledger.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">index</span>
+<span class="xdocChildSum">&#151;&nbsp;The entry index in the ledger to be used by this processor. Each
+  processor must have its own unique entry. The index is zero based
+  (as in array indexing). Index values range from 0 - (size-1).</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">A ledger is used to keep track of which processors are running.
+  Depending on the ledger role, there can be two or more users of
+  the same ledger instance. You can define multiple ledgers. See
+  <a class="xdoc-link" href="TimestampProvider.html#ledgers" title="ledgers">ledgers</a> for examples of creating ledgers.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".L_latch"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">L_latch</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#.L_latch">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log event raised at the end of the timer isr</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">TimestampProvider_L_latch</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The timer isr maintains a global tick value used by System
+  Analyzer to correlate the log events across processor boundaries.
+  This event is raised at the end of the timer isr. The latch count
+  should be the same on all processors. The isr timestamp is also
+  reported. This value can be used to measure the accuracy of the
+  event correlation. The isr timestamp is captured at the very
+  beginning of the timer isr.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".L_suspend"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">L_suspend</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#.L_suspend">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log event raised when loggers are to be suspended</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">TimestampProvider_L_suspend</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The module has determined that the system state is not nominal. To
+  preserve the events in the log buffers leading up to this point,
+  the loggers will be suspended. This event is raised shortly before
+  the loggers are actually suspended.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="cpu.Intr.Num"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">cpuIntrNum</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#cpu.Intr.Num">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Specify cpu interrupt to receive timer interrupt</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">TimestampProvider_cpuIntrNum</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">For accurate event correlation in System Analyzer, it is
+  recommended not to share this interrupt.</div>
+<div class="xdocText">The following table indicates possible interrupt numbers, but
+  this is device specific. Please consult your manual.</div>
+<div class="xdocText"><table>
+    <style scoped>th,td {padding:4px}</style>
+    <tr style="text-align:left; background-color:LightGray">
+      <th>Processor</th>
+      <th>Timer ID</th>
+    </tr>
+    <tr>
+      <td>DSP</td>
+      <td>4-15</td>
+    </tr>
+    <tr>
+      <td>EVE</td>
+      <td>8-11</td>
+    </tr>
+  </table></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="est.Cpu.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">estCpuFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#est.Cpu.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Estimate the cpu frequency using timestamp sample buffer</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">TimestampProvider_estCpuFreq</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">When enabled, this module will save timestamps in the sample
+  buffer which are then used to calculate an estimate of the
+  cpu frequency. Run the processor continuously for 30 seconds
+  to ensure the sample buffer is full. Open ROV and select the
+  Module tab. The calculated cpu frequency is displayed in the
+  estCpuFreq column. The timestamp samples are displayed in the
+  Sample Buffer tab.</div>
+<div class="xdocText">Set this config param to false to reduce the data footprint in
+  your released product.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="event.Id"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">eventId</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#event.Id">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Specify interrupt controller event to receive timer interrupt</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">TimestampProvider_eventId</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The eventId specifies which interrupt controller event should
+  receive the timer interrupt. This value is used to route the
+  timer interrupt through the Interrupt Crossbar to the interrupt
+  controller event. It is also used to route the interrupt event
+  to the cpu interrupt specified in <a class="xdoc-link" href="TimestampProvider.html#cpu.Intr.Num" title="cpuIntrNum">cpuIntrNum</a>.</div>
+<div class="xdocText">The following table indicates possible event ids, but this is
+  device specific. Please consult your manual.</div>
+<div class="xdocText"><table>
+    <style scoped>th,td {padding:4px}</style>
+    <tr style="text-align:left; background-color:LightGray">
+      <th>Processor</th>
+      <th>Event ID</th>
+    </tr>
+    <tr>
+      <td>DSP</td>
+      <td>63-78, 81</td>
+    </tr>
+    <tr>
+      <td>EVE</td>
+      <td>32-39</td>
+    </tr>
+  </table></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="ledgers"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">ledgers</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#ledgers">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Define the ledgers to be managed by this processor</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html#.Ledger" title="ti.uia.family.dm.dra7xx.TimestampProvider.Ledger">TimestampProvider_Ledger</a>&nbsp;<span class="xdoc-id">TimestampProvider_ledgers</span>[<span class="xdoc-kw2">length</span>];
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Ledgers are used to keep track of the other processors. This
+  is needed to support the auto-logging feature and to issue
+  LogSync events. Each processor must define at least one ledger.</div>
+<div class="xdocText">There are two types of ledgers: a group ledger, and a private
+  ledger. See the <a class="xdoc-link" href="TimestampProvider.html#.Role" title="Role">Role</a> enumeration for details.</div>
+<div class="xdocText">Use as few ledgers as possible. However, some system constraints
+  will require additional ledgers. For example, the EVE processors
+  have very slow data access to on-chip or external memory. Therefore,
+  we recommend that each EVE processor use a private ledger. Place
+  the private ledger in DMEM to ensure fast memory access.</div>
+<div class="xdocText">Add the following to your EVE1 configuration script.</div>
+<div class="xdocText"><PRE class="Example">  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+
+  // use private ledger, role = owner
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Role_OWNER,
+          base: 0x40020000
+      })
+ );
+</PRE></div>
+<div class="xdocText">Each private ledger has exactly two users: an owner (Role_OWNER)
+  and a user (Role_USER). In the example above, the EVE would always
+  be the owner. Typically, the DSP would be the corresponding user.</div>
+<div class="xdocText">Add the following to your DSP1 configuration script.</div>
+<div class="xdocText"><PRE class="Example">  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+
+  // eve1 ledger, role = user
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Role_USER,
+          base: 0x42020000
+      })
+ );
+</PRE></div>
+<div class="xdocText">Note in the example above, the EVE defines the ledger address
+  using its local address (e.g. 0x40020000). However, the DSP must
+  use the interconnect address (e.g. 0x42020000).</div>
+<div class="xdocText">For the remaining processors in the system, you could use one
+  group ledger. All processors using the same group must agree on
+  the ledger address, and the number of entries. Each processor must
+  be assigned its own entry in the ledger.</div>
+<div class="xdocText">The following example defines a single group ledger used by two
+  processors: DSP1 and DSP2. Add the following to your DSP1
+  configuration script.</div>
+<div class="xdocText"><PRE class="Example">  var TimerSupport = xdc.useModule('ti.sysbios.family.shared.vayu.TimerSupport');
+
+  // group ledger, role = peer
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Ledger_PEER,
+          base: 0x40500000,
+          size: 2, // DSP1 DSP2
+          index: 0 // DSP1
+      })
+ );
+</PRE></div>
+<div class="xdocText">Add the following to your DSP2 configuration script.</div>
+<div class="xdocText"><PRE class="Example">  var TimerSupport = xdc.useModule('ti.sysbios.family.shared.vayu.TimerSupport');
+
+  // group ledger, role = peer
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Role_PEER,
+          base: 0x40500000,
+          size: 2, // DSP1 DSP2
+          index: 1 // DSP2
+      })
+ );
+</PRE></div>
+<div class="xdocText">It is also possible to partition the remaining processors into
+  groups and assign a group ledger to each processor group. This
+  might be done to support independent application domains. However,
+  one requirement is that the processor which owns the timer must
+  participate in all group ledgers. For example, if DSP1 has</div>
+<div class="xdocText"><PRE class="Example">  TimestampProvider.owner = true;
+</PRE></div>
+<div class="xdocText">then DSP1 must participate in all group ledgers (i.e. Role_PEER).</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="max.Bus.Clock.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">maxBusClockFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#max.Bus.Clock.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The highest bus clock frequency used to drive the timer</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;<span class="xdoc-id">TimestampProvider_maxBusClockFreq</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the cyclesPerTick config parameter.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">the 32 MSBs of the highest bus clock frequency used to drive
+    the timer.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="max.Timer.Clock.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">maxTimerClockFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#max.Timer.Clock.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The highest timer clock frequency</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;<span class="xdoc-id">TimestampProvider_maxTimerClockFreq</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the cyclesPerTick config parameter.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">the 32 LSBs of the highest timer clock frequency
+   (i.e. ticksPerSecond).</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="owner"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">owner</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#owner">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Determine ownership of the timer</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">TimestampProvider_owner</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">When set to true, the timer will be enabled and configured
+  during the boot phase. The owner should run before any other
+  processor using this same timer. Only one processor should
+  be configured as the owner of the timer. This processor will
+  also listen for the timer interrupt and acknowledge it.</div>
+<div class="xdocText">When set to false, it is expected that another processor will
+  enable and configure the timer. This processor will simply
+  listen for the timer interrupt and acknowledge it.</div>
+<div class="xdocText">Note: The ARP32 does not support timer ownership. This config
+  param must always be false when running on the ARP32.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sync.Interval"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">syncInterval</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#sync.Interval">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Specify the interval for logging sync events</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">UInt</span>&nbsp;<span class="xdoc-id">TimestampProvider_syncInterval</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">UIA Sync events are used by System Analyzer to correlate the
+  events from each processor onto a global time base. Only the
+  last sync event is actually used.</div>
+<div class="xdocText">This configuration parameter specifies how frequently the sync
+  events should be raised. In order to maintain accurate event
+  correlation, you should raise one sync event within each log
+  data window. For example, if your log buffer contains 100 ms
+  of data, then you should raise a sync event each 0.1 seconds
+  (100 ms = 0.1 sec).</div>
+<div class="xdocText">Each syncInterval is 0.001953125 seconds. Divide the data window
+  by this value to get the syncInterval (round down).</div>
+<div class="xdocText"><PRE class="Example">      0.1 sec / 0.001953125 sec = 51.2
+
+      TimestampProvider.syncInterval = 51;
+</PRE></div>
+<div class="xdocText">When using multiple logger instances, the data window for each
+  instance is probably different. Use System Analyzer to measure
+  the data overlap of your region of interest. Use the length of
+  this region to calculate the syncInterval.</div>
+<div class="xdocText">The syncInterval should be as large as possible to reduce logging
+  overhead, yet small enough to yield accurate event correlation.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="timer.Id"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">timerId</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#timer.Id">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Identify which timer to use as the timestamp clock source</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">UInt</span>&nbsp;<span class="xdoc-id">TimestampProvider_timerId</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The timers are named Timer1-Timer16; their corresponding ids
+  are 0-15 (e.g. for Timer3, use id=2). Not all timers are
+  appropriate clock sources for this module. Use one of the
+  following timers:</div>
+<div class="xdocText"><table>
+    <style scoped>th,td {padding:4px}</style>
+    <tr style="text-align:left; background-color:LightGray">
+      <th>Timer Name</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>Timer[3,4,9,11,13,14,15,16]</td>
+      <td>PD_L4PER power domain</td>
+    </tr>
+    <tr>
+      <td>Timer[5,6,7,8]</td>
+      <td>PD_IPU power domain</td>
+    </tr>
+  </table></div>
+<div class="xdocText">All executables must use the same timer in order to support
+  event correlation in System Analyzer.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get32"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">get32</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#get32">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Return a 32-bit timestamp</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits32</span>&nbsp;<span class="xdoc-id">TimestampProvider_get32</span>();
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">Returns a 32-bit timestamp value.  
+  Use <tt><a class="xdoc-link" href="TimestampProvider.html#get.Freq" title="getFreq">getFreq</a></tt> to convert this value into units of real time.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="TimestampProvider.html#get64" title="get64">get64</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get64"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">get64</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#get64">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Return a 64-bit timestamp</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">TimestampProvider_get64</span>(<a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">Types_Timestamp64</a>&nbsp;*<span class="xdoc-id">result</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">result</span>
+<span class="xdocChildSum">&#151;&nbsp;pointer to 64-bit result</span>
+</div>
+<div class="xdocChildText">This parameter is a pointer to a structure representing a 64-bit
+      wide timestamp value where the current timestamp is written.</div>
+<div class="xdocChildText">If the underlying hardware does not support 64-bit resolution, the
+      <tt>hi</tt> field of <tt>result</tt> is always set to 0; see
+      <tt><a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Timestamp64" title="xdc.runtime.Types.Timestamp64">xdc.runtime.Types.Timestamp64</a></tt>.  So, it is possible for 
+      the <tt>lo</tt> field to wrap around without any change to the <tt>hi</tt> field.
+      Use <tt><a class="xdoc-link" href="TimestampProvider.html#get.Freq" title="getFreq">getFreq</a></tt> to convert this value into units of real 
+      time.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="TimestampProvider.html#get32" title="get32">get32</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">TimestampProvider_</span><span class="xdoc-id">getFreq</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#get.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Get the timestamp timer's frequency (in Hz)</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">TimestampProvider_getFreq</span>(<a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types_FreqHz</a>&nbsp;*<span class="xdoc-id">freq</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">freq</span>
+<span class="xdocChildSum">&#151;&nbsp;pointer to a 64-bit result</span>
+</div>
+<div class="xdocChildText">This parameter is a pointer to a structure representing a 64-bit
+      wide frequency value where the timer's frequency (in Hz)
+      is written; see <tt><a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">xdc.runtime.Types.FreqHz</a></tt>.
+      This function provides a way of converting timestamp 
+      values into units of real time.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="TimestampProvider.html#get32" title="get32">get32</a>, <a class="xdoc-link" href="TimestampProvider.html#get64" title="get64">get64</a></div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">TimestampProvider_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">TimestampProvider_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">TimestampProvider_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">TimestampProvider_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">TimestampProvider_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">TimestampProvider_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider-src.html"><span class="xdocLabelFile">ti/uia/family/dm/dra7xx/TimestampProvider.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> TimestampProvider = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.family.dm.dra7xx.TimestampProvider'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide constants & types</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><i>values of type <a class="xdocSynGo" href="#meta.Role">TimestampProvider.<span class="xdoc-id">Role</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Define roles for each ledger instance</span></span></a></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Role">TimestampProvider.<span class="xdoc-id">Role_PEER</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;shared by multiple processors</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Role">TimestampProvider.<span class="xdoc-id">Role_OWNER</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;shared with one remote processor</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Role">TimestampProvider.<span class="xdoc-id">Role_USER</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;shared with one remote processor</span></span></a>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> <a class="xdocSynGo" href="#meta.Ledger">TimestampProvider.<span class="xdoc-id">Ledger</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Define a ledger used in the system</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Ledger"><span class="xdoc-id">role</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;role used to access the ledger</span></span></a> = <i><a class="xdoc-link" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html#.Role" title="ti.uia.family.dm.dra7xx.TimestampProvider.Role">TimestampProvider.Role</a></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Ledger"><span class="xdoc-id">base</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;base address of the ledger</span></span></a> = <i><span class="xdoc-kw2">Ptr</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Ledger"><span class="xdoc-id">size</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;number of users</span></span></a> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#meta.Ledger"><span class="xdoc-id">index</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;entry assigned to this processor</span></span></a> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#meta.L_latch">TimestampProvider.<span class="xdoc-id">L_latch</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log event raised at the end of the timer isr</span></span></a> = <i><a class="xdoc-link" href="../../../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../../../xdc/runtime/Diags.html#.I.N.F.O" title="xdc.runtime.Diags.INFO">Diags.INFO</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "L_latch: latch=0x%x:0x%x, isr ts=0x%x:0x%x"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#meta.L_suspend">TimestampProvider.<span class="xdoc-id">L_suspend</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log event raised when loggers are to be suspended</span></span></a> = <i><a class="xdoc-link" href="../../../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../../../xdc/runtime/Diags.html#.I.N.F.O" title="xdc.runtime.Diags.INFO">Diags.INFO</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "L_suspend: loggers suspended"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metacpu.Intr.Num">TimestampProvider.<span class="xdoc-id">cpuIntrNum</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Specify cpu interrupt to receive timer interrupt</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaest.Cpu.Freq">TimestampProvider.<span class="xdoc-id">estCpuFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Estimate the cpu frequency using timestamp sample buffer</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaevent.Id">TimestampProvider.<span class="xdoc-id">eventId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Specify interrupt controller event to receive timer interrupt</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaledgers">TimestampProvider.<span class="xdoc-id">ledgers</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Define the ledgers to be managed by this processor</span></span></a> = <i><a class="xdoc-link" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html#.Ledger" title="ti.uia.family.dm.dra7xx.TimestampProvider.Ledger">TimestampProvider.Ledger</a>[<span class="xdoc-kw1">length</span>]</i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metamax.Bus.Clock.Freq">TimestampProvider.<span class="xdoc-id">maxBusClockFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The highest bus clock frequency used to drive the timer</span></span></a> = <i><a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types.FreqHz</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metamax.Timer.Clock.Freq">TimestampProvider.<span class="xdoc-id">maxTimerClockFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The highest timer clock frequency</span></span></a> = <i><a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types.FreqHz</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaowner">TimestampProvider.<span class="xdoc-id">owner</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Determine ownership of the timer</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metasync.Interval">TimestampProvider.<span class="xdoc-id">syncInterval</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Specify the interval for logging sync events</span></span></a> = <i><span class="xdoc-kw2">UInt</span></i> 50;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metatimer.Id">TimestampProvider.<span class="xdoc-id">timerId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Identify which timer to use as the timestamp clock source</span></span></a> = <i><span class="xdoc-kw2">UInt</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">TimestampProvider.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Role"></a>
+<a class="xdocAnchor" id=".Role_.P.E.E.R"></a>
+<a class="xdocAnchor" id=".Role_.O.W.N.E.R"></a>
+<a class="xdocAnchor" id=".Role_.U.S.E.R"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">Role</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#.Role">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Define roles for each ledger instance</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>values of type TimestampProvider.<span class="xdoc-id">Role</span></i>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampProvider.<span class="xdoc-id">Role_PEER</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;shared by multiple processors</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampProvider.<span class="xdoc-id">Role_OWNER</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;shared with one remote processor</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> TimestampProvider.<span class="xdoc-id">Role_USER</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;shared with one remote processor</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">There may be multiple ledger instances in a system. There are
+  two types of ledgers: 1. a group ledger, and 2. a private ledger.
+  A group ledger may have two or more users. A private ledger has
+  exactly two users. When a processor creates a private ledger,
+  that processor may not create any additional ledgers of any type.
+  A private ledger is typicaly used by the ARP32 processor.</div>
+<div class="xdocText">The ledger type is identified by the role used to access it.</div>
+<div class="xdocText"><div class="xdocText"><dl>
+  <dt>Role_PEER</dt>
+      <dd>
+      This role is used to access a group ledger instance. This
+      ledger instance is used by multiple processors. The ledger
+      is an array of GroupLedgerElem elements. Each processor
+      uses one entry in the ledger. The size of the ledger must
+      equal the number of users.<br><br>
+
+      All users of this ledger are peers. The ledger is not created
+      by any processor, it must be defined in the memory map.<br><br>
+      </dd>
+
+  <dt>Role_OWNER</dt>
+      <dd>
+      This role is used to access a private ledger. This ledger
+      is used by only two processors: the local processor (the
+      owner) and a remote processor (the user). The ledger is
+      allocated in the local processor's memory map. This same
+      ledger must be defined by a Role_USER role on one other
+      processor.<br><br>
+      </dd>
+
+  <dt>Role_USER</dt>
+      <dd>
+      This role is used to access a private ledger.  This role is the
+      complement of the Role_OWNER role. When using a private ledger,
+      the actual ledger is created by the other processor.<br><br>
+
+      A processor using the Role_USER role, will access the ledger with
+      the given address, but it does not allocate the ledger.<br><br>
+
+      It is possible to access multiple private ledgers from the
+      same processor. Each Role_USER corresponds to a private ledger
+      created by another processor.<br><br>
+      </dd>
+  </dl></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Role" title="TimestampProvider_Role">TimestampProvider_Role</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Ledger"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">struct</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">Ledger</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#.Ledger">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Define a ledger used in the system</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> TimestampProvider.<span class="xdoc-id">Ledger</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">role</span> = <i><a class="xdoc-link" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html#.Role" title="ti.uia.family.dm.dra7xx.TimestampProvider.Role">TimestampProvider.Role</a></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;role used to access the ledger</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">base</span> = <i><span class="xdoc-kw2">Ptr</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;base address of the ledger</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">size</span> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;number of users</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">index</span> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;entry assigned to this processor</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">FIELDS</div>
+<div class="xdocChild"><span class="xdocChildId">role</span>
+<span class="xdocChildSum">&#151;&nbsp;Defines how this processor will be using the ledger. The role
+  also implicitly defines which type of ledger is created. See
+  the <a class="xdoc-link" href="TimestampProvider.html#.Role" title="Role">Role</a> enumeration for details.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">base</span>
+<span class="xdocChildSum">&#151;&nbsp;The base address of the ledger as seen by the local processor.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">size</span>
+<span class="xdocChildSum">&#151;&nbsp;The number of users of the current ledger. When adding a new
+  user to a ledger, be sure to update this value for all processors
+  using the same ledger.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">index</span>
+<span class="xdocChildSum">&#151;&nbsp;The entry index in the ledger to be used by this processor. Each
+  processor must have its own unique entry. The index is zero based
+  (as in array indexing). Index values range from 0 - (size-1).</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">A ledger is used to keep track of which processors are running.
+  Depending on the ledger role, there can be two or more users of
+  the same ledger instance. You can define multiple ledgers. See
+  <a class="xdoc-link" href="TimestampProvider.html#ledgers" title="ledgers">ledgers</a> for examples of creating ledgers.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Ledger" title="TimestampProvider_Ledger">TimestampProvider_Ledger</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.L_latch"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">L_latch</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#.L_latch">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log event raised at the end of the timer isr</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampProvider.<span class="xdoc-id">L_latch</span> = <i><a class="xdoc-link" href="../../../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../../../xdc/runtime/Diags.html#.I.N.F.O" title="xdc.runtime.Diags.INFO">Diags.INFO</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "L_latch: latch=0x%x:0x%x, isr ts=0x%x:0x%x"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The timer isr maintains a global tick value used by System
+  Analyzer to correlate the log events across processor boundaries.
+  This event is raised at the end of the timer isr. The latch count
+  should be the same on all processors. The isr timestamp is also
+  reported. This value can be used to measure the accuracy of the
+  event correlation. The isr timestamp is captured at the very
+  beginning of the timer isr.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.L_latch" title="TimestampProvider_L_latch">TimestampProvider_L_latch</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.L_suspend"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">L_suspend</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#.L_suspend">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log event raised when loggers are to be suspended</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampProvider.<span class="xdoc-id">L_suspend</span> = <i><a class="xdoc-link" href="../../../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../../../xdc/runtime/Diags.html#.I.N.F.O" title="xdc.runtime.Diags.INFO">Diags.INFO</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "L_suspend: loggers suspended"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The module has determined that the system state is not nominal. To
+  preserve the events in the log buffers leading up to this point,
+  the loggers will be suspended. This event is raised shortly before
+  the loggers are actually suspended.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.L_suspend" title="TimestampProvider_L_suspend">TimestampProvider_L_suspend</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metacpu.Intr.Num"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">cpuIntrNum</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#cpu.Intr.Num">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Specify cpu interrupt to receive timer interrupt</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampProvider.<span class="xdoc-id">cpuIntrNum</span> = <i><span class="xdoc-kw2">Int</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">For accurate event correlation in System Analyzer, it is
+  recommended not to share this interrupt.</div>
+<div class="xdocText">The following table indicates possible interrupt numbers, but
+  this is device specific. Please consult your manual.</div>
+<div class="xdocText"><table>
+    <style scoped>th,td {padding:4px}</style>
+    <tr style="text-align:left; background-color:LightGray">
+      <th>Processor</th>
+      <th>Timer ID</th>
+    </tr>
+    <tr>
+      <td>DSP</td>
+      <td>4-15</td>
+    </tr>
+    <tr>
+      <td>EVE</td>
+      <td>8-11</td>
+    </tr>
+  </table></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#cpu.Intr.Num" title="TimestampProvider_cpuIntrNum">TimestampProvider_cpuIntrNum</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaest.Cpu.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">estCpuFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#est.Cpu.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Estimate the cpu frequency using timestamp sample buffer</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampProvider.<span class="xdoc-id">estCpuFreq</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">When enabled, this module will save timestamps in the sample
+  buffer which are then used to calculate an estimate of the
+  cpu frequency. Run the processor continuously for 30 seconds
+  to ensure the sample buffer is full. Open ROV and select the
+  Module tab. The calculated cpu frequency is displayed in the
+  estCpuFreq column. The timestamp samples are displayed in the
+  Sample Buffer tab.</div>
+<div class="xdocText">Set this config param to false to reduce the data footprint in
+  your released product.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#est.Cpu.Freq" title="TimestampProvider_estCpuFreq">TimestampProvider_estCpuFreq</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaevent.Id"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">eventId</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#event.Id">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Specify interrupt controller event to receive timer interrupt</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampProvider.<span class="xdoc-id">eventId</span> = <i><span class="xdoc-kw2">Int</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The eventId specifies which interrupt controller event should
+  receive the timer interrupt. This value is used to route the
+  timer interrupt through the Interrupt Crossbar to the interrupt
+  controller event. It is also used to route the interrupt event
+  to the cpu interrupt specified in <a class="xdoc-link" href="TimestampProvider.html#cpu.Intr.Num" title="cpuIntrNum">cpuIntrNum</a>.</div>
+<div class="xdocText">The following table indicates possible event ids, but this is
+  device specific. Please consult your manual.</div>
+<div class="xdocText"><table>
+    <style scoped>th,td {padding:4px}</style>
+    <tr style="text-align:left; background-color:LightGray">
+      <th>Processor</th>
+      <th>Event ID</th>
+    </tr>
+    <tr>
+      <td>DSP</td>
+      <td>63-78, 81</td>
+    </tr>
+    <tr>
+      <td>EVE</td>
+      <td>32-39</td>
+    </tr>
+  </table></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#event.Id" title="TimestampProvider_eventId">TimestampProvider_eventId</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaledgers"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">ledgers</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#ledgers">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Define the ledgers to be managed by this processor</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampProvider.<span class="xdoc-id">ledgers</span> = <i><a class="xdoc-link" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html#.Ledger" title="ti.uia.family.dm.dra7xx.TimestampProvider.Ledger">TimestampProvider.Ledger</a>[<span class="xdoc-kw1">length</span>]</i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Ledgers are used to keep track of the other processors. This
+  is needed to support the auto-logging feature and to issue
+  LogSync events. Each processor must define at least one ledger.</div>
+<div class="xdocText">There are two types of ledgers: a group ledger, and a private
+  ledger. See the <a class="xdoc-link" href="TimestampProvider.html#.Role" title="Role">Role</a> enumeration for details.</div>
+<div class="xdocText">Use as few ledgers as possible. However, some system constraints
+  will require additional ledgers. For example, the EVE processors
+  have very slow data access to on-chip or external memory. Therefore,
+  we recommend that each EVE processor use a private ledger. Place
+  the private ledger in DMEM to ensure fast memory access.</div>
+<div class="xdocText">Add the following to your EVE1 configuration script.</div>
+<div class="xdocText"><PRE class="Example">  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+
+  // use private ledger, role = owner
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Role_OWNER,
+          base: 0x40020000
+      })
+ );
+</PRE></div>
+<div class="xdocText">Each private ledger has exactly two users: an owner (Role_OWNER)
+  and a user (Role_USER). In the example above, the EVE would always
+  be the owner. Typically, the DSP would be the corresponding user.</div>
+<div class="xdocText">Add the following to your DSP1 configuration script.</div>
+<div class="xdocText"><PRE class="Example">  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+
+  // eve1 ledger, role = user
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Role_USER,
+          base: 0x42020000
+      })
+ );
+</PRE></div>
+<div class="xdocText">Note in the example above, the EVE defines the ledger address
+  using its local address (e.g. 0x40020000). However, the DSP must
+  use the interconnect address (e.g. 0x42020000).</div>
+<div class="xdocText">For the remaining processors in the system, you could use one
+  group ledger. All processors using the same group must agree on
+  the ledger address, and the number of entries. Each processor must
+  be assigned its own entry in the ledger.</div>
+<div class="xdocText">The following example defines a single group ledger used by two
+  processors: DSP1 and DSP2. Add the following to your DSP1
+  configuration script.</div>
+<div class="xdocText"><PRE class="Example">  var TimerSupport = xdc.useModule('ti.sysbios.family.shared.vayu.TimerSupport');
+
+  // group ledger, role = peer
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Ledger_PEER,
+          base: 0x40500000,
+          size: 2, // DSP1 DSP2
+          index: 0 // DSP1
+      })
+ );
+</PRE></div>
+<div class="xdocText">Add the following to your DSP2 configuration script.</div>
+<div class="xdocText"><PRE class="Example">  var TimerSupport = xdc.useModule('ti.sysbios.family.shared.vayu.TimerSupport');
+
+  // group ledger, role = peer
+  TimestampProvider.ledgers.$add(
+      new TimestampProvider.Ledger({
+          role: TimestampProvider.Role_PEER,
+          base: 0x40500000,
+          size: 2, // DSP1 DSP2
+          index: 1 // DSP2
+      })
+ );
+</PRE></div>
+<div class="xdocText">It is also possible to partition the remaining processors into
+  groups and assign a group ledger to each processor group. This
+  might be done to support independent application domains. However,
+  one requirement is that the processor which owns the timer must
+  participate in all group ledgers. For example, if DSP1 has</div>
+<div class="xdocText"><PRE class="Example">  TimestampProvider.owner = true;
+</PRE></div>
+<div class="xdocText">then DSP1 must participate in all group ledgers (i.e. Role_PEER).</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#ledgers" title="TimestampProvider_ledgers">TimestampProvider_ledgers</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metamax.Bus.Clock.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">maxBusClockFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#max.Bus.Clock.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The highest bus clock frequency used to drive the timer</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampProvider.<span class="xdoc-id">maxBusClockFreq</span> = <i><a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types.FreqHz</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the cyclesPerTick config parameter.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">the 32 MSBs of the highest bus clock frequency used to drive
+    the timer.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#max.Bus.Clock.Freq" title="TimestampProvider_maxBusClockFreq">TimestampProvider_maxBusClockFreq</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metamax.Timer.Clock.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">maxTimerClockFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#max.Timer.Clock.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The highest timer clock frequency</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampProvider.<span class="xdoc-id">maxTimerClockFreq</span> = <i><a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Freq.Hz" title="xdc.runtime.Types.FreqHz">Types.FreqHz</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The default ticks per second rate of the timer is calculated by dividing
+ the timer's bus clock frequency by the cyclesPerTick config parameter.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">the 32 LSBs of the highest timer clock frequency
+   (i.e. ticksPerSecond).</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#max.Timer.Clock.Freq" title="TimestampProvider_maxTimerClockFreq">TimestampProvider_maxTimerClockFreq</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaowner"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">owner</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#owner">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Determine ownership of the timer</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampProvider.<span class="xdoc-id">owner</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">When set to true, the timer will be enabled and configured
+  during the boot phase. The owner should run before any other
+  processor using this same timer. Only one processor should
+  be configured as the owner of the timer. This processor will
+  also listen for the timer interrupt and acknowledge it.</div>
+<div class="xdocText">When set to false, it is expected that another processor will
+  enable and configure the timer. This processor will simply
+  listen for the timer interrupt and acknowledge it.</div>
+<div class="xdocText">Note: The ARP32 does not support timer ownership. This config
+  param must always be false when running on the ARP32.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#owner" title="TimestampProvider_owner">TimestampProvider_owner</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metasync.Interval"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">syncInterval</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#sync.Interval">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Specify the interval for logging sync events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampProvider.<span class="xdoc-id">syncInterval</span> = <i><span class="xdoc-kw2">UInt</span></i> 50;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">UIA Sync events are used by System Analyzer to correlate the
+  events from each processor onto a global time base. Only the
+  last sync event is actually used.</div>
+<div class="xdocText">This configuration parameter specifies how frequently the sync
+  events should be raised. In order to maintain accurate event
+  correlation, you should raise one sync event within each log
+  data window. For example, if your log buffer contains 100 ms
+  of data, then you should raise a sync event each 0.1 seconds
+  (100 ms = 0.1 sec).</div>
+<div class="xdocText">Each syncInterval is 0.001953125 seconds. Divide the data window
+  by this value to get the syncInterval (round down).</div>
+<div class="xdocText"><PRE class="Example">      0.1 sec / 0.001953125 sec = 51.2
+
+      TimestampProvider.syncInterval = 51;
+</PRE></div>
+<div class="xdocText">When using multiple logger instances, the data window for each
+  instance is probably different. Use System Analyzer to measure
+  the data overlap of your region of interest. Use the length of
+  this region to calculate the syncInterval.</div>
+<div class="xdocText">The syncInterval should be as large as possible to reduce logging
+  overhead, yet small enough to yield accurate event correlation.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#sync.Interval" title="TimestampProvider_syncInterval">TimestampProvider_syncInterval</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metatimer.Id"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">timerId</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#timer.Id">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Identify which timer to use as the timestamp clock source</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampProvider.<span class="xdoc-id">timerId</span> = <i><span class="xdoc-kw2">UInt</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The timers are named Timer1-Timer16; their corresponding ids
+  are 0-15 (e.g. for Timer3, use id=2). Not all timers are
+  appropriate clock sources for this module. Use one of the
+  following timers:</div>
+<div class="xdocText"><table>
+    <style scoped>th,td {padding:4px}</style>
+    <tr style="text-align:left; background-color:LightGray">
+      <th>Timer Name</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>Timer[3,4,9,11,13,14,15,16]</td>
+      <td>PD_L4PER power domain</td>
+    </tr>
+    <tr>
+      <td>Timer[5,6,7,8]</td>
+      <td>PD_IPU power domain</td>
+    </tr>
+  </table></div>
+<div class="xdocText">All executables must use the same timer in order to support
+  event correlation in System Analyzer.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#timer.Id" title="TimestampProvider_timerId">TimestampProvider_timerId</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">TimestampProvider.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../../ti/uia/family/dm/dra7xx/TimestampProvider.html" title="module TimestampProvider"><img class="xdocHdrArrow" src="../../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../../index.html#ti/uia/family/dm/dra7xx/TimestampProvider.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>TimestampProvider.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:12 GMT</div>
+</div></div></body>
+</html>

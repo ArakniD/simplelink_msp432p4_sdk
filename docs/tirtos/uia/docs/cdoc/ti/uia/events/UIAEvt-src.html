@@ -1,0 +1,442 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.events.UIAEvt</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> * ======== UIAEvt.xdc ========
+</span>    35    <span class="comment"> */</span>
+    36    import xdc.runtime.Diags;
+    37    
+    38    <span class="xdoc">/*!
+</span>    39    <span class="xdoc"> * UIA Standard Events
+</span>    40    <span class="xdoc"> * <b>@p</b>
+</span>    41    <span class="xdoc"> * The UIAEvt module defines events that allow
+</span>    42    <span class="xdoc"> * tooling to display event information
+</span>    43    <span class="xdoc"> * and filter events based on their priority.
+</span>    44    <span class="xdoc"> * <b>@p</b>
+</span>    45    <span class="xdoc"> * The events in this module have one of the following event priority levels:
+</span>    46    <span class="xdoc"> *  WARNING: used to indicate an unexpected or problematic situation such as when a resource
+</span>    47    <span class="xdoc"> *  becomes dangerously low
+</span>    48    <span class="xdoc"> *  INFO: used to indicate something of interest or of use in understanding the
+</span>    49    <span class="xdoc"> *  current state of the system or behaviour of the software
+</span>    50    <span class="xdoc"> *  DETAIL: used to indicate additional information that may be of interest
+</span>    51    <span class="xdoc"> *  in troubleshooting problems or improving the software
+</span>    52    <span class="xdoc"> *<b>@p</b>
+</span>    53    <span class="xdoc"> * For each priority level, two predefined event codes
+</span>    54    <span class="xdoc"> * are provided: one for logging a single event code,
+</span>    55    <span class="xdoc"> * and one for logging an event code along with a
+</span>    56    <span class="xdoc"> * reference to a constant formatting string that can
+</span>    57    <span class="xdoc"> * be used to format the text displayed for the event.
+</span>    58    <span class="xdoc"> * The formatting string allows additional arguments
+</span>    59    <span class="xdoc"> * to be displayed along with the event code when the
+</span>    60    <span class="xdoc"> * event is rendered as text (e.g. by DVT).
+</span>    61    <span class="xdoc"> *<b>@p</b>
+</span>    62    <span class="xdoc"> * The following special formatting specifiers may be used in the
+</span>    63    <span class="xdoc"> * msg field of an event's config specification:
+</span>    64    <span class="xdoc"> * <b>@p</b>
+</span>    65    <span class="xdoc"> * %$S - a string parameter that can provide additional formatting specifiers
+</span>    66    <span class="xdoc"> *       Note that $S use in strings passed in as a paramter is not supported.
+</span>    67    <span class="xdoc"> *<b>@p</b>
+</span>    68    <span class="xdoc"> * %$F - a specifier for a string parameter containing the file name (__FILE__) and
+</span>    69    <span class="xdoc"> *       an integer parameter containing the line number (__LINE__).
+</span>    70    <span class="xdoc"> *<b>@p</b>
+</span>    71    <span class="xdoc"> *  The generation of UIAEvt events is controlled by a module's diagnostics
+</span>    72    <span class="xdoc"> *  mask, which is described in details in `{<b>@link</b> xdc.runtime.Diags}`.
+</span>    73    <span class="xdoc"> * `UIAEvt` warning events are generated only when the Diags.STATUS bit is set
+</span>    74    <span class="xdoc"> *  in the module's diagnostics mask.  The Diags.STATUS bit is set to ALWAYS_ON
+</span>    75    <span class="xdoc"> *  by default.  'UIAEvt' info and detail events are generated only when the
+</span>    76    <span class="xdoc"> *  Diags.INFO bit is set in the module's diagnostics mask.
+</span>    77    <span class="xdoc"> *
+</span>    78    <span class="xdoc"> *  The following configuration script demonstrates how to enable use of
+</span>    79    <span class="xdoc"> *  UIAEvt events within an application.  Since the Diags.STATUS bits are set
+</span>    80    <span class="xdoc"> *  to ALWAYS_ON by default, no explicit code is required to enable the
+</span>    81    <span class="xdoc"> *  Diags Masks for these events.  The Diags.INFO bitmust be explicitly set
+</span>    82    <span class="xdoc"> *  in order to enable info and detail level events.
+</span>    83    <span class="xdoc"> *
+</span>    84    <span class="xdoc"> *  This is part of the XDC configuration file for the application:
+</span>    85    <span class="xdoc"> *
+</span>    86    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    87    <span class="xdoc"> *  var UIAEvt = xdc.useModule('ti.uia.events.UIAEvt');
+</span>    88    <span class="xdoc"> *  var Diags = xdc.useModule('xdc.runtime.Diags');
+</span>    89    <span class="xdoc"> *  var LoggerSys = xdc.useModule('xdc.runtime.LoggerSys');
+</span>    90    <span class="xdoc"> *  var Defaults = xdc.useModule('xdc.runtime.Defaults');
+</span>    91    <span class="xdoc"> *  var logger = LoggerSys.create();
+</span>    92    <span class="xdoc"> *
+</span>    93    <span class="xdoc"> *  Defaults.common$.logger = logger;
+</span>    94    <span class="xdoc"> *  Defaults.common$.diags_INFO = Diags.ALWAYS_ON;
+</span>    95    <span class="xdoc"> *  <b>@p</b>
+</span>    96    <span class="xdoc"> *
+</span>    97    <span class="xdoc"> *  <b>@p(html)</b>
+</span>    98    <span class="xdoc"> *  &lt;hr /&gt;
+</span>    99    <span class="xdoc"> *  <b>@p</b>
+</span>   100    <span class="xdoc"> *
+</span>   101    <span class="xdoc"> *  Example 2: The following example configures a module to support logging
+</span>   102    <span class="xdoc"> *  of STATUS events and INFO events, but defers the actual activation and deactivation of the
+</span>   103    <span class="xdoc"> *  logging until runtime. See the `{<b>@link</b> Diags#setMask Diags_setMask()}`
+</span>   104    <span class="xdoc"> *  function for details on specifying the control string.
+</span>   105    <span class="xdoc"> *
+</span>   106    <span class="xdoc"> *  This is a part of the XDC configuration file for the application:
+</span>   107    <span class="xdoc"> *
+</span>   108    <span class="xdoc"> *  <b>@p(code)</b>
+</span>   109    <span class="xdoc"> *  var UIAEvt = xdc.useModule('ti.uia.events.UIAEvt');
+</span>   110    <span class="xdoc"> *  var Diags = xdc.useModule('xdc.runtime.Diags');
+</span>   111    <span class="xdoc"> *  var Mod = xdc.useModule('my.pkg.Mod');
+</span>   112    <span class="xdoc"> *
+</span>   113    <span class="xdoc"> *  Mod.common$.diags_STATUS = Diags.RUNTIME_OFF;
+</span>   114    <span class="xdoc"> *  Mod.common$.diags_INFO = Diags.RUNTIME_OFF;
+</span>   115    <span class="xdoc"> *  <b>@p</b>
+</span>   116    <span class="xdoc"> *
+</span>   117    <span class="xdoc"> *  This is a part of the C code for the application:
+</span>   118    <span class="xdoc"> *
+</span>   119    <span class="xdoc"> *  <b>@p(code)</b>
+</span>   120    <span class="xdoc"> *  // turn on logging of STATUS events (S) and INFO events (F)
+</span>   121    <span class="xdoc"> *  // in the module
+</span>   122    <span class="xdoc"> *  Diags_setMask("my.pkg.Mod+SF");
+</span>   123    <span class="xdoc"> *
+</span>   124    <span class="xdoc"> *  // turn off logging of STATUS events and INFO events in the module
+</span>   125    <span class="xdoc"> *  Diags_setMask("my.pkg.Mod-SF");
+</span>   126    <span class="xdoc"> *  <b>@p</b>
+</span>   127    <span class="xdoc"> */</span>
+   128     <span class=key>module</span> UIAEvt <span class=key>inherits</span> IUIAEvent {
+   129    
+   130        <span class="xdoc">/*!
+</span>   131    <span class="xdoc">     *  ======== warning ========
+</span>   132    <span class="xdoc">     *  Event to use to log a Warning Event Code
+</span>   133    <span class="xdoc">     *
+</span>   134    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   135    <span class="xdoc">     *   The following C code shows how to log a legacy warning code as a UIA event.
+</span>   136    <span class="xdoc">     *
+</span>   137    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   138    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   139    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAEvt.h&gt;
+</span>   140    <span class="xdoc">     *  ...
+</span>   141    <span class="xdoc">     *  Int myWarningCode = 0xBAD;
+</span>   142    <span class="xdoc">     *  ...
+</span>   143    <span class="xdoc">     *  Log_write1(UIAEvt_warning, myWarningCode);
+</span>   144    <span class="xdoc">     *  ...
+</span>   145    <span class="xdoc">     *  <b>@p</b>
+</span>   146    <span class="xdoc">     *  The following text is an example of what will be displayed for the event:
+</span>   147    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   148    <span class="xdoc">     *  "WARNING: EventCode:0xBAD."
+</span>   149    <span class="xdoc">     *  <b>@p</b>
+</span>   150    <span class="xdoc">     *  <b>@param(eventCode)</b>  integer that identifies the type of warning
+</span>   151    <span class="xdoc">     *  <b>@param(fmt)</b>        a constant string that provides format specifiers for up to 6 additional parameters
+</span>   152    <span class="xdoc">     *
+</span>   153    <span class="xdoc">     *  <b>@see</b> #warningWithStr
+</span>   154    <span class="xdoc">     */</span>
+   155        <span class=key>config</span> xdc.runtime.Log.Event warning = {
+   156                mask: Diags.STATUS,
+   157                level: Diags.WARNING,
+   158                msg: <span class="string">"WARNING: EventCode:0x%x"</span>
+   159        };
+   160    
+   161        <span class="xdoc">/*!
+</span>   162    <span class="xdoc">     *  ======== warningWithStr ========
+</span>   163    <span class="xdoc">     *  Event to use to log a Warning Event Code and fmt string
+</span>   164    <span class="xdoc">     *
+</span>   165    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   166    <span class="xdoc">     *  The following C code shows how to log a legacy warning code and string as a UIA event.
+</span>   167    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   168    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   169    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAEvt.h&gt;
+</span>   170    <span class="xdoc">     *  ...
+</span>   171    <span class="xdoc">     *  Int myWarningCode = 0xBAD;
+</span>   172    <span class="xdoc">     *  String myWarningStr = "Legacy Warning String for warning 0xBAD";
+</span>   173    <span class="xdoc">     *  ...
+</span>   174    <span class="xdoc">     *  Log_write2(UIAEvt_warning,myWarningCode,(IArg)myWarningStr);
+</span>   175    <span class="xdoc">     *  ...
+</span>   176    <span class="xdoc">     *  <b>@p</b>
+</span>   177    <span class="xdoc">     *  The following text is an example of what will be displayed for the event:
+</span>   178    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   179    <span class="xdoc">     *  "WARNING: EventCode:0xBAD. Legacy Warning String for warning 0xBAD"
+</span>   180    <span class="xdoc">     *  <b>@p</b>
+</span>   181    <span class="xdoc">     *  <b>@param(eventCode)</b>  integer that identifies the type of warning event
+</span>   182    <span class="xdoc">     *  <b>@param(fmt)</b>        a constant string that provides format specifiers for up to 6 additional parameters
+</span>   183    <span class="xdoc">     *
+</span>   184    <span class="xdoc">     *  <b>@see</b> #warning
+</span>   185    <span class="xdoc">     *
+</span>   186    <span class="xdoc">     */</span>
+   187        <span class=key>config</span> xdc.runtime.Log.Event warningWithStr = {
+   188                mask: Diags.STATUS,
+   189                level: Diags.WARNING,
+   190                msg: <span class="string">"WARNING: EventCode:0x%x. %$S"</span>
+   191        };
+   192    
+   193        <span class="xdoc">/*!
+</span>   194    <span class="xdoc">     *  ======== info ========
+</span>   195    <span class="xdoc">     *  Event to use to log an Informational Event Code
+</span>   196    <span class="xdoc">     *
+</span>   197    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   198    <span class="xdoc">     *   The following C code shows how to log an informational event code as a UIA event.
+</span>   199    <span class="xdoc">     *
+</span>   200    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   201    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   202    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAEvt.h&gt;
+</span>   203    <span class="xdoc">     *  ...
+</span>   204    <span class="xdoc">     *  Int myInfoCode = 0xC0DE;
+</span>   205    <span class="xdoc">     *  ...
+</span>   206    <span class="xdoc">     *  Log_write1(UIAEvt_info, myInfoCode);
+</span>   207    <span class="xdoc">     *  ...
+</span>   208    <span class="xdoc">     *  <b>@p</b>
+</span>   209    <span class="xdoc">     *  The following text is an example of what will be displayed for the event:
+</span>   210    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   211    <span class="xdoc">     *  "INFO: EventCode:0xC0DE."
+</span>   212    <span class="xdoc">     *  <b>@p</b>
+</span>   213    <span class="xdoc">     *  <b>@param(eventCode)</b>          integer that identifies the type of info event
+</span>   214    <span class="xdoc">     *
+</span>   215    <span class="xdoc">     *  <b>@see</b> #infoWithStr
+</span>   216    <span class="xdoc">     *
+</span>   217    <span class="xdoc">     */</span>
+   218        <span class=key>config</span> xdc.runtime.Log.Event info = {
+   219                mask: Diags.INFO,
+   220                msg: <span class="string">"INFO: EventCode: 0x%x"</span>
+   221        };
+   222    
+   223        <span class="xdoc">/*!
+</span>   224    <span class="xdoc">     *  ======== infoWithStr ========
+</span>   225    <span class="xdoc">     *  Event to use to log a Informational Event Code and format string
+</span>   226    <span class="xdoc">     *
+</span>   227    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   228    <span class="xdoc">     *   The following C code shows how to log an informational event code
+</span>   229    <span class="xdoc">     *   and format string as a UIA event.  It also shows how additional parameters
+</span>   230    <span class="xdoc">     *   can be logged along with the event and format string.
+</span>   231    <span class="xdoc">     *
+</span>   232    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   233    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   234    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAEvt.h&gt;
+</span>   235    <span class="xdoc">     *  ...
+</span>   236    <span class="xdoc">     *  Int myInfoCode = 0xC0DE;
+</span>   237    <span class="xdoc">     *  Int anAdditionalParam = 0x6543;
+</span>   238    <span class="xdoc">     *  ...
+</span>   239    <span class="xdoc">     *  Log_write3(UIAEvt_infoWithStr, myInfoCode,(IArg)"Descriptive text. anAdditionalParam=0x%x.",anAdditionalParam);
+</span>   240    <span class="xdoc">     *  ...
+</span>   241    <span class="xdoc">     *  <b>@p</b>
+</span>   242    <span class="xdoc">     *  The following text is an example of what will be displayed for the event:
+</span>   243    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   244    <span class="xdoc">     *  "INFO: EventCode:0xC0DE. Some descriptive text.  anAdditionalParam=0x6543."
+</span>   245    <span class="xdoc">     *  <b>@p</b>
+</span>   246    <span class="xdoc">     *  <b>@param(eventCode)</b>  integer that identifies the specific info event being logged
+</span>   247    <span class="xdoc">     *  <b>@param(fmt)</b>        a constant string that provides format specifiers for up to 6 additional parameters
+</span>   248    <span class="xdoc">     *
+</span>   249    <span class="xdoc">     *  <b>@see</b> #info
+</span>   250    <span class="xdoc">     */</span>
+   251        <span class=key>config</span> xdc.runtime.Log.Event infoWithStr = {
+   252                mask: Diags.INFO,
+   253                msg: <span class="string">"INFO: EventCode:0x%x.  %$S"</span>
+   254        };
+   255    
+   256        <span class="xdoc">/*!
+</span>   257    <span class="xdoc">     *  ======== detail ========
+</span>   258    <span class="xdoc">     *  Event to use to log a Detail-level Event Code
+</span>   259    <span class="xdoc">     *
+</span>   260    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   261    <span class="xdoc">     *   The following C code shows how to log a detail-level event code as a UIA event.
+</span>   262    <span class="xdoc">     *
+</span>   263    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   264    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   265    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAEvt.h&gt;
+</span>   266    <span class="xdoc">     *  ...
+</span>   267    <span class="xdoc">     *  Int myEventCode = 0xE1;
+</span>   268    <span class="xdoc">     *  ...
+</span>   269    <span class="xdoc">     *  Log_write1(UIAEvt_detail, myEventCode);
+</span>   270    <span class="xdoc">     *  ...
+</span>   271    <span class="xdoc">     *  <b>@p</b>
+</span>   272    <span class="xdoc">     *  The following text is an example of what will be displayed for the event:
+</span>   273    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   274    <span class="xdoc">     *  "DETAIL: EventCode:0xE1."
+</span>   275    <span class="xdoc">     *  <b>@p</b>
+</span>   276    <span class="xdoc">     *  <b>@param(eventCode)</b>  integer that identifies the specific detail event being logged
+</span>   277    <span class="xdoc">     *
+</span>   278    <span class="xdoc">     *  <b>@see</b> #detailWithStr
+</span>   279    <span class="xdoc">     */</span>
+   280        <span class=key>config</span> xdc.runtime.Log.Event detail = {
+   281                mask: Diags.INFO,
+   282                level: Diags.LEVEL4,
+   283                msg: <span class="string">"DETAIL: EventCode:0x%x"</span>
+   284        };
+   285    
+   286        <span class="xdoc">/*!
+</span>   287    <span class="xdoc">     *  ======== detailWithStr ========
+</span>   288    <span class="xdoc">     *  Event to use to log a Detail-level Event Code and fmt string
+</span>   289    <span class="xdoc">     *
+</span>   290    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   291    <span class="xdoc">     *   The following C code shows how to log a detail-level event code
+</span>   292    <span class="xdoc">     *   and format string as a UIA event.  It also shows how additional parameters
+</span>   293    <span class="xdoc">     *   can be logged along with the event and format string.
+</span>   294    <span class="xdoc">     *
+</span>   295    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   296    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   297    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAEvt.h&gt;
+</span>   298    <span class="xdoc">     *  ...
+</span>   299    <span class="xdoc">     *  Int myEventCode = 0xE1;
+</span>   300    <span class="xdoc">     *  Int anAdditionalParam = 0x6543;
+</span>   301    <span class="xdoc">     *  ...
+</span>   302    <span class="xdoc">     *  Log_write3(UIAEvt_detailWithStr, myEventCode,(IArg)"Descriptive text. anAdditionalParam=0x%x.",anAdditionalParam);
+</span>   303    <span class="xdoc">     *  ...
+</span>   304    <span class="xdoc">     *  <b>@p</b>
+</span>   305    <span class="xdoc">     *  The following text is an example of what will be displayed for the event:
+</span>   306    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   307    <span class="xdoc">     *  "DETAIL: EventCode:0xE1. Some descriptive text.  anAdditionalParam=0x6543."
+</span>   308    <span class="xdoc">     *  <b>@p</b>
+</span>   309    <span class="xdoc">     *  <b>@param(eventCode)</b>  integer that identifies the specific detail event being logged
+</span>   310    <span class="xdoc">     *  <b>@param(fmt)</b>        a constant string that provides format specifiers for up to 6 additional parameters
+</span>   311    <span class="xdoc">     *
+</span>   312    <span class="xdoc">     *  <b>@see</b> #detail
+</span>   313    <span class="xdoc">     */</span>
+   314        <span class=key>config</span> xdc.runtime.Log.Event detailWithStr = {
+   315                mask: Diags.INFO ,
+   316                level: Diags.LEVEL4,
+   317                msg: <span class="string">"DETAIL: EventCode:0x%x.  %$S"</span>
+   318        };
+   319    
+   320        <span class="xdoc">/*!
+</span>   321    <span class="xdoc">     *  ======== intWithKey ========
+</span>   322    <span class="xdoc">     *  Event to use to log values to be analyzed as Statistics and / or Graphs
+</span>   323    <span class="xdoc">     *
+</span>   324    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   325    <span class="xdoc">     *  Example 1:
+</span>   326    <span class="xdoc">     *   The following C code shows how to log an intWithKey event code
+</span>   327    <span class="xdoc">     *   that logs a value, a format string that defines the key, and
+</span>   328    <span class="xdoc">     *   parameters for use within the key format string.
+</span>   329    <span class="xdoc">     *
+</span>   330    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   331    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   332    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAEvt.h&gt;
+</span>   333    <span class="xdoc">     *  ...
+</span>   334    <span class="xdoc">     *  Int myValue = 1001;
+</span>   335    <span class="xdoc">     *  Int myInstanceId = 0x6543;
+</span>   336    <span class="xdoc">     *  ...
+</span>   337    <span class="xdoc">     *  Log_write5(UIAEvt_intWithKey, myValue,0,0,(IArg)"InstanceId=0x%x.",myInstanceId);
+</span>   338    <span class="xdoc">     *  ...
+</span>   339    <span class="xdoc">     *  <b>@p</b>
+</span>   340    <span class="xdoc">     *  The following text is an example of what will be displayed for the event:
+</span>   341    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   342    <span class="xdoc">     *  "VALUE=1001 (AuxData=0,0) Key: InstanceId=0x6543."
+</span>   343    <span class="xdoc">         *
+</span>   344    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   345    <span class="xdoc">     *  Example 2:
+</span>   346    <span class="xdoc">     *   The following C code shows how to log an intWithKey event code
+</span>   347    <span class="xdoc">     *   that logs a value, a format string that defines the key, and
+</span>   348    <span class="xdoc">     *   parameters for use within the key format string, including
+</span>   349    <span class="xdoc">     *   the file name and line of code that the event was logged at.
+</span>   350    <span class="xdoc">     *   This example uses a special format specifier, %$F, which
+</span>   351    <span class="xdoc">     *   is used to format two parameters (__FILE__ and __LINE__)
+</span>   352    <span class="xdoc">     *   in a way that tools will be able to display the line of code
+</span>   353    <span class="xdoc">     *   that the event was logged from in a source code editor
+</span>   354    <span class="xdoc">     *   when the user clicks on the event.
+</span>   355    <span class="xdoc">     *
+</span>   356    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   357    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   358    <span class="xdoc">     *  #include &lt;ti/uia/events/UIAEvt.h&gt;
+</span>   359    <span class="xdoc">     *  ...
+</span>   360    <span class="xdoc">     *  Int myValue = 1001;
+</span>   361    <span class="xdoc">     *  Int myInstanceId = 9876;
+</span>   362    <span class="xdoc">     *  ...
+</span>   363    <span class="xdoc">     *  Log_write7(UIAEvt_intWithKey, myValue,0,0,(IArg)"InstanceId=%d, at %$F.",
+</span>   364    <span class="xdoc">     *                    myInstanceId,(IArg)__FILE__,(IArg)__LINE__);
+</span>   365    <span class="xdoc">     *  ...
+</span>   366    <span class="xdoc">     *  // If you wish to log only the line number as a key, use the following:
+</span>   367    <span class="xdoc">     *  Log_write6(UIAEvt_intWithKey, myValue+1,0,0,(IArg)"InstanceId=%d, at line %d.",
+</span>   368    <span class="xdoc">     *                    myInstanceId,(IArg)__LINE__);
+</span>   369    <span class="xdoc">     *  ...
+</span>   370    <span class="xdoc">     *  // If you wish to log only the file name as a key and the line number
+</span>   371    <span class="xdoc">     *  // as auxiliary data which is logged along with the event, use the following:
+</span>   372    <span class="xdoc">     *  Log_write6(UIAEvt_intWithKey, myValue+2,(IArg)__LINE__,0,(IArg)"InstanceId=%d, in file [%s].",
+</span>   373    <span class="xdoc">     *                    myInstanceId,(IArg)__FILE__);
+</span>   374    <span class="xdoc">     *  <b>@p</b>
+</span>   375    <span class="xdoc">     *  The following text is an example of what will be displayed for the event,
+</span>   376    <span class="xdoc">     *  assuming it was logged from a file named demo.c at line 1234:
+</span>   377    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   378    <span class="xdoc">     *  "VALUE=1001 (AuxData=0,0) Key: InstanceId=9876, at [../demo.c:1234] ."
+</span>   379    <span class="xdoc">     *  "VALUE=1002 (AuxData=0,0) Key: InstanceId=9876, at line 1234."
+</span>   380    <span class="xdoc">     *  "VALUE=1003 (AuxData=1234,0) Key: InstanceId=9876, in file [../demo.c]."
+</span>   381    <span class="xdoc">     *  <b>@p</b>
+</span>   382    <span class="xdoc">     *
+</span>   383    <span class="xdoc">     *  <b>@param(value)</b>      integer value that is to be analyzed
+</span>   384    <span class="xdoc">     *  <b>@param(auxData1)</b>   auxiliary data that is to be displayed along with the event (use 0 if none)
+</span>   385    <span class="xdoc">     *  <b>@param(auxData2)</b>   auxiliary data that is to be displayed along with the event (use 0 if none)
+</span>   386    <span class="xdoc">     *  <b>@param(key)</b>        a constant string that provides format specifiers for up to 4 key entries
+</span>   387    <span class="xdoc">     */</span>
+   388        <span class=key>config</span> xdc.runtime.Log.Event intWithKey = {
+   389                    mask: Diags.ANALYSIS,
+   390                    msg: <span class="string">"VALUE=%d (AuxData=%d, %d) Key:%$S"</span>
+   391        };
+   392    
+   393        <span class="xdoc">/*!
+</span>   394    <span class="xdoc">     *  ======== metaEventStart ========
+</span>   395    <span class="xdoc">     *  Metadata description of the start event
+</span>   396    <span class="xdoc">     *
+</span>   397    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   398    <span class="xdoc">     */</span>
+   399        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventIntWithKey = {
+   400            versionId: <span class="string">"2.0"</span>,
+   401            analysisType: DvtTypes.DvtAnalysisType_STATISTIC,
+   402            displayText: <span class="string">"intWithKey"</span>,
+   403            tooltipText: <span class="string">"Value with a key string"</span>,
+   404            numParameters: 4,
+   405            paramInfo: [
+   406            {   name: <span class="string">'value'</span>,
+   407                dataDesc: DvtTypes.DvtDataDesc_VALUE,
+   408                dataTypeName: <span class="string">'Int'</span>,
+   409                units: <span class="string">'none'</span>,
+   410                isHidden: <span class=key>false</span>
+   411            },
+   412            {   name: <span class="string">'aux1'</span>,
+   413                dataDesc: DvtTypes.DvtDataDesc_VALUE,
+   414                dataTypeName: <span class="string">'Int'</span>,
+   415                units: <span class="string">'none'</span>,
+   416                isHidden: <span class=key>false</span>
+   417            },
+   418            {   name: <span class="string">'aux2'</span>,
+   419                dataDesc: DvtTypes.DvtDataDesc_VALUE,
+   420                dataTypeName: <span class="string">'Int'</span>,
+   421                units: <span class="string">'none'</span>,
+   422                isHidden: <span class=key>false</span>
+   423            },
+   424            {   name: <span class="string">'key'</span>,
+   425                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   426                dataTypeName: <span class="string">'String'</span>,
+   427                units: <span class="string">'none'</span>,
+   428                isHidden: <span class=key>false</span>
+   429            }
+   430            ]
+   431        };
+   432    
+   433    }
+</pre>
+</body></html>

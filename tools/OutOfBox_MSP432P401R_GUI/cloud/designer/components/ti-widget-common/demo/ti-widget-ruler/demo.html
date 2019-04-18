@@ -1,0 +1,238 @@
+<!doctype html>
+<!--
+Copyright 2014 - 2015. Texas Instruments Incorporated. All rights reserved.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+*   Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+*   Neither the name of Texas Instruments Incorporated nor the names of
+its contributors may be used to endorse or promote products derived
+from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<html>
+<head>
+    <title>TI Commond Widgets - Ruler Widget Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <script src="../../../webcomponentsjs/webcomponents.js"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            height: 100%;
+            overflow-y: hidden;
+        }
+        
+        design-gist-element-preview {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body unresolved>
+<link rel="import" href="../../../ti-core-stylesheets/ti-core-stylesheets.html">
+
+<!-- ------------------------------------------------------------------------------------- -->
+<link rel="import" href="../../../ti-widget-common/ti-widget-label.html">
+<link rel="import" href="../../../paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../../paper-input/paper-input.html">
+<link rel="import" href="../../../ti-widget-common/ti-widget-spinner.html">
+<link rel="import" href="../../../ti-widget-common/ti-widget-droplist.html">
+<link rel="import" href="../../../ti-widget-common/ti-widget-ruler.html">
+
+  <template id="template_obj" is="auto-binding">
+    <style>    
+      #ti_widget_label {
+        width: 520px;
+        height: 40px;
+        left: 60px;
+        top: 20px;
+        position: absolute;
+      }
+      #ti_widget_label1 {
+        width: 200px;
+        height: 20px;
+        left: 60px;
+        top: 170px;
+        position: absolute;
+      }
+      #value {
+        left: 460px;
+        top: 440px;
+        position: absolute;
+      }
+      #trim {
+        left: 90px;
+        top: 220px;
+        position: absolute;
+      }
+      #uppercase {
+        left: 90px;
+        top: 270px;
+        position: absolute;
+      }
+      #intermediateChanges {
+        left: 90px;
+        top: 370px;
+        position: absolute;
+      }
+      #lowercase {
+        left: 90px;
+        top: 320px;
+        position: absolute;
+      }
+      #selectOnClick {
+        left: 90px;
+        top: 420px;
+        position: absolute;
+      }
+      #visible {
+        left: 108px;
+        top: 481px;
+        position: absolute;
+      }
+      #disabled {
+        left: 108px;
+        top: 531px;
+        position: absolute;
+      }
+      #tooltip {
+        left: 170px;
+        top: 570px;
+        position: absolute;
+        width: 360px;
+        height: 40px;
+      }
+      #ti_widget_label3 {
+        left: 110px;
+        top: 580px;
+        position: absolute;
+      }
+      #text_align_label {
+        left: 110px;
+        top: 220px;
+        position: absolute;
+      }
+      #font_color {
+        left: 450px;
+        top: 270px;
+        position: absolute;
+        width: 150px;
+        height: 50px;
+      }
+      #hide_ticks {
+        left: 108px;
+        top: 421px;
+        position: absolute;
+      }
+      #labels {
+        left: 190px;
+        top: 200px;
+        position: absolute;
+      }
+      #ti_widget_label2 {
+        left: 110px;
+        top: 270px;
+        position: absolute;
+      }
+      #ti_widget_label4 {
+        left: 110px;
+        top: 320px;
+        position: absolute;
+      }
+      #ti_widget_label5 {
+        left: 110px;
+        top: 370px;
+        position: absolute;
+      }
+      #minor_ticks {
+        left: 190px;
+        top: 270px;
+        position: absolute;
+      }
+      #align_select {
+        width: 100px;
+        left: 190px;
+        top: 320px;
+        position: absolute;
+      }
+      #orientation_select {
+        width: 100px;
+        left: 190px;
+        top: 370px;
+        position: absolute;
+      }
+      #ti_widget_ruler {
+        width: 3in;
+        height: 1em;
+        left: 240px;
+        top: 110px;
+        position: absolute;
+      }
+      #tooltip_input {
+        left: 188px;
+        top: 562px;
+        position: absolute;
+      }
+      #ti_widget_ruler1 {
+        width: 1em;
+        height: 3in;
+        left: 640px;
+        top: 200px;
+        position: absolute;
+      }
+      #ti_widget_label6 {
+        left: 70px;
+        top: 110px;
+        position: absolute;
+      }
+      #ti_widget_label7 {
+        left: 460px;
+        top: 310px;
+        position: absolute;
+      }
+    </style>
+    <ti-core-stylesheets id="ti_core_stylesheets"></ti-core-stylesheets>
+    <ti-widget-label label="Demo of Ruler Widget" textdecoration="underline" fontcolor="orange" fontsize="xx-large" id="ti_widget_label"></ti-widget-label>
+    <paper-checkbox checked label="visible" id="visible"></paper-checkbox>
+    <paper-checkbox label="disabled" id="disabled"></paper-checkbox>
+    <ti-widget-label label="tooltip:" id="ti_widget_label3"></ti-widget-label>
+    <ti-widget-label label="labels:" id="text_align_label"></ti-widget-label>
+    <paper-input label="Type something..." value="-10,-5,0,5,10" committedvalue="-10,-5,0,5,10" id="labels"></paper-input>
+    <ti-widget-label label="minorTicks:" id="ti_widget_label2"></ti-widget-label>
+    <ti-widget-label label="align:" id="ti_widget_label4"></ti-widget-label>
+    <ti-widget-label label="orientation:" id="ti_widget_label5"></ti-widget-label>
+    <ti-widget-spinner value="2" id="minor_ticks"></ti-widget-spinner>
+    <ti-widget-droplist selectedtext="center" labels="start|center|end" selectedindex="1" selectedvalue="2" id="align_select"></ti-widget-droplist>
+    <ti-widget-droplist selectedtext="horizontal" labels="horizontal|vertical" id="orientation_select"></ti-widget-droplist>
+    <ti-widget-ruler labels="{{ $.labels.value }}" minorticks="{{ $.minor_ticks.value }}" align="{{ $.align_select.selectedText }}" hideticks="{{ $.hide_ticks.checked }}" disabled="{{ $.disabled.checked }}" visible="{{ $.visible.checked }}" tooltip="{{ $.tooltip_input.value }}" id="ti_widget_ruler"></ti-widget-ruler>
+    <ti-widget-ruler labels="{{ $.labels.value }}" minorticks="{{ $.minor_ticks.value }}" align="{{ $.align_select.selectedText }}" orientation="vertical" hideticks="{{ $.hide_ticks.checked }}" disabled="{{ $.disabled.checked }}" visible="{{ $.visible.checked }}" tooltip="{{ $.tooltip_input.value }}" id="ti_widget_ruler1"></ti-widget-ruler>
+    <ti-widget-label label="Property Bindings:" fontweight="bold" fontsize="large" id="ti_widget_label1"></ti-widget-label>
+    <ti-widget-label label="vertical orientation" fontstyle="italic" fontsize="medium" id="ti_widget_label6"></ti-widget-label>
+    <ti-widget-label label="horizontal orientation" fontstyle="italic" fontsize="medium" id="ti_widget_label7"></ti-widget-label>
+    <paper-input label="Type something..." id="tooltip_input"></paper-input>
+    <paper-checkbox label="hideTicks" id="hide_ticks"></paper-checkbox>
+  </template>
+</body>
+</html>

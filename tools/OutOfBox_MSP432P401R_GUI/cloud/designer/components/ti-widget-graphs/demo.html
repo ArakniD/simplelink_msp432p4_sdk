@@ -1,0 +1,253 @@
+<!doctype html>
+<!--
+    @license
+    Copyright (c) 2014 Texas Instruments Inc. All rights reserved.
+-->
+
+<html>
+  <head>
+    <title>ti-widget-linegraph</title>
+    <script src="../webcomponentsjs/webcomponents.js"></script>
+    <script src="buffermgr.js"></script>
+
+    <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+	<link rel="import" href="demo-header.html">
+	<link rel="import" href="demo-footer.html">
+	<link rel="import" href="ti-service-et.html">
+    <link rel="import" href="ti-widget-linegraph.html">
+    <link rel="import" href="ti-widget-scalargraph.html">
+
+    <style>
+      body {
+        font-size: 20px;
+		background-color: #FFFFFF;
+      }
+
+      flex-css, flex-container, flex-nonvisual {
+        height: 300px;
+      }
+      
+      .demo {
+        box-sizing: border-box; 
+        width: 925px; 
+        height: 300px; 
+        margin: 15px auto 30px auto; 
+        border: 1px solid #ddd; 
+        padding: 10px 10px 10px 10px;
+      }
+      
+      .chart {
+        float:left; 
+        width:675px; 
+        height:90%; 
+        margin: 10px auto 10px auto;
+      }
+      
+      .options {
+        float:right;
+        width:200px; 
+        height:90%; 
+        margin: 10px auto 10px auto;
+        padding: 0px 10px 0px 10px;
+      }
+	  
+    </style>
+
+  </head>
+
+  <body>
+    <!-- services -->
+	<ti-service-et id="et"> </ti-service-et>
+
+    <!-- header -->
+	<div>
+	<demo-header id="appheader" titlestring="GUI Composer 2.0 Graphs"> </demo-header>
+	</div>
+
+    <!-- main app area -->
+    
+    <!-- chart 1: dual axes, allows option changes -->
+	<div class="demo">
+	<div class="chart">
+      <ti-widget-linegraph id="chart1"></ti-widget-linegraph>
+	</div>
+    <div class="options" >
+      <input type='checkbox' name='fixedScale' id='fixedScale' onChange='onOptionChange(this)'>Fixed Scale<br>
+      <input type='checkbox' name='hideXAxis' id='hideXAxis' onChange='onOptionChange(this)'>Hide X Axis<br>
+      <input type='checkbox' name='hideYAxis' id='hideYAxis' onChange='onOptionChange(this)'>Hide Y Axis<br>
+      <input type='checkbox' name='hideLegend' id='hideLegend' onChange='onOptionChange(this)'>Hide Legend<br>
+      <input type='checkbox' name='hideBorder' id='hideBorder' onChange='onOptionChange(this)'>Hide Border<br>
+      <input type='checkbox' name='showPoints' id='showPoints' onChange='onOptionChange(this)'>Show Points<br>
+      <input type='checkbox' name='showBars' id='showBars' onChange='onOptionChange(this)'>Show Bars<br>
+      <input type='checkbox' name='fill' id='fill' onChange='onOptionChange(this)'>Fill <br>
+      <input type='checkbox' name='disabled' id='disabled' onChange='onOptionChange(this)'>Disabled<br>
+      <!--
+      -->
+      <input type='checkbox' name='visible' id='visible' checked onChange='onOptionChange(this)'>Visible<br>
+      Background Color: <input type='text' name='backgroundColor' id='backgroundColor' onChange='onOptionChange(this)'><br>
+    </div>
+	</div>
+
+    <!-- chart 2: single axis, scalar graph -->
+	<div class="demo">
+	<div class="chart">
+      <ti-widget-scalargraph id="chart2"></ti-widget-scalargraph>
+	</div>
+	</div>
+    
+    <!-- footer -->
+    <p>
+	<div style="float:bottom;">
+    <demo-footer> </demo-footer>
+	</div>
+
+  </body>
+  
+  <script>
+    var hdr = document.querySelector('demo-header');
+    var chart = document.getElementById('chart1');
+	var et = document.querySelector('ti-service-et');
+    var timerD = null;
+    var total = 0;
+    var plotCounter = 0;
+    var oneDimensionData = true;
+    var  numSamples = 200;
+    var sampleArrays = new MultiLimitedArray(3, numSamples);
+    var chart2 = document.getElementById('chart2');
+  
+	hdr.version="0.1.0";
+	
+    // add listeners
+	chart.addEventListener("click", onChartClick, false);
+    chart.addEventListener("ready", onChartReady, false);
+	
+    function getData() {
+        
+      if(total == 0) {
+        // restart a new collection
+        this.et.reset();
+        this.sampleArrays.reset();
+        this.plotCounter = 0;
+        chart.reset();
+        chart2.reset();
+        chart2.start();
+      }
+
+      // get data from source, returns 3 arrays: [time], [power], [energy]
+      var dataArrays = this.et.newSampleArrays(-1);
+      total += dataArrays[0].length;
+
+      // append data to the growing arrays
+      var _time   = this.sampleArrays.concat(0, dataArrays[0]);
+      var _power  = this.sampleArrays.concat(1, dataArrays[1]);
+      var _energy = this.sampleArrays.concat(2, dataArrays[2]);
+      
+      // prepare data arrays for the graph
+      if(oneDimensionData) {
+        // no timestamp, let graph do the x-axis as ticks
+        chart.series_0_Values = _power.getArray();
+        chart.series_1_Values = _energy.getArray();
+      }
+      else {
+        // with timestamp, prepare (x,y) arrays
+        // below are 2 ways to get merged arrays
+        chart.series_0_Values = _time.merge(_power);
+        chart.series_1_Values = this.sampleArrays.getMerged(0, 2);
+      }
+      
+      if(!chart.disabled) {
+        // minic a temperature measurement
+        chart2.value_0 = dataArrays[1][0]*5+23;
+      }
+      
+      // 3 ways to trigger a redraw:
+      // - call updateGraph()
+      // - change the plotCounter value
+      // - change the data arrays
+      //   - have to set chart.redrawOnValuesChange to true
+      //chart.updateGraph();
+      //chart.plotCounter = this.plotCounter;
+      //this.plotCounter++;
+	}
+	
+    /*
+     * onChartClick: start/stop data collection
+     */
+	function onChartClick(event) {
+      if(timerD) {
+        clearInterval(timerD);
+        timerD = null;
+        
+        chart2.stop();
+      }
+      else {
+        total = 0;
+        timerD = setInterval(getData, 500);
+        
+        chart2.start();
+	  }
+	}
+    
+    /*
+     * onChartReady: do initialization
+     */
+    function onChartReady() {
+      //console.log("onChartReady()");
+
+      // set up charts 
+	  chart.series_0_Label="Power (uW)";
+      chart.series_0_Min = 0;
+      chart.series_0_Max = 3.0;
+	  chart.series_1_Label="Energy (mJ)";
+      chart.series_1_Min = 0;
+      chart.redrawOnOptionsChange = true;
+      
+      chart2.series_0_Label="Temerature (C)";
+      chart2.series_0_Min = 0;
+      chart2.series_0_Max = 50;
+      chart2.tickPeriod = 500;
+    }
+    
+    /*
+     * onOptionChange: update graph options accordingly
+     */
+    function onOptionChange(input) {
+      switch(input.id) {
+        case "fixedScale":
+          chart.fixedScale = input.checked;
+        break;
+        case "hideXAxis":
+          chart.hideXAxis = input.checked;
+        break;
+        case "hideYAxis":
+          chart.hideYAxis = input.checked;
+        break;
+        case "hideLegend":
+          chart.hideLegend = input.checked;
+        break;
+        case "hideBorder":
+          chart.hideBorder = input.checked;
+        break;
+        case "showPoints":
+          chart.showPoints = input.checked;
+        break;
+        case "showBars":
+          chart.showBars = input.checked;
+        break;
+        case "fill":
+          chart.fill = input.checked;
+        break;
+        case "disabled":
+          chart.disabled = input.checked;
+        break;
+        case "visible":
+          chart.visible = input.checked;
+        break;
+        case "backgroundColor":
+          chart.backgroundColor = input.value;
+        break;
+      }
+    }
+    
+  </script>
+</html>

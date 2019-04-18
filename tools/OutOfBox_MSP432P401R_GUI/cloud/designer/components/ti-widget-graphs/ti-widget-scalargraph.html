@@ -1,0 +1,175 @@
+<!--
+'ti-widget-scalargraph' plots series of data in line form.
+... to be completed ...
+
+@group TI Widgets
+@element ti-widget-scalargraph
+@homepage ../ti-guicomposer-helpindex/demo.html
+-->
+<!--
+    Copyright (c) 2014 Texas Instruments Inc. All rights reserved.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-linegraph.html">
+
+  <script language="javascript" type="text/javascript" src="assets/flot/jquery.js"></script>
+  <script language="javascript" type="text/javascript" src="assets/flot/jquery.flot.js"></script>
+  <script src="buffermgr.js"></script>
+
+<polymer-element name="ti-widget-scalargraph" extends="ti-widget-linegraph" >
+  <template>
+    <style>
+	</style>
+    <shadow></shadow>
+  </template>
+  
+  <script>
+    Polymer( {
+      channels_: undefined,
+      sTimer_: null,
+      values_: undefined,
+      
+      publish: {
+        /**
+         * The sampling period in mSec.
+         *
+         * @attribute tickPeriod
+         * @type number
+         * @default 0
+         */
+        tickPeriod: 0,
+        tickOn: {
+          value: false,
+          reflect: true
+        },
+        bufferLen: 200,
+        
+        value_0: undefined,
+        value_1: undefined,
+        value_2: undefined,
+        value_3: undefined,
+        value_4: undefined,
+        value_5: undefined,
+        value_6: undefined,
+        value_7: undefined,
+      },
+      
+      created: function() {
+        this.super();
+      },
+      
+      enterView: function() {
+        this.super();
+      },
+      
+      ready: function() {
+        this._createBuffer();
+        this.super();
+      },
+      
+      reset: function() {
+        this.super();
+        this.channels_.reset();
+        this.stop();
+      },
+      
+      start: function() {
+        this.tickOn = true;
+        if(this.sTimer_) {
+          return;
+        }
+        if(this.tickPeriod === undefined || this.tickPeriod <= 0) {
+          this.tickOn = false;
+          return;
+        }
+        
+        this.sTimer_ = setInterval(this.onTick.bind(this), this.tickPeriod);
+      },
+      
+      stop: function() {
+        this.tickOn = false;
+        if(!this.sTimer_) {
+          return;
+        }
+         clearInterval(this.sTimer_);
+         this.sTimer_=null;
+      },
+      
+      pause: function() {
+      },
+
+      _createBuffer: function() {
+        this.channels_ = new MultiLimitedArray(8, this.bufferLen);
+      },
+      
+      _takeSample: function() {
+        this.values_ = [this.value_0, this.value_1, this.value_2, this.value_3, this.value_4, this.value_5, this.value_6, this.value_7]; 
+      },
+      
+      onTick: function() {
+        this._takeSample();
+        for(i=0; i<8; i++) {
+          this.onValueChange(i, this.values_[i]);
+        }
+      },
+      
+      onValueChange: function(index, value) {
+        if(value === undefined) {
+          return;
+        }
+        if( typeof value != "number") {
+          return;
+        }
+        var _larry = this.channels_.push(index, value);
+        switch(index) {
+          case 0:
+            this.series_0_Values = _larry.getArray();
+            break;
+          case 1:
+            this.series_1_Values = _larry.getArray();
+            break;
+          default:
+            // TODO
+            break;
+        }
+      },
+      
+      value_0Changed: function() {
+        if(this.tickPeriod !== undefined && this.tickPeriod > 0) {
+          // do nothing, let it self animate
+          return;
+        }
+        this.onValueChange(0, this.value_0);
+      },
+      value_1Changed: function() {
+        if(this.tickPeriod !== undefined && this.tickPeriod > 0) {
+          // do nothing, let it self animate
+          return;
+        }
+        this.onValueChange(1, this.value_1);
+      },
+      tickOnChanged: function() {
+        if(this.tickOn) {
+          this.start();
+        }
+        else {
+          this.stop();
+        }
+      },
+      bufferLenChanged: function() {
+        if(!this.sTimer_) {
+          this._createBuffer();
+        }
+        else {
+          this.stop();
+          this.async(function() {
+            this._createBuffer();
+            this.reset();
+            }, null, this.tickPeriod);
+        }
+
+      },
+      
+	});
+  </script>
+</polymer-element>

@@ -1,0 +1,664 @@
+<html>
+<head>
+<title>module ti.uia.events.UIASync</title>
+<meta name="description" content="UIA Synchronization Events">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.events.</span><span class="xdoc-id">UIASync</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAStatistic.html" title="module UIAStatistic"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/package.html" title="package ti.uia.events"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIAThreadCtx.html" title="module UIAThreadCtx"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIASync.html">index URL</a></div>
+<p class="xdocHdrSummary">UIA Synchronization Events</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-1">DETAILS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-2">SEE</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-3">EXAMPLES</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+The UIASync module defines events that enable
+  correlation of events from multiple cores as well as
+  correlation of software events with hardware trace
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/events/UIASync-src.html"><span class="xdocLabelFile">ti/uia/events/UIASync.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/events/UIASync.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIASync_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIASync_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIASync_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIASync_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIASync_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">UIASync_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Constants</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#global.Timer.Freq"><span class="xdoc-id">UIASync_globalTimerFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;syncPoint event containing global timer frequency information</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#sync.Point"><span class="xdoc-id">UIASync_syncPoint</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;syncPoint event</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#sync.Point.After.Halt"><span class="xdoc-id">UIASync_syncPointAfterHalt</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;syncPoint event logged after the CPU has resumed running after being
+   reset, suspended or halted by the debugger</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#sync.Point.User.Provided.Data"><span class="xdoc-id">UIASync_syncPointUserProvidedData</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;An event that provides supplementary info to a sync point event</span></span></a>;</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The UIASync module defines events that enable
+  correlation of events from multiple cores as well as
+  correlation of software events with hardware trace</div>
+<div class="xdocText">The following configuration script demonstrates how to configure an
+  application to log sync point events, using the default configuration
+  settings provided by the LogSync module.  By default, the LogSync module
+  creates a dedicated 256 byte LoggerCircBuf logger to use to capture
+  sync point events.   By default, the Rta module logs sync point events
+  when it receives a start or stop command, or before sending up an
+  event packet if the LogSync.isSyncPointRequired API returns 'true'.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html" title="ti.uia.runtime.LogSync">ti.uia.runtime.LogSync</a></div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">EXAMPLES</div>
+<div class="xdocText">Example 1: This is part of the XDC configuration file for the application:</div>
+<div class="xdocText"><PRE class="Example">  // the LogSync module internally does xdc.useModule('ti.uia.events.UIASync')
+  var LogSync = xdc.useModule('ti.uia.runtime.LogSync');
+  var Rta = xdc.useModule('ti.uia.services.Rta');
+</PRE></div>
+<div class="xdocText"><hr /></div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="global.Timer.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIASync_</span><span class="xdoc-id">globalTimerFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIASync.html" title="module UIASync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIASync.html#global.Timer.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">syncPoint event containing global timer frequency information</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIASync_globalTimerFreq</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">serialNumber</span>
+<span class="xdocChildSum">&#151;&nbsp;a 32b serial number, used for correlation with HW
+    trace sync points</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuCyclesPerGlobalTimerTick</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of CPU cycles per global
+    timer increment.  0 if no conversion possible.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">GlobalTimerFreqLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the Global Timer frequency</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">GlobalTimerFreqMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the Global Timer frequency</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This event logs clock information that allows the host to determine how
+ to convert global imestamp tick counts into time values and CPU cycle
+ counts.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sync.Point"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIASync_</span><span class="xdoc-id">syncPoint</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIASync.html" title="module UIASync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIASync.html#sync.Point">index URL</a></div>
+<p class="xdocHdrSummaryDcl">syncPoint event</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIASync_syncPoint</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">serialNumber</span>
+<span class="xdocChildSum">&#151;&nbsp;a 32b serial number, used for correlation with HW
+    trace sync points</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuTimestampLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuTimestampMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">GlobalTimestampLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">GlobalTimestampMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuCyclesPerCpuTimerTick</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of CPU cycles per CPU timer
+    increment.  0 if no conversion possible.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CPUFreqLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the CPU frequency</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CPUFreqMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the CPU frequency</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This event logs both a local CPU timestamp (the event timestamp) and a
+ global timestamp, which enables time correlation of the
+ local CPU timestamps that each event can be tagged with
+ against the global timebase, thus enabling multi-core
+ event correlation.  It also logs clock information that allows the host
+ to determine how to convert CPU timestamp tick counts into time values
+ and CPU cycle counts.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sync.Point.After.Halt"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIASync_</span><span class="xdoc-id">syncPointAfterHalt</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIASync.html" title="module UIASync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIASync.html#sync.Point.After.Halt">index URL</a></div>
+<p class="xdocHdrSummaryDcl">syncPoint event logged after the CPU has resumed running after being
+   reset, suspended or halted by the debugger</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIASync_syncPointAfterHalt</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">serialNumber</span>
+<span class="xdocChildSum">&#151;&nbsp;a 32b serial number, used for correlation with HW
+   trace sync points</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuTimestampLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuTimestampMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">GlobalTimestampLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">GlobalTimestampMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuCyclesPerCpuTimerTick</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of CPU cycles per CPU timer
+   increment.  0 if no conversion possible.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CPUFreqLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the CPU frequency</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CPUFreqMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the CPU frequency</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This event logs both a local CPU timestamp (the event timestamp) and a
+ global timestamp, which enables time correlation of the
+ local CPU timestamps that each event can be tagged with
+ against the global timebase, thus enabling multi-core
+ event correlation.  It also logs clock information that allows the host
+ to determine how to convert CPU timestamp tick counts into time values
+   and CPU cycle counts.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="sync.Point.User.Provided.Data"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIASync_</span><span class="xdoc-id">syncPointUserProvidedData</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIASync.html" title="module UIASync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIASync.html#sync.Point.User.Provided.Data">index URL</a></div>
+<p class="xdocHdrSummaryDcl">An event that provides supplementary info to a sync point event</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">UIASync_syncPointUserProvidedData</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">serialNumber</span>
+<span class="xdocChildSum">&#151;&nbsp;a 32b serial number, used for correlation with
+    HW trace sync points</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">fmt</span>
+<span class="xdocChildSum">&#151;&nbsp;a format specifier string for up to 6 additional parameters</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This event can be used by user-provided code to log supplementary
+ event data whenever a sync point event is logged.</div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIASync.html" title="module UIASync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIASync.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">UIASync_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">UIASync_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">UIASync_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">UIASync_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">UIASync_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">UIASync_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/events/UIASync-src.html"><span class="xdocLabelFile">ti/uia/events/UIASync.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> UIASync = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.events.UIASync'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaglobal.Timer.Freq">UIASync.<span class="xdoc-id">globalTimerFreq</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;syncPoint event containing global timer frequency information</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Sync Point Global Timer Freq:  SerialNumber=0x%x, CpuCyclesPerGlobalTimerTick=%d, GlobalTimerFreq [LSW=0x%x, MSW=0x%x]"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metasync.Point">UIASync.<span class="xdoc-id">syncPoint</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;syncPoint event</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Sync Point:  SerialNumber=0x%x, CpuTStamp [LSW=0x%x, MSW=0x%x], GlobalTStamp [LSW=0x%x, MSW=0x%x], CpuCyclesPerCpuTimerTick=%d, CpuFreq [LSW=0x%x, MSW=0x%x]"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metasync.Point.After.Halt">UIASync.<span class="xdoc-id">syncPointAfterHalt</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;syncPoint event logged after the CPU has resumed running after being
+   reset, suspended or halted by the debugger</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Sync Point After Halt:  SerialNumber=0x%x, CpuTStamp [LSW=0x%x, MSW=0x%x], GlobalTStamp [LSW=0x%x, MSW=0x%x], CpuCyclesPerCpuTimerTick=%d, CpuFreq [LSW=0x%x, MSW=0x%x]"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metasync.Point.User.Provided.Data">UIASync.<span class="xdoc-id">syncPointUserProvidedData</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;An event that provides supplementary info to a sync point event</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Sync Point User Data: SerialNumber=0x%x, %$S"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">UIASync.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaglobal.Timer.Freq"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIASync.</span><span class="xdoc-id">globalTimerFreq</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIASync.html" title="module UIASync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIASync.html#global.Timer.Freq">index URL</a></div>
+<p class="xdocHdrSummaryDcl">syncPoint event containing global timer frequency information</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIASync.<span class="xdoc-id">globalTimerFreq</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Sync Point Global Timer Freq:  SerialNumber=0x%x, CpuCyclesPerGlobalTimerTick=%d, GlobalTimerFreq [LSW=0x%x, MSW=0x%x]"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">serialNumber</span>
+<span class="xdocChildSum">&#151;&nbsp;a 32b serial number, used for correlation with HW
+    trace sync points</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuCyclesPerGlobalTimerTick</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of CPU cycles per global
+    timer increment.  0 if no conversion possible.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">GlobalTimerFreqLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the Global Timer frequency</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">GlobalTimerFreqMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the Global Timer frequency</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This event logs clock information that allows the host to determine how
+ to convert global imestamp tick counts into time values and CPU cycle
+ counts.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#global.Timer.Freq" title="UIASync_globalTimerFreq">UIASync_globalTimerFreq</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metasync.Point"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIASync.</span><span class="xdoc-id">syncPoint</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIASync.html" title="module UIASync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIASync.html#sync.Point">index URL</a></div>
+<p class="xdocHdrSummaryDcl">syncPoint event</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIASync.<span class="xdoc-id">syncPoint</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Sync Point:  SerialNumber=0x%x, CpuTStamp [LSW=0x%x, MSW=0x%x], GlobalTStamp [LSW=0x%x, MSW=0x%x], CpuCyclesPerCpuTimerTick=%d, CpuFreq [LSW=0x%x, MSW=0x%x]"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">serialNumber</span>
+<span class="xdocChildSum">&#151;&nbsp;a 32b serial number, used for correlation with HW
+    trace sync points</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuTimestampLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuTimestampMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">GlobalTimestampLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">GlobalTimestampMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuCyclesPerCpuTimerTick</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of CPU cycles per CPU timer
+    increment.  0 if no conversion possible.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CPUFreqLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the CPU frequency</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CPUFreqMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the CPU frequency</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This event logs both a local CPU timestamp (the event timestamp) and a
+ global timestamp, which enables time correlation of the
+ local CPU timestamps that each event can be tagged with
+ against the global timebase, thus enabling multi-core
+ event correlation.  It also logs clock information that allows the host
+ to determine how to convert CPU timestamp tick counts into time values
+ and CPU cycle counts.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#sync.Point" title="UIASync_syncPoint">UIASync_syncPoint</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metasync.Point.After.Halt"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIASync.</span><span class="xdoc-id">syncPointAfterHalt</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIASync.html" title="module UIASync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIASync.html#sync.Point.After.Halt">index URL</a></div>
+<p class="xdocHdrSummaryDcl">syncPoint event logged after the CPU has resumed running after being
+   reset, suspended or halted by the debugger</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIASync.<span class="xdoc-id">syncPointAfterHalt</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Sync Point After Halt:  SerialNumber=0x%x, CpuTStamp [LSW=0x%x, MSW=0x%x], GlobalTStamp [LSW=0x%x, MSW=0x%x], CpuCyclesPerCpuTimerTick=%d, CpuFreq [LSW=0x%x, MSW=0x%x]"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">serialNumber</span>
+<span class="xdocChildSum">&#151;&nbsp;a 32b serial number, used for correlation with HW
+   trace sync points</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuTimestampLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuTimestampMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">GlobalTimestampLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">GlobalTimestampMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the global timestamp</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CpuCyclesPerCpuTimerTick</span>
+<span class="xdocChildSum">&#151;&nbsp;the number of CPU cycles per CPU timer
+   increment.  0 if no conversion possible.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CPUFreqLSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 LSBs of the CPU frequency</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">CPUFreqMSW</span>
+<span class="xdocChildSum">&#151;&nbsp;the 32 MSBs of the CPU frequency</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This event logs both a local CPU timestamp (the event timestamp) and a
+ global timestamp, which enables time correlation of the
+ local CPU timestamps that each event can be tagged with
+ against the global timebase, thus enabling multi-core
+ event correlation.  It also logs clock information that allows the host
+ to determine how to convert CPU timestamp tick counts into time values
+   and CPU cycle counts.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#sync.Point.After.Halt" title="UIASync_syncPointAfterHalt">UIASync_syncPointAfterHalt</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metasync.Point.User.Provided.Data"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIASync.</span><span class="xdoc-id">syncPointUserProvidedData</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIASync.html" title="module UIASync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIASync.html#sync.Point.User.Provided.Data">index URL</a></div>
+<p class="xdocHdrSummaryDcl">An event that provides supplementary info to a sync point event</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIASync.<span class="xdoc-id">syncPointUserProvidedData</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event.Desc" title="xdc.runtime.Log.EventDesc">Log.EventDesc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>mask: <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.N.A.L.Y.S.I.S" title="xdc.runtime.Diags.ANALYSIS">Diags.ANALYSIS</a>,
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "Sync Point User Data: SerialNumber=0x%x, %$S"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">VALUES</div>
+<div class="xdocChild"><span class="xdocChildId">serialNumber</span>
+<span class="xdocChildSum">&#151;&nbsp;a 32b serial number, used for correlation with
+    HW trace sync points</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">fmt</span>
+<span class="xdocChildSum">&#151;&nbsp;a format specifier string for up to 6 additional parameters</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This event can be used by user-provided code to log supplementary
+ event data whenever a sync point event is logged.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#sync.Point.User.Provided.Data" title="UIASync_syncPointUserProvidedData">UIASync_syncPointUserProvidedData</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">UIASync.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/events/UIASync.html" title="module UIASync"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/events/UIASync.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>UIASync.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:10 GMT</div>
+</div></div></body>
+</html>

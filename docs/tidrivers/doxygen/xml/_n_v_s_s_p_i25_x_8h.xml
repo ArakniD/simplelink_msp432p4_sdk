@@ -1,0 +1,448 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="_n_v_s_s_p_i25_x_8h" kind="file" language="C++">
+    <compoundname>NVSSPI25X.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includes local="no">stdbool.h</includes>
+    <includes refid="_s_p_i_8h" local="no">ti/drivers/SPI.h</includes>
+    <incdepgraph>
+      <node id="168">
+        <label>stdbool.h</label>
+      </node>
+      <node id="167">
+        <label>stdint.h</label>
+      </node>
+      <node id="170">
+        <label>stddef.h</label>
+      </node>
+      <node id="169">
+        <label>ti/drivers/SPI.h</label>
+        <link refid="_s_p_i_8h"/>
+        <childnode refid="168" relation="include">
+        </childnode>
+        <childnode refid="170" relation="include">
+        </childnode>
+        <childnode refid="167" relation="include">
+        </childnode>
+      </node>
+      <node id="166">
+        <label>NVSSPI25X.h</label>
+        <link refid="_n_v_s_s_p_i25_x_8h"/>
+        <childnode refid="167" relation="include">
+        </childnode>
+        <childnode refid="168" relation="include">
+        </childnode>
+        <childnode refid="169" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <innerclass refid="struct_n_v_s_s_p_i25_x___h_w_attrs" prot="public">NVSSPI25X_HWAttrs</innerclass>
+    <innerclass refid="struct_n_v_s_s_p_i25_x___object" prot="public">NVSSPI25X_Object</innerclass>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="_n_v_s_s_p_i25_x_8h_1a89a4a07b7be073b897feebf4760f1662" prot="public" static="no">
+        <name>NVSSPI25X_CMD_MASS_ERASE</name>
+        <initializer>(<ref refid="group___n_v_s___c_o_n_t_r_o_l_1gaa9fa1c41660d17139bce63ff34cd774f" kindref="member">NVS_CMD_RESERVED</ref> + 0)</initializer>
+        <briefdescription>
+<para>Command to perform mass erase of entire flash. </para>        </briefdescription>
+        <detaileddescription>
+<para>As this command can erase flash memory outside the region associated with the NVS_Handle passed to the control command, the user must carefully orchestrate the use of the command.</para><para>Mass Erase is the only control command supported. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSSPI25X.h" line="212" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSSPI25X.h" bodystart="212" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_n_v_s_s_p_i25_x_8h_1abf8ed123f5292601fe76a62275bb60f9" prot="public" static="no">
+        <name>NVSSPI25X_SPI_MANAGES_CS</name>
+        <initializer>((uint16_t)(~0))</initializer>
+        <briefdescription>
+<para>Disable internal management of SPI chip select. </para>        </briefdescription>
+        <detaileddescription>
+<para>Some SPI peripherals can be configured to manage their own chip select. Setting the <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ade20d02364fd0f77d795295f4b85d363" kindref="member">spiCsnGpioIndex</ref> field of the <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs" kindref="compound">NVSSPI25X_HWAttrs</ref> structure to <ref refid="_n_v_s_s_p_i25_x_8h_1abf8ed123f5292601fe76a62275bb60f9" kindref="member">NVSSPI25X_SPI_MANAGES_CS</ref> informs the NVSSPI25X driver that the SPI peripheral used by the NVS driver is configured to manage its own chip select signal. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSSPI25X.h" line="224" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSSPI25X.h" bodystart="224" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_n_v_s_s_p_i25_x_8h_1aebd6500a16f6e85681ba7e5c000d0156" prot="public" static="no">
+        <type>struct <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs" kindref="compound">NVSSPI25X_HWAttrs</ref></type>
+        <definition>typedef struct NVSSPI25X_HWAttrs  NVSSPI25X_HWAttrs</definition>
+        <argsstring></argsstring>
+        <name>NVSSPI25X_HWAttrs</name>
+        <briefdescription>
+<para>NVSSPI25X attributes. </para>        </briefdescription>
+        <detaileddescription>
+<para>The &apos;regionBaseOffset&apos; is the offset, in bytes, from the base of the SPI flash, of the flash region to be managed.</para><para>The &apos;regionSize&apos; must be an integer multiple of the flash sector size.</para><para>The &apos;sectorSize&apos; is SPI flash device specific. This parameter should correspond to the number of bytes erased when the &apos;SPIFLASH_SUBSECTOR_ERASE&apos; (0x20) command is issued to the device.</para><para>The &apos;verifyBuf&apos; and &apos;verifyBufSize&apos; parameters are used by the <ref refid="_n_v_s_8h_1aae7abe0cb889a6d0cc1858bfc69ab7e0" kindref="member">NVS_write()</ref> command when either &apos;NVS_WRITE_PRE_VERIFY&apos; or &apos;NVS_WRITE_POST_VERIFY&apos; functions are requested in the &apos;flags&apos; argument. The &apos;verifyBuf&apos; is used to successively read back portions of the flash to compare with the data being written to it.</para><para><programlisting><codeline><highlight class="normal">//</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>Only<sp/>one<sp/>region<sp/>write<sp/>operation<sp/>is<sp/>performed<sp/>at<sp/>a<sp/>time</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>so<sp/>a<sp/>single<sp/>verifyBuf<sp/>can<sp/>be<sp/>shared<sp/>by<sp/>all<sp/>the<sp/>regions.</highlight></codeline>
+<codeline><highlight class="normal">//</highlight></codeline>
+<codeline><highlight class="normal">uint8_t<sp/>verifyBuf[256];</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">NVSSPI25X_HWAttrs<sp/>nvsSPIHWAttrs[2]<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>region<sp/>0<sp/>is<sp/>1<sp/>flash<sp/>sector<sp/>in<sp/>length.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionBaseOffset<sp/>=<sp/>0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionSize<sp/>=<sp/>4096,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.sectorSize<sp/>=<sp/>4096,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.verifyBuf<sp/>=<sp/>verifyBuf;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.verifyBufSize<sp/>=<sp/>256;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiHandle<sp/>=<sp/>NULL,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiIndex<sp/>=<sp/>0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiBitRate<sp/>=<sp/>40000000,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiCsnGpioIndex<sp/>=<sp/>12,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>region<sp/>1<sp/>is<sp/>3<sp/>flash<sp/>sectors<sp/>in<sp/>length.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionBaseOffset<sp/>=<sp/>4096,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionSize<sp/>=<sp/>4096<sp/>*<sp/>3,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.sectorSize<sp/>=<sp/>4096,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.verifyBuf<sp/>=<sp/>verifyBuf;<sp/><sp/><sp/><sp/><sp/>//<sp/>use<sp/>shared<sp/>verifyBuf</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.verifyBufSize<sp/>=<sp/>256;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiHandle<sp/>=<sp/>NULL,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiIndex<sp/>=<sp/>0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiBitRate<sp/>=<sp/>40000000,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiCsnGpioIndex<sp/>=<sp/>12,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSSPI25X.h" line="320" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_n_v_s_s_p_i25_x_8h_1a817f992b570e02d68f89bcabbe2ae856" prot="public" static="no">
+        <type>struct <ref refid="struct_n_v_s_s_p_i25_x___object" kindref="compound">NVSSPI25X_Object</ref></type>
+        <definition>typedef struct NVSSPI25X_Object  NVSSPI25X_Object</definition>
+        <argsstring></argsstring>
+        <name>NVSSPI25X_Object</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSSPI25X.h" line="331" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="_n_v_s_s_p_i25_x_8h_1a105e78ab0c157b8ad847af271b05b18c" prot="public" static="no" mutable="no">
+        <type>const <ref refid="struct_n_v_s___fxn_table" kindref="compound">NVS_FxnTable</ref></type>
+        <definition>const NVS_FxnTable NVSSPI25X_fxnTable</definition>
+        <argsstring></argsstring>
+        <name>NVSSPI25X_fxnTable</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSSPI25X.h" line="236" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Non-Volatile Storage driver implementation for SPI flash peripherals. </para>    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+</para><para><heading level="1">Overview</heading>
+</para><para>The NVSSPI25X module allows you to manage SPI flash memory. This driver works with most 256 byte/page SPI flash memory devices such as: <verbatim>Winbond     W25xx   family
+Macronics   MX25Rxx family
+Micron      N25Qxx  family
+</verbatim></para><para>The SPI flash commands used by this driver are as follows:</para><para><programlisting><codeline><highlight class="normal">#define<sp/>SPIFLASH_PAGE_WRITE<sp/><sp/><sp/><sp/><sp/><sp/><sp/>0x02<sp/>//<sp/>Page<sp/>Program<sp/>(up<sp/>to<sp/>256<sp/>bytes)</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>SPIFLASH_READ<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0x03<sp/>//<sp/>Read<sp/>Data</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>SPIFLASH_READ_STATUS<sp/><sp/><sp/><sp/><sp/><sp/>0x05<sp/>//<sp/>Read<sp/>Status<sp/>Register</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>SPIFLASH_WRITE_ENABLE<sp/><sp/><sp/><sp/><sp/>0x06<sp/>//<sp/>Write<sp/>Enable</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>SPIFLASH_SUBSECTOR_ERASE<sp/><sp/>0x20<sp/>//<sp/>SubSector<sp/>(4K<sp/>bytes)<sp/>Erase</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>SPIFLASH_SECTOR_ERASE<sp/><sp/><sp/><sp/><sp/>0xD8<sp/>//<sp/>Sector<sp/>(usually<sp/>64K<sp/>bytes)<sp/>Erase</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>SPIFLASH_RDP<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0xAB<sp/>//<sp/>Release<sp/>from<sp/>Deep<sp/>Power<sp/>Down</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>SPIFLASH_DP<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0xB9<sp/>//<sp/>Deep<sp/>Power<sp/>Down</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>SPIFLASH_MASS_ERASE<sp/><sp/><sp/><sp/><sp/><sp/><sp/>0xC7<sp/>//<sp/>Erase<sp/>entire<sp/>flash.</highlight></codeline>
+</programlisting></para><para>It is assumed that the SPI flash device used by this driver supports the byte programmability of the SPIFLASH_PAGE_WRITE command and that write page size is 256 bytes. The erase sector and subsector sizes are assumed to be 64K and 4K respectively.</para><para>The <ref refid="_n_v_s_8h_1a4f309d160ac4641c89501adc95d170b3" kindref="member">NVS_erase()</ref> command will issue a sector or subsector erase command based on the input size and offset.</para><para>The driver must query the SPI flash to ensure that the part is ready before commands are issued. If the part responds as busy, the poll function sleeps for a number of microseconds determined by the <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a0babde38f1743458205b95c316363e80" kindref="member">NVSSPI25X_HWAttrs.statusPollDelayUs</ref> field. A value of 0 means that the driver will continuously poll the external flash until it is ready, which may affect other threads ability to execute.</para><para><heading level="2">SPI Interface Management</heading>
+</para><para>For each managed flash region, a corresponding SPI instance must be provided to the NVSSPI25X driver.</para><para>The SPI instance can be opened and closed internally by the NVSSPI25X driver, or alternatively, a SPI handle can be provided to the NVSSPI25X driver, indicating that the SPI instance is being opened and closed elsewhere within the application. This mode is useful when the SPI bus is share by more than just the SPI flash device.</para><para>If the SPI instance is to be managed internally by the NVSSPI25X driver, a SPI instance index and bit rate must be configured in the region&apos;s HWAttrs. If the same SPI instance is referenced by multiple flash regions the driver will ensure that <ref refid="_s_p_i_8h_1a9c9022decfb136991d6b53f7dd2ae2fc" kindref="member">SPI_open()</ref> is invoked only once, and that <ref refid="_s_p_i_8h_1a0e3448b30b88609fa120915e49560601" kindref="member">SPI_close()</ref> will only be invoked when all flash regions using the SPI instance have been closed.</para><para>If the SPI bus that the SPI flash device is on is shared with other devices accessed by an application, then the SPI handle used to manage a SPI flash region can be provided in the region&apos;s HWAttrs &quot;spiHandle&quot; field. Keep in mind that the &quot;spiHandle&quot; field is a POINTER to a SPI Handle, NOT a SPI Handle. This allows the user to simply initialize this field with the name of the global variable used for the SPI handle. In this mode, the user MUST open the SPI instance prior to opening the NVS region instance so that the referenced spiHandle is valid.</para><para>By default, the &quot;spiHandle&quot; field is set to NULL, indicating that the user expects the NVS driver to open and close the SPI instance internally using the &apos;spiIndex&apos; and &apos;spiBitRate&apos; provided in the HWAttrs.</para><para><heading level="2"><anchor id="_n_v_s_s_p_i25_x_8h_1SPI_CS_MGMT"/>SPI Flash Chip Select Management</heading>
+</para><para><heading level="3">Option 1: NVSSPI25X Driver Manages Chip Select</heading>
+</para><para>By default, the NVSSPI25X driver will assert and de-assert a GPIO driver managed pin to select the SPI flash device before and after each SPI transfer to and from the device.</para><para>To enable this behavior, a valid GPIO driver instance index must be provided in the NVS region&apos;s <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ade20d02364fd0f77d795295f4b85d363" kindref="member">spiCsnGpioIndex</ref> field of the <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs" kindref="compound">NVSSPI25X_HWAttrs</ref> structure. The corresponding GPIO pin will be configured at runtime by the NVSSPI25X driver as &quot;GPIO_CFG_OUT_STD&quot; and assertion of this pin is assumed to be active LOW.</para><para><heading level="3">Option 2: SPI Driver Manages Chip Select</heading>
+</para><para>Some SPI peripherals can be configured to manage their own chip select. Setting the <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ade20d02364fd0f77d795295f4b85d363" kindref="member">spiCsnGpioIndex</ref> field of the <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs" kindref="compound">NVSSPI25X_HWAttrs</ref> structure to <ref refid="_n_v_s_s_p_i25_x_8h_1abf8ed123f5292601fe76a62275bb60f9" kindref="member">NVSSPI25X_SPI_MANAGES_CS</ref> informs the NVSSPI25X driver that the SPI peripheral used by the NVS driver has been configured that way.</para><para><heading level="3">Option 3: User Manages Chip Select</heading>
+</para><para>Alternatively, the user can manage the assertion and de-assertion of the SPI flash chip select entirely themselves by providing implementations of the following 4 APIs in their application code:</para><para><programlisting><codeline><highlight class="normal">void<sp/>NVSSPI25X_initSpiCs(NVS_Handle<sp/>nvsHandle,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+</programlisting><itemizedlist>
+<listitem><para>This function is invoked within the <ref refid="_n_v_s_8h_1a15488564c98e00aa62400a54dde3d44e" kindref="member">NVS_open()</ref> API and is where the user should do whatever is required to initialize the hardware used for asserting and de-assering the SPI chip select signal.</para></listitem><listitem><para>The &apos;nvsHandle` argument is the NVS handle associated with the corresponding NVS region.</para></listitem><listitem><para>The &apos;csId&apos; argument passed to this API is a copy of the <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ade20d02364fd0f77d795295f4b85d363" kindref="member">spiCsnGpioIndex</ref> field of the corresponding NVS region&apos;s <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs" kindref="compound">NVSSPI25X_HWAttrs</ref> structure.</para></listitem></itemizedlist>
+</para><para><programlisting><codeline><highlight class="normal">void<sp/>NVSSPI25X_deinitSpiCs(NVS_Handle<sp/>nvsHandle,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+</programlisting><itemizedlist>
+<listitem><para>This function is invoked within the <ref refid="_n_v_s_8h_1a12147fcc41f532802d97c0784c3e30c3" kindref="member">NVS_close()</ref> API and is where the user should do whatever is required to de-initialize the hardware used for asserting and de-assering the SPI chip select signal.</para></listitem><listitem><para>The &apos;nvsHandle` argument is the NVS handle associated with the corresponding NVS region.</para></listitem><listitem><para>The &apos;csId&apos; argument passed to this API is a copy of the <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ade20d02364fd0f77d795295f4b85d363" kindref="member">spiCsnGpioIndex</ref> field of the corresponding NVS region&apos;s <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs" kindref="compound">NVSSPI25X_HWAttrs</ref> structure.</para></listitem></itemizedlist>
+</para><para><programlisting><codeline><highlight class="normal">void<sp/>NVSSPI25X_assertSpiCs(NVS_Handle<sp/>nvsHandle,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+</programlisting><itemizedlist>
+<listitem><para>This function is called PRIOR to every SPI transfer to and from the SPI flash device performed by the NVSSPI25X driver. The user code should perform the corresponding action required to select the SPI flash device to prepare for the SPI transfer.</para></listitem><listitem><para>The &apos;nvsHandle` argument is the NVS handle associated with the corresponding NVS region.</para></listitem><listitem><para>The &apos;csId&apos; argument passed to this API is a copy of the <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ade20d02364fd0f77d795295f4b85d363" kindref="member">spiCsnGpioIndex</ref> field of the corresponding NVS region&apos;s <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs" kindref="compound">NVSSPI25X_HWAttrs</ref> structure.</para></listitem></itemizedlist>
+</para><para><programlisting><codeline><highlight class="normal">void<sp/>NVSSPI25X_deassertSpiCs(NVS_Handle<sp/>nvsHandle,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+</programlisting><itemizedlist>
+<listitem><para>This function is called AFTER every SPI transfer to and from the SPI flash device performed by the NVSSPI25X driver. The user code should perform the corresponding action required to de-select the SPI flash device. following the SPI transfer.</para></listitem><listitem><para>The &apos;nvsHandle` argument is the NVS handle associated with the corresponding NVS region.</para></listitem><listitem><para>The &apos;csId&apos; argument passed to this API is a copy of the <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ade20d02364fd0f77d795295f4b85d363" kindref="member">spiCsnGpioIndex</ref> field of the corresponding NVS region&apos;s <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs" kindref="compound">NVSSPI25X_HWAttrs</ref> structure.</para></listitem></itemizedlist>
+</para><para><simplesect kind="warning"><para>All 4 of the above APIs must be provided by the user if this option is used, otherwise default internal implementations of the APIs will be called that will likely lead to application failure. </para></simplesect>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2017-2018,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>are<sp/>met:</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>Texas<sp/>Instruments<sp/>Incorporated<sp/>nor<sp/>the<sp/>names<sp/>of</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>its<sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>from<sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>THIS<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>BY<sp/>THE<sp/>COPYRIGHT<sp/>HOLDERS<sp/>AND<sp/>CONTRIBUTORS<sp/>&quot;AS<sp/>IS&quot;</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>AND<sp/>ANY<sp/>EXPRESS<sp/>OR<sp/>IMPLIED<sp/>WARRANTIES,<sp/>INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>THE<sp/>IMPLIED<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY<sp/>AND<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>PURPOSE<sp/>ARE<sp/>DISCLAIMED.<sp/>IN<sp/>NO<sp/>EVENT<sp/>SHALL<sp/>THE<sp/>COPYRIGHT<sp/>OWNER<sp/>OR</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>CONTRIBUTORS<sp/>BE<sp/>LIABLE<sp/>FOR<sp/>ANY<sp/>DIRECT,<sp/>INDIRECT,<sp/>INCIDENTAL,<sp/>SPECIAL,</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>EXEMPLARY,<sp/>OR<sp/>CONSEQUENTIAL<sp/>DAMAGES<sp/>(INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>PROCUREMENT<sp/>OF<sp/>SUBSTITUTE<sp/>GOODS<sp/>OR<sp/>SERVICES;<sp/>LOSS<sp/>OF<sp/>USE,<sp/>DATA,<sp/>OR<sp/>PROFITS;</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>OR<sp/>BUSINESS<sp/>INTERRUPTION)<sp/>HOWEVER<sp/>CAUSED<sp/>AND<sp/>ON<sp/>ANY<sp/>THEORY<sp/>OF<sp/>LIABILITY,</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>WHETHER<sp/>IN<sp/>CONTRACT,<sp/>STRICT<sp/>LIABILITY,<sp/>OR<sp/>TORT<sp/>(INCLUDING<sp/>NEGLIGENCE<sp/>OR</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>OTHERWISE)<sp/>ARISING<sp/>IN<sp/>ANY<sp/>WAY<sp/>OUT<sp/>OF<sp/>THE<sp/>USE<sp/>OF<sp/>THIS<sp/>SOFTWARE,</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>EVEN<sp/>IF<sp/>ADVISED<sp/>OF<sp/>THE<sp/>POSSIBILITY<sp/>OF<sp/>SUCH<sp/>DAMAGE.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">/*!*****************************************************************************</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/><sp/>@file<sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X.h</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>Non-Volatile<sp/>Storage<sp/>driver<sp/>implementation</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>SPI<sp/>flash<sp/>peripherals</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/>#<sp/>Overview<sp/>#</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>NVSSPI25X<sp/>module<sp/>allows<sp/>you<sp/>to<sp/>manage<sp/>SPI<sp/>flash<sp/>memory.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/><sp/>This<sp/>driver<sp/>works<sp/>with<sp/>most<sp/>256<sp/>byte/page<sp/>SPI<sp/>flash<sp/>memory<sp/>devices</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/><sp/>such<sp/>as:</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Winbond<sp/><sp/><sp/><sp/><sp/>W25xx<sp/><sp/><sp/>family</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Macronics<sp/><sp/><sp/>MX25Rxx<sp/>family</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Micron<sp/><sp/><sp/><sp/><sp/><sp/>N25Qxx<sp/><sp/>family</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI<sp/>flash<sp/>commands<sp/>used<sp/>by<sp/>this<sp/>driver<sp/>are<sp/>as<sp/>follows:</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>SPIFLASH_PAGE_WRITE<sp/><sp/><sp/><sp/><sp/><sp/><sp/>0x02<sp/>//<sp/>Page<sp/>Program<sp/>(up<sp/>to<sp/>256<sp/>bytes)</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>SPIFLASH_READ<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0x03<sp/>//<sp/>Read<sp/>Data</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>SPIFLASH_READ_STATUS<sp/><sp/><sp/><sp/><sp/><sp/>0x05<sp/>//<sp/>Read<sp/>Status<sp/>Register</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>SPIFLASH_WRITE_ENABLE<sp/><sp/><sp/><sp/><sp/>0x06<sp/>//<sp/>Write<sp/>Enable</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>SPIFLASH_SUBSECTOR_ERASE<sp/><sp/>0x20<sp/>//<sp/>SubSector<sp/>(4K<sp/>bytes)<sp/>Erase</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>SPIFLASH_SECTOR_ERASE<sp/><sp/><sp/><sp/><sp/>0xD8<sp/>//<sp/>Sector<sp/>(usually<sp/>64K<sp/>bytes)<sp/>Erase</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>SPIFLASH_RDP<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0xAB<sp/>//<sp/>Release<sp/>from<sp/>Deep<sp/>Power<sp/>Down</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>SPIFLASH_DP<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0xB9<sp/>//<sp/>Deep<sp/>Power<sp/>Down</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>SPIFLASH_MASS_ERASE<sp/><sp/><sp/><sp/><sp/><sp/><sp/>0xC7<sp/>//<sp/>Erase<sp/>entire<sp/>flash.</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/><sp/>It<sp/>is<sp/>assumed<sp/>that<sp/>the<sp/>SPI<sp/>flash<sp/>device<sp/>used<sp/>by<sp/>this<sp/>driver<sp/>supports</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>byte<sp/>programmability<sp/>of<sp/>the<sp/>SPIFLASH_PAGE_WRITE<sp/>command<sp/>and<sp/>that</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/><sp/>write<sp/>page<sp/>size<sp/>is<sp/>256<sp/>bytes.<sp/>The<sp/>erase<sp/>sector<sp/>and<sp/>subsector<sp/>sizes<sp/>are</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/><sp/>assumed<sp/>to<sp/>be<sp/>64K<sp/>and<sp/>4K<sp/>respectively.</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>NVS_erase()<sp/>command<sp/>will<sp/>issue<sp/>a<sp/>sector<sp/>or<sp/>subsector<sp/>erase<sp/>command</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*<sp/><sp/>based<sp/>on<sp/>the<sp/>input<sp/>size<sp/>and<sp/>offset.</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>driver<sp/>must<sp/>query<sp/>the<sp/>SPI<sp/>flash<sp/>to<sp/>ensure<sp/>that<sp/>the<sp/>part<sp/>is<sp/>ready<sp/>before</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*<sp/><sp/>commands<sp/>are<sp/>issued.<sp/>If<sp/>the<sp/>part<sp/>responds<sp/>as<sp/>busy,<sp/>the<sp/>poll<sp/>function<sp/>sleeps</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/><sp/>for<sp/>a<sp/>number<sp/>of<sp/>microseconds<sp/>determined<sp/>by<sp/>the</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/><sp/>#NVSSPI25X_HWAttrs.statusPollDelayUs<sp/>field.<sp/>A<sp/>value<sp/>of<sp/>0<sp/>means<sp/>that<sp/>the</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*<sp/><sp/>driver<sp/>will<sp/>continuously<sp/>poll<sp/>the<sp/>external<sp/>flash<sp/>until<sp/>it<sp/>is<sp/>ready,<sp/>which</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*<sp/><sp/>may<sp/>affect<sp/>other<sp/>threads<sp/>ability<sp/>to<sp/>execute.</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*<sp/>##<sp/>SPI<sp/>Interface<sp/>Management<sp/>##</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*<sp/><sp/>For<sp/>each<sp/>managed<sp/>flash<sp/>region,<sp/>a<sp/>corresponding<sp/>SPI<sp/>instance<sp/>must<sp/>be</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*<sp/><sp/>provided<sp/>to<sp/>the<sp/>NVSSPI25X<sp/>driver.</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI<sp/>instance<sp/>can<sp/>be<sp/>opened<sp/>and<sp/>closed</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/>*<sp/><sp/>internally<sp/>by<sp/>the<sp/>NVSSPI25X<sp/>driver,<sp/>or<sp/>alternatively,<sp/>a<sp/>SPI<sp/>handle<sp/>can<sp/>be</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/>*<sp/><sp/>provided<sp/>to<sp/>the<sp/>NVSSPI25X<sp/>driver,<sp/>indicating<sp/>that<sp/>the<sp/>SPI<sp/>instance<sp/>is<sp/>being</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>*<sp/><sp/>opened<sp/>and<sp/>closed<sp/>elsewhere<sp/>within<sp/>the<sp/>application.<sp/>This<sp/>mode<sp/>is<sp/>useful</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/>*<sp/><sp/>when<sp/>the<sp/>SPI<sp/>bus<sp/>is<sp/>share<sp/>by<sp/>more<sp/>than<sp/>just<sp/>the<sp/>SPI<sp/>flash<sp/>device.</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/>*<sp/><sp/>If<sp/>the<sp/>SPI<sp/>instance<sp/>is<sp/>to<sp/>be<sp/>managed<sp/>internally<sp/>by<sp/>the<sp/>NVSSPI25X<sp/>driver,<sp/>a<sp/>SPI</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/>*<sp/><sp/>instance<sp/>index<sp/>and<sp/>bit<sp/>rate<sp/>must<sp/>be<sp/>configured<sp/>in<sp/>the<sp/>region&apos;s<sp/>HWAttrs.</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/>*<sp/><sp/>If<sp/>the<sp/>same<sp/>SPI<sp/>instance<sp/>is<sp/>referenced<sp/>by<sp/>multiple<sp/>flash<sp/>regions</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>driver<sp/>will<sp/>ensure<sp/>that<sp/>SPI_open()<sp/>is<sp/>invoked<sp/>only<sp/>once,<sp/>and<sp/>that</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/>*<sp/><sp/>SPI_close()<sp/>will<sp/>only<sp/>be<sp/>invoked<sp/>when<sp/>all<sp/>flash<sp/>regions<sp/>using<sp/>the<sp/>SPI</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/>*<sp/><sp/>instance<sp/>have<sp/>been<sp/>closed.</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/>*<sp/><sp/>If<sp/>the<sp/>SPI<sp/>bus<sp/>that<sp/>the<sp/>SPI<sp/>flash<sp/>device<sp/>is<sp/>on<sp/>is<sp/>shared<sp/>with<sp/>other</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/>*<sp/><sp/>devices<sp/>accessed<sp/>by<sp/>an<sp/>application,<sp/>then<sp/>the<sp/>SPI<sp/>handle<sp/>used<sp/>to<sp/>manage</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*<sp/><sp/>a<sp/>SPI<sp/>flash<sp/>region<sp/>can<sp/>be<sp/>provided<sp/>in<sp/>the<sp/>region&apos;s<sp/>HWAttrs<sp/>&quot;spiHandle&quot;</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/>*<sp/><sp/>field.<sp/>Keep<sp/>in<sp/>mind<sp/>that<sp/>the<sp/>&quot;spiHandle&quot;<sp/>field<sp/>is<sp/>a<sp/>POINTER<sp/>to<sp/>a</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"><sp/>*<sp/><sp/>SPI<sp/>Handle,<sp/>NOT<sp/>a<sp/>SPI<sp/>Handle.<sp/>This<sp/>allows<sp/>the<sp/>user<sp/>to<sp/>simply<sp/>initialize</highlight></codeline>
+<codeline lineno="100"><highlight class="comment"><sp/>*<sp/><sp/>this<sp/>field<sp/>with<sp/>the<sp/>name<sp/>of<sp/>the<sp/>global<sp/>variable<sp/>used<sp/>for<sp/>the<sp/>SPI<sp/>handle.</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>this<sp/>mode,<sp/>the<sp/>user<sp/>MUST<sp/>open<sp/>the<sp/>SPI<sp/>instance<sp/>prior<sp/>to<sp/>opening<sp/>the<sp/>NVS</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/>*<sp/><sp/>region<sp/>instance<sp/>so<sp/>that<sp/>the<sp/>referenced<sp/>spiHandle<sp/>is<sp/>valid.</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/>*<sp/><sp/>By<sp/>default,<sp/>the<sp/>&quot;spiHandle&quot;<sp/>field<sp/>is<sp/>set<sp/>to<sp/>NULL,<sp/>indicating<sp/>that<sp/>the<sp/>user</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/>*<sp/><sp/>expects<sp/>the<sp/>NVS<sp/>driver<sp/>to<sp/>open<sp/>and<sp/>close<sp/>the<sp/>SPI<sp/>instance<sp/>internally<sp/>using</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>&apos;spiIndex&apos;<sp/>and<sp/>&apos;spiBitRate&apos;<sp/>provided<sp/>in<sp/>the<sp/>HWAttrs.</highlight></codeline>
+<codeline lineno="107"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"><sp/>*<sp/><sp/>##<sp/>@anchor<sp/>SPI_CS_MGMT<sp/>SPI<sp/>Flash<sp/>Chip<sp/>Select<sp/>Management<sp/>##</highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="110"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>Option<sp/>1:<sp/>NVSSPI25X<sp/>Driver<sp/>Manages<sp/>Chip<sp/>Select<sp/>###</highlight></codeline>
+<codeline lineno="111"><highlight class="comment"><sp/>*<sp/><sp/>By<sp/>default,<sp/>the<sp/>NVSSPI25X<sp/>driver<sp/>will<sp/>assert<sp/>and<sp/>de-assert<sp/>a<sp/>GPIO</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/>*<sp/><sp/>driver<sp/>managed<sp/>pin<sp/>to<sp/>select<sp/>the<sp/>SPI<sp/>flash<sp/>device<sp/>before<sp/>and<sp/>after</highlight></codeline>
+<codeline lineno="113"><highlight class="comment"><sp/>*<sp/><sp/>each<sp/>SPI<sp/>transfer<sp/>to<sp/>and<sp/>from<sp/>the<sp/>device.</highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/>*<sp/><sp/>To<sp/>enable<sp/>this<sp/>behavior,<sp/>a<sp/>valid<sp/>GPIO<sp/>driver<sp/>instance<sp/>index<sp/>must<sp/>be</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/>*<sp/><sp/>provided<sp/>in<sp/>the<sp/>NVS<sp/>region&apos;s<sp/>[spiCsnGpioIndex]</highlight></codeline>
+<codeline lineno="117"><highlight class="comment"><sp/>*<sp/><sp/>(@ref<sp/>NVSSPI25X_HWAttrs.spiCsnGpioIndex)<sp/>field<sp/>of<sp/>the</highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/>*<sp/><sp/>NVSSPI25X_HWAttrs<sp/>structure.<sp/>The<sp/>corresponding<sp/>GPIO<sp/>pin<sp/>will<sp/>be</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/>*<sp/><sp/>configured<sp/>at<sp/>runtime<sp/>by<sp/>the<sp/>NVSSPI25X<sp/>driver<sp/>as<sp/>&quot;GPIO_CFG_OUT_STD&quot;</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/>*<sp/><sp/>and<sp/>assertion<sp/>of<sp/>this<sp/>pin<sp/>is<sp/>assumed<sp/>to<sp/>be<sp/>active<sp/>LOW.</highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="122"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>Option<sp/>2:<sp/>SPI<sp/>Driver<sp/>Manages<sp/>Chip<sp/>Select<sp/>###</highlight></codeline>
+<codeline lineno="123"><highlight class="comment"><sp/>*<sp/><sp/>Some<sp/>SPI<sp/>peripherals<sp/>can<sp/>be<sp/>configured<sp/>to<sp/>manage<sp/>their<sp/>own<sp/>chip</highlight></codeline>
+<codeline lineno="124"><highlight class="comment"><sp/>*<sp/><sp/>select.<sp/>Setting<sp/>the<sp/>[spiCsnGpioIndex]</highlight></codeline>
+<codeline lineno="125"><highlight class="comment"><sp/>*<sp/><sp/><sp/>(@ref<sp/>NVSSPI25X_HWAttrs.spiCsnGpioIndex)<sp/>field<sp/>of<sp/>the<sp/>NVSSPI25X_HWAttrs</highlight></codeline>
+<codeline lineno="126"><highlight class="comment"><sp/>*<sp/><sp/>structure<sp/>to<sp/>#NVSSPI25X_SPI_MANAGES_CS<sp/>informs<sp/>the<sp/>NVSSPI25X<sp/>driver</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"><sp/>*<sp/><sp/>that<sp/>the<sp/>SPI<sp/>peripheral<sp/>used<sp/>by<sp/>the<sp/>NVS<sp/>driver<sp/>has<sp/>been<sp/>configured</highlight></codeline>
+<codeline lineno="128"><highlight class="comment"><sp/>*<sp/><sp/>that<sp/>way.</highlight></codeline>
+<codeline lineno="129"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="130"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>Option<sp/>3:<sp/>User<sp/>Manages<sp/>Chip<sp/>Select<sp/>###</highlight></codeline>
+<codeline lineno="131"><highlight class="comment"><sp/>*<sp/><sp/>Alternatively,<sp/>the<sp/>user<sp/>can<sp/>manage<sp/>the<sp/>assertion<sp/>and<sp/>de-assertion<sp/>of</highlight></codeline>
+<codeline lineno="132"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>SPI<sp/>flash<sp/>chip<sp/>select<sp/>entirely<sp/>themselves<sp/>by<sp/>providing<sp/>implementations</highlight></codeline>
+<codeline lineno="133"><highlight class="comment"><sp/>*<sp/><sp/>of<sp/>the<sp/>following<sp/>4<sp/>APIs<sp/>in<sp/>their<sp/>application<sp/>code:</highlight></codeline>
+<codeline lineno="134"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="135"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="136"><highlight class="comment"><sp/>*<sp/><sp/>void<sp/>NVSSPI25X_initSpiCs(NVS_Handle<sp/>nvsHandle,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+<codeline lineno="137"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="138"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>This<sp/>function<sp/>is<sp/>invoked<sp/>within<sp/>the<sp/>NVS_open()<sp/>API<sp/>and<sp/>is<sp/>where<sp/>the</highlight></codeline>
+<codeline lineno="139"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>user<sp/>should<sp/>do<sp/>whatever<sp/>is<sp/>required<sp/>to<sp/>initialize<sp/>the<sp/>hardware</highlight></codeline>
+<codeline lineno="140"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>used<sp/>for<sp/>asserting<sp/>and<sp/>de-assering<sp/>the<sp/>SPI<sp/>chip<sp/>select<sp/>signal.</highlight></codeline>
+<codeline lineno="141"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>The<sp/>&apos;nvsHandle`<sp/>argument<sp/>is<sp/>the<sp/>NVS<sp/>handle<sp/>associated<sp/>with<sp/>the</highlight></codeline>
+<codeline lineno="142"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>corresponding<sp/>NVS<sp/>region.</highlight></codeline>
+<codeline lineno="143"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>The<sp/>&apos;csId&apos;<sp/>argument<sp/>passed<sp/>to<sp/>this<sp/>API<sp/>is<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>[spiCsnGpioIndex]</highlight></codeline>
+<codeline lineno="144"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>(@ref<sp/>NVSSPI25X_HWAttrs.spiCsnGpioIndex)</highlight></codeline>
+<codeline lineno="145"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>field<sp/>of<sp/>the<sp/>corresponding<sp/>NVS<sp/>region&apos;s<sp/>NVSSPI25X_HWAttrs<sp/>structure.</highlight></codeline>
+<codeline lineno="146"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="147"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="148"><highlight class="comment"><sp/>*<sp/><sp/>void<sp/>NVSSPI25X_deinitSpiCs(NVS_Handle<sp/>nvsHandle,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+<codeline lineno="149"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="150"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>This<sp/>function<sp/>is<sp/>invoked<sp/>within<sp/>the<sp/>NVS_close()<sp/>API<sp/>and<sp/>is<sp/>where<sp/>the</highlight></codeline>
+<codeline lineno="151"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>user<sp/>should<sp/>do<sp/>whatever<sp/>is<sp/>required<sp/>to<sp/>de-initialize<sp/>the<sp/>hardware</highlight></codeline>
+<codeline lineno="152"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>used<sp/>for<sp/>asserting<sp/>and<sp/>de-assering<sp/>the<sp/>SPI<sp/>chip<sp/>select<sp/>signal.</highlight></codeline>
+<codeline lineno="153"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>The<sp/>&apos;nvsHandle`<sp/>argument<sp/>is<sp/>the<sp/>NVS<sp/>handle<sp/>associated<sp/>with<sp/>the</highlight></codeline>
+<codeline lineno="154"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>corresponding<sp/>NVS<sp/>region.</highlight></codeline>
+<codeline lineno="155"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>The<sp/>&apos;csId&apos;<sp/>argument<sp/>passed<sp/>to<sp/>this<sp/>API<sp/>is<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>[spiCsnGpioIndex]</highlight></codeline>
+<codeline lineno="156"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>(@ref<sp/>NVSSPI25X_HWAttrs.spiCsnGpioIndex)</highlight></codeline>
+<codeline lineno="157"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>field<sp/>of<sp/>the<sp/>corresponding<sp/>NVS<sp/>region&apos;s<sp/>NVSSPI25X_HWAttrs<sp/>structure.</highlight></codeline>
+<codeline lineno="158"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="159"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="160"><highlight class="comment"><sp/>*<sp/><sp/>void<sp/>NVSSPI25X_assertSpiCs(NVS_Handle<sp/>nvsHandle,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+<codeline lineno="161"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="162"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>This<sp/>function<sp/>is<sp/>called<sp/>PRIOR<sp/>to<sp/>every<sp/>SPI<sp/>transfer<sp/>to<sp/>and<sp/>from<sp/>the<sp/>SPI</highlight></codeline>
+<codeline lineno="163"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>flash<sp/>device<sp/>performed<sp/>by<sp/>the<sp/>NVSSPI25X<sp/>driver.<sp/>The<sp/>user<sp/>code<sp/>should</highlight></codeline>
+<codeline lineno="164"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>perform<sp/>the<sp/>corresponding<sp/>action<sp/>required<sp/>to<sp/>select<sp/>the<sp/>SPI<sp/>flash</highlight></codeline>
+<codeline lineno="165"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>device<sp/>to<sp/>prepare<sp/>for<sp/>the<sp/>SPI<sp/>transfer.</highlight></codeline>
+<codeline lineno="166"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>The<sp/>&apos;nvsHandle`<sp/>argument<sp/>is<sp/>the<sp/>NVS<sp/>handle<sp/>associated<sp/>with<sp/>the</highlight></codeline>
+<codeline lineno="167"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>corresponding<sp/>NVS<sp/>region.</highlight></codeline>
+<codeline lineno="168"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>The<sp/>&apos;csId&apos;<sp/>argument<sp/>passed<sp/>to<sp/>this<sp/>API<sp/>is<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>[spiCsnGpioIndex]</highlight></codeline>
+<codeline lineno="169"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>(@ref<sp/>NVSSPI25X_HWAttrs.spiCsnGpioIndex)</highlight></codeline>
+<codeline lineno="170"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>field<sp/>of<sp/>the<sp/>corresponding<sp/>NVS<sp/>region&apos;s<sp/>NVSSPI25X_HWAttrs<sp/>structure.</highlight></codeline>
+<codeline lineno="171"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="172"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="173"><highlight class="comment"><sp/>*<sp/><sp/>void<sp/>NVSSPI25X_deassertSpiCs(NVS_Handle<sp/>nvsHandle,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+<codeline lineno="174"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="175"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>This<sp/>function<sp/>is<sp/>called<sp/>AFTER<sp/>every<sp/>SPI<sp/>transfer<sp/>to<sp/>and<sp/>from<sp/>the<sp/>SPI</highlight></codeline>
+<codeline lineno="176"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>flash<sp/>device<sp/>performed<sp/>by<sp/>the<sp/>NVSSPI25X<sp/>driver.<sp/>The<sp/>user<sp/>code<sp/>should</highlight></codeline>
+<codeline lineno="177"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>perform<sp/>the<sp/>corresponding<sp/>action<sp/>required<sp/>to<sp/>de-select<sp/>the<sp/>SPI<sp/>flash</highlight></codeline>
+<codeline lineno="178"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>device.</highlight></codeline>
+<codeline lineno="179"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>following<sp/>the<sp/>SPI<sp/>transfer.</highlight></codeline>
+<codeline lineno="180"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>The<sp/>&apos;nvsHandle`<sp/>argument<sp/>is<sp/>the<sp/>NVS<sp/>handle<sp/>associated<sp/>with<sp/>the</highlight></codeline>
+<codeline lineno="181"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>corresponding<sp/>NVS<sp/>region.</highlight></codeline>
+<codeline lineno="182"><highlight class="comment"><sp/>*<sp/><sp/>-<sp/>The<sp/>&apos;csId&apos;<sp/>argument<sp/>passed<sp/>to<sp/>this<sp/>API<sp/>is<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>[spiCsnGpioIndex]</highlight></codeline>
+<codeline lineno="183"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>(@ref<sp/>NVSSPI25X_HWAttrs.spiCsnGpioIndex)</highlight></codeline>
+<codeline lineno="184"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>field<sp/>of<sp/>the<sp/>corresponding<sp/>NVS<sp/>region&apos;s<sp/>NVSSPI25X_HWAttrs<sp/>structure.</highlight></codeline>
+<codeline lineno="185"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="186"><highlight class="comment"><sp/>*<sp/><sp/>@warning<sp/><sp/>All<sp/>4<sp/>of<sp/>the<sp/>above<sp/>APIs<sp/>must<sp/>be<sp/>provided<sp/>by<sp/>the<sp/>user<sp/>if<sp/>this</highlight></codeline>
+<codeline lineno="187"><highlight class="comment"><sp/>*<sp/><sp/>option<sp/>is<sp/>used,<sp/>otherwise<sp/>default<sp/>internal<sp/>implementations<sp/>of<sp/>the<sp/>APIs</highlight></codeline>
+<codeline lineno="188"><highlight class="comment"><sp/>*<sp/><sp/>will<sp/>be<sp/>called<sp/>that<sp/>will<sp/>likely<sp/>lead<sp/>to<sp/>application<sp/>failure.</highlight></codeline>
+<codeline lineno="189"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ti_drivers_nvs_NVSSPI25X__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_drivers_nvs_NVSSPI25X__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_s_p_i_8h" kindref="compound">ti/drivers/SPI.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined<sp/>(__cplusplus)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="212" refid="_n_v_s_s_p_i25_x_8h_1a89a4a07b7be073b897feebf4760f1662" refkind="member"><highlight class="preprocessor">#define<sp/>NVSSPI25X_CMD_MASS_ERASE<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(NVS_CMD_RESERVED<sp/>+<sp/>0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight></codeline>
+<codeline lineno="224" refid="_n_v_s_s_p_i25_x_8h_1abf8ed123f5292601fe76a62275bb60f9" refkind="member"><highlight class="preprocessor">#define<sp/>NVSSPI25X_SPI_MANAGES_CS<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>((uint16_t)(~0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_n_v_s___fxn_table" kindref="compound">NVS_FxnTable</ref><sp/><ref refid="_n_v_s_s_p_i25_x_8h_1a105e78ab0c157b8ad847af271b05b18c" kindref="member">NVSSPI25X_fxnTable</ref>;</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight></codeline>
+<codeline lineno="295" refid="struct_n_v_s_s_p_i25_x___h_w_attrs" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs" kindref="compound">NVSSPI25X_HWAttrs</ref><sp/>{</highlight></codeline>
+<codeline lineno="296" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a0743a03845422aebdcc49c67552637cb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a0743a03845422aebdcc49c67552637cb" kindref="member">regionBaseOffset</ref>;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="297" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1aa33d42d0f66905a9d5d70ba77916099c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1aa33d42d0f66905a9d5d70ba77916099c" kindref="member">regionSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="298" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a4187978da42e59bb81953569577a53b0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a4187978da42e59bb81953569577a53b0" kindref="member">sectorSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="299" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ad231c8f7f6c73d29e2b715c8b1e032ba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ad231c8f7f6c73d29e2b715c8b1e032ba" kindref="member">verifyBuf</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="300" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ac0e721a58e6b25c8ab1fc0759698f796" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ac0e721a58e6b25c8ab1fc0759698f796" kindref="member">verifyBufSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="301" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___config__" kindref="compound">SPI_Handle</ref><sp/><sp/>*<ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" kindref="member">spiHandle</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="302" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ae99187ec73db72f537b87b75200fc52f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ae99187ec73db72f537b87b75200fc52f" kindref="member">spiIndex</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="303" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a738695395ff8772994c1446793636df0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a738695395ff8772994c1446793636df0" kindref="member">spiBitRate</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="311" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ade20d02364fd0f77d795295f4b85d363" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ade20d02364fd0f77d795295f4b85d363" kindref="member">spiCsnGpioIndex</ref>;</highlight></codeline>
+<codeline lineno="319" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a0babde38f1743458205b95c316363e80" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a0babde38f1743458205b95c316363e80" kindref="member">statusPollDelayUs</ref>;</highlight></codeline>
+<codeline lineno="320"><highlight class="normal">}<sp/><ref refid="_n_v_s_s_p_i25_x_8h_1aebd6500a16f6e85681ba7e5c000d0156" kindref="member">NVSSPI25X_HWAttrs</ref>;</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"></highlight></codeline>
+<codeline lineno="322"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="323"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X<sp/>Object</highlight></codeline>
+<codeline lineno="324"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="325"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>application<sp/>must<sp/>not<sp/>access<sp/>any<sp/>member<sp/>variables<sp/>of<sp/>this<sp/>structure!</highlight></codeline>
+<codeline lineno="326"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="327" refid="struct_n_v_s_s_p_i25_x___object" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_n_v_s_s_p_i25_x___object" kindref="compound">NVSSPI25X_Object</ref><sp/>{</highlight></codeline>
+<codeline lineno="328" refid="struct_n_v_s_s_p_i25_x___object_1ac279aced49b5423b40cfab02b5c78d98" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___object_1ac279aced49b5423b40cfab02b5c78d98" kindref="member">opened</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Has<sp/>this<sp/>region<sp/>been<sp/>opened<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="329" refid="struct_n_v_s_s_p_i25_x___object_1a6e78dbf7192457ef032aa7f94c68c4a0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___config__" kindref="compound">SPI_Handle</ref><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___object_1a6e78dbf7192457ef032aa7f94c68c4a0" kindref="member">spiHandle</ref>;</highlight></codeline>
+<codeline lineno="330" refid="struct_n_v_s_s_p_i25_x___object_1a6cb6753a7703769a54800945a065bfba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___object_1a6cb6753a7703769a54800945a065bfba" kindref="member">sectorBaseMask</ref>;</highlight></codeline>
+<codeline lineno="331"><highlight class="normal">}<sp/><ref refid="_n_v_s_s_p_i25_x_8h_1a817f992b570e02d68f89bcabbe2ae856" kindref="member">NVSSPI25X_Object</ref>;</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"></highlight></codeline>
+<codeline lineno="333"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="334"><highlight class="comment"><sp/>*<sp/><sp/>@cond<sp/>NODOC</highlight></codeline>
+<codeline lineno="335"><highlight class="comment"><sp/>*<sp/><sp/>NVSSPI25X<sp/>driver<sp/>public<sp/>APIs</highlight></codeline>
+<codeline lineno="336"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="337"><highlight class="normal"></highlight></codeline>
+<codeline lineno="338"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_close(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_control(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint_fast16_t<sp/>cmd,</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uintptr_t<sp/>arg);</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_erase(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size);</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_getAttrs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/><ref refid="struct_n_v_s___attrs" kindref="compound">NVS_Attrs</ref><sp/>*attrs);</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_init();</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_lock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint32_t<sp/>timeout);</highlight></codeline>
+<codeline lineno="346"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/><ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/><sp/><sp/>NVSSPI25X_open(uint_least8_t<sp/>index,<sp/><ref refid="struct_n_v_s___params" kindref="compound">NVS_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_read(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize);</highlight></codeline>
+<codeline lineno="349"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_unlock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_write(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
+<codeline lineno="351"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize,<sp/>uint_fast16_t<sp/>flags);</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="353"><highlight class="comment"><sp/>*<sp/><sp/>Weakly<sp/>defined<sp/>APIs<sp/>that<sp/>can<sp/>be<sp/>overridden<sp/>by<sp/>the<sp/>user</highlight></codeline>
+<codeline lineno="354"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="355"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_initSpiCs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" kindref="member">spiHandle</ref>,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+<codeline lineno="356"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_deinitSpiCs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" kindref="member">spiHandle</ref>,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+<codeline lineno="357"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_assertSpiCs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" kindref="member">spiHandle</ref>,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_deassertSpiCs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" kindref="member">spiHandle</ref>,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"></highlight></codeline>
+<codeline lineno="362"><highlight class="preprocessor">#if<sp/>defined<sp/>(__cplusplus)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="363"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="364"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>defined<sp/>(__cplusplus)<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="365"><highlight class="normal"></highlight></codeline>
+<codeline lineno="367"><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_nvs_NVSSPI25X__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSSPI25X.h"/>
+  </compounddef>
+</doxygen>

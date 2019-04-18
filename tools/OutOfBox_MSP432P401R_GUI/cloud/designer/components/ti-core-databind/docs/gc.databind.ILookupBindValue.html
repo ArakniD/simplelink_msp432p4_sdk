@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Interface: ILookupBindValue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Interface: ILookupBindValue</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="gc.html">gc</a><a href="gc.databind.html">.databind</a>.</span>
+        
+        ILookupBindValue
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>This interface represents a single binding within a multi-dimensional collection of bindable objects.It can also be thought of as a parametized binding.  For example, an array, a structure,or even a function have parameters like index, field name, and argument that are used in determining the bindings value in addition to underlying model data that is changing as well.</p>  <p>It is best explained through example.  Consider the master-detail use case where you have a list boxthat is the master selector.  Then you have widgets that show the detail based on the current singleselection in the listbox.  A binding for a particular piece of detail will likely look like this:"a[i].x".  This expression contains an array operator and a dot operator.  The multi-dimensional collection a returns an array of structures.  In this case, the detail binding is interested in only a single value at a time.  As the users selection changes so will the binding i change, and as a resultthe value of interest will change as well.  So in this case, we will create an ILookupBindValueand call setIndex(i, "x") to indicate we are currently interested in the ith element's x field.When the index changes, another call to setIndex(j) will be called to indicate that we are now onlyinterested in the jth element's x field.  In this case a is a two dimensional collection.</p>  <p>Furthermore, the expression "a[i]" represents a single dimensional collection whose value is a structure.  The expression "a" is also valid, but it will not be a lookup binding.  Rather it willbe a normal binding that returns an array of structures (no lookup).</p><p>Clients do not implement this class directly. They need to inherit from AbstractLookupBindValue instead.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>IBindValue</li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<dt>
+    
+        
+        
+        <h4 class="name" id="setIndex"><span class="type-signature"></span>setIndex<span class="signature">(index)</span><span class="type-signature"></span></h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Method to choose which index value(s) should be used to lookup the value of this binding.Setting a new index value(s) may cause the value of this binding to change.
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the lookup identifier(s).  Number for array lookup, and string for fields.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="gc.databind.AbstractAsyncBindValue.html">AbstractAsyncBindValue</a></li><li><a href="gc.databind.AbstractBind.html">AbstractBind</a></li><li><a href="gc.databind.AbstractBindValue.html">AbstractBindValue</a></li><li><a href="gc.databind.AbstractLookupBindValue.html">AbstractLookupBindValue</a></li><li><a href="gc.databind.AbstractStatus.html">AbstractStatus</a></li><li><a href="gc.databind.BindingRegistry.html">BindingRegistry</a></li><li><a href="gc.databind.BindListenerAdapter.html">BindListenerAdapter</a></li><li><a href="gc.databind.DataConverter.html">DataConverter</a></li><li><a href="gc.databind.FunctionBindValue.html">FunctionBindValue</a></li><li><a href="gc.databind.ProgressCounter.html">ProgressCounter</a></li><li><a href="gc.databind.RefreshIntervalBindValue.html">RefreshIntervalBindValue</a></li><li><a href="gc.databind.VariableBindValue.html">VariableBindValue</a></li><li><a href="gc.databind.VariableLookupBindValue.html">VariableLookupBindValue</a></li><li><a href="gc.widget.StatusIndicator.Factory.html">Factory</a></li></ul><h3>Namespaces</h3><ul><li><a href="gc.html">gc</a></li><li><a href="gc.databind.html">databind</a></li><li><a href="gc.widget.html">widget</a></li><li><a href="gc.widget.StatusIndicator.html">StatusIndicator</a></li></ul><h3>Interfaces</h3><ul><li><a href="gc.databind.IBind.html">IBind</a></li><li><a href="gc.databind.IBindAction.html">IBindAction</a></li><li><a href="gc.databind.IBindFactory.html">IBindFactory</a></li><li><a href="gc.databind.IBindProvider.html">IBindProvider</a></li><li><a href="gc.databind.IBindValue.html">IBindValue</a></li><li><a href="gc.databind.IChangedListener.html">IChangedListener</a></li><li><a href="gc.databind.IDataBinder.html">IDataBinder</a></li><li><a href="gc.databind.IDataConverter.html">IDataConverter</a></li><li><a href="gc.databind.IDisposable.html">IDisposable</a></li><li><a href="gc.databind.IFinished.html">IFinished</a></li><li><a href="gc.databind.IFinishedWithResult.html">IFinishedWithResult</a></li><li><a href="gc.databind.ILookupBindValue.html">ILookupBindValue</a></li><li><a href="gc.databind.IProgressCounter.html">IProgressCounter</a></li><li><a href="gc.databind.IRefreshListener.html">IRefreshListener</a></li><li><a href="gc.databind.IStaleListener.html">IStaleListener</a></li><li><a href="gc.databind.IStatus.html">IStatus</a></li><li><a href="gc.databind.IStatusListener.html">IStatusListener</a></li><li><a href="gc.widget.IStatusIndicator.html">IStatusIndicator</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Sat May 09 2015 21:21:15 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+/*
+ * Copyright (c) 2018, Texas Instruments Incorporated
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ *  spiloopback.syscfg
+ */
+
+/* ======== RTOS ======== */
+var RTOS = scripting.addModule("/ti/drivers/RTOS");
+
+/* ======== GPIO ======== */
+var GPIO = scripting.addModule("/ti/drivers/GPIO");
+
+var gpio0 = GPIO.addInstance();
+gpio0.$hardware = system.deviceData.board.components.LED0;
+gpio0.$name = "Board_GPIO_LED0";
+
+var gpio1 = GPIO.addInstance();
+gpio1.$hardware = system.deviceData.board.components.LED1;
+gpio1.$name = "Board_GPIO_LED1";
+
+/* ======== SPI ======== */
+var SPI = scripting.addModule("/ti/drivers/SPI");
+
+var spi0 = SPI.addInstance();
+spi0.mode = "Three Pin";
+spi0.$name = "Board_SPI0";
+spi0.spi.$assign = "EUSCI_B0"; /* Use the peripheral */
+spi0.spi.sclkPin.$assign = "P1.5";
+spi0.spi.dmaTxChannel.$assign = "DMA_CH0";
+spi0.spi.dmaRxChannel.$assign = "DMA_CH1";
+spi0.spi.dmaInterruptNumber.$assign = "DMA_INT1";
+spi0.spi.mosiPin.$assign = "P1.6";
+spi0.spi.misoPin.$assign = "P1.7";
+spi0.defaultTxBufferValue = "0xFF";
+
+var spi1 = SPI.addInstance();
+spi1.mode = "Three Pin";
+spi1.$name = "Board_SPI1";
+spi1.spi.$assign = "EUSCI_B2"; /* Use the peripheral */
+spi1.spi.sclkPin.$assign = "P3.5";
+spi1.spi.dmaTxChannel.$assign = "DMA_CH4";
+spi1.spi.dmaRxChannel.$assign = "DMA_CH5";
+spi1.spi.dmaInterruptNumber.$assign = "DMA_INT2";
+spi1.spi.mosiPin.$assign = "P3.6";
+spi1.spi.misoPin.$assign = "P3.7";
+spi1.defaultTxBufferValue = "0xFF";
+
+/* ======== Display ======== */
+var Display = scripting.addModule("/ti/display/Display");
+var display = Display.addInstance();
+display.$hardware = system.deviceData.board.components.xds110Uart;

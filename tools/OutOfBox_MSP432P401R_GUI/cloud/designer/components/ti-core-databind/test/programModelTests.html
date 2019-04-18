@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <title>TI DataBind Program Model Unit Tests</title>
+  
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  
+  <script>
+    if (typeof console  != "undefined")
+    {
+        if (typeof console.log != 'undefined')
+            console.olog = console.log;
+        else
+            console.olog = function() {};
+    }
+
+    console.log = function(message) {
+        console.olog(message);
+		var para = document.createElement('p');
+		para.appendChild(document.createTextNode(message));
+        document.getElementById('debugDiv').appendChild(para);
+    };
+    console.error = console.debug = console.info =  console.log
+  </script>
+  
+  <link rel="import" href="../ti-program-model.html">
+  <script type='text/javascript' src="../ti-core-assets/scripts/q.js"></script>
+  
+</head>
+<body>
+    <div id="debugDiv"></div>
+    <script src='../src/internal/pm/ProgramModelTest.js'></script>
+</body>

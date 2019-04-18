@@ -1,0 +1,1782 @@
+<html>
+<head>
+<title>module ti.uia.runtime.LoggerSM</title>
+<meta name="description" content="Logger implementation that stores Log records into shared memory">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.runtime.</span><span class="xdoc-id">LoggerSM</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSync.html" title="module LogSync"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/package.html" title="package ti.uia.runtime"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerTypes.html" title="module LoggerTypes"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html">index URL</a></div>
+<p class="xdocHdrSummary">Logger implementation that stores Log records into shared memory</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-1">DETAILS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-2">CACHE MANAGEMENT</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-3">PARTITIONS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-4">DECODE AND OVERWRITE</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-5">CAVEATS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+This logger implementation stores xdc.runtime.Log records into shared memory.
+  This logger is intended to be used for SoC system (e.g. EVMTI816X),
+  where Linux is running on the host core (e.g. CortexA8) and
+  SYS/BIOS is running on the targets (e.g. M3 and DSP).
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/LoggerSM-src.html"><span class="xdocLabelFile">ti/uia/runtime/LoggerSM.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/runtime/LoggerSM.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Functions</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_creation"><span class="xdoc-id">LoggerSM_construct</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Initialize a new instance object inside the provided structure</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Struct">LoggerSM_Struct</a> *structP, <span class="xdoc-kw1">const</span> <a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_config_parameters" title="ti.uia.runtime.LoggerSM.Params">LoggerSM_Params</a> *params);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_creation"><span class="xdoc-id">LoggerSM_create</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Allocate and initialize a new instance object and return its handle</span></span></a>(<span class="xdoc-kw1">const</span> <a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_config_parameters" title="ti.uia.runtime.LoggerSM.Params">LoggerSM_Params</a> *params, <a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Block" title="xdc.runtime.Error.Block">Error_Block</a> *eb);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_deletion"><span class="xdoc-id">LoggerSM_delete</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Finalize and free this previously allocated instance object, setting the referenced handle to NULL</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> *handleP);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_deletion"><span class="xdoc-id">LoggerSM_destruct</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Finalize the instance object inside the provided structure</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Struct">LoggerSM_Struct</a> *structP);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_config_parameters"><span class="xdoc-id">LoggerSM_Params_init</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Initialize this config-params structure with supplier-specified defaults before instance creation</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_config_parameters" title="ti.uia.runtime.LoggerSM.Params">LoggerSM_Params</a> *params);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#set.Partition.Id"><span class="xdoc-id">LoggerSM_setPartitionId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Change the partitionId at runtime</span></span></a>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">partitionId</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#set.Shared.Memory"><span class="xdoc-id">LoggerSM_setSharedMemory</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Specify the shared memory to be used by LoggerSM</span></span></a>(<span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">sharedMemory</span>, <span class="xdoc-kw2">Bits32</span>&nbsp;<span class="xdoc-id">sharedMemorySize</span>);</div></td></tr>
+<tr><td colspan="2"><div class="xdocSynFxnCat">Functions common to all ILogger modules</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#disable"><span class="xdoc-id">LoggerSM_disable</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Disable a log</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#enable"><span class="xdoc-id">LoggerSM_enable</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable a log</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write0"><span class="xdoc-id">LoggerSM_write0</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Process a log event with 0 arguments and the calling address</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write1"><span class="xdoc-id">LoggerSM_write1</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Process a log event with 1 arguments and the calling address</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write2"><span class="xdoc-id">LoggerSM_write2</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Process a log event with 2 arguments and the calling address</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write4"><span class="xdoc-id">LoggerSM_write4</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Process a log event with 4 arguments and the calling address</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a3</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a4</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#write8"><span class="xdoc-id">LoggerSM_write8</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Process a log event with 8 arguments and the calling address</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a3</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a4</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a5</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a6</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a7</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a8</span>);</div></td></tr>
+<tr><td colspan="2"><div class="xdocSynFxnCat">Functions common to all IFilterLogger modules</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Mask" title="xdc.runtime.Diags.Mask">Diags_Mask</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get.Filter.Level"><span class="xdoc-id">LoggerSM_getFilterLevel</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the mask of diags categories currently set to the specified
+  level</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Event.Level" title="xdc.runtime.Diags.EventLevel">Diags_EventLevel</a>&nbsp;<span class="xdoc-id">level</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#set.Filter.Level"><span class="xdoc-id">LoggerSM_setFilterLevel</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Sets the level of detail that instances will log</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Mask" title="xdc.runtime.Diags.Mask">Diags_Mask</a>&nbsp;<span class="xdoc-id">mask</span>, <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Event.Level" title="xdc.runtime.Diags.EventLevel">Diags_EventLevel</a>&nbsp;<span class="xdoc-id">filterLevel</span>);</div></td></tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target instances</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LoggerSM_handle</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Convert this instance structure pointer into an instance handle</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_convertors"><span class="xdoc-id">LoggerSM_Handle_downCast</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;conditionally move one level down the inheritance hierarchy; NULL upon failure</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_convertors"><span class="xdoc-id">LoggerSM_Handle_downCast2</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;conditionally move 2 levels down the inheritance hierarchy; NULL upon failure</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerSM_Handle_label</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The label associated with this instance object</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerSM_Handle_name</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The name of this instance object</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_convertors"><span class="xdoc-id">LoggerSM_Handle_upCast</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;unconditionally move one level up the inheritance hierarchy</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_convertors"><span class="xdoc-id">LoggerSM_Handle_upCast2</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;unconditionally move 2 levels up the inheritance hierarchy</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerSM_Object_count</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The number of statically-created instance objects</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerSM_Object_first</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The handle of the first dynamically-created instance object, or NULL</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerSM_Object_get</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The handle of the i-th statically-created instance object (array == NULL)</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerSM_Object_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap used to allocate dynamically-created instance objects</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_built-ins"><span class="xdoc-id">LoggerSM_Object_next</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The handle of the next dynamically-created instance object, or NULL</span></span></a>,
+<a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LoggerSM_struct</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Convert this instance handle into an instance structure pointer</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LoggerSM_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LoggerSM_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LoggerSM_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LoggerSM_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LoggerSM_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LoggerSM_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Typedefs</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Object">LoggerSM_Object</a> *</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LoggerSM_Handle</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Client reference to an instance object</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LoggerSM_Object</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Opaque internal representation of an instance object</span></span></a> <span class="xdoc-id">LoggerSM_Object</span>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_config_parameters"><span class="xdoc-id">LoggerSM_Params</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Instance config-params structure</span></span></a> ...</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_object_types"><span class="xdoc-id">LoggerSM_Struct</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Opaque client structure large enough to hold an instance object</span></span></a> <span class="xdoc-id">LoggerSM_Struct</span>;</div></td></tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Constants</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#decode"><span class="xdoc-id">LoggerSM_decode</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Flag to determine whether to decode the events in shared memory</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Id" title="xdc.runtime.Error.Id">Error_Id</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.E_bad.Level"><span class="xdoc-id">LoggerSM_E_badLevel</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Error raised if get or setFilterLevel receive a bad level value</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#filter.By.Level"><span class="xdoc-id">LoggerSM_filterByLevel</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Support filtering of events by event level</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#is.Timestamp.Enabled"><span class="xdoc-id">LoggerSM_isTimestampEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable or disable logging the 64b local CPU timestamp
+  at the start of each event</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Mask" title="xdc.runtime.Diags.Mask">Diags_Mask</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#level1.Mask"><span class="xdoc-id">LoggerSM_level1Mask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Mask of diags categories whose initial filtering level is Diags.LEVEL1</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Mask" title="xdc.runtime.Diags.Mask">Diags_Mask</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#level2.Mask"><span class="xdoc-id">LoggerSM_level2Mask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Mask of diags categories whose initial filtering level is Diags.LEVEL2</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Mask" title="xdc.runtime.Diags.Mask">Diags_Mask</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#level3.Mask"><span class="xdoc-id">LoggerSM_level3Mask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Mask of diags categories whose initial filtering level is Diags.LEVEL3</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Mask" title="xdc.runtime.Diags.Mask">Diags_Mask</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#level4.Mask"><span class="xdoc-id">LoggerSM_level4Mask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Mask of diags categories whose initial filtering level is Diags.LEVEL4</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#num.Partitions"><span class="xdoc-id">LoggerSM_numPartitions</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of partitions sharing the shared memory</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#overwrite"><span class="xdoc-id">LoggerSM_overwrite</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Flag to determine whether to overwrite records when full</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">SizeT</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#shared.Memory.Size"><span class="xdoc-id">LoggerSM_sharedMemorySize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Total size of shared memory in MAU that will be divided by the number
+  of partitions</span></span></a>;</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This logger implementation stores xdc.runtime.Log records into shared memory.
+  This logger is intended to be used for SoC system (e.g. EVMTI816X),
+  where Linux is running on the host core (e.g. CortexA8) and
+  SYS/BIOS is running on the targets (e.g. M3 and DSP).</div>
+<div class="xdocText">This logger is used on the targets. The host is then responsible
+  for reading the shared memory and processing the records. UIA
+  ships the ti/uia/linux/LoggerSM module that can be used to
+  process the records. UIA also ships a cmdline app,
+  ti/uia/examples/evmti816x/loggerSMDump.out, that show
+  how to use the linux/LoggerSM module.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">CACHE MANAGEMENT</div>
+<div class="xdocText"></div>
+<div class="xdocText">The location of the shared memory that is used by LoggerSM must be
+  specified by the application. This shared memory must be in a
+  non-cacheable region. The '<a class="xdoc-link" href="LoggerSM.html#buf.Section" title="bufSection">bufSection</a>' configuration
+  parameter can be used to help place the Logger's buffer.
+  Refer to the device specific LoggerSM
+  examples (e.g. ti/uia/examples/evmti816x/readme.txt) to see how this
+  was accomplished.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">PARTITIONS</div>
+<div class="xdocText"></div>
+<div class="xdocText">The application gets to specify the size of the shared region. This
+  size is divided between each of the targets. For example, on the evmti816x,
+  if the '<a class="xdoc-link" href="LoggerSM.html#shared.Memory.Size" title="sharedMemorySize">sharedMemorySize</a>' was 0x3000, each target,
+  dsp, videoM3 and vpssM3, would get 0x1000 amount of shared memory for
+  log records. Each target region is called a partition. Since LoggerSM is a
+  generic logger that can be used on multiple devices, the number of
+  partitions (e.g. number of targets using the shared memory) is specified
+  wtih the '<a class="xdoc-link" href="LoggerSM.html#num.Partitions" title="numPartitions">numPartitions</a>' configuration option. Each target needs
+  a unique '<a class="xdoc-link" href="LoggerSM.html#partition.Id" title="partitionId">partitionId</a>' also. For example, on evmti816x examples,
+  the dsp is assigned 0, videoM3 is assigned 1 and vpssM3 is assigned 2. This
+  corresponds with the IPC Multicore Ids for simplicity sake. Note: the
+  partition id can be set during target startup also via the
+  '<a class="xdoc-link" href="LoggerSM.html#set.Partition.Id" title="setPartitionId">setPartitionId</a>' API.</div>
+<div class="xdocText">LoggerSM supports multiple instances, but all instances are writing to
+  the same shared memory (in a thread safe manner). This was done to
+  simplify the design. Because of this, application really should only
+  create one LoggerSM instance.</div>
+<span id="xdoc-sect-4"></span>
+<div class="xdocSect">DECODE AND OVERWRITE</div>
+<div class="xdocText">The LoggerSM module has two key configuration options: '<a class="xdoc-link" href="LoggerSM.html#decode" title="decode">decode</a>'
+  and '<a class="xdoc-link" href="LoggerSM.html#overwrite" title="overwrite">overwrite</a>'</div>
+<div class="xdocText">The '<a class="xdoc-link" href="LoggerSM.html#decode" title="decode">decode</a>' configuration determines whether the target will
+  decode the Log record during the Log call. If '<a class="xdoc-link" href="LoggerSM.html#decode" title="decode">decode</a>'  is true,
+  the Log record is converted to an ASCII string and then written into the
+  shared memory. This approach is expensive from a performance standpoint.
+  Its value is that it is easy to manage and view on the host
+  (e.g. ti/uia/examples/evmti816x/loggerSMDump.out prints the ASCII strings
+  to the console on the CortexA8).</div>
+<div class="xdocText">If '<a class="xdoc-link" href="LoggerSM.html#decode" title="decode">decode</a>'  is false, the Log records are not decoded. Instead
+  they are stored in the shared memory as binary data. This allows the
+  Log calls to be much faster. The burden for decoding is on the readers side.
+  For example, ti/uia/examples/evmti816x/loggerSMDump.out dumps the encoded
+  records into a binary file that can be post-processed in
+  CCS' System Analyzer.</div>
+<div class="xdocText">The '<a class="xdoc-link" href="LoggerSM.html#overwrite" title="overwrite">overwrite</a>' configuration determines whether the target
+  will overwrite old records
+  when the shared memory is full. The default setting is false, so when the
+  logger is full, new records are dropped. This mode allows the reader
+  (e.g. ti/uia/examples/evmti816x/loggerSMDump.out) to read the records
+  while the target is running.</div>
+<div class="xdocText">When '<a class="xdoc-link" href="LoggerSM.html#overwrite" title="overwrite">overwrite</a>', old records are overwritten when the logger is
+  full. However, the reader should only run when the targets are halted (or
+  crashed).</div>
+<span id="xdoc-sect-5"></span>
+<div class="xdocSect">CAVEATS</div>
+<div class="xdocText"></div>
+<div class="xdocText"><UL><LI>Currently LoggerSM assumes the endianness and word size of the host
+  and targets are the same.
+</LI><LI><a class="xdoc-link" href="../../../ti/uia/sysbios/LoggingSetup.html" title="ti.uia.sysbios.LoggingSetup">ti.uia.sysbios.LoggingSetup</a> and <a class="xdoc-link" href="../../../ti/uia/runtime/LogSync.html" title="ti.uia.runtime.LogSync">ti.uia.runtime.LogSync</a>
+  cannot be used with LoggerSM.
+</LI></UL></div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".E_bad.Level"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">E_badLevel</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#.E_bad.Level">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Error raised if get or setFilterLevel receive a bad level value</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Id" title="xdc.runtime.Error.Id">Error_Id</a>&nbsp;<span class="xdoc-id">LoggerSM_E_badLevel</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="decode"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">decode</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#decode">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Flag to determine whether to decode the events in shared memory</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LoggerSM_decode</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If true, all the events will be decoded into ASCII strings
+  when it is written into shared memory. If false, binary
+  data is written instead.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="filter.By.Level"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">filterByLevel</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#filter.By.Level">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Support filtering of events by event level</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LoggerSM_filterByLevel</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">To improve logging performance, this feature can be disabled by setting
+  <tt>filterByLevel</tt> to false.</div>
+<div class="xdocText">See '<a class="xdoc-link" href="LoggerSM.html#set.Filter.Level" title="setFilterLevel">setFilterLevel</a>' for an explanation of level filtering.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Timestamp.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">isTimestampEnabled</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#is.Timestamp.Enabled">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable or disable logging the 64b local CPU timestamp
+  at the start of each event</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LoggerSM_isTimestampEnabled</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="level1.Mask"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">level1Mask</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#level1.Mask">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Mask of diags categories whose initial filtering level is Diags.LEVEL1</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Mask" title="xdc.runtime.Diags.Mask">Diags_Mask</a>&nbsp;<span class="xdoc-id">LoggerSM_level1Mask</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">See '<a class="xdoc-link" href="LoggerSM.html#level4.Mask" title="level4Mask">level4Mask</a>' for details.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="level2.Mask"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">level2Mask</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#level2.Mask">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Mask of diags categories whose initial filtering level is Diags.LEVEL2</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Mask" title="xdc.runtime.Diags.Mask">Diags_Mask</a>&nbsp;<span class="xdoc-id">LoggerSM_level2Mask</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">See '<a class="xdoc-link" href="LoggerSM.html#level4.Mask" title="level4Mask">level4Mask</a>' for details.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="level3.Mask"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">level3Mask</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#level3.Mask">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Mask of diags categories whose initial filtering level is Diags.LEVEL3</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Mask" title="xdc.runtime.Diags.Mask">Diags_Mask</a>&nbsp;<span class="xdoc-id">LoggerSM_level3Mask</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">See '<a class="xdoc-link" href="LoggerSM.html#level4.Mask" title="level4Mask">level4Mask</a>' for details.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="level4.Mask"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">level4Mask</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#level4.Mask">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Mask of diags categories whose initial filtering level is Diags.LEVEL4</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Mask" title="xdc.runtime.Diags.Mask">Diags_Mask</a>&nbsp;<span class="xdoc-id">LoggerSM_level4Mask</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If 'filterByLevel' is true, then all LoggerBuf instances will filter
+  incoming events based on their event level.</div>
+<div class="xdocText">The LoggerSM module allows for specifying a different filter level for
+  every Diags bit. These filtering levels are module wide; LoggerBuf does
+  not support specifying the levels on a per-instance basis.</div>
+<div class="xdocText">The setFilterLevel API can be used to change the filtering levels at
+  runtime.</div>
+<div class="xdocText">The default filtering levels are assigned using the 'level1Mask' -
+  'level4Mask' config parameters. These are used to specify, for each of
+  the four event levels, the set of bits which should filter at that
+  level by default.</div>
+<div class="xdocText">The default filtering configuration sets the filter level to
+  Diags.LEVEL4 for all logging-related diags bits so that all events are
+  logged by default.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="num.Partitions"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">numPartitions</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#num.Partitions">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of partitions sharing the shared memory</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">LoggerSM_numPartitions</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="overwrite"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">overwrite</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#overwrite">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Flag to determine whether to overwrite records when full</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LoggerSM_overwrite</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If true and when the buffer is full, the logger will overwrite
+  the oldest record. Reading the records can only occur when the
+  targets have been halted.</div>
+<div class="xdocText">If false and when the buffer is full, the logger will discard
+  the new record.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="shared.Memory.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">sharedMemorySize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#shared.Memory.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Total size of shared memory in MAU that will be divided by the number
+  of partitions</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">LoggerSM_sharedMemorySize</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="set.Partition.Id"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">setPartitionId</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#set.Partition.Id">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Change the partitionId at runtime</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LoggerSM_setPartitionId</span>(<span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">partitionId</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Must be called early before module startup occurs.
+  Generally the best place to do this is via the
+  xdc.runtime.Startup.firstFxns array.   If using the <a class="xdoc-link" href="LoggerSM.html#set.Shared.Memory" title="setSharedMemory">setSharedMemory</a>
+  API, make sure that LoggerSM_setPartitionId() is called before
+  <a class="xdoc-link" href="LoggerSM.html#set.Shared.Memory" title="setSharedMemory">setSharedMemory</a>, if changing the partition Id.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="set.Shared.Memory"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">setSharedMemory</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#set.Shared.Memory">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Specify the shared memory to be used by LoggerSM</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LoggerSM_setSharedMemory</span>(<span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">sharedMemory</span>, <span class="xdoc-kw2">Bits32</span>&nbsp;<span class="xdoc-id">sharedMemorySize</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">sharedMemory</span>
+<span class="xdocChildSum">&#151;&nbsp;Base address of the shared memory to be used
+                       by LoggerSM.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">sharedMemorySize</span>
+<span class="xdocChildSum">&#151;&nbsp;Size of the shared memory.</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This runtime API can be called once to initialize the shared memory
+  that all LoggerSM instances use. This API can only be called
+  if '<a class="xdoc-link" href="LoggerSM.html#shared.Memory.Size" title="sharedMemorySize">sharedMemorySize</a>' is set to zero. If
+  '<a class="xdoc-link" href="LoggerSM.html#shared.Memory.Size" title="sharedMemorySize">sharedMemorySize</a>' is non-zero, the shared memory is
+  statically defined and initialized instead. Since the memory
+  is already defined, this API cannot change it.
+  Also, the <a class="xdoc-link" href="LoggerSM.html#partition.Id" title="partitionId">partitionId</a> must not be changed after calling
+  this API.</div>
+<div class="xdocText">The Linux host utility that reads the buffer requires it to be
+  aligned on a page boundary.  So make sure that the buffer passed
+  to setSharedMemory() is page-aligned (e.g. on a 4096 byte boundary).</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">This function returns TRUE if successful. It returns FALSE if not.
+  The reasons for failure are either '<a class="xdoc-link" href="LoggerSM.html#shared.Memory.Size" title="sharedMemorySize">sharedMemorySize</a>' is
+  non-zero or the API has been called multiple times.</div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">LoggerSM_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">LoggerSM_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">LoggerSM_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">LoggerSM_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">LoggerSM_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LoggerSM_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+<a class="xdocAnchor" id="per-instance_object_types"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Object Types</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#per-instance_object_types">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">LoggerSM_Object</span> <span class="xdoc-id">LoggerSM_Object</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Opaque internal representation of an instance object</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Object">LoggerSM_Object</a> *<span class="xdoc-id">LoggerSM_Handle</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Client reference to an instance object</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">LoggerSM_Struct</span> <span class="xdoc-id">LoggerSM_Struct</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Opaque client structure large enough to hold an instance object</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> <span class="xdoc-id">LoggerSM_handle</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Struct">LoggerSM_Struct</a> *structP);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Convert this instance structure pointer into an instance handle</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Struct">LoggerSM_Struct</a> *<span class="xdoc-id">LoggerSM_struct</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Convert this instance handle into an instance structure pointer</div>
+</div>
+<a class="xdocAnchor" id="per-instance_config_parameters"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Config Parameters</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#per-instance_config_parameters">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> <span class="xdoc-id">LoggerSM_Params</span> {
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Instance config-params structure</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><a class="xdoc-link" href="../../../xdc/runtime/IInstance.html#per-instance_config_parameters" title="xdc.runtime.IInstance.Params">IInstance_Params</a> *instance;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Common per-instance configs</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">LoggerSM_Params</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LoggerSM_Params_init</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_config_parameters" title="ti.uia.runtime.LoggerSM.Params">LoggerSM_Params</a> *params);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Initialize this config-params structure with supplier-specified defaults before instance creation</div>
+</div>
+<a class="xdocAnchor" id="per-instance_creation"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Runtime Instance Creation</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#per-instance_creation">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> <span class="xdoc-id">LoggerSM_create</span>(<span class="xdoc-kw1">const</span> <a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_config_parameters" title="ti.uia.runtime.LoggerSM.Params">LoggerSM_Params</a> *params, <a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Block" title="xdc.runtime.Error.Block">Error_Block</a> *eb);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Allocate and initialize a new instance object and return its handle</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LoggerSM_construct</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Struct">LoggerSM_Struct</a> *structP, <span class="xdoc-kw1">const</span> <a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_config_parameters" title="ti.uia.runtime.LoggerSM.Params">LoggerSM_Params</a> *params);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Initialize a new instance object inside the provided structure</div>
+</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">params</span>
+<span class="xdocChildSum">&#151;&nbsp;per-instance config params, or <tt>NULL</tt> to select default values (target-domain only)</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">eb</span>
+<span class="xdocChildSum">&#151;&nbsp;active error-handling block, or <tt>NULL</tt> to select default policy (target-domain only)</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="LoggerSM.html#per-instance_config_parameters" title="LoggerSM.Params">LoggerSM.Params</a></div>
+<a class="xdocAnchor" id="per-instance_deletion"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Deletion</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#per-instance_deletion">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LoggerSM_delete</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> *handleP);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Finalize and free this previously allocated instance object, setting the referenced handle to NULL</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LoggerSM_destruct</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Struct">LoggerSM_Struct</a> *structP);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Finalize the instance object inside the provided structure</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="disable"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">disable</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#disable">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Disable a log</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LoggerSM_disable</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerSM</tt> instance object</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Events written to a disabled log are silently discarded.</div>
+<div class="xdocText">Events written to a disabled log are silently discarded.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">The function returns the state of the log (<tt>TRUE</tt> if enabled,
+  <tt>FALSE</tt> if disabled) before the call. This return value allows 
+  clients to restore the previous state.
+  Note: not thread safe.</div>
+<div class="xdocText">The function returns the state of the log (<tt>TRUE</tt> if enabled,
+  <tt>FALSE</tt> if disabled) before the call. That allow clients to restore
+  the previous state.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="enable"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">enable</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#enable">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable a log</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LoggerSM_enable</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerSM</tt> instance object</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">The function returns the state of the log (<tt>TRUE</tt> if enabled,
+  <tt>FALSE</tt> if disabled) before the call. This return value allows 
+  clients to restore the previous state.  
+  Note: not thread safe.</div>
+<div class="xdocText">The function returns the state of the log (<tt>TRUE</tt> if enabled,
+  <tt>FALSE</tt> if disabled) before the call. That allow clients to restore
+  the previous state.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get.Filter.Level"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">getFilterLevel</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#get.Filter.Level">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Returns the mask of diags categories currently set to the specified
+  level</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Mask" title="xdc.runtime.Diags.Mask">Diags_Mask</a>&nbsp;<span class="xdoc-id">LoggerSM_getFilterLevel</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Event.Level" title="xdc.runtime.Diags.EventLevel">Diags_EventLevel</a>&nbsp;<span class="xdoc-id">level</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerSM</tt> instance object</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">See '<a class="xdoc-link" href="LoggerSM.html#set.Filter.Level" title="setFilterLevel">setFilterLevel</a>' for an explanation of level filtering.</div>
+<div class="xdocText">See '<a class="xdoc-link" href="LoggerSM.html#set.Filter.Level" title="setFilterLevel">setFilterLevel</a>' for an explanation of level filtering.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="set.Filter.Level"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">setFilterLevel</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#set.Filter.Level">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Sets the level of detail that instances will log</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LoggerSM_setFilterLevel</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Mask" title="xdc.runtime.Diags.Mask">Diags_Mask</a>&nbsp;<span class="xdoc-id">mask</span>, <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.Event.Level" title="xdc.runtime.Diags.EventLevel">Diags_EventLevel</a>&nbsp;<span class="xdoc-id">filterLevel</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerSM</tt> instance object</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">mask</span>
+<span class="xdocChildSum">&#151;&nbsp;The diags categories to set the level for</span>
+</div>
+<div class="xdocChildText">The diags categories to set the level for</div>
+<div class="xdocChild"><span class="xdocChildId">filterLevel</span>
+<span class="xdocChildSum">&#151;&nbsp;The new filtering level for the specified 
+                      categories</span>
+</div>
+<div class="xdocChildText">The new filtering level for the specified
+                      categories</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Events with the specified level or higher will be logged, events
+  below the specified level will be dropped.</div>
+<div class="xdocText">Events are filtered first by diags category, then by level. If an 
+  event's diags category is disabled in the module's diags mask, then it 
+  will be filtered out regardless of level. The event will not even be
+  passed to the logger.</div>
+<div class="xdocText">This API allows for setting the filtering level for more than one
+  diags category at a time. The mask parameter can be a single category 
+  or multiple categories combined, and the level will be set for all of
+  those categories.</div>
+<div class="xdocText">Events with the specified level or higher will be logged, events
+  below the specified level will be dropped.</div>
+<div class="xdocText">Events are filtered first by diags category, then by level. If an
+  event's diags category is disabled in the module's diags mask, then it
+  will be filtered out regardless of level. The event will not even be
+  passed to the logger.</div>
+<div class="xdocText">This API allows for setting the filtering level for more than one
+  diags category at a time. The mask parameter can be a single category
+  or multiple categories combined, and the level will be set for all of
+  those categories.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write0"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">write0</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#write0">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Process a log event with 0 arguments and the calling address</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LoggerSM_write0</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerSM</tt> instance object</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Same as <tt>write4</tt> except with 0 arguments rather than 4.</div>
+<div class="xdocText">Same as <tt>write4</tt> except with 0 arguments rather than 4.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="ILogger.html#write4" title="ILogger.write4">ILogger.write4()</a>, <a class="xdoc-link" href="LoggerSM.html#write4" title="write4">write4()</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write1"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">write1</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#write1">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Process a log event with 1 arguments and the calling address</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LoggerSM_write1</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerSM</tt> instance object</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Same as <tt>write4</tt> except with 1 arguments rather than 4.</div>
+<div class="xdocText">Same as <tt>write4</tt> except with 1 arguments rather than 4.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="ILogger.html#write4" title="ILogger.write4">ILogger.write4()</a>, <a class="xdoc-link" href="LoggerSM.html#write4" title="write4">write4()</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write2"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">write2</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#write2">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Process a log event with 2 arguments and the calling address</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LoggerSM_write2</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerSM</tt> instance object</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Same as <tt>write4</tt> except with 2 arguments rather than 4.</div>
+<div class="xdocText">Same as <tt>write4</tt> except with 2 arguments rather than 4.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="ILogger.html#write4" title="ILogger.write4">ILogger.write4()</a>, <a class="xdoc-link" href="LoggerSM.html#write4" title="write4">write4()</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write4"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">write4</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#write4">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Process a log event with 4 arguments and the calling address</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LoggerSM_write4</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a3</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a4</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerSM</tt> instance object</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">evt</span>
+<span class="xdocChildSum">&#151;&nbsp;event to be logged</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">mid</span>
+<span class="xdocChildSum">&#151;&nbsp;module ID of the module which logged the event</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">a1</span>
+<span class="xdocChildSum">&#151;&nbsp;arbitrary argument passed by caller</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The <tt>evt</tt> argument is of type Log.Event, which encodes the 
+  <tt><a class="xdoc-link" href="Log.html#.Event.Id" title="Log.EventId">Log.EventId</a></tt>, the <tt><a class="xdoc-link" href="Diags.html#.Mask" title="Diags.Mask">Diags.Mask</a></tt>, and the 
+  <tt><a class="xdoc-link" href="Diags.html#.Event.Level" title="Diags.EventLevel">Diags.EventLevel</a></tt> of the event. The event ID can be obtained
+  via <tt><a class="xdoc-link" href="Types.html#get.Event.Id" title="Types.getEventId">Types.getEventId</a>(evt)</tt>, the Diags mask can be obtained via
+  <tt><a class="xdoc-link" href="Diags.html#get.Mask" title="Diags.getMask">Diags.getMask</a>(evt)</tt>, and the event level can be obtained via
+  <tt><a class="xdoc-link" href="Diags.html#get.Level" title="Diags.getLevel">Diags.getLevel</a>(evt)</tt>.</div>
+<div class="xdocText">The <tt>modId</tt> argument is the module ID of the module that logged the
+  event.</div>
+<div class="xdocText">The event information can be used by the logger to handle different 
+  events specially. For example, the event ID can be used to compare 
+  against other known <tt>Log.Event</tt>s.</div>
+<div class="xdocText"><PRE class="Example">      if (Log_getEventId(MY_EVENT) == Log_getEventId(evt)) {
+          :
+      }
+</PRE></div>
+<div class="xdocText">The Diags mask and event level can be used for filtering of events 
+  based on event level (see <a class="xdoc-link" href="IFilterLogger.html" title="IFilterLogger">IFilterLogger</a>), or even routing 
+  events to separate loggers based on diags category (see, for example, 
+  <a class="xdoc-link" href="LoggerBuf.html#status.Logger" title="LoggerBuf.statusLogger">LoggerBuf.statusLogger</a>).</div>
+<div class="xdocText">The Diags mask and event level are useful for handling the event, but 
+  are generally not recorded by the logger because they are not needed in
+  decoding and displaying the event. A more suitable value to record is a
+  <tt><a class="xdoc-link" href="Types.html#.Event" title="Types.Event">Types.Event</a></tt>, which encodes the event ID and module ID. For
+  example, the <tt><a class="xdoc-link" href="Log.html#.Event.Rec" title="Log.EventRec">Log.EventRec</a></tt> type stores a <tt><a class="xdoc-link" href="Types.html#.Event" title="Types.Event">Types.Event</a></tt>
+  in its record definition. A <tt><a class="xdoc-link" href="Types.html#.Event" title="Types.Event">Types.Event</a></tt> can be created using
+  the <tt><a class="xdoc-link" href="Types.html#make.Event" title="Types.makeEvent">Types.makeEvent</a></tt> API given the event ID and module ID.</div>
+<div class="xdocText">The event ID value of <tt>0</tt> is used to indicate an event triggered by a
+  call to one of the <tt><a class="xdoc-link" href="Log.html#print0" title="Log.print0">Log_print[0-6]</a></tt> methods. These
+  methods take a format string rather than a <tt>Log_Event</tt> argument and,
+  as a result, the event ID encoded in <tt>evt</tt> is <tt>0</tt> and the parameter 
+  <tt>a1</tt> is the format string.</div>
+<div class="xdocText">Non-zero event IDs can also be used to access the <tt>msg</tt> string
+  associated with the <tt><a class="xdoc-link" href="Log.html#.Event.Desc" title="Log.EventDesc">Log.EventDesc</a></tt> that originally
+  defined the <tt>Log</tt> event.</div>
+<div class="xdocText"><PRE class="Example">      Log_EventId id = Log_getEventId(evt));
+      if (id != 0) {
+          String msg = Text_ropeText(id);
+          System_aprintf(msg, a1, a2, a3, a4);
+      }
+</PRE></div>
+<div class="xdocText">This works because an event's ID is simply an offset into a table
+  of characters (maintained by the <tt><a class="xdoc-link" href="Text.html" title="Text">Text</a></tt> module)
+  containing the event's msg string.</div>
+<div class="xdocText">The arguments a1, a2, etc. are parameters that are to be interpreted
+  according to the message format string associated with <tt>evt</tt>.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="Log.html#.Event" title="Log.Event">Log.Event</a>, <a class="xdoc-link" href="Log.html#.Event.Desc" title="Log.EventDesc">Log.EventDesc</a>, <a class="xdoc-link" href="Text.html#rope.Text" title="Text.ropeText">Text.ropeText</a>, <a class="xdoc-link" href="Log.html#get.Event.Id" title="Log.getEventId">Log.getEventId</a>, <a class="xdoc-link" href="ILogger.html#write4" title="ILogger.write4">ILogger.write4()</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="write8"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LoggerSM_</span><span class="xdoc-id">write8</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#write8">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Process a log event with 8 arguments and the calling address</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LoggerSM_write8</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Log.html#.Event" title="xdc.runtime.Log.Event">Log_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a3</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a4</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a5</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a6</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a7</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a8</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">handle</span>
+<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>LoggerSM</tt> instance object</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Same as <tt>write4</tt> except with 8 arguments rather than 4.</div>
+<div class="xdocText">Same as <tt>write4</tt> except with 8 arguments rather than 4.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="ILogger.html#write4" title="ILogger.write4">ILogger.write4()</a>, <a class="xdoc-link" href="LoggerSM.html#write4" title="write4">write4()</a></div>
+<a class="xdocAnchor" id="per-instance_convertors"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Convertors</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#per-instance_convertors">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IFilterLogger.html#per-instance_object_types" title="xdc.runtime.IFilterLogger.Handle">IFilterLogger_Handle</a> <span class="xdoc-id">LoggerSM_Handle_upCast</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;unconditionally move one level up the inheritance hierarchy</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> <span class="xdoc-id">LoggerSM_Handle_downCast</span>(<a class="xdoc-link" href="../../../xdc/runtime/IFilterLogger.html#per-instance_object_types" title="xdc.runtime.IFilterLogger.Handle">IFilterLogger_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;conditionally move one level down the inheritance hierarchy; NULL upon failure</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/ILogger.html#per-instance_object_types" title="xdc.runtime.ILogger.Handle">ILogger_Handle</a> <span class="xdoc-id">LoggerSM_Handle_upCast2</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;unconditionally move 2 levels up the inheritance hierarchy</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> <span class="xdoc-id">LoggerSM_Handle_downCast2</span>(<a class="xdoc-link" href="../../../xdc/runtime/ILogger.html#per-instance_object_types" title="xdc.runtime.ILogger.Handle">ILogger_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;conditionally move 2 levels down the inheritance hierarchy; NULL upon failure</div>
+</div>
+<a class="xdocAnchor" id="per-instance_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#per-instance_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Int</span> <span class="xdoc-id">LoggerSM_Object_count</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The number of statically-created instance objects</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> <span class="xdoc-id">LoggerSM_Object_get</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Object">LoggerSM_Object</a> *array, <span class="xdoc-kw2">Int</span> i);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The handle of the i-th statically-created instance object (array == NULL)</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> <span class="xdoc-id">LoggerSM_Object_first</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The handle of the first dynamically-created instance object, or NULL</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> <span class="xdoc-id">LoggerSM_Object_next</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The handle of the next dynamically-created instance object, or NULL</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">LoggerSM_Object_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap used to allocate dynamically-created instance objects</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Label" title="xdc.runtime.Types.Label">Types_Label</a> *<span class="xdoc-id">LoggerSM_Handle_label</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Label" title="xdc.runtime.Types.Label">Types_Label</a> *buf);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The label associated with this instance object</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">String</span> <span class="xdoc-id">LoggerSM_Handle_name</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#per-instance_object_types" title="ti.uia.runtime.LoggerSM.Handle">LoggerSM_Handle</a> handle);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The name of this instance object</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/LoggerSM-src.html"><span class="xdocLabelFile">ti/uia/runtime/LoggerSM.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> LoggerSM = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.runtime.LoggerSM'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide constants & types</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> <a class="xdocSynGo" href="#.Meta.Data">LoggerSM.<span class="xdoc-id">MetaData</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;This data is added to the RTA MetaData file</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Meta.Data" title="ti.uia.runtime.LoggerSM.MetaData"><span class="xdoc-id">instanceId</span></a> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<a class="xdocSynGo" href="#.Meta.Data" title="ti.uia.runtime.LoggerSM.MetaData"><span class="xdoc-id">priority</span></a> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#meta.E_bad.Level">LoggerSM.<span class="xdoc-id">E_badLevel</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Error raised if get or setFilterLevel receive a bad level value</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Desc" title="xdc.runtime.Error.Desc">Error.Desc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "E_badLevel: Bad filter level value: %d"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metadecode">LoggerSM.<span class="xdoc-id">decode</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Flag to determine whether to decode the events in shared memory</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metafilter.By.Level">LoggerSM.<span class="xdoc-id">filterByLevel</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Support filtering of events by event level</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metais.Timestamp.Enabled">LoggerSM.<span class="xdoc-id">isTimestampEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enable or disable logging the 64b local CPU timestamp
+  at the start of each event</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metalevel1.Mask">LoggerSM.<span class="xdoc-id">level1Mask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Mask of diags categories whose initial filtering level is Diags.LEVEL1</span></span></a> = <i><span class="xdoc-kw2">Bits16</span></i> 0;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metalevel2.Mask">LoggerSM.<span class="xdoc-id">level2Mask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Mask of diags categories whose initial filtering level is Diags.LEVEL2</span></span></a> = <i><span class="xdoc-kw2">Bits16</span></i> 0;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metalevel3.Mask">LoggerSM.<span class="xdoc-id">level3Mask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Mask of diags categories whose initial filtering level is Diags.LEVEL3</span></span></a> = <i><span class="xdoc-kw2">Bits16</span></i> 0;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metalevel4.Mask">LoggerSM.<span class="xdoc-id">level4Mask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Mask of diags categories whose initial filtering level is Diags.LEVEL4</span></span></a> = <i><span class="xdoc-kw2">Bits16</span></i> <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.L.L_.L.O.G.G.I.N.G" title="xdc.runtime.Diags.ALL_LOGGING">Diags.ALL_LOGGING</a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metanum.Partitions">LoggerSM.<span class="xdoc-id">numPartitions</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of partitions sharing the shared memory</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> 3;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaoverwrite">LoggerSM.<span class="xdoc-id">overwrite</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Flag to determine whether to overwrite records when full</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metashared.Memory.Size">LoggerSM.<span class="xdoc-id">sharedMemorySize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Total size of shared memory in MAU that will be divided by the number
+  of partitions</span></span></a> = <i><span class="xdoc-kw2">SizeT</span></i> 0x20000;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#buf.Section">LoggerSM.<span class="xdoc-id">bufSection</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Section name for the buffer in shared memory</span></span></a> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">LoggerSM.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#partition.Id">LoggerSM.<span class="xdoc-id">partitionId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Unique id for each core using the shared memory</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> 0;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#user.Timestamp">LoggerSM.<span class="xdoc-id">userTimestamp</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Use the user configured Timestamp_get64() instead of TCSL/TCSH</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class='xdocSynHdr'>module-wide functions</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#get.Meta.Args">LoggerSM.<span class="xdoc-id">getMetaArgs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns any meta data needed to support RTA</span></span></a>(<i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">inst</span>, <i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">instNum</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+<div class='xdocSynHdr'>per-instance config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> LoggerSM.<a class="xdocSynGo" href="#metaper-instance_config_parameters"><span class="xdoc-id">Params</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Instance config-params object</span></span></a>;
+</div>
+<div class='xdocSynHdr'>per-instance creation</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> inst = LoggerSM.<a class="xdocSynGo" href="#metaper-instance_creation"><span class="xdoc-id">create</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Create an instance-object</span></span></a>(params);
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Meta.Data"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">struct</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">MetaData</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#.Meta.Data">index URL</a></div>
+<p class="xdocHdrSummaryDcl">This data is added to the RTA MetaData file</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> <i>obj</i> = <span class="xdoc-kw1">new</span> LoggerSM.<span class="xdoc-id">MetaData</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">instanceId</span> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><i>obj</i>.<span class="xdoc-id">priority</span> = <i><span class="xdoc-kw2">Int</span></i><b>&nbsp;&nbsp;...</b>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.E_bad.Level"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">E_badLevel</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#.E_bad.Level">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Error raised if get or setFilterLevel receive a bad level value</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">E_badLevel</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Desc" title="xdc.runtime.Error.Desc">Error.Desc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "E_badLevel: Bad filter level value: %d"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.E_bad.Level" title="LoggerSM_E_badLevel">LoggerSM_E_badLevel</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metadecode"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">decode</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#decode">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Flag to determine whether to decode the events in shared memory</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">decode</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If true, all the events will be decoded into ASCII strings
+  when it is written into shared memory. If false, binary
+  data is written instead.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#decode" title="LoggerSM_decode">LoggerSM_decode</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metafilter.By.Level"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">filterByLevel</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#filter.By.Level">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Support filtering of events by event level</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">filterByLevel</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">To improve logging performance, this feature can be disabled by setting
+  <tt>filterByLevel</tt> to false.</div>
+<div class="xdocText">See '<a class="xdoc-link" href="LoggerSM.html#set.Filter.Level" title="setFilterLevel">setFilterLevel</a>' for an explanation of level filtering.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#filter.By.Level" title="LoggerSM_filterByLevel">LoggerSM_filterByLevel</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metais.Timestamp.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">isTimestampEnabled</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#is.Timestamp.Enabled">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enable or disable logging the 64b local CPU timestamp
+  at the start of each event</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">isTimestampEnabled</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#is.Timestamp.Enabled" title="LoggerSM_isTimestampEnabled">LoggerSM_isTimestampEnabled</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metalevel1.Mask"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">level1Mask</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#level1.Mask">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Mask of diags categories whose initial filtering level is Diags.LEVEL1</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">level1Mask</span> = <i><span class="xdoc-kw2">Bits16</span></i> 0;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">See '<a class="xdoc-link" href="LoggerSM.html#level4.Mask" title="level4Mask">level4Mask</a>' for details.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#level1.Mask" title="LoggerSM_level1Mask">LoggerSM_level1Mask</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metalevel2.Mask"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">level2Mask</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#level2.Mask">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Mask of diags categories whose initial filtering level is Diags.LEVEL2</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">level2Mask</span> = <i><span class="xdoc-kw2">Bits16</span></i> 0;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">See '<a class="xdoc-link" href="LoggerSM.html#level4.Mask" title="level4Mask">level4Mask</a>' for details.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#level2.Mask" title="LoggerSM_level2Mask">LoggerSM_level2Mask</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metalevel3.Mask"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">level3Mask</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#level3.Mask">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Mask of diags categories whose initial filtering level is Diags.LEVEL3</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">level3Mask</span> = <i><span class="xdoc-kw2">Bits16</span></i> 0;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">See '<a class="xdoc-link" href="LoggerSM.html#level4.Mask" title="level4Mask">level4Mask</a>' for details.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#level3.Mask" title="LoggerSM_level3Mask">LoggerSM_level3Mask</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metalevel4.Mask"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">level4Mask</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#level4.Mask">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Mask of diags categories whose initial filtering level is Diags.LEVEL4</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">level4Mask</span> = <i><span class="xdoc-kw2">Bits16</span></i> <a class="xdoc-link" href="../../../xdc/runtime/Diags.html#.A.L.L_.L.O.G.G.I.N.G" title="xdc.runtime.Diags.ALL_LOGGING">Diags.ALL_LOGGING</a>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If 'filterByLevel' is true, then all LoggerBuf instances will filter
+  incoming events based on their event level.</div>
+<div class="xdocText">The LoggerSM module allows for specifying a different filter level for
+  every Diags bit. These filtering levels are module wide; LoggerBuf does
+  not support specifying the levels on a per-instance basis.</div>
+<div class="xdocText">The setFilterLevel API can be used to change the filtering levels at
+  runtime.</div>
+<div class="xdocText">The default filtering levels are assigned using the 'level1Mask' -
+  'level4Mask' config parameters. These are used to specify, for each of
+  the four event levels, the set of bits which should filter at that
+  level by default.</div>
+<div class="xdocText">The default filtering configuration sets the filter level to
+  Diags.LEVEL4 for all logging-related diags bits so that all events are
+  logged by default.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#level4.Mask" title="LoggerSM_level4Mask">LoggerSM_level4Mask</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metanum.Partitions"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">numPartitions</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#num.Partitions">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of partitions sharing the shared memory</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">numPartitions</span> = <i><span class="xdoc-kw2">Int</span></i> 3;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#num.Partitions" title="LoggerSM_numPartitions">LoggerSM_numPartitions</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaoverwrite"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">overwrite</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#overwrite">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Flag to determine whether to overwrite records when full</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">overwrite</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If true and when the buffer is full, the logger will overwrite
+  the oldest record. Reading the records can only occur when the
+  targets have been halted.</div>
+<div class="xdocText">If false and when the buffer is full, the logger will discard
+  the new record.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#overwrite" title="LoggerSM_overwrite">LoggerSM_overwrite</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metashared.Memory.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">sharedMemorySize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#shared.Memory.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Total size of shared memory in MAU that will be divided by the number
+  of partitions</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">sharedMemorySize</span> = <i><span class="xdoc-kw2">SizeT</span></i> 0x20000;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#shared.Memory.Size" title="LoggerSM_sharedMemorySize">LoggerSM_sharedMemorySize</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="buf.Section"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">bufSection</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#buf.Section">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Section name for the buffer in shared memory</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">bufSection</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="partition.Id"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">partitionId</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#partition.Id">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Unique id for each core using the shared memory</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">partitionId</span> = <i><span class="xdoc-kw2">Int</span></i> 0;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="user.Timestamp"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">userTimestamp</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#user.Timestamp">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Use the user configured Timestamp_get64() instead of TCSL/TCSH</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">userTimestamp</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">For C6x devices, LoggerSM defaults to using the built-in hardware
+  counter, TCSL/TCSH for timestamping.  This improves the performance
+  of Log statements.  However, in some cases, the user may want to
+  provide their own timestamp provider to LoggerSM, instead of using
+  TCSL/TCSH.
+  If userTimestamp is set to true, Timestamp_get64() will be used
+  instead of reading TCSL/TCSH.  For non-C6x devices, changing
+  this configuration parameter has no effect.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get.Meta.Args"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-id">LoggerSM.</span><span class="xdoc-id">getMetaArgs</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#get.Meta.Args">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Returns any meta data needed to support RTA</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LoggerSM.<span class="xdoc-id">getMetaArgs</span>(<i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">inst</span>, <i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">instNum</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This meta data should be returned in the form of a structure which
+  can be converted into XML. This data is added to the RTA XML file
+  during the application's configuration, and can be accessed later
+  through the xdc.rta.MetaData module.</div>
+<div class="xdocText">The MetaData is returned per instance of the ILogger module. The
+  instance object is passed to the function as the first argument.</div>
+<div class="xdocText">The second argument is the index of the instance in the list of 
+  the ILogger's static instances.</div>
+<a class="xdocAnchor" id="metaper-instance_config_parameters"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Config Parameters</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#per-instance_config_parameters">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> LoggerSM.<span class="xdoc-id">Params</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Instance config-params object</div>
+</div>
+<a class="xdocAnchor" id="metaper-instance_creation"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Static Instance Creation</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerSM.html" title="module LoggerSM"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LoggerSM.html#per-instance_creation">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> LoggerSM.<a class="xdoc-link" href="../../../ti/uia/runtime/LoggerSM.html#metaper-instance_config_parameters" title="ti.uia.runtime.LoggerSM.Params">Params</a>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Allocate instance config-params</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<i>config</i> = <b>&nbsp;&nbsp;...</b>
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Assign individual configs</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> inst = LoggerSM.<span class="xdoc-id">create</span>(params);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Create an instance-object</div>
+</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">params</span>
+<span class="xdocChildSum">&#151;&nbsp;per-instance config params, or <tt>NULL</tt> to select default values (target-domain only)</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">eb</span>
+<span class="xdocChildSum">&#151;&nbsp;active error-handling block, or <tt>NULL</tt> to select default policy (target-domain only)</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="LoggerSM.html#per-instance_config_parameters" title="LoggerSM.Params">LoggerSM.Params</a></div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:15 GMT</div>
+</div></div></body>
+</html>

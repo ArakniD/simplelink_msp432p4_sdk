@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2014, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+        its contributors may be used to endorse or promote products derived
+        from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<html>
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheets/rex.css">
+    <!-- bc:
+        <link rel="stylesheet" href="assets/bootstrap/dist/css/bootstrap.min.css">
+        -->
+    <link rel="stylesheet" href="assets/css/custom.css">
+
+    <!--[if gte IE 6]>
+    <script type="text/javascript">
+        // this is IE greater than or equal to 6
+        var isInternetExplorer=true;
+    </script>
+    <![endif]-->
+
+    <script>
+        var isIE =   ((navigator.appName == 'Microsoft Internet Explorer') ||
+        ((navigator.appName == 'Netscape') &&
+        (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)));
+        if (window.isInternetExplorer) {
+            isIE =  true;
+        }
+
+        if ( isIE ){
+            var object = document.createElement("object");
+            object.setAttribute("id", "ticloudagentlauncher");
+            object.setAttribute("type", "application/x-ticloudagentlauncher");
+            object.setAttribute("width", "0");
+            object.setAttribute("height", "0");
+            document.head.appendChild( object );
+            window.TICloudAgent_HACK = {};
+            window. TICloudAgent_HACK.plugin = document.getElementById("ticloudagentlauncher");
+        }
+    </script>
+    <link rel="import" href="../designer/components/polymer/polymer.html">
+    <script src="../designer/components/webcomponentsjs/webcomponents.js"></script>
+    <script data-require="jquery@*" data-semver="1.11.1" src="assets/jquery/dist/jquery-1.11.1.min.js"></script>
+
+    <script type='text/javascript' src="assets/jquery/dist/jquery-ui-1.10.4.min.js"></script>
+
+
+
+
+    <link rel="import" href="../designer/components/ti-core-backplane/ti-core-backplane.html">
+
+    <link rel="import" href="../designer/components/ti-service-serialio/ti-service-serialio.html">
+    <link rel="import" href="../designer/components/ti-service-programloader/ti-service-programloader.html">
+    <link rel="import" href="../designer/components/paper-button/paper-button.html">
+    <link rel="import" href="../designer/components/core-icons/core-icons.html">
+    <link rel="import" href="../designer/components/ti-widget-menubar/ti-widget-menubar.html">
+    <link rel="import" href="../designer/components/ti-widget-menubar/ti-widget-filemenu.html">
+    <link rel="import" href="../designer/components/ti-widget-menubar/ti-widget-optionsmenu.html">
+    <link rel="import" href="../designer/components/ti-widget-menubar/ti-widget-menuitem.html">
+    <link rel="import" href="../designer/components/ti-widget-menubar/ti-widget-menuaction.html">
+    <link rel="import" href="../designer/components/paper-dialog/paper-action-dialog.html">
+    <!--
+    <link rel="import" href="../designer/components/ti-widget-menubar/ti-widget-menubar.html">
+    <link rel="import" href="../designer/components/ti-widget-menubar/ti-widget-filemenu.html">
+     --->
+    <link rel="import" href="../designer/components/ti-core-stylesheets/ti-core-stylesheets.html">
+
+
+    <style type="text/css" media="screen, print, projection">
+        body,
+        html {
+            margin:0;
+            padding:0;
+        }
+        #wrap {
+            width:650px;
+            height:375px;
+            margin:0 auto;
+        }
+        #sidebar {
+            float:left;
+            width:218px;
+            padding:0px;
+        }
+        #main {
+            float:right;
+            width:410px;
+            padding:11px;
+        }
+
+        #footer {
+            clear:both;
+            padding:0px;
+        }
+        #footer p {
+            margin:0;
+        }
+        * html #footer {
+            height:1px;
+        }
+        /* override values imposed by bootstrap.min (for Firefox) */
+        ti-widget-statusbar .container {
+            color: white;
+        }
+        #ti_widget_menubar {
+            color:white;
+        }
+
+    </style>
+    <style shim-shadowdom>
+
+        body {
+            font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+            margin: 0;
+            padding:24px;
+        }
+
+        ti-core-backplane {
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 0 0;
+        }
+
+        ti-service-serialio {
+            display: none;
+        }
+        #ti_widget_menubar {
+            left: 0px;
+            top: 0px;
+            position: absolute;
+            width: 100%;
+        }
+
+    </style>
+    <title>MSP-EXP432P401R Out Of Box Demo GUI</title>
+
+</head>
+<body  style="background-color: rgb(50,50,50); background: radial-gradient(rgb(50,50,50), rgb(50,50,50), black);">
+
+
+<div class="container-fluid" style="height: 100%;">
+
+    <ti-widget-menubar id="ti_widget_menubar" layout horizontal>
+    </ti-widget-menubar>
+    <paper-action-dialog id="troubleshootingDialog" heading="Troubleshooting Suggestions" >
+        <p>Please try the following:</p>
+        <ul>
+            <li>close any other browser windows that are running this demo</li>
+            <li>close any applications such as mspdebug or Energia that are connected to your Launchpad.</li>
+            <li>unplug any TI devices or emulators that are connected to your computer other than your MSP430F5529 Launchpad.</li>
+            <li>ensure that you are connected to the internet</li>
+            <li>update your browser to the latest version</li>
+            <li>reload this page using your browser's refresh button.</li>
+        </ul>
+
+        <p>If you are still having trouble connecting, please see the <a href="http://processors.wiki.ti.com/index.php/TI_Cloud_Agent_Troubleshooting_Guide" target="_blank">TI Cloud Agent wiki page</a>.</p>
+        <paper-button affirmative autofocus >Close</paper-button>
+
+    </paper-action-dialog>
+
+    <div id="optionsmenu">
+        <ti-widget-menubar style="width:100%" layout horizontal>
+            <ti-widget-menuitem name="Help" id="ti_widget_menuitem" layout>
+                <ti-widget-menuaction name="Troubleshooting..." id="troubleshootingAction" icon="done-all" alwaysenabled="true" onclick="showTroubleshootingGuide()" description="Show troubleshooting guide"></ti-widget-menuaction>
+                <ti-widget-menuaction name="Online Help..." id="onlineHelpAction" icon="help" alwaysenabled="true" onclick="getHelp()" description="Online help"></ti-widget-menuaction>
+                <ti-widget-menuaction name="E2E Support Forum..." id="e2eAction" icon="question-answer" alwaysenabled="true" onclick="getE2EForum()" description="Ask an Expert"></ti-widget-menuaction>
+            </ti-widget-menuitem>
+        </ti-widget-menubar>
+
+    </div>
+    <div class="row">
+        <div id="chipIcon" class="col-sm-2"
+             style="margin-left:20px; margin-top:20px; height:120px; width:120px; border-radius: 2px; background-color: rgba(255,0,0,0.5)">
+            <h4 style="color: white; padding:0px">MSP432</h4>
+            <h6 style="color: white; padding:0px">MCUs</h6>
+            <br>
+            <h6 style="color: white; margin-top:-5px">Texas Instruments</h6>
+        </div>
+        <div class="col-sm-10">
+            <h2 style="color: white;">MSP-EXP432P401R Out Of Box Demo</h2>
+            <h4 style="color: white;">
+                <div id="status" style="color: white;"><b>Target Status:</b> Disconnected.</div><p>&nbsp;</p>
+                <!-- uncomment if you wish to monitor the state changes here...
+                <div id="currentState" style="style="color: white;display:none"></div>
+            -->
+
+                <div class="col-sm-6" style="text-align:left;">
+                    <div id="connectBtnDiv">
+                        <button id="btnConnect" onclick="onBtnConnectClicked();" type="button"
+                                class="btn btn-default" style="width: 30%;">Connect
+                        </button>
+                    </div>
+                    <div id="disconnectBtnDiv" style="display:none">
+                        <button id="btnDisconnect" onclick="onBtnDisconnectClicked();" type="button"
+                                class="btn btn-default" style="width: 30%;">Disconnect
+                        </button>
+                    </div>
+                </div>
+            </h4>
+            <div id="standaloneAppFailedToStartDiv" style="color: white; display:none">
+                <p>&nbsp;</p> <p>&nbsp;</p>Startup error: Timeout waiting for connection to debug agent.<br/>Please see the
+                <a href="http://e2e.ti.com/support/microcontrollers/default.aspx" target="_blank">TI E2E Microcontrollers Forum</a> for
+                troubleshooting advice.
+            </div>
+            <div id="downloadInstallerBtnDiv" style="color: white; display:none">
+                <!--
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <div id="downloadSafariBrowserExtDiv" style="color: white; display:none">
+                        If you have not already done so, please:<br/>
+                        <button onclick="onBtnInstallBrowserExtensionClicked()" style="color: black"><img src="../designer/components/ti-core-backplane/images/download16x19.png"/>&nbsp;Download the TI Cloud Agent Bridge Safari Extension</button>
+                        <span style="color: white;">and install it.</span>
+                    </div>
+                    <div id="downloadBrowserExtDiv" style="color: white; display:none">
+                        If you have not already done so, please:<br/>
+                        <button onclick="onBtnInstallBrowserExtensionClicked()" style="color: black"><img src="../designer/components/ti-core-backplane/images/download16x19.png"/>&nbsp;Install the TI Cloud Agent Bridge Browser Extension</button>
+                    </div>
+                    <p>&nbsp;</p>
+                    <button onclick="installAgent()" style="color: black"><img src="../designer/components/ti-core-backplane/images/download16x19.png"/>&nbsp;Download the TI Cloud Agent Application</button>
+                    <div id="downloadSafariInstructionsDiv" style="color: white; display:none">
+                        <p>&nbsp;</p>Once these are installed, please close Safari and start the Demo application again.
+                    </div>
+                    <div id="downloadInstructionsDiv" style="color: white; display:none">
+                        <p>&nbsp;</p>Once these are installed, please click the Restart button: <button onclick="onRestartBtnClicked()" style="color: black">Restart</button>
+                    </div>
+
+                    <p>&nbsp;</p>If you have already installed TI Cloud Agent, please:
+                    <ul>
+                        <li>close any other windows that are running this demo</li>
+                        <li>close any applications such as mspdebug or Energia that are connected to your Launchpad.</li>
+                    </ul>
+                    <p>&nbsp;</p>If you are still having trouble connecting, please see the
+                    <a href="http://e2e.ti.com/support/microcontrollers/default.aspx" target="_blank">TI E2E Microcontrollers Forum</a> for
+                    troubleshooting advice.
+                    <p></p>
+                 -->
+                </div>
+
+                <div id="replugNotice" style="color: white; display:none"></div>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col-sm-4" id="serialPortIO" style="display:none">
+                <h4 style="color: white;">Connect to Serial Port</h4>
+
+                <div>
+                    <form class="form" id="serialForm">
+                        <div class="form-group">
+                            <div class="col-sm-6" style="text-align:center;">
+                                <!--
+                                <select class="form-control" id="formData" style="width: 100%;display: inline-block">
+                                </select>
+                                -->
+                                <select class="form-control" id="serialPortList" onchange="onPortSelectedHdlr();" style="width: 100%;display: inline-block">
+                                </select>
+                            </div>
+                            <div class="col-sm-6" style="text-align:center;">
+                                <div id="openSerialPortBtnDiv">
+                                    <!-- bc: NOTE - type="submit" was causing the page to reload, so changed to type="button" -->
+                                    <button id="btnOpenSerialPort" onclick="openSerialPort();" type="button"
+                                            class="btn btn-default" style="width: 100%;">Open
+                                    </button>
+                                </div>
+                                <div id="closeSerialPortBtnDiv" style="display:none">
+                                    <button id="btnCloseSerialPort" onclick="closeSerialPort();" type="button"
+                                            class="btn btn-default" style="width: 100%;">Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-sm-6" style="text-align:center; display:none"> <!-- remove display:none to show the baud rate selector -->
+                        <!--
+                        <select class="form-control" id="formData" style="width: 100%;display: inline-block">
+                        </select>
+                        -->
+                        <select class="form-control" id="baudRateList" onchange="onBaudRateSelectedHdlr();" style="width: 100%;display: inline-block">
+                        </select>
+                    </div>
+                </div>
+                <br><br><br>
+                <div  id="colorSelectorSlidersDiv" style="visibility:hidden">
+                    <h4 style="color: white;">Change Tri-color LED's color</h4>
+
+                    <div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div style="text-align:center;">
+                                    <label class="label" style="display:inline-block;width:2em;color:silver">R</label><input
+                                        id="red_slider" type="range" value="255" min="0" max="255"
+                                        style="background-color: rgba(255,0,0,1);"/><label id="Rlabel" class="label"
+                                                                                           style="display:inline-block;width:3em;color:silver">255</label>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div style="text-align:center;">
+                                    <label class="label" style="display:inline-block;width:2em;color:silver">G</label><input
+                                        id="green_slider" type="range" value="255" min="0" max="255"
+                                        style="background-color: rgba(0,255,0,1);"/><label id="Glabel" class="label"
+                                                                                           style="display:inline-block;width:3em;color:silver">255</label>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div style="text-align:center;">
+                                    <label class="label" style="display:inline-block;width:2em;color:silver">B</label><input
+                                        id="blue_slider" type="range" value="255" min="0" max="255"
+                                        style="background-color: rgba(0,0,255,1);"/><label id="Blabel" class="label"
+                                                                                           style="display:inline-block;width:3em;color:silver">255</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <h4 style="color: white;">Set LED Beats Per Minute</h4>
+
+                    <div>
+                        <!-- <form class="form" id="bpmForm">  -->
+                        <div class="col-sm-12">
+                            <input id="bpm" type="number" value="60" class="form-control"
+                                   style="width: 40%;display:inline;"/><label class="label"
+                                                                              style="display:inline-block;width:2em;color:silver">bpm
+                            (10 ~ 4000)</label>
+                        </div>
+                        <!--  </form>  -->
+                    </div>
+                </div>
+            </div>
+            <div id="colorSelectorWheelDiv" style="visibility:hidden">
+                <div class="col-sm-8">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div style="text-align:center;">
+                                <canvas id="canvas" width="600" height="600" style="background: transparent;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer" align="right" style="color:white;">
+        <ti-core-backplane id="10" statusChanged="myStatusChangedHdlr()" ></ti-core-backplane>
+        <ti-service-serialio id='serialIO'></ti-service-serialio>
+        <ti-service-programloader id='programLoader'></ti-service-programloader>
+    </div>
+
+    <script>
+        "use strict";
+        var backplane;
+        var programLoader;
+        var serialIO;
+        var currentAction = 0;
+        //var currentStateDiv = document.getElementById("currentState");
+        var statusDiv = document.getElementById('status');
+        var connectBtnDiv = document.getElementById("connectBtnDiv");
+        var serialPortList = document.getElementById('serialPortList');
+        var baudRateList = document.getElementById('baudRateList');
+        var replugNoticeDiv = document.getElementById('replugNotice');
+        var btnConnect = document.getElementById("btnConnect");
+        var disconnectBtnDiv = document.getElementById("disconnectBtnDiv");
+        var btnDisconnect = document.getElementById("btnDisconnect");
+        var downloadInstallerBtnDiv = document.getElementById('downloadInstallerBtnDiv');
+        var colorSelectorSlidersDiv = document.getElementById('colorSelectorSlidersDiv');
+        var colorSelectorWheelDiv = document.getElementById('colorSelectorWheelDiv');
+        var standaloneAppFailedToStartDiv =document.getElementById('standaloneAppFailedToStartDiv');
+        var serialPortIODiv = document.getElementById("serialPortIO");
+        var btnOpenSerialPort = document.getElementById("btnOpenSerialPort");
+        var btnCloseSerialPort = document.getElementById("btnCloseSerialPort");
+        var openSerialPortBtnDiv = document.getElementById("openSerialPortBtnDiv");
+        var closeSerialPortBtnDiv = document.getElementById("closeSerialPortBtnDiv");
+        var dataFromSerialPort = [];
+        var rxDataCount = 0;
+        var numBadValues = 0;
+        var myDevices = [
+            {
+                boardName: 'MSP-EXP432P401R',
+                deviceName: 'msp432p401r',
+                connectionID: 'TIXDS110_Connection',
+                fileName: 'OutOfBox_MSP432.out',
+                fileFolderName: 'binfiles/',
+                startBtnName: 'P1.1',
+                msgWaitingForData: "Press the Start Button (P1.1 on your MSP-EXP432P401R Launchpad) to start mixing colors.",
+                msgConnectDevice: "",
+                boardImage: 'MSP432.jpg',
+                startBtnImage: 'MSP432.jpg',
+                imageFolderName: 'images/'
+            }];
+        var selectedBoardIndex = 0;
+        var boardName = myDevices[selectedBoardIndex].boardName;
+        var isFireFox =  (navigator.userAgent.indexOf("Firefox") !== -1);
+        var isSafari =  ((navigator.userAgent.indexOf("Safari") !== -1 && navigator.userAgent.indexOf("Chrome") == -1));
+        var isNotSafari = ((!isSafari) ||(isFireFox));
+        var isMac =  (navigator.appVersion.indexOf("Mac") != -1);
+        var isSupported = true;  // set to false if Internet Explorer is not supported.
+        var handshakefirmware = 0;
+        var setStateMachine = function(strEvent) {
+            if (backplane) {
+                backplane.updateStateMachine(strEvent);
+            }
+        };
+
+        var installAgent = function() {
+            if (backplane) {
+                backplane.downloadTICloudAgentInstaller();
+            }
+        };
+
+        var onPortSelectedHdlr = function() {
+            if (serialIO) {
+                var index = serialPortList.selectedIndex;
+                console.log('User selected serial port['+ index+'] '+serialIO.serialPorts[index].displayName+', pnpId='+ serialIO.serialPorts[index].pnpId);
+                serialIO.selectedSerialPort = serialIO.serialPorts[index];
+            }
+        };
+
+        var onBaudRateSelectedHdlr = function() {
+            if (serialIO) {
+                var index = baudRateList.selectedIndex;
+                serialIO.selectedBaudRate = serialIO.baudRates[index];
+            }
+        };
+
+        var openSerialPort = function(e) {
+            if (serialIO) {
+                serialIO.updateStateMachine('userOpenSerialPort');
+                openSerialPortBtnDiv.style.display = 'none';
+                closeSerialPortBtnDiv.style.display = '';
+                colorSelectorSlidersDiv.style.visibility = '';
+                colorSelectorWheelDiv.style.visibility = '';
+            }
+        };
+
+        var closeSerialPort = function(e) {
+            handshakefirmware = 0;
+            if (serialIO) {
+                serialIO.updateStateMachine('userCloseSerialPort');
+                openSerialPortBtnDiv.style.display = '';
+                closeSerialPortBtnDiv.style.display = 'none';
+                colorSelectorSlidersDiv.style.visibility = 'hidden';
+                colorSelectorWheelDiv.style.visibility = 'hidden';
+            }
+        };
+        var onBtnConnectClicked = function() {
+            if (backplane === undefined){
+                backplane = document.getElementById('10');
+                backplane.selectedDevice = myDevices[selectedBoardIndex];
+                serialIO = document.getElementById("serialIO");
+                serialIO.selectedDevice = myDevices[selectedBoardIndex];
+            }
+            if (backplane) {
+                //backplane.updateStateMachine('onConnectBtnClicked');
+                backplane.connect();
+            }
+        };
+        var onBtnDisconnectClicked = function() {
+            handshakefirmware = 0;
+            if (backplane) {
+                backplane.updateStateMachine('onDisconnectBtnClicked');
+            }
+        };
+        var onBtnDownloadInstallerClicked = function() {
+            if (backplane) {
+                backplane.downloadTICloudAgentInstaller();
+            }
+        };
+        var onRestartBtnClicked = function(){
+            window.location.reload(true);
+        };
+
+        var myStatusChangedHdlr = function(e){
+            //var backplane = e.currentTarget;
+            if ((e.currentTarget.tagName == 'TI-SERVICE-SERIALIO') && (backplane.isDisconnectBtnVisible)) {
+                statusDiv.innerHTML = "<b>Target Status:</b> " + serialIO.status;
+            } else {
+                statusDiv.innerHTML = "<b>Target Status:</b> " + backplane.status;
+            }
+            //currentStateDiv.innerHTML = "Current State: "+backplane.currentState.name;
+
+        };
+        var myCurrentStateChangedHdlr = function(e){
+            //var backplane = e.currentTarget;
+            // currentStateDiv.innerHTML = backplane.currentState.name;
+            switch(backplane.currentState.name){
+                case 'downloadTICloudAgent':
+                    if (backplane.isNodeWebkitApp) {
+                        standaloneAppFailedToStartDiv.style.display = ''; // hidden = false
+                    } else {
+                        if ((!backplane.isAutoDownloadEnabled) && (!backplane.isProgramDownloadDisabled)) {
+                            downloadInstallerBtnDiv.style.display = '';  //hidden = false
+
+                        }
+                    }
+                    break;
+                default:
+                    standaloneAppFailedToStartDiv.style.display = 'none'; //hidden = true
+                    break;
+            }
+        };
+        var myConnectionStatusChangedHdlr = function(e){
+        };
+
+        var mySerialPortVisibilityChangedHdlr = function(e) {
+            if (serialIO) {
+                if (serialIO.isSerialPortUIVisible) {
+                    drawColorWheel();
+
+                    can.addEventListener("mousedown", mDown, false);
+                    can.addEventListener("mouseup", mUp, false);
+                    //portInfoDiv.style.display = '';
+                    serialPortIODiv.style.display = ''; // not hidden
+
+                    if (serialIO.hasOpenSerialPortBeenCalled) {
+                        openSerialPortBtnDiv.style.display = 'none';
+                        closeSerialPortBtnDiv.style.display = '';
+                    } else {
+                        openSerialPortBtnDiv.style.display = '';
+                        closeSerialPortBtnDiv.style.display = 'none';
+                    }
+
+                }
+
+                else {
+                    //  portInfoDiv.
+                    //     style.display = 'none';
+                    ctx.save();
+                    ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.restore();
+                    can.removeEventListener("mousemove", getPosition);
+                    can.removeEventListener("mousedown", mDown);
+                    can.removeEventListener("mouseup", mUp);
+                    serialPortIODiv.style.display = 'none'; // hidden
+                    openSerialPortBtnDiv.style.display = '';
+                    closeSerialPortBtnDiv.style.display = 'none';
+                }
+            }
+        };
+
+
+        var myReplugNoticeHdlr = function(e) {
+            /*
+             if (serialIO) {
+             if (serialIO.isReplugNoticeVisible) {
+             // the innerHTML will be generated by the ti-app-framework custom element.
+             replugNoticeDiv.innerHTML = "Please connect your "+ e.target.selectedDevice.boardName+" to a USB port of your computer and then click Connect.";
+             replugNoticeDiv.style.display = '';
+             } else {
+             replugNoticeDiv.style.display = 'none';
+             }
+             }
+             */
+        };
+        var mySerialPortListHdlr = function(e) {
+
+            //  portInfoDiv.style.display = '';//not hidden
+
+            serialPortList = document.getElementById("serialPortList");
+            while (serialPortList.firstChild) {
+                serialPortList.removeChild(serialPortList.firstChild);
+            }
+            var html = "";
+            var cloudAgent = e.currentTarget;
+            var selectedPort = 0;
+            for (var i = 0; i < cloudAgent.serialPorts.length; i++) {
+                var port = cloudAgent.serialPorts[i];
+                html += "<option value=\"" + port.comName + "\">" + port.comName + "</option>\n";
+                var opt = document.createElement('option');
+                opt.value = i;
+                opt.text = port.comName;
+                //opt.innerHTML = i;
+
+                serialPortList.appendChild(opt);
+                if (port.selected) {
+                    selectedPort = i;
+                    serialPortList.options[i].selected = true;
+                }
+            }
+            $("#formData").html(html);
+            serialPortList.value = selectedPort;
+            serialIO.selectedSerialPort = cloudAgent.serialPorts[selectedPort];
+
+
+            baudRateList = document.getElementById("baudRateList");
+            while (baudRateList.firstChild) {
+                baudRateList.removeChild(baudRateList.firstChild);
+            }
+
+            var selectedRate = -1;
+            var indexOf9600 = 0;
+            for (var i = 0; i < cloudAgent.baudRates.length; i++) {
+                var baudRate = cloudAgent.baudRates[i];
+
+                // override the default selected baud rate of 9600 to set the default as 115200
+                //baudRateList.options[baudRateList.options.length] = new Option(baudRate.rate, i);
+                var opt = document.createElement('option');
+                opt.value = i;
+                opt.text = baudRate.rate;
+                //opt.innerHTML = i;
+
+                baudRateList.appendChild(opt);
+                if (baudRate.rate === '115200') {//(baudRate.selected) {
+                    selectedRate = i;
+                    baudRateList.options[i].selected = true;
+                } else {
+                    baudRateList.options[i].selected = false;
+                }
+
+            }
+            if (selectedRate < 0) {
+                selectedRate = indexOf9600;
+            }
+            baudRateList.value = selectedRate;
+            serialIO.selectedBaudRate = cloudAgent.baudRates[selectedRate].rate;
+
+
+        };
+
+        var serialSend = function(value) {
+            if ((serialIO) && (serialIO.serialSend)) {
+                console.log('sending serial data ='+value);
+                serialIO.serialSend(value);
+            }
+        };
+
+        var sendColorAndBPM = function(){
+            var period = (1/($('#bpm').val()/60))*3000000/2;
+            if (handshakefirmware)
+                serialSend("START");
+            serialSend([$('#red_slider').val(),$('#green_slider').val(),$('#blue_slider').val(),period%256,(period/256)%256,(period/65536)%256,(period/16777216)%256]);
+        }
+
+        var mySerialPortOutputHdlr = {
+            text: function(message) {
+                if (handshakefirmware == 0 && message.indexOf("A") > -1) {
+                    handshakefirmware = 1;
+                    sendColorAndBPM();
+                    console.log("HELLO: " + message);
+                }
+                rxDataCount++;
+                if (rxDataCount === 0){
+                    console.log('serial data received from target!');
+                }
+            }
+
+        };
+        var myBtnVisibilityChangedHdlr = function(){
+            if (backplane) {
+
+                if (backplane.isConnectBtnVisible) {
+                    connectBtnDiv.style.display ='';
+                } else {
+                    connectBtnDiv.style.display ='none';
+                }
+
+                if (backplane.isDisconnectBtnVisible) {
+                    disconnectBtnDiv.style.display = '';
+                } else {
+                    disconnectBtnDiv.style.display ='none';
+                }
+
+                if (backplane.isCloudAgentDownloadBtnVisible) {
+                    if (backplane.isNodeWebkitApp) {
+                        standaloneAppFailedToStartDiv.style.display = ''; // hidden = false
+                        downloadInstallerBtnDiv.style.display = 'none';  //hidden = true
+                    } else {
+                        connectBtnDiv.style.display ='none';
+                        standaloneAppFailedToStartDiv.style.display = 'none'; //hidden = true
+                        downloadInstallerBtnDiv.style.display = '';
+                    }
+                } else {
+                    standaloneAppFailedToStartDiv.style.display = 'none'; //hidden = true
+                    downloadInstallerBtnDiv.style.display = 'none';  //hidden = true
+                }
+            }
+        };
+
+
+        addEventListener('polymer-ready', function() {
+            console.log("ABOUT TO START DEMO!");
+            var i;
+            //backplane = document.getElementById("10");
+            backplane = document.querySelector('ti-core-backplane');
+
+            backplane.addEventListener("statusMsgUpdated",myStatusChangedHdlr);
+            backplane.addEventListener("currentStateUpdated",myCurrentStateChangedHdlr);
+            backplane.addEventListener("connectionStatusChanged",myConnectionStatusChangedHdlr);
+            backplane.addEventListener("btnVisibilityChanged", myBtnVisibilityChangedHdlr);
+            //serialIO = document.querySelector('ti-service-serialio');
+            serialIO = document.getElementById("serialIO");
+            serialIO.backplane = backplane;
+            serialIO.selectedDevice = myDevices[selectedBoardIndex];
+            serialIO.serialPortTextOutputHdlr = mySerialPortOutputHdlr;
+            serialIO.addEventListener('serialPortListUpdated', mySerialPortListHdlr);
+            serialIO.addEventListener('replugNoticeVisibilityChanged', myReplugNoticeHdlr);
+            serialIO.addEventListener("serialPortUIVisibilityChanged", mySerialPortVisibilityChangedHdlr);
+            serialIO.addEventListener('statusMsgUpdated',myStatusChangedHdlr);
+            programLoader = document.querySelector('ti-service-programloader');
+            programLoader.backplane = backplane;
+            programLoader.selectedDevice = myDevices[selectedBoardIndex];
+        });
+        window.$ = window.jQuery;// = require('assets/jquery/dist/jquery-1.11.1.min.js');
+
+        var port;
+
+
+        //var updatingLED = false;
+
+
+
+        // RGB slider event listeners
+        $('#red_slider').on("change", function() {
+            //console.log($(this).val());
+            //$('#red_slider').css("background-color", "rgba(255,0,0,"+$(this).val()/255+")");
+            updateColor();
+            drawColorWheel();
+
+        });
+
+        $('#green_slider').on("change", function() {
+            //console.log($(this).val());
+            //$('#green_slider').css("background-color", "rgba(0,255,0,"+$(this).val()/255+")");
+            updateColor();
+            drawColorWheel();
+
+        });
+
+        $('#blue_slider').on("change", function() {
+            //console.log($(this).val());
+            //$('#blue_slider').css("background-color", "rgba(0,0,255,"+$(this).val()/255+")");
+            updateColor();
+            drawColorWheel();
+
+        });
+
+
+        //$("#bpmForm").submit(function(event) {
+        $('#bpm').change(function() {
+            console.log("HERE");
+            if ($('#bpm').val() > 4000)
+                $('#bpm').val(4000);
+            if ($('#bpm').val() < 10)
+                $('#bpm').val(10);
+
+            if (serialIO !== 'undefined') //&& updatingLED == false)
+            {
+                //updatingLED = true;
+                /*
+                 var period = (1 / ($('#bpm').val() / 60)) * 3000000 / 2;
+                 port.write([$('#red_slider').val(), $('#green_slider').val(), $('#blue_slider').val(), period % 256, (period / 256) % 256, (period / 65536) % 256, (period / 16777216) % 256]);
+                 */
+                sendColorAndBPM();
+            }
+
+            // event.preventDefault();
+        });
+
+        var can = $('#canvas')[0],
+                ctx = can.getContext('2d'),
+                p = {
+                    x: can.width / 2,
+                    y: can.height / 2
+                };
+
+        ctx.translate(p.x, p.y);
+
+        function drawColorWheel() {
+            // Draw Color Wheel
+
+            var radius = 260,
+                    thickness = 255,
+                    start = Math.PI,
+                    end = start + Math.PI * 2,
+                    step = Math.PI / 180,
+                    ang = 0,
+                    grad,
+                    r = 0,
+                    g = 0,
+                    b = 0,
+                    pct = 0;
+
+            ctx.clearRect(0 - p.x, 0 - p.y, can.width, can.height);
+
+            //Color wheel edge (black)
+            ctx.beginPath();
+            ctx.arc(0, 0, radius + 5, 0, 2 * Math.PI);
+            ctx.fillStyle = 'black';
+            ctx.fill();
+
+            //Color wheel gradient
+            for (ang = start; ang <= end; ang += step) {
+                ctx.save();
+                ctx.rotate(-ang);
+                grad = ctx.createLinearGradient(0, radius - thickness, 0, radius);
+                grad.addColorStop(1, 'black');
+
+                var hue = 360 - (ang - start) / (end - start) * 360;
+                var saturation = '100%';
+                var light = '50%';
+
+                grad.addColorStop(.5, 'hsl(' + [hue, saturation, light].join() + ')');
+                grad.addColorStop(0, 'white');
+                ctx.fillStyle = grad;
+
+                ctx.fillRect(0, radius - thickness, 5, thickness);
+                ctx.restore();
+            }
+
+            //Color wheel center (white)
+            ctx.beginPath();
+            ctx.arc(0, 0, radius - thickness, 0, 2 * Math.PI);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+        }
+
+        function drawCircle(x, y, rgba) {
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, 2 * Math.PI);
+            ctx.lineWidth = 4;
+            //var color = r;
+            //if (r <= 5)
+            //  color = 5;
+            //else if (r >= 260)
+            //  color = 260;
+            //color -= 5;
+            //color = Math.round(color);
+            //console.log(color);
+            ctx.strokeStyle = 'rgb(' + [255 - rgba[0], 255 - rgba[1], 255 - rgba[2]] + ')';
+            ctx.stroke();
+        }
+
+        function mDown(event) {
+            getPosition(event);
+            can.addEventListener("mousemove", getPosition, false);
+            event.preventDefault();
+        }
+
+        function mUp(event) {
+            can.removeEventListener("mousemove", getPosition, false);
+            event.preventDefault();
+        }
+
+        function getPosition(event) {
+            drawColorWheel();
+            var x = event.clientX;
+            var y = event.clientY;
+
+            var box = document.getElementById("canvas").getBoundingClientRect();
+
+            x -= box.left;
+            y -= box.top;
+
+            //console.log(x+", " + y);
+            var clickRadius = (Math.sqrt(Math.pow(300 - x, 2) + Math.pow(300 - y, 2)));
+
+            if (!(clickRadius > 265)) {
+                var rgba = ctx.getImageData(x, y, 1, 1).data;
+                drawCircle(x - p.x, y - p.y, rgba);
+                $('#red_slider').val(rgba[0]);
+                $('#green_slider').val(rgba[1]);
+                $('#blue_slider').val(rgba[2]);
+
+                updateColor();
+            }
+
+            event.preventDefault();
+        }
+
+        function updateColor() {
+            $('#red_slider').css("background-color", "rgba(255,0,0," + $('#red_slider').val() / 255 + ")");
+            $('#green_slider').css("background-color", "rgba(0,255,0," + $('#green_slider').val() / 255 + ")");
+            $('#blue_slider').css("background-color", "rgba(0,0,255," + $('#blue_slider').val() / 255 + ")");
+
+            $('#Rlabel').html($('#red_slider').val());
+            $('#Glabel').html($('#green_slider').val());
+            $('#Blabel').html($('#blue_slider').val());
+
+            $('#chipIcon').css("background-color", "rgba(" + $('#red_slider').val() + "," + $('#green_slider').val() + "," + $('#blue_slider').val() + ",0.5)");
+            if (serialIO) //&& updatingLED == false)
+            {
+                //updatingLED = true;
+                var period = (1 / ($('#bpm').val() / 60)) * 3000000 / 2;
+                sendColorAndBPM();
+                //port.write([$('#red_slider').val(), $('#green_slider').val(), $('#blue_slider').val(), period % 256, (period / 256) % 256, (period / 65536) % 256, (period / 16777216) % 256]);
+            }
+        }
+
+        var getHelp = function(){
+            window.open("http://processors.wiki.ti.com/index.php/TI_Cloud_Agent_Troubleshooting_Guide");
+        }
+        var getE2EForum = function(){
+            window.open("http://e2e.ti.com/support/development_tools/code_composer_studio/");
+        }
+        var showTroubleshootingGuide = function(){
+            var dialog = document.getElementById("troubleshootingDialog");
+            dialog.toggle();
+        }
+
+
+    </script>
+    <script src="assets/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
+

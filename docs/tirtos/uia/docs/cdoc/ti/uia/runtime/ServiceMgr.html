@@ -1,0 +1,1885 @@
+<html>
+<head>
+<title>module ti.uia.runtime.ServiceMgr</title>
+<meta name="description" content="Module that manages UIA Services">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.runtime.</span><span class="xdoc-id">ServiceMgr</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LoggerTypes.html" title="module LoggerTypes"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/package.html" title="package ti.uia.runtime"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/UIAPacket.html" title="module UIAPacket"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html">index URL</a></div>
+<p class="xdocHdrSummary">Module that manages UIA Services</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+The ServiceMgr module manages all the UIA Services. The ServiceMgr module
+  itself can be plugged with different low level transport functions to
+  support different methods for getting information between the target
+  and instrumentation host. Some of these methods (e.g. File) only support
+  sending information from the target to the host. They do not support
+  sending information from the host to the target.
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/ServiceMgr-src.html"><span class="xdocLabelFile">ti/uia/runtime/ServiceMgr.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/runtime/ServiceMgr.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Functions</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#free.Packet"><span class="xdoc-id">ServiceMgr_freePacket</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Function to return an unused packet back to the ServiceMgr module</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/UIAPacket.html#.Hdr" title="ti.uia.runtime.UIAPacket.Hdr">UIAPacket_Hdr</a>&nbsp;*<span class="xdoc-id">packet</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/UIAPacket.html#.Hdr" title="ti.uia.runtime.UIAPacket.Hdr">UIAPacket_Hdr</a>&nbsp;*</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get.Free.Packet"><span class="xdoc-id">ServiceMgr_getFreePacket</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Function to obtain a free UIA packet</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/UIAPacket.html#.Hdr.Type" title="ti.uia.runtime.UIAPacket.HdrType">UIAPacket_HdrType</a>&nbsp;<span class="xdoc-id">type</span>, <span class="xdoc-kw2">UInt</span>&nbsp;<span class="xdoc-id">timeout</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get.Num.Services"><span class="xdoc-id">ServiceMgr_getNumServices</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the number of services present in the system</span></span></a>();</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#request.Energy"><span class="xdoc-id">ServiceMgr_requestEnergy</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Function to request energy for a service</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Service.Id" title="ti.uia.runtime.ServiceMgr.ServiceId">ServiceMgr_ServiceId</a>&nbsp;<span class="xdoc-id">id</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#send.Packet"><span class="xdoc-id">ServiceMgr_sendPacket</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Send a UIAPacket to the instrumentation host</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/UIAPacket.html#.Hdr" title="ti.uia.runtime.UIAPacket.Hdr">UIAPacket_Hdr</a>&nbsp;*<span class="xdoc-id">packet</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#set.Period"><span class="xdoc-id">ServiceMgr_setPeriod</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Allows services to set their event collection period</span></span></a>(<a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Service.Id" title="ti.uia.runtime.ServiceMgr.ServiceId">ServiceMgr_ServiceId</a>&nbsp;<span class="xdoc-id">id</span>, <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">periodInMs</span>);</div></td></tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">ServiceMgr_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">ServiceMgr_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">ServiceMgr_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">ServiceMgr_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">ServiceMgr_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">ServiceMgr_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Defines</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw3">#define</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.W.A.I.T_.F.O.R.E.V.E.R"><span class="xdoc-id">ServiceMgr_WAIT_FOREVER</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Wait forever constant that can be used in ServiceMgr_getFreePacket</span></span></a>  (<i><span class="xdoc-kw2">UInt</span></i>)~(0)</div></td></tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Typedefs</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl">(*<a class="xdocSynGo" href="#.Process.Callback"><span class="xdoc-id">ServiceMgr_ProcessCallback</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Function prototype for the processMsg callback</span></span></a>)(<a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Reason" title="ti.uia.runtime.ServiceMgr.Reason">ServiceMgr_Reason</a>,<a class="xdoc-link" href="../../../ti/uia/runtime/UIAPacket.html#.Hdr" title="ti.uia.runtime.UIAPacket.Hdr">UIAPacket_Hdr</a>*);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Reason"><span class="xdoc-id">ServiceMgr_Reason</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Used in the ProcessCallback to denote the reason</span></span></a> ...</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <i>opaque</i> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Service.Id"><span class="xdoc-id">ServiceMgr_ServiceId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Used by services to generate a serviceId</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Topology"><span class="xdoc-id">ServiceMgr_Topology</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Used to define UIA topology</span></span></a> ...</div></td></tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Constants</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Assert.html#.Id" title="xdc.runtime.Assert.Id">Assert_Id</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.A_invalid.Process.Callback.Fxn"><span class="xdoc-id">ServiceMgr_A_invalidProcessCallbackFxn</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Assert raised invalid processCallbackFxn is supplied</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Assert.html#.Id" title="xdc.runtime.Assert.Id">Assert_Id</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.A_invalid.Service.Id"><span class="xdoc-id">ServiceMgr_A_invalidServiceId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Assert raised when calling API with invalid ServiceId</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">UInt16</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#master.Proc.Id"><span class="xdoc-id">ServiceMgr_masterProcId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Processor that communicates to the instrumentation host</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">SizeT</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#max.Ctrl.Packet.Size"><span class="xdoc-id">ServiceMgr_maxCtrlPacketSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Size of control message packets in bytes</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">SizeT</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#max.Event.Packet.Size"><span class="xdoc-id">ServiceMgr_maxEventPacketSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Size of Event packets in bytes</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#num.Event.Packet.Bufs"><span class="xdoc-id">ServiceMgr_numEventPacketBufs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of UIAPacket events on the processor</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#num.Incoming.Ctrl.Packet.Bufs"><span class="xdoc-id">ServiceMgr_numIncomingCtrlPacketBufs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of incoming Ctrl buffers on the master processor</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#num.Outgoing.Ctrl.Packet.Bufs"><span class="xdoc-id">ServiceMgr_numOutgoingCtrlPacketBufs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of outgoing Ctrl buffers on the processor</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#period.In.Ms"><span class="xdoc-id">ServiceMgr_periodInMs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Period in miliseconds of ServiceMgr's transfer agent</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#rx.Task.Priority"><span class="xdoc-id">ServiceMgr_rxTaskPriority</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Priority of the Transfer Agent Task</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">SizeT</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#rx.Task.Stack.Size"><span class="xdoc-id">ServiceMgr_rxTaskStackSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Transfer Agent Task stack size in MAUs</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#support.Control"><span class="xdoc-id">ServiceMgr_supportControl</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Configure whether control messages are supported</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Topology" title="ti.uia.runtime.ServiceMgr.Topology">ServiceMgr_Topology</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#topology"><span class="xdoc-id">ServiceMgr_topology</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Used to define UIA topology</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#transfer.Agent.Priority"><span class="xdoc-id">ServiceMgr_transferAgentPriority</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Priority of the Transfer Agent Task</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">SizeT</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#transfer.Agent.Stack.Size"><span class="xdoc-id">ServiceMgr_transferAgentStackSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Transfer Agent Task stack size in MAUs</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../ti/uia/runtime/Transport.html#.Fxn.Set" title="ti.uia.runtime.Transport.FxnSet">Transport_FxnSet</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#transport.Fxns"><span class="xdoc-id">ServiceMgr_transportFxns</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Transport functions used to communicate to the instrumentation host</span></span></a>;</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The ServiceMgr module manages all the UIA Services. The ServiceMgr module
+  itself can be plugged with different low level transport functions to
+  support different methods for getting information between the target
+  and instrumentation host. Some of these methods (e.g. File) only support
+  sending information from the target to the host. They do not support
+  sending information from the host to the target.</div>
+<div class="xdocText">The ServiceMgr module also supports two different topologies.</div>
+<div class="xdocText"><UL><LI> Topology_SINGLECORE: Each core on the device communicates
+        directly the instrumentation host.
+</LI><LI> Topology_MULTICORE: Only one core (i.e. master)
+        communicates with the instrumentation host. Communication
+        with other cores are routed to the via the master core.
+        The master core is determined by the <a class="xdoc-link" href="ServiceMgr.html#master.Proc.Id" title="masterProcId">masterProcId</a>
+        parameter. The routing is done via Ipc's MessageQ module.
+        Note: ServiceMgr is a user of Ipc and depends on the
+        application to configure and initialize Ipc.
+</LI></UL></div>
+<div class="xdocText">There are two different uses of the ServiceMgr module:</div>
+<div class="xdocText"><UL><LI> Applications (configuration only)
+</LI><LI> Services
+</LI></UL></div>
+<div class="xdocText"><B>Applications</B></div>
+<div class="xdocText">The ServiceMgr module contains the generic configuration.
+  Many of these configuration values change
+  depending on the device. The ServiceMgr module uses the
+  ti.uia.family.Settings module to fill in values if they are not set by
+  the application.</div>
+<div class="xdocText">The ServiceMgr does expose many configuration parameters to allow users
+  to modify the default behavior.</div>
+<div class="xdocText"><UL><LI> Topology: UIA is shipped with support for two different topologies:
+</LI></UL></div>
+<div class="xdocText"><UL><LI> Topology_SINGLECORE: Each core on the device communicates
+               directly the instrumentation host.
+</LI><LI> Topology_MULTICORE: Only one core (i.e. master)
+               communicates with the instrumentation host. Communication
+               with other cores are routed to the via the master core.
+               The master core is determined by the <a class="xdoc-link" href="ServiceMgr.html#master.Proc.Id" title="masterProcId">masterProcId</a>
+               parameter. The routing is done via Ipc's MessageQ module.
+               Note: ServiceMgr is a user of Ipc and depends on the
+               application to configure and initialize Ipc.
+</LI></UL></div>
+<div class="xdocText">- Transport: The ServiceMgr has  pluggable transport functions. The
+               determination of the transport is accomplished via the
+               <a class="xdoc-link" href="ServiceMgr.html#transport.Type" title="transportType">transportType</a> parameter. The parameter is defaulted
+               based on the device is not explicitly set.</div>
+<div class="xdocText">- Packets: UIA makes a distinction between event and messages packets.
+                 Events packets are generally bigger to hold many event
+                 records. The size and number of these packets are defaulted
+                 by UIA based on the transport and device. However the number
+                 of event packets might need to be increased on a multicore
+                 device with heavy event record load.
+                 <a class="xdoc-link" href="ServiceMgr.html#num.Event.Packet.Bufs" title="numEventPacketBufs">numEventPacketBufs</a> can be increased in this case.</div>
+<div class="xdocText">- Tasks: The ServiceMgr module might have up to two tasks:
+               transfer agent task and receive task. The receive task only
+               recieves control messages from the instrumentation host and
+               forwards it on the the transfer agent task.
+               The transfer agent task is responsible for everything else
+               (e.g. period management, event collection, communicating with
+               remote cores in a multicore configuration, sending UIA Packets
+               to the instrumentation host, etc.).</div>
+<div class="xdocText">The application can specify the stack sizes and placement of
+               these task via the ServiceMgr.</div>
+<div class="xdocText">If there is only one task needed, the parameters for the
+               receive task is ignored.</div>
+<div class="xdocText"><B>Services</B></div>
+<div class="xdocText">All services must register with the ServiceMgr module via the
+  <a class="xdoc-link" href="ServiceMgr.html#register" title="register">register</a> function. Each service
+  must have a unique service id (the first 3 are reserved). The service id
+  is obtained via the encoded type ServiceIdDesc.</div>
+<div class="xdocText">From the service's standpoint, the ServiceMgr module manages all the
+  buffers for sending and receive messages and events. The services need
+  to obtain packets from the ServiceMgr via the <a class="xdoc-link" href="ServiceMgr.html#get.Free.Packet" title="getFreePacket">getFreePacket</a>
+  function. To send a packet, the service must call the
+  <a class="xdoc-link" href="ServiceMgr.html#send.Packet" title="sendPacket">sendPacket</a> function.</div>
+<div class="xdocText">All data send and received by a service must be contained in a
+  <a class="xdoc-link" href="UIAPacket.html" title="UIAPacket">UIAPacket</a> header. Refer to this module for more details.</div>
+<div class="xdocText">From the service's standpoint, the ServiceMgr module also manages the
+  the period of service. Each service can request the interval at which
+  the ServiceMgr calls the service's <a class="xdoc-link" href="ServiceMgr.html#.Process.Callback" title="ProcessCallback">ProcessCallback</a> to send out
+  events. This interval can be set by the service via the <a class="xdoc-link" href="ServiceMgr.html#register" title="register">register</a>
+  function. If during runtime the service wants to change it period, it
+  can call <a class="xdoc-link" href="ServiceMgr.html#set.Period" title="setPeriod">setPeriod</a>.</div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".W.A.I.T_.F.O.R.E.V.E.R"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">const</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">WAIT_FOREVER</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#.W.A.I.T_.F.O.R.E.V.E.R">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Wait forever constant that can be used in ServiceMgr_getFreePacket</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw3">#define</span> <span class="xdoc-id">ServiceMgr_WAIT_FOREVER</span>  (<i><span class="xdoc-kw2">UInt</span></i>)~(0)
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Reason"></a>
+<a class="xdocAnchor" id=".Reason_.P.E.R.I.O.D.E.X.P.I.R.E.D"></a>
+<a class="xdocAnchor" id=".Reason_.R.E.Q.U.E.S.T.E.N.E.R.G.Y"></a>
+<a class="xdocAnchor" id=".Reason_.I.N.C.O.M.I.N.G.M.S.G"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">Reason</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#.Reason">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Used in the ProcessCallback to denote the reason</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> <span class="xdoc-id">ServiceMgr_Reason</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ServiceMgr_Reason_PERIODEXPIRED</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ServiceMgr_Reason_REQUESTENERGY</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ServiceMgr_Reason_INCOMINGMSG</span>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">ServiceMgr_Reason</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">ServiceMgr_Reason_PERIODEXPIRED: the <a class="xdoc-link" href="ServiceMgr.html#.Process.Callback" title="ProcessCallback">ProcessCallback</a> is being
+  called because it is time to collect events and send them.</div>
+<div class="xdocText">ServiceMgr_Reason_REQUESTENERGY: the <a class="xdoc-link" href="ServiceMgr.html#.Process.Callback" title="ProcessCallback">ProcessCallback</a> is being
+  called because the service requested energy to perform some action.</div>
+<div class="xdocText">ServiceMgr_Reason_INCOMINGMSG: the <a class="xdoc-link" href="ServiceMgr.html#.Process.Callback" title="ProcessCallback">ProcessCallback</a> is being
+  called because there is an incoming message for the service.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Topology"></a>
+<a class="xdocAnchor" id=".Topology_.S.I.N.G.L.E.C.O.R.E"></a>
+<a class="xdocAnchor" id=".Topology_.M.U.L.T.I.C.O.R.E"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">Topology</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#.Topology">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Used to define UIA topology</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> <span class="xdoc-id">ServiceMgr_Topology</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ServiceMgr_Topology_SINGLECORE</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">ServiceMgr_Topology_MULTICORE</span>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">ServiceMgr_Topology</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If UIA is configured for multicore, all events and messages are routed
+  via the master core to the non-master cores. Choosing multicore requires
+  setting the <a class="xdoc-link" href="ServiceMgr.html#master" title="master">master</a> config.</div>
+<div class="xdocText">If UIA is configured for Topology_SINGLECORE, each core on the device
+  communicates with the instrumentation host directly.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Process.Callback"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">typedef</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">ProcessCallback</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#.Process.Callback">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Function prototype for the processMsg callback</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw2">Void</span>&nbsp;(*<span class="xdoc-id">ServiceMgr_ProcessCallback</span>)(<a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Reason" title="ti.uia.runtime.ServiceMgr.Reason">ServiceMgr_Reason</a>,<a class="xdoc-link" href="../../../ti/uia/runtime/UIAPacket.html#.Hdr" title="ti.uia.runtime.UIAPacket.Hdr">UIAPacket_Hdr</a>*);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">A ProcessCallback function must be supplied by every service.
+  The function is provided in the <a class="xdoc-link" href="ServiceMgr.html#register" title="register">register</a> function.</div>
+<div class="xdocText">For a description of the ServiceMgr_Reason parameter, please refer
+  to <a class="xdoc-link" href="ServiceMgr.html#.Reason" title="Reason">Reason</a>.</div>
+<div class="xdocText">The UIPacket_Hdr field is only used in the <a class="xdoc-link" href="ServiceMgr.html#.Reason_.I.N.C.O.M.I.N.G.M.S.G" title="Reason_INCOMINGMSG">Reason_INCOMINGMSG</a>
+  case. For any other reason, this value is NULL.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Service.Id"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">typedef</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">ServiceId</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#.Service.Id">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Used by services to generate a serviceId</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <i>opaque</i> <span class="xdoc-id">ServiceMgr_ServiceId</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Services needs to define a ServiceId in their xdc file.
+  Then the ServiceMgr module will assign a unique value to it during
+  build time.</div>
+<div class="xdocText">For example in ti.uia.service.Rta.xdc there is the following line:</div>
+<div class="xdocText"><PRE class="Example">  readonly config ServiceMgr.ServiceId SERVICEID;
+</PRE></div>
+<div class="xdocText">Control command type</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".A_invalid.Process.Callback.Fxn"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">A_invalidProcessCallbackFxn</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#.A_invalid.Process.Callback.Fxn">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Assert raised invalid processCallbackFxn is supplied</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Assert.html#.Id" title="xdc.runtime.Assert.Id">Assert_Id</a>&nbsp;<span class="xdoc-id">ServiceMgr_A_invalidProcessCallbackFxn</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".A_invalid.Service.Id"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">A_invalidServiceId</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#.A_invalid.Service.Id">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Assert raised when calling API with invalid ServiceId</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Assert.html#.Id" title="xdc.runtime.Assert.Id">Assert_Id</a>&nbsp;<span class="xdoc-id">ServiceMgr_A_invalidServiceId</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="master.Proc.Id"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">masterProcId</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#master.Proc.Id">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Processor that communicates to the instrumentation host</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">ServiceMgr_masterProcId</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This value denotes which core in a multiple core topology is
+  the master core. All routing of UIA data to the instrumentation
+  host is done via this core.</div>
+<div class="xdocText">The procId corresponds to Ipc's MultiProc value.</div>
+<div class="xdocText">For single processor systems, or where there is no routing of
+  data via an intermediate core, this value is ignored.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="max.Ctrl.Packet.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">maxCtrlPacketSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#max.Ctrl.Packet.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Size of control message packets in bytes</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">ServiceMgr_maxCtrlPacketSize</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This size includes the UIAPacket header. This value's default
+  depends on the device.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="max.Event.Packet.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">maxEventPacketSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#max.Event.Packet.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Size of Event packets in bytes</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">ServiceMgr_maxEventPacketSize</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This size includes the UIAPacket header. This value's default
+  depends on the device.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="num.Event.Packet.Bufs"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">numEventPacketBufs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#num.Event.Packet.Bufs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of UIAPacket events on the processor</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">ServiceMgr_numEventPacketBufs</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="num.Incoming.Ctrl.Packet.Bufs"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">numIncomingCtrlPacketBufs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#num.Incoming.Ctrl.Packet.Bufs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of incoming Ctrl buffers on the master processor</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">ServiceMgr_numIncomingCtrlPacketBufs</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="num.Outgoing.Ctrl.Packet.Bufs"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">numOutgoingCtrlPacketBufs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#num.Outgoing.Ctrl.Packet.Bufs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of outgoing Ctrl buffers on the processor</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">ServiceMgr_numOutgoingCtrlPacketBufs</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="period.In.Ms"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">periodInMs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#period.In.Ms">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Period in miliseconds of ServiceMgr's transfer agent</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">ServiceMgr_periodInMs</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The transfer agent runs at the configured period. It checks to see
+  if a service's period has expired. If it has expired, the service's
+  <a class="xdoc-link" href="ServiceMgr.html#.Process.Callback" title="ProcessCallback">ProcessCallback</a> is called with the
+  <a class="xdoc-link" href="ServiceMgr.html#.Reason_.P.E.R.I.O.D.E.X.P.I.R.E.D" title="Reason_PERIODEXPIRED">Reason_PERIODEXPIRED</a> reason.</div>
+<div class="xdocText">A service should not set it's period to a value less than the ServiceMgr
+  module'speriod. A service's period should be a multiple of the
+  ServiceMgr module's period. If it is not, it will called at the rounded
+  up period. For example, if ServiceMgr.periodInMs = 100 and a service
+  sets its period to 250. That service will be called every 300
+  milliseconds.</div>
+<div class="xdocText">This value does not guarantee that the transfer agent will run at this
+  rate. Even if the period has expired, the transfer agent will not run
+  until the current running Task has yielded and there are no other higher
+  priority Tasks ready.</div>
+<div class="xdocText">Default is 100ms.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="rx.Task.Priority"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">rxTaskPriority</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#rx.Task.Priority">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Priority of the Transfer Agent Task</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">ServiceMgr_rxTaskPriority</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Default is 1, the lowest priority.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="rx.Task.Stack.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">rxTaskStackSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#rx.Task.Stack.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Transfer Agent Task stack size in MAUs</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">ServiceMgr_rxTaskStackSize</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The recommended size is 2048 bytes.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="support.Control"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">supportControl</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#support.Control">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Configure whether control messages are supported</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">ServiceMgr_supportControl</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Default is determined based on the device and transport type.</div>
+<div class="xdocText">The application should only set this if <a class="xdoc-link" href="ServiceMgr.html#transport.Type" title="transportType">transportType</a>
+  is TransportType_USER and it is plugging in a new set
+  of transport functions. The transport function package should
+  specify how to set this parameter.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="topology"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">topology</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#topology">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Used to define UIA topology</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Topology" title="ti.uia.runtime.ServiceMgr.Topology">ServiceMgr_Topology</a>&nbsp;<span class="xdoc-id">ServiceMgr_topology</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If <tt>Topology_MULTICORE</tt> is chosen, the ServiceMgr will use Ipc to
+  discover the core configuration and to communicate between the cores.
+  UIA will route the outbound packets from each core through the master
+  core. UIA will also route messages received by the master core to
+  their intended recipient.</div>
+<div class="xdocText">If UIA is configured for Topology_SINGLECORE, each core on the device
+  communicates with the instrumentation host directly.</div>
+<div class="xdocText">The default is Topology_SINGLECORE.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="transfer.Agent.Priority"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">transferAgentPriority</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#transfer.Agent.Priority">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Priority of the Transfer Agent Task</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">ServiceMgr_transferAgentPriority</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Default is 1, the lowest priority.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="transfer.Agent.Stack.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">transferAgentStackSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#transfer.Agent.Stack.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Transfer Agent Task stack size in MAUs</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">ServiceMgr_transferAgentStackSize</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The recommended size is 2048 bytes.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="transport.Fxns"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">transportFxns</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#transport.Fxns">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Transport functions used to communicate to the instrumentation host</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../ti/uia/runtime/Transport.html#.Fxn.Set" title="ti.uia.runtime.Transport.FxnSet">Transport_FxnSet</a>&nbsp;<span class="xdoc-id">ServiceMgr_transportFxns</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">These functions are setup by default based on the device.
+  The user can explicitly set this parameter if the default is not
+  appropriate.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="free.Packet"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">freePacket</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#free.Packet">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Function to return an unused packet back to the ServiceMgr module</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">ServiceMgr_freePacket</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/UIAPacket.html#.Hdr" title="ti.uia.runtime.UIAPacket.Hdr">UIAPacket_Hdr</a>&nbsp;*<span class="xdoc-id">packet</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">packet</span>
+<span class="xdocChildSum">&#151;&nbsp;Pointer to a UIAPacket</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This function can be used to return an unused packet back to the
+  ServiceMgr module. It must only return packets that were obtained via
+  the <a class="xdoc-link" href="ServiceMgr.html#get.Free.Packet" title="getFreePacket">getFreePacket</a> function.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get.Free.Packet"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">getFreePacket</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#get.Free.Packet">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Function to obtain a free UIA packet</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../ti/uia/runtime/UIAPacket.html#.Hdr" title="ti.uia.runtime.UIAPacket.Hdr">UIAPacket_Hdr</a>&nbsp;*<span class="xdoc-id">ServiceMgr_getFreePacket</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/UIAPacket.html#.Hdr.Type" title="ti.uia.runtime.UIAPacket.HdrType">UIAPacket_HdrType</a>&nbsp;<span class="xdoc-id">type</span>, <span class="xdoc-kw2">UInt</span>&nbsp;<span class="xdoc-id">timeout</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">type</span>
+<span class="xdocChildSum">&#151;&nbsp;Requested type of packet</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">timeout</span>
+<span class="xdocChildSum">&#151;&nbsp;Return after this many system time units</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">Pointer to a packet if successful. NULL if timeout.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The service can specify what type of packet it wants with the
+  first parameter. Currently only UIAPacket_HdrType_Msg and
+  UIAPacket_HdrType_EventPkt are supported.</div>
+<div class="xdocText">The function fills in the HdrType field of the packet automatically
+  for the service. All other fields are un-initialized.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get.Num.Services"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">getNumServices</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#get.Num.Services">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Returns the number of services present in the system</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">ServiceMgr_getNumServices</span>();
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">Number of services</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="request.Energy"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">requestEnergy</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#request.Energy">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Function to request energy for a service</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">ServiceMgr_requestEnergy</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Service.Id" title="ti.uia.runtime.ServiceMgr.ServiceId">ServiceMgr_ServiceId</a>&nbsp;<span class="xdoc-id">id</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">id</span>
+<span class="xdocChildSum">&#151;&nbsp;Service id of the service</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Generally services do not maintain an active thread.
+  They may request the ServiceMgr module to call the
+  <a class="xdoc-link" href="ServiceMgr.html#.Process.Callback" title="ProcessCallback">ProcessCallback</a> in the context of the transfer agent.
+  This can be accomplished via this function.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="send.Packet"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">sendPacket</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#send.Packet">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Send a UIAPacket to the instrumentation host</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">ServiceMgr_sendPacket</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/UIAPacket.html#.Hdr" title="ti.uia.runtime.UIAPacket.Hdr">UIAPacket_Hdr</a>&nbsp;*<span class="xdoc-id">packet</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">packet</span>
+<span class="xdocChildSum">&#151;&nbsp;UIAPacket to be sent</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">TRUE denotes success and the packet is
+                  no longer owned by the caller. FALSE denotes
+                  failure and the packet is still owned by the caller.</div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All UIAPacket fields except for SenderAdrs must be filled in.</div>
+<div class="xdocText">The caller loses ownership of the packet once it is successfully sent.
+  If this function fails, the caller still owns the packet. It can re-use
+  it or free it via the <a class="xdoc-link" href="ServiceMgr.html#free.Packet" title="freePacket">freePacket</a> function.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="set.Period"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">ServiceMgr_</span><span class="xdoc-id">setPeriod</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#set.Period">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Allows services to set their event collection period</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">ServiceMgr_setPeriod</span>(<a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Service.Id" title="ti.uia.runtime.ServiceMgr.ServiceId">ServiceMgr_ServiceId</a>&nbsp;<span class="xdoc-id">id</span>, <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">periodInMs</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">id</span>
+<span class="xdocChildSum">&#151;&nbsp;Service id of the service</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">periodInMs</span>
+<span class="xdocChildSum">&#151;&nbsp;Requested period in milliseconds</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">ServiceMgr's period should be a multiple of the ServiceMgr's period
+  (<a class="xdoc-link" href="ServiceMgr.html#period.In.Ms" title="periodInMs">periodInMs</a>). If it is not, they will called at the rounded
+  up period. For example, if ServiceMgr.periodInMs = 100 and a service sets
+  its period to 250. That service will be called every 300 milliseconds.</div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">ServiceMgr_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">ServiceMgr_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">ServiceMgr_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">ServiceMgr_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">ServiceMgr_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">ServiceMgr_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/ServiceMgr-src.html"><span class="xdocLabelFile">ti/uia/runtime/ServiceMgr.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> ServiceMgr = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.runtime.ServiceMgr'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide constants & types</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.W.A.I.T_.F.O.R.E.V.E.R">ServiceMgr.<span class="xdoc-id">WAIT_FOREVER</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Wait forever constant that can be used in ServiceMgr_getFreePacket</span></span></a> = ~(0);
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><i>values of type <a class="xdocSynGo" href="#meta.Reason">ServiceMgr.<span class="xdoc-id">Reason</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Used in the ProcessCallback to denote the reason</span></span></a></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Reason" title="ti.uia.runtime.ServiceMgr.Reason">ServiceMgr.<span class="xdoc-id">Reason_PERIODEXPIRED</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Reason" title="ti.uia.runtime.ServiceMgr.Reason">ServiceMgr.<span class="xdoc-id">Reason_REQUESTENERGY</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Reason" title="ti.uia.runtime.ServiceMgr.Reason">ServiceMgr.<span class="xdoc-id">Reason_INCOMINGMSG</span></a>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><i>values of type <a class="xdocSynGo" href="#meta.Topology">ServiceMgr.<span class="xdoc-id">Topology</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Used to define UIA topology</span></span></a></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Topology" title="ti.uia.runtime.ServiceMgr.Topology">ServiceMgr.<span class="xdoc-id">Topology_SINGLECORE</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Topology" title="ti.uia.runtime.ServiceMgr.Topology">ServiceMgr.<span class="xdoc-id">Topology_MULTICORE</span></a>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><i>values of type <a class="xdocSynGo" href="#.Transport.Type">ServiceMgr.<span class="xdoc-id">TransportType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Used to specify the type of transport for UIA to use</span></span></a></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Transport.Type" title="ti.uia.runtime.ServiceMgr.TransportType">ServiceMgr.<span class="xdoc-id">TransportType_ETHERNET</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Transport.Type" title="ti.uia.runtime.ServiceMgr.TransportType">ServiceMgr.<span class="xdoc-id">TransportType_FILE</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Transport.Type" title="ti.uia.runtime.ServiceMgr.TransportType">ServiceMgr.<span class="xdoc-id">TransportType_USER</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#.Transport.Type" title="ti.uia.runtime.ServiceMgr.TransportType">ServiceMgr.<span class="xdoc-id">TransportType_NULL</span></a>;
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#meta.A_invalid.Process.Callback.Fxn">ServiceMgr.<span class="xdoc-id">A_invalidProcessCallbackFxn</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Assert raised invalid processCallbackFxn is supplied</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Assert.html#.Desc" title="xdc.runtime.Assert.Desc">Assert.Desc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "A_invalidProcessCallbackFxn: Callback cannot be NULL"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#meta.A_invalid.Service.Id">ServiceMgr.<span class="xdoc-id">A_invalidServiceId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Assert raised when calling API with invalid ServiceId</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Assert.html#.Desc" title="xdc.runtime.Assert.Desc">Assert.Desc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "A_invalidServiceId: ServiceId out of range"
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metamaster.Proc.Id">ServiceMgr.<span class="xdoc-id">masterProcId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Processor that communicates to the instrumentation host</span></span></a> = <i><span class="xdoc-kw2">UInt16</span></i> 0;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metamax.Ctrl.Packet.Size">ServiceMgr.<span class="xdoc-id">maxCtrlPacketSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Size of control message packets in bytes</span></span></a> = <i><span class="xdoc-kw2">SizeT</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metamax.Event.Packet.Size">ServiceMgr.<span class="xdoc-id">maxEventPacketSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Size of Event packets in bytes</span></span></a> = <i><span class="xdoc-kw2">SizeT</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metanum.Event.Packet.Bufs">ServiceMgr.<span class="xdoc-id">numEventPacketBufs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of UIAPacket events on the processor</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> 2;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metanum.Incoming.Ctrl.Packet.Bufs">ServiceMgr.<span class="xdoc-id">numIncomingCtrlPacketBufs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of incoming Ctrl buffers on the master processor</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> 2;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metanum.Outgoing.Ctrl.Packet.Bufs">ServiceMgr.<span class="xdoc-id">numOutgoingCtrlPacketBufs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Number of outgoing Ctrl buffers on the processor</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> 2;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metaperiod.In.Ms">ServiceMgr.<span class="xdoc-id">periodInMs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Period in miliseconds of ServiceMgr's transfer agent</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> 100;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metarx.Task.Priority">ServiceMgr.<span class="xdoc-id">rxTaskPriority</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Priority of the Transfer Agent Task</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> 1;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metarx.Task.Stack.Size">ServiceMgr.<span class="xdoc-id">rxTaskStackSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Transfer Agent Task stack size in MAUs</span></span></a> = <i><span class="xdoc-kw2">SizeT</span></i> 2048;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metasupport.Control">ServiceMgr.<span class="xdoc-id">supportControl</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Configure whether control messages are supported</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metatopology">ServiceMgr.<span class="xdoc-id">topology</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Used to define UIA topology</span></span></a> = <i><a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Topology" title="ti.uia.runtime.ServiceMgr.Topology">ServiceMgr.Topology</a></i> <a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Topology_.S.I.N.G.L.E.C.O.R.E" title="ti.uia.runtime.ServiceMgr.Topology_SINGLECORE">ServiceMgr.Topology_SINGLECORE</a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metatransfer.Agent.Priority">ServiceMgr.<span class="xdoc-id">transferAgentPriority</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Priority of the Transfer Agent Task</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> 1;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metatransfer.Agent.Stack.Size">ServiceMgr.<span class="xdoc-id">transferAgentStackSize</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Transfer Agent Task stack size in MAUs</span></span></a> = <i><span class="xdoc-kw2">SizeT</span></i> 2048;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metatransport.Fxns">ServiceMgr.<span class="xdoc-id">transportFxns</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Transport functions used to communicate to the instrumentation host</span></span></a> = <i><a class="xdoc-link" href="../../../ti/uia/runtime/Transport.html#.Fxn.Set" title="ti.uia.runtime.Transport.FxnSet">Transport.FxnSet</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">ServiceMgr.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#custom.Transport.Type">ServiceMgr.<span class="xdoc-id">customTransportType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Custom transport used to send the records to an instrumentation host</span></span></a> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#rx.Task.Stack.Section">ServiceMgr.<span class="xdoc-id">rxTaskStackSection</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Memory section for Receiving Task's stack</span></span></a> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#transfer.Agent.Stack.Section">ServiceMgr.<span class="xdoc-id">transferAgentStackSection</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Memory section for Transfer Agent Task's stack</span></span></a> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#transport.Type">ServiceMgr.<span class="xdoc-id">transportType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Determines the transport that UIA will be configured for</span></span></a> = <i><a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Transport.Type" title="ti.uia.runtime.ServiceMgr.TransportType">ServiceMgr.TransportType</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class='xdocSynHdr'>module-wide functions</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#register">ServiceMgr.<span class="xdoc-id">register</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Register a services with the ServiceMgr module</span></span></a>(<i><a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Service.Id.Desc" title="ti.uia.runtime.ServiceMgr.ServiceIdDesc">ServiceMgr.ServiceIdDesc</a></i> <span class="xdoc-id">id</span>, <i><span class="xdoc-kw2">Void</span>(*)(<a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Reason" title="ti.uia.runtime.ServiceMgr.Reason">ServiceMgr.Reason</a>,<a class="xdoc-link" href="../../../ti/uia/runtime/UIAPacket.html#.Hdr" title="ti.uia.runtime.UIAPacket.Hdr">UIAPacket.Hdr</a>*)</i> <span class="xdoc-id">processCallbackFxn</span>, <i><span class="xdoc-kw2">UInt32</span></i> <span class="xdoc-id">periodInMs</span>) <i>returns</i> <i><span class="xdoc-kw2">Int</span></i>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.W.A.I.T_.F.O.R.E.V.E.R"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">const</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">WAIT_FOREVER</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#.W.A.I.T_.F.O.R.E.V.E.R">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Wait forever constant that can be used in ServiceMgr_getFreePacket</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">const</span> ServiceMgr.<span class="xdoc-id">WAIT_FOREVER</span> = ~(0);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.W.A.I.T_.F.O.R.E.V.E.R" title="ServiceMgr_WAIT_FOREVER">ServiceMgr_WAIT_FOREVER</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Reason"></a>
+<a class="xdocAnchor" id=".Reason_.P.E.R.I.O.D.E.X.P.I.R.E.D"></a>
+<a class="xdocAnchor" id=".Reason_.R.E.Q.U.E.S.T.E.N.E.R.G.Y"></a>
+<a class="xdocAnchor" id=".Reason_.I.N.C.O.M.I.N.G.M.S.G"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">Reason</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#.Reason">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Used in the ProcessCallback to denote the reason</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>values of type ServiceMgr.<span class="xdoc-id">Reason</span></i>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> ServiceMgr.<span class="xdoc-id">Reason_PERIODEXPIRED</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> ServiceMgr.<span class="xdoc-id">Reason_REQUESTENERGY</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> ServiceMgr.<span class="xdoc-id">Reason_INCOMINGMSG</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">ServiceMgr_Reason_PERIODEXPIRED: the <a class="xdoc-link" href="ServiceMgr.html#.Process.Callback" title="ProcessCallback">ProcessCallback</a> is being
+  called because it is time to collect events and send them.</div>
+<div class="xdocText">ServiceMgr_Reason_REQUESTENERGY: the <a class="xdoc-link" href="ServiceMgr.html#.Process.Callback" title="ProcessCallback">ProcessCallback</a> is being
+  called because the service requested energy to perform some action.</div>
+<div class="xdocText">ServiceMgr_Reason_INCOMINGMSG: the <a class="xdoc-link" href="ServiceMgr.html#.Process.Callback" title="ProcessCallback">ProcessCallback</a> is being
+  called because there is an incoming message for the service.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Reason" title="ServiceMgr_Reason">ServiceMgr_Reason</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Topology"></a>
+<a class="xdocAnchor" id=".Topology_.S.I.N.G.L.E.C.O.R.E"></a>
+<a class="xdocAnchor" id=".Topology_.M.U.L.T.I.C.O.R.E"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">Topology</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#.Topology">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Used to define UIA topology</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>values of type ServiceMgr.<span class="xdoc-id">Topology</span></i>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> ServiceMgr.<span class="xdoc-id">Topology_SINGLECORE</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> ServiceMgr.<span class="xdoc-id">Topology_MULTICORE</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If UIA is configured for multicore, all events and messages are routed
+  via the master core to the non-master cores. Choosing multicore requires
+  setting the <a class="xdoc-link" href="ServiceMgr.html#master" title="master">master</a> config.</div>
+<div class="xdocText">If UIA is configured for Topology_SINGLECORE, each core on the device
+  communicates with the instrumentation host directly.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Topology" title="ServiceMgr_Topology">ServiceMgr_Topology</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Transport.Type"></a>
+<a class="xdocAnchor" id=".Transport.Type_.E.T.H.E.R.N.E.T"></a>
+<a class="xdocAnchor" id=".Transport.Type_.F.I.L.E"></a>
+<a class="xdocAnchor" id=".Transport.Type_.U.S.E.R"></a>
+<a class="xdocAnchor" id=".Transport.Type_.N.U.L.L"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">enum</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">TransportType</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#.Transport.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Used to specify the type of transport for UIA to use</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>values of type ServiceMgr.<span class="xdoc-id">TransportType</span></i>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> ServiceMgr.<span class="xdoc-id">TransportType_ETHERNET</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> ServiceMgr.<span class="xdoc-id">TransportType_FILE</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> ServiceMgr.<span class="xdoc-id">TransportType_USER</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> ServiceMgr.<span class="xdoc-id">TransportType_NULL</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">TransportType defines what the underlying transport will be used. In
+  a multi-core topology, this parameter is only relevant for the
+  <a class="xdoc-link" href="ServiceMgr.html#master.Proc.Id" title="masterProcId">masterProcId</a> core. The masterProcId core uses the TransportType
+  to determine how to get the data off the target.</div>
+<div class="xdocText"><UL><LI>TransportType_ETHERNET: Use the Ethernet transport. On a SYS/BIOS
+      system, this uses the NDK. The application is responsible for
+      adding the NDK into the application and initializing it.
+</LI><LI>TransportType_FILE: Use the File transport.
+      On a SYS/BIOS system, this transport requires a JTAG connection.
+</LI><LI>TransportType_USER: This allows the application to specify their
+      own transport functions.
+</LI><LI>TransportType_NULL: No transport functions are needed. This should
+      only be used on the non-masterProcId cores.
+</LI></UL></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.A_invalid.Process.Callback.Fxn"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">A_invalidProcessCallbackFxn</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#.A_invalid.Process.Callback.Fxn">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Assert raised invalid processCallbackFxn is supplied</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">A_invalidProcessCallbackFxn</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Assert.html#.Desc" title="xdc.runtime.Assert.Desc">Assert.Desc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "A_invalidProcessCallbackFxn: Callback cannot be NULL"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.A_invalid.Process.Callback.Fxn" title="ServiceMgr_A_invalidProcessCallbackFxn">ServiceMgr_A_invalidProcessCallbackFxn</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.A_invalid.Service.Id"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">A_invalidServiceId</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#.A_invalid.Service.Id">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Assert raised when calling API with invalid ServiceId</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">A_invalidServiceId</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Assert.html#.Desc" title="xdc.runtime.Assert.Desc">Assert.Desc</a></i> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "A_invalidServiceId: ServiceId out of range"
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>};
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.A_invalid.Service.Id" title="ServiceMgr_A_invalidServiceId">ServiceMgr_A_invalidServiceId</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metamaster.Proc.Id"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">masterProcId</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#master.Proc.Id">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Processor that communicates to the instrumentation host</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">masterProcId</span> = <i><span class="xdoc-kw2">UInt16</span></i> 0;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This value denotes which core in a multiple core topology is
+  the master core. All routing of UIA data to the instrumentation
+  host is done via this core.</div>
+<div class="xdocText">The procId corresponds to Ipc's MultiProc value.</div>
+<div class="xdocText">For single processor systems, or where there is no routing of
+  data via an intermediate core, this value is ignored.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#master.Proc.Id" title="ServiceMgr_masterProcId">ServiceMgr_masterProcId</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metamax.Ctrl.Packet.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">maxCtrlPacketSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#max.Ctrl.Packet.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Size of control message packets in bytes</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">maxCtrlPacketSize</span> = <i><span class="xdoc-kw2">SizeT</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This size includes the UIAPacket header. This value's default
+  depends on the device.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#max.Ctrl.Packet.Size" title="ServiceMgr_maxCtrlPacketSize">ServiceMgr_maxCtrlPacketSize</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metamax.Event.Packet.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">maxEventPacketSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#max.Event.Packet.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Size of Event packets in bytes</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">maxEventPacketSize</span> = <i><span class="xdoc-kw2">SizeT</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This size includes the UIAPacket header. This value's default
+  depends on the device.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#max.Event.Packet.Size" title="ServiceMgr_maxEventPacketSize">ServiceMgr_maxEventPacketSize</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metanum.Event.Packet.Bufs"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">numEventPacketBufs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#num.Event.Packet.Bufs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of UIAPacket events on the processor</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">numEventPacketBufs</span> = <i><span class="xdoc-kw2">Int</span></i> 2;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#num.Event.Packet.Bufs" title="ServiceMgr_numEventPacketBufs">ServiceMgr_numEventPacketBufs</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metanum.Incoming.Ctrl.Packet.Bufs"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">numIncomingCtrlPacketBufs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#num.Incoming.Ctrl.Packet.Bufs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of incoming Ctrl buffers on the master processor</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">numIncomingCtrlPacketBufs</span> = <i><span class="xdoc-kw2">Int</span></i> 2;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#num.Incoming.Ctrl.Packet.Bufs" title="ServiceMgr_numIncomingCtrlPacketBufs">ServiceMgr_numIncomingCtrlPacketBufs</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metanum.Outgoing.Ctrl.Packet.Bufs"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">numOutgoingCtrlPacketBufs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#num.Outgoing.Ctrl.Packet.Bufs">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Number of outgoing Ctrl buffers on the processor</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">numOutgoingCtrlPacketBufs</span> = <i><span class="xdoc-kw2">Int</span></i> 2;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#num.Outgoing.Ctrl.Packet.Bufs" title="ServiceMgr_numOutgoingCtrlPacketBufs">ServiceMgr_numOutgoingCtrlPacketBufs</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metaperiod.In.Ms"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">periodInMs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#period.In.Ms">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Period in miliseconds of ServiceMgr's transfer agent</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">periodInMs</span> = <i><span class="xdoc-kw2">Int</span></i> 100;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The transfer agent runs at the configured period. It checks to see
+  if a service's period has expired. If it has expired, the service's
+  <a class="xdoc-link" href="ServiceMgr.html#.Process.Callback" title="ProcessCallback">ProcessCallback</a> is called with the
+  <a class="xdoc-link" href="ServiceMgr.html#.Reason_.P.E.R.I.O.D.E.X.P.I.R.E.D" title="Reason_PERIODEXPIRED">Reason_PERIODEXPIRED</a> reason.</div>
+<div class="xdocText">A service should not set it's period to a value less than the ServiceMgr
+  module'speriod. A service's period should be a multiple of the
+  ServiceMgr module's period. If it is not, it will called at the rounded
+  up period. For example, if ServiceMgr.periodInMs = 100 and a service
+  sets its period to 250. That service will be called every 300
+  milliseconds.</div>
+<div class="xdocText">This value does not guarantee that the transfer agent will run at this
+  rate. Even if the period has expired, the transfer agent will not run
+  until the current running Task has yielded and there are no other higher
+  priority Tasks ready.</div>
+<div class="xdocText">Default is 100ms.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#period.In.Ms" title="ServiceMgr_periodInMs">ServiceMgr_periodInMs</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metarx.Task.Priority"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">rxTaskPriority</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#rx.Task.Priority">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Priority of the Transfer Agent Task</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">rxTaskPriority</span> = <i><span class="xdoc-kw2">Int</span></i> 1;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Default is 1, the lowest priority.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#rx.Task.Priority" title="ServiceMgr_rxTaskPriority">ServiceMgr_rxTaskPriority</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metarx.Task.Stack.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">rxTaskStackSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#rx.Task.Stack.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Transfer Agent Task stack size in MAUs</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">rxTaskStackSize</span> = <i><span class="xdoc-kw2">SizeT</span></i> 2048;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The recommended size is 2048 bytes.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#rx.Task.Stack.Size" title="ServiceMgr_rxTaskStackSize">ServiceMgr_rxTaskStackSize</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metasupport.Control"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">supportControl</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#support.Control">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Configure whether control messages are supported</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">supportControl</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Default is determined based on the device and transport type.</div>
+<div class="xdocText">The application should only set this if <a class="xdoc-link" href="ServiceMgr.html#transport.Type" title="transportType">transportType</a>
+  is TransportType_USER and it is plugging in a new set
+  of transport functions. The transport function package should
+  specify how to set this parameter.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#support.Control" title="ServiceMgr_supportControl">ServiceMgr_supportControl</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metatopology"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">topology</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#topology">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Used to define UIA topology</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">topology</span> = <i><a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Topology" title="ti.uia.runtime.ServiceMgr.Topology">ServiceMgr.Topology</a></i> <a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Topology_.S.I.N.G.L.E.C.O.R.E" title="ti.uia.runtime.ServiceMgr.Topology_SINGLECORE">ServiceMgr.Topology_SINGLECORE</a>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If <tt>Topology_MULTICORE</tt> is chosen, the ServiceMgr will use Ipc to
+  discover the core configuration and to communicate between the cores.
+  UIA will route the outbound packets from each core through the master
+  core. UIA will also route messages received by the master core to
+  their intended recipient.</div>
+<div class="xdocText">If UIA is configured for Topology_SINGLECORE, each core on the device
+  communicates with the instrumentation host directly.</div>
+<div class="xdocText">The default is Topology_SINGLECORE.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#topology" title="ServiceMgr_topology">ServiceMgr_topology</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metatransfer.Agent.Priority"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">transferAgentPriority</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#transfer.Agent.Priority">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Priority of the Transfer Agent Task</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">transferAgentPriority</span> = <i><span class="xdoc-kw2">Int</span></i> 1;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Default is 1, the lowest priority.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#transfer.Agent.Priority" title="ServiceMgr_transferAgentPriority">ServiceMgr_transferAgentPriority</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metatransfer.Agent.Stack.Size"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">transferAgentStackSize</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#transfer.Agent.Stack.Size">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Transfer Agent Task stack size in MAUs</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">transferAgentStackSize</span> = <i><span class="xdoc-kw2">SizeT</span></i> 2048;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The recommended size is 2048 bytes.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#transfer.Agent.Stack.Size" title="ServiceMgr_transferAgentStackSize">ServiceMgr_transferAgentStackSize</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metatransport.Fxns"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">transportFxns</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#transport.Fxns">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Transport functions used to communicate to the instrumentation host</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">transportFxns</span> = <i><a class="xdoc-link" href="../../../ti/uia/runtime/Transport.html#.Fxn.Set" title="ti.uia.runtime.Transport.FxnSet">Transport.FxnSet</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">These functions are setup by default based on the device.
+  The user can explicitly set this parameter if the default is not
+  appropriate.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#transport.Fxns" title="ServiceMgr_transportFxns">ServiceMgr_transportFxns</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="custom.Transport.Type"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">customTransportType</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#custom.Transport.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Custom transport used to send the records to an instrumentation host</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">customTransportType</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="rx.Task.Stack.Section"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">rxTaskStackSection</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#rx.Task.Stack.Section">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Memory section for Receiving Task's stack</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">rxTaskStackSection</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If this parameter is not set then the Task.defaultStackSection is used.
+  See the Task module for instructions on creating a stack section in
+  a different memory segment.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="transfer.Agent.Stack.Section"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">transferAgentStackSection</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#transfer.Agent.Stack.Section">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Memory section for Transfer Agent Task's stack</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">transferAgentStackSection</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">If this parameter is not set then the Task.defaultStackSection is used.
+  See the Task module for instructions on creating a stack section in
+  a different memory segment.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="transport.Type"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">transportType</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#transport.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Determines the transport that UIA will be configured for</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">transportType</span> = <i><a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Transport.Type" title="ti.uia.runtime.ServiceMgr.TransportType">ServiceMgr.TransportType</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">For a given transport type, UIA picks an appropriate transport
+  implementation to use based on your device. This is specified by the
+  ti.uia.family.Settings module. Refer to the examples for configuring
+  the actual transport implementation.</div>
+<div class="xdocText">If someone writes an new transport (e.g. RapidIO),
+  they can be plugged in by setting the TransportType
+  to <tt>TransportType_USER</tt> and then plugging
+  the transportFxns manually. It must also set up the following parameters
+  as directed by the new transport developer.</div>
+<div class="xdocText"><UL><LI>ServiceMgr.supportControl: does the transport support receiving
+               messages from the host. For example TransportFile does not.
+</LI><LI>ServiceMgr.maxEventPacketSize: Max size of an outgoing event packet. For
+               example TransportNdk uses 1472 (emac size minus headers)
+</LI><LI>ServiceMgr.maxCtrlPacketSize: Max size of the message packets. This can
+               be zero if supportControl is false.
+</LI></UL></div>
+<div class="xdocText">Here is an example of plugging the transport XYZ into the ServiceMgr:</div>
+<div class="xdocText"><PRE class="Example">  var ServiceMgr = xdc.useModule('ti.uia.runtime.ServiceMgr');
+  ServiceMgr.transportType = ServiceMgr.TransportType_USER;
+  var xyzTransport = {
+      initFxn: '&amp;TransportXYZ_init',
+      startFxn: '&amp;TransportXYZ_start',
+      recvFxn: '&amp;TransportXYZ_recv',
+      sendFxn: '&amp;TransportXYZ_send',
+      stopFxn: '&amp;TransportXYZ_stop',
+      exitFxn: '&amp;TransportXYZ_exit'
+  };
+  ServiceMgr.transportFxns = xyzTransport;
+
+  ServiceMgr.maxEventPacketSize = 1024
+  ServiceMgr.maxCtrlPacketSize  = 1024;
+  ServiceMgr.supportControl     = true;
+</PRE></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="register"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-id">ServiceMgr.</span><span class="xdoc-id">register</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/ServiceMgr.html" title="module ServiceMgr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/ServiceMgr.html#register">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Register a services with the ServiceMgr module</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>ServiceMgr.<span class="xdoc-id">register</span>(<i><a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Service.Id.Desc" title="ti.uia.runtime.ServiceMgr.ServiceIdDesc">ServiceMgr.ServiceIdDesc</a></i> <span class="xdoc-id">id</span>, <i><span class="xdoc-kw2">Void</span>(*)(<a class="xdoc-link" href="../../../ti/uia/runtime/ServiceMgr.html#.Reason" title="ti.uia.runtime.ServiceMgr.Reason">ServiceMgr.Reason</a>,<a class="xdoc-link" href="../../../ti/uia/runtime/UIAPacket.html#.Hdr" title="ti.uia.runtime.UIAPacket.Hdr">UIAPacket.Hdr</a>*)</i> <span class="xdoc-id">processCallbackFxn</span>, <i><span class="xdoc-kw2">UInt32</span></i> <span class="xdoc-id">periodInMs</span>) <i>returns</i> <i><span class="xdoc-kw2">Int</span></i>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">id</span>
+<span class="xdocChildSum">&#151;&nbsp;Service id of the service (refer to
+                  <a class="xdoc-link" href="ServiceMgr.html#.Service.Id" title="ServiceId">ServiceId</a>).</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">processCallbackFxn</span>
+<span class="xdocChildSum">&#151;&nbsp;Service's callback function.</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">periodInMs</span>
+<span class="xdocChildSum">&#151;&nbsp;Period of the service.</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All service's must register with the ServiceMgr module statically.</div>
+<div class="xdocText">Refer to <a class="xdoc-link" href="ServiceMgr.html#period.In.Ms" title="periodInMs">periodInMs</a> for a description of the period parameter.</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:15 GMT</div>
+</div></div></body>
+</html>

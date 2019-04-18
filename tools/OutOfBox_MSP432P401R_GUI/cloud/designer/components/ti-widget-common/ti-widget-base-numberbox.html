@@ -1,0 +1,78 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-base-input.html">
+<polymer-element name="ti-widget-base-numberbox" extends="ti-widget-base-input" attributes="minValue maxValue">
+
+    <script>
+        Polymer ('ti-widget-base-numberbox', 
+        {
+            getText : function()
+            {
+                return this.getElement().value;
+            },
+            setText : function(newValue)
+            {
+                this.getElement().value = newValue;
+            },
+            _roundDecimalPlaces : 12,  
+            formatChangedValue : function(value)
+            {
+                var newValue = +value;
+                if (this.minValue !== undefined && newValue < this.minValue)
+                {
+                    newValue = this.minValue;
+                }
+                if (this.maxValue !== undefined && newValue > this.maxValue)
+                {
+                    newValue = this.maxValue;
+                }
+                if (this._roundDecimalPlaces)  // if not undefined or not zero in value
+                {
+                    newValue = +(Math.round(newValue + "e+" + this._roundDecimalPlaces)  + "e-" + this._roundDecimalPlaces);
+                    return newValue.toString();
+                }
+                else
+                {
+                    return Math.round(newValue).toString();  // special case integer rounding.
+                }
+            },
+            minValueChanged : function()
+            {
+                this.minValue = +this.minValue; // convert to number, if not already.
+                
+                // update value in case the desired value is no longer outside the limits  
+                this.refreshValue();
+            },
+            maxValueChanged : function()
+            {
+                this.maxValue = +this.maxValue; // convert to number, if not already.
+                
+                // update value in case the desired value is no longer outside the limits  
+                this.refreshValue();
+            },
+            refreshValue : function()
+            {
+                var newValue = this.formatValue(this.value);
+                var oldValue = this.getText();
+                if (oldValue !== newValue)
+                {
+                    this.setText(newValue);
+                }
+            },
+            updateValue: function(newValue)
+            {
+                this.super([+newValue]);  // convert to number to store values.
+            },
+            valueChanged: function()
+            {
+                if (typeof this.value === 'string')  
+                { 
+                    this.value = +this.value;  // make sure we are converting text to numbers.
+                }
+                if (!isNaN(this.value) || !isNaN(this._lastValue))
+                {
+                    this.super();
+                }
+            }
+        });
+    </script>
+</polymer-element>

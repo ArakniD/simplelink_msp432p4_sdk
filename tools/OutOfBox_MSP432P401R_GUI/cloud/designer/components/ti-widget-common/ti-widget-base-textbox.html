@@ -1,0 +1,86 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-base-input.html">
+<polymer-element name="ti-widget-base-textbox" extends="ti-widget-base-input" attributes="value trim uppercase lowercase">
+
+    <script>
+        Polymer ('ti-widget-base-textbox', 
+        {
+            value : "",
+            trim : false,
+            uppercase : false,
+            lowercase : false,
+
+            formatIntermediateValue : function(text)
+            {
+                // format the case only 
+                if (text === undefined || text === null)
+                {
+                    return "";
+                }
+                
+                var newText = (typeof text !== 'string') ? text.toString() : text;
+                
+                if (this.lowercase)
+                {
+                    newText = newText.toLowerCase();
+                }
+                else if (this.uppercase)
+                {
+                    newText = newText.toUpperCase();
+                }
+                return newText;
+            },
+            formatChangedValue : function(text)
+            {
+                return  (this.trim) ? text.trim() : text;
+            },            
+            trimChanged : function()
+            {
+                if (this.trim)
+                {
+                    var oldValue = this.getText();
+                    var newValue = oldValue.trim();
+                    if (oldValue != newValue)
+                    {
+                        this.setText(newValue);
+                    }
+                    this.updateValue(newValue);
+                }
+            },
+            uppercaseChanged : function()
+            {
+                if (this.uppercase && this.lowercase)
+                {
+                    this.lowercase = false;
+                }
+                if (this.uppercase)
+                {
+                    var oldValue = this.getText();
+                    var newValue = oldValue.toUpperCase();
+                    if (oldValue != newValue)
+                    {
+                        this.setText(newValue);
+                    }
+                    this.updateValue(newValue);
+                }
+            },
+            lowercaseChanged : function()
+            {
+                if (this.uppercase && this.lowercase)
+                {
+                    this.uppercase = false;
+                }
+                if (this.lowercase)
+                {
+                    var oldValue = this.getText();
+                    var newValue = oldValue.toLowerCase();
+                    if (oldValue != newValue)
+                    {
+                        this.setText(newValue);
+                    }
+                    this.updateValue(newValue);
+                }
+            }
+        });
+    </script>
+</polymer-element>

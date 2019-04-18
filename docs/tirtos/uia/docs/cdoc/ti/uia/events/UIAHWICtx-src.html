@@ -1,0 +1,237 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.events.UIAHWICtx</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> * ======== UIAHWICtx.xdc
+</span>    35    <span class="comment"> */</span>
+    36    import xdc.runtime.Types;
+    37    import xdc.runtime.Diags;
+    38    import ti.uia.events.IUIACtx;
+    39    
+    40    <span class="xdoc">/*!
+</span>    41    <span class="xdoc"> * UIA Hardware Interrupt Context Instrumentation
+</span>    42    <span class="xdoc"> *
+</span>    43    <span class="xdoc"> * The UIAHWICtx module defines context change events
+</span>    44    <span class="xdoc"> * and methods that allow tooling to identify hardware interrupt context
+</span>    45    <span class="xdoc"> * switches and to enable HWI-aware filtering, trace and
+</span>    46    <span class="xdoc"> * analysis.
+</span>    47    <span class="xdoc"> *
+</span>    48    <span class="xdoc"> * Note: in order to reduce overhead, UIAHWICtx does not support context-aware filtering
+</span>    49    <span class="xdoc"> *
+</span>    50    <span class="xdoc"> * The following configuration script demonstrates how the application might
+</span>    51    <span class="xdoc"> * control the logging of ANALYSIS events embedded in the `Mod` module at configuration
+</span>    52    <span class="xdoc"> * time. In this case, the configuration script arranges for the `Log`
+</span>    53    <span class="xdoc"> * statements within modules to always generate ANALYSIS events.
+</span>    54    <span class="xdoc"> * Without these configuration statements, no ANALYSIS events would be generated
+</span>    55    <span class="xdoc"> * by any modules.
+</span>    56    <span class="xdoc"> *
+</span>    57    <span class="xdoc"> * <b>@a(Examples)</b>
+</span>    58    <span class="xdoc"> * Example 1: This is part of the XDC configuration file for the application:
+</span>    59    <span class="xdoc"> *
+</span>    60    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    61    <span class="xdoc"> *  var LogCtxChg = xdc.useModule('ti.uia.runtime.LogCtxChg');
+</span>    62    <span class="xdoc"> *  var Diags = xdc.useModule('xdc.runtime.Diags');
+</span>    63    <span class="xdoc"> *  var LoggerSys = xdc.useModule('xdc.runtime.LoggerSys');
+</span>    64    <span class="xdoc"> *  var Defaults = xdc.useModule('xdc.runtime.Defaults');
+</span>    65    <span class="xdoc"> *  var logger = LoggerSys.create();
+</span>    66    <span class="xdoc"> *
+</span>    67    <span class="xdoc"> *  Defaults.common$.diags_ANALYSIS = Diags.ALWAYS_ON;
+</span>    68    <span class="xdoc"> *  Defaults.common$.logger = logger;
+</span>    69    <span class="xdoc"> *
+</span>    70    <span class="xdoc"> *  // BIOS specific configuration:
+</span>    71    <span class="xdoc"> *  var Hwi = xdc.useModule('ti.sysbios.hal.Hwi');
+</span>    72    <span class="xdoc"> *  Hwi.addHookSet({
+</span>    73    <span class="xdoc"> *    beginFxn: '&amp;hwiBeginHook',
+</span>    74    <span class="xdoc"> *    endFxn: '&amp;hwiEndHook'
+</span>    75    <span class="xdoc"> *   });
+</span>    76    <span class="xdoc"> *  <b>@p</b>
+</span>    77    <span class="xdoc"> *
+</span>    78    <span class="xdoc"> *  <b>@p(html)</b>
+</span>    79    <span class="xdoc"> *  &lt;hr /&gt;
+</span>    80    <span class="xdoc"> *  <b>@p</b>
+</span>    81    <span class="xdoc"> *
+</span>    82    <span class="xdoc"> * Example 2: The following example configures a module to support logging
+</span>    83    <span class="xdoc"> * of ANALYSIS events, but defers the actual activation and deactivation of the
+</span>    84    <span class="xdoc"> * logging until runtime. See the `{<b>@link</b> Diags#setMask Diags_setMask()}`
+</span>    85    <span class="xdoc"> * function for details on specifying the control string.
+</span>    86    <span class="xdoc"> *
+</span>    87    <span class="xdoc"> * This is a part of the XDC configuration file for the application:
+</span>    88    <span class="xdoc"> *
+</span>    89    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    90    <span class="xdoc"> *  var LogCtxChg = xdc.useModule('ti.uia.runtime.LogCtxChg');
+</span>    91    <span class="xdoc"> *  var Diags = xdc.useModule('xdc.runtime.Diags');
+</span>    92    <span class="xdoc"> *  var Mod = xdc.useModule('my.pkg.Mod');
+</span>    93    <span class="xdoc"> *
+</span>    94    <span class="xdoc"> *  Mod.common$.diags_ANALYSIS = Diags.RUNTIME_OFF;
+</span>    95    <span class="xdoc"> *  <b>@p</b>
+</span>    96    <span class="xdoc"> *
+</span>    97    <span class="xdoc"> *  This is a part of the C code for the application:
+</span>    98    <span class="xdoc"> *
+</span>    99    <span class="xdoc"> *  <b>@p(code)</b>
+</span>   100    <span class="xdoc"> *  // turn on logging of ANALYSIS events in the module
+</span>   101    <span class="xdoc"> *  Diags_setMask("my.pkg.Mod+Z");
+</span>   102    <span class="xdoc"> *
+</span>   103    <span class="xdoc"> *  // turn off logging of ANALYSIS events in the module
+</span>   104    <span class="xdoc"> *  Diags_setMask("my.pkg.Mod-Z");
+</span>   105    <span class="xdoc"> *  <b>@p</b>
+</span>   106    <span class="xdoc"> */</span>
+   107    <span class=key>module</span> UIAHWICtx <span class=key>inherits</span> IUIACtx {
+   108    
+   109        <span class="xdoc">/*!
+</span>   110    <span class="xdoc">     *  ======== start ========
+</span>   111    <span class="xdoc">     *  Hardware Interrupt start event
+</span>   112    <span class="xdoc">     *
+</span>   113    <span class="xdoc">     *  Used to log the start of a hardware interrupt service routine
+</span>   114    <span class="xdoc">     *
+</span>   115    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   116    <span class="xdoc">     *   The following C code shows how to log a Context Change
+</span>   117    <span class="xdoc">     *   event that identifies the start of a HWI.  It implements
+</span>   118    <span class="xdoc">     *   a BIOS hook function.  Alternatively, the LogCtxChg_hwiStart
+</span>   119    <span class="xdoc">     *   API can be called directly from the HWI service routine.
+</span>   120    <span class="xdoc">     *
+</span>   121    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   122    <span class="xdoc">     *  #include &lt;ti/uia/runtime/LogCtxChg.h&gt;
+</span>   123    <span class="xdoc">     *   ...
+</span>   124    <span class="xdoc">     *  Void hwiBeginHook(Hwi_Handle handle) {
+</span>   125    <span class="xdoc">     *    LogCtxChg_hwiStart("Hwi_Handle:0x%x",handle);
+</span>   126    <span class="xdoc">     *  }
+</span>   127    <span class="xdoc">     *  <b>@p</b>
+</span>   128    <span class="xdoc">     *  This event has an associated format string (%$S)
+</span>   129    <span class="xdoc">     *  which is recursively formatted with any addition arguments.
+</span>   130    <span class="xdoc">     *  The following text is an example of what will be displayed for the event:
+</span>   131    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   132    <span class="xdoc">     *  "HWI start: Hwi_Handle:0x80001200"
+</span>   133    <span class="xdoc">     *
+</span>   134    <span class="xdoc">     *  <b>@param(fmt)</b>   a constant string that describes the HWI and provides a format specifier for the HWI handle
+</span>   135    <span class="xdoc">     *  <b>@param(handle)</b>   an integer which uniquely identifies the HWI
+</span>   136    <span class="xdoc">     */</span>
+   137        <span class=key>config</span> xdc.runtime.Log.Event start = {
+   138            mask: Diags.ANALYSIS,
+   139            msg: <span class="string">"HWI start: %$S"</span>
+   140        };
+   141        <span class="xdoc">/*!
+</span>   142    <span class="xdoc">     *  ======== metaEventHwiStart ========
+</span>   143    <span class="xdoc">     *  Metadata description of the HWI Start event
+</span>   144    <span class="xdoc">     *
+</span>   145    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   146    <span class="xdoc">     */</span>
+   147        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventHwiStart = {
+   148            versionId: <span class="string">"2.0"</span>,
+   149            analysisType: DvtTypes.DvtAnalysisType_START,
+   150            displayText: <span class="string">"HWI Start"</span>,
+   151            tooltipText: <span class="string">"HWI Start"</span>,
+   152            numParameters: 2,
+   153            paramInfo: [
+   154            {   name: <span class="string">'fmt'</span>,
+   155                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   156                dataTypeName: <span class="string">'String'</span>,
+   157                units: <span class="string">'none'</span>,
+   158                isHidden: <span class=key>false</span>
+   159            },
+   160            {   name: <span class="string">'HWI ID'</span>,
+   161                dataDesc: DvtTypes.DvtDataDesc_HWIID,
+   162                dataTypeName: <span class="string">'Int'</span>,
+   163                units: <span class="string">'none'</span>,
+   164                isHidden: <span class=key>false</span>
+   165            }]
+   166    
+   167        };
+   168        <span class="xdoc">/*!
+</span>   169    <span class="xdoc">     *  ======== stop ========
+</span>   170    <span class="xdoc">     *  Hardware Interrupt exit event
+</span>   171    <span class="xdoc">     *
+</span>   172    <span class="xdoc">     *  Used to log the end of a hardware interrupt service routine
+</span>   173    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   174    <span class="xdoc">     *   The following C code shows how to log a Context Change
+</span>   175    <span class="xdoc">     *   event that identifies the end of a HWI.  It implements
+</span>   176    <span class="xdoc">     *   a BIOS hook function.  Alternatively, the LogCtxChg_hwiStop
+</span>   177    <span class="xdoc">     *   API can be called directly from the HWI service routine.
+</span>   178    <span class="xdoc">     *
+</span>   179    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   180    <span class="xdoc">     *  #include &lt;ti/uia/runtime/LogCtxChg.h&gt;
+</span>   181    <span class="xdoc">     *   ...
+</span>   182    <span class="xdoc">     *  Void hwiEndHook(Hwi_Handle handle) {
+</span>   183    <span class="xdoc">     *    LogCtxChg_hwiStop("Hwi_Handle:0x%x",handle);
+</span>   184    <span class="xdoc">     *  }
+</span>   185    <span class="xdoc">     *  <b>@p</b>
+</span>   186    <span class="xdoc">     *  This event has an associated format string (%$S)
+</span>   187    <span class="xdoc">     *  which is recursively formatted with any addition arguments.
+</span>   188    <span class="xdoc">     *  The following text is an example of what will be displayed for the event:
+</span>   189    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   190    <span class="xdoc">     *  "HWI stop: Hwi_Handle:0x80001200"
+</span>   191    <span class="xdoc">     *
+</span>   192    <span class="xdoc">     *  <b>@param(fmt)</b>   a constant string that describes the HWI and provides a format specifier for the HWI handle
+</span>   193    <span class="xdoc">     *  <b>@param(handle)</b>   an integer which uniquely identifies the HWI
+</span>   194    <span class="xdoc">     */</span>
+   195        <span class=key>config</span> xdc.runtime.Log.Event stop = {
+   196            mask: Diags.ANALYSIS,
+   197            msg: <span class="string">"HWI stop: %$S"</span>
+   198        };
+   199    
+   200        <span class="xdoc">/*!
+</span>   201    <span class="xdoc">     *  ======== metaEventHwiStop ========
+</span>   202    <span class="xdoc">     *  Metadata description of the HWI Stop event
+</span>   203    <span class="xdoc">     *
+</span>   204    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   205    <span class="xdoc">     */</span>
+   206        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventHwiStop = {
+   207            versionId: <span class="string">"2.0"</span>,
+   208            analysisType: DvtTypes.DvtAnalysisType_STOP,
+   209            displayText: <span class="string">"HWI Exit"</span>,
+   210            tooltipText: <span class="string">"HWI Exit"</span>,
+   211            numParameters: 2,
+   212            paramInfo: [
+   213            {   name: <span class="string">'fmt'</span>,
+   214                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   215                dataTypeName: <span class="string">'String'</span>,
+   216                units: <span class="string">'none'</span>,
+   217                isHidden: <span class=key>false</span>
+   218            },
+   219            {   name: <span class="string">'HWI ID'</span>,
+   220                dataDesc: DvtTypes.DvtDataDesc_HWIID,
+   221                dataTypeName: <span class="string">'Int'</span>,
+   222                units: <span class="string">'none'</span>,
+   223                isHidden: <span class=key>false</span>
+   224            }]
+   225    
+   226        };
+   227    
+   228    }
+</pre>
+</body></html>

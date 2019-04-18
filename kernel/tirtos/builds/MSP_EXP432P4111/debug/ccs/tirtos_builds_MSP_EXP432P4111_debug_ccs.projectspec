@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectSpec>
+    <applicability>
+        <when>
+            <context
+                deviceFamily="MSP432"
+                deviceId="MSP432P4111"
+            />
+        </when>
+    </applicability>
+
+    <project
+        title="TI-RTOS build debug configuration"
+        name="tirtos_builds_MSP_EXP432P4111_debug_ccs"
+        outputType="rtscConfiguration"
+        toolChain="TI"
+        device="MSP432P4111"
+        ignoreDefaultDeviceSettings="true"
+        ignoreDefaultCCSSettings="true"
+        description="TI-RTOS debug configuration project">
+
+        <property name="products" value="com.ti.SIMPLELINK_MSP432_SDK"/>
+        <property name="xdcToolsVersion" value="3.51.999"/> <!-- use 999 to pickup latest 3.51 version -->
+        <property name="target" value="ti.targets.arm.elf.M4F"/>
+        <property name="platform" value="ti.platforms.msp432:MSP432P4111"/>
+        <property name="buildProfile" value="release"/>
+        <group id="MSP432_SDK.MSP_EXP432P4111.debug.ccs"/>
+        <file path="makefile.defs" openOnCreation="false" excludeFromBuild="false" action="copy" ></file>
+        <file path="../debug.cfg" openOnCreation="false" excludeFromBuild="false" action="copy" >
+        </file>
+        <file path="../README.md" openOnCreation="false" excludeFromBuild="false" action="copy" >
+        </file>
+        <file path="../README.html" openOnCreation="false" excludeFromBuild="false" action="copy" >
+        </file>
+    </project>
+</projectSpec>
+

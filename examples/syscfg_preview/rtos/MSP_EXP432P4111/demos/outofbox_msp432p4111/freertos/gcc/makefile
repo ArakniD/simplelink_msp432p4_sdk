@@ -1,0 +1,126 @@
+SIMPLELINK_MSP432_SDK_INSTALL_DIR ?= $(abspath ../../../../../../../..)
+
+include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
+
+KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_EXP432P4111/release
+SYSCONFIG_PRODUCT := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json
+BOARD := /ti/boards/.meta/MSP_EXP432P4111
+
+CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
+LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
+
+OBJECTS = Board.obj cJSON.obj lcd_hal.obj main_freertos.obj lcd_thread.obj callbacks.obj uart_thread.obj led_thread.obj temperature_thread.obj
+
+NAME = outofbox_msp432p4111
+
+CFLAGS = -I../.. \
+    -I. \
+    "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
+    "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
+    -D__MSP432P4111__ \
+    -DDeviceFamily_MSP432P4x1xI \
+    "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/posix/gcc" \
+    "-I$(FREERTOS_INSTALL_DIR)/FreeRTOS/Source/include" \
+    "-I$(FREERTOS_INSTALL_DIR)/FreeRTOS/Source/portable/GCC/ARM_CM4F" \
+    "-I$(KERNEL_BUILD)" \
+    -mcpu=cortex-m4 \
+    -march=armv7e-m \
+    -mthumb \
+    -std=c99 \
+    -mfloat-abi=hard \
+    -mfpu=fpv4-sp-d16 \
+    -ffunction-sections \
+    -fdata-sections \
+    -g \
+    -gstrict-dwarf \
+    -Wall \
+    "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include/newlib-nano" \
+    "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include"
+
+LFLAGS = -Wl,-T,../../freertos/gcc/MSP_EXP432P4111_FREERTOS.lds \
+    "-Wl,-Map,$(NAME).map" \
+    "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
+    -l:ti/display/lib/display.am4fg \
+    -l:ti/grlib/lib/gcc/m4f/grlib.a \
+    -l:third_party/spiffs/lib/gcc/m4f/spiffs.a \
+    -l:ti/drivers/lib/drivers_msp432p4x1xi.am4fg \
+    -l:third_party/fatfs/lib/gcc/m4f/fatfs.a \
+    -nostartfiles \
+    "-L$(KERNEL_BUILD)/gcc" \
+    -l:freertos.lib \
+    -l:ti/devices/msp432p4xx/driverlib/gcc/msp432p4xx_driverlib.a \
+    -march=armv7e-m \
+    -mthumb \
+    -mfloat-abi=hard \
+    -mfpu=fpv4-sp-d16 \
+    -static \
+    -Wl,--gc-sections \
+    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
+    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib" \
+    -lgcc \
+    -lc \
+    -lm \
+    -lnosys \
+    --specs=nano.specs
+
+all: $(NAME).out
+
+$(KERNEL_BUILD)/gcc/freertos.lib:
+	@ $(ECHOBLANKLINE)
+	@ echo $@ is not built.
+	@ echo You can build it by issuing $(MAKE) in $(dir $@).
+	@ $(ECHOBLANKLINE)
+.INTERMEDIATE: syscfg
+Board.c Board.h : syscfg
+	@ echo generation complete
+
+syscfg: ../../outOfBox_msp432p4111.syscfg
+	@ echo Generating configuration files...
+	@ $(NODE_JS) $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --board $(BOARD) --output $(@D) $<
+
+Board.obj: Board.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+cJSON.obj: ../../cJSON/cJSON.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+lcd_hal.obj: ../../LCD_HAL/lcd_hal.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+main_freertos.obj: ../../freertos/main_freertos.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+lcd_thread.obj: ../../lcd_thread.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+callbacks.obj: ../../callbacks.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+uart_thread.obj: ../../uart_thread.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+led_thread.obj: ../../led_thread.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+temperature_thread.obj: ../../temperature_thread.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+$(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/gcc/freertos.lib
+	@ echo linking $@
+	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+
+clean:
+	@ echo Cleaning...
+	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
+	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
+	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
+	@ $(RM) Board.c Board.h  > $(DEVNULL) 2>&1

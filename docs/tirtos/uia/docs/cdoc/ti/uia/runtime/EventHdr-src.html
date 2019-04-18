@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.runtime.EventHdr</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2013-2018, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> * ======== EventHdr.xdc ========
+</span>    35    <span class="comment"> */</span>
+    36    <span class=key>package</span> ti.uia.runtime;
+    37    
+    38    <span class="xdoc">/*!
+</span>    39    <span class="xdoc"> *  ======== EventHdr ========
+</span>    40    <span class="xdoc"> *  Module defines the header format to be used when logging an event
+</span>    41    <span class="xdoc"> *
+</span>    42    <span class="xdoc"> *  Each event's first word includes the type, length of the event and
+</span>    43    <span class="xdoc"> *  sequence number. The length includes the first word and is in bytes.
+</span>    44    <span class="xdoc"> *
+</span>    45    <span class="xdoc"> *  The following is the desciption of the first word.
+</span>    46    <span class="xdoc"> *
+</span>    47    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    48    <span class="xdoc"> *  EventHdr
+</span>    49    <span class="xdoc"> *   3 3 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0
+</span>    50    <span class="xdoc"> *   1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+</span>    51    <span class="xdoc"> *  |---------------------------------------------------------------|
+</span>    52    <span class="xdoc"> *  |H H H H H|L L L L L L L L L L L|S S S S S S S S S S S S S S S S|
+</span>    53    <span class="xdoc"> *  |---------------------------------------------------------------|
+</span>    54    <span class="xdoc"> *
+</span>    55    <span class="xdoc"> *  H = HdrType         (5-bits)
+</span>    56    <span class="xdoc"> *  L = Event Length    (11-bits)
+</span>    57    <span class="xdoc"> *  S = Sequence Number (16-bits)
+</span>    58    <span class="xdoc"> *  <b>@p</b>
+</span>    59    <span class="xdoc"> *
+</span>    60    <span class="xdoc"> *  There are currently 4 different types of events supported in UIA. The
+</span>    61    <span class="xdoc"> *  following discusses the format of each one of the types.
+</span>    62    <span class="xdoc"> *
+</span>    63    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    64    <span class="xdoc"> *  HdrType_Event
+</span>    65    <span class="xdoc"> *    word0: EventHdr
+</span>    66    <span class="xdoc"> *    word1: event Id (top 16 bits) &amp; module Id (bottom 16 bits)
+</span>    67    <span class="xdoc"> *
+</span>    68    <span class="xdoc"> *  HdrType_EventWithTimestamp
+</span>    69    <span class="xdoc"> *    word0: EventHdr
+</span>    70    <span class="xdoc"> *    word1: Timestamp lower 32 bits
+</span>    71    <span class="xdoc"> *    word2: Timestamp upper 32 bits
+</span>    72    <span class="xdoc"> *    word3: event Id (top 16 bits) &amp; module Id (bottom 16 bits)
+</span>    73    <span class="xdoc"> *
+</span>    74    <span class="xdoc"> *  HdrType_EventWithSnapshotId
+</span>    75    <span class="xdoc"> *    word0: EventHdr
+</span>    76    <span class="xdoc"> *    word1: event Id (top 16 bits) &amp; module Id (bottom 16 bits)
+</span>    77    <span class="xdoc"> *    word2: filename pointer
+</span>    78    <span class="xdoc"> *    word3: linenum
+</span>    79    <span class="xdoc"> *    word4: snapshotId
+</span>    80    <span class="xdoc"> *    word5: address where the data was located
+</span>    81    <span class="xdoc"> *    word6: total length of data (top 16-bits)
+</span>    82    <span class="xdoc"> *           length for this record (bottom 16 bits)
+</span>    83    <span class="xdoc"> *    word7: format pointer
+</span>    84    <span class="xdoc"> *    data:  the rest of the record contains the data
+</span>    85    <span class="xdoc"> *
+</span>    86    <span class="xdoc"> *  HdrType_EventWithSnapshotIdAndTimestamp:
+</span>    87    <span class="xdoc"> *    word0: EventHdr
+</span>    88    <span class="xdoc"> *    word1: Timestamp lower 32 bits
+</span>    89    <span class="xdoc"> *    word2: Timestamp upper 32 bits
+</span>    90    <span class="xdoc"> *    word3: event Id (top 16 bits) &amp; module Id (bottom 16 bits)
+</span>    91    <span class="xdoc"> *    word4: filename pointer
+</span>    92    <span class="xdoc"> *    word5: linenum
+</span>    93    <span class="xdoc"> *    word6: snapshotId
+</span>    94    <span class="xdoc"> *    word7: address where the data was located
+</span>    95    <span class="xdoc"> *    word8: total length of data (top 16-bits)
+</span>    96    <span class="xdoc"> *           length for this record (bottom 16 bits)
+</span>    97    <span class="xdoc"> *    word9: format pointer
+</span>    98    <span class="xdoc"> *    data:  the rest of the record contains the data
+</span>    99    <span class="xdoc"> *  <b>@p</b>
+</span>   100    <span class="xdoc"> *
+</span>   101    <span class="xdoc"> *  Snapshot events can span multiple records. The snapshotId is used to
+</span>   102    <span class="xdoc"> *  correlate the records when this occurs.
+</span>   103    <span class="xdoc"> *  The length field (word6 or word8) contains two lengths. The bottom 16 bits
+</span>   104    <span class="xdoc"> *  length of data for this record. The top 16 bits is the sum of all
+</span>   105    <span class="xdoc"> *  lengths for this specific snapshotId.
+</span>   106    <span class="xdoc"> *
+</span>   107    <span class="xdoc"> *  The address field points to the location of the data. When the snapshot
+</span>   108    <span class="xdoc"> *  spans multiple records, the address field is updated accordingly. Therefore
+</span>   109    <span class="xdoc"> *  this field can be used to detect dropped records. Note the snapshot
+</span>   110    <span class="xdoc"> *  event data is contiguous.
+</span>   111    <span class="xdoc"> *
+</span>   112    <span class="xdoc"> *  EventHdr for HdrType_EventWithPrevLen* and HdrType_SnapshotEventWithPrevLen*
+</span>   113    <span class="xdoc"> *   3 3 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0
+</span>   114    <span class="xdoc"> *   1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+</span>   115    <span class="xdoc"> *  |---------------------------------------------------------------|
+</span>   116    <span class="xdoc"> *  |H H H H H|L L L L L L L L L L L|P P P P P P P P P P P|S S S S S|
+</span>   117    <span class="xdoc"> *  |---------------------------------------------------------------|
+</span>   118    <span class="xdoc"> *
+</span>   119    <span class="xdoc"> *  H = HdrType         (5-bits)
+</span>   120    <span class="xdoc"> *  L = Event Length in bytes    (11-bits: # of bytes in current event)
+</span>   121    <span class="xdoc"> *  P = Number of Bytes in Previous Event (5-bits: # of bytes in prev. event)
+</span>   122    <span class="xdoc"> *  S = Sequence Number (5-bits)
+</span>   123    <span class="xdoc"> */</span>
+   124    @CustomHeader
+   125    <span class=key>module</span> EventHdr {
+   126        <span class="xdoc">/*!
+</span>   127    <span class="xdoc">     *  ======== HdrType ========
+</span>   128    <span class="xdoc">     *  Enumeration of the various types of events headers
+</span>   129    <span class="xdoc">     *
+</span>   130    <span class="xdoc">     *  Stored in a 5 bit bitfield (b31-b27) of the first word in the event.
+</span>   131    <span class="xdoc">     */</span>
+   132        <span class=key>enum</span> HdrType {
+   133            HdrType_Event = 0, <span class="xdoc">/*! Event with no timestamp or other optional parameters */</span>
+   134            HdrType_EventWithTimestamp = 1, <span class="xdoc">/*! Event with 64 bit Timestamp */</span>
+   135            HdrType_EventWithSnapshotId = 2, <span class="xdoc">/*! Snapshot event */</span>
+   136            HdrType_EventWithSnapshotIdAndTimestamp = 3, <span class="xdoc">/*! Snapshot event with 64 bit Timestamp */</span>
+   137            HdrType_EventWith32bTimestamp = 4, <span class="xdoc">/*! Event with 32 bit Timestamp */</span>
+   138            HdrType_EventWithTimestampAndEndpointId = 5,
+   139            HdrType_EventWithSnapshotIdAnd32bTimestamp = 6, <span class="xdoc">/*! Snapshot event with 32 bit Timestamp */</span>
+   140            HdrType_EventWithSnapshotIdAndTimestampAndEndpointId = 7,
+   141            HdrType_EventWithPrevLenWithNoTimestamp = 8, <span class="xdoc">/*! reverse param event with prev. length field */</span>
+   142            HdrType_EventWithPrevLenWith32bTimestamp = 9,  <span class="xdoc">/*! reverse param event with prev. length field */</span>
+   143            HdrType_EventWithPrevLenWith64bTimestamp = 10,  <span class="xdoc">/*! reverse param event with prev. length field */</span>
+   144            HdrType_SnapshotEventWithPrevLen = 11, <span class="xdoc">/*! Snapshot event with no timestamp*/</span>
+   145            HdrType_SnapshotEventWithPrevLenAnd64bTimestamp = 12, <span class="xdoc">/*! Snapshot event with 64 bit Timestamp */</span>
+   146            HdrType_Reserved13 = 13, <span class="xdoc">/*! reserved for future use */</span>
+   147            HdrType_Reserved14 = 14, <span class="xdoc">/*! reserved for future use */</span>
+   148            HdrType_Reserved15 = 15, <span class="xdoc">/*! reserved for future use */</span>
+   149            HdrType_Reserved16 = 16, <span class="xdoc">/*! reserved for future use */</span>
+   150            HdrType_Reserved17 = 17, <span class="xdoc">/*! reserved for future use */</span>
+   151            HdrType_Reserved18 = 18, <span class="xdoc">/*! reserved for future use */</span>
+   152            HdrType_Reserved19 = 19, <span class="xdoc">/*! reserved for future use */</span>
+   153            HdrType_Reserved20 = 20, <span class="xdoc">/*! reserved for future use */</span>
+   154            HdrType_Reserved21 = 21, <span class="xdoc">/*! reserved for future use */</span>
+   155            HdrType_Reserved22 = 22, <span class="xdoc">/*! reserved for future use */</span>
+   156            HdrType_Reserved23 = 23, <span class="xdoc">/*! reserved for future use */</span>
+   157            HdrType_Reserved24 = 24, <span class="xdoc">/*! reserved for future use */</span>
+   158            HdrType_Reserved25 = 25, <span class="xdoc">/*! reserved for future use */</span>
+   159            HdrType_Reserved26 = 26, <span class="xdoc">/*! reserved for future use */</span>
+   160            HdrType_Reserved27 = 27, <span class="xdoc">/*! reserved for future use */</span>
+   161            HdrType_Reserved28 = 28, <span class="xdoc">/*! reserved for future use */</span>
+   162            HdrType_Reserved29 = 29, <span class="xdoc">/*! reserved for future use */</span>
+   163            HdrType_Reserved30 = 30, <span class="xdoc">/*! reserved for future use */</span>
+   164            HdrType_Reserved31 = 31  <span class="xdoc">/*! reserved for future use */</span>
+   165        };
+   166    
+   167        <span class="xdoc">/*!
+</span>   168    <span class="xdoc">     *  ======== getHdrType ========
+</span>   169    <span class="xdoc">     *  Gets the message header type from the first word of the event header
+</span>   170    <span class="xdoc">     *
+</span>   171    <span class="xdoc">     *  <b>@param(eventWord1)</b>   first word of the event header
+</span>   172    <span class="xdoc">     *
+</span>   173    <span class="xdoc">     *  <b>@a(returns)</b>          HdrType of the event
+</span>   174    <span class="xdoc">     */</span>
+   175        @Macro HdrType getHdrType(UInt32 eventWord1);
+   176    
+   177        <span class="xdoc">/*!
+</span>   178    <span class="xdoc">     *  ======== setHdrType ========
+</span>   179    <span class="xdoc">     *  Sets the header type in the event header
+</span>   180    <span class="xdoc">     *
+</span>   181    <span class="xdoc">     *  <b>@param(eventWord1)</b>   the first word of the event header to be updated
+</span>   182    <span class="xdoc">     *  <b>@param(HdrType hdrType)</b>  the new header type
+</span>   183    <span class="xdoc">     */</span>
+   184        @Macro Void setHdrType(UInt32 eventWord1, EventHdr.HdrType hdrType);
+   185    
+   186        <span class="xdoc">/*!
+</span>   187    <span class="xdoc">     *  ======== getLength ========
+</span>   188    <span class="xdoc">     *  gets the event length (in bytes) from the event header
+</span>   189    <span class="xdoc">     *
+</span>   190    <span class="xdoc">     *  <b>@param(eventWord1)</b>   first word of the event header
+</span>   191    <span class="xdoc">     */</span>
+   192        @Macro SizeT getLength(UInt32 eventWord1);
+   193    
+   194        <span class="xdoc">/*!
+</span>   195    <span class="xdoc">     *  ======== setLength ========
+</span>   196    <span class="xdoc">     *  sets the event length (in bytes) in the event header
+</span>   197    <span class="xdoc">     *
+</span>   198    <span class="xdoc">     *  <b>@param(eventWord1)</b>   first word of the event header
+</span>   199    <span class="xdoc">     *  <b>@param(eventLength)</b>    the new event length
+</span>   200    <span class="xdoc">     */</span>
+   201        @Macro Void setLength(UInt32 eventWord1, SizeT eventLength);
+   202    
+   203        <span class="xdoc">/*!
+</span>   204    <span class="xdoc">     *  ======== getSeqCount ========
+</span>   205    <span class="xdoc">     *  gets the sequence count from the message header
+</span>   206    <span class="xdoc">     *
+</span>   207    <span class="xdoc">     *  <b>@param(eventWord1)</b>   first word of the event header
+</span>   208    <span class="xdoc">     */</span>
+   209        @Macro UInt16 getSeqCount(UInt32 eventWord1);
+   210    
+   211        <span class="xdoc">/*!
+</span>   212    <span class="xdoc">     *  ======== setSeqCount ========
+</span>   213    <span class="xdoc">     *  sets the sequence count in the message header
+</span>   214    <span class="xdoc">     *
+</span>   215    <span class="xdoc">     *  <b>@param(eventWord1)</b>   first word of the event header
+</span>   216    <span class="xdoc">     *  <b>@param(seqCount)</b>     the new message sequence count
+</span>   217    <span class="xdoc">     */</span>
+   218        @Macro Void setSeqCount(UInt32 eventWord1, UInt16 seqCount);
+   219    
+   220        <span class="xdoc">/*!
+</span>   221    <span class="xdoc">     *  ======== genEventHdrWord1 ========
+</span>   222    <span class="xdoc">     *  generates the first word to use in an Event header
+</span>   223    <span class="xdoc">     *
+</span>   224    <span class="xdoc">     *  <b>@param(numBytesInEvent)</b>  number of bytes in the event
+</span>   225    <span class="xdoc">     *  <b>@param(seqCount)</b>            sequence count number to tag the event with
+</span>   226    <span class="xdoc">     *  <b>@param(eventHdrType)</b>        type of event header for this event
+</span>   227    <span class="xdoc">     */</span>
+   228        @Macro UInt32 genEventHdrWord1(SizeT numBytesInEvent, UInt16 seqCount,
+   229                                       EventHdr.HdrType eventHdrType);
+   230    
+   231        <span class="xdoc">/*!
+</span>   232    <span class="xdoc">     *  ======== genEventWithPrevLenHdrWord1 ========
+</span>   233    <span class="xdoc">     *  generates the first word to use in a header that contains the length of the previous event
+</span>   234    <span class="xdoc">     *
+</span>   235    <span class="xdoc">     *  <b>@param(numBytesInEvent)</b>  number of bytes in the event
+</span>   236    <span class="xdoc">     *  <b>@param(numBytesInPrevEvent)</b>  number of bytes in the previous event
+</span>   237    <span class="xdoc">     *  <b>@param(seqCount)</b>            sequence count number to tag the event with
+</span>   238    <span class="xdoc">     *  <b>@param(eventHdrType)</b>        type of event header for this event
+</span>   239    <span class="xdoc">     */</span>
+   240        @Macro UInt32 genEventWithPrevLenHdrWord1(SizeT numBytesInEvent, SizeT numBytesInPrevEvent, UInt16 seqCount,
+   241                                       EventHdr.HdrType eventHdrType);
+   242    
+   243        <span class="xdoc">/*!
+</span>   244    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   245    <span class="xdoc">     *  ======== getEventHdrWithPrevLenSeqCount ========
+</span>   246    <span class="xdoc">     *  Extract the sequence number from an EventHdr with previous length.
+</span>   247    <span class="xdoc">     *  For testing.
+</span>   248    <span class="xdoc">     */</span>
+   249        @Macro UInt32 getEventHdrWithPrevLenSeqCount(UInt32 word);
+   250    
+   251        <span class="xdoc">/*!
+</span>   252    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   253    <span class="xdoc">     *  ======== getPrevLength ========
+</span>   254    <span class="xdoc">     *  Extract the length of the previous event from an EventHdr with previous
+</span>   255    <span class="xdoc">     *  length.  For testing.
+</span>   256    <span class="xdoc">     */</span>
+   257        @Macro UInt32 getPrevLength(UInt32 word);
+   258    }
+</pre>
+</body></html>

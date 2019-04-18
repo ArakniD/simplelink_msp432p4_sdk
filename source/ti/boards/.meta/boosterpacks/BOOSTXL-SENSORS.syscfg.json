@@ -1,0 +1,267 @@
+/*
+ * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ *  ======== BOOSTXL-SENSORS.syscfg.json ========
+ */
+
+/*
+ *  Standard portable signal type names:
+ *     DOUT
+ *     AIN
+ *     AOUT
+ *     PWM
+ *     UART_RXD
+ *     UART_TXD
+ *     UART_CTS
+ *     UART_RTS
+ *     SPI_SCLK
+ *     SPI_MOSI
+ *     SPI_MISO
+ *     I2C_SDA
+ *     I2C_SCL
+ *
+ *  A signal type is either one of the signal type names above or
+ *  an array of these names.
+ */
+{
+    "name": "BOOSTXL_SENSORS", /* must be C identifier */
+    "displayName": "SENSORS BoosterPack",
+    "headerType": "BoosterPack 40 pin",
+    "components": {
+        "SENSORS_I2C": {
+            "isBus": true,
+            "type": "I2C",
+            "displayName": "Sensors I2C",
+
+            "signals": {
+                /* BP standard: I2C_SDA (MSP P6.4) */
+                "SDA": {"type": "I2C_SDA", "connection": 10},
+
+                /* BP standard: I2C_SCL (MSP P6.5) */
+                "SCL": {"type": "I2C_SCL", "connection":  9}
+            }
+        },
+
+        /* From https://cdn-shop.adafruit.com/datasheets/tmp007.pdf
+         * (SBOS685B - APRIL 2014 - REVISED MAY 2014, no longer on ti.com!)
+         *     7.3.6 Serial Interface
+         *     The TMP007 supports the transmission protocol for both fast
+         *     and fastplus (1 kHz to 1000 kHz) and high-speed (1000 kHz to
+         *     2.5 MHz) mode
+         * 
+         *     7.3.6.2 Serial Bus Address
+         *     ADR1 ADR0 address
+         *     ---- ---- -------
+         *       0    0  1000000 (0x40)
+         *       0    1  1000001 (0x41)
+         *       0   SDA 1000010 (0x42)
+         *       0   SCL 1000011 (0x43)
+         *       1    0  1000100 (0x44)
+         *       1    0  1000101 (0x45)
+         *       1   SDA 1000110 (0x46)
+         *       1   SCL 1000111 (0x47)
+         */
+        "TMP007": {
+            "type": "TMP007",
+            "displayName": "Temperature Sensor",
+            "settings": {
+                "address":  64,  /* 0x40 = 64 */
+                "maxSpeed": 2500 /* 2.5 Mbps (high-speed mode) */
+            },
+
+            "subComponents": {
+                "I2C": {
+                    "link": "SENSORS_I2C"
+                },
+
+                "TMP_INT": {
+                    "type": "SENSOR_INT",
+                    "displayName": "Temperature Interrupt",
+                    "signals": {
+                        "TMP_INT": {
+                            "type": "DIN",
+                            "settings": {
+                                "interruptTrigger": "Rising Edge",
+                                "callbackFunction": "NULL"
+                            },
+                            "connection": 12 /* BP std GPIO|SPI CS (display) */
+                        }
+                    }
+                }
+            }
+        },
+
+        /* https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BMI160-DS000-07.pdf:
+         *     Section 3.2.3: The default I2C address of the device is
+         *     0b1101000 (0x68).  It is used if the SDO pin is pulled to
+         *     'GND'.  The alternative address is 0b1101001 (0x69) is
+         *     selected by pulling the SDO pi to 'VDDIO'.
+         * 
+         *     The I2C interface of the BMI160 is compatible with the I2C
+         *     Specificatopn UM10204 Rev 03 (19 June 2007), available at
+         *     http://www.nxp.com.  The BMI160 supports I2C standard mode and
+         *     fast mode, only 7-bit address mode is supported.
+         * 
+         *     BMI160 also supports an extended I2C mode that allows clock
+         *     frequencies up to 1MHz.  In this mode all timings of the fast
+         *     mode apply and it additionally supports clock frequencies up to
+         *     1MHz.
+         */
+        "BMI160_BMI150": {
+            "type": "BMI160_BMI150",
+            "displayName": "Inertial Measurement Unit",
+            "settings": {
+                "address":  105, /* 0x69 = 96 + 9 */
+                "maxSpeed": 1000 /* 1 Mbps (fast mode plus) */
+            },
+
+            "subComponents": {
+                "I2C": {
+                    "link": "SENSORS_I2C"
+                },
+
+                "INT1": {
+                    "type": "SENSOR_INT",
+                    "displayName": "Acc/Gyro Interrupt 1",
+                    "signals": {
+                        "INT1": {
+                            "type": "DIN",
+                            "settings": {
+                                "interruptTrigger": "Rising Edge",
+                                "callbackFunction" : "NULL"
+                            },
+                            "connection": 5 /* BP standard: GPIO (MSP P4.1) */
+                        }
+                    }
+                },
+
+                "INT2": {
+                    "type": "SENSOR_INT",
+                    "displayName": "Acc/Gyro Interrupt 2",
+                    "signals": {
+                        "INT2": {
+                            "type": "DIN",
+                            "settings": {
+                                "interruptTrigger": "Rising Edge",
+                                "callbackFunction" : "NULL"
+                            },
+                            "connection": 13 /* BP GPIO | SPI CS (MSP P5.0) */
+                        }
+                    }
+                },
+
+                "MAG_INT": {
+                    "type": "SENSOR_INT",
+                    "displayName": "Magnetometer Interrupt",
+                    "signals": {
+                        "MAG_INT": {
+                            "type": "DIN",
+                            "settings": {
+                                "interruptTrigger": "Rising Edge",
+                                "callbackFunction" : "NULL"
+                            },
+                            "connection": 8 /* BP standard GPIO (MSP P4.6) */
+                        }
+                    }
+                }
+            }
+        },
+
+        /* http://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280_DS001-12.pdf:
+         *     Chapter 6: The I2C interface supports the Standard, Fast, and 
+         *     High Speed modes.
+         * 
+         *     Section 6.2: Connecting SDO to GN results in a slave address 
+         *     1110110 (0x76); connection it to VDDIO reults in slave address
+         *     1110111 (0x77), which is the same as BMP280's I2C address.
+         */
+        "BME280": {
+            "type": "BME280",
+            "displayName": "Environmental Sensor",
+
+            "settings": {
+                "address":  119, /* 0x77 = 112 + 7 */
+                "maxSpeed": 3400 /* 3.4 Mbps (high-speed mode) */
+            },
+
+            "subComponents": {
+                "I2C": {
+                    "link": "SENSORS_I2C"
+                }
+            }
+        },
+
+        /* From http://www.ti.com/lit/ds/symlink/opt3001.pdf:
+         *     7.3.4.2 Serial Interface
+         *     The OPT3001 supports the transmission protocol for standard
+         *     mode (up to 100 kHz), fast mode (up to 400 kHz), and high-speed
+         *     mode (up to 2.6 MHz).
+         * 
+         *     7.3.4.1 Serial Bus Address
+         *     ADDR address
+         *     ---- -------
+         *      GND 1000100 (0x44)
+         *      VCC 1000101 (0x45)
+         *      SDA 1000110 (0x46)
+         *      SCL 1000111 (0x47)
+         */
+        "OPT3001": {
+            "type": "OPT3001",
+            "displayName": "Optical Sensor",
+            "settings": {
+                "address":  71,  /* 0x47 = 64 + 7 */
+                "maxSpeed": 2600 /* 2.6 Mbps (high-speed mode) */
+            },
+            "subComponents": {
+                "I2C": {
+                    "link": "SENSORS_I2C"
+                },
+                "OPT_INT": {
+                    "type": "SENSOR_INT",
+                    "displayName": "Optical Interrupt",
+                    "signals": {
+                        "OPT_INT": {
+                            "type": "DIN",
+                            "settings": {
+                                "interruptTrigger": "Rising Edge",
+                                "callbackFunction": "NULL"
+                            },
+                            "connection": 11 /* BP std GPIO|SPI CS (display) */
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

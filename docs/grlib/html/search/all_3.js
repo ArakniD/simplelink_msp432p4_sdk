@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['data',['data',['../struct_graphics___font.html#ac38808c84fe3c4178a876801e4bfcb15',1,'Graphics_Font::data()'],['../struct_graphics___font_ex.html#a9422c1c6fcd967b532a8bb937a6be658',1,'Graphics_FontEx::data()']]],
+  ['disclaimer_2edox',['disclaimer.dox',['../disclaimer_8dox.html',1,'']]],
+  ['display',['display',['../struct_graphics___context.html#a605ed03bd200ed353accf77705f8bcf5',1,'Graphics_Context']]],
+  ['display_2ec',['display.c',['../display_8c.html',1,'']]],
+  ['display_5fapi',['Display_api',['../group__display__api.html',1,'']]],
+  ['displaydata',['displayData',['../struct_graphics___display.html#a4b32fd618fa2a7ba09a9da2289d71428',1,'Graphics_Display']]],
+  ['dpycleardisplay',['DpyClearDisplay',['../group__primitives__api.html#gae933a21e6753e53f6dc6ce6fde2a9ec3',1,'grlib.h']]],
+  ['dpycolortranslate',['DpyColorTranslate',['../group__primitives__api.html#ga4e1479abe3eca731a877a854bbd310f7',1,'grlib.h']]],
+  ['dpyflush',['DpyFlush',['../group__primitives__api.html#ga98347da072ef550d870e819a8910d760',1,'grlib.h']]],
+  ['dpyheightget',['DpyHeightGet',['../group__primitives__api.html#ga79ba17b42e95839f2fc4671b9b6cec28',1,'grlib.h']]],
+  ['dpylinedrawh',['DpyLineDrawH',['../group__primitives__api.html#ga0f0db66058d3c95beb5f89f7541bc96d',1,'grlib.h']]],
+  ['dpylinedrawv',['DpyLineDrawV',['../group__primitives__api.html#gadd18c569da02abd102b01664fa5610a1',1,'grlib.h']]],
+  ['dpypixeldraw',['DpyPixelDraw',['../group__primitives__api.html#gad891d9569519e6f6030502e7af335880',1,'grlib.h']]],
+  ['dpypixeldrawmultiple',['DpyPixelDrawMultiple',['../group__primitives__api.html#ga164431d2ce126ecb3500f9cd9ac18b03',1,'grlib.h']]],
+  ['dpyrectfill',['DpyRectFill',['../group__primitives__api.html#ga65b5da05d99a084219a108c088618421',1,'grlib.h']]],
+  ['dpywidthget',['DpyWidthGet',['../group__primitives__api.html#ga7609a9f7d9d788a944563e323abc87ca',1,'grlib.h']]]
+];

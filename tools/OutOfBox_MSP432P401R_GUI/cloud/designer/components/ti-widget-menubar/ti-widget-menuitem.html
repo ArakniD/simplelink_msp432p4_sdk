@@ -1,0 +1,196 @@
+<!--
+`ti-widget-menuitem` a menu item to add to a menu bar.  May contain sub-menu items.
+    - 
+Example:
+
+    <ti-widget-menubar>
+        <ti-widget-menuitem></ti-widget-menuitem>
+        <ti-widget-menuitem></ti-widget-menuitem>
+        <ti-widget-menuitem></ti-widget-menuitem>
+    </ti-widget-menubar>
+
+See ../demo.html for a full working example of how to use this component.
+
+@group TI Widget
+@element ti-widget-menuitem
+@homepage https://gitorious.design.ti.com/guicomposer-nw/ti-widget-menuitem
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../ti-widget-menubar/ti-widget-abstractmenu.html">
+
+<polymer-element name="ti-widget-menuitem" extends="ti-widget-abstractmenu">
+    <template>
+        <style>
+            *{
+                Box-sizing: Border-box;
+            }
+            
+            .hoverMenu.rightSide {
+                border-radius: 0em .3em .3em .3em;
+                border-width: 1px 1px 1px 1px;
+            }
+
+            .hoverMenu.leftSide {
+                border-radius: .3em 0em .3em .3em;
+                border-width: 1px 1px 1px 1px;
+            }
+
+            .hoverMenu {
+                display: block;
+                z-index: 999;
+                position: absolute;
+                border-color: #118899;
+                border-style: solid;
+                padding: 1em;
+                margin:0px;
+                border-radius: 0 0 .3em .3em;
+                border-width: 0 1px 1px 1px;
+            }
+            li {
+                padding:0px;
+                margin:0px;
+                height:100%;
+            }
+
+            #navContainer {
+                float: left;
+                padding:8px 0 0 0;
+                vertical-align: middle;
+                position: relative;
+            }
+
+			:host(.subMenuItem) .navBtn {
+				margin-left: 24px;
+			}
+			
+            .navBtn {
+                background-repeat: no-repeat;
+                background-position: 10px center;
+                padding: 0 20px 0 20px;
+                text-decoration:none;
+                font-size:1.2em;
+                font-weight:500;
+                white-space: nowrap;
+            }
+        </style>
+
+            <li id="navContainer" on-mouseenter="{{show}}" on-mouseleave="{{hide}}">
+                <span class="navBtn" style="cursor:default">{{name}}</span>
+                <ul class="hoverMenu" id="menuItem" style="display:none;padding:0;list-style-type:none;">
+                    <content></content>
+                </ul>
+            </li>
+    </template>
+    <script>
+
+        Polymer('ti-widget-menuitem',
+                {
+                    _orientation : 'bottom',
+                    icon: undefined,
+                    _iconFound: true,
+                    popupMenuOrientation : function(orientation)
+                    {
+                        if (orientation)
+                        {
+                            this.$.navContainer.style.width = "";
+                            
+                            this._orientation = orientation;
+                            return this;
+                        }
+                        return _orientation;
+                    },
+                    _hoverMenuWidth : 24,
+                    getMenuItem : function()
+                    {
+                        return this;
+                    },
+                    showMenu : function()
+                    {
+                        if (this._orientation === 'bottom')
+                        {
+                            this.$.menuItem.style.top = this.$.navContainer.offsetTop + this.$.navContainer.clientHeight + 'px';
+                            this.$.menuItem.style.right = "";
+                            this.$.menuItem.style.left = "";
+                            this.$.navContainer.style.width = "";
+                            this.$.menuItem.className = "hoverMenu";
+                            this.$.navContainer.className = 'hovering';
+                            this.$.menuItem.style.display = "";
+
+                            // test if menu item is out of bounds
+                            var rect = this.$.menuItem.getBoundingClientRect();
+                            var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+                            if (rect.right > screenWidth)
+                            {
+                                this.$.menuItem.style.right = '0px';
+                            }
+                        }
+                        else if (this._orientation === 'side')
+                        {
+                            this.$.menuItem.style.top = '0px';
+                            this.$.menuItem.style.left = (this.offsetWidth === 0 ? this.offsetParent.clientWidth : this.offsetWidth) + 'px';
+                            this.$.menuItem.style.right = "";
+                            this.$.navContainer.style.width = this.$.menuItem.style.left;
+                            this.$.menuItem.className = "hoverMenu rightSide";
+
+                            this.$.navContainer.className = 'hovering';
+                            this.$.menuItem.style.display = "";
+
+                            // test if menu item is out of bounds
+                            var rect = this.$.menuItem.getBoundingClientRect();
+                            this._hoverMenuWidth = rect.right - rect.left;
+                            var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+                            if (rect.right > screenWidth)
+                            {
+                                this.$.menuItem.style.right = this.$.navContainer.clientWidth + 'px';
+                                this.$.menuItem.style.left = "";
+                                this.$.menuItem.className = "hoverMenu leftSide";
+                            }
+                        }
+                    },
+                    hideMenu : function() 
+                    {
+                        this.$.navContainer.className = '';
+                        this.$.menuItem.style.display = "none";
+                        this.$.menuItem.style.left = "";
+                        this.$.menuItem.style.right = "";
+                        this.$.menuItem.style.top = "";
+                        this.$.menuItem.className = "hoverMenu";
+                    },
+                    getMenuWidth : function()
+                    {
+                        return this.$.navContainer.scrollWidth+1;
+                    }
+                });
+
+    </script>
+</polymer-element>
+    

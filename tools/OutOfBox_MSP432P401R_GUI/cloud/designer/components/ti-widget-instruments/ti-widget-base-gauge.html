@@ -1,0 +1,109 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../ti-widget-common/ti-widget-base.html">
+
+<polymer-element name="ti-widget-base-gauge" extends="ti-widget-base" attributes="titleLabel minValue maxValue decimalPlaces">
+    <script>
+        Polymer ('ti-widget-base-gauge', 
+        {
+            value: 0,
+            _lastValue: 0,
+            minValue: 0,
+            maxValue: 100,
+            _displayValue : "",
+            decimalPlaces : 1,
+            titleLabel : "",
+            valueChanged : function()
+            {
+            	var newValue = +this.value;
+            	if (this._lastValue != this.value)
+            	{
+            		this._lastValue = +this.value;
+            		this.updateValue();
+            		
+            		this._displayValue = newValue.toFixed(this.decimalPlaces);
+            	}
+            },
+            updateValue : function()
+            {
+            	var val = this._lastValue;
+                var min = +this.minValue;
+                var max = +this.maxValue;
+                if (min > max)
+                {
+                	var tmp = max;
+                	max = min;
+                	min = tmp;
+                }
+                val = Math.max(val, min);
+                val = Math.min(val, max);
+                val = (val - min) / (max - min);
+                
+                this.updateGauge(val);
+            },
+            updateGauge : function()
+            {
+            },
+            minValueChanged : function()
+            {
+                this.updateValue();
+            },
+            maxValueChanged : function()
+            {
+                this.updateValue();
+            },
+            cutHex : function(str) 
+            {
+            	return (str.charAt(0)=="#") ? str.substring(1,7):str;
+            },
+            _defaultPercentColors : ["#a9d70b", "#f9c802", "#ff0000"],
+            getColorForPercentage : function(pct, percentColors) 
+            {
+            	var col = percentColors || this._defaultPercentColors;
+            	var grad = true;
+                var no = col.length;
+                if (no === 1) return col[0];
+                var inc = (grad) ? (1 / (no - 1)) : (1 / no);
+                var colors = new Array();
+                for (var i = 0; i < col.length; i++) 
+                {
+	                var percentage = (grad) ? (inc * i) : (inc * (i + 1));
+	                var rval = parseInt((this.cutHex(col[i])).substring(0,2),16);
+	                var gval = parseInt((this.cutHex(col[i])).substring(2,4),16);
+	                var bval = parseInt((this.cutHex(col[i])).substring(4,6),16);
+	                colors[i] = { pct: percentage, color: { r: rval, g: gval, b: bval  } };
+                }
+                    
+                if(pct == 0) 
+                {
+                	return 'rgb(' + [colors[0].color.r, colors[0].color.g, colors[0].color.b].join(',') + ')';
+                }
+                
+				for (var i = 0; i < colors.length; i++) 
+				{
+					if (pct <= colors[i].pct) 
+					{
+						if (grad == true) 
+						{
+						    var lower = colors[i - 1];
+						    var upper = colors[i];
+						    var range = upper.pct - lower.pct;
+						    var rangePct = (pct - lower.pct) / range;
+						    var pctLower = 1 - rangePct;
+						    var pctUpper = rangePct;
+						    var color = {
+						        r: Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
+						        g: Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
+						        b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
+						    };
+						    return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
+						} 
+						else 
+						{
+							return 'rgb(' + [colors[i].color.r, colors[i].color.g, colors[i].color.b].join(',') + ')';
+						}
+					}
+				}
+            }
+        });
+    </script>
+</polymer-element>

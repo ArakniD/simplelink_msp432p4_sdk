@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="struct_n_v_s_r_a_m___h_w_attrs" kind="struct" language="C++" prot="public">
+    <compoundname>NVSRAM_HWAttrs</compoundname>
+    <includes refid="_n_v_s_r_a_m_8h" local="no">NVSRAM.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_n_v_s_r_a_m___h_w_attrs_1a06f0a7a3323a55f6740f7c0a362dcf7d" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* NVSRAM_HWAttrs::regionBase</definition>
+        <argsstring></argsstring>
+        <name>regionBase</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Base address of RAM region </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSRAM.h" line="132" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSRAM.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_n_v_s_r_a_m___h_w_attrs_1ae07d198b33dae009dedfa38897d69b36" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t NVSRAM_HWAttrs::regionSize</definition>
+        <argsstring></argsstring>
+        <name>regionSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The size of the region in bytes </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSRAM.h" line="133" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSRAM.h" bodystart="133" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_n_v_s_r_a_m___h_w_attrs_1aa52893b2c1da0f062d69db8ef4128be9" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t NVSRAM_HWAttrs::sectorSize</definition>
+        <argsstring></argsstring>
+        <name>sectorSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sector size in bytes </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSRAM.h" line="134" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSRAM.h" bodystart="134" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>NVSRAM Hardware Attributes. </para>    </briefdescription>
+    <detaileddescription>
+<para>The &apos;sectorSize&apos; is the minimal amount of data to that is cleared on an erase operation. Devices which feature internal FLASH memory usually have a 4096 byte sector size (refer to device specific documentation). It is recommended that the &apos;sectorSize&apos; used match the FLASH memory sector size.</para><para>The &apos;regionBase&apos; field must point to the base address of the region to be managed. It is also required that the region be aligned on a sectorSize boundary (example below to demonstrate how to do this).</para><para>The &apos;regionSize&apos; must be an integer multiple of the &apos;sectorSize&apos;.</para><para>Defining and reserving RAM memory regions can be done entirely within the Board.c file.</para><para>The example below defines a char array, &apos;ramBuf&apos; and uses compiler pragmas to place &apos;ramBuf&apos; at an aligned address within RAM.</para><para><programlisting><codeline><highlight class="normal">#define<sp/>SECTORSIZE<sp/>(4096)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">static<sp/>char<sp/>ramBuf[SECTORSIZE<sp/>*<sp/>4]<sp/>__attribute__<sp/>((aligned<sp/>(4096)));</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">NVSRAM_HWAttrs<sp/>NVSRAMHWAttrs[1]<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionBase<sp/>=<sp/>(void<sp/>*)<sp/>ramBuf,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionSize<sp/>=<sp/>SECTORSIZE<sp/>*<sp/>4,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.sectorSize<sp/>=<sp/>SECTORSIZE</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting> </para>    </detaileddescription>
+    <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSRAM.h" line="131" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSRAM.h" bodystart="131" bodyend="135"/>
+    <listofallmembers>
+      <member refid="struct_n_v_s_r_a_m___h_w_attrs_1a06f0a7a3323a55f6740f7c0a362dcf7d" prot="public" virt="non-virtual"><scope>NVSRAM_HWAttrs</scope><name>regionBase</name></member>
+      <member refid="struct_n_v_s_r_a_m___h_w_attrs_1ae07d198b33dae009dedfa38897d69b36" prot="public" virt="non-virtual"><scope>NVSRAM_HWAttrs</scope><name>regionSize</name></member>
+      <member refid="struct_n_v_s_r_a_m___h_w_attrs_1aa52893b2c1da0f062d69db8ef4128be9" prot="public" virt="non-virtual"><scope>NVSRAM_HWAttrs</scope><name>sectorSize</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

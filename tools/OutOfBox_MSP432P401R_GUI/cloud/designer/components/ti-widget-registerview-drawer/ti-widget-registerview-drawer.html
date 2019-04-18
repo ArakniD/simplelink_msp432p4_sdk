@@ -1,0 +1,225 @@
+<!--
+`ti-program-model` adds the program model for databinding to a c-program with static variables running on the target.
+    -
+Example:
+
+    <ti-program-model></ti-program-model>
+
+See ../demo.html for a full working example of how to use this component.
+
+@group TI Widgets
+@element ti-widget-registergrid
+@homepage ../ti-guicomposer-helpindex/demo.html
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-toolbar/core-toolbar.html">
+<link rel="import" href="../core-icon-button/core-icon-button.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../ti-widget-registergrid/ti-widget-registergrid.html">
+<link rel="import" href="../ti-widget-propertygrid/ti-widget-propertygrid.html">
+<link rel="import" href="../ti-widget-common/ti-widget-droplist.html">
+<link rel="import" href="../core-drawer-panel/core-drawer-panel.html" >
+<link rel="import" href="../paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../core-resizable/core-resizable.html">
+
+<polymer-element name="ti-widget-registerview-drawer"  >
+    <!-- <script  type='text/javascript'  src='../ti-core-assets/scripts/resizable-tables.js'></script>  -->
+
+    <template >
+        <style>
+            :host {
+                display: block;
+                font-size: small;
+                min-height: 400px;
+            }
+
+        </style>
+        <!--
+        <core-drawer-panel id="core_drawer_panel" responsiveWidth="900px" drawerWidth="350px" rightdrawer="true">
+            <div main layout vertical>
+
+                <core-toolbar id="register_view_toolbar">
+                    <core-icon-button icon="save" id="save_button"></core-icon-button>
+                    <core-icon-button icon="file-download" id="download_button"></core-icon-button>
+                    <paper-button>Write Register</paper-button>
+                    <paper-button>Read Register</paper-button>
+                    <div id="nameDiv" flex align="center">
+                        <label>Update Mode</label><ti-widget-droplist width="150px" items="Immediate,Posted"></ti-widget-droplist></div>
+                </core-toolbar>
+
+                <div id="registerGrid" >
+                    <ti-widget-registergrid id="grid1" style="height:100%"></ti-widget-registergrid>
+                </div>
+
+            </div>
+            <div drawer>
+
+                <core-toolbar style="height:50px;padding-bottom:10px;">
+                    <div id="nameDiv" flex align="center">Field View</div>
+                    <core-icon-button icon="more-vert" id="core_icon_button"></core-icon-button></core-toolbar>
+                <ti-widget-propertygrid titleForPropertyCol="Field" colWidthProperty="200px"  colWidthValue="60%"  namevaluepairs="FD,V04 FD disabled|V04 FD enabled,PWM,PFM|PWM,V04,0"></ti-widget-propertygrid><br/>
+
+            </div>
+        </core-drawer-panel>
+
+-->
+        <core-drawer-panel id="core_drawer_panel" responsiveWidth="{{minWidthForDrawerToBeShown}}px" drawerWidth="300px"  rightdrawer="true">
+
+
+
+            <div main style="background-color:lightgrey;height:100%">
+                <div>
+                    <core-toolbar id="register_view_toolbar" style="font-size:small">
+                        <core-icon-button icon="save" id="save_button"></core-icon-button>
+                        <core-icon-button icon="file-download" id="download_button"></core-icon-button>
+                        <paper-button>Read Register</paper-button>
+                        <paper-button>Write Register</paper-button>
+                        <paper-radio-group layout vertical style="text-align:left;vert-align:middle" selected="Immediate" valueattr="label" selectedindex="0" id="radio_group_updatemode">
+                            <paper-radio-button checked label="Immediate" id="updatemode_immediate" style="padding:0px;"></paper-radio-button>
+                            <paper-radio-button label="Posted" id="updatemode_posted" style="padding:0px;"></paper-radio-button>
+                        </paper-radio-group>
+                        <div id="nameDiv" flex align="center" style="color:white">
+                            <!--   <label>Update Mode</label><ti-widget-droplist width="150px" labels="Immediate,Posted"></ti-widget-droplist></div>
+                            -->
+                            <core-icon-button core-drawer-toggle icon="more-horiz" id="core_icon_button" style="float:right"></core-icon-button>
+                        </div>
+                    </core-toolbar>
+
+                    <div id="registerGrid" style="height:100%;" >
+                        <ti-widget-registergrid id="grid1" style="width:100%;"></ti-widget-registergrid>
+                    </div>
+                </div>
+            </div>
+            <div drawer style="background-color:white">
+            <core-toolbar >
+
+                <div id="div" flex>Field View</div>
+                <core-icon-button core-drawer-toggle icon="close" id="core_icon_button" style="float:right"></core-icon-button>
+
+            </core-toolbar>
+            <ti-widget-propertygrid id="property_grid" style="width:100%"></ti-widget-propertygrid>
+            </div>
+        </core-drawer-panel>
+
+
+
+
+        <!--
+<div flex>
+
+<core-toolbar style="height:40px">
+
+<div id="div" flex>Field View</div>
+<core-icon-button icon="vert-menu" id="core_icon_button"></core-icon-button>
+</core-toolbar>
+<ti-widget-propertygrid style="width:100%"></ti-widget-propertygrid>
+
+    </div>
+    -->
+
+
+    </template>
+    <script>
+        Polymer ('ti-widget-registerview-drawer', {
+
+            publish: {
+                maxBitWidth: 8,
+                minWidthForDrawerToBeShown: 1760,
+                gridWidth: undefined,
+                gridHeight: undefined
+            },
+            maxBitWidthChanged: function() {
+                if (this.$.grid1 !== undefined) {
+                    if (this.$.grid1.gridWidth !== undefined) {
+
+                        //this.gridWidth = this.$.grid1.gridWidth;
+                        this.gridHeight = this.$.grid1.height;
+
+                        console.log('maxBitWidth = ' + this.maxBitWidth + '. grid width = ' + this.$.grid1.gridWidth);
+                    }
+
+                    this.$.grid1.maxBitWidth = this.maxBitWidth;
+
+                    console.log('minWidthForDrawerToBeShown = ' + this.minWidthForDrawerToBeShown);
+                }
+                //this.gridWidth = 332 + 20 * this.maxBitWidth;
+                var _self = this;
+                window.setTimeout(function(){
+                    _self.minWidthForDrawerToBeShown = 300 + 120+ _self.$.grid1.getTableWidth();
+                },200);
+            },
+            eventDelegates: {
+                'core-resize': 'updateSize'
+            },
+            gridWidthChanged: function(){
+                if ((this.gridWidth !== undefined)&&(!isNaN(this.gridWidth))) {
+                    if (this.$.grid1.gridWidth !== this.gridWidth) {
+                //        this.$.grid1.gridWidth = this.gridWidth;
+                    }
+                } else {
+                    console.log('ti-widget-registerview:\ failed to set grid1.gridWidth.')
+                }
+
+            },
+            gridHeightChanged: function(){
+                var viewHeight = this.offsetHeight;
+                var toolbarHeight = this.$.register_view_toolbar.offsetHeight;
+                var padding = 30;
+                var newHeight = viewHeight-toolbarHeight-padding;
+                if (this.$.grid1 !== undefined)  {
+                    this.$.grid1.setGridHeight(newHeight);
+
+                    if (this.$.grid1.gridWidth !== undefined) {
+                        this.gridWidth = this.$.grid1.gridWidth;
+                    }
+                }
+            },
+            ready: function(){
+                this.$.property_grid.titleForPropertyCol="Field";
+                this.$.property_grid.nameValuePairs="FD,V04 FD disabled|V04 FD enabled,PWM,PFM|PWM,V04,0";
+                //this.gridWidth = this.$.grid1.gridWidth;
+
+
+            },
+            domReady: function(){
+                this.gridHeightChanged();
+                this.maxBitWidthChanged();
+                var _self = this;
+                window.onresize = function(e){
+                    console.log("Got a resize Event!");
+                    _self.gridHeightChanged();
+                };
+            }
+        });
+    </script>
+</polymer-element>

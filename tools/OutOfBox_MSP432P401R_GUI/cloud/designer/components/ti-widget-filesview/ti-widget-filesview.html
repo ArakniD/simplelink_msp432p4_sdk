@@ -1,0 +1,483 @@
+<link rel="import" href="../polymer/polymer.html">
+<link href="../core-a11y-keys/core-a11y-keys.html" rel="import">
+<link href="../core-icons/core-icons.html" rel="import">
+<link href="../core-icons/av-icons.html" rel="import">
+
+<link href="../core-toolbar/core-toolbar.html" rel="import">
+<link href="../core-icon-button/core-icon-button.html" rel="import">
+<link href="../core-menu-button/core-menu-button.html" rel="import">
+<link href="../paper-dialog/paper-action-dialog.html" rel="import">
+
+<polymer-element name="ti-widget-filesview">
+
+    <template >
+
+        <style>
+
+            body {
+                margin: 0px;
+                padding: 0px;
+                font-family: 'Open Sans', sans-serif !important;
+                position: static;
+            }
+            core-dropdown {
+                border: 1px solid #ccc;
+                font-family: 'Open Sans', sans-serif !important;
+                font-size: small;
+                border-radius: 3px;
+            }
+            core-toolbar {
+                background-color:white;
+                text-align:left;
+            }
+            #title {
+                -webkit-transform-origin: 0;
+                transform-origin: 0;
+                font-size: large;
+                font-weight: bold;
+            }
+        </style>
+
+
+        <core-toolbar >
+            <core-icon-button icon="folder-open" style="float:left;" on-click="{{openExplorer}}"></core-icon-button>
+            <!--
+        <core-menu-button>
+
+            <core-icon-button icon="more-vert" style="float:left;border:0px;"></core-icon-button>
+            <core-dropdown class="dropdown" halign="left" valign="top">
+                <core-menu id="fileOperationsMenu" on-core-select="{{selectAction}}" enabled="false">
+                    <core-item id="cut_action" icon="content-cut" label="Cut" horizontal center layout></core-item>
+                    <core-item id="copy_action" icon="content-copy" label="Copy" horizontal center layout></core-item>
+                    <core-item id="paste_action" icon="content-paste" label="Paste" horizontal center layout></core-item>
+                    <core-item id="delete_action" icon="delete" label="Delete" horizontal center layout></core-item>
+                    <core-item id="rename_action" icon="more-horiz" label="Rename" horizontal center layout></core-item>
+                </core-menu>
+            </core-dropdown>
+
+            </core-menu-button>
+                            -->
+            <div id="title" class="bottom indent title"  ><span>{{folderName}}</span></div>
+            <div flex></div>
+            <core-icon-button icon="close" on-tap="{{toggle}}" ></core-icon-button>
+
+
+        </core-toolbar>
+        <div flex style="text-align:left;padding-left:5px;font-size:small;font-name:sans-serif;width:{{width}};overflow-y:auto;padding-bottom:30px;">
+            <template id="tableTemplate" repeat="{{item, itemIndex in nodes}}" >
+                <div id="{{itemIndex}}" style="padding-left:{{item.indentInPx+'px'}}" on-click={{selectFile}} on-dblclick={{openFile}} on-keyup="{{selectFile}}" >
+                    <core-icon icon="{{item.iconArrowName}}" style="height:18px;width:18px;padding:0px;{{item.iconArrowDisplayStyle}}" ></core-icon>
+                    <core-icon icon="{{item.iconName}}" style="height:20px;padding:0px;{{item.iconDisplayStyle}}"></core-icon>
+
+                    <template if="{{item.renameFile}}">
+                        <input is="core-input" id="input_{{itemIndex}}" placeholder="{{item.name}}" value="{{item.name}}" />
+                    </template>
+                    <template if="{{!item.renameFile}}">
+                        <span style="font-weight:{{item.fontWeight}};">{{item.name}}</span>
+                    </template>
+
+                </div>
+            </template>
+        </div>
+
+        <!--
+    <style>
+        #core_menu_button {
+            left: 260px;
+            top: 210px;
+            position: absolute;
+        }
+    </style>
+    <core-menu-button id="core_menu_button" icon="more-vert" selected="0" relative>
+        <core-item id="core_item" icon="content-cut" label="Cut" horizontal center layout></core-item>
+        <core-item id="core_item1" icon="content-copy" label="Copy" horizontal center layout></core-item>
+        <core-item id="core_item2" icon="content-paste" label="Paste" horizontal center layout></core-item>
+    </core-menu-button>
+    -->
+    </template>
+    <script>
+        Polymer ('ti-widget-filesview', {
+            indent: 0,
+            debounceCtr: 1, // for some reason, the first action selected from the menu does not bounce...??
+            nodes_ping: [],
+            nodes_pong: [],
+            isPing: true,
+            /**
+             * Fired when the user has double-clicked on a file.  Use on-openfile={{myHandler}} to receive callback
+             * Use var myHandler = function(event, filepath, sender) as handler signature.
+             *
+             * @event openfile
+             */
+            publish: {
+                width: "300px",
+                hilightIndex: -1,
+                nodes: [],
+                selectedIndex: -1,
+                selectedFilePath: "",
+                folderName: "",
+                folderPath:undefined
+            },
+            fs: undefined,
+            path: undefined,
+            toggle: function(){
+                this.fire('filesViewToggled');
+            },
+            _openExplorer: function(){
+                if (typeof process !== 'undefined') {
+                    var path = require('path');
+                    var exec = require('child_process').exec;
+                    if (this.getOS() === 'win') {
+                        var command = 'explorer "' + path.normalize(this.folderPath) + '"';
+                        try {
+                            exec(command);
+                        }
+                        catch (ex) {
+                            console.log('ti-widget-filesview: Exception while opening explorer: ex=' + ex.toString());
+                        }
+                    }
+                    // TODO: add support for other OSes
+                }
+            },
+            openExplorer: undefined,
+            getOS: function(){
+                var os = 'linux';
+                if (navigator.appVersion.indexOf("Mac") != -1)
+                    os = 'osx';
+                if (navigator.appVersion.indexOf("Win") != -1)
+                    os = 'win';
+                return os;
+            },
+            _folderPathChanged: function()  {
+                // empty the array of nodes to prevent duplicates
+                if (this.isPing) {
+                    this.nodes = this.nodes_ping;
+                } else {
+                    this.nodes = this.nodes_pong;
+                }
+                this.nodes.length = 0;
+                if (this.folderPath !== undefined) {
+                    var normalizedPath = this.resolvePath(this.folderPath);
+                    normalizedPath = this.unescapeUnicode(normalizedPath);
+                    if (typeof process !== 'undefined') {
+                        this.folderName = this.path.basename(normalizedPath);
+                        if (normalizedPath.indexOf("file:///") == 0) {
+                            normalizedPath = normalizedPath.substring(8, normalizedPath.length);
+                        }
+
+                        if (this.fs.existsSync(normalizedPath)) {
+
+                            this.injectDir(normalizedPath, 0, this.indent);
+                            //TODO rework so that existing nodes are validated to see if any files or folders have been added / deleted
+                        }
+                    }
+                }
+                this.isPing = !this.isPing;
+            },
+            folderPathChanged: undefined,
+            _refresh: function(){
+                this.folderPathChanged();
+            },
+            refresh: undefined,
+            _selectAction: function(e){
+                if (this.debounceCtr === 1) {  // for some reason, selectAction is called 2x for each menu item click, except for the first one clicked in the session.
+                    console.log("ti-widget-filesview: selectAction = " + this.$.fileOperationsMenu.selected);
+                    var actionStr = "";
+                    switch (this.$.fileOperationsMenu.selected) {
+                        case 0:
+                            actionStr = "cut";
+                            break;
+                        case 1:
+                            actionStr = "copy";
+                            break;
+                        case 2:
+                            actionStr = "paste";
+                            break;
+                        case 3:
+                            actionStr = "delete";
+                            break;
+                        case 4:
+                            actionStr = "rename";
+                            if (this.selectedIndex >= 0){
+                                this.nodes[this.selectedIndex].renameFile = true;
+                            }
+                            break;
+
+                    }
+                    this.debounceCtr = 0;
+                    console.log("ti-widget-filesview: action = "+actionStr);
+                    window.alert(actionStr+" operation not implemented yet...");
+                } else {
+                    this.debounceCtr = 1;
+                }
+            },
+            selectAction: undefined,
+            yesDialogAction: function(e){
+                console.log("yes");
+            },
+            noDialogAction: function(e){
+                console.log("no");
+            },
+            injectDir: function(baseDir,index,indentInPixels){
+                if (typeof process !== 'undefined') {
+                    var files = this.fs.readdirSync(baseDir);
+                    var fileCtr = 0;
+                    if ((files !== undefined) && (files !== null) && (files.length > 0)) {
+                        for (var pass = 0; pass < 2; pass++) {
+                            for (var i = 0, l = files.length; i < l; i++) {
+                                if (true) {//(files[i][0] !== '.') { // ignore hidden
+                                    var filepath = this.path.join(baseDir, files[i]);
+                                    var stat = this.fs.statSync(filepath);
+
+                                    var fileName = this.path.basename(files[i]);
+                                    var insertIndex = index + fileCtr;
+                                    if (pass === 0) {
+
+                                        if (stat.isDirectory()) {
+                                            fileCtr++;
+
+                                            this.nodes.splice((1 + insertIndex), 0, {
+                                                name: fileName,
+                                                isDir: true,
+                                                filePath: filepath,
+                                                parentFolder: baseDir,
+                                                iconName: "folder",
+                                                iconArrowName: "av:play-arrow",
+                                                iconArrowDisplayStyle: "color:grey",
+                                                iconDisplayStyle: "color:gold",
+                                                renameFile: false,
+                                                isOpen: false,
+                                                fontWeight: "normal",
+                                                indentInPx: indentInPixels
+                                            });
+                                        }
+                                    } else {
+
+                                        if (!stat.isDirectory()) {
+                                            fileCtr++;
+                                            this.nodes.splice((1 + insertIndex), 0, {
+                                                name: fileName,
+                                                isDir: false,
+                                                filePath: filepath,
+                                                parentFolder: baseDir,
+                                                iconName: "",
+                                                iconArrowName: "",
+                                                iconArrowDisplayStyle: "color:grey",
+                                                iconDisplayStyle: "visibility:hidden",
+                                                renameFile: false,
+                                                isOpen: false,
+                                                fontWeight: "normal",
+                                                indentInPx: indentInPixels
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            removeDir: function(baseDir,index){
+                var numEntriesToRemove = 0;
+                var i = index+1;
+                while ((i < this.nodes.length) && (this.nodes[i].parentFolder === baseDir)){
+                    numEntriesToRemove++;
+                    i++;
+                }
+                if (numEntriesToRemove > 0) {
+                    this.nodes.splice(index+1, numEntriesToRemove);
+                }
+            },
+            _closeFile: function(filePath){
+
+                for (var i=0;i<this.nodes.length;i++){
+                    var node = this.nodes[i];
+                    if (node.filePath === filePath){
+                        node.fontWeight = 'normal';
+                        break;
+                    }
+                }
+            },
+            closeFile: undefined,
+            _selectFile: function(e) {
+                var tableCell = e.target;
+                if ((tableCell !== undefined)&&(tableCell !== null)) {
+                    var idStr = tableCell.id;
+                    if ((idStr === undefined) || (idStr === "")) {
+                        idStr = tableCell.parentElement.id;
+                    }
+                    if ((idStr !== undefined) && (idStr !== "")) {
+                        var fileIndex = parseInt(idStr);
+                        var node = this.nodes[fileIndex];
+
+                        this.selectedIndex = fileIndex;
+                        this.selectedFilePath = node.filePath;
+                        for (var i=0;i<this.nodes.length;i++){
+                            if (i === this.selectedIndex){
+                                this.nodes[i].fontWeight = 'bold'
+                            } else {
+                                this.nodes[i].fontWeight = 'normal'
+                            }
+                        }
+                    }
+                }
+            },
+            selectFile: undefined,
+            _openFile: function(e) {
+                var tableCell = e.target;
+                if ((tableCell !== undefined)&&(tableCell !== null)) {
+                    var idStr = tableCell.id;
+                    if ((idStr === undefined)||(idStr === "")){
+                        idStr = tableCell.parentElement.id;
+                    }
+                    if ((idStr !== undefined)&&(idStr !== "")) {
+                        var fileIndex = parseInt(idStr);
+                        var node = this.nodes[fileIndex];
+                        var isDir = node.isDir;
+                        if (isDir) {
+                            node.isOpen = !node.isOpen;
+                            if (!node.isOpen) {
+                                node.iconArrowDisplayStyle = "color:grey";
+                                this.removeDir(node.filePath, fileIndex);
+                            } else {
+                                node.iconArrowDisplayStyle = "color:grey;transform:rotate(90deg);";
+                                this.injectDir(node.filePath, fileIndex, node.indentInPx + 20);
+                            }
+                        } else {
+                            node.fontWeight = "bold";
+                            this.selectedIndex = fileIndex;
+                            this.selectedFilePath = node.filePath;
+                            console.log("open file " + node.filePath)
+                            this.fire("openfile");
+                        }
+
+                    }
+                }
+            },
+            openFile: undefined,
+            mouseEnterHdlr: function(e){
+                var tableCell = e.target;
+                if ((tableCell !== undefined)&&(tableCell !== null)) {
+                    var idStr = tableCell.parentElement.id;
+                    if ((idStr === undefined)||(idStr === "")){
+                        idStr = tableCell.parentElement.parentElement.id;
+                    }
+                    this.hilightIndex = parseInt(idStr)
+                }
+            },
+            mouseOutHdlr: function(e){
+                /* var tableCell = e.target;
+                 if ((tableCell !== undefined)&&(tableCell !== null)) {
+
+                 tableCell.style.backgroundColor = 'white';
+                 tableCell.style.color = 'black';
+
+                 }
+                 */
+            },
+            _unescapeUnicode: function (str){
+                var _self = this;
+                var result = str.replace(/((%[0-9a-fA-F]{2})+)/g,
+                        function(value,strToConvert) {
+                            return _self.getUnicodeStr(strToConvert);
+                        });
+                return result;
+            },
+            unescapeUnicode: undefined,
+            getUnicodeStr: function(str){
+
+                var result = "";
+
+                var hexCodesAsStrings = str.split('%');
+                var hexCodes = [];
+                for ( var j = 1; j < hexCodesAsStrings.length; j++){
+                    hexCodes[j-1] = parseInt(hexCodesAsStrings[j],16);
+                }
+                var charCode = 0;
+                var charCode1 = 0;
+                var charCode2 = 0;
+                var charCode3 = 0;
+                var charCode4 = 0;
+                var hexCode = 0;
+                var page = 0;
+                var i = 0;
+                var OK = true;
+
+                while ((i < hexCodes.length)&&(OK)) {
+                    hexCode = hexCodes[i++];
+
+                    if ((hexCode >= 0) && (hexCode <= 0x7F)){
+                        charCode = hexCode;
+                        result = result + String.fromCharCode(charCode);
+                    } else {
+                        if ((i >= hexCodes.length) ||
+                                (hexCodes[i] <= 0x80) || (hexCodes[i] >= 0xBF) ) {
+                            OK = false;
+                        } else {
+                            if ((hexCode >= 0xC0) && (hexCode <= 0xDF)) {
+                                charCode2 = (hexCode & 0x1F);
+                                charCode1 = hexCodes[i++] - 0x80;
+                                charCode = (charCode2 << 6) | charCode1;
+                                result = result + String.fromCharCode(charCode);
+                            } else {
+                                if ((i >= (hexCodes.length - 1)) ||
+                                        (hexCodes[i]   <= 0x80) || (hexCodes[i]   >= 0xBF) ||
+                                        (hexCodes[i+1] <= 0x80) || (hexCodes[i+1] >= 0xBF) ) {
+
+                                    OK = false;
+                                } else {
+                                    if ((hexCode >= 0xE0) && (hexCode <= 0xEF)) {
+                                        charCode3 = (hexCode & 0xF);
+                                        charCode2 = hexCodes[i++] - 0x80;
+                                        charCode1 = hexCodes[i++] - 0x80;
+                                        charCode = (((charCode3 << 6) | charCode2) << 6) | charCode1;
+                                        result = result + String.fromCharCode(charCode);
+
+                                    } else {
+                                        if ((i >= (hexCodes.length - 2)) ||
+                                                (hexCodes[i]   <= 0x80) || (hexCodes[i]   >= 0xBF) ||
+                                                (hexCodes[i+1] <= 0x80) || (hexCodes[i+1] >= 0xBF) ||
+                                                (hexCodes[i+2] <= 0x80) || (hexCodes[i+2] >= 0xBF) ) {
+                                            OK = false;
+                                        } else {
+                                            if ((hexCode >= 0xF0)&&(hexCode <= 0xF7)){
+                                                charCode4 = (hexCode & 0x7);
+                                                charCode3 = hexCodes[i++] - 0x80;
+                                                charCode2 = hexCodes[i++] - 0x80;
+                                                charCode1 = hexCodes[i++] - 0x80;
+                                                charCode = ((((charCode4 << 6) | charCode3 << 6) | charCode2) << 6) | charCode1;
+                                                result = result + String.fromCharCode(charCode);
+
+                                            } else {
+
+                                                OK = false;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+                if (!OK) {
+                    console.log("ti-widget-filesview: failed to convert escaped path to unicode at index = "+i);
+                }
+                return (result);
+            },
+            ready: function(){
+                if (typeof process !== 'undefined') {
+                    this.fs = require('fs');
+                    this.path = require('path');
+                }
+                this.folderPathChanged = this._folderPathChanged.bind(this);
+                this.openExplorer = this._openExplorer.bind(this);
+                this.refresh = this._refresh.bind(this);
+                this.openFile = this._openFile.bind(this);
+                this.selectFile = this._selectFile.bind(this);
+                this.closeFile = this._closeFile.bind(this);
+                this.selectAction = this._selectAction.bind(this);
+                this.unescapeUnicode = this._unescapeUnicode.bind(this);
+            }
+        });
+    </script>
+</polymer-element>

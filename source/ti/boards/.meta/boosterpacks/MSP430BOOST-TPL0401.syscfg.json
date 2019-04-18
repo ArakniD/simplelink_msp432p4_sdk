@@ -1,0 +1,156 @@
+/*
+ * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ *  ======== MSP430BOOST-TPL0401.syscfg.json ========
+ */
+
+{
+    /* user guide/schematics: http://www.ti.com/lit/pdf/SLIU008 */
+    "name"        : "MSP430BOOST_TPL0401",
+    "displayName" : "TPL0401 EVM",
+    "headerType"  : "BoosterPack 40 pin",
+
+    "components"  : {
+        "TPL0401EVM_I2C" : {
+            "type": "I2C",
+            "isBus": true,
+            "displayName": "TPL0401 EVM I2C",
+            "definition": "/ti/boards/components/i2c.json",
+            "connections": {
+                /* signal name : header pin # */
+                "SCL":  14, /* conflicts with BP standard: SPI MISO */
+                "SDA":  15  /* conflicts with BP standard: SPI MOSI */
+            }
+        },
+
+        /* datasheet: http://www.ti.com/lit/ds/symlink/tlc59108.pdf */
+        "TLC59108": {
+            "type": "I2C_LED",
+            "displayName": "Constant-Current LED Sink Driver",
+            "settings": {
+                "address":  64,  /* 0x40 = 64 */
+                "maxSpeed": 1000 /* 1 Mbps (fast mode plus) */
+            },
+            "subComponents": {
+                "I2C": {
+                    "link": "TPL0401EVM_I2C"
+                }
+            }
+        },
+
+        /* datasheet: http://www.ti.com/lit/pdf/SLIS144
+         *     Section 5: 
+         *     Part Number     I2C Addr
+         *     -----------     --------
+         *     TPL0401A-10DCKR 0101110 (0x2E)
+         *     TPL0401B-10DCKR 0111110 (0x3E)
+         * 
+         *     Section 7.6: Fscl max = 400 KHz
+         */
+        "TPL0401A": {
+            "type": "I2C_DPOT",
+            "displayName": "128-TAP Digital Potentiometer",
+            "settings": {
+                "address":  46, /* 0x2E = 46 */
+                "maxSpeed": 400 /* 400 Kbps (fast mode) */
+            },
+            "subComponents": {
+                "I2C": {
+                    "link": "TPL0401EVM_I2C"
+                }
+            }
+        },
+        "TPL0401B": {
+            "type": "I2C_DPOT",
+            "displayName": "128-TAP Digital Potentiometer",
+            "settings": {
+                "address":  62, /* 0x3E = 62 */
+                "maxSpeed": 400 /* 400 Kbps (fast mode) */
+            },
+            "subComponents": {
+                "I2C": {
+                    "link": "TPL0401EVM_I2C"
+                }
+            }
+        },
+
+        /* datasheet: http://www.ti.com/lit/ds/symlink/tca5405.pdf */
+        "TCA5405" : {
+            "type": "TCA5405",
+            "displayName": "TCA5405 Single-Wire Output Expander",
+            "signals": {
+                "digitalOutput": { "type": ["DOUT"], "connection": 8 }
+            }
+        },
+
+        /* datasheet: http://www.ti.com/lit/ds/symlink/tca7408.pdf
+         *    Section 6.6
+         *    Fscl max = 400 KHz
+         * 
+         *    Section 8.3.2
+         *    ADDR address
+         *    ---- -------
+         *     GND 1000011 (0x43)
+         *     VCC 1000100 (0x44)
+         */
+        "TCA7408": {
+            "type": "TCA7408",
+            "displayName": "TCA7408 8-bit I2C I/O Expander",
+            "settings": {
+                "address":  68, /* 0x44 = 68 */
+                "maxSpeed": 400 /* 400 Kbps (fast mode) */
+            },
+            "subComponents": {
+                "I2C": {
+                    "link": "TPL0401EVM_I2C"
+                },
+
+                "INT": {
+                    "type": "GPIO_INT",
+                    "displayName": "GPIO Input Change",
+                    "signals": {
+                        "INT": {
+                            "type": "DIN",
+                            "settings": {
+                                "interruptTrigger": "Rising Edge",
+                                "callbackFunction": "NULL"
+                            },
+                            "connection": 7 /* conflicts with BP standard: SPI CLK */
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

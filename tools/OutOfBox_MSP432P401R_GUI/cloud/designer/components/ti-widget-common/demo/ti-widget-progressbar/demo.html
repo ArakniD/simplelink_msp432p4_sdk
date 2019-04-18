@@ -1,0 +1,99 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+Copyright (c) 2014, Texas Instruments Incorporated
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+*   Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+*   Neither the name of Texas Instruments Incorporated nor the names of
+its contributors may be used to endorse or promote products derived
+from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        if ('registerElement' in document
+                && 'createShadowRoot' in HTMLElement.prototype
+                && 'import' in document.createElement('link')
+                && 'content' in document.createElement('template')) {
+            // We're using a browser with native WC support!
+        } else {
+            document.write('<script src="../../../webcomponentsjs/webcomponents.js"><\/script>');
+        }
+    </script>
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 20px;
+            font-family: sans-serif;
+        }
+
+        .wide { display: block; padding-left: 5px; padding-top:5px; vertical-align:bottom; background-color: gray; }
+        .container {height: 28px; width:120px;}
+    </style>
+
+    <link rel="import" href="../../../ti-core-stylesheets/ti-core-stylesheets.html">
+    <link rel="import" href="../../../ti-widget-common/ti-widget-progressbar.html">
+    <link rel="import" href="../../../ti-widget-common/ti-widget-slider.html">
+    <link rel="import" href="../../../ti-widget-common/ti-widget-droplist.html">
+
+</head>
+
+<body unresolved>
+<h1>ti-widget-progressbar demo</h1>
+
+<template is="auto-binding" id="progressbar_demo">
+    The progressPercent properties of the progress bars below are bound to the slider's value:<br/>
+
+        <ti-widget-slider id="paper_slider" value="20" intermediateChanges hideTicks hidePinValue style="width:45%;"></ti-widget-slider><p>&nbsp;</p>
+
+    <div class="container" style="width:500px;height:200px;background-color:lightblue">White: positon = sticky<br/>Black: position = relative
+       <!-- <ti-widget-droplist labels="fixed,absolute,relative,static" on-selected="{{onSelectedHdlr}}"></ti-widget-droplist> -->
+        <ti-widget-progressbar id="ti_widget_progressbarDarkT" color="#115566" position="absolute" bottomPx="20" leftPx="50" rightPx="160" progressPercent="{{$.paper_slider.value }}%"></ti-widget-progressbar><p>&nbsp;</p>
+        <ti-widget-progressbar id="ti_widget_progressbarMedT" color="#118899" position="absolute" bottomPx="80" leftPx="80" rightPx="220" progressPercent="{{$.paper_slider.value }}%"></ti-widget-progressbar><p>&nbsp;</p>
+        <ti-widget-progressbar id="ti_widget_progressbarLightT" color="#00bbcc" position="absolute" bottomPx="120" leftPx="150" rightPx="360" progressPercent="{{$.paper_slider.value }}%"></ti-widget-progressbar><p>&nbsp;</p>
+        <ti-widget-progressbar id="ti_widget_progressbarWhite" color="white" position="sticky" progressPercent="{{$.paper_slider.value }}%"></ti-widget-progressbar><p>&nbsp;</p>
+        <ti-widget-progressbar id="ti_widget_progressbarBlack" color="black" position="relative" progressPercent="{{$.paper_slider.value }}%"></ti-widget-progressbar><p>&nbsp;</p>
+        <ti-widget-progressbar id="ti_widget_progressbarRed"  position="fixed" progressPercent="{{$.paper_slider.value }}%"></ti-widget-progressbar><p>&nbsp;</p>
+    </div>
+    <p>&nbsp;</p>
+    Light/Med/Dark Torquoise: position = absolute.<p>&nbsp;</p>
+    Red: position = fixed.
+</template>
+<script>
+    var template = document.querySelector('#progressbar_demo');
+    template.onSelectedHdlr = function(event) {
+        console.log("changing position to "+event.target.selectedItem);
+       // template.selectedPosition = event.target.selectedItem;
+    }
+</script>
+</body>
+</html>

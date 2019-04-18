@@ -1,0 +1,73 @@
+<!--
+`ti-widget-editmenu` a sub menu item that performs an action.
+    - 
+Example:
+
+    <ti-widget-menubar>
+        <ti-widget-menuitem></ti-widget-menuitem>
+        <ti-widget-menuitem></ti-widget-menuitem>
+        <ti-widget-menuitem></ti-widget-menuitem>
+    </ti-widget-menubar>
+
+See ../demo.html for a full working example of how to use this component.
+
+@group TI Widget
+@element ti-widget-editmenu
+@homepage https://gitorious.design.ti.com/guicomposer-nw/ti-widget-editmenu
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../ti-widget-menubar/ti-widget-abstractmenu.html">
+<link rel="import" href="../ti-widget-menubar/ti-widget-menuitem.html">
+<link rel="import" href="../ti-widget-menubar/ti-widget-menuaction.html">
+<script type='text/javascript' src="../ti-core-assets/scripts/q.js"></script>
+<script src='src/history.js'></script>
+
+<polymer-element name="ti-widget-editmenu" extends="ti-widget-abstractmenu">
+<template>
+    <ti-widget-menuitem id="EditMenu" name="{{name}}">
+        <ti-widget-menuaction id="EditUndo" icon="undo" name="Undo" description="Undo the last edit operation."></ti-widget-menuaction>
+        <ti-widget-menuaction id="EditRedo" icon="redo" name="Redo" description="Redo the last undo operation."></ti-widget-menuaction>
+        <content></content>
+    </ti-widget-menuitem>
+</template>
+<script>
+    
+    Polymer('ti-widget-editmenu', 
+    {
+        name : 'Edit',
+        getMenuItem : function() { return this.$.EditMenu; }
+    });
+   
+</script>
+</polymer-element>
+    

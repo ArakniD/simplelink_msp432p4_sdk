@@ -1,0 +1,611 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../ti-widget-common/ti-widget-image.html">
+<link rel="import" href="../ti-widget-common/ti-widget-label.html">
+<link rel="import" href="../ti-widget-common/ti-widget-panel.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../ti-widget-propertygrid/ti-widget-propertygrid.html">
+<link rel="import" href="../core-icon-button/core-icon-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../core-tooltip/core-tooltip.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icon/core-icon.html">
+<polymer-element name="ti-guicomposer-newcomponentwizard">
+
+    <template>
+
+
+        <paper-dialog id="paper_dialog" heading="{{dialogTitle}}" transition="paper-dialog-transition" autoCloseDisabled="true" style="background-color: white; ">
+
+            <div align="center">
+                <ti-widget-propertygrid  id="newComponentPropertyGrid" style="width:500px" minwidthproperty="180px" ></ti-widget-propertygrid>
+            </div>
+            <div  align="center" style="padding-left:80px;">
+                <paper-button id="buttonCreateComponent"  on-click="{{onCreateButtonClickedHdlr}}" style="padding-top:3px;">{{createButtonCaption}}</paper-button>
+                <paper-button id="buttonCancel" on-click="{{toggle}}" style="float:right">Close<core-icon icon="close" style="width:18px;"></core-icon></paper-button>
+            </div>
+            <div align="center">
+                <core-icon id="warningIcon" icon="info" style="display:none;color:darkorange" ></core-icon>
+                <ti-widget-label id="statusLabel" style="color:black;" wrap label="status info here."></ti-widget-label>
+            </div>
+        </paper-dialog>
+    </template>
+
+
+    <!-- ------------------------------------------------------------------------------------- -->
+    <script>
+
+
+
+        Polymer ('ti-guicomposer-newcomponentwizard', {
+            /**
+             * Fired when the projectFolder or componentName changes.
+             *
+             * @event projectFolderUpdatedEvent
+             */
+
+            statusLabel: undefined,
+            warningIcon: undefined,
+            gui: undefined,
+            win: undefined,
+            path: undefined,
+            fs: undefined,
+            spawn: undefined,
+            exec: undefined,
+            metadataFile: undefined,
+            bsdLicenceHeader: undefined,
+            workingDir: undefined,
+            baseDir: undefined,
+            designerDir: undefined,
+            designerSplashDir: undefined,
+            isWizardOpen: false,
+            _myTimeout: undefined,
+            copyright: '',
+            hasProjectBeenCreated: false,
+            os: 'win',
+            propertyNameValues: "Component Name,name that follows ti-app- prefix,"+
+            "Palette Label,name used in the designer palette,"+
+            "Palette Group,group name in the designer palette",
+
+            publish: {
+                enableTIbranding: true,
+                isPropertyEditingMode: false,
+                polymerVersion: "0.5.5",
+                createButtonCaption: "Create Component",
+                dialogTitle: "New Component Wizard"
+            },
+
+            /**
+             *
+             */
+            toggle: function() {
+                if (this._myTimeout) {
+                    window.clearTimeout(this._myTimeout);
+                }
+                var isPropertyEditor = false;
+                var dialog = this.$.paper_dialog;
+                if (!this.isWizardOpen) {
+                    if ((isPropertyEditor !== undefined)&&(isPropertyEditor !== null) &&(isPropertyEditor) ) {
+                        this.isPropertyEditingMode = true;
+                    } else {
+                        this.isPropertyEditingMode = false;
+                    }
+                    if (this.isPropertyEditingMode){
+                        this.createButtonCaption = "Update Properties";
+                        this.dialogTitle = "Component Properties";
+                    } else {
+                        this.createButtonCaption = "Create Component";
+                        this.dialogTitle = "New Component Wizard"
+                    }
+                } else {
+                    this.isPropertyEditingMode = false;
+                }
+                this.isWizardOpen = !this.isWizardOpen;
+                this.clearStatus();
+                dialog.toggle();
+            },
+            clearStatus: function(){
+                this.warningIcon.style.display = 'none';
+                this.warningIcon.style.color='blue';
+                this.warningIcon.icon=' ';
+                this.statusLabel.style.display = 'none';
+                this.statusLabel.style.color = 'black';
+                this.statusLabel.innerHtml = '';
+                this.hasProjectBeenCreated = false;
+            },
+            onCreateButtonClickedHdlr: function(){
+                console.log("create button clicked!");
+                var ok = true;
+                this.componentName = undefined;
+
+
+                // Create the project folder
+                this.properties = this.$.newComponentPropertyGrid.getJSON();
+                var tempName = this.properties[0].value;
+                if (tempName.indexOf("ti-app-") >= 0){
+                    this.notifyUser("info","blue","Please do not include the ti-app- prefix in the component name.","black");
+                    ok = false;
+                } else {
+                    if (tempName.length === 0){
+                        this.notifyUser("info","blue","Please enter a component name.","black");
+                        ok = false;
+                    }
+                    tempName = "ti-app-"+tempName.toLowerCase();
+                    this.componentName = tempName;
+                }
+                if (ok) {
+                    // ensure no spaces in the project name
+                    if ((this.componentName !== undefined) && (this.componentName !== null) && (this.componentName.length > 0)) {
+                        this.componentName = this.componentName.replace(/ /g, '-');
+                    }
+                    this.paletteLabel = this.properties[1].value;
+                    this.groupName = this.properties[2].value;
+
+                    this.pkgJsonObj = [];
+                    if ((!this.componentName) || (!this.paletteLabel) || (!this.groupName)) {
+                        this.notifyUser("info", "blue", "Please fill in all fields.", "black");
+                        ok = false;
+                    }
+                }
+                if (ok){
+                    var userSpecifiedDir = this.path.join(this.baseDir, this.componentName)
+                    if (this.fs.existsSync(userSpecifiedDir)){
+                        this.notifyUser("info","blue","A component named "+this.componentName+" already exists.  Please either remove the old project folder or use another name.","black");
+                        ok = false;
+                    }
+                }
+                if (ok) {
+                   // verify that the index.gui file in the current project folder exists
+                    var projectGuiPath = this.path.join(document.gcGlobal.projectFolder,"app/index.gui");
+                    ok = this.fs.existsSync(projectGuiPath);
+                    if (!ok){
+                        this.notifyUser("info","blue","Please create a project that contains a valid .gui file first.","black");
+                    }
+                }
+                if (ok) {
+                    // disable the close button so that user's don't close the dialog
+                    // before the first status message is displayed
+                    this.$.buttonCancel.disabled = true;
+                    if ((this.componentName !== undefined)&&(this.componentName !== null)) {
+                        this.notifyUser("info", "blue", "Copying over files... please wait", "black");
+                        // allow the notification to get displayed by pausing execution
+                        var _self = this;
+                        setTimeout(function () {
+                            _self.createComponent();
+                        }, 10);
+                    }
+                }
+
+            },
+            _createComponent: function(){
+                var _self = this;
+                try {
+                    var componentDir = this.path.join(this.baseDir, this.componentName);
+                    var componentDirCreated = false;
+                    var isNewComponentDir = false;
+
+                    if (!this.fs.existsSync(componentDir)) {
+                        isNewComponentDir = true;
+                        this.fs.mkdirSync(componentDir);
+                        componentDirCreated = true;
+                    }
+
+
+                    if (isNewComponentDir){
+
+                        // copy the index.gui file directly into the component's html file
+                        var projectGuiPath = this.path.join(document.gcGlobal.projectFolder,"app/index.gui");
+                        var guiFile = this.fs.readFileSync(projectGuiPath,"utf8");
+                        // remove the program model from the gist
+                        guiFile = guiFile.replace('<ti-program-model id="pm" class="drag-element"></ti-program-model>','');
+                        // update the name of the component inside the gist
+                        guiFile = guiFile.replace("my-element",this.componentName);
+                        guiFile = guiFile.replace("Polymer({","Polymer('"+this.componentName+"', {\n    ready: function(){\n"+"    },\n");
+                        guiFile = this.getLicenseHeader()+ guiFile;
+                        var htmlFilePath = this.path.join(componentDir,this.componentName+".html");
+                        this.fs.writeFileSync(htmlFilePath,guiFile);
+                        // Generate the metadata.html file
+                        this.genMetadataHtml(this.path.join(componentDir,"metadata.html"), this.componentName,this.paletteLabel,this.groupName);
+                        this.genDemoHtml(this.path.join(componentDir,"demo.html"),componentDir,this.componentName);
+                        this.genBowerJson(componentDir, this.componentName, this.polymerVersion);
+                        // copy over the index.html file from ti-core-backplane (nothing special about ti-core-backplane's
+                        // index.html file - it could be copied from any component that has the standard index.html file)
+                        this.copyFileSync(this.path.join(this.baseDir,"ti-core-backplane/index.html"),this.path.join(componentDir,"index.html"));
+
+                        // add the new component to the ti-app-elements file so that the designer will display it
+                        // in the palette
+                        var ti_app_metadataFilepath = this.path.join(this.baseDir,"ti-app-elements/metadata.html");
+                        var appMetadata = this.fs.readFileSync(ti_app_metadataFilepath,"utf8");
+                        appMetadata += "<link rel=\"import\" href=\"../"+this.componentName+"/metadata.html\">\n";
+                        this.fs.writeFileSync(ti_app_metadataFilepath,appMetadata);
+
+                        var ti_app_elements_filepath = this.path.join(this.baseDir,"ti-app-elements/ti-app-elements.html");
+                        var appElements= this.fs.readFileSync(ti_app_elements_filepath,"utf8");
+                        appElements += "<link rel=\"import\" href=\"../"+this.componentName+"/"+this.componentName+".html\">\n";
+                        this.fs.writeFileSync(ti_app_elements_filepath,appElements);
+
+                        // replicate the folder in all projects' components folders:
+                        var rootDir = this.path.join(this.baseDir,"../../");
+                        var dirs = this.getListOfProjects(rootDir);
+                        for (var i=0;i<dirs.length;i++){
+                            var componentsDir = this.path.join(rootDir,dirs[i]+'/components/');
+                            if (this.fs.existsSync(componentsDir)) {
+                                var dir = this.path.join(componentsDir, this.componentName);
+                                this.copyRecursiveSync(componentDir, dir, false, null, 0);
+                            } else {
+                                console.log("ti-guicomposer-newcomponentwizard: Skipping badly formed project "+dirs[i]);
+                            }
+                        }
+                        this.warningIcon.style.display = '';
+                        this.statusLabel.style.color = 'black';
+                        var msgText = 'Component created successfully! Please restart to refresh palette.'
+                        if (!componentDirCreated) {
+                            msgText = 'Component properties updated.';
+                        }
+                        this.notifyUser("check-circle", "green", msgText, "black");
+                        this.fire("componentListUpdatedEvent");
+                    }
+                } catch (e) {
+                    var errMsg = e.toString();
+                    if ((errMsg === undefined) || (errMsg === null) || (errMsg.length === 0)) {
+                        errMsg = "Error. e.code = " + e.code;
+                    }
+                    console.log(e.toString());
+                    this.notifyUser("error", "red", errMsg, "red");
+                }
+            },
+            createComponent: undefined,
+            _getListOfProjects: function(rootDir){
+                //todo: refactor (duplicate of code in ti-guicomposer-quickstart
+                var files = this.fs.readdirSync(rootDir);
+                var filePath = rootDir;
+                var dirs = [];
+
+                for(var i=0, l=files.length; i<l; i++) {
+                    if(files[i][0] !== '.') { // ignore hidden
+                        filePath = this.path.join(rootDir, files[i]);
+                        var stat = this.fs.statSync(filePath);
+                        if (stat.isDirectory()) {
+                            var folderName = this.path.basename(files[i]);
+                            switch (folderName) {
+                                case 'win32':
+                                    break;
+                                case 'linux':
+                                    break;
+                                case 'mac' :
+                                    break;
+                                case 'designer' :
+                                    break;
+                                case 'node_modules':
+                                    break;
+                                default:
+                                    dirs.push(folderName);
+                                    break;
+                            }
+                        }
+                    }
+                }
+                return dirs;
+
+            },
+            getListOfProjects: undefined,
+            _notifyUser: function(iconName,iconColor, msgText, textColor){
+                var _self = this;
+
+                this.async(function() {
+                    if (_self.statusLabel) {
+                        if ((msgText !== undefined) && (msgText !== null)) {
+                            _self.statusLabel.style.color = textColor;
+                            _self.statusLabel.label = msgText;
+                            _self.statusLabel.style.display = '';
+                        } else {
+                            _self.statusLabel.style.display = 'none';
+                        }
+                        if (iconName) {
+                            _self.warningIcon.style.color = iconColor;
+                            _self.warningIcon.icon = iconName;
+                            _self.warningIcon.style.display = '';
+                        } else {
+                            _self.warningIcon.style.display = 'none';
+                        }
+                        if (_self.$.buttonCancel.disabled){
+                            if ((iconColor === 'red')||(iconColor === 'green')){
+                                _self.$.buttonCancel.disabled = false;
+                            }
+                        }
+                    }
+
+                });
+            },
+            notifyUser: undefined,
+            numTimesWaiting: 0,
+            _waitForFile: function(fileName) {
+                var _self = this;
+                fs.exists(fileName),function(exists) {
+                    if (!exists) {
+                        console.log("wait " + _self.numTimesWaiting++);
+                        if (_self.numTimesWaiting > 100) {
+                            throw "waiting too long for " + fileName;
+                        } else {
+                            setTimeout(_self.waitForFile(fileName), 50);
+                        }
+
+                    } else {
+                        _self.numTimesWaiting = 0;
+                    }
+                }
+            },
+            waitForFile: undefined,
+            setDefaultProperties: function(){
+                    var groupRow = this.$.newComponentPropertyGrid.findRow('group');
+                    if (groupRow >= 0) {
+                        this.$.newComponentPropertyGrid.setValue(groupRow,"TI Apps");
+                    }
+            },
+            _getLicenseHeader: function(){
+                var result = "<!--\n" +
+                this.copyright+"\n" +
+                "All rights reserved.\n" +
+                "\n" +
+                "Redistribution and use in source and binary forms, with or without\n" +
+                "modification, are permitted provided that the following conditions\n" +
+                "are met:\n" +
+                "\n" +
+                "*   Redistributions of source code must retain the above copyright\n" +
+                "notice, this list of conditions and the following disclaimer.\n" +
+                "notice, this list of conditions and the following disclaimer in the\n" +
+                "documentation and/or other materials provided with the distribution.\n" +
+                "*   Neither the name of Texas Instruments Incorporated nor the names of\n" +
+                "its contributors may be used to endorse or promote products derived\n" +
+                "from this software without specific prior written permission.\n" +
+                "\n" +
+                "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\n" +
+                "AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,\n" +
+                "THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR\n" +
+                "PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR\n" +
+                "CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,\n" +
+                "EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,\n" +
+                "PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;\n" +
+                "OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,\n" +
+                "WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR\n" +
+                "OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,\n" +
+                "EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n" +
+                "-->\n";
+                return result;
+
+            },
+            getLicenseHeader: undefined,
+            _genMetadataHtml: function(outputFileName,componentName,componentLabel,componentGroup){
+
+                // Note: the application name is the same as the folder name that the application is in
+                var metadataFile = this.getLicenseHeader()+
+
+                        "<x-meta id=\""+this.componentName+"\" label=\""+componentLabel+"\" group=\""+componentGroup+"\">\n" +
+                        "<template>\n" +
+                        "<"+this.componentName+ " style=\"width:100%;height:100%\"></"+componentName+">\n" +
+                        "</template>\n" +
+                        "\n" +
+                        "<template id=\"imports\">\n" +
+                        "<link rel=\"import\" href=\""+componentName+".html\">\n" +
+                        "</template>\n" +
+                        "</x-meta>\n";
+
+                try {
+                    this.fs.writeFileSync(outputFileName,  metadataFile);
+                }
+                catch(exXml){
+                    console.log("Error writing "+outputFileName+".  ex="+exXml.toString());
+                }
+            },
+            genMetadataHtml: undefined,
+            _genDemoHtml: function(outputFileName,projectDir, componentName){
+                var demoFile =  "<!DOCTYPE html>\n" +this.getLicenseHeader() +
+                "<html>\n" +
+                "<head>\n" +
+                "  <title>"+componentName+"<\/title>\n" +
+                "  <meta name=\"viewport\" content=\"width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes\">\n" +
+                "  <script src=\"..\/webcomponentsjs\/webcomponents.js\"><\/script>\n" +
+                "  <link rel=\"import\" href=\""+componentName+".html\">\n" +
+                "  <style>\n" +
+                "    body {\n" +
+                "      height: 100%;\n" +
+                "      margin: 0;\n" +
+                "      padding: 20px;\n" +
+                "      font-family: sans-serif;\n" +
+                "    }\n" +
+                "<\/style>\n" +
+                "\n" +
+                " <\/head>\n" +
+                " <body>\n" +
+                " <div style=\"text-align:center\"><h1>"+componentName+" demo</h1></div>\n" +
+                " <"+componentName+" id=\"demo_id\" ></"+componentName+"><p>&nbsp;</p>\n" +
+                "\n" +
+                "<script>\n" +
+                "<\/script>\n" +
+                "<\/body>\n" +
+                "<\/html>\n";
+                try {
+                    this.fs.writeFileSync(outputFileName, demoFile);
+                }
+                catch(exXml){
+                    console.log("Error writing "+outputFileName+".  ex="+exXml.toString());
+                }
+            },
+            genDemoHtml: undefined,
+            _genBowerJson: function(folderName, componentName, polymerVersion){
+                var bowerFile =  "{\n" +
+                    "\"name\": \""+componentName+"\",\n" +
+                    "\"private\": true,\n" +
+                    "\"dependencies\": {\n" +
+                    "  \"polymer\": \"Polymer/polymer#~"+polymerVersion+"\"\n";
+                //TODO: add dependencies for Polymer/core- and Polymer/paper- components as well
+                // as gitorious paths for ti- components
+                bowerFile +=  "  }\n" +
+                            "}";
+
+                try {
+                    this.fs.writeFileSync(this.path.join(folderName,"bower.json"), bowerFile);
+                    this.fs.writeFileSync(this.path.join(folderName,".bower.json"), bowerFile);
+                }
+                catch(exXml){
+                    console.log("Error writing "+outputFileName+".  ex="+exXml.toString());
+                }
+
+            },
+            genBowerJson: undefined,
+            _copyFile: function(src,dest){
+                this.fs.createReadStream(src).pipe(this.fs.createWriteStream(dest));
+            },
+            copyFile: undefined,
+            _copyFileSync: function(src,dest){
+                // see http://stackoverflow.com/questions/19268723/nodejs-with-child-process-how-to-escape-my-command
+                    try {
+                        var buffer = this.fs.readFileSync(src, buffer);
+                        if (buffer.length > 0) {
+                            this.fs.writeFileSync(dest, buffer);
+                        } else {
+                            throw "attempted to copy an empty file: " + src;
+                        }
+                        //              this.execSync('xcopy "'+src+'" "'+dest+'" /y /i');
+                    }
+                    catch(ex){
+                        throw "error copying file "+src+" ex="+ex.toString();
+                    }
+            },
+            copyFileSync: undefined,
+            /**
+             *   if useLinks parameter is true, the files are linked using fs.linkSync instead of copying them.
+             *   This uses much less memory and time than synchronously copying over the files.
+             *   However, all changes made to the file in either the source or destination folder
+             *   will be seen in both folders (subject to cacheing??)
+             */
+            copyRecursiveSync: function(src, dest, useLinks, skipFolderLists,levelIndex) {
+                var exists = this.fs.existsSync(src);
+                var stats = exists && this.fs.statSync(src);
+                var isDirectory = exists && stats.isDirectory();
+                var _self = this;
+                if (exists && isDirectory) {
+                    var dirName = this.path.basename(src);
+                    var skipThisFolder = false;
+                    if ((skipFolderLists !== null) && (levelIndex >= 0) && (levelIndex < skipFolderLists.length)){
+                        var skipFolderList = skipFolderLists[levelIndex++];
+                        if (skipFolderList !== null) {
+                            for (var j = 0; j < skipFolderList.length; ++j) {
+                                var skipFolderName = skipFolderList[j];
+                                if (dirName === skipFolderName) {
+                                    skipThisFolder = true;
+                                    console.log("skipping folder ["+stats.size+"] "+src);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (!skipThisFolder) {
+                        this.fs.mkdirSync(dest);
+                        this.fs.readdirSync(src).forEach(function (childItemName) {
+                            _self.copyRecursiveSync(this.path.join(src, childItemName),
+                                    this.path.join(dest, childItemName), useLinks, skipFolderLists,levelIndex );
+                        });
+                    }
+                } else {
+                    if (useLinks){
+                        //  fs.linkSync creates a link of the file, not an actual copy
+                        //  however, this uses much less memory and time and is less prone to crashing
+                        //  than attempting to do an actual streaming copy of the file.
+                        this.fs.linkSync(src, dest);
+                    } else {
+                        _self.copyFileSync(src,dest);
+                    }
+                }
+            },
+            execSync: function(command){
+                //TODO: when nw.js has moved to Node.js v12.0 API or the io.js equivalent, replace the following with child_process.execSync
+                // The problem with the following is that it is NOT done synchronously, so execSync is a misnomer at this time.
+                var output = '';
+                try {
+                    this.exec(command);
+                }
+                catch(ex){
+                    console.log('Exception while running execSync: ex='+ex.toString());
+                }
+                return output;
+            },
+
+            _xcopyRecursive: function(src,dest){
+                if (this.os === 'win'){
+                    this.execSync('xcopy "'+src+'" "'+dest+'" /s /y /i');
+                } else {
+                    throw 'xcopy not supported on '+this.os;
+                }
+            },
+            xcopyRecursive: undefined,
+            ready: function () {
+                this.enableTIbranding =  document.gcGlobal.tiBrandingEnabled;
+                this.gui = require('nw.gui');
+                this.win = this.gui.Window.get();
+                this.path = require('path');
+                this.fs = require('fs');
+                this.onFinished = require('on-finished');
+                this.destroy = require('destroy');
+                var year = new Date().getFullYear();
+
+                if (this.enableTIbranding){
+                    this.copyright = "Copyright " + year + ". Texas Instruments Incorporated. All rights reserved.";
+                } else {
+                    this.copyright = "Copyright " + year + ".";
+                }
+
+                if ((localStorage !== undefined)&&(localStorage !== null)) {
+                    if (localStorage.copyrightProperty !== undefined) {
+                        this.copyright = localStorage.copyrightProperty;
+                    }
+                }
+                this.workingDir = this.path.normalize(process.cwd());
+                this.baseDir = this.path.join(workingDir,'../../designer/components');
+                if (this.baseDir.lastIndexOf("designer") === (this.baseDir.length-8)){
+                    this.baseDir = this.path.join(this.baseDir,'..');
+                }
+                console.log('baseDir = '+this.baseDir);
+                this.statusLabel = this.$.statusLabel;
+                this.warningIcon = this.$.warningIcon;
+                this.genMetadataHtml = this._genMetadataHtml.bind(this);
+                this.genDemoHtml = this._genDemoHtml.bind(this);
+                this.getLicenseHeader = this._getLicenseHeader.bind(this);
+                this.genBowerJson = this._genBowerJson.bind(this);
+                this.createComponent = this._createComponent.bind(this);
+                this.notifyUser = this._notifyUser.bind(this);
+                this.waitForFile = this._waitForFile.bind(this);
+                this.spawn = require("child_process").spawn;
+                this.exec = require('child_process').exec;
+                this.copyFile = this._copyFile.bind(this);
+                this.copyFileSync = this._copyFileSync.bind(this);
+                this.xcopyRecursive = this._xcopyRecursive.bind(this);
+                this.getListOfProjects = this._getListOfProjects.bind(this);
+
+                this.$.newComponentPropertyGrid.nameValuePairs = this.propertyNameValues;
+                this.$.newComponentPropertyGrid.nameValuePairsChanged();  // avoid race condition by forcing the update of the nameValuePairs
+                this.setDefaultProperties();
+                this.os = 'linux';
+                if (navigator.appVersion.indexOf("Mac") != -1)
+                    this.os = 'osx';
+                if (navigator.appVersion.indexOf("Win") != -1)
+                    this.os = 'win';
+
+                var _self = this;
+                // Workaround to ensure paper dialog is properly position: see https://github.com/Polymer/paper-dialog/issues/44
+                this.$.paper_dialog.addEventListener("core-overlay-open-completed", function (e) {
+                    setTimeout(function(){
+                        //_self.$.paper_dialog.resetTargetDimensions();
+                        _self.$.paper_dialog.updateTargetDimensions();
+                    },400);
+                });
+
+            },
+            domReady: function(){
+                this.$.newComponentPropertyGrid.configure();
+            }
+
+        });
+    </script>
+
+</polymer-element>

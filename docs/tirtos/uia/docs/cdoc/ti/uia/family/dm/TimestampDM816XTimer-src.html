@@ -1,0 +1,375 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.family.dm.TimestampDM816XTimer</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012-2013, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> * ======== TimestampDM816XTimer.xdc ========
+</span>    35    <span class="comment"> */</span>
+    36    <span class=key>package</span> ti.uia.family.dm;
+    37    
+    38    import xdc.runtime.Types;
+    39    
+    40    <span class="xdoc">/*!
+</span>    41    <span class="xdoc"> *  ======== TimestampDM8168Timer.xdc ========
+</span>    42    <span class="xdoc"> *  Implementation of `{<b>@link</b> ITimestampProvider}` using DM General purpose
+</span>    43    <span class="xdoc"> *  32b timer.  NOTE: for ARM devices, address values should be virtual
+</span>    44    <span class="xdoc"> *  addresses as seen by the CPU.
+</span>    45    <span class="xdoc"> */</span>
+    46    @ModuleStartup
+    47    @Gated
+    48    <span class=key>module</span> TimestampDM816XTimer <span class=key>inherits</span> ti.uia.runtime.IUIATimestampProvider {
+    49    
+    50        <span class="xdoc">/*!
+</span>    51    <span class="xdoc">     * ======== TimerInstance ========
+</span>    52    <span class="xdoc">     * Enumeration that defines the base addresses for each timer instance
+</span>    53    <span class="xdoc">     *  of the DM8168 device.
+</span>    54    <span class="xdoc">     */</span>
+    55        <span class=key>enum</span> BaseAdrs {
+    56            <span class="comment">/* Timer 0-2 are reserved for Linux.  Timer 3 reserved for DSP */</span>
+    57            <span class="comment">/* Both CortexM3 and CortexA8 have the same base addresses for the timers */</span>
+    58            BaseAdrs_ARM_Timer4 = 0x48044000,
+    59            BaseAdrs_ARM_Timer5 = 0x48046000,
+    60            BaseAdrs_ARM_Timer6 = 0x48048000,
+    61            BaseAdrs_ARM_Timer7 = 0x4804A000,
+    62            BaseAdrs_C6000_Timer4 = 0x08044000,
+    63            BaseAdrs_C6000_Timer5 = 0x08046000,
+    64            BaseAdrs_C6000_Timer6 = 0x08048000,
+    65            BaseAdrs_C6000_Timer7 = 0x0804A000
+    66        };
+    67    
+    68        <span class=key>enum</span> TimerInstance {
+    69            TimerInstance_UserConfigured = 0,
+    70            TimerInstance_Timer4 = 4,
+    71            TimerInstance_Timer5 = 5,
+    72            TimerInstance_Timer6 = 6,
+    73            TimerInstance_Timer7 = 7
+    74        };
+    75    
+    76        <span class="xdoc">/*!
+</span>    77    <span class="xdoc">     * ======== PrcmClkMuxBaseAdrs ========
+</span>    78    <span class="xdoc">     * PRCM CM_TIMERX_CLKSEL Timer clock mux select line
+</span>    79    <span class="xdoc">     *
+</span>    80    <span class="xdoc">     * The following enum provides the physical
+</span>    81    <span class="xdoc">     * addresses of the PRCM Clock Mux register
+</span>    82    <span class="xdoc">     * used for Timers 4,5,6 and 7.
+</span>    83    <span class="xdoc">     * If the virtual address of the register
+</span>    84    <span class="xdoc">     * is not the same as the physical address,
+</span>    85    <span class="xdoc">     * AND the autostart config option is true,
+</span>    86    <span class="xdoc">     * the prcmClkMuxBaseAdrs must be configured
+</span>    87    <span class="xdoc">     * with the virtual address of the register.
+</span>    88    <span class="xdoc">     */</span>
+    89        <span class=key>enum</span> PrcmClkMuxBaseAdrs {
+    90            PrcmClkMuxBaseAdrs_Timer4 = 0x4818039C,
+    91            PrcmClkMuxBaseAdrs_Timer5 = 0x481803A0,
+    92            PrcmClkMuxBaseAdrs_Timer6 = 0x481803A4,
+    93            PrcmClkMuxBaseAdrs_Timer7 = 0x481803A8
+    94        }
+    95    
+    96        <span class="xdoc">/*! Timer OCP Configuration Register (TIOCP_CFG) - L4 interface Configuration. */</span>
+    97        <span class=key>struct</span> TiocpCfg {
+    98            Bits8 idlemode;  <span class="xdoc">/*! 0=force-idle;1=no-idle;2=Smart-idle;3=Smart-idle */</span>
+    99            Bits8 emufree;   <span class="xdoc">/*! 0=counter frozen; 1=counter free-running */</span>
+   100            Bits8 softreset; <span class="xdoc">/*! 0=normal mode; 1=soft reset */</span>
+   101        };
+   102    
+   103        <span class="xdoc">/*! Timer IRQENABLE CLR (IRQENABLE_CLR) */</span>
+   104        <span class=key>struct</span> Tier {
+   105            Bits8 mat_it_ena;  <span class="xdoc">/*! Enable match interrupt */</span>
+   106            Bits8 ovf_it_ena;  <span class="xdoc">/*! Enable overflow interrupt */</span>
+   107            Bits8 tcar_it_ena; <span class="xdoc">/*! Enable capture interrupt */</span>
+   108        };
+   109    
+   110        <span class="xdoc">/*! Timer IRQ WAKEUP ENABLE (IRQWAKEEN) */</span>
+   111        <span class=key>struct</span> Twer {
+   112            Bits8 mat_wup_ena;  <span class="xdoc">/*! Enable match wake-up */</span>
+   113            Bits8 ovf_wup_ena;  <span class="xdoc">/*! Enable overflow wake-up */</span>
+   114            Bits8 tcar_wup_ena; <span class="xdoc">/*! Enable capture wake-up */</span>
+   115        };
+   116    
+   117        <span class="xdoc">/*! Timer Control Register (TCLR). */</span>
+   118        <span class=key>struct</span> Tclr {
+   119            <span class="comment">/*  b0: ST (1=start timer, 0=stop timer) set by internal #define.*/</span>
+   120            <span class="comment">/*  b1: AR (1=auto-reload timer, 0=one shot timer) set by internal #define */</span>
+   121            Bits32 ptv; <span class="xdoc">/*! Trigger output mode */</span>
+   122            Bits8 pre;  <span class="xdoc">/*! Prescalar enable */</span>
+   123            Bits8 ce;   <span class="xdoc">/*! Compare enable */</span>
+   124            Bits8 scpwm;<span class="xdoc">/*! Pulse-width modulation */</span>
+   125            Bits16 tcm; <span class="xdoc">/*! Transition capture mode */</span>
+   126            Bits16 trg; <span class="xdoc">/*! Trigger output mode */</span>
+   127            Bits8 pt;   <span class="xdoc">/*! Pulse or toggle select bit */</span>
+   128            Bits8 captmode; <span class="xdoc">/*! Capture mode select bit */</span>
+   129            Bits8 gpocfg; <span class="xdoc">/*! PWM output/event detection input pin */</span>
+   130        };
+   131    
+   132        <span class="xdoc">/*! L4 Interface Synchronization Control Register (TSICR). */</span>
+   133        <span class=key>struct</span> Tsicr {
+   134            Bits8 sft;    <span class="xdoc">/*! Reset software functional registers */</span>
+   135            Bits8 posted; <span class="xdoc">/*! Posted mode selection */</span>
+   136        };
+   137    
+   138        <span class="xdoc">/*!
+</span>   139    <span class="xdoc">     * ======= timerNumber ========
+</span>   140    <span class="xdoc">     * Number of the timer to use as the global timer
+</span>   141    <span class="xdoc">     *
+</span>   142    <span class="xdoc">     * The global timer provides a common time reference for all CPUs.
+</span>   143    <span class="xdoc">     * This configuration parameter specifies which timer to use
+</span>   144    <span class="xdoc">     * as the global timer.  All CPUs on the device must be
+</span>   145    <span class="xdoc">     * configured to use the same timer as the global timer.
+</span>   146    <span class="xdoc">     * Must be a value of TimerInstance_Timer4,5,6,7 or
+</span>   147    <span class="xdoc">     *  TimerInstance_UserConfigured.
+</span>   148    <span class="xdoc">     * If configured as TimerInstance_UserConfigured, then
+</span>   149    <span class="xdoc">     *  the module's timerBaseAdrs must be configured with
+</span>   150    <span class="xdoc">     *  the timer's virtual address and the module's
+</span>   151    <span class="xdoc">     *  prcmClkMuxBaseAdrs must be configured with the
+</span>   152    <span class="xdoc">     *  PRCM clock mux register's virtual address.
+</span>   153    <span class="xdoc">     * Note: Timers 0-2 are reserved for Linux.
+</span>   154    <span class="xdoc">     *       Timer 3 is reserved for the DSP.
+</span>   155    <span class="xdoc">     */</span>
+   156        <span class=key>config</span> TimerInstance timerNumber = TimerInstance_Timer7;
+   157    
+   158        <span class="xdoc">/*!
+</span>   159    <span class="xdoc">     * ======== timerBaseAdrs ========
+</span>   160    <span class="xdoc">     * Base address of the timer to be used as the global timer
+</span>   161    <span class="xdoc">     *
+</span>   162    <span class="xdoc">     * If the virtual address of the timer is not the same as the
+</span>   163    <span class="xdoc">     * physical address, AND the autostart config option is true,
+</span>   164    <span class="xdoc">     * the timerBaseAdrs must be configured with the virtual
+</span>   165    <span class="xdoc">     * address of the timer.  Otherwise set to null to allow
+</span>   166    <span class="xdoc">     * module to automatically use the physical address for the
+</span>   167    <span class="xdoc">     * specified timer.
+</span>   168    <span class="xdoc">     */</span>
+   169        <span class=key>config</span> Ptr timerBaseAdrs = <span class=key>null</span>;
+   170    
+   171        <span class="xdoc">/*!
+</span>   172    <span class="xdoc">     * ======== prcmClkMuxBaseAdrs ========
+</span>   173    <span class="xdoc">     * Base address of the PRCM register used to select the timer clock source
+</span>   174    <span class="xdoc">     *
+</span>   175    <span class="xdoc">     * If the virtual address of the register is not the same as the
+</span>   176    <span class="xdoc">     * physical address, AND the autostart config option is true,
+</span>   177    <span class="xdoc">     * the prcmClkMuxBaseAdrs must be configured with the virtual
+</span>   178    <span class="xdoc">     * address of the register.  Otherwise set to null to allow
+</span>   179    <span class="xdoc">     * module to automatically use the physical address for the
+</span>   180    <span class="xdoc">     * specified timer.
+</span>   181    <span class="xdoc">     */</span>
+   182        <span class=key>config</span> Ptr prcmClkMuxBaseAdrs = <span class=key>null</span>;
+   183    
+   184        <span class="xdoc">/*!
+</span>   185    <span class="xdoc">     * ======== prcmClkMuxInitValue =========
+</span>   186    <span class="xdoc">     * Value to write into the prcmClkMux register in order to configure timer clock
+</span>   187    <span class="xdoc">     *
+</span>   188    <span class="xdoc">     * If autoStart is TRUE and prcmClkMuxBaseAdrs is not null
+</span>   189    <span class="xdoc">     * OR timerNumber is set to a value other than UserConfigured
+</span>   190    <span class="xdoc">     * the module will writh the prcmClkMuxInitValue into the
+</span>   191    <span class="xdoc">     * PRCM clock mux register upon startup.
+</span>   192    <span class="xdoc">     *
+</span>   193    <span class="xdoc">     * By default, the value written, sets CLKSEL to SYS_CLK (b24 = 0) and sets
+</span>   194    <span class="xdoc">     * MODULEMODE to 2 (Module is enabled).
+</span>   195    <span class="xdoc">     */</span>
+   196        <span class=key>config</span> Int prcmClkMuxInitValue = 0x0000002;
+   197    
+   198        <span class="xdoc">/*!
+</span>   199    <span class="xdoc">     * ======== autoStart ========
+</span>   200    <span class="xdoc">     * Controls whether the module initializes the timer or not
+</span>   201    <span class="xdoc">     *
+</span>   202    <span class="xdoc">     * Must be set to true for one and only one CPU in the device
+</span>   203    <span class="xdoc">     */</span>
+   204        <span class=key>config</span> Bool autoStart = <span class=key>false</span>;
+   205    
+   206        <span class="xdoc">/*!
+</span>   207    <span class="xdoc">     * ======== maxTimerClockFreq =========
+</span>   208    <span class="xdoc">     * The highest timer clock frequency.
+</span>   209    <span class="xdoc">     *
+</span>   210    <span class="xdoc">     * The default ticks per second rate of the timer is calculated by dividing
+</span>   211    <span class="xdoc">     * the timer's bus clock frequency by the cyclesPerTick config parameter.
+</span>   212    <span class="xdoc">     */</span>
+   213        <span class=key>override</span> <span class=key>config</span> Types.FreqHz maxTimerClockFreq = {lo:27000000,hi:0};
+   214    
+   215    
+   216        <span class="xdoc">/*!
+</span>   217    <span class="xdoc">     * ======== maxBusClockFreq =========
+</span>   218    <span class="xdoc">     * The highest bus clock frequency used to drive the timer.
+</span>   219    <span class="xdoc">     *
+</span>   220    <span class="xdoc">     * The default ticks per second rate of the timer is calculated by dividing
+</span>   221    <span class="xdoc">     * the timer's bus clock frequency by the cyclesPerTick config parameter.
+</span>   222    <span class="xdoc">     */</span>
+   223        <span class=key>override</span> <span class=key>config</span> Types.FreqHz maxBusClockFreq = {lo:27000000,hi:0};
+   224    
+   225        <span class="xdoc">/*!
+</span>   226    <span class="xdoc">     *  ======== tiocpCfg ========
+</span>   227    <span class="xdoc">     */</span>
+   228        <span class=key>config</span> TiocpCfg tiocpCfg = {idlemode: 0, emufree: 0, softreset: 1};
+   229    
+   230        <span class="xdoc">/*!
+</span>   231    <span class="xdoc">     *  ======== tier ========
+</span>   232    <span class="xdoc">     */</span>
+   233        <span class=key>config</span> Tier tier = {mat_it_ena: 0, ovf_it_ena: 1, tcar_it_ena: 0};
+   234    
+   235        <span class="xdoc">/*!
+</span>   236    <span class="xdoc">     *  ======== twer ========
+</span>   237    <span class="xdoc">     */</span>
+   238        <span class=key>config</span> Twer twer = {mat_wup_ena: 0, ovf_wup_ena: 0, tcar_wup_ena: 0};
+   239    
+   240        <span class="xdoc">/*!
+</span>   241    <span class="xdoc">     *  ======== tclr ========
+</span>   242    <span class="xdoc">     */</span>
+   243        <span class=key>config</span> Tclr tclr = {ptv: 0, pre: 0, ce: 0, scpwm: 0, tcm: 0, trg: 0,
+   244            pt: 0, captmode: 0, gpocfg: 0};
+   245    
+   246        <span class="xdoc">/*!
+</span>   247    <span class="xdoc">     *  ======== tsicr ========
+</span>   248    <span class="xdoc">     *  Default value of tsicr to use when configuring the timer
+</span>   249    <span class="xdoc">     *
+</span>   250    <span class="xdoc">     *  Only used if autoStart is true
+</span>   251    <span class="xdoc">     */</span>
+   252        <span class=key>config</span> Tsicr tsicr = {sft: 0, posted: 1};
+   253    
+   254    
+   255        <span class="xdoc">/*!
+</span>   256    <span class="xdoc">     * ======== canFrequencyBeChanged =========
+</span>   257    <span class="xdoc">     * Indicates whether the timer frequency can be changed or not
+</span>   258    <span class="xdoc">     *
+</span>   259    <span class="xdoc">     * <b>@a(returns)</b> true if the timer's clock frequency can be changed
+</span>   260    <span class="xdoc">     */</span>
+   261        <span class=key>override</span> <span class=key>metaonly</span> <span class=key>config</span> Bool canFrequencyBeChanged = <span class=key>false</span>;
+   262    
+   263        <span class="xdoc">/*!
+</span>   264    <span class="xdoc">     * ======== cpuCyclesPerTick =========
+</span>   265    <span class="xdoc">     * The number of CPU cycles each tick of the timestamp corresponds to
+</span>   266    <span class="xdoc">     *
+</span>   267    <span class="xdoc">     * A value of 0 indicates that no conversion between the timer's tick count
+</span>   268    <span class="xdoc">     * and CPU cycles is possible.
+</span>   269    <span class="xdoc">     */</span>
+   270        <span class=key>override</span> <span class=key>metaonly</span> <span class=key>config</span> UInt32 cpuCyclesPerTick = 0;
+   271    
+   272    
+   273        <span class="xdoc">/*!
+</span>   274    <span class="xdoc">     * ======== canCpuCyclesPerTickBeChanged =========
+</span>   275    <span class="xdoc">     * Indicates whether the timer's cycles per tick divide down ratio can be
+</span>   276    <span class="xdoc">     *    changed or not
+</span>   277    <span class="xdoc">     *
+</span>   278    <span class="xdoc">     * <b>@a(returns)</b> true if the timer's CPU cycles per tick can be changed
+</span>   279    <span class="xdoc">     */</span>
+   280        <span class=key>override</span> <span class=key>metaonly</span> <span class=key>config</span> Bool canCpuCyclesPerTickBeChanged = <span class=key>false</span>;
+   281        <span class="xdoc">/*!
+</span>   282    <span class="xdoc">     *  ======== get32 ========
+</span>   283    <span class="xdoc">     *  Return a 32-bit timestamp
+</span>   284    <span class="xdoc">     *
+</span>   285    <span class="xdoc">     *  <b>@a(returns)</b>
+</span>   286    <span class="xdoc">     *  Returns a 32-bit timestamp value.
+</span>   287    <span class="xdoc">     *  Use `{<b>@link</b> #getFreq}` to convert this value into units of real time.
+</span>   288    <span class="xdoc">     *
+</span>   289    <span class="xdoc">     *  <b>@see</b> #get64
+</span>   290    <span class="xdoc">     */</span>
+   291        @DirectCall
+   292        <span class=key>override</span> Bits32 get32();
+   293    
+   294        <span class="xdoc">/*!
+</span>   295    <span class="xdoc">     *  ======== get64 ========
+</span>   296    <span class="xdoc">     *  Return a 64-bit timestamp
+</span>   297    <span class="xdoc">     *
+</span>   298    <span class="xdoc">     *  <b>@param(result)</b>  pointer to 64-bit result
+</span>   299    <span class="xdoc">     *
+</span>   300    <span class="xdoc">     *      This parameter is a pointer to a structure representing a 64-bit
+</span>   301    <span class="xdoc">     *      wide timestamp value where the current timestamp is written.
+</span>   302    <span class="xdoc">     *
+</span>   303    <span class="xdoc">     *      If the underlying hardware does not support 64-bit resolution, the
+</span>   304    <span class="xdoc">     *      `hi` field of `result` is always set to 0; see
+</span>   305    <span class="xdoc">     *      `{<b>@link</b> xdc.runtime.Types#Timestamp64}`.  So, it is possible for
+</span>   306    <span class="xdoc">     *      the `lo` field to wrap around without any change to the `hi` field.
+</span>   307    <span class="xdoc">     *      Use `{<b>@link</b> #getFreq}` to convert this value into units of real
+</span>   308    <span class="xdoc">     *      time.
+</span>   309    <span class="xdoc">     *
+</span>   310    <span class="xdoc">     *  <b>@see</b> #get32
+</span>   311    <span class="xdoc">     */</span>
+   312        @DirectCall
+   313        <span class=key>override</span> Void get64(Types.Timestamp64 *result);
+   314    
+   315        <span class="xdoc">/*!
+</span>   316    <span class="xdoc">     *  ======== getFreq ========
+</span>   317    <span class="xdoc">     *  Get the timestamp timer's frequency (in Hz)
+</span>   318    <span class="xdoc">     *
+</span>   319    <span class="xdoc">     *  <b>@param(freq)</b>  pointer to a 64-bit result
+</span>   320    <span class="xdoc">     *
+</span>   321    <span class="xdoc">     *      This parameter is a pointer to a structure representing a 64-bit
+</span>   322    <span class="xdoc">     *      wide frequency value where the timer's frequency (in Hz)
+</span>   323    <span class="xdoc">     *      is written; see `{<b>@link</b> xdc.runtime.Types#FreqHz}`.
+</span>   324    <span class="xdoc">     *      This function provides a way of converting timestamp
+</span>   325    <span class="xdoc">     *      values into units of real time.
+</span>   326    <span class="xdoc">     *
+</span>   327    <span class="xdoc">     *  <b>@see</b> #get32
+</span>   328    <span class="xdoc">     *  <b>@see</b> #get64
+</span>   329    <span class="xdoc">     */</span>
+   330        @DirectCall
+   331        <span class=key>override</span> Void getFreq(Types.FreqHz *freq);
+   332    
+   333    
+   334        <span class="comment">/*
+</span>   335    <span class="comment">     * ======== setMSW ========
+</span>   336    <span class="comment">     * Sets the value to be returned in result-&gt;hi by the get64() API
+</span>   337    <span class="comment">     *
+</span>   338    <span class="comment">     * @param(value)  32b value to be returned in result-&gt;hi by the get64() API
+</span>   339    <span class="comment">     */</span>
+   340        @DirectCall
+   341        Void setMSW(Int value);
+   342    <span class=key>internal</span>:
+   343        <span class="comment">/*
+</span>   344    <span class="comment">     *  ======== start ========
+</span>   345    <span class="comment">     *  1. Hwi_disable();
+</span>   346    <span class="comment">     *  2. Clear the counters
+</span>   347    <span class="comment">     *  3. Clear IFR
+</span>   348    <span class="comment">     *  4. Enable timer interrupt
+</span>   349    <span class="comment">     *  5. Start timer
+</span>   350    <span class="comment">     *  6. Hwi_restore()
+</span>   351    <span class="comment">     */</span>
+   352        Void start();
+   353    
+   354        <span class="comment">/*
+</span>   355    <span class="comment">     *  ======== stop ========
+</span>   356    <span class="comment">     *  1. stop timer
+</span>   357    <span class="comment">     *  2. disable timer interrupt
+</span>   358    <span class="comment">     */</span>
+   359        Void stop();
+   360    
+   361        <span class=key>struct</span> Module_State {
+   362            Int timerMSW;
+   363            Ptr timerBaseAdrs;
+   364            Ptr timer;
+   365        };
+   366    }
+</pre>
+</body></html>

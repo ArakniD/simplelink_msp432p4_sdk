@@ -1,0 +1,670 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+    Copyright (c) 2014, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+        its contributors may be used to endorse or promote products derived
+        from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<x-meta id="ti-widget-ruler" isHidden label="Ruler" group="TI Widgets">
+
+  <template>
+    <ti-widget-ruler style="width: 3in; height: 1em;"></ti-widget-ruler>
+  </template>
+
+    <property name="labels" kind="string"/>
+    <property name="minorTicks" kind="number"/>
+    <property name="align" kind="select" options="start,center,end"/>
+    <property name="orientation" kind="select" options="horizontal,vertical"/>
+    <property name="hideTicks" kind="boolean"/>
+    
+  <template id="imports">
+    <link rel="import" href="ti-widget-ruler.html">
+  </template>
+</x-meta>
+
+<x-meta id="ti-widget-label" label="Label" group="TI Widgets">
+
+  <template>
+    <ti-widget-label></ti-widget-label>
+  </template>
+
+    <property name="label" kind="string"/>
+    
+    // inherited from ti-widget-base-text
+    <property name="textAlign" kind="select"
+        options="left,center,right">
+    </property>
+    <property name="fontSize" kind="select"
+        options="xx-small,x-small,small,medium,large,x-large,xx-large,smaller,larger,inherit">
+    </property>
+    <property name="fontColor" kind="string"/>
+    <property name="fontStyle" kind="select"
+        options="normal,italic,inherit">
+    </property>
+    <property name="fontWeight" kind="select"
+        options="normal,bold,lighter,bolder,100,200,300,400,500,600,700,800,900,inherit">
+    </property>
+    <property name="textDecoration" kind="select"
+        options="none,underline,overline,line-through">
+    </property>
+    
+  <template id="imports">
+    <link rel="import" href="ti-widget-label.html">
+  </template>
+</x-meta>
+
+<x-meta id="ti-widget-droplist" label="Drop Down Select" group="TI Widgets">
+
+  <template>
+    <ti-widget-droplist style="width:100px;"></ti-widget-droplist>
+  </template>
+  
+    <property name="labels" kind="string"/>
+    <property name="values" kind="string"/>
+    <property name="selectedText" kind="string"/>
+    <property name="selectedValue" kind="string"/>
+    <property name="selectedIndex" kind="number"/>
+    <property name="initialIndex" kind="number"/>
+    <property name="sorted" kind="boolean"/>
+
+    // inherited from ti-widget-base-text
+    <property name="fontSize" kind="select"
+        options="xx-small,x-small,small,medium,large,x-large,xx-large,smaller,larger,inherit">
+    </property>
+    <property name="fontColor" kind="string"/>
+    <property name="fontStyle" kind="select"
+        options="normal,italic,inherit">
+    </property>
+    <property name="fontWeight" kind="select"
+        options="normal,bold,lighter,bolder,100,200,300,400,500,600,700,800,900,inherit">
+    </property>
+    <property name="textDecoration" kind="select"
+        options="none,underline,overline,line-through">
+    </property>
+    
+  <template id="imports">
+    <link rel="import" href="ti-widget-droplist.html">
+  </template>
+</x-meta>
+
+<x-meta id="ti-widget-textbox" label="Text Box" group="TI Widgets">
+
+  <template>
+    <ti-widget-textbox></ti-widget-textbox>
+  </template>
+
+    <property name="value" kind="string" />
+    <property name="trim" kind="boolean" />
+    <property name="uppercase" kind="boolean" />
+    <property name="lowercase" kind="boolean" />
+
+    // inherited from ti-widget-base-input
+    <property name="intermediateChanges" kind="boolean" />
+    <property name="selectOnClick" kind="boolean" />
+
+    // inherited from ti-widget-base-text
+    <property name="textAlign" kind="select"
+        options="left,center,right">
+    </property>
+    <property name="fontSize" kind="select"
+        options="xx-small,x-small,small,medium,large,x-large,xx-large,smaller,larger,inherit">
+    </property>
+    <property name="fontColor" kind="string"/>
+    <property name="fontStyle" kind="select"
+        options="normal,italic,inherit">
+    </property>
+    <property name="fontWeight" kind="select"
+        options="normal,bold,lighter,bolder,100,200,300,400,500,600,700,800,900,inherit">
+    </property>
+    <property name="textDecoration" kind="select"
+        options="none,underline,overline,line-through">
+    </property>
+    
+  <template id="imports">
+    <link rel="import" href="ti-widget-textbox.html">
+  </template>
+</x-meta>
+
+<x-meta id="ti-widget-numberbox" label="Number Box" group="TI Widgets">
+
+  <template>
+    <ti-widget-numberbox></ti-widget-numberbox>
+  </template>
+
+    <property name="value" kind="string" />
+    <property name="decimalPlaces" kind="number" />
+
+    // inherited from ti-widget-base-numberbox
+    <property name="minValue" kind="number" />
+    <property name="maxValue" kind="number" />
+
+    // inherited from ti-widget-base-input
+    <property name="intermediateChanges" kind="boolean" />
+    <property name="selectOnClick" kind="boolean" />
+
+    // inherited from ti-widget-base-text
+    <property name="textAlign" kind="select"
+        options="left,center,right">
+    </property>
+    <property name="fontSize" kind="select"
+        options="xx-small,x-small,small,medium,large,x-large,xx-large,smaller,larger,inherit">
+    </property>
+    <property name="fontColor" kind="string"/>
+    <property name="fontStyle" kind="select"
+        options="normal,italic,inherit">
+    </property>
+    <property name="fontWeight" kind="select"
+        options="normal,bold,lighter,bolder,100,200,300,400,500,600,700,800,900,inherit">
+    </property>
+    <property name="textDecoration" kind="select"
+        options="none,underline,overline,line-through">
+    </property>
+    
+  <template id="imports">
+    <link rel="import" href="ti-widget-numberbox.html">
+  </template>
+</x-meta>
+
+<x-meta id="ti-widget-spinner" label="Number Spinner" group="TI Widgets">
+
+  <template>
+    <ti-widget-spinner></ti-widget-spinner>
+  </template>
+
+    <property name="value" kind="string" />
+    <property name="increment" kind="number" />
+
+    // inherited from ti-widget-base-numberbox
+    <property name="minValue" kind="number" />
+    <property name="maxValue" kind="number" />
+
+    // inherited from ti-widget-base-input
+    <property name="intermediateChanges" kind="boolean" />
+    <property name="selectOnClick" kind="boolean" />
+
+    // inherited from ti-widget-base-text
+    <property name="textAlign" kind="select"
+        options="left,center,right">
+    </property>
+    <property name="fontSize" kind="select"
+        options="xx-small,x-small,small,medium,large,x-large,xx-large,smaller,larger,inherit">
+    </property>
+    <property name="fontColor" kind="string"/>
+    <property name="fontStyle" kind="select"
+        options="normal,italic,inherit">
+    </property>
+    <property name="fontWeight" kind="select"
+        options="normal,bold,lighter,bolder,100,200,300,400,500,600,700,800,900,inherit">
+    </property>
+    <property name="textDecoration" kind="select"
+        options="none,underline,overline,line-through">
+    </property>
+    
+  <template id="imports">
+    <link rel="import" href="ti-widget-spinner.html">
+  </template>
+</x-meta>
+
+<x-meta id="ti-widget-checkbox" label="Checkbox" group="TI Widgets">
+
+  <template>
+    <ti-widget-checkbox label="click me"></ti-widget-checkbox>
+  </template>
+
+    <property name="checked" kind="boolean" />
+    <property name="label" kind="string" />
+    <property name="disabled" kind="boolean" />
+    <property name="textAlign" kind="select"
+        options="left,center,right">
+    </property>
+    <property name="fontSize" kind="select"
+        options="xx-small,x-small,small,medium,large,x-large,xx-large,smaller,larger,inherit">
+    </property>
+    <property name="fontColor" kind="string"/>
+    <property name="fontStyle" kind="select"
+        options="normal,italic,inherit">
+    </property>
+    <property name="fontWeight" kind="select"
+        options="normal,bold,lighter,bolder,100,200,300,400,500,600,700,800,900,inherit">
+    </property>
+    <property name="textDecoration" kind="select"
+        options="none,underline,overline,line-through">
+    </property>
+    
+  <template id="imports">
+    <link rel="import" href="ti-widget-checkbox.html">
+  </template>
+</x-meta>
+
+<x-meta id="ti-widget-slider" label="Horizontal Slider" group="TI Widgets">
+
+  <template>
+    <ti-widget-slider style="width:255px;" labels="0,25,50,75,100"></ti-widget-slider>
+  </template>
+
+    <property name="value" kind="number" />
+    <property name="minValue" kind="number" />
+    <property name="maxValue" kind="number" />
+    <property name="increment" kind="number" />
+    <property name="labels" kind="string"/>
+    <property name="intermediateChanges" kind="boolean" />
+    <property name="hideTicks" kind="boolean" />
+    <property name="hidePinValue" kind="boolean" />
+    <property name="fontSize" kind="select"
+        options="xx-small,x-small,small,medium,large,x-large,xx-large,smaller,larger,inherit">
+    </property>
+    <property name="fontColor" kind="string"/>
+    <property name="fontStyle" kind="select"
+        options="normal,italic,inherit">
+    </property>
+    <property name="fontWeight" kind="select"
+        options="normal,bold,lighter,bolder,100,200,300,400,500,600,700,800,900,inherit">
+    </property>
+    <property name="disabled" kind="boolean" />
+    <property name="visible" kind="boolean" />
+    <property name="tooltip" kind="string" />
+    
+  <template id="imports">
+    <link rel="import" href="ti-widget-slider.html">
+  </template>
+</x-meta>
+
+<x-meta id="ti-widget-image" label="Image" group="TI Widgets">
+
+  <template>
+    <ti-widget-image lockaspectratio></ti-widget-image>
+  </template>
+
+    <property name="imagePath" kind="string"/>
+    <property name="lockAspectRatio" kind="boolean"/>
+    <property name="hoverEffect" kind="select"
+        options="none,enlarge,button,color">
+    </property>
+    <property name="disabled" kind="boolean" />
+    <property name="visible" kind="boolean" />
+    <property name="tooltip" kind="string" />
+    
+  <template id="imports">
+    <link rel="import" href="ti-widget-image.html">
+  </template>
+</x-meta>
+
+<x-meta id="ti-widget-multiimage" label="Multi-Image" group="TI Widgets">
+
+  <template>
+    <ti-widget-multiimage lockaspectratio></ti-widget-multiimage>
+  </template>
+ 
+  <property name="imagePaths" kind="string"/>
+  <property name="imageFolder" kind="string"/>
+  <property name="lockAspectRatio" kind="boolean"/>
+  <property name="hoverEffect" kind="select"
+      options="none,enlarge,button,color">
+  </property>
+  <property name="selectedIndex" kind="number"/>
+  <property name="selectedValue" kind="string"/>
+  <property name="initialIndex" kind="number"/>
+  <property name="values" kind="string"/>
+
+  <template id="imports">
+    <link rel="import" href="ti-widget-multiimage.html">
+  </template>
+</x-meta>
+
+<x-meta id="ti-widget-progressbar" label="Progress Bar" group="TI Widgets">
+
+    <template>
+        <ti-widget-progressbar  style="position: absolute; width: 400px; height: 5px; background-color: #AAAAAA;"  ></ti-widget-progressbar>
+    </template>
+    <property name="color"
+              kind="color"
+              options="red,darkred,torquoise,darktourqoise,darkgrey,green,limegreen,yellow,gold,orange">
+    </property>
+    <template id="imports">
+        <link rel="import" href="ti-widget-progressbar.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-button" label="Button" group="TI Widgets">
+
+    <template>
+        <ti-widget-button raised>Button</ti-widget-button>
+    </template>
+
+    <property name="buttonType"
+              kind="select"
+              options="default,primary,secondary,success,info,warning,error,link">
+    </property>
+
+    <property name="fontColor"
+              kind="color">
+    </property>
+
+    <property name="btnClickHdlr"
+              kind="string">
+    </property>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-button.html">
+    </template>
+</x-meta>
+<!--
+<x-meta id="default-button" label="Button[Default]" group="TI Widgets">
+
+    <template>
+        <paper-button raised >Button</paper-button>
+    </template>
+
+    <template id="imports">
+        <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+        <link rel="import" href="../paper-button.html">
+    </template>
+</x-meta>
+
+<x-meta id="primary-button" label="Button[Primary]" group="TI Widgets">
+
+    <template>
+        <paper-button raised primary="">Button</paper-button>
+    </template>
+
+    <template id="imports">
+        <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+        <link rel="import" href="../paper-button.html">
+    </template>
+</x-meta>
+<x-meta id="secondary-button" label="Button[Secondary]" group="TI Widgets">
+
+    <template>
+        <paper-button raised secondary="" >Button</paper-button>
+    </template>
+
+    <template id="imports">
+        <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+        <link rel="import" href="../paper-button.html">
+    </template>
+</x-meta>
+<x-meta id="success-button" label="Button[Success]" group="TI Widgets">
+
+    <template>
+        <paper-button raised success="">Button</paper-button>
+    </template>
+
+    <template id="imports">
+        <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+        <link rel="import" href="../paper-button.html">
+    </template>
+</x-meta>
+
+<x-meta id="info-button" label="Button[Info]" group="TI Widgets">
+
+    <template>
+        <paper-button raised info="">Button</paper-button>
+    </template>
+
+    <template id="imports">
+        <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+        <link rel="import" href="../paper-button.html">
+    </template>
+</x-meta>
+
+<x-meta id="warning-button" label="Button[Warning]" group="TI Widgets">
+
+    <template>
+        <paper-button raised warning="">Button</paper-button>
+    </template>
+
+    <template id="imports">
+        <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+        <link rel="import" href="../paper-button.html">
+    </template>
+</x-meta>
+
+
+
+<x-meta id="link-button" label="Button[Link]" group="TI Widgets">
+
+    <template>
+        <paper-button raised link="">Button</paper-button>
+    </template>
+
+    <template id="imports">
+        <link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+        <link rel="import" href="../paper-button.html">
+    </template>
+</x-meta>
+-->
+
+<x-meta id="ti-widget-panel1" label="TI Red" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 200px; height: 200px; background-color: #CC0000; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px; " layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel2" label="Secondary TI Red" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 300px; height: 300px; background-color: #990000; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px; " layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel3" label="TI Gray" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 300px; height: 300px; background-color: #AAAAAA; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px; " layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel4" label="Secondary TI Gray" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 300px; height: 300px; background-color: #E0E0E0; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px; " layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel5" label="TI Black" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 300px; height: 300px; background-color: black; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px; " layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel6" label="TI White" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle; position: absolute; width: 300px; height: 300px; background-color: #FFFFFF; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px;" layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel7" label="Secondary TI Dark Torquoise" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 300px; height: 300px; background-color: #115566; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px; " layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel8" label="Secondary TI Medium Torquoise" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 300px; height: 300px; background-color: #118899; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px; " layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel9" label="Secondary TI Light Turquoise" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 300px; height: 300px; background-color: #00bbcc; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px; " layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel10" label="Gradient Dark Torquoise to Black" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 300px; height: 300px; background-color: #fff; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px; background-image: -webkit-gradient(linear,100% 0%,NaN% 100%, from(#115566), to(black)); background-image: -o-linear-gradient(315deg,#115566, black);  background-image: -ms-linear-gradient(315deg,#115566, black); background-image: -moz-linear-gradient(315deg,#115566, black); background-image: -webkit-linear-gradient(315deg,#115566, black); background-image: linear-gradient(315deg,#115566, black);" layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel11" label="Gradient Light Torquoise to Dark Torquoise" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 300px; height: 300px; background-color: #fff; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px; background-image: -webkit-gradient(linear,100% 0%,NaN% 100%, from(#00bbcc), to(#115566)); background-image: -o-linear-gradient(315deg,#00bbcc,#115566);  background-image: -ms-linear-gradient(315deg,#00bbcc,#115566); background-image: -moz-linear-gradient(315deg,#00bbcc,#115566); background-image: -webkit-linear-gradient(315deg,#00bbcc,#115566); background-image: linear-gradient(315deg,#00bbcc,#115566);" layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel12" label="Gradient TI Red to TI Secondary Red" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 300px; height: 300px; background-color: #fff; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px; background-image: -webkit-gradient(linear,100% 0%,NaN% 100%, from(#cc0000), to(#990000)); background-image: -o-linear-gradient(315deg,#cc0000,#990000);  background-image: -ms-linear-gradient(315deg,#cc0000,#990000); background-image: -moz-linear-gradient(315deg,#cc0000,#990000); background-image: -webkit-linear-gradient(315deg,#cc0000,#990000); background-image: linear-gradient(315deg,#cc0000,#990000);" layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel13" label="Gradient TI Gray to TI Secondary Gray" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 300px; height: 300px; background-color: #fff; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px; background-image: -webkit-gradient(linear,100% 0%,NaN% 100%, from(#aaaaaa), to(#e0e0e0)); background-image: -o-linear-gradient(315deg,#aaaaaa,#e0e0e0);  background-image: -ms-linear-gradient(315deg,#aaaaaa,#e0e0e0); background-image: -moz-linear-gradient(315deg,#aaaaaa,#e0e0e0); background-image: -webkit-linear-gradient(315deg,#aaaaaa,#e0e0e0); background-image: linear-gradient(315deg,#aaaaaa,#e0e0e0);" layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel14" label="Gradient White to TI Secondary Gray" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:black;position: absolute; width: 300px; height: 300px; background-color: #fff; border-radius: 2px; box-shadow: rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px; background-image: -webkit-gradient(linear,100% 0%,NaN% 100%, from(#aaaaaa), to(#e0e0e0)); background-image: -o-linear-gradient(315deg,#ffffff,#e0e0e0);  background-image: -ms-linear-gradient(315deg,#ffffff,#e0e0e0); background-image: -moz-linear-gradient(315deg,#ffffff,#e0e0e0); background-image: -webkit-linear-gradient(315deg,#ffffff,#e0e0e0); background-image: linear-gradient(315deg,#ffffff,#e0e0e0);" layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel15" label="Radial Gradient Black to Dark Gray" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 300px; height: 300px; background-color: rgb(50,50,50); background: radial-gradient(rgb(50,50,50), rgb(50,50,50), black);" layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel16" label="Border - White" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:white;position: absolute; width: 300px; height: 300px; background-color: transparent;  border-radius: 2px; border: solid medium white;  " layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel17" label="Border - Black" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:black;position: absolute; width: 300px; height: 300px; background-color: transparent;  border-radius: 2px; border: solid thin black; " layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-panel18" label="Border - Gray" group="TI Panels">
+
+    <template>
+        <ti-widget-panel  style="text-align:center;vertical-align:middle;color:#aaaaaa;position: absolute; width: 300px; height: 300px; background-color: transparent;  border-radius: 2px; border: solid thick #aaaaaa;  " layout vertical ></ti-widget-panel>  </template>
+
+    <template id="imports">
+        <link rel="import" href="ti-widget-panel.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-bitfield-header" label="Bitfield header" group="TI Widgets">
+
+    <template>
+        <ti-widget-bitfield-header></ti-widget-bitfield-header>
+    </template>
+    <property name="borderColor" kind="color"></property>
+    <property name="backgroundColor" kind="color"></property>
+    <property name="bitValues" kind="string"></property>
+    <template id="imports">
+        <link rel="import" href="ti-widget-bitfield-header.html">
+    </template>
+</x-meta>
+
+<x-meta id="ti-widget-container" label="Container" isContainer group="TI Widgets">
+
+    <template>
+        <ti-widget-container style="height: 10em; width:10em;"></ti-widget-container>
+    </template>
+    <property name="visible" kind="boolean" />
+    <property name="tooltip" kind="string" />
+    <template id="imports">
+        <link rel="import" href="ti-widget-container.html">
+    </template>
+</x-meta>

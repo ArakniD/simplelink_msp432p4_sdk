@@ -1,0 +1,455 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.runtime.LogSnapshot</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012-2018, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> *  ======== LogSnapshot.xdc ========
+</span>    35    <span class="comment"> */</span>
+    36    <span class=key>package</span> ti.uia.runtime;
+    37    import xdc.runtime.Types;
+    38    import ti.uia.runtime.LoggerTypes;
+    39    import xdc.runtime.ILogger;
+    40    import ti.uia.runtime.CtxFilter;
+    41    import xdc.runtime.ILogger;
+    42    import xdc.runtime.Diags;
+    43    import xdc.runtime.Text;
+    44    import ti.uia.events.UIASnapshot;
+    45    import ti.uia.runtime.IUIATraceSyncClient;
+    46    
+    47    <span class="xdoc">/*!
+</span>    48    <span class="xdoc"> *  ======== LogSnapshot ========
+</span>    49    <span class="xdoc"> *  Snapshot Event logging manager for logging blocks of memory, strings in memory
+</span>    50    <span class="xdoc"> *     and names of dynamically created objects
+</span>    51    <span class="xdoc"> *
+</span>    52    <span class="xdoc"> *  {<b>@link</b> ti.uia.events.UIASnapshot Snapshot events} are used to log dynamic
+</span>    53    <span class="xdoc"> *  target state information in order to
+</span>    54    <span class="xdoc"> *  capture the execution context of the application at a particular moment in
+</span>    55    <span class="xdoc"> *  time.  Types of information that can be logged include:
+</span>    56    <span class="xdoc"> *  <b>@p(blist)</b>
+</span>    57    <span class="xdoc"> *      - Blocks of memory (using the {<b>@link</b> #writeMemoryBlock LogSnapshot_writeMemoryBlock} API)
+</span>    58    <span class="xdoc"> *      - Strings that reside in memory (using the {<b>@link</b> #writeString LogSnapshot_writeString} API)
+</span>    59    <span class="xdoc"> *      - Names of dynamically created objects (using the {<b>@link</b> #writeNameOfReference LogSnapshot_writeNameOfReference} API)
+</span>    60    <span class="xdoc"> *  <b>@p</b>
+</span>    61    <span class="xdoc"> *  The host-side tooling can be instructed to treat a series of LogSnapshot
+</span>    62    <span class="xdoc"> *  events as representing the state of the target at the same moment in time by
+</span>    63    <span class="xdoc"> *  using the same non-zero value in the {<b>@link</b> #getSnapshotId snapshot ID} parameter
+</span>    64    <span class="xdoc"> *  of each of the LogSnapshot events in the series.
+</span>    65    <span class="xdoc"> *
+</span>    66    <span class="xdoc"> *  Snapshot events are logged by a logger that implements the
+</span>    67    <span class="xdoc"> *  {<b>@link</b> ti.uia.runtime.ILoggerSnapshot ILoggerSnapshot}
+</span>    68    <span class="xdoc"> *  interface (e.g. {<b>@link</b> ti.uia.loggers.LoggerStopMode LoggerStopMode},
+</span>    69    <span class="xdoc"> *  {<b>@link</b> ti.uia.loggers.LoggerRunMode LoggerRunMode}).
+</span>    70    <span class="xdoc"> *  Rather than invoking the logger's APIs directly, the APIs are
+</span>    71    <span class="xdoc"> *  called indirectly via the LogSnapshot module's APIs so that different types
+</span>    72    <span class="xdoc"> *  of loggers can be used without having to recompile the source code that is
+</span>    73    <span class="xdoc"> *  logging the snapshot events.
+</span>    74    <span class="xdoc"> * <b>@a(Examples)</b>
+</span>    75    <span class="xdoc"> *  <b>@p(html)</b>
+</span>    76    <span class="xdoc"> *  &lt;B&gt;Example 1: A simple 2-line configuration script&lt;/B&gt;
+</span>    77    <span class="xdoc"> *  <b>@p</b>
+</span>    78    <span class="xdoc"> *  The following configuration script shows the simplest way
+</span>    79    <span class="xdoc"> * to configure an application to use log snapshot events:
+</span>    80    <span class="xdoc"> * <b>@p(code)</b>
+</span>    81    <span class="xdoc"> * var LoggingSetup = xdc.useModule('ti.uia.sysbios.LoggingSetup');
+</span>    82    <span class="xdoc"> * var LogSnapshot   = xdc.useModule('ti.uia.runtime.LogSnapshot');
+</span>    83    <span class="xdoc"> * <b>@p</b>
+</span>    84    <span class="xdoc"> * The first line causes the {<b>@link</b> ti.uia.sysbios.LoggingSetup LoggingSetup}
+</span>    85    <span class="xdoc"> * module's .xs script to automatically create a 32K Byte logger and assign it to
+</span>    86    <span class="xdoc"> * xdc.runtime.Main.common$.logger.  It also sets any unconfigured Diags masks
+</span>    87    <span class="xdoc"> * for the Main module to Diags.RUNTIME_ON, enabling the events to be logged.
+</span>    88    <span class="xdoc"> * <b>@p</b>
+</span>    89    <span class="xdoc"> * The second line causes the LogSnapshot .xs script to run during the configuration
+</span>    90    <span class="xdoc"> * process when building the application. The script detects that a logger has
+</span>    91    <span class="xdoc"> * not been assigned to the LogSnapshot module, so it checks if
+</span>    92    <span class="xdoc"> * a logger has been configured for either the Main module or the Defaults module.
+</span>    93    <span class="xdoc"> * Since there is a logger for the Main module, the script configures the LogSnapshot
+</span>    94    <span class="xdoc"> * module to log events to the same logger instance.
+</span>    95    <span class="xdoc"> *
+</span>    96    <span class="xdoc"> *  <b>@p(html)</b>
+</span>    97    <span class="xdoc"> *  &lt;hr /&gt;
+</span>    98    <span class="xdoc"> *  &lt;B&gt;Example 3: Using Diags masks to control snapshot events&lt;/B&gt;
+</span>    99    <span class="xdoc"> *  <b>@p</b>
+</span>   100    <span class="xdoc"> *  The generation of a 'Snapshot' event is controlled by a module's diagnostics
+</span>   101    <span class="xdoc"> *  mask, which is described in details in the CDoc for xdc.runtime.Diags. Each
+</span>   102    <span class="xdoc"> *  {<b>@link</b> ti.uia.events.UIASnapshot snapshot event} is controlled using the
+</span>   103    <span class="xdoc"> *  Diags.ANALYSIS mask, and will only be logged when the diagnostics mask for
+</span>   104    <span class="xdoc"> *  the module that is logging the code has the Diags.ANALYSIS bit
+</span>   105    <span class="xdoc"> *  configured as either ALWAYS_ON or RUNTIME_ON.
+</span>   106    <span class="xdoc"> *  <b>@p</b>
+</span>   107    <span class="xdoc"> *  The `LogSnapshot` function call sites are implemented in such a way that an
+</span>   108    <span class="xdoc"> *  optimizer can completely eliminate `LogSnapshot` code from the program if
+</span>   109    <span class="xdoc"> *  the module's `ANALYSIS` events have been disabled at configuration time. If
+</span>   110    <span class="xdoc"> *  the 'ANALYSIS' events are permanently turned on at configuration time,
+</span>   111    <span class="xdoc"> *  then the optimizer can eliminate all runtime conditional checking and
+</span>   112    <span class="xdoc"> *  simply invoke the 'LogSnapshot' functions directly. Runtime checking is
+</span>   113    <span class="xdoc"> *  performed only when the ANALYSIS events are configured to be runtime
+</span>   114    <span class="xdoc"> *  modifiable.
+</span>   115    <span class="xdoc"> *  <b>@p</b>
+</span>   116    <span class="xdoc"> * The following is an example of the configuration script used
+</span>   117    <span class="xdoc"> * to configure the default mask for modules to have Analysis events such as
+</span>   118    <span class="xdoc"> * the UIASnapshot events always on.
+</span>   119    <span class="xdoc"> * <b>@p(code)</b>
+</span>   120    <span class="xdoc"> *  // Configure all modules to always log Analysis events
+</span>   121    <span class="xdoc"> *  var Diags = xdc.useModule('xdc.runtime.Diags');
+</span>   122    <span class="xdoc"> *  var Defaults = xdc.useModule('xdc.runtime.Defaults');
+</span>   123    <span class="xdoc"> *  Defaults.common$.diags_ANALYSIS = Diags.ALWAYS_ON;
+</span>   124    <span class="xdoc"> * <b>@p</b>
+</span>   125    <span class="xdoc"> *
+</span>   126    <span class="xdoc"> */</span>
+   127    
+   128    @CustomHeader
+   129    <span class=key>module</span> LogSnapshot <span class=key>inherits</span> IUIATraceSyncClient {
+   130    
+   131        <span class="xdoc">/*!
+</span>   132    <span class="xdoc">     *  ======== EventRec ========
+</span>   133    <span class="xdoc">     *  The target representation of a recorded event
+</span>   134    <span class="xdoc">     *
+</span>   135    <span class="xdoc">     *  This structure defines how events are recorded on the target.
+</span>   136    <span class="xdoc">     */</span>
+   137        <span class=key>struct</span> EventRec {
+   138            Types.Timestamp64 tstamp; <span class="xdoc">/*! time event was written */</span>
+   139            Bits32 serial; <span class="xdoc">/*! serial number of event */</span>
+   140            Types.Event evt; <span class="xdoc">/*! target encoding of an Event */</span>
+   141            UArg snapshotId;
+   142            IArg fmt;
+   143            Ptr pData;
+   144            UInt16 lengthInMAUs; <span class="xdoc">/*! arguments passed via Log_write/print */</span>
+   145        }
+   146        <span class="xdoc">/*!
+</span>   147    <span class="xdoc">     *  ======== maxLengthInMAUs ========
+</span>   148    <span class="xdoc">     *  Maximum number of MAUs (miniumum addressable units, e.g. bytes)
+</span>   149    <span class="xdoc">     *     supported by `LogSnapshot` events.
+</span>   150    <span class="xdoc">     *
+</span>   151    <span class="xdoc">     *  Attempting to write more than the maximum length results in the
+</span>   152    <span class="xdoc">     *  multiple events being logged.  The maxLengthInMAUs must be
+</span>   153    <span class="xdoc">     *  lower than the size of the buffer that the events are being logged to.
+</span>   154    <span class="xdoc">     *  Must be less than 1400 in order to support streaming of event
+</span>   155    <span class="xdoc">     *  data over UDP.
+</span>   156    <span class="xdoc">     */</span>
+   157        <span class=key>config</span> Int maxLengthInMAUs = 512;
+   158    
+   159        <span class="xdoc">/*!
+</span>   160    <span class="xdoc">     *  ======== isTimestampEnabled ========
+</span>   161    <span class="xdoc">     *  used to enable or disable logging the 64b local CPU timestamp
+</span>   162    <span class="xdoc">     *  at the start of each event
+</span>   163    <span class="xdoc">     */</span>
+   164        <span class=key>config</span> Bool isTimestampEnabled = <span class=key>true</span>;
+   165    
+   166        <span class="xdoc">/*! <b>@_nodoc</b>
+</span>   167    <span class="xdoc">     *  ======== loggerDefined ========
+</span>   168    <span class="xdoc">     *  set to true in the configuration script when a logger that implements
+</span>   169    <span class="xdoc">     *  ILoggerSnapshot is attached
+</span>   170    <span class="xdoc">     */</span>
+   171        <span class=key>config</span> Bool loggerDefined = <span class=key>false</span>;
+   172        <span class="xdoc">/*!
+</span>   173    <span class="xdoc">     *  ======== loggerObj ========
+</span>   174    <span class="xdoc">     *  handle of the logger that is to be used to log snapshot events
+</span>   175    <span class="xdoc">     */</span>
+   176        <span class=key>config</span> Ptr loggerObj = <span class=key>null</span>;
+   177    
+   178        <span class="xdoc">/*! <b>@_nodoc</b> */</span>
+   179        <span class=key>config</span> ti.uia.runtime.LoggerTypes.LogMemoryRangeFxn loggerMemoryRangeFxn = <span class=key>null</span>;
+   180        <span class="comment">/*======================================================================*/</span>
+   181    
+   182        <span class="xdoc">/*!
+</span>   183    <span class="xdoc">     *  ======== putMemoryRange ========
+</span>   184    <span class="xdoc">     *  Unconditionally put the specified `Types` event.
+</span>   185    <span class="xdoc">     *  Supports both writeMemoryRange and writeString.
+</span>   186    <span class="xdoc">     *
+</span>   187    <span class="xdoc">     *  This method unconditionally puts the specified memoryRange`{<b>@link</b> Types#Event}`
+</span>   188    <span class="xdoc">     *  `evt` into the log.  This type of event is created either implicitly
+</span>   189    <span class="xdoc">     *  (and passed to an `{<b>@link</b> ISnapshotLogger}` implementation) or explicitly
+</span>   190    <span class="xdoc">     *  via `{<b>@link</b> Types#makeEvent()}`.
+</span>   191    <span class="xdoc">     *
+</span>   192    <span class="xdoc">     *  <b>@param(evt)</b>         the `Types` event to put into the log
+</span>   193    <span class="xdoc">     *  <b>@param(mid)</b>         the module ID of the caller
+</span>   194    <span class="xdoc">     *  <b>@param(snapshotId)</b>  unique ID that binds together a series of events used to
+</span>   195    <span class="xdoc">     *                      log a large memory range.  Upper 16b hold the ID Tag (0 for UIA)
+</span>   196    <span class="xdoc">     *  <b>@param(fileName)</b>    the name of the file that the event was logged from
+</span>   197    <span class="xdoc">     *  <b>@param(lineNum)</b>     the line number that the event was logged from
+</span>   198    <span class="xdoc">     *  <b>@param(fmt)</b>         a user-specified print format string
+</span>   199    <span class="xdoc">     *  <b>@param(startAdrs)</b>   the start address of the memory range to log
+</span>   200    <span class="xdoc">     *  <b>@param(lengthInMAUs)</b>   the number of minimum addressable units (e.g. bytes) to log
+</span>   201    <span class="xdoc">     *  <b>@a(return)</b>          value to use as snapshotId parameter for subsequent events
+</span>   202    <span class="xdoc">     */</span>
+   203        @Macro Void putMemoryRange(Types.Event evt, Types.ModuleId mid,
+   204          IArg fileName, IArg lineNum, UArg snapshotID, IArg fmt, IArg startAdrs,
+   205                IArg lengthInMAUs);
+   206    
+   207        <span class="xdoc">/*!
+</span>   208    <span class="xdoc">     *  ======== writeMemoryBlockWithIdTag ========
+</span>   209    <span class="xdoc">     *  Generate a `LogSnapshot` event for a block of memory
+</span>   210    <span class="xdoc">     *
+</span>   211    <span class="xdoc">     * <b>@a(Examples)</b>
+</span>   212    <span class="xdoc">     * Example: The following C code shows how to log a snapshot event to
+</span>   213    <span class="xdoc">     *   capture a block of memory.
+</span>   214    <span class="xdoc">     *
+</span>   215    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   216    <span class="xdoc">     *  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+</span>   217    <span class="xdoc">     *  ...
+</span>   218    <span class="xdoc">     *  UInt32* pIntArray = (UInt32 *)malloc(sizeof(UInt32) * 200);
+</span>   219    <span class="xdoc">     *  ...
+</span>   220    <span class="xdoc">     *  UInt16 myCustomIdTag = 1;
+</span>   221    <span class="xdoc">     *  LogSnapshot_writeMemoryBlockWithIdTag(myCustomIdTag,0,"pIntArray ptr=0x%x, numBytes=%d",(UInt32)pIntArray,200);
+</span>   222    <span class="xdoc">     *  ...
+</span>   223    <span class="xdoc">     *  <b>@p</b>
+</span>   224    <span class="xdoc">     *  The following text will be displayed for the event, if it was logged
+</span>   225    <span class="xdoc">     *  from file demo.c at line 1234 and all 200 bytes were logged in the
+</span>   226    <span class="xdoc">     *  same event.
+</span>   227    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   228    <span class="xdoc">     *  Memory Snapshot at [demo.c:1234] [snapshotID=0,adrs=0x80002000,
+</span>   229    <span class="xdoc">     *    numMAUsDataInEvent=200,numMAUsDataInRecord=200] ptr=0x80002000, numBytes=200
+</span>   230    <span class="xdoc">     *  <b>@p</b>
+</span>   231    <span class="xdoc">     *  If the 200 bytes were spread across multiple events,
+</span>   232    <span class="xdoc">     *  the numMAUsDataInRecord would indicate how many bytes were in the
+</span>   233    <span class="xdoc">     *  memory block, and numMAUsDataInEvent would indicate how many bytes
+</span>   234    <span class="xdoc">     *  were stored in that particular event.
+</span>   235    <span class="xdoc">     *  <b>@p</b>
+</span>   236    <span class="xdoc">     *  <b>@param(idTag)</b>      ID used to identify who logged the event. Set to 0 for a
+</span>   237    <span class="xdoc">     *                     standard UIA event.  Can be used to filter snapshot events on host.
+</span>   238    <span class="xdoc">     *  <b>@param(snapshotID)</b> ID used to identify snapshot events taken at the same
+</span>   239    <span class="xdoc">     *                     time. Set to 0 for first in series, set rest to return
+</span>   240    <span class="xdoc">     *                     value of LogSnapshot API.  {<b>@link</b> #getSnapshotId see getSnapshotId()}
+</span>   241    <span class="xdoc">     *  <b>@param(fmt)</b>        a constant string that provides a user-readable description
+</span>   242    <span class="xdoc">     *                     of what information the event is capturing
+</span>   243    <span class="xdoc">     *  <b>@param(pMemoryRange)</b>  the start address of the range of memory
+</span>   244    <span class="xdoc">     *  <b>@param(lengthInMAUs)</b> the number of MAUs of data payload for the
+</span>   245    <span class="xdoc">     *                     multi-event data record
+</span>   246    <span class="xdoc">     */</span>
+   247        @Macro Void writeMemoryBlockWithIdTag(UInt16 idTag, UInt32 snapshotID, IArg fmt, Ptr pMemoryRange,
+   248          UInt16 lengthInMAUs);
+   249    
+   250        <span class="xdoc">/*!
+</span>   251    <span class="xdoc">     *  ======== writeMemoryBlock ========
+</span>   252    <span class="xdoc">     *  Generate a `LogSnapshot` event for a block of memory
+</span>   253    <span class="xdoc">     *
+</span>   254    <span class="xdoc">     * <b>@a(Examples)</b>
+</span>   255    <span class="xdoc">     * Example: The following C code shows how to log a snapshot event to
+</span>   256    <span class="xdoc">     *   capture a block of memory.
+</span>   257    <span class="xdoc">     *
+</span>   258    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   259    <span class="xdoc">     *  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+</span>   260    <span class="xdoc">     *  ...
+</span>   261    <span class="xdoc">     *  UInt32* pIntArray = (UInt32 *)malloc(sizeof(UInt32) * 200);
+</span>   262    <span class="xdoc">     *  ...
+</span>   263    <span class="xdoc">     *  LogSnapshot_writeMemoryBlock(0,"pIntArray ptr=0x%x, numBytes=%d",(UInt32)pIntArray,200);
+</span>   264    <span class="xdoc">     *  ...
+</span>   265    <span class="xdoc">     *  <b>@p</b>
+</span>   266    <span class="xdoc">     *  The following text will be displayed for the event, if it was logged
+</span>   267    <span class="xdoc">     *  from file demo.c at line 1234 and all 200 bytes were logged in the
+</span>   268    <span class="xdoc">     *  same event.
+</span>   269    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   270    <span class="xdoc">     *  Memory Snapshot at [demo.c:1234] [snapshotID=0,adrs=0x80002000,
+</span>   271    <span class="xdoc">     *    numMAUsDataInEvent=200,numMAUsDataInRecord=200] ptr=0x80002000, numBytes=200
+</span>   272    <span class="xdoc">     *  <b>@p</b>
+</span>   273    <span class="xdoc">     *  If the 200 bytes were spread across multiple events,
+</span>   274    <span class="xdoc">     *  the numMAUsDataInRecord would indicate how many bytes were in the
+</span>   275    <span class="xdoc">     *  memory block, and numMAUsDataInEvent would indicate how many bytes
+</span>   276    <span class="xdoc">     *  were stored in that particular event.
+</span>   277    <span class="xdoc">     *  <b>@p</b>
+</span>   278    <span class="xdoc">     *  <b>@param(snapshotID)</b> ID used to identify snapshot events taken at the same
+</span>   279    <span class="xdoc">     *                     time. Set to 0 for first in series, set rest to return
+</span>   280    <span class="xdoc">     *                     value of LogSnapshot API.  {<b>@link</b> #getSnapshotId see getSnapshotId()}
+</span>   281    <span class="xdoc">     *  <b>@param(fmt)</b>        a constant string that provides a user-readable description
+</span>   282    <span class="xdoc">     *                     of what information the event is capturing
+</span>   283    <span class="xdoc">     *  <b>@param(pMemoryRange)</b>  the start address of the range of memory
+</span>   284    <span class="xdoc">     *  <b>@param(lengthInMAUs)</b> the number of MAUs of data payload for the
+</span>   285    <span class="xdoc">     *                     multi-event data record
+</span>   286    <span class="xdoc">     */</span>
+   287        @Macro Void writeMemoryBlock(UInt32 snapshotID, IArg fmt, Ptr pMemoryRange,
+   288          UInt16 lengthInMAUs);
+   289    
+   290        <span class="xdoc">/*!
+</span>   291    <span class="xdoc">     *  ======== writeStringWithIdTag ========
+</span>   292    <span class="xdoc">     *  Generate a `LogSnapshot` event for a string in memory
+</span>   293    <span class="xdoc">     *
+</span>   294    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   295    <span class="xdoc">     *   The following C code shows how to log a snapshot event to log the
+</span>   296    <span class="xdoc">     *   contents of a string in memory.
+</span>   297    <span class="xdoc">     *
+</span>   298    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   299    <span class="xdoc">     *  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+</span>   300    <span class="xdoc">     *  ...
+</span>   301    <span class="xdoc">     *  Void myFunc(String name){
+</span>   302    <span class="xdoc">     *     ...
+</span>   303    <span class="xdoc">     *     UInt16 myCustomIdTag = 1;
+</span>   304    <span class="xdoc">     *     LogSnapshot_writeStringWithIdTag(myCustomIdTag,0,"User-defined name=%s.",name, strlen(name));
+</span>   305    <span class="xdoc">     *  }
+</span>   306    <span class="xdoc">     *  <b>@p</b>
+</span>   307    <span class="xdoc">     *  The following text will be displayed for the event, if it was logged
+</span>   308    <span class="xdoc">     *  from file demo.c at line 1234 and all bytes in the 40 character string
+</span>   309    <span class="xdoc">     *  was logged in the same event.
+</span>   310    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   311    <span class="xdoc">     *  String Snapshot at [../demo.c:1234] [snapshotID=0,adrs=0x80001234,40,40] User-defined name=ValueOfParm.
+</span>   312    <span class="xdoc">     *  <b>@p</b>
+</span>   313    <span class="xdoc">     *  <b>@param(idTag)</b>      ID used to identify who logged the event. Set to 0 for a
+</span>   314    <span class="xdoc">     *                     standard UIA event.  Can be used to filter snapshot events on host.
+</span>   315    <span class="xdoc">     *  <b>@param(snapshotID)</b> ID used to identify snapshot events taken at the same
+</span>   316    <span class="xdoc">     *                     time. Set to 0 for first in series, set rest to return
+</span>   317    <span class="xdoc">     *                     value of LogSnapshot API. {<b>@link</b> #getSnapshotId see getSnapshotId()}
+</span>   318    <span class="xdoc">     *  <b>@param(fmt)</b>        a constant string that provides a user-readable description
+</span>   319    <span class="xdoc">     *                     of what information the event is capturing
+</span>   320    <span class="xdoc">     *  <b>@param(pString)</b>    the start address of the string in memory
+</span>   321    <span class="xdoc">     *  <b>@param(lengthInMAUs)</b> the number of MAUs to log (e.g. strlen(pString))
+</span>   322    <span class="xdoc">     */</span>
+   323        @Macro Void writeStringWithIdTag(UInt16 idTag, UInt32 snapshotID, IArg fmt, Ptr pString,
+   324        UInt16 lengthInMAUs);
+   325    
+   326        <span class="xdoc">/*!
+</span>   327    <span class="xdoc">     *  ======== writeString ========
+</span>   328    <span class="xdoc">     *  Generate a `LogSnapshot` event for a string in memory
+</span>   329    <span class="xdoc">     *
+</span>   330    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   331    <span class="xdoc">     *   The following C code shows how to log a snapshot event to log the
+</span>   332    <span class="xdoc">     *   contents of a string in memory.
+</span>   333    <span class="xdoc">     *
+</span>   334    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   335    <span class="xdoc">     *  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+</span>   336    <span class="xdoc">     *  ...
+</span>   337    <span class="xdoc">     *  Void myFunc(String name){
+</span>   338    <span class="xdoc">     *     ...
+</span>   339    <span class="xdoc">     *     LogSnapshot_writeString(0,"User-defined name=%s.",name, strlen(name));
+</span>   340    <span class="xdoc">     *  }
+</span>   341    <span class="xdoc">     *  <b>@p</b>
+</span>   342    <span class="xdoc">     *  The following text will be displayed for the event, if it was logged
+</span>   343    <span class="xdoc">     *  from file demo.c at line 1234 and all bytes in the 40 character string
+</span>   344    <span class="xdoc">     *  was logged in the same event.
+</span>   345    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   346    <span class="xdoc">     *  String Snapshot at [../demo.c:1234] [snapshotID=0,adrs=0x80001234,40,40] User-defined name=ValueOfParm.
+</span>   347    <span class="xdoc">     *  <b>@p</b>
+</span>   348    <span class="xdoc">     *  <b>@param(snapshotID)</b> ID used to identify snapshot events taken at the same
+</span>   349    <span class="xdoc">     *                     time. Set to 0 for first in series, set rest to return
+</span>   350    <span class="xdoc">     *                     value of LogSnapshot API. {<b>@link</b> #getSnapshotId see getSnapshotId()}
+</span>   351    <span class="xdoc">     *  <b>@param(fmt)</b>        a constant string that provides a user-readable description
+</span>   352    <span class="xdoc">     *                     of what information the event is capturing
+</span>   353    <span class="xdoc">     *  <b>@param(pString)</b>    the start address of the string in memory
+</span>   354    <span class="xdoc">     *  <b>@param(lengthInMAUs)</b> the number of MAUs to log (e.g. strlen(pString))
+</span>   355    <span class="xdoc">     */</span>
+   356        @Macro Void writeString(UArg snapshotID, IArg fmt, Ptr pString,
+   357                UInt16 lengthInMAUs);
+   358    
+   359        <span class="xdoc">/*!
+</span>   360    <span class="xdoc">     *  ======== nameOfReference ========
+</span>   361    <span class="xdoc">     *  Used to log the contents of a dynamic string on the heap so that host-side
+</span>   362    <span class="xdoc">     *  tooling can display this string as the name of handle / reference ID
+</span>   363    <span class="xdoc">     *
+</span>   364    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   365    <span class="xdoc">     *   The following C code shows how to log a task name for use by task
+</span>   366    <span class="xdoc">     *   execution graphs etc.
+</span>   367    <span class="xdoc">     *
+</span>   368    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   369    <span class="xdoc">     *  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+</span>   370    <span class="xdoc">     *  #include &lt;ti/sysbios/BIOS.h&gt;
+</span>   371    <span class="xdoc">     *  #include &lt;ti/sysbios/knl/Task.h&gt;
+</span>   372    <span class="xdoc">     *  ...
+</span>   373    <span class="xdoc">     *  // Task create hook function that logs the task name.
+</span>   374    <span class="xdoc">     *  // Notes: Task name is not trequired when creating a BIOS task. Please \
+</span>   375    <span class="xdoc">     *  // make sure a name is provided in order for the host side analysis tool
+</span>   376    <span class="xdoc">     *  // to work properly.
+</span>   377    <span class="xdoc">     *  Void  tskCreateHook(Task_Handle hTask, Error_Block *eb) {
+</span>   378    <span class="xdoc">     *          String name;
+</span>   379    <span class="xdoc">     *          name = Task_Handle_name(hTask);
+</span>   380    <span class="xdoc">     *          LogSnapshot_writeNameOfReference(hTask,"Task_create: name=%s",
+</span>   381    <span class="xdoc">     *            name,strlen(name)+1);
+</span>   382    <span class="xdoc">     *  }
+</span>   383    <span class="xdoc">     *  <b>@p</b>
+</span>   384    <span class="xdoc">     *  This event prints the Log call site (%$F) and a format string (%$S)
+</span>   385    <span class="xdoc">     *  which describes what information the event is logging.
+</span>   386    <span class="xdoc">     *  The following text will be displayed for the event:
+</span>   387    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   388    <span class="xdoc">     *  nameOfReference at  [demo.c:line 1234] [refID=0x80002000,adrs=0x80001234,40,40] Task_create: name=10msThread.
+</span>   389    <span class="xdoc">     *  <b>@param(refID)</b>        reference ID (e.g. task handle) that the name is
+</span>   390    <span class="xdoc">     *                       associated with
+</span>   391    <span class="xdoc">     *  <b>@param(pString)</b>      the start address of the string on the heap
+</span>   392    <span class="xdoc">     *  <b>@param(lengthInMAUs)</b> the number of MAUs to log (e.g. strlen(pString))
+</span>   393    <span class="xdoc">     *  <b>@param(fmt)</b>          a constant string that provides format specifiers
+</span>   394    <span class="xdoc">     *                       describing the string
+</span>   395    <span class="xdoc">     */</span>
+   396        @Macro Void writeNameOfReference(UArg refID, IArg fmt, Ptr pString,
+   397        UInt16 lengthInMAUs);
+   398    
+   399        <span class="xdoc">/*!
+</span>   400    <span class="xdoc">     * ======== getSnapshotId ========
+</span>   401    <span class="xdoc">     * returns a unique ID to use to group a set of snapshot event logs together
+</span>   402    <span class="xdoc">     *
+</span>   403    <span class="xdoc">     * Allows tooling to treat a set of consecutive event logs as a unit and
+</span>   404    <span class="xdoc">     * display all of the relevent data together as a set
+</span>   405    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   406    <span class="xdoc">     *   The following C code shows how to log two snapshot events that capture
+</span>   407    <span class="xdoc">     *   the target state of two different data structures, using a common unique
+</span>   408    <span class="xdoc">     *   non-zero snapshot ID provided by the getSnapshotId to inform the host-side
+</span>   409    <span class="xdoc">     *   tooling that the events represent the target state at the same point in time
+</span>   410    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   411    <span class="xdoc">     *  #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+</span>   412    <span class="xdoc">     *  ...
+</span>   413    <span class="xdoc">     *  MyStruct1 myStruct1;
+</span>   414    <span class="xdoc">     *  MyStruct2 myStruct2;
+</span>   415    <span class="xdoc">     *  UInt32 snapshotId;
+</span>   416    <span class="xdoc">     *  ...
+</span>   417    <span class="xdoc">     *  snapshotId = LogSnapshot_getSnapshotId();
+</span>   418    <span class="xdoc">     *  LogSnapshot_writeMemoryBlock(snapshotId,"myStruct1 ptr=0x%x, numBytes=%d",(UInt32)&amp;myStruct1,sizeof(MyStruct1));
+</span>   419    <span class="xdoc">     *  LogSnapshot_writeMemoryBlock(snapshotId,"myStruct2 ptr=0x%x, numBytes=%d",(UInt32)&amp;myStruct2,sizeof(MyStruct2));
+</span>   420    <span class="xdoc">     *  ...
+</span>   421    <span class="xdoc">     *  <b>@p</b>
+</span>   422    <span class="xdoc">     * <b>@a(return)</b> a unique non-zero snapshot ID to pass in as a parameter to the
+</span>   423    <span class="xdoc">     *    LogSnapshot APIs
+</span>   424    <span class="xdoc">     */</span>
+   425        @DirectCall
+   426        UArg getSnapshotId();
+   427    
+   428        <span class="xdoc">/*!
+</span>   429    <span class="xdoc">     *  ======== doPrint ========
+</span>   430    <span class="xdoc">     *  Render an event as text via `{<b>@link</b> System#printf System_printf}`
+</span>   431    <span class="xdoc">     *
+</span>   432    <span class="xdoc">     *  This method is not currently implemented.
+</span>   433    <span class="xdoc">     *
+</span>   434    <span class="xdoc">     *  <b>@param(evRec)</b>   a non`NULL` pointer to an initialized `
+</span>   435    <span class="xdoc">     *     LogSnapshot_EventRec`structure to be formated via
+</span>   436    <span class="xdoc">     *     {<b>@link</b> System#printf System_printf}`.
+</span>   437    <span class="xdoc">     */</span>
+   438        Void doPrint(EventRec *er);
+   439    
+   440        <span class="comment">/* @_nodoc
+</span>   441    <span class="comment">     *  ======== idToInfo ========
+</span>   442    <span class="comment">     *  Map event ID strings into a string of the form &lt;eventName&gt;::&lt;eventMsg&gt;
+</span>   443    <span class="comment">     */</span>
+   444        <span class=key>metaonly</span> <span class=key>config</span> String idToInfo[string] = [];
+   445    
+   446    }
+</pre>
+</body></html>

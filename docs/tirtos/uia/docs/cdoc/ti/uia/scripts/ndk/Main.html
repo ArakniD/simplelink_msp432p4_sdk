@@ -1,0 +1,481 @@
+<html>
+<head>
+<title>module ti.uia.scripts.ndk.Main</title>
+<meta name="description" content="Tool for reading and decoding UIA data over ethernet">
+<link rel="stylesheet" type="text/css" href="../../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.scripts.ndk.</span><span class="xdoc-id">Main</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/scripts/ndk/package.html" title="package ti.uia.scripts.ndk"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/scripts/ndk/Main.html">index URL</a></div>
+<p class="xdocHdrSummary">Tool for reading and decoding UIA data over ethernet</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../../ti/uia/scripts/ndk/Main-src.html"><span class="xdocLabelFile">ti/uia/scripts/ndk/Main.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> Main = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.scripts.ndk.Main'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#usage">Main.<span class="xdoc-id">usage</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Usage for this command</span></span></a> = <i><span class="xdoc-kw2">String</span>[<span class="xdoc-kw2"></span>]</i> [
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>' ',
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'Usage',
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[-p] [-h] [-m] [-e executable] [-x RTA XML file] [-o output text file] [-c delimter character]',
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--help]',
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>' '
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>];
+</div>
+<div class='xdocSynHdr'>module-wide functions</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#exec">Main.<span class="xdoc-id">exec</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;<tt>xs</tt> script entry point</span></span></a>(<i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">args</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#main">Main.<span class="xdoc-id">main</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;<tt>xs</tt> shell entry point</span></span></a>(<i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">args</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+<div class='xdocSynHdr'>per-instance config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<a class="xdocSynGo" href="#per-instance_config_parameters"><span class="xdoc-id">Params</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Instance config-params object</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#delimiter"><span class="xdoc-id">delimiter</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;// TODO
+  [-l output file for load data]</span></span></a> = <i><span class="xdoc-kw2">String</span></i> "|";
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#executable"><span class="xdoc-id">executable</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Path to the executable which was used to generate the data file</span></span></a> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#more"><span class="xdoc-id">more</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Wait for the user to press enter before displaying the next packet</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#output.File"><span class="xdoc-id">outputFile</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Optional path to an output file to write the decoded records to</span></span></a> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#print.To.Screen"><span class="xdoc-id">printToScreen</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Whether to print the decoded records to the console</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#rta.Xml"><span class="xdoc-id">rtaXml</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Optional path to the RTA XML file</span></span></a> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#suppress.Header"><span class="xdoc-id">suppressHeader</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Don't print the header when printing the decoded records</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class='xdocSynHdr'>per-instance functions</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#run">inst.<span class="xdoc-id">run</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Underlying implementation of the command</span></span></a>(<i><a class="xdoc-link" href="../../../../xdc/tools/Cmdr.html#.Instance" title="xdc.tools.Cmdr.Instance">Cmdr.Instance</a></i> <span class="xdoc-id">cmdr</span>, <i><span class="xdoc-kw2">String</span>[<span class="xdoc-kw2"></span>]</i> <span class="xdoc-id">args</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="usage"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.</span><span class="xdoc-id">usage</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/scripts/ndk/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/scripts/ndk/Main.html#usage">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Usage for this command</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>Main.<span class="xdoc-id">usage</span> = <i><span class="xdoc-kw2">String</span>[<span class="xdoc-kw2"></span>]</i> [
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>' ',
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'Usage',
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[-p] [-h] [-m] [-e executable] [-x RTA XML file] [-o output text file] [-c delimter character]',
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--help]',
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>' '
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>];
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="exec"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">Main.</span><span class="xdoc-id">exec</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/scripts/ndk/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/scripts/ndk/Main.html#exec">index URL</a></div>
+<p class="xdocHdrSummaryDcl"><tt>xs</tt> script entry point</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>Main.<span class="xdoc-id">exec</span>(<i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">args</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This function is called from within other XDCscript scripts and
+  performs the same operations as <tt><a class="xdoc-link" href="Main.html#main" title="main">main()</a></tt> except that,
+  rather than output the return value of <tt>inst.run()</tt>, this value
+  is simply returned to the caller of <tt>exec()</tt>.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="main"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">Main.</span><span class="xdoc-id">main</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/scripts/ndk/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/scripts/ndk/Main.html#main">index URL</a></div>
+<p class="xdocHdrSummaryDcl"><tt>xs</tt> shell entry point</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>Main.<span class="xdoc-id">main</span>(<i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">args</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This function</div>
+<div class="xdocText"><UL><LI> creates a no-arg instance, <tt>inst</tt>, of the module inheriting
+     this interface;
+</LI><LI> parses command line arguments placing all options in the config
+     params of the inheriting module;
+</LI><LI> creates a <tt><a class="xdoc-link" href="../../../../xdc/tools/Cmdr.html" title="xdc.tools.Cmdr">xdc.tools.Cmdr</a></tt> instance, <tt>cmdr</tt>;
+</LI><LI> calls <tt><a class="xdoc-link" href="Main.html#run" title="run">inst.run()</a></tt> with the <tt>cmdr</tt> and any command
+     line command line arguments not parsed as options; and
+</LI><LI> outputs the return result from <tt>inst.run()</tt>
+</LI></UL></div>
+<a class="xdocAnchor" id="per-instance_config_parameters"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Config Parameters</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/scripts/ndk/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/scripts/ndk/Main.html#per-instance_config_parameters">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Instance config-params object</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">delimiter</span> = <i><span class="xdoc-kw2">String</span></i> "|";
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;// TODO
+  [-l output file for load data]</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">executable</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Path to the executable which was used to generate the data file</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">more</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Wait for the user to press enter before displaying the next packet</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">outputFile</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Optional path to an output file to write the decoded records to</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">printToScreen</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Whether to print the decoded records to the console</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">rtaXml</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Optional path to the RTA XML file</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">suppressHeader</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Don't print the header when printing the decoded records</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="delimiter"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">delimiter</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/scripts/ndk/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/scripts/ndk/Main.html#delimiter">index URL</a></div>
+<p class="xdocHdrSummaryDcl">// TODO
+  [-l output file for load data]</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">delimiter</span> = <i><span class="xdoc-kw2">String</span></i> "|";
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Delimiter character to use when writing out the file.</div>
+<div class="xdocText">The character specified here will be inserted between each of the
+  record fields so that the file can be imported into a spreadsheet
+  such as excel.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="executable"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">executable</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/scripts/ndk/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/scripts/ndk/Main.html#executable">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Path to the executable which was used to generate the data file</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">executable</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="more"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">more</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/scripts/ndk/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/scripts/ndk/Main.html#more">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Wait for the user to press enter before displaying the next packet</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">more</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Without this flag, the tool will simply print all of the records in the
+  data file to the screen. If this flag is set, then the tool will wait
+  the user to press enter in between displaying each packet.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="output.File"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">outputFile</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/scripts/ndk/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/scripts/ndk/Main.html#output.File">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Optional path to an output file to write the decoded records to</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">outputFile</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The tool will write the decoded records out as text to the specified
+  out file. The record properties will be separated with a delimeter
+  character so that they can be imported into a spreadsheet such as
+  Excel.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="print.To.Screen"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">printToScreen</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/scripts/ndk/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/scripts/ndk/Main.html#print.To.Screen">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Whether to print the decoded records to the console</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">printToScreen</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">You may use this tool to simply print the decoded records, or you
+  may have them redirected to a file to be processed elsewhere.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="rta.Xml"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">rtaXml</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/scripts/ndk/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/scripts/ndk/Main.html#rta.Xml">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Optional path to the RTA XML file</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">rtaXml</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="suppress.Header"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">suppressHeader</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/scripts/ndk/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/scripts/ndk/Main.html#suppress.Header">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Don't print the header when printing the decoded records</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">suppressHeader</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="run"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">Main.</span><span class="xdoc-id">run</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../../ti/uia/scripts/ndk/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../../index.html#ti/uia/scripts/ndk/Main.html#run">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Underlying implementation of the command</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>inst.<span class="xdoc-id">run</span>(<i><a class="xdoc-link" href="../../../../xdc/tools/Cmdr.html#.Instance" title="xdc.tools.Cmdr.Instance">Cmdr.Instance</a></i> <span class="xdoc-id">cmdr</span>, <i><span class="xdoc-kw2">String</span>[<span class="xdoc-kw2"></span>]</i> <span class="xdoc-id">args</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Since this method is used to support both command line tools and
+  other XDCscript scripts, it is important to avoid explicit
+  termination of the JVM via <tt>java.lang.System.exit()</tt>; doing so
+  precludes callers from handling failures.</div>
+<div class="xdocText">Implementations should instead call</div>
+<div class="xdocText"><UL><LI> <tt><a class="xdoc-link" href="../../../../xdc/tools/Cmdr.html#error" title="xdc.tools.Cmdr.error">cmdr.error()</a></tt> when encountering a
+     fatal error.
+</LI><LI> <tt><a class="xdoc-link" href="../../../../xdc/tools/Cmdr.html#warning" title="xdc.tools.Cmdr.warning">cmdr.warning()</a></tt> when encountering a
+     non-fatal error.
+</LI><LI> <tt><a class="xdoc-link" href="../../../../xdc/tools/Cmdr.html#info" title="xdc.tools.Cmdr.info">cmdr.info()</a></tt> when simply generating
+     an informative message.
+</LI></UL></div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:16 GMT</div>
+</div></div></body>
+</html>

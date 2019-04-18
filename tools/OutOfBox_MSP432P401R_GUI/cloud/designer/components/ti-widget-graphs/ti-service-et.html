@@ -1,0 +1,108 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!-- 
+  `<ti-service-et>` provides APIs for a faked EnergyTrace service.
+
+
+  @group TI Core
+  @element ti-service-et
+-->
+<!--
+    Copyright (c) 2014, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<!--
+-->
+
+<polymer-element name="ti-service-et" attribute="maxSamples samplingRate">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+  </template>
+  <script>
+  defaultMax = 300;
+  Polymer('ti-service-et', {
+    time : 0,
+	v1 : 0,
+	v2 : 0,
+	deltaTime : 1,
+    created: function() {
+	  // 
+    },
+    postsLoaded: function() {
+	  //
+    },
+    reset: function() {
+      this.v1 = this.v2 = this.time = 0;
+    },
+	newSample: function() {
+	  var _v1, _v2;
+	  var _time = this.time;
+	  this.v1 = Math.sin(this.time/2.0) + 1.0;
+	  _v1 = this.v1;
+	  _v2 = this.v2;
+	  this.v2 = this.v2 + (this.v1*this.deltaTime);
+	  this.time += this.deltaTime;
+	  
+	  return([_time, _v1, _v2]);
+	},
+    newSamplesArray: function(max) {
+      var len = 10;
+      if(max > 0) {
+        len = Math.min(len, max);
+      }
+      var result = [];
+      for(var i=0; i<len; i++) {
+        var sample = this.newSample();
+        result.push(sample);
+      }
+      return result;
+    },
+    newSampleArrays: function(max) {
+      var len = 10;
+      if(max > 0) {
+        len = Math.min(len, max);
+      }
+      var t = [];
+      var p = [];
+      var e = [];
+      for(var i=0; i<len; i++) {
+        var sample = this.newSample();
+        t.push(sample[0]);
+        p.push(sample[1]);
+        e.push(sample[2]);
+      }
+      var result = [t, p, e];
+      return result;
+    },
+  });
+  </script>
+</polymer-element>

@@ -1,0 +1,243 @@
+<!doctype html>
+<!--
+Copyright 2014 - 2015. Texas Instruments Incorporated. All rights reserved.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+*   Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+*   Neither the name of Texas Instruments Incorporated nor the names of
+its contributors may be used to endorse or promote products derived
+from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<html>
+<head>
+    <title>TI Common Widgets - Multi-Image Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <script src="../../../webcomponentsjs/webcomponents.js"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            height: 100%;
+            overflow-y: hidden;
+        }
+        
+        design-gist-element-preview {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body unresolved>
+<!-- ------------------------------------------------------------------------------------- -->
+<link rel="import" href="../../../ti-widget-common/ti-widget-label.html">
+<link rel="import" href="../../../ti-widget-common/ti-widget-multiimage.html">
+<link rel="import" href="../../../ti-widget-common/ti-widget-checkbox.html">
+<link rel="import" href="../../../paper-input/paper-input.html">
+<link rel="import" href="../../../ti-widget-common/ti-widget-droplist.html">
+<link rel="import" href="../../../ti-widget-common/ti-widget-spinner.html">
+<link rel="import" href="../../../ti-core-stylesheets/ti-core-stylesheets.html">
+
+  <template id="template_obj" is="auto-binding">
+    <style>    
+      #ti_widget_label {
+        left: 50px;
+        top: 20px;
+        position: absolute;
+        width: 590px;
+        height: 60px;
+      }
+      #ti_widget_label1 {
+        left: 50px;
+        top: 330px;
+        position: absolute;
+      }
+      #ti_widget_label3 {
+        left: 80px;
+        top: 370px;
+        position: absolute;
+      }
+      #input {
+        padding: 15px;
+        left: 150px;
+        top: 340px;
+        position: absolute;
+      }
+      #tooltip_text {
+        left: 150px;
+        top: 650px;
+        position: absolute;
+        width: 250px;
+        height: 50px;
+      }
+      #ti_widget_label10 {
+        left: 90px;
+        top: 670px;
+        position: absolute;
+      }
+      #visibleFlag {
+        left: 70px;
+        top: 610px;
+        position: absolute;
+      }
+      #lock_aspect_ratio {
+        left: 70px;
+        top: 450px;
+        position: absolute;
+      }
+      #disabledFlag {
+        left: 70px;
+        top: 550px;
+        position: absolute;
+        padding: 0px;
+      }
+      #hover_effect_label {
+        left: 80px;
+        top: 520px;
+        position: absolute;
+      }
+      #hover_effect {
+        left: 170px;
+        top: 520px;
+        position: absolute;
+        width: 130px;
+        height: 20px;
+      }
+      #ti_widget_image {
+        position: absolute;
+        width: 48px;
+        height: 48px;
+        vertical-align: middle;
+        left: 40px;
+        top: 70px;
+      }
+      #ti_widget_image1 {
+        position: absolute;
+        width: 510px;
+        height: 250px;
+        left: 130px;
+        top: 70px;
+      }
+      #ti_widget_image2 {
+        left: 680px;
+        top: 70px;
+        position: absolute;
+      }
+      #ti_widget_label2 {
+        left: 80px;
+        top: 410px;
+        position: absolute;
+      }
+      #image_folder {
+        left: 180px;
+        top: 390px;
+        position: absolute;
+        width: 340px;
+        height: 50px;
+      }
+      #ti_widget_label4 {
+        left: 400px;
+        top: 470px;
+        position: absolute;
+      }
+      #ti_widget_label5 {
+        left: 400px;
+        top: 520px;
+        position: absolute;
+      }
+      #ti_widget_label6 {
+        left: 400px;
+        top: 570px;
+        position: absolute;
+      }
+      #ti_widget_label7 {
+        left: 400px;
+        top: 620px;
+        position: absolute;
+      }
+      #selected_value {
+        left: 510px;
+        top: 500px;
+        position: absolute;
+      }
+      #value_list {
+        left: 510px;
+        top: 550px;
+        position: absolute;
+      }
+      #ti_widget_image3 {
+        left: 690px;
+        top: 60px;
+        position: absolute;
+        width: 460px;
+        height: 450px;
+      }
+      #selected_index {
+        left: 510px;
+        top: 470px;
+        position: absolute;
+      }
+      #initial_index {
+        left: 510px;
+        top: 620px;
+        position: absolute;
+      }
+      #image_path {
+        left: 180px;
+        top: 350px;
+        position: absolute;
+        width: 340px;
+      }
+    </style>
+    <ti-core-stylesheets id="ti_core_stylesheets"></ti-core-stylesheets>
+    <ti-widget-label label="Demo of Multi-Image Widget" textalign="center" textdecoration="underline" fontcolor="orange" fontsize="xx-large" id="ti_widget_label"></ti-widget-label>
+    <ti-widget-multiimage imagepaths="{{ $.image_path.value }}" imagefolder="{{ $.image_folder.value }}" lockaspectratio="{{ $.lock_aspect_ratio.checked }}" hovereffect="{{ $.hover_effect.selectedText }}" initialindex="{{ $.initial_index.value }}" selectedindex="{{ $.selected_index.value }}" selectedvalue="{{ $.selected_value.value }}" values="{{ $.value_list.value }}" disabled="{{ $.disabledFlag.checked }}" visible="{{ $.visibleFlag.checked }}" tooltip="{{ $.tooltip_text.value }}" id="ti_widget_image">
+      </ti-widget-multiimage>
+    <ti-widget-multiimage imagepaths="{{ $.image_path.value }}" imagefolder="{{ $.image_folder.value }}" lockaspectratio="{{ $.lock_aspect_ratio.checked }}" hovereffect="{{ $.hover_effect.selectedText }}" initialindex="{{ $.initial_index.value }}" selectedindex="{{ $.selected_index.value }}" selectedvalue="{{ $.selected_value.value }}" values="{{ $.value_list.value }}" disabled="{{ $.disabledFlag.checked }}" visible="{{ $.visibleFlag.checked }}" tooltip="{{ $.tooltip_text.value }}" id="ti_widget_image1">
+  </ti-widget-multiimage>
+    <ti-widget-label label="Properties:" fontweight="bold" fontsize="large" id="ti_widget_label1"></ti-widget-label>
+    <ti-widget-label label="imagePaths:" id="ti_widget_label3"></ti-widget-label>
+    <ti-widget-label label="tooltip:" id="ti_widget_label10"></ti-widget-label>
+    <ti-widget-checkbox checked label="visible" id="visibleFlag"></ti-widget-checkbox>
+    <ti-widget-checkbox label="lockAspectRatio" id="lock_aspect_ratio"></ti-widget-checkbox>
+    <ti-widget-checkbox label="disabled" id="disabledFlag"></ti-widget-checkbox>
+    <paper-input label="Type something..." id="tooltip_text"></paper-input>
+    <ti-widget-label label="hoverEffect:" id="hover_effect_label"></ti-widget-label>
+    <ti-widget-droplist selectedtext="none" labels="none, enlarge, button, color" id="hover_effect"></ti-widget-droplist>
+    <ti-widget-label label="imageFolder:" id="ti_widget_label2"></ti-widget-label>
+    <paper-input label="Enter common prefix for all image paths here" value="../ti-widget-image/images" id="image_folder"></paper-input>
+    <ti-widget-label label="selectedIndex:" id="ti_widget_label4"></ti-widget-label>
+    <ti-widget-label label="selectedValue:" id="ti_widget_label5"></ti-widget-label>
+    <ti-widget-label label="values:" id="ti_widget_label6"></ti-widget-label>
+    <ti-widget-label label="initialIndex:" id="ti_widget_label7"></ti-widget-label>
+    <paper-input label="Type something..." id="selected_value"></paper-input>
+    <paper-input label="Type something..." id="value_list"></paper-input>
+    <ti-widget-multiimage imagepaths="{{ $.image_path.value }}" imagefolder="{{ $.image_folder.value }}" lockaspectratio="{{ $.lock_aspect_ratio.checked }}" hovereffect="{{ $.hover_effect.selectedText }}" initialindex="{{ $.initial_index.value }}" selectedindex="{{ $.selected_index.value }}" selectedvalue="{{ $.selected_value.value }}" values="{{ $.value_list.value }}" disabled="{{ $.disabledFlag.checked }}" visible="{{ $.visibleFlag.checked }}" tooltip="{{ $.tooltip_text.value }}" id="ti_widget_image3"></ti-widget-multiimage>
+    <ti-widget-spinner value="-1" minvalue="-1" id="selected_index"></ti-widget-spinner>
+    <ti-widget-spinner minvalue="-1" id="initial_index"></ti-widget-spinner>
+    <paper-input label="Enter list of images" value="chip.jpg,msp430.svg,work.png" id="image_path"></paper-input>
+  </template>
+</body>
+</html>

@@ -1,0 +1,655 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.events.UIABenchmark</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012-2014, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> * ======== UIABenchmark.xdc ========
+</span>    35    <span class="comment"> */</span>
+    36    
+    37    import xdc.runtime.Diags;
+    38    import xdc.runtime.Types;
+    39    import ti.uia.events.DvtTypes;
+    40    
+    41    <span class="xdoc">/*!
+</span>    42    <span class="xdoc"> * UIA Benchmark Events
+</span>    43    <span class="xdoc"> *
+</span>    44    <span class="xdoc"> * The UIABenchmark module defines events that allow
+</span>    45    <span class="xdoc"> * tooling to analyze the performance of the software
+</span>    46    <span class="xdoc"> * (processing time, latency, etc.)
+</span>    47    <span class="xdoc"> *
+</span>    48    <span class="xdoc"> *  The generation of UIABenchmark events is controlled by a module's diagnostics
+</span>    49    <span class="xdoc"> *  mask, which is described in detail in `{<b>@link</b> xdc.runtime.Diags}`.
+</span>    50    <span class="xdoc"> * `UIABenchmark` events are generated only when the Diags.ANALYSIS bit is set
+</span>    51    <span class="xdoc"> *  in the module's diagnostics mask.
+</span>    52    <span class="xdoc"> *
+</span>    53    <span class="xdoc"> *  The following configuration script demonstrates how the application might
+</span>    54    <span class="xdoc"> *  control the logging of ANALYSIS events embedded in the `Mod` module at configuration
+</span>    55    <span class="xdoc"> *  time. In this case, the configuration script arranges for the `Log`
+</span>    56    <span class="xdoc"> *  statements within modules to always generate ANALYSIS events.
+</span>    57    <span class="xdoc"> *  Without these configuration statements, no ANALYSIS events would be generated
+</span>    58    <span class="xdoc"> *  by any modules.
+</span>    59    <span class="xdoc"> *
+</span>    60    <span class="xdoc"> * <b>@a(Examples)</b>
+</span>    61    <span class="xdoc"> * Example 1: This is part of the XDC configuration file for the application:
+</span>    62    <span class="xdoc"> *
+</span>    63    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    64    <span class="xdoc"> *  var UIABenchmark = xdc.useModule('ti.uia.events.UIABenchmark');
+</span>    65    <span class="xdoc"> *  var Diags = xdc.useModule('xdc.runtime.Diags');
+</span>    66    <span class="xdoc"> *  var LoggerSys = xdc.useModule('xdc.runtime.LoggerSys');
+</span>    67    <span class="xdoc"> *  var Defaults = xdc.useModule('xdc.runtime.Defaults');
+</span>    68    <span class="xdoc"> *  var logger = LoggerSys.create();
+</span>    69    <span class="xdoc"> *
+</span>    70    <span class="xdoc"> *  Defaults.common$.diags_ANALYSIS = Diags.ALWAYS_ON;
+</span>    71    <span class="xdoc"> *  Defaults.common$.logger = logger;
+</span>    72    <span class="xdoc"> *  <b>@p</b>
+</span>    73    <span class="xdoc"> *
+</span>    74    <span class="xdoc"> *  <b>@p(html)</b>
+</span>    75    <span class="xdoc"> *  &lt;hr /&gt;
+</span>    76    <span class="xdoc"> *  <b>@p</b>
+</span>    77    <span class="xdoc"> *
+</span>    78    <span class="xdoc"> *  Example 2: The following example configures a module to support logging
+</span>    79    <span class="xdoc"> *  of ANALYSIS events, but defers the actual activation and deactivation of the
+</span>    80    <span class="xdoc"> *  logging until runtime. See the `{<b>@link</b> Diags#setMask Diags_setMask()}`
+</span>    81    <span class="xdoc"> *  function for details on specifying the control string.
+</span>    82    <span class="xdoc"> *
+</span>    83    <span class="xdoc"> *  This is a part of the XDC configuration file for the application:
+</span>    84    <span class="xdoc"> *
+</span>    85    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    86    <span class="xdoc"> *  var UIABenchmark = xdc.useModule('ti.uia.events.UIABenchmark');
+</span>    87    <span class="xdoc"> *  var Diags = xdc.useModule('xdc.runtime.Diags');
+</span>    88    <span class="xdoc"> *  var Mod = xdc.useModule('my.pkg.Mod');
+</span>    89    <span class="xdoc"> *
+</span>    90    <span class="xdoc"> *  Mod.common$.diags_ANALYSIS = Diags.RUNTIME_OFF;
+</span>    91    <span class="xdoc"> *  <b>@p</b>
+</span>    92    <span class="xdoc"> *
+</span>    93    <span class="xdoc"> *  This is a part of the C code for the application:
+</span>    94    <span class="xdoc"> *
+</span>    95    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    96    <span class="xdoc"> *  // turn on logging of ANALYSIS events in the module
+</span>    97    <span class="xdoc"> *  Diags_setMask("my.pkg.Mod+Z");
+</span>    98    <span class="xdoc"> *
+</span>    99    <span class="xdoc"> *  // turn off logging of ANALYSIS events in the module
+</span>   100    <span class="xdoc"> *  Diags_setMask("my.pkg.Mod-Z");
+</span>   101    <span class="xdoc"> *  <b>@p</b>
+</span>   102    <span class="xdoc"> */</span>
+   103    <span class=key>module</span> UIABenchmark <span class=key>inherits</span> IUIAEvent {
+   104    
+   105        <span class="xdoc">/*!
+</span>   106    <span class="xdoc">     *  ======== start ========
+</span>   107    <span class="xdoc">     *  Benchmark event used to log the start of an operation
+</span>   108    <span class="xdoc">     *
+</span>   109    <span class="xdoc">     * <b>@a(Example)</b>
+</span>   110    <span class="xdoc">     *   The following C code shows how to log a simple
+</span>   111    <span class="xdoc">     *   benchmark 'start' event along with a user-specified
+</span>   112    <span class="xdoc">     *   format string describing the event.
+</span>   113    <span class="xdoc">     *
+</span>   114    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   115    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   116    <span class="xdoc">     *  #include &lt;ti/uia/events/UIABenchmark.h&gt;
+</span>   117    <span class="xdoc">     *  ...
+</span>   118    <span class="xdoc">     *  Log_write1(UIABenchmark_start, (IArg)"My benchmark event");
+</span>   119    <span class="xdoc">     *  <b>@p</b>
+</span>   120    <span class="xdoc">     *  The following text will be displayed for the event:
+</span>   121    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   122    <span class="xdoc">     *  Start: My benchmark event
+</span>   123    <span class="xdoc">     *  <b>@p</b>
+</span>   124    <span class="xdoc">     *  <b>@param(fmt)</b>        a constant string that provides format specifiers for up to 7 additional parameters
+</span>   125    <span class="xdoc">     *
+</span>   126    <span class="xdoc">     */</span>
+   127        <span class=key>config</span> xdc.runtime.Log.Event start = {
+   128            mask: Diags.ANALYSIS,
+   129            msg: <span class="string">"Start: %$S "</span>};
+   130    
+   131        <span class="xdoc">/*!
+</span>   132    <span class="xdoc">     *  ======== metaEventStart ========
+</span>   133    <span class="xdoc">     *  Metadata description of the start event
+</span>   134    <span class="xdoc">     *
+</span>   135    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   136    <span class="xdoc">     */</span>
+   137        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventStart = {
+   138            versionId: <span class="string">"2.0"</span>,
+   139            analysisType: DvtTypes.DvtAnalysisType_START,
+   140            displayText: <span class="string">"Start"</span>,
+   141            tooltipText: <span class="string">"Marks the start of analysis"</span>,
+   142            numParameters: 1,
+   143            paramInfo: [
+   144            {   name: <span class="string">'fmt'</span>,
+   145                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   146                dataTypeName: <span class="string">'String'</span>,
+   147                units: <span class="string">'none'</span>,
+   148                isHidden: <span class=key>false</span>
+   149            }]
+   150        };
+   151    
+   152        <span class="xdoc">/*!
+</span>   153    <span class="xdoc">     *  ======== stop ========
+</span>   154    <span class="xdoc">     *  Benchmark event used to log the end of an operation
+</span>   155    <span class="xdoc">     *
+</span>   156    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   157    <span class="xdoc">     *   The following C code shows how to log a simple
+</span>   158    <span class="xdoc">     *   benchmark 'stop' event along with a user-specified
+</span>   159    <span class="xdoc">     *   format string describing the event.
+</span>   160    <span class="xdoc">     *
+</span>   161    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   162    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   163    <span class="xdoc">     *  #include &lt;ti/uia/events/UIABenchmark.h&gt;
+</span>   164    <span class="xdoc">     *  ...
+</span>   165    <span class="xdoc">     *  Log_write1(UIABenchmark_stop, (IArg)"My benchmark event");
+</span>   166    <span class="xdoc">     *  <b>@p</b>
+</span>   167    <span class="xdoc">     *  The following text will be displayed for the event:
+</span>   168    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   169    <span class="xdoc">     *  Stop: My benchmark event
+</span>   170    <span class="xdoc">     *  <b>@p</b>
+</span>   171    <span class="xdoc">     *  <b>@param(fmt)</b>        a constant string that provides format specifiers for up to 7 additional parameters
+</span>   172    <span class="xdoc">     */</span>
+   173        <span class=key>config</span> xdc.runtime.Log.Event stop = {
+   174            mask: Diags.ANALYSIS,
+   175            msg: <span class="string">"Stop: %$S "</span>};
+   176    
+   177        <span class="xdoc">/*!
+</span>   178    <span class="xdoc">     *  ======== metaEventStop ========
+</span>   179    <span class="xdoc">     *  Metadata description of the stop event
+</span>   180    <span class="xdoc">     *
+</span>   181    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   182    <span class="xdoc">     */</span>
+   183        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventStop = {
+   184            versionId: <span class="string">"2.0"</span>,
+   185            analysisType: DvtTypes.DvtAnalysisType_STOP,
+   186            displayText: <span class="string">"Stop"</span>,
+   187            tooltipText: <span class="string">"Marks the end of analysis"</span>,
+   188            numParameters: 1,
+   189            paramInfo: [
+   190            {   name: <span class="string">'fmt'</span>,
+   191                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   192                dataTypeName: <span class="string">'String'</span>,
+   193                units: <span class="string">'none'</span>,
+   194                isHidden: <span class=key>false</span>
+   195            }]
+   196        };
+   197        <span class="xdoc">/*!
+</span>   198    <span class="xdoc">     *  ======== startInstance ========
+</span>   199    <span class="xdoc">     *  Benchmark event used to log the start of an operation instance
+</span>   200    <span class="xdoc">     *
+</span>   201    <span class="xdoc">     *  Event parameter provides instance data to differentiate
+</span>   202    <span class="xdoc">     *  between multiple instances that can run in parallel.
+</span>   203    <span class="xdoc">     *
+</span>   204    <span class="xdoc">     *  <b>@a(Example)</b>
+</span>   205    <span class="xdoc">     *   The following C code shows how to log a benchmark
+</span>   206    <span class="xdoc">     *   'startInstance' event along with a user-specified
+</span>   207    <span class="xdoc">     *   instance identifier and a format string describing the event.
+</span>   208    <span class="xdoc">     *
+</span>   209    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   210    <span class="xdoc">     *  #include &lt;xdc/runtime/Gate.h&gt;
+</span>   211    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   212    <span class="xdoc">     *  #include &lt;ti/uia/events/UIABenchmark.h&gt;
+</span>   213    <span class="xdoc">     *  static volatile int gMyGlobalInstanceId = 0;
+</span>   214    <span class="xdoc">     *  ...
+</span>   215    <span class="xdoc">     *  IArg key;
+</span>   216    <span class="xdoc">     *  int localInstanceId;
+</span>   217    <span class="xdoc">     *
+</span>   218    <span class="xdoc">     * // protect pre-increment operation from race conditions
+</span>   219    <span class="xdoc">     *  key = Gate_enterSystem();
+</span>   220    <span class="xdoc">     *  localInstanceId = ++gMyGlobalInstanceId;
+</span>   221    <span class="xdoc">     *  Gate_leaveSystem(key);
+</span>   222    <span class="xdoc">     *
+</span>   223    <span class="xdoc">     *  Log_write2(UIABenchmark_startInstance, (IArg)"My benchmark event: instanceId=%d",localInstanceId);
+</span>   224    <span class="xdoc">     *  ...
+</span>   225    <span class="xdoc">     *  Log_write2(UIABenchmark_stopInstance, (IArg)"My benchmark event: instanceId=%d",localInstanceId);
+</span>   226    <span class="xdoc">     *  <b>@p</b>
+</span>   227    <span class="xdoc">     *  The following text will be displayed for the event:
+</span>   228    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   229    <span class="xdoc">     *  StartInstance: My benchmark event: instanceId=1
+</span>   230    <span class="xdoc">     *  StopInstance: My benchmark event: instanceId=1
+</span>   231    <span class="xdoc">     *  <b>@p</b>
+</span>   232    <span class="xdoc">     *  <b>@param(fmt)</b>                 a constant string that provides format specifiers for up to 6 additional parameters
+</span>   233    <span class="xdoc">     *  <b>@param(instanceId)</b>          a unique instance ID that can be used to match benchmark start and stop events
+</span>   234    <span class="xdoc">     */</span>
+   235        <span class=key>config</span> xdc.runtime.Log.Event startInstance = {
+   236            mask: Diags.ANALYSIS,
+   237            msg: <span class="string">"StartInstance: %$S "</span>
+   238        };
+   239    
+   240        <span class="xdoc">/*!
+</span>   241    <span class="xdoc">     *  ======== metaEventStartInstance ========
+</span>   242    <span class="xdoc">     *  Metadata description of the startInstance event
+</span>   243    <span class="xdoc">     *
+</span>   244    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   245    <span class="xdoc">     */</span>
+   246        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventStartInstance = {
+   247            versionId: <span class="string">"2.0"</span>,
+   248            analysisType: DvtTypes.DvtAnalysisType_START,
+   249            displayText: <span class="string">"StartInstance"</span>,
+   250            tooltipText: <span class="string">"Marks the start of analysis for a module instance"</span>,
+   251            numParameters: 2,
+   252            paramInfo: [
+   253            {   name: <span class="string">'fmt'</span>,
+   254                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   255                dataTypeName: <span class="string">'String'</span>,
+   256                units: <span class="string">'none'</span>,
+   257                isHidden: <span class=key>false</span>
+   258            },
+   259            {   name: <span class="string">'InstanceID'</span>,
+   260                dataDesc: DvtTypes.DvtDataDesc_INSTANCE,
+   261                dataTypeName: <span class="string">'Int'</span>,
+   262                units: <span class="string">'none'</span>,
+   263                isHidden: <span class=key>false</span>
+   264            }
+   265            ]
+   266        };
+   267    
+   268        <span class="xdoc">/*!
+</span>   269    <span class="xdoc">     *  ======== stopInstance ========
+</span>   270    <span class="xdoc">     *  Benchmark event used to log the end of an operation instance
+</span>   271    <span class="xdoc">     *
+</span>   272    <span class="xdoc">     *  Event parameter provides instance data to differentiate
+</span>   273    <span class="xdoc">     *  between multiple instances that can run in parallel.
+</span>   274    <span class="xdoc">     *
+</span>   275    <span class="xdoc">     * <b>@a(Example)</b>
+</span>   276    <span class="xdoc">     *   The following C code shows how to log a benchmark
+</span>   277    <span class="xdoc">     *   'stopInstance' event along with a user-specified
+</span>   278    <span class="xdoc">     *   instance identifier and a format string describing the event.
+</span>   279    <span class="xdoc">     *
+</span>   280    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   281    <span class="xdoc">     *  #include &lt;xdc/runtime/Gate.h&gt;
+</span>   282    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   283    <span class="xdoc">     *  #include &lt;ti/uia/events/UIABenchmark.h&gt;
+</span>   284    <span class="xdoc">     *  static volatile int gMyGlobalInstanceId = 0;
+</span>   285    <span class="xdoc">     *  ...
+</span>   286    <span class="xdoc">     *  IArg key;
+</span>   287    <span class="xdoc">     *  int localInstanceId;
+</span>   288    <span class="xdoc">     *
+</span>   289    <span class="xdoc">     * // protect pre-increment operation from race conditions
+</span>   290    <span class="xdoc">     *  key = Gate_enterSystem();
+</span>   291    <span class="xdoc">     *  localInstanceId = ++gMyGlobalInstanceId;
+</span>   292    <span class="xdoc">     *  Gate_leaveSystem(key);
+</span>   293    <span class="xdoc">     *
+</span>   294    <span class="xdoc">     *  Log_write2(UIABenchmark_startInstance, (IArg)"My benchmark event: instanceId=%d",localInstanceId);
+</span>   295    <span class="xdoc">     *  ...
+</span>   296    <span class="xdoc">     *  Log_write2(UIABenchmark_stopInstance, (IArg)"My benchmark event: instanceId=%d",localInstanceId);
+</span>   297    <span class="xdoc">     *  <b>@p</b>
+</span>   298    <span class="xdoc">     *  The following text will be displayed for the event:
+</span>   299    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   300    <span class="xdoc">     *  StartInstance: My benchmark event: instanceId=1
+</span>   301    <span class="xdoc">     *  StopInstance: My benchmark event: instanceId=1
+</span>   302    <span class="xdoc">     *  <b>@p</b>
+</span>   303    <span class="xdoc">     *  <b>@param(fmt)</b>                 a constant string that provides format specifiers for up to 6 additional parameters
+</span>   304    <span class="xdoc">     *  <b>@param(instanceId)</b>          a unique instance ID that can be used to match benchmark start and stop events
+</span>   305    <span class="xdoc">     */</span>
+   306        <span class=key>config</span> xdc.runtime.Log.Event stopInstance = {
+   307            mask: Diags.ANALYSIS,
+   308            msg: <span class="string">"StopInstance: %$S "</span>
+   309        };
+   310    
+   311        <span class="xdoc">/*!
+</span>   312    <span class="xdoc">     *  ======== metaEventStopInstance ========
+</span>   313    <span class="xdoc">     *  Metadata description of the stopInstance event
+</span>   314    <span class="xdoc">     *
+</span>   315    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   316    <span class="xdoc">     */</span>
+   317        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventStopInstance = {
+   318            versionId: <span class="string">"2.0"</span>,
+   319            analysisType: DvtTypes.DvtAnalysisType_STOP,
+   320            displayText: <span class="string">"StopInstance"</span>,
+   321            tooltipText: <span class="string">"Marks the end of analysis for a module instance"</span>,
+   322            numParameters: 2,
+   323            paramInfo: [
+   324            {   name: <span class="string">'fmt'</span>,
+   325                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   326                dataTypeName: <span class="string">'String'</span>,
+   327                units: <span class="string">'none'</span>,
+   328                isHidden: <span class=key>false</span>
+   329            },
+   330            {   name: <span class="string">'InstanceID'</span>,
+   331                dataDesc: DvtTypes.DvtDataDesc_INSTANCE,
+   332                dataTypeName: <span class="string">'Int'</span>,
+   333                units: <span class="string">'none'</span>,
+   334                isHidden: <span class=key>false</span>
+   335            }
+   336            ]
+   337        };
+   338    
+   339    
+   340        <span class="xdoc">/*!
+</span>   341    <span class="xdoc">     *  ======== startInstanceWithAdrs ========
+</span>   342    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   343    <span class="xdoc">     *  Benchmark event used to log the start of an operation instance
+</span>   344    <span class="xdoc">     *  (Deprecated - please use UIAProfile events or other UIABenchmark events instead)
+</span>   345    <span class="xdoc">     *
+</span>   346    <span class="xdoc">     *  Event parameter provides instance data to differentiate
+</span>   347    <span class="xdoc">     *  between multiple instances that can run in parallel
+</span>   348    <span class="xdoc">     *
+</span>   349    <span class="xdoc">     * <b>@a(Example)</b>
+</span>   350    <span class="xdoc">     *   The following C code shows how to log a benchmark
+</span>   351    <span class="xdoc">     *   'startInstanceWithAdrs' event along with a task handle as the
+</span>   352    <span class="xdoc">     *   instance identifier, the function address and a format string
+</span>   353    <span class="xdoc">     *   describing the event.
+</span>   354    <span class="xdoc">     *
+</span>   355    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   356    <span class="xdoc">     *  #include &lt;ti/sysbios/knl/Task.h&gt;
+</span>   357    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   358    <span class="xdoc">     *  #include &lt;ti/uia/events/UIABenchmark.h&gt;
+</span>   359    <span class="xdoc">     *  ...
+</span>   360    <span class="xdoc">     * Void myFunction(){
+</span>   361    <span class="xdoc">     *   Task_Handle hTsk = Task_selfMacro( );
+</span>   362    <span class="xdoc">     *
+</span>   363    <span class="xdoc">     *   Log_write3(UIABenchmark_startInstanceWithAdrs, (IArg)"My benchmark event: task=0x%x, fnAdrs=0x%x",(IArg)hTsk,(IArg)&amp;myFunc);
+</span>   364    <span class="xdoc">     *   ...
+</span>   365    <span class="xdoc">     *   Log_write3(UIABenchmark_stopInstanceWithAdrs, (IArg)"My benchmark event: task=0x%x", fnAdrs=0x%x",(IArg)hTsk,(IArg)&amp;myFunc);
+</span>   366    <span class="xdoc">     * }
+</span>   367    <span class="xdoc">     *  <b>@p</b>
+</span>   368    <span class="xdoc">     *  The following text will be displayed for the event:
+</span>   369    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   370    <span class="xdoc">     *  StartInstanceWithAdrs: My benchmark event: task=0x893230, fnAdrs=0x820060
+</span>   371    <span class="xdoc">     *  StopInstanceWithAdrs: My benchmark event: task=0x893230, fnAdrs=0x820060
+</span>   372    <span class="xdoc">     *  <b>@p</b>
+</span>   373    <span class="xdoc">     *  <b>@param(fmt)</b>                 a constant string that provides format specifiers for up to 5 additional parameters
+</span>   374    <span class="xdoc">     *  <b>@param(instanceId)</b>          a unique instance ID that can be used to match benchmark start and stop events
+</span>   375    <span class="xdoc">     *  <b>@param(functionAdrs)</b>        the address of a function that can differentiate this pair of start and stop events from others
+</span>   376    <span class="xdoc">     */</span>
+   377        <span class=key>config</span> xdc.runtime.Log.Event startInstanceWithAdrs = {
+   378            mask: Diags.ANALYSIS,
+   379            msg: <span class="string">"StartInstanceWithAdrs: %$S"</span>
+   380        };
+   381    
+   382        <span class="xdoc">/*!
+</span>   383    <span class="xdoc">     *  ======== metaEventStartInstanceWithAdrs ========
+</span>   384    <span class="xdoc">     *  Metadata description of the startInstanceWithAdrs event
+</span>   385    <span class="xdoc">     *
+</span>   386    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   387    <span class="xdoc">     */</span>
+   388        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventStartInstanceWithAdrs = {
+   389            versionId: <span class="string">"2.0"</span>,
+   390            analysisType: DvtTypes.DvtAnalysisType_START,
+   391            displayText: <span class="string">"StartInstanceWithAdrs"</span>,
+   392            tooltipText: <span class="string">"Marks the start of analysis for a module instance"</span>,
+   393            numParameters: 3,
+   394            paramInfo: [
+   395            {   name: <span class="string">'fmt'</span>,
+   396                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   397                dataTypeName: <span class="string">'String'</span>,
+   398                units: <span class="string">'none'</span>,
+   399                isHidden: <span class=key>false</span>
+   400            },
+   401            {   name: <span class="string">'InstanceID'</span>,
+   402                dataDesc: DvtTypes.DvtDataDesc_INSTANCE,
+   403                dataTypeName: <span class="string">'Int'</span>,
+   404                units: <span class="string">'none'</span>,
+   405                isHidden: <span class=key>false</span>
+   406            },
+   407            {   name: <span class="string">'FunctionAdrs'</span>,
+   408                dataDesc: DvtTypes.DvtDataDesc_FUNCTIONADRS,
+   409                dataTypeName: <span class="string">'Int'</span>,
+   410                units: <span class="string">'none'</span>,
+   411                isHidden: <span class=key>false</span>
+   412            }
+   413            ]
+   414        };
+   415    
+   416    
+   417    
+   418    
+   419    
+   420        <span class="xdoc">/*!
+</span>   421    <span class="xdoc">     *  ======== stopInstanceWithAdrs ========
+</span>   422    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   423    <span class="xdoc">     *  Benchmark event used to log the end of an operation instance
+</span>   424    <span class="xdoc">     *  (Deprecated - please use UIAProfile events or other UIABenchmark events instead)
+</span>   425    <span class="xdoc">     *
+</span>   426    <span class="xdoc">     * <b>@a(Example)</b>
+</span>   427    <span class="xdoc">     *   The following C code shows how to log a benchmark
+</span>   428    <span class="xdoc">     *   'stopInstanceWithAdrs' event along with a task handle as the
+</span>   429    <span class="xdoc">     *   instance identifier, the function address and a format string
+</span>   430    <span class="xdoc">     *   describing the event.
+</span>   431    <span class="xdoc">     *
+</span>   432    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   433    <span class="xdoc">     *  #include &lt;ti/sysbios/knl/Task.h&gt;
+</span>   434    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   435    <span class="xdoc">     *  #include &lt;ti/uia/events/UIABenchmark.h&gt;
+</span>   436    <span class="xdoc">     *  ...
+</span>   437    <span class="xdoc">     * Void myFunction(){
+</span>   438    <span class="xdoc">     *   Task_Handle hTsk = Task_selfMacro( );
+</span>   439    <span class="xdoc">     *
+</span>   440    <span class="xdoc">     *   Log_write3(UIABenchmark_startInstanceWithAdrs, (IArg)"My benchmark event: task=0x%x, fnAdrs=0x%x",(IArg)hTsk,(IArg)&amp;myFunc);
+</span>   441    <span class="xdoc">     *   ...
+</span>   442    <span class="xdoc">     *   Log_write3(UIABenchmark_stopInstanceWithAdrs, (IArg)"My benchmark event: task=0x%x", fnAdrs=0x%x",(IArg)hTsk,(IArg)&amp;myFunc);
+</span>   443    <span class="xdoc">     * }
+</span>   444    <span class="xdoc">     *  <b>@p</b>
+</span>   445    <span class="xdoc">     *  The following text will be displayed for the event:
+</span>   446    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   447    <span class="xdoc">     *  StartInstanceWithAdrs: My benchmark event: task=0x893230, fnAdrs=0x820060
+</span>   448    <span class="xdoc">     *  StopInstanceWithAdrs: My benchmark event: task=0x893230, fnAdrs=0x820060
+</span>   449    <span class="xdoc">     *  <b>@p</b>
+</span>   450    <span class="xdoc">     *  <b>@param(fmt)</b>                 a constant string that provides format specifiers for up to 5 additional parameters
+</span>   451    <span class="xdoc">     *  <b>@param(instanceId)</b>          a unique instance ID that can be used to match benchmark start and stop events
+</span>   452    <span class="xdoc">     *  <b>@param(functionAdrs)</b>        the address of a function that can differentiate this pair of start and stop events from others
+</span>   453    <span class="xdoc">     */</span>
+   454        <span class=key>config</span> xdc.runtime.Log.Event stopInstanceWithAdrs = {
+   455            mask: Diags.ANALYSIS,
+   456            msg: <span class="string">"StopInstanceWithAdrs: %$S"</span>
+   457        };
+   458    
+   459        <span class="xdoc">/*!
+</span>   460    <span class="xdoc">     *  ======== metaEventStopInstanceWithAdrs ========
+</span>   461    <span class="xdoc">     *  Metadata description of the stopInstanceWithAdrs event
+</span>   462    <span class="xdoc">     *
+</span>   463    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   464    <span class="xdoc">     */</span>
+   465        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventStopInstanceWithAdrs = {
+   466            versionId: <span class="string">"2.0"</span>,
+   467            analysisType: DvtTypes.DvtAnalysisType_STOP,
+   468            displayText: <span class="string">"StopInstanceWithAdrs"</span>,
+   469            tooltipText: <span class="string">"Marks the end of analysis for a module instance"</span>,
+   470            numParameters: 3,
+   471            paramInfo: [
+   472            {   name: <span class="string">'fmt'</span>,
+   473                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   474                dataTypeName: <span class="string">'String'</span>,
+   475                units: <span class="string">'none'</span>,
+   476                isHidden: <span class=key>false</span>
+   477            },
+   478            {   name: <span class="string">'Handle'</span>,
+   479                dataDesc: DvtTypes.DvtDataDesc_INSTANCE,
+   480                dataTypeName: <span class="string">'Int'</span>,
+   481                units: <span class="string">'none'</span>,
+   482                isHidden: <span class=key>false</span>
+   483            },
+   484            {   name: <span class="string">'FunctionAdrs'</span>,
+   485                dataDesc: DvtTypes.DvtDataDesc_FUNCTIONADRS,
+   486                dataTypeName: <span class="string">'Int'</span>,
+   487                units: <span class="string">'none'</span>,
+   488                isHidden: <span class=key>false</span>
+   489            }
+   490            ]
+   491        };
+   492    
+   493    
+   494        <span class="xdoc">/*!
+</span>   495    <span class="xdoc">     *  ======== startInstanceWithStr ========
+</span>   496    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   497    <span class="xdoc">     *  Benchmark event used to log the start of an operation instance
+</span>   498    <span class="xdoc">     *  (Deprecated - please use UIAProfile events or other UIABenchmark events instead)
+</span>   499    <span class="xdoc">     *
+</span>   500    <span class="xdoc">     *  Event parameter provides instance data to differentiate
+</span>   501    <span class="xdoc">     *  between multiple instances that can run in parallel
+</span>   502    <span class="xdoc">     * <b>@a(Example)</b>
+</span>   503    <span class="xdoc">     *   The following C code shows how to log a benchmark
+</span>   504    <span class="xdoc">     *   'startInstanceWithStr' event along with a unique instance identifier
+</span>   505    <span class="xdoc">     *   and a string reference used only by the pair of start / stop events.
+</span>   506    <span class="xdoc">     *
+</span>   507    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   508    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   509    <span class="xdoc">     *  #include &lt;ti/uia/events/UIABenchmark.h&gt;
+</span>   510    <span class="xdoc">     *  ...
+</span>   511    <span class="xdoc">     * Void packetHdlr(Int packetId){
+</span>   512    <span class="xdoc">     *
+</span>   513    <span class="xdoc">     *   Log_write3(UIABenchmark_startInstanceWithStr, (IArg)"My benchmark event: packetId=0x%x",packetId,(IArg)"(routing)");
+</span>   514    <span class="xdoc">     *   ...
+</span>   515    <span class="xdoc">     *   Log_write3(UIABenchmark_stopInstanceWithStr, (IArg)"My benchmark event: packetId=0x%x",packetId,(IArg)"(routing)");
+</span>   516    <span class="xdoc">     * }
+</span>   517    <span class="xdoc">     *  <b>@p</b>
+</span>   518    <span class="xdoc">     *  The following text will be displayed for the event:
+</span>   519    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   520    <span class="xdoc">     *  StartInstanceWithStr: My benchmark event: packetId=0x3bc3 (routing)
+</span>   521    <span class="xdoc">     *  StopInstanceWithStr: My benchmark event: packetId=0x3bc3 (routing)
+</span>   522    <span class="xdoc">     *  <b>@p</b>
+</span>   523    <span class="xdoc">     *  Event parameter provides instance data to differentiate
+</span>   524    <span class="xdoc">     *  between multiple instances that can run in parallel
+</span>   525    <span class="xdoc">     *  <b>@param(fmt)</b>                 a constant string that provides format specifiers for up to 5 additional parameters
+</span>   526    <span class="xdoc">     *  <b>@param(instanceId)</b>          a unique instance ID that can be used to match benchmark start and stop events
+</span>   527    <span class="xdoc">     *  <b>@param(str)</b>                 a constant string reference
+</span>   528    <span class="xdoc">     */</span>
+   529        <span class=key>config</span> xdc.runtime.Log.Event startInstanceWithStr = {
+   530            mask: Diags.ANALYSIS,
+   531            msg: <span class="string">"StartInstanceWithStr: %$S"</span>
+   532        };
+   533    
+   534        <span class="xdoc">/*!
+</span>   535    <span class="xdoc">     *  ======== metaEventStartInstanceWithStr ========
+</span>   536    <span class="xdoc">     *  Metadata description of the startInstance event
+</span>   537    <span class="xdoc">     *
+</span>   538    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   539    <span class="xdoc">     */</span>
+   540        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventStartInstanceWithStr = {
+   541            versionId: <span class="string">"2.0"</span>,
+   542            analysisType: DvtTypes.DvtAnalysisType_START,
+   543            displayText: <span class="string">"StartInstanceWithStr"</span>,
+   544            tooltipText: <span class="string">"Marks the start of analysis for a module instance"</span>,
+   545            numParameters: 3,
+   546            paramInfo: [
+   547            {   name: <span class="string">'fmt'</span>,
+   548                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   549                dataTypeName: <span class="string">'String'</span>,
+   550                units: <span class="string">'none'</span>,
+   551                isHidden: <span class=key>false</span>
+   552            },
+   553            {   name: <span class="string">'InstanceID'</span>,
+   554                dataDesc: DvtTypes.DvtDataDesc_INSTANCE,
+   555                dataTypeName: <span class="string">'Int'</span>,
+   556                units: <span class="string">'none'</span>,
+   557                isHidden: <span class=key>false</span>
+   558            },
+   559            {   name: <span class="string">'FunctionAdrs'</span>,
+   560                dataDesc: DvtTypes.DvtDataDesc_FUNCTIONADRS,
+   561                dataTypeName: <span class="string">'Int'</span>,
+   562                units: <span class="string">'none'</span>,
+   563                isHidden: <span class=key>false</span>
+   564            }
+   565            ]
+   566        };
+   567    
+   568    
+   569    
+   570    
+   571    
+   572        <span class="xdoc">/*!
+</span>   573    <span class="xdoc">     *  ======== stopInstanceWithStr ========
+</span>   574    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   575    <span class="xdoc">     *  Benchmark event used to log the end of an operation instance
+</span>   576    <span class="xdoc">     *  (Deprecated - please use UIAProfile events or other UIABenchmark events instead)
+</span>   577    <span class="xdoc">     *
+</span>   578    <span class="xdoc">     *  Event parameter provides instance data to differentiate
+</span>   579    <span class="xdoc">     *  between multiple instances that can run in parallel
+</span>   580    <span class="xdoc">     * <b>@a(Example)</b>
+</span>   581    <span class="xdoc">     *   The following C code shows how to log a benchmark
+</span>   582    <span class="xdoc">     *   'stopInstanceWithStr' event along with a unique instance identifier
+</span>   583    <span class="xdoc">     *   and a string reference used only by the pair of start / stop events.
+</span>   584    <span class="xdoc">     *
+</span>   585    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   586    <span class="xdoc">     *  #include &lt;xdc/runtime/Log.h&gt;
+</span>   587    <span class="xdoc">     *  #include &lt;ti/uia/events/UIABenchmark.h&gt;
+</span>   588    <span class="xdoc">     *  ...
+</span>   589    <span class="xdoc">     * Void packetHdlr(Int packetId){
+</span>   590    <span class="xdoc">     *
+</span>   591    <span class="xdoc">     *   Log_write3(UIABenchmark_startInstanceWithStr, (IArg)"My benchmark event: packetId=0x%x",packetId,(IArg)"(routing)");
+</span>   592    <span class="xdoc">     *   ...
+</span>   593    <span class="xdoc">     *   Log_write3(UIABenchmark_stopInstanceWithStr, (IArg)"My benchmark event: packetId=0x%x",packetId,(IArg)"(routing)");
+</span>   594    <span class="xdoc">     * }
+</span>   595    <span class="xdoc">     *  <b>@p</b>
+</span>   596    <span class="xdoc">     *  The following text will be displayed for the event:
+</span>   597    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   598    <span class="xdoc">     *  StartInstanceWithStr: My benchmark event: packetId=0x3bc3 (routing)
+</span>   599    <span class="xdoc">     *  StopInstanceWithStr: My benchmark event: packetId=0x3bc3 (routing)
+</span>   600    <span class="xdoc">     *  <b>@p</b>
+</span>   601    <span class="xdoc">     *  Event parameter provides instance data to differentiate
+</span>   602    <span class="xdoc">     *  between multiple instances that can run in parallel
+</span>   603    <span class="xdoc">     *  <b>@param(fmt)</b>                 a constant string that provides format specifiers for up to 5 additional parameters
+</span>   604    <span class="xdoc">     *  <b>@param(instanceId)</b>          a unique instance ID that can be used to match benchmark start and stop events
+</span>   605    <span class="xdoc">     *  <b>@param(str)</b>                 a constant string reference
+</span>   606    <span class="xdoc">     */</span>
+   607        <span class=key>config</span> xdc.runtime.Log.Event stopInstanceWithStr = {
+   608            mask: Diags.ANALYSIS,
+   609            msg: <span class="string">"StopInstanceWithStr: %$S"</span>
+   610        };
+   611    
+   612        <span class="xdoc">/*!
+</span>   613    <span class="xdoc">     *  ======== metaEventStopInstance ========
+</span>   614    <span class="xdoc">     *  Metadata description of the stopInstance event
+</span>   615    <span class="xdoc">     *
+</span>   616    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   617    <span class="xdoc">     */</span>
+   618        <span class=key>metaonly</span> <span class=key>config</span> DvtTypes.MetaEventDescriptor metaEventStopInstanceWithStr = {
+   619            versionId: <span class="string">"2.0"</span>,
+   620            analysisType: DvtTypes.DvtAnalysisType_STOP,
+   621            displayText: <span class="string">"StopInstanceWithStr"</span>,
+   622            tooltipText: <span class="string">"Marks the end of analysis for a module instance"</span>,
+   623            numParameters: 3,
+   624            paramInfo: [
+   625            {   name: <span class="string">'fmt'</span>,
+   626                dataDesc: DvtTypes.DvtDataDesc_FMTSTR,
+   627                dataTypeName: <span class="string">'String'</span>,
+   628                units: <span class="string">'none'</span>,
+   629                isHidden: <span class=key>false</span>
+   630            },
+   631            {   name: <span class="string">'InstanceID'</span>,
+   632                dataDesc: DvtTypes.DvtDataDesc_INSTANCE,
+   633                dataTypeName: <span class="string">'Int'</span>,
+   634                units: <span class="string">'none'</span>,
+   635                isHidden: <span class=key>false</span>
+   636            },
+   637            {   name: <span class="string">'String'</span>,
+   638                dataDesc: DvtTypes.DvtDataDesc_STRINGADRS,
+   639                dataTypeName: <span class="string">'String'</span>,
+   640                units: <span class="string">'none'</span>,
+   641                isHidden: <span class=key>false</span>
+   642            }
+   643            ]
+   644        };
+   645    
+   646    }
+</pre>
+</body></html>

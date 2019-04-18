@@ -1,0 +1,939 @@
+<html>
+<head>
+<title>module ti.uia.runtime.EventHdr</title>
+<meta name="description" content="Module defines the header format to be used when logging an event">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.runtime.</span><span class="xdoc-id">EventHdr</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/CtxFilter.html" title="module CtxFilter"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/package.html" title="package ti.uia.runtime"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/EventHdr.html">index URL</a></div>
+<p class="xdocHdrSummary">Module defines the header format to be used when logging an event</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+Each event's first word includes the type, length of the event and
+  sequence number. The length includes the first word and is in bytes.
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/EventHdr-src.html"><span class="xdocLabelFile">ti/uia/runtime/EventHdr.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/runtime/EventHdr.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Functions</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">UInt32</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#gen.Event.Hdr.Word1"><span class="xdoc-id">EventHdr_genEventHdrWord1</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;generates the first word to use in an Event header</span></span></a>(<span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">numBytesInEvent</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">seqCount</span>, <a class="xdoc-link" href="../../../ti/uia/runtime/EventHdr.html#.Hdr.Type" title="ti.uia.runtime.EventHdr.HdrType">EventHdr_HdrType</a>&nbsp;<span class="xdoc-id">eventHdrType</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">UInt32</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#gen.Event.With.Prev.Len.Hdr.Word1"><span class="xdoc-id">EventHdr_genEventWithPrevLenHdrWord1</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;generates the first word to use in a header that contains the length of the previous event</span></span></a>(<span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">numBytesInEvent</span>, <span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">numBytesInPrevEvent</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">seqCount</span>, <a class="xdoc-link" href="../../../ti/uia/runtime/EventHdr.html#.Hdr.Type" title="ti.uia.runtime.EventHdr.HdrType">EventHdr_HdrType</a>&nbsp;<span class="xdoc-id">eventHdrType</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <a class="xdoc-link" href="../../../ti/uia/runtime/EventHdr.html#.Hdr.Type" title="ti.uia.runtime.EventHdr.HdrType">EventHdr_HdrType</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get.Hdr.Type"><span class="xdoc-id">EventHdr_getHdrType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Gets the message header type from the first word of the event header</span></span></a>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">eventWord1</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">SizeT</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get.Length"><span class="xdoc-id">EventHdr_getLength</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;gets the event length (in bytes) from the event header</span></span></a>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">eventWord1</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">UInt16</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get.Seq.Count"><span class="xdoc-id">EventHdr_getSeqCount</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;gets the sequence count from the message header</span></span></a>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">eventWord1</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#set.Hdr.Type"><span class="xdoc-id">EventHdr_setHdrType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Sets the header type in the event header</span></span></a>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">eventWord1</span>, <a class="xdoc-link" href="../../../ti/uia/runtime/EventHdr.html#.Hdr.Type" title="ti.uia.runtime.EventHdr.HdrType">EventHdr_HdrType</a>&nbsp;<span class="xdoc-id">hdrType</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#set.Length"><span class="xdoc-id">EventHdr_setLength</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;sets the event length (in bytes) in the event header</span></span></a>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">eventWord1</span>, <span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">eventLength</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#set.Seq.Count"><span class="xdoc-id">EventHdr_setSeqCount</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;sets the sequence count in the message header</span></span></a>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">eventWord1</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">seqCount</span>);</div></td></tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">EventHdr_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">EventHdr_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">EventHdr_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">EventHdr_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">EventHdr_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">EventHdr_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Typedefs</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Hdr.Type"><span class="xdoc-id">EventHdr_HdrType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enumeration of the various types of events headers</span></span></a> ...</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Each event's first word includes the type, length of the event and
+  sequence number. The length includes the first word and is in bytes.</div>
+<div class="xdocText">The following is the desciption of the first word.</div>
+<div class="xdocText"><PRE class="Example">  EventHdr
+   3 3 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0
+   1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+  |---------------------------------------------------------------|
+  |H H H H H|L L L L L L L L L L L|S S S S S S S S S S S S S S S S|
+  |---------------------------------------------------------------|
+
+  H = HdrType         (5-bits)
+  L = Event Length    (11-bits)
+  S = Sequence Number (16-bits)
+</PRE></div>
+<div class="xdocText">There are currently 4 different types of events supported in UIA. The
+  following discusses the format of each one of the types.</div>
+<div class="xdocText"><PRE class="Example">  HdrType_Event
+    word0: EventHdr
+    word1: event Id (top 16 bits) &amp; module Id (bottom 16 bits)
+
+  HdrType_EventWithTimestamp
+    word0: EventHdr
+    word1: Timestamp lower 32 bits
+    word2: Timestamp upper 32 bits
+    word3: event Id (top 16 bits) &amp; module Id (bottom 16 bits)
+
+  HdrType_EventWithSnapshotId
+    word0: EventHdr
+    word1: event Id (top 16 bits) &amp; module Id (bottom 16 bits)
+    word2: filename pointer
+    word3: linenum
+    word4: snapshotId
+    word5: address where the data was located
+    word6: total length of data (top 16-bits)
+           length for this record (bottom 16 bits)
+    word7: format pointer
+    data:  the rest of the record contains the data
+
+  HdrType_EventWithSnapshotIdAndTimestamp:
+    word0: EventHdr
+    word1: Timestamp lower 32 bits
+    word2: Timestamp upper 32 bits
+    word3: event Id (top 16 bits) &amp; module Id (bottom 16 bits)
+    word4: filename pointer
+    word5: linenum
+    word6: snapshotId
+    word7: address where the data was located
+    word8: total length of data (top 16-bits)
+           length for this record (bottom 16 bits)
+    word9: format pointer
+    data:  the rest of the record contains the data
+</PRE></div>
+<div class="xdocText">Snapshot events can span multiple records. The snapshotId is used to
+  correlate the records when this occurs.
+  The length field (word6 or word8) contains two lengths. The bottom 16 bits
+  length of data for this record. The top 16 bits is the sum of all
+  lengths for this specific snapshotId.</div>
+<div class="xdocText">The address field points to the location of the data. When the snapshot
+  spans multiple records, the address field is updated accordingly. Therefore
+  this field can be used to detect dropped records. Note the snapshot
+  event data is contiguous.</div>
+<div class="xdocText">EventHdr for HdrType_EventWithPrevLen* and HdrType_SnapshotEventWithPrevLen*
+   3 3 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0
+   1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+  |---------------------------------------------------------------|
+  |H H H H H|L L L L L L L L L L L|P P P P P P P P P P P|S S S S S|
+  |---------------------------------------------------------------|</div>
+<div class="xdocText">H = HdrType         (5-bits)
+  L = Event Length in bytes    (11-bits: # of bytes in current event)
+  P = Number of Bytes in Previous Event (5-bits: # of bytes in prev. event)
+  S = Sequence Number (5-bits)</div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id=".Hdr.Type"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Snapshot.Id"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Snapshot.Id.And.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With32b.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Timestamp.And.Endpoint.Id"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Snapshot.Id.And32b.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Snapshot.Id.And.Timestamp.And.Endpoint.Id"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Prev.Len.With.No.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Prev.Len.With32b.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Prev.Len.With64b.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Snapshot.Event.With.Prev.Len"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Snapshot.Event.With.Prev.Len.And64b.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved13"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved14"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved15"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved16"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved17"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved18"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved19"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved20"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved21"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved22"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved23"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved24"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved25"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved26"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved27"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved28"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved29"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved30"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved31"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">EventHdr_</span><span class="xdoc-id">HdrType</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/EventHdr.html#.Hdr.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enumeration of the various types of events headers</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> <span class="xdoc-id">EventHdr_HdrType</span> {
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Event</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Event with no timestamp or other optional parameters</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_EventWithTimestamp</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Event with 64 bit Timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_EventWithSnapshotId</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Snapshot event</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_EventWithSnapshotIdAndTimestamp</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Snapshot event with 64 bit Timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_EventWith32bTimestamp</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Event with 32 bit Timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_EventWithTimestampAndEndpointId</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_EventWithSnapshotIdAnd32bTimestamp</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Snapshot event with 32 bit Timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_EventWithSnapshotIdAndTimestampAndEndpointId</span>, 
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_EventWithPrevLenWithNoTimestamp</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reverse param event with prev. length field</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_EventWithPrevLenWith32bTimestamp</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reverse param event with prev. length field</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_EventWithPrevLenWith64bTimestamp</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reverse param event with prev. length field</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_SnapshotEventWithPrevLen</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Snapshot event with no timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_SnapshotEventWithPrevLenAnd64bTimestamp</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Snapshot event with 64 bit Timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved13</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved14</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved15</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved16</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved17</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved18</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved19</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved20</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved21</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved22</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved23</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved24</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved25</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved26</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved27</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved28</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved29</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved30</span>, 
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-id">EventHdr_HdrType_Reserved31</span>
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>} <span class="xdoc-id">EventHdr_HdrType</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Stored in a 5 bit bitfield (b31-b27) of the first word in the event.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="gen.Event.Hdr.Word1"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">EventHdr_</span><span class="xdoc-id">genEventHdrWord1</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/EventHdr.html#gen.Event.Hdr.Word1">index URL</a></div>
+<p class="xdocHdrSummaryDcl">generates the first word to use in an Event header</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">EventHdr_genEventHdrWord1</span>(<span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">numBytesInEvent</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">seqCount</span>, <a class="xdoc-link" href="../../../ti/uia/runtime/EventHdr.html#.Hdr.Type" title="ti.uia.runtime.EventHdr.HdrType">EventHdr_HdrType</a>&nbsp;<span class="xdoc-id">eventHdrType</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">numBytesInEvent</span>
+<span class="xdocChildSum">&#151;&nbsp;number of bytes in the event</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">seqCount</span>
+<span class="xdocChildSum">&#151;&nbsp;sequence count number to tag the event with</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">eventHdrType</span>
+<span class="xdocChildSum">&#151;&nbsp;type of event header for this event</span>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="gen.Event.With.Prev.Len.Hdr.Word1"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">EventHdr_</span><span class="xdoc-id">genEventWithPrevLenHdrWord1</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/EventHdr.html#gen.Event.With.Prev.Len.Hdr.Word1">index URL</a></div>
+<p class="xdocHdrSummaryDcl">generates the first word to use in a header that contains the length of the previous event</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">EventHdr_genEventWithPrevLenHdrWord1</span>(<span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">numBytesInEvent</span>, <span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">numBytesInPrevEvent</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">seqCount</span>, <a class="xdoc-link" href="../../../ti/uia/runtime/EventHdr.html#.Hdr.Type" title="ti.uia.runtime.EventHdr.HdrType">EventHdr_HdrType</a>&nbsp;<span class="xdoc-id">eventHdrType</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">numBytesInEvent</span>
+<span class="xdocChildSum">&#151;&nbsp;number of bytes in the event</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">numBytesInPrevEvent</span>
+<span class="xdocChildSum">&#151;&nbsp;number of bytes in the previous event</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">seqCount</span>
+<span class="xdocChildSum">&#151;&nbsp;sequence count number to tag the event with</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">eventHdrType</span>
+<span class="xdocChildSum">&#151;&nbsp;type of event header for this event</span>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get.Hdr.Type"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">EventHdr_</span><span class="xdoc-id">getHdrType</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/EventHdr.html#get.Hdr.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Gets the message header type from the first word of the event header</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <a class="xdoc-link" href="../../../ti/uia/runtime/EventHdr.html#.Hdr.Type" title="ti.uia.runtime.EventHdr.HdrType">EventHdr_HdrType</a>&nbsp;<span class="xdoc-id">EventHdr_getHdrType</span>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">eventWord1</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">eventWord1</span>
+<span class="xdocChildSum">&#151;&nbsp;first word of the event header</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">RETURNS</div>
+<div class="xdocText">HdrType of the event</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get.Length"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">EventHdr_</span><span class="xdoc-id">getLength</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/EventHdr.html#get.Length">index URL</a></div>
+<p class="xdocHdrSummaryDcl">gets the event length (in bytes) from the event header</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">EventHdr_getLength</span>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">eventWord1</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">eventWord1</span>
+<span class="xdocChildSum">&#151;&nbsp;first word of the event header</span>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="get.Seq.Count"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">EventHdr_</span><span class="xdoc-id">getSeqCount</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/EventHdr.html#get.Seq.Count">index URL</a></div>
+<p class="xdocHdrSummaryDcl">gets the sequence count from the message header</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">EventHdr_getSeqCount</span>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">eventWord1</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">eventWord1</span>
+<span class="xdocChildSum">&#151;&nbsp;first word of the event header</span>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="set.Hdr.Type"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">EventHdr_</span><span class="xdoc-id">setHdrType</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/EventHdr.html#set.Hdr.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Sets the header type in the event header</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">EventHdr_setHdrType</span>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">eventWord1</span>, <a class="xdoc-link" href="../../../ti/uia/runtime/EventHdr.html#.Hdr.Type" title="ti.uia.runtime.EventHdr.HdrType">EventHdr_HdrType</a>&nbsp;<span class="xdoc-id">hdrType</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">eventWord1</span>
+<span class="xdocChildSum">&#151;&nbsp;the first word of the event header to be updated</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">HdrType hdrType</span>
+<span class="xdocChildSum">&#151;&nbsp;the new header type</span>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="set.Length"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">EventHdr_</span><span class="xdoc-id">setLength</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/EventHdr.html#set.Length">index URL</a></div>
+<p class="xdocHdrSummaryDcl">sets the event length (in bytes) in the event header</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">EventHdr_setLength</span>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">eventWord1</span>, <span class="xdoc-kw2">SizeT</span>&nbsp;<span class="xdoc-id">eventLength</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">eventWord1</span>
+<span class="xdocChildSum">&#151;&nbsp;first word of the event header</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">eventLength</span>
+<span class="xdocChildSum">&#151;&nbsp;the new event length</span>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="set.Seq.Count"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">EventHdr_</span><span class="xdoc-id">setSeqCount</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/EventHdr.html#set.Seq.Count">index URL</a></div>
+<p class="xdocHdrSummaryDcl">sets the sequence count in the message header</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">EventHdr_setSeqCount</span>(<span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">eventWord1</span>, <span class="xdoc-kw2">UInt16</span>&nbsp;<span class="xdoc-id">seqCount</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">eventWord1</span>
+<span class="xdocChildSum">&#151;&nbsp;first word of the event header</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">seqCount</span>
+<span class="xdocChildSum">&#151;&nbsp;the new message sequence count</span>
+</div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/EventHdr.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">EventHdr_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">EventHdr_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">EventHdr_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">EventHdr_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">EventHdr_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">EventHdr_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/EventHdr-src.html"><span class="xdocLabelFile">ti/uia/runtime/EventHdr.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> EventHdr = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.runtime.EventHdr'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide constants & types</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><i>values of type <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Enumeration of the various types of events headers</span></span></a></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Event</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Event with no timestamp or other optional parameters</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_EventWithTimestamp</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Event with 64 bit Timestamp</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_EventWithSnapshotId</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Snapshot event</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_EventWithSnapshotIdAndTimestamp</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Snapshot event with 64 bit Timestamp</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_EventWith32bTimestamp</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Event with 32 bit Timestamp</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type" title="ti.uia.runtime.EventHdr.HdrType">EventHdr.<span class="xdoc-id">HdrType_EventWithTimestampAndEndpointId</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_EventWithSnapshotIdAnd32bTimestamp</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Snapshot event with 32 bit Timestamp</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type" title="ti.uia.runtime.EventHdr.HdrType">EventHdr.<span class="xdoc-id">HdrType_EventWithSnapshotIdAndTimestampAndEndpointId</span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_EventWithPrevLenWithNoTimestamp</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reverse param event with prev. length field</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_EventWithPrevLenWith32bTimestamp</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reverse param event with prev. length field</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_EventWithPrevLenWith64bTimestamp</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reverse param event with prev. length field</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_SnapshotEventWithPrevLen</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Snapshot event with no timestamp</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_SnapshotEventWithPrevLenAnd64bTimestamp</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Snapshot event with 64 bit Timestamp</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved13</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved14</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved15</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved16</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved17</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved18</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved19</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved20</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved21</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved22</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved23</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved24</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved25</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved26</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved27</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved28</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved29</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved30</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> <a class="xdocSynGo" href="#meta.Hdr.Type">EventHdr.<span class="xdoc-id">HdrType_Reserved31</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;reserved for future use</span></span></a>;
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">EventHdr.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="meta.Hdr.Type"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Snapshot.Id"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Snapshot.Id.And.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With32b.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Timestamp.And.Endpoint.Id"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Snapshot.Id.And32b.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Snapshot.Id.And.Timestamp.And.Endpoint.Id"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Prev.Len.With.No.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Prev.Len.With32b.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Event.With.Prev.Len.With64b.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Snapshot.Event.With.Prev.Len"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Snapshot.Event.With.Prev.Len.And64b.Timestamp"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved13"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved14"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved15"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved16"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved17"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved18"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved19"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved20"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved21"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved22"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved23"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved24"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved25"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved26"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved27"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved28"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved29"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved30"></a>
+<a class="xdocAnchor" id=".Hdr.Type_.Reserved31"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">enum</span> <span class="xdoc-id">EventHdr.</span><span class="xdoc-id">HdrType</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/EventHdr.html#.Hdr.Type">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Enumeration of the various types of events headers</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>values of type EventHdr.<span class="xdoc-id">HdrType</span></i>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Event</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Event with no timestamp or other optional parameters</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_EventWithTimestamp</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Event with 64 bit Timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_EventWithSnapshotId</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Snapshot event</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_EventWithSnapshotIdAndTimestamp</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Snapshot event with 64 bit Timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_EventWith32bTimestamp</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Event with 32 bit Timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_EventWithTimestampAndEndpointId</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_EventWithSnapshotIdAnd32bTimestamp</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Snapshot event with 32 bit Timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_EventWithSnapshotIdAndTimestampAndEndpointId</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_EventWithPrevLenWithNoTimestamp</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reverse param event with prev. length field</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_EventWithPrevLenWith32bTimestamp</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reverse param event with prev. length field</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_EventWithPrevLenWith64bTimestamp</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reverse param event with prev. length field</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_SnapshotEventWithPrevLen</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Snapshot event with no timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_SnapshotEventWithPrevLenAnd64bTimestamp</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Snapshot event with 64 bit Timestamp</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved13</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved14</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved15</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved16</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved17</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved18</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved19</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved20</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved21</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved22</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved23</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved24</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved25</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved26</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved27</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved28</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved29</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved30</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw1">const</span> EventHdr.<span class="xdoc-id">HdrType_Reserved31</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;reserved for future use</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Stored in a 5 bit bitfield (b31-b27) of the first word in the event.</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#.Hdr.Type" title="EventHdr_HdrType">EventHdr_HdrType</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">EventHdr.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/EventHdr.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>EventHdr.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:15 GMT</div>
+</div></div></body>
+</html>

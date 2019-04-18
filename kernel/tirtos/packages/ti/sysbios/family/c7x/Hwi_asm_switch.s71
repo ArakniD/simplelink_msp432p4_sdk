@@ -1,0 +1,103 @@
+;
+; ======== Hwi_asm_switch.s71 ========
+;
+;
+
+        .cdecls C,NOLIST,"package/internal/Hwi.xdc.h"
+
+    .if $isdefed("__TI_ELFABI__")
+    .if __TI_ELFABI__
+        .asg ti_sysbios_family_xxx_Hwi_switchAndRunFunc, _ti_sysbios_family_xxx_Hwi_switchAndRunFunc
+        .asg ti_sysbios_family_c7x_Hwi_switchAndDispatch__I, _ti_sysbios_family_c7x_Hwi_switchAndDispatch__I
+        .asg ti_sysbios_family_c7x_Hwi_Module__state__V, ti_sysbios_family_c7x_Hwi_Module__state__V
+        .asg ti_sysbios_family_c7x_Hwi_dispatchCore__I, _ti_sysbios_family_c7x_Hwi_dispatchCore__I
+    .endif
+    .endif
+
+        .global ti_sysbios_family_xxx_Hwi_switchAndRunFunc
+        .global ti_sysbios_family_c7x_Hwi_switchAndDispatch__I
+
+        .global ti_sysbios_family_c7x_Hwi_dispatchCore__I
+
+ti_sysbios_family_c7x_Hwi_Module__state__V .tag ti_sysbios_family_c7x_Hwi_Module_State
+
+        .text
+
+        .asg	d15, SP
+
+;
+;  ======== ti_sysbios_family_xxx_Hwi_switchAndRunFunc ========
+;  ti_sysbios_family_c7x_Hwi_switchAndRunFunc(Void (*func)());
+;
+;  Switch to ISR stack, run func() and then switch back to Task
+;  stack.
+;
+;
+        .sect ".text:ti_sysbios_family_xxx_Hwi_switchAndRunFunc"
+        .clink
+ti_sysbios_family_xxx_Hwi_switchAndRunFunc:
+        .asmfunc
+
+        addkpc.d1  $PCR_OFFSET(ti_sysbios_family_c7x_Hwi_Module__state__V), a0
+        ldd.d1     *a0(ti_sysbios_family_c7x_Hwi_Module_State.taskSP), a1
+        ldd.d1     *a0(ti_sysbios_family_c7x_Hwi_Module_State.isrStack), a2
+  [!a1] std.d1     SP, *a0(ti_sysbios_family_c7x_Hwi_Module_State.taskSP)
+  [!a1] mv.d1      a2, SP                     ; set SP to isrStack
+        std.d1     a8, *SP++[-2]              ; save SOE reg a8
+||      mvc.s1     rp, a8
+        std.d1     a1, *SP[3]                 ; save old taskSP on stack
+
+        calla.s1   a4                         ; call func()
+
+func_return:
+        ldd.d1     *SP[3], a1                 ; get old taskSP
+        addkpc.d1  $PCR_OFFSET(ti_sysbios_family_c7x_Hwi_Module__state__V), a0
+        mvc.s1     a8, rp
+        ldd.d1     *SP[2], a8                 ; restore SOE reg a8
+        addd.d1    SP, 2*8, SP
+  [!a1] ldd.d1     *a0(ti_sysbios_family_c7x_Hwi_Module_State.taskSP), a3
+  [!a1] std.d1     a1, *a0(ti_sysbios_family_c7x_Hwi_Module_State.taskSP)
+  [!a1] mv.d1      a3, SP                     ; set SP to taskSP
+
+        ret.b1
+
+        .endasmfunc
+
+;
+;  ======== ti_sysbios_family_c7x_Hwi_switchAndDispatch ========
+;
+        .sect ".text:ti_sysbios_family_c7x_Hwi_switchAndDispatch__I"
+        .clink
+ti_sysbios_family_c7x_Hwi_switchAndDispatch__I
+        .asmfunc
+
+; We could combine the code for switchAndRunFunc and switchAndDispatch,
+; by using a4 as a switch - switchAndRunFunc will have non-zero a4 and
+; switchAndDispatch could set a4 to zero before branching to common code.
+; If a4 is 0 call dispatchCore, else call a4
+
+        addkpc.d1  $PCR_OFFSET(ti_sysbios_family_c7x_Hwi_Module__state__V), a0
+        ldd.d1     *a0(ti_sysbios_family_c7x_Hwi_Module_State.taskSP), a1
+        ldd.d1     *a0(ti_sysbios_family_c7x_Hwi_Module_State.isrStack), a2
+        addkpc.d1  $PCR_OFFSET(ti_sysbios_family_c7x_Hwi_dispatchCore__I), a3
+  [!a1] std.d1     SP, *a0(ti_sysbios_family_c7x_Hwi_Module_State.taskSP)
+  [!a1] mv.d1      a2, SP                     ; set SP to isrStack
+        std.d1     a8, *SP++[-2]              ; save SOE reg a8
+||      mvc.s1     rp, a8
+        std.d1     a1, *SP[3]                 ; save old taskSP on stack
+
+        calla.s1   a3
+
+dispatch_return:
+        ldd.d1     *SP[3], a1                 ; get old taskSP
+        addkpc.d1  $PCR_OFFSET(ti_sysbios_family_c7x_Hwi_Module__state__V), a0
+        mvc.s1     a8, rp
+        ldd.d1     *SP[2], a8                 ; restore SOE reg a8
+        addd.d1    SP, 2*8, SP
+  [!a1] ldd.d1     *a0(ti_sysbios_family_c7x_Hwi_Module_State.taskSP), a3
+  [!a1] std.d1     a1, *a0(ti_sysbios_family_c7x_Hwi_Module_State.taskSP)
+  [!a1] mv.d1      a3, SP                     ; set SP to taskSP
+
+        ret.b1
+
+        .endasmfunc

@@ -1,0 +1,656 @@
+<html>
+<head>
+<title>module iar.tools.configuro.Main</title>
+<meta name="description" content="Command implementation">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">module</span> <span class="xdoc-id">iar.tools.configuro.</span><span class="xdoc-id">Main</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/package.html" title="package iar.tools.configuro"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html">index URL</a></div>
+<p class="xdocHdrSummary">Command implementation</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-1">DETAILS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-2">INPUTS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-3">OUTPUTS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+This command-line tool computes the appropriate configuro options from the
+  set of options passed from the IAR Workbench (for ex. target/platform
+  from compile options). With these options, the xdc.tools.configuro tool
+  is executed to compute the set of libraries, command-line flags and
+  the other artifacts needed to build the application in IAR Workbench.
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../iar/tools/configuro/Main-src.html"><span class="xdocLabelFile">iar/tools/configuro/Main.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> Main = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'iar.tools.configuro.Main'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#usage">Main.<span class="xdoc-id">usage</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;usage help message</span></span></a> = <i><span class="xdoc-kw2">String</span>[<span class="xdoc-kw2"></span>]</i> [
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[-o outdir (optional)]',
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[-c codegen_dir]',
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--cc compiler_name_string]',
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--device device_name]',
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--cfgArgs args_string]',
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--compileOptions compile_options_string]',
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--linkOptions linker_options_string]',
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--profile profile]',
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--projFile project_file (optional)]',
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'infile.cfg (optional)'
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>];
+</div>
+<div class='xdocSynHdr'>module-wide functions</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#exec">Main.<span class="xdoc-id">exec</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;<tt>xs</tt> script entry point</span></span></a>(<i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">args</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#main">Main.<span class="xdoc-id">main</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;<tt>xs</tt> shell entry point</span></span></a>(<i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">args</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+<div class='xdocSynHdr'>per-instance config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<a class="xdocSynGo" href="#per-instance_config_parameters"><span class="xdoc-id">Params</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Instance config-params object</span></span></a>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#cfg.Args"><span class="xdoc-id">cfgArgs</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Optional arguments passed to configuration script</span></span></a> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#compile.Options"><span class="xdoc-id">compileOptions</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Compile options used for building C files</span></span></a> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#device"><span class="xdoc-id">device</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The name of the device</span></span></a> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#link.Options"><span class="xdoc-id">linkOptions</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Linker options used for linking libraries</span></span></a> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#output"><span class="xdoc-id">output</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Pathname of the output directory</span></span></a> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#profile"><span class="xdoc-id">profile</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Build profile</span></span></a> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#proj.File"><span class="xdoc-id">projFile</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;IAR Embedded project file</span></span></a> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#root.Dir"><span class="xdoc-id">rootDir</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Root directory of the code generation tools</span></span></a> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class='xdocSynHdr'>per-instance functions</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#run">inst.<span class="xdoc-id">run</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Underlying implementation of the command</span></span></a>(<i><a class="xdoc-link" href="../../../xdc/tools/Cmdr.html#.Instance" title="xdc.tools.Cmdr.Instance">Cmdr.Instance</a></i> <span class="xdoc-id">cmdr</span>, <i><span class="xdoc-kw2">String</span>[<span class="xdoc-kw2"></span>]</i> <span class="xdoc-id">args</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This command-line tool computes the appropriate configuro options from the
+  set of options passed from the IAR Workbench (for ex. target/platform
+  from compile options). With these options, the xdc.tools.configuro tool
+  is executed to compute the set of libraries, command-line flags and
+  the other artifacts needed to build the application in IAR Workbench.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">INPUTS</div>
+<div class="xdocText"></div>
+<div class="xdocText"><DL><DT> <tt>-o outdir (Optional)</tt></DT><DD>
+      Optionally an output directory can be provided.
+</DD><DT> <tt>-c codegen_dir</tt></DT><DD>
+      Root directory of the code generation tools.
+</DD><DT> <tt>--device device_name_string</tt></DT><DD>
+      The name of the device.
+</DD><DT> <tt>--compileOptions compile_options_string</tt></DT><DD>
+      The command line options passed to the compiler.
+</DD><DT> <tt>--linkOptions linker_options_string</tt></DT><DD>
+      The command line options passed to the linker.
+</DD><DT> <tt>--profile profile</tt></DT><DD>
+      The build profile.
+</DD><DT> <tt>--projFile project_file (Optional)</tt></DT><DD>
+      IAR Embedded Workbench project file. This is optional when
+      infile.cfg is passed on command line.
+</DD><DT> <tt>infile.cfg (Optional)</tt></DT><DD>
+      A user-supplied configuration script that names a set of RTSC
+      modules, and optionally changes their configuration settings.
+      If provided, it will override the --projFile option.
+</DD></DL></div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">OUTPUTS</div>
+<div class="xdocText"></div>
+<div class="xdocText"><DL><DT> <tt>outdir/</tt></DT><DD>
+      A directory containing all generated build artifacts.
+</DD><DT> <tt>outdir/compiler.defs</tt></DT><DD>
+      A file containing C compiler command-line flags. These flags must
+      included on the compiler command line for any C source file that
+      directly accesses the RTSC content. The flags define the header file
+      and include paths to ensure object code compatibility between all
+      all included content.
+</DD><DT> <tt>outdir/linker.cmd</tt></DT><DD>
+      A file containing linker command-line flags. These flags must be
+      included on the linker command line for the final link of the
+      application. The flags list needed libraries and object files,
+      and on some platforms define the embedded system memory map.
+</DD></DL></div>
+<div class="xdocText">For example:</div>
+<div class="xdocText"><PRE class="Example">      xs iar.tools.configuro -c "&lt;codegen_dir&gt;" --cc "&lt;compiler&gt;"
+         --device "&lt;device_name&gt;" --cfgArgs "&lt;cfg_script_args&gt;"
+         --compileOptions "&lt;compiler_options&gt;" --linkOptions "&lt;link_options&gt;"
+         --profile "&lt;profile&gt;" infile.cfg
+</PRE></div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="usage"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.</span><span class="xdoc-id">usage</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html#usage">index URL</a></div>
+<p class="xdocHdrSummaryDcl">usage help message</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>Main.<span class="xdoc-id">usage</span> = <i><span class="xdoc-kw2">String</span>[<span class="xdoc-kw2"></span>]</i> [
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[-o outdir (optional)]',
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[-c codegen_dir]',
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--cc compiler_name_string]',
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--device device_name]',
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--cfgArgs args_string]',
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--compileOptions compile_options_string]',
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--linkOptions linker_options_string]',
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--profile profile]',
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'[--projFile project_file (optional)]',
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>'infile.cfg (optional)'
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>];
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="exec"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">Main.</span><span class="xdoc-id">exec</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html#exec">index URL</a></div>
+<p class="xdocHdrSummaryDcl"><tt>xs</tt> script entry point</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>Main.<span class="xdoc-id">exec</span>(<i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">args</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This function is called from within other XDCscript scripts and
+  performs the same operations as <tt><a class="xdoc-link" href="Main.html#main" title="main">main()</a></tt> except that,
+  rather than output the return value of <tt>inst.run()</tt>, this value
+  is simply returned to the caller of <tt>exec()</tt>.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="main"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">Main.</span><span class="xdoc-id">main</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html#main">index URL</a></div>
+<p class="xdocHdrSummaryDcl"><tt>xs</tt> shell entry point</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>Main.<span class="xdoc-id">main</span>(<i><span class="xdoc-kw2">Any</span></i> <span class="xdoc-id">args</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This function</div>
+<div class="xdocText"><UL><LI> creates a no-arg instance, <tt>inst</tt>, of the module inheriting
+     this interface;
+</LI><LI> parses command line arguments placing all options in the config
+     params of the inheriting module;
+</LI><LI> creates a <tt><a class="xdoc-link" href="../../../xdc/tools/Cmdr.html" title="xdc.tools.Cmdr">xdc.tools.Cmdr</a></tt> instance, <tt>cmdr</tt>;
+</LI><LI> calls <tt><a class="xdoc-link" href="Main.html#run" title="run">inst.run()</a></tt> with the <tt>cmdr</tt> and any command
+     line command line arguments not parsed as options; and
+</LI><LI> outputs the return result from <tt>inst.run()</tt>
+</LI></UL></div>
+<a class="xdocAnchor" id="per-instance_config_parameters"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Instance Config Parameters</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html#per-instance_config_parameters">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Instance config-params object</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">cfgArgs</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Optional arguments passed to configuration script</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">compileOptions</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Compile options used for building C files</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">device</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;The name of the device</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">linkOptions</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Linker options used for linking libraries</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">output</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Pathname of the output directory</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">profile</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Build profile</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">projFile</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;IAR Embedded project file</div>
+<div class="xdocSynCode">
+<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">rootDir</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Root directory of the code generation tools</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="cfg.Args"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">cfgArgs</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html#cfg.Args">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Optional arguments passed to configuration script</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">cfgArgs</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This option lets the user pass values into the configuration script
+  from the command line. The argument is an expression in JavaScript
+  syntax.  Its value is available in the configuration script under the
+  name <tt>Program.build.cfgArgs</tt>.</div>
+<div class="xdocText">The JavaScript expression is evaluated in the configuration domain
+  after the platform package is imported, immediately before calling
+  the user's configuration script.</div>
+<div class="xdocText">This string has the same effect as the <tt>cfgArgs</tt> string in
+  <tt><a class="xdoc-link" href="../../../xdc/bld/Executable.html#.Attrs" title="xdc.bld.Executable.Attrs">xdc.bld.Executable.Attrs</a></tt>.</div>
+<div class="xdocText">You can pass multiple values to configuration scripts using the
+  syntax of a JavaScript <tt>Object</tt> constant:</div>
+<div class="xdocText"><PRE class="Example">      xs xdc.tools.configuro --cfgArgs '{foo:"hello", bar:2}' ... app.cfg
+</PRE></div>
+<div class="xdocText">The configuration script can read the various fields as, e.g.:</div>
+<div class="xdocText"><PRE class="Example">      if (Program.build.cfgArgs.foo == "hello") {
+          :
+      }
+</PRE></div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">NOTE</div>
+<div class="xdocText">Different command line shells, such as UNIX <tt>bash</tt> verses Windows
+  <tt>cmd.exe</tt>, interpret quotes on the command line very differently.
+  As a result, the syntax necessary to pass a string such as "hello"
+  to <tt>configuro</tt> can vary depending on the shell you use.</div>
+<div class="xdocText">For most UNIX shells, it is possible to use single quotes around the
+  use of double quotes as in the example above.  However, since Windows
+  <tt>cmd.exe</tt> does not treat the single quote as a special character, it
+  is necessary to use a backslash, '\', to ensure that the double quote
+  characters are passed to the configuro tool.</div>
+<div class="xdocText">Windows <tt>cmd.exe</tt>:</div>
+<div class="xdocText"><PRE class="Example">      xs xdc.tools.configuro --cfgArgs "{foo:\"hello\", bar:2}" ...
+</PRE></div>
+<div class="xdocText">UNIX <tt>bash</tt>, <tt>ksh</tt>, <tt>csh</tt>, ...:</div>
+<div class="xdocText"><PRE class="Example">      xs xdc.tools.configuro --cfgArgs '{foo:"hello", bar:2}' ...
+</PRE></div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../xdc/bld/Executable.html#.Attrs" title="xdc.bld.Executable.Attrs">xdc.bld.Executable.Attrs</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="compile.Options"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">compileOptions</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html#compile.Options">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Compile options used for building C files</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">compileOptions</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The compiler options are required to find the target and platform
+  options for xdc.tools.configuro.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="device"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">device</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html#device">index URL</a></div>
+<p class="xdocHdrSummaryDcl">The name of the device</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">device</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The device name has to be passed to the xdc.tools.configuro tool.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="link.Options"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">linkOptions</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html#link.Options">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Linker options used for linking libraries</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">linkOptions</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The linker options are required to pull in the correct libraries
+  during link.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="output"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">output</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html#output">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Pathname of the output directory</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">output</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">A directory containing the generated build artifacts, in particular
+  the <tt>compiler.defs</tt> and <tt>linker.cmd</tt> files.</div>
+<div class="xdocText">The last component of the output directory path must be a valid
+  ANSI C identifier; i.e., it must consist entirely of alphanumeric or
+  '_' characters and must not start with a number.  So, the names
+  '0app' and 'app-test' are not valid but '0app/config' and
+  'app-test/config' are valid.</div>
+<div class="xdocText">This is optional parameter. By default, the output directory has the
+  name <tt>configPkg</tt> and will be  within the <tt>{#cfgDir}</tt> directory.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="profile"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">profile</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html#profile">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Build profile</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">profile</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="proj.File"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">projFile</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html#proj.File">index URL</a></div>
+<p class="xdocHdrSummaryDcl">IAR Embedded project file</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">projFile</span> = <i><span class="xdoc-kw2">String</span></i> "";
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This file is searched for the RTSC configuration file (.cfg).</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="root.Dir"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Main.Params.</span><span class="xdoc-id">rootDir</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html#root.Dir">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Root directory of the code generation tools</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Main.<span class="xdoc-id">Params</span>;
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
+</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt>params.<span class="xdoc-id">rootDir</span> = <i><span class="xdoc-kw2">String</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">The path to the installation directory of the compiler and linker
+  for the selected target. The definition of "installation directory"
+  can vary from compiler to compiler, but is most commonly the
+  directory that contains a "bin" subdirectory.</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="run"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">Main.</span><span class="xdoc-id">run</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../iar/tools/configuro/Main.html" title="module Main"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#iar/tools/configuro/Main.html#run">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Underlying implementation of the command</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>inst.<span class="xdoc-id">run</span>(<i><a class="xdoc-link" href="../../../xdc/tools/Cmdr.html#.Instance" title="xdc.tools.Cmdr.Instance">Cmdr.Instance</a></i> <span class="xdoc-id">cmdr</span>, <i><span class="xdoc-kw2">String</span>[<span class="xdoc-kw2"></span>]</i> <span class="xdoc-id">args</span>) <i>returns</i> <i><span class="xdoc-kw2">Any</span></i>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Since this method is used to support both command line tools and
+  other XDCscript scripts, it is important to avoid explicit
+  termination of the JVM via <tt>java.lang.System.exit()</tt>; doing so
+  precludes callers from handling failures.</div>
+<div class="xdocText">Implementations should instead call</div>
+<div class="xdocText"><UL><LI> <tt><a class="xdoc-link" href="../../../xdc/tools/Cmdr.html#error" title="xdc.tools.Cmdr.error">cmdr.error()</a></tt> when encountering a
+     fatal error.
+</LI><LI> <tt><a class="xdoc-link" href="../../../xdc/tools/Cmdr.html#warning" title="xdc.tools.Cmdr.warning">cmdr.warning()</a></tt> when encountering a
+     non-fatal error.
+</LI><LI> <tt><a class="xdoc-link" href="../../../xdc/tools/Cmdr.html#info" title="xdc.tools.Cmdr.info">cmdr.info()</a></tt> when simply generating
+     an informative message.
+</LI></UL></div>
+</div>
+<div id="xdocDate">generated on Wed, 21 Nov 2018 17:15:11 GMT</div>
+</div></div></body>
+</html>

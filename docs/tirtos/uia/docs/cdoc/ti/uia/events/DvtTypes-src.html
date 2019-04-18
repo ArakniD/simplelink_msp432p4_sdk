@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.events.DvtTypes</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> *  ======== DvtTypes.xdc ========
+</span>    35    <span class="comment"> */</span>
+    36    
+    37    <span class=key>package</span> ti.uia.events;
+    38    import xdc.runtime.Diags;
+    39    
+    40    <span class="xdoc">/*!
+</span>    41    <span class="xdoc"> *  ======== DvtTypes ========
+</span>    42    <span class="xdoc"> *  Constants and types used by DVT meta data
+</span>    43    <span class="xdoc"> */</span>
+    44    
+    45    <span class=key>module</span> DvtTypes {
+    46    
+    47        <span class=key>metaonly</span> <span class=key>enum</span> DvtAnalysisType {
+    48            DvtAnalysisType_START,
+    49            DvtAnalysisType_STOP,
+    50            DvtAnalysisType_STARTSTOP,
+    51            DvtAnalysisType_FUNCTIONENTRY,
+    52            DvtAnalysisType_FUNCTIONEXIT,
+    53            DvtAnalysisType_SYNCPOINT,
+    54            DvtAnalysisType_CONTEXTCHANGE,
+    55            DvtAnalysisType_STATECHANGE,
+    56            DvtAnalysisType_MESSAGEMONITOR,
+    57            DvtAnalysisType_STATISTIC,
+    58            DvtAnalysisType_SEMAPHORE,
+    59            DvtAnalysisType_LOCK,
+    60            DvtAnalysisType_EVENTMARKER,
+    61            DvtAnalysisType_MEMORYSNAPSHOT,
+    62            DvtAnalysisType_STRINGSNAPSHOT,
+    63            DvtAnalysisType_NAMESNAPSHOT,
+    64            DvtAnalysisType_STACKSNAPSHOT,
+    65            DvtAnalysisType_REGISTERSNAPSHOT,
+    66            DvtAnalysisType_CUSTOM
+    67        }
+    68    
+    69        <span class=key>metaonly</span> <span class=key>enum</span> DvtDataDesc {
+    70            DvtDataDesc_TIMESTAMP32,
+    71            DvtDataDesc_TIMESTAMP64_MSW,
+    72            DvtDataDesc_TIMESTAMP64_LSW,
+    73            DvtDataDesc_TIMESTAMP_CTIME,
+    74    
+    75            DvtDataDesc_COOKIE,
+    76            DvtDataDesc_SIZE,
+    77    
+    78            DvtDataDesc_PROGRAMADRS,
+    79            DvtDataDesc_FUNCTIONADRS,
+    80            DvtDataDesc_DATAADRS,
+    81            DvtDataDesc_STRINGADRS,
+    82    
+    83            DvtDataDesc_INSTANCE,
+    84            DvtDataDesc_INITIATOR,
+    85            DvtDataDesc_PROCESSID,
+    86            DvtDataDesc_THREADID,
+    87            DvtDataDesc_TASKID,
+    88            DvtDataDesc_CHANNELID,
+    89            DvtDataDesc_PACKETID,
+    90            DvtDataDesc_FRAMEID,
+    91            DvtDataDesc_APPID,
+    92            DvtDataDesc_HWIID,
+    93            DvtDataDesc_SWIID,
+    94            DvtDataDesc_STATEID,
+    95            DvtDataDesc_STATESTRINGADRS,
+    96    
+    97            DvtDataDesc_COUNTER,
+    98            DvtDataDesc_VALUE,
+    99            DvtDataDesc_FLAG,
+   100            DvtDataDesc_SEMAPHORE,
+   101            DvtDataDesc_RETURNVALUE,
+   102            DvtDataDesc_PARAMVALUE,
+   103            DvtDataDesc_EXPECTEDVALUE,
+   104    
+   105            DvtDataDesc_TESTNUMBER,
+   106            DvtDataDesc_RESULT,
+   107            DvtDataDesc_ERRORCODE,
+   108            DvtDataDesc_EVENTCODE,
+   109    
+   110            DvtDataDesc_FILENAMESTR,
+   111            DvtDataDesc_LINENUM,
+   112            DvtDataDesc_FMTSTR,
+   113    
+   114            DvtDataDesc_GLOBALSYMBOLADRS,
+   115            DvtDataDesc_ENUMVALUE,
+   116            DvtDataDesc_LENGTHINMAUS,
+   117            DvtDataDesc_DATAARRAY,
+   118            DvtDataDesc_REFERENCEID,
+   119            DvtDataDesc_SNAPSHOTID,
+   120            DvtDataDesc_CUSTOM
+   121        }
+   122    
+   123        <span class=key>metaonly</span> <span class=key>struct</span> ParamDescriptor {
+   124            String name;
+   125            DvtDataDesc dataDesc;
+   126            String strCustomDataDesc;
+   127            String dataTypeName;
+   128            String units;
+   129            Bool isHidden;
+   130            Int  lsb;
+   131        }
+   132    
+   133        <span class="xdoc">/*!
+</span>   134    <span class="xdoc">     *  ======== EventDescriptor ========
+</span>   135    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   136    <span class="xdoc">     *  DVT event descriptor.
+</span>   137    <span class="xdoc">     */</span>
+   138        <span class=key>metaonly</span> <span class=key>struct</span> MetaEventDescriptor {
+   139            String versionId;
+   140            DvtAnalysisType analysisType;
+   141            String strCustomAnalysisType;
+   142            String displayText;
+   143            String tooltipText;
+   144            Bool isMultiEventRecordItem;
+   145            Int multiEventRecordItemIndex;
+   146            Int multiEventRecordLength;
+   147            Int numParameters;
+   148            ParamDescriptor paramInfo[];
+   149        }
+   150    
+   151    }
+</pre>
+</body></html>

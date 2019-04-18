@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>interface ti.uia.runtime.IUIATraceSyncClient</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2012, Texas Instruments Incorporated
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> * */</span>
+    32    
+    33    import ti.uia.runtime.IUIATraceSyncProvider;
+    34    
+    35    <span class="comment">/*
+</span>    36    <span class="comment"> * ======== IUIATraceSyncClient.xdc ========
+</span>    37    <span class="comment"> *  Interface for client modules that can inject info into a
+</span>    38    <span class="comment"> *  device trace stream whenever a sync point event, snapshot event and / or
+</span>    39    <span class="comment"> *  context change event occurs.  Using a module that implements IUIATraceSyncProvider
+</span>    40    <span class="comment"> *  will cause that module to automatically register its callback function
+</span>    41    <span class="comment"> *  with any modules that implement the IUIATraceSyncClient interface.
+</span>    42    <span class="comment"> *  @p
+</span>    43    <span class="comment"> *  Examples of modules that implement this interface include
+</span>    44    <span class="comment"> *  {@link ti.uia.family.c64p.GemTraceSync ti.uia.family.c64p.GemTraceSync} and
+</span>    45    <span class="comment"> *  {@link ti.uia.family.c66.GemTraceSync ti.uia.family.c66.GemTraceSync}
+</span>    46    <span class="comment"> */</span>
+    47    <span class=key>interface</span> IUIATraceSyncClient <span class=key>inherits</span> ti.uia.events.IUIAMetaProvider {
+    48    
+    49        <span class="xdoc">/*!
+</span>    50    <span class="xdoc">     * ======== injectIntoTraceFxn ========
+</span>    51    <span class="xdoc">     * Callback function that handles injection of info such as serial numbers
+</span>    52    <span class="xdoc">     * of sync point events, context change events or snapshot events into a
+</span>    53    <span class="xdoc">     * hardware trace stream. (e.g. GEM CPU Trace, System Trace, etc.)
+</span>    54    <span class="xdoc">     *
+</span>    55    <span class="xdoc">     * Users can provide their own custom injectIntoTraceFxn to log whatever
+</span>    56    <span class="xdoc">     * additional information they wish to record when the hook function is called.
+</span>    57    <span class="xdoc">     * For example, event serial numbers can be injected into the CPU
+</span>    58    <span class="xdoc">     * trace stream and / or STM trace stream in order to enable correlation
+</span>    59    <span class="xdoc">     * of information logged in these streams with UIA software events.
+</span>    60    <span class="xdoc">     * <b>@a(Examples)</b>
+</span>    61    <span class="xdoc">     * <b>@p(html)</b>
+</span>    62    <span class="xdoc">     * &lt;B&gt;Example 1: Correlating events with C64X+ and C66 CPU Trace&lt;/B&gt;
+</span>    63    <span class="xdoc">     * <b>@p</b>
+</span>    64    <span class="xdoc">     * The following is an example of the configuration script used
+</span>    65    <span class="xdoc">     * to inject serial numbers of sync point events or context change events or
+</span>    66    <span class="xdoc">     * snapshot Ids associated with snapshot events.
+</span>    67    <span class="xdoc">     * <b>@p</b>
+</span>    68    <span class="xdoc">     * Note that the GemTraceSync module's .xs script takes care of finding
+</span>    69    <span class="xdoc">     * all modules that implement the IUIATraceSyncClient and assigning the
+</span>    70    <span class="xdoc">     * GemTraceSync_injectIntoTrace function pointer to those modules'
+</span>    71    <span class="xdoc">     * injectIntoTraceFxn config option.
+</span>    72    <span class="xdoc">     * <b>@p(code)</b>
+</span>    73    <span class="xdoc">     * //The following 3 modules all implement the IUIATraceSyncClient interface
+</span>    74    <span class="xdoc">     * var LogSnapshot   = xdc.useModule('ti.uia.runtime.LogSnapshot');
+</span>    75    <span class="xdoc">     * var LogCtxChg   = xdc.useModule('ti.uia.runtime.LogCtxChg');
+</span>    76    <span class="xdoc">     * var LogSync   = xdc.useModule('ti.uia.runtime.LogSync');
+</span>    77    <span class="xdoc">     * //For C66 devices, replace the following line with
+</span>    78    <span class="xdoc">     * // var GemTraceSync = xdc.useModule('ti.uia.family.c66.GemTraceSync');
+</span>    79    <span class="xdoc">     * var GemTraceSync = xdc.useModule('ti.uia.family.c64p.GemTraceSync');
+</span>    80    <span class="xdoc">     * <b>@p</b>
+</span>    81    <span class="xdoc">     * <b>@p(html)</b>
+</span>    82    <span class="xdoc">     * &lt;hr&gt;
+</span>    83    <span class="xdoc">     * &lt;B&gt;Example 2: How to create a custom hook function
+</span>    84    <span class="xdoc">     * and assign it to the LogSnapshot module&lt;/B&gt;
+</span>    85    <span class="xdoc">     * <b>@p</b>
+</span>    86    <span class="xdoc">     * The following is an example of a 'C' code program that implements
+</span>    87    <span class="xdoc">     * a hook function that prints out the snapshot ID that is passed in
+</span>    88    <span class="xdoc">     * as the serialNumber
+</span>    89    <span class="xdoc">     * <b>@p(code)</b>
+</span>    90    <span class="xdoc">     * #include &lt;xdc/std.h&gt;
+</span>    91    <span class="xdoc">     * #include &lt;xdc/runtime/Gate.h&gt;
+</span>    92    <span class="xdoc">     * #include &lt;ti/uia/runtime/IUIATraceSyncProvider.h&gt;
+</span>    93    <span class="xdoc">     * #include &lt;ti/uia/runtime/LogSnapshot.h&gt;
+</span>    94    <span class="xdoc">     * #include &lt;stdio.h&gt;
+</span>    95    <span class="xdoc">     * #include &lt;string.h&gt;
+</span>    96    <span class="xdoc">     * extern Void myHookFxn(UInt32 serialNumber, IUIATraceSyncProvider_ContextType ctxType);
+</span>    97    <span class="xdoc">     * Void Test();
+</span>    98    <span class="xdoc">     * char name[32]={"Bob"};
+</span>    99    <span class="xdoc">     * UInt32 newAppId = 0;
+</span>   100    <span class="xdoc">     * Void myHookFxn(UInt32 serialNumber, IUIATraceSyncProvider_ContextType ctxType){
+</span>   101    <span class="xdoc">     *      volatile UInt32 syncWord;
+</span>   102    <span class="xdoc">     *      IArg key = Gate_enterSystem();
+</span>   103    <span class="xdoc">     *      printf("newAppId written with serialNumber %d and ctxType = %d\n",serialNumber,ctxType);
+</span>   104    <span class="xdoc">     *      Gate_leaveSystem(key);
+</span>   105    <span class="xdoc">     * }
+</span>   106    <span class="xdoc">     * Void Test(){
+</span>   107    <span class="xdoc">     *     // note that the hook function is triggered by calling LogSnapshot_getSnapshotId()
+</span>   108    <span class="xdoc">     *     // since that is where the unique snapshot ID that is passed to the
+</span>   109    <span class="xdoc">     *     // hook function is generated.
+</span>   110    <span class="xdoc">     *     Int snapshotId = LogSnapshot_getSnapshotId();
+</span>   111    <span class="xdoc">     *     LogSnapshot_writeString(snapshotId,"User-defined name=%s.",name, strlen(name));
+</span>   112    <span class="xdoc">     * }
+</span>   113    <span class="xdoc">     *
+</span>   114    <span class="xdoc">     * Void main(){
+</span>   115    <span class="xdoc">     *     while(TRUE){  Test();  }
+</span>   116    <span class="xdoc">     *  }
+</span>   117    <span class="xdoc">     * <b>@p</b>
+</span>   118    <span class="xdoc">     * In order to have the above user-defined function called by the LogSnapshot
+</span>   119    <span class="xdoc">     * module whenever it writes an event, the following configuration script
+</span>   120    <span class="xdoc">     * is needed:
+</span>   121    <span class="xdoc">     * <b>@p(code)</b>
+</span>   122    <span class="xdoc">     * var LoggingSetup = xdc.useModule('ti.uia.sysbios.LoggingSetup');
+</span>   123    <span class="xdoc">     * var LogSnapshot   = xdc.useModule('ti.uia.runtime.LogSnapshot');
+</span>   124    <span class="xdoc">     * var IUIATraceSyncClient = xdc.useModule('ti.uia.runtime.IUIATraceSyncClient');
+</span>   125    <span class="xdoc">     * LogSnapshot.injectIntoTraceFxn = $externFxn('myHookFxn');
+</span>   126    <span class="xdoc">     *
+</span>   127    <span class="xdoc">     * <b>@p</b>
+</span>   128    <span class="xdoc">     * <b>@see</b> LoggerTypes#InjectIntoTraceFxn
+</span>   129    <span class="xdoc">     * <b>@see</b> LogSnapshot
+</span>   130    <span class="xdoc">     */</span>
+   131        <span class=key>config</span> LoggerTypes.InjectIntoTraceFxn injectIntoTraceFxn = <span class=key>null</span>;
+   132        <span class="xdoc">/*!
+</span>   133    <span class="xdoc">     * ======== isInjectIntoTraceEnabled ========
+</span>   134    <span class="xdoc">     * set false to turn off injection of sync point info into trace even
+</span>   135    <span class="xdoc">     *  if a module that implements IUIATraceSyncProvider is configured.
+</span>   136    <span class="xdoc">     *
+</span>   137    <span class="xdoc">     * The XDCScript associated with a module that implements IUIATraceSyncProvider
+</span>   138    <span class="xdoc">     * is responsible for checking this config option for all IUIATraceSyncClient
+</span>   139    <span class="xdoc">     * modules before automatically configuring the client callback function.
+</span>   140    <span class="xdoc">     * This allows users to control which features have sync points injected
+</span>   141    <span class="xdoc">     * into the trace stream.  For example, a user may wish to configure
+</span>   142    <span class="xdoc">     * LogSync.isInjectIntoTraceEnabled = true and
+</span>   143    <span class="xdoc">     * LogCtxChg.isInjectIntoTraceEnabled = false in order to reduce the number
+</span>   144    <span class="xdoc">     * of sync point events injected into the trace stream.
+</span>   145    <span class="xdoc">     */</span>
+   146        <span class=key>metaonly</span> <span class=key>config</span> Bool isInjectIntoTraceEnabled = <span class=key>true</span>;
+   147    
+   148    }
+</pre>
+</body></html>

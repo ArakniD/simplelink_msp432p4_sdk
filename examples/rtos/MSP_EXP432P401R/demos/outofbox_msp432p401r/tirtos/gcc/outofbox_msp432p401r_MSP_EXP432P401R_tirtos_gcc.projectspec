@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectSpec>
+    <applicability>
+        <when>
+            <context
+                deviceFamily="MSP432"
+                deviceId="MSP432P401R"
+            />
+        </when>
+    </applicability>
+
+    <import spec="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/builds/MSP_EXP432P401R/release/gcc/tirtos_builds_MSP_EXP432P401R_release_gcc.projectspec"/>
+
+    <project
+        title="outOfBox_msp432p401r"
+        name="outofbox_msp432p401r_MSP_EXP432P401R_tirtos_gcc"
+        toolChain="GNU"
+        connection="TIXDS110_Connection.xml"
+        device="MSP432P401R"
+        ignoreDefaultDeviceSettings="true"
+        ignoreDefaultCCSSettings="true"
+        references="tirtos_builds_MSP_EXP432P401R_release_gcc"
+        compilerBuildOptions=" -I${PROJECT_ROOT} -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include -D__MSP432P401R__ -DDeviceFamily_MSP432P401x -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/posix/gcc -mcpu=cortex-m4 -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffunction-sections -fdata-sections -g -gstrict-dwarf -Wall -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/include/newlib-nano -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/include -I${CG_TOOL_ROOT}/arm-none-eabi/include"
+        compilerBuildOptions_c="-std=c99"
+        compilerBuildOptions_cpp="-std=c++11"
+        linkerBuildOptions=" -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source -l:ti/display/lib/display.am4fg -l:ti/grlib/lib/gcc/m4f/grlib.a -l:third_party/spiffs/lib/gcc/m4f/spiffs.a -l:ti/drivers/lib/drivers_msp432p401x.am4fg -l:third_party/fatfs/lib/gcc/m4f/fatfs.a -nostartfiles -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages -l:ti/dpl/lib/dpl_msp432p401x.am4fg -l${GENERATED_LIBRARIES} -l:ti/devices/msp432p4xx/driverlib/gcc/msp432p4xx_driverlib.a -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -static -Wl,--gc-sections -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard -L${CG_TOOL_ROOT}/arm-none-eabi/lib -lgcc -lc -lm -lnosys --specs=nano.specs"
+        description="TODO: Write description">
+
+        <property name="buildProfile" value="release"/>
+        <property name="isHybrid" value="true"/>
+        <group id="outofbox_msp432p401r.SIMPLELINK_MSP432_SDK.MSP_EXP432P401R.demos.GCC"/>
+        <file path="../../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../Board.html" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../overview.rov.json" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../tirtos/main_tirtos.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../tirtos/gcc/MSP_EXP432P401R_TIRTOS.lds" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../MSP_EXP432P401R.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../uart_thread.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../Board.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../MSP_EXP432P401R.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../callbacks.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../uart_thread.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../callbacks.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../led_thread.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../led_thread.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+    </project>
+</projectSpec>
+

@@ -1,0 +1,41 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-base-label.html">
+<polymer-element name="ti-widget-label" extends="ti-widget-base-label" attributes="label">
+
+    <template>
+        <style>
+            :host {
+                display: inline;
+                font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+                background-color: transparent;
+            }
+            #label {
+                display: inherit;
+                white-space: nowrap;
+                
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;   
+            }
+
+        </style>
+    <label id="label" class="label-content">
+      {{label}}
+    </label>
+    </template>
+    <script>
+        Polymer ('ti-widget-label', 
+        {
+            label: "Label Text",
+            disabled: undefined,  // hide the disabled property since it doesn't do anything in this case.
+            
+            getElement : function()
+            {
+                return this.$.label;
+            }
+        });
+    </script>
+</polymer-element>

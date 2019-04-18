@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/Organization">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!--[if gte IE 6]>
+    <script type="text/javascript">
+        // this is IE greater than or equal to 6
+        var isInternetExplorer=true;
+    </script>
+    <![endif]-->
+
+    <script>
+        var isIE =   ((navigator.appName == 'Microsoft Internet Explorer') ||
+        ((navigator.appName == 'Netscape') &&
+        (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)));
+        if (window.isInternetExplorer) {
+            isIE =  true;
+        }
+
+        if ( isIE ){
+            var object = document.createElement("object");
+            object.setAttribute("id", "ticloudagentlauncher");
+            object.setAttribute("type", "application/x-ticloudagentlauncher");
+            object.setAttribute("width", "0");
+            object.setAttribute("height", "0");
+            document.head.appendChild( object );
+            window.TICloudAgent_HACK = {};
+            window. TICloudAgent_HACK.plugin = document.getElementById("ticloudagentlauncher");
+        }
+    </script>
+    <link rel="import" href="../polymer/polymer.html">
+    <script src="../webcomponentsjs/webcomponents.js"></script>
+<!--
+    <script>
+        var isNodeWebkit = (typeof process !== 'undefined');
+        var isChrome = false;
+        if (!isNodeWebkit) {
+            isChrome = (navigator.userAgent.indexOf("Chrome") !== -1);
+        }
+        if (isNodeWebkit ||isChrome){
+            document.write('<link type="text/css" rel="stylesheet" href="selected-theme.css" shim-shadowdom>');
+        } else {
+            // ensure that the correct style for the designer is applied
+            document.write('<link  type="text/css" rel="stylesheet" href="themes/ti-theme.css" shim-shadowdom>');
+        }
+    </script>
+    -->
+    <link rel="import" href="ti-core-stylesheets.html">
+    <title>Demo of Selected-theme.css</title>
+    <link rel="import" href="../paper-button/paper-button-base.html">
+    <link rel="import" href="../paper-button/paper-button.html">
+    <link rel="import" href="../paper-calculator/paper-calculator-key.html">
+    <link rel="import" href="../paper-calculator/paper-calculator-keygrid.html">
+    <link rel="import" href="../paper-calculator/paper-calculator-keypad.html">
+    <link rel="import" href="../paper-calculator/paper-calculator-math.html">
+    <link rel="import" href="../paper-calculator/paper-calculator-output.html">
+    <link rel="import" href="../paper-calculator/paper-calculator-panels.html">
+    <link rel="import" href="../paper-calculator/paper-calculator.html">
+    <link rel="import" href="../paper-checkbox/paper-checkbox.html">
+    <link rel="import" href="../paper-dialog/paper-action-dialog.html">
+    <link rel="import" href="../paper-dialog/paper-dialog-base.html">
+    <link rel="import" href="../paper-dialog/paper-dialog-transition.html">
+    <link rel="import" href="../paper-dialog/paper-dialog.html">
+    <link rel="import" href="../paper-dropdown/paper-dropdown-transition.html">
+    <link rel="import" href="../paper-dropdown/paper-dropdown.html">
+    <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+    <link rel="import" href="../paper-elements/paper-elements.html">
+<!--    <link rel="import" href="../paper-elements/demos/core-toolbar.html">  -->
+    <link rel="import" href="../paper-fab/paper-fab.html">
+    <link rel="import" href="../paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../paper-input/paper-autogrow-textarea.html">
+    <link rel="import" href="../paper-input/paper-char-counter.html">
+    <link rel="import" href="../paper-input/paper-input-decorator.html">
+    <link rel="import" href="../paper-input/paper-input.html">
+    <link rel="import" href="../paper-item/paper-item.html">
+    <link rel="import" href="../paper-menu-button/paper-menu-button.html">
+    <link rel="import" href="../paper-progress/paper-progress.html">
+    <link rel="import" href="../paper-radio-button/paper-radio-button.html">
+    <link rel="import" href="../paper-radio-group/paper-radio-group.html">
+    <link rel="import" href="../paper-ripple/paper-ripple.html">
+    <link rel="import" href="../paper-shadow/paper-shadow.html">
+    <link rel="import" href="../paper-slider/paper-slider.html">
+    <link rel="import" href="../paper-spinner/paper-spinner.html">
+    <link rel="import" href="../paper-tabs/paper-tab.html">
+    <link rel="import" href="../paper-tabs/paper-tabs.html">
+    <link rel="import" href="../paper-toast/paper-toast.html">
+    <link rel="import" href="../paper-toggle-button/paper-toggle-button.html">
+
+    <link rel="import" href="../core-splitter/core-splitter.html">
+
+    <link rel="import" href="../ti-widget-analoggauge/ti-widget-analoggauge.html">
+    <link rel="import" href="../ti-widget-dial/ti-widget-dial.html">
+    <link rel="import" href="../ti-widget-filesview/ti-widget-filesview.html">
+    <link rel="import" href="../ti-widget-graphs/ti-widget-linegraph.html">
+    <link rel="import" href="../ti-widget-graphs/ti-widget-scalargraph.html">
+    <link rel="import" href="../ti-widget-menubar/ti-widget-editmenu.html">
+    <link rel="import" href="../ti-widget-menubar/ti-widget-filemenu.html">
+    <link rel="import" href="../ti-widget-menubar/ti-widget-helpmenu.html">
+    <link rel="import" href="../ti-widget-menubar/ti-widget-menuaction.html">
+    <link rel="import" href="../ti-widget-menubar/ti-widget-menubar.html">
+    <link rel="import" href="../ti-widget-menubar/ti-widget-menuitem.html">
+    <link rel="import" href="../ti-widget-registergrid/ti-widget-registergrid.html">
+    <link rel="import" href="../ti-widget-registerview/ti-widget-registerview.html">
+    <link rel="import" href="../ti-widget-common/ti-widget-bitfield-header.html">
+    <link rel="import" href="../ti-widget-common/ti-widget-button.html">
+    <link rel="import" href="../ti-widget-common/ti-widget-checkbox.html">
+    <link rel="import" href="../ti-widget-common/ti-widget-container.html">
+    <link rel="import" href="../ti-widget-common/ti-widget-droplist.html">
+    <link rel="import" href="../ti-widget-common/ti-widget-image.html">
+    <link rel="import" href="../ti-widget-common/ti-widget-label.html">
+    <link rel="import" href="../ti-widget-common/ti-widget-multiimage.html">
+    <link rel="import" href="../ti-widget-common/ti-widget-numberbox.html">
+    <link rel="import" href="../ti-widget-common/ti-widget-progressbar.html">
+    <link rel="import" href="../ti-widget-common/ti-widget-slider.html">
+    <link rel="import" href="../ti-widget-common/ti-widget-spinner.html">
+    <link rel="import" href="../ti-widget-common/ti-widget-textbox.html">
+    <link rel="import" href="../ti-widget-statusbar/ti-widget-statusbar.html">
+    <link rel="import" href="../ti-core-icons/ti-core-icons.html">
+    <link rel="import" href="../core-icons/core-icons.html">
+    <link rel="import" href="../core-icons/av-icons.html">
+
+</head>
+<body unresolved touch-action="auto" style="padding:15px;">
+
+
+<div id="content">
+
+    <style shim-shadowdom>
+        .unselectable {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+
+        .no-tap-color {
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            -webkit-touch-callout: none;
+        }
+
+        .example {
+            padding: 20px;
+        }
+
+        .centered-panel {
+            display: inline-block;
+            margin: 0 auto;
+            text-align: left;
+        }
+    </style>
+
+
+    <h1>Current theme name: <span id="cssName"></span></h1>
+    <div style="width:340px;">
+        Please select the GUI Theme you wish to use:
+        <ti-widget-droplist id="themeSelector"  ></ti-widget-droplist>
+    </div>
+    <br/>
+    <b>NOTE:</b> The GUIComposer Designer must be restarted to pick up a new theme.
+    <p>&nbsp;</p>
+
+    <div id="PaperWidgets" align="center" style="font-size:x-large;vertical-align:middle;border:solid grey 1px;" class="core-header">
+   Paper Widgets
+    </div>
+
+    <a href="#TIWidgets">Jump to TI Widgets...</a><br/>
+    <p>&nbsp;</p>
+
+
+    <section hero="" id="example1">
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-button">Buttons</a></h3>
+        <div class="example">
+            <paper-button role="button" tabindex="0">Default</paper-button>
+            <paper-button primary="" role="button" tabindex="0">Primary</paper-button>
+            <paper-button secondary="" role="button" tabindex="0">Secondary</paper-button>
+            <paper-button success="" role="button" tabindex="0">Success</paper-button>
+            <paper-button info="" role="button" tabindex="0">Info</paper-button>
+            <paper-button warning="" role="button" tabindex="0">Warning</paper-button>
+            <paper-button error="" role="button" tabindex="0">Error</paper-button>
+            <paper-button link="" role="button" tabindex="0">Link</paper-button>
+        </div>
+        <div class="example">
+            <paper-button raised>Default</paper-button>
+            <paper-button raised primary>Primary</paper-button>
+            <paper-button raised secondary>Secondary</paper-button>
+            <paper-button raised success>Success</paper-button>
+            <paper-button raised info>Info</paper-button>
+            <paper-button raised warning>Warning</paper-button>
+            <paper-button raised error>Error</paper-button>
+            <paper-button raised link>Link</paper-button>
+        </div>
+        <div class="example">
+            <paper-button disabled="" role="button" aria-disabled="" style="pointer-events: none;">Default</paper-button>
+            <paper-button disabled="" primary="" role="button" aria-disabled="" style="pointer-events: none;">Primary</paper-button>
+            <paper-button disabled="" secondary="" role="button" aria-disabled="" style="pointer-events: none;">Secondary</paper-button>
+            <paper-button disabled="" success="" role="button" aria-disabled="" style="pointer-events: none;">Success</paper-button>
+            <paper-button disabled="" info="" role="button" aria-disabled="" style="pointer-events: none;">Info</paper-button>
+            <paper-button disabled="" warning="" role="button" aria-disabled="" style="pointer-events: none;">Warning</paper-button>
+            <paper-button disabled="" error="" role="button" aria-disabled="" style="pointer-events: none;">Error</paper-button>
+            <paper-button disabled="" link="" role="button" aria-disabled="" style="pointer-events: none;">Link</paper-button>
+        </div>
+    </section>
+
+
+
+    <section >
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-fab">Action Buttons</a></h3>
+
+        <div class="centered-panel">
+
+            <div class="example" center="" horizontal="" layout="">
+                <div flex="" style="padding-right: 30px;">Big action button</div>&nbsp;
+                <paper-fab icon="favorite" role="button" tabindex="0" aria-label="favorite"></paper-fab>
+            </div>
+
+            <div class="example" center="" horizontal="" layout="" style="padding-right: 28px;">
+                <div flex="" style="padding-right: 30px;">Small action button</div>&nbsp;
+                <paper-fab mini="" icon="favorite" role="button" tabindex="0" aria-label="favorite"></paper-fab>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <section hero="" id="example3">
+
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-icon-button">Icon Buttons</a></h3>
+
+        <style shim-shadowdom="">
+
+            #example3 span {
+                display: inline-block;
+                text-align: right;
+                width: 6em;
+                margin-right: 1em;
+            }
+
+            #example3 paper-icon-button {
+                vertical-align: middle;
+            }
+
+        </style>
+
+        <div class="example centered-panel">
+
+            <div>
+                <span>icon buttons</span>
+                <paper-icon-button icon="menu" role="button" tabindex="0" aria-label="menu"></paper-icon-button>
+                <paper-icon-button icon="arrow-back" role="button" tabindex="0" aria-label="arrow-back"></paper-icon-button>
+                <paper-icon-button icon="arrow-forward" role="button" tabindex="0" aria-label="arrow-forward"></paper-icon-button>
+                <paper-icon-button icon="check" role="button" tabindex="0" aria-label="check"></paper-icon-button>
+                <paper-icon-button icon="close" role="button" tabindex="0" aria-label="close"></paper-icon-button>
+                <paper-icon-button icon="fullscreen" role="button" tabindex="0" aria-label="fullscreen"></paper-icon-button>
+                <paper-icon-button icon="fullscreen-exit" role="button" tabindex="0" aria-label="fullscreen-exit"></paper-icon-button>
+                <paper-icon-button icon="more-vert" role="button" tabindex="0" aria-label="more-vert"></paper-icon-button>
+                <paper-icon-button icon="refresh" role="button" tabindex="0" aria-label="refresh"></paper-icon-button>
+            </div>
+
+            <div>
+                <span>ripple fill</span>
+                <paper-icon-button fill="" icon="menu" role="button" tabindex="0" aria-label="menu"></paper-icon-button>
+                <paper-icon-button fill="" icon="arrow-back" role="button" tabindex="0" aria-label="arrow-back"></paper-icon-button>
+                <paper-icon-button fill="" icon="arrow-forward" role="button" tabindex="0" aria-label="arrow-forward"></paper-icon-button>
+                <paper-icon-button fill="" icon="check" role="button" tabindex="0" aria-label="check"></paper-icon-button>
+                <paper-icon-button fill="" icon="close" role="button" tabindex="0" aria-label="close"></paper-icon-button>
+                <paper-icon-button fill="" icon="fullscreen" role="button" tabindex="0" aria-label="fullscreen"></paper-icon-button>
+                <paper-icon-button fill="" icon="fullscreen-exit" role="button" tabindex="0" aria-label="fullscreen-exit"></paper-icon-button>
+                <paper-icon-button fill="" icon="more-vert" role="button" tabindex="0" aria-label="more-vert"></paper-icon-button>
+                <paper-icon-button fill="" icon="refresh" role="button" tabindex="0" aria-label="refresh"></paper-icon-button>
+            </div>
+
+            <div>
+                <span>disabled</span>
+                <paper-icon-button disabled="" icon="menu" role="button" aria-label="menu" aria-disabled="" style="pointer-events: none;"></paper-icon-button>
+                <paper-icon-button disabled="" icon="arrow-back" role="button" aria-label="arrow-back" aria-disabled="" style="pointer-events: none;"></paper-icon-button>
+                <paper-icon-button disabled="" icon="arrow-forward" role="button" aria-label="arrow-forward" aria-disabled="" style="pointer-events: none;"></paper-icon-button>
+                <paper-icon-button disabled="" icon="check" role="button" aria-label="check" aria-disabled="" style="pointer-events: none;"></paper-icon-button>
+                <paper-icon-button disabled="" icon="close" role="button" aria-label="close" aria-disabled="" style="pointer-events: none;"></paper-icon-button>
+                <paper-icon-button disabled="" icon="fullscreen" role="button" aria-label="fullscreen" aria-disabled="" style="pointer-events: none;"></paper-icon-button>
+                <paper-icon-button disabled="" icon="fullscreen-exit" role="button" aria-label="fullscreen-exit" aria-disabled="" style="pointer-events: none;"></paper-icon-button>
+                <paper-icon-button disabled="" icon="more-vert" role="button" aria-label="more-vert" aria-disabled="" style="pointer-events: none;"></paper-icon-button>
+                <paper-icon-button disabled="" icon="refresh" role="button" aria-label="refresh" aria-disabled="" style="pointer-events: none;"></paper-icon-button>
+            </div>
+
+            <div>
+                <span>toggles</span>
+                <paper-icon-button fill="" toggle="" icon="maps:directions-walk" role="button" tabindex="0" aria-label="maps:directions-walk"></paper-icon-button>
+                <paper-icon-button fill="" toggle="" icon="maps:directions-bike" role="button" tabindex="0" aria-label="maps:directions-bike"></paper-icon-button>
+                <paper-icon-button fill="" toggle="" icon="maps:directions-transit" role="button" tabindex="0" aria-label="maps:directions-transit"></paper-icon-button>
+                <paper-icon-button fill="" toggle="" icon="maps:directions-car" role="button" tabindex="0" aria-label="maps:directions-car"></paper-icon-button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <section class="unselectable no-tap-color" id="example8">
+
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-radio-button">Radio Buttons</a></h3>
+
+        <div class="centered-panel">
+
+            <div class="example" center="" horizontal="" layout="">
+                <div flex="" style="padding-right: 30px;">Radio button</div>&nbsp;
+                <paper-radio-button role="radio" tabindex="0" aria-checked="false"></paper-radio-button>
+            </div>
+
+            <div class="example" center="" horizontal="" layout="">
+                <div flex="" style="padding-right: 30px;">Radio button (toggles)</div>&nbsp;
+                <paper-radio-button toggles="" role="radio" tabindex="0" aria-checked="false"></paper-radio-button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <section hero="" class="unselectable no-tap-color" id="example9">
+
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-radio-group">Radio Button Group</a></h3>
+
+        <div class="example centered-panel">
+
+            <h3>Keep Wi-Fi on during sleep</h3>
+
+            <paper-radio-group selected="2" role="radiogroup">
+                <paper-radio-button label="Always" role="radio" tabindex="0" aria-checked="false" aria-label="Always"></paper-radio-button><br>
+                <paper-radio-button label="Only when plugged in" role="radio" tabindex="0" aria-checked="true" aria-label="Only when plugged in" class="core-selected" checked=""></paper-radio-button><br>
+                <paper-radio-button label="Never" role="radio" tabindex="0" aria-checked="false" aria-label="Never"></paper-radio-button>
+            </paper-radio-group>
+
+        </div>
+
+    </section>
+
+
+
+    <section class="unselectable no-tap-color" id="example13">
+
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-toggle-button">Toggle Buttons</a></h3>
+
+        <div class="centered-panel">
+
+
+            <div class="example" center="" horizontal="" layout="">
+                <div flex="" style="padding-right: 50px;">Wi-Fi</div>&nbsp;
+                <paper-toggle-button checked="" role="button" aria-pressed="true" tabindex="0"></paper-toggle-button>
+            </div>
+
+            <div class="example" center="" horizontal="" layout="">
+                <div flex="" style="padding-right: 50px;">Bluetooth</div>&nbsp;
+                <paper-toggle-button role="button" aria-pressed="false" tabindex="0"></paper-toggle-button>
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <section hero="" >
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-checkbox">Checkboxes</a></h3>
+
+
+        <div class="centered-panel">
+            <div class="example" layout="" horizontal="" center="" style="padding-right: 60px; padding-left: 0px;">
+                <paper-checkbox role="checkbox" tabindex="0" aria-checked="false"></paper-checkbox>
+                <div>Checkbox on the left</div>
+            </div>
+            <div class="example" layout="" horizontal="" center="" end-justified="" style="padding-left: 60px; padding-right: 0px;">
+                <div>Checkbox on the right</div>
+                <paper-checkbox checked="" role="checkbox" tabindex="0" aria-checked="true"></paper-checkbox>
+            </div>
+        </div>
+
+    </section>
+
+    <section>
+        <h3><a target="_blank" href="https://www.polymer-project.org/docs/elements/paper-elements.html#paper-dropdown-menu">Dropdown Menus</a></h3>
+
+        <div class="centered-panel">
+            <paper-dropdown-menu label="Fruit (halign left, valign top)" relative="" layout="" inline="" horizontal="" center="" tabindex="0">
+                <paper-dropdown class="dropdown core-transition" tabindex="-1" style="outline: none; display: none;">
+                    <core-menu class="menu">
+                        <paper-item tabindex="0">Apple</paper-item>
+                        <paper-item tabindex="0">Banana</paper-item>
+                        <paper-item tabindex="0">Cantelope</paper-item>
+                    </core-menu>
+                </paper-dropdown>
+            </paper-dropdown-menu>
+            <br><br>
+            <paper-dropdown-menu label="Fruit (halign left, valign bottom)" relative="" layout="" inline="" horizontal="" center="" tabindex="0">
+                <paper-dropdown class="dropdown core-transition" valign="bottom" tabindex="-1" style="outline: none; display: none;">
+                    <core-menu class="menu">
+                        <paper-item tabindex="0">Apple</paper-item>
+                        <paper-item tabindex="0">Banana</paper-item>
+                        <paper-item tabindex="0">Cantelope</paper-item>
+                    </core-menu>
+                </paper-dropdown>
+            </paper-dropdown-menu>
+            <br><br>
+            <paper-dropdown-menu label="Fruit (halign right, valign top)" relative="" layout="" inline="" horizontal="" center="" tabindex="0">
+                <paper-dropdown class="dropdown core-transition" halign="right" tabindex="-1" style="outline: none; display: none;">
+                    <core-menu class="menu">
+                        <paper-item tabindex="0">Apple</paper-item>
+                        <paper-item tabindex="0">Banana</paper-item>
+                        <paper-item tabindex="0">Cantelope</paper-item>
+                    </core-menu>
+                </paper-dropdown>
+            </paper-dropdown-menu>
+            <br><br>
+            <paper-dropdown-menu label="Fruit (halign right, valign bottom)" relative="" layout="" inline="" horizontal="" center="" tabindex="0">
+                <paper-dropdown class="dropdown core-transition" halign="right" valign="bottom" tabindex="-1" style="outline: none; display: none;">
+                    <core-menu class="menu">
+                        <paper-item tabindex="0">Apple</paper-item>
+                        <paper-item tabindex="0">Banana</paper-item>
+                        <paper-item tabindex="0">Cantelope</paper-item>
+                    </core-menu>
+                </paper-dropdown>
+            </paper-dropdown-menu>
+        </div>
+
+    </section>
+
+    <section hero="" id="example4">
+
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-input">Text Inputs</a></h3>
+
+        <style shim-shadowdom="">
+            #example4 .example {
+                width: 22em;
+            }
+
+            #example4 paper-input {
+                width: 100%;
+            }
+        </style>
+
+        <div class="example centered-panel">
+
+            <h4>Simple</h4>
+
+            <paper-input label="Type something..."></paper-input><br>
+
+            <paper-input floatinglabel="" label="Floating label"></paper-input><br>
+
+            <paper-input disabled="" label="I'm disabled"></paper-input><br>
+
+            <br><br>
+
+            <h4>Validation</h4>
+
+            <paper-input-decorator label="Type something..." error="This input requires a value!" layout="" vertical="">
+                <input is="core-input" required="" placeholder="Type something..." aria-label="Type something...">
+            </paper-input-decorator>
+
+            <paper-input-decorator label="Type only numbers..." error="Input is not a number!" layout="" vertical="">
+                <input is="core-input" type="number" placeholder="Type only numbers..." aria-label="Type only numbers...">
+            </paper-input-decorator>
+
+            <paper-button raised="" primary="" onclick="validateAll()" role="button" tabindex="0">Click to validate</paper-button>
+            <script>
+                function validateAll() {
+                    var $d = document.getElementById('example4').querySelectorAll('paper-input-decorator');
+                    Array.prototype.forEach.call($d, function(d) {
+                        d.isInvalid = !d.querySelector('input').validity.valid;
+                    });
+                }
+            </script>
+
+            <br><br><br>
+
+            <h4>Auto-growing</h4>
+
+            <paper-input-decorator label="Autogrowing" layout="" vertical="">
+                <paper-autogrow-textarea>
+                    <textarea placeholder="Autogrowing" aria-label="Autogrowing"></textarea>
+                </paper-autogrow-textarea>
+            </paper-input-decorator>
+
+            <paper-input-decorator floatinglabel="" label="Autogrowing with floating label" layout="" vertical="">
+                <paper-autogrow-textarea>
+                    <textarea placeholder="Autogrowing with floating label" aria-label="Autogrowing with floating label"></textarea>
+                </paper-autogrow-textarea>
+            </paper-input-decorator>
+
+        </div>
+
+    </section>
+
+    <section class="unselectable no-tap-color" id="example10">
+
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-slider">Sliders</a></h3>
+
+        <style shim-shadowdom="">
+            body #example10 {
+                padding: 24px;
+            }
+
+            #example10 paper-slider {
+                width: 100%;
+            }
+
+            #example10 section {
+                max-width: 1000px;
+                padding: 20px 0;
+            }
+
+            #example10 section > div {
+                padding: 14px;
+            }
+
+            #example10 #ratingsLabel {
+                padding-left: 12px;
+            }
+        </style>
+
+        <bs-container>
+            <bs-row>
+                <bs-col style="text-align: left;">
+
+                    <div>
+                        <div>Basic</div>
+                        <br>
+                        <paper-slider value="80" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80"></paper-slider>
+
+                        <br><br><br>
+
+                        <div>Secondary Progress</div>
+                        <br>
+                        <paper-slider value="20" secondaryprogress="60" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"></paper-slider>
+
+                        <br><br><br>
+
+                        <div>Editable</div>
+                        <br>
+                        <paper-slider value="92" max="255" editable="" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="255" aria-valuenow="92"></paper-slider>
+
+                        <br><br><br>
+
+                        <div>Pin</div>
+                        <br>
+                        <paper-slider pin="" value="70" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70"></paper-slider>
+
+                        <br><br><br>
+
+                        <div>
+                            <span>Snap</span><span id="ratingsLabel">5</span>
+                        </div>
+                        <br>
+                        <paper-slider id="ratings" pin="" snaps="" max="10" step="1" value="5" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="10" aria-valuenow="5"></paper-slider>
+                    </div>
+
+                    <script>
+
+                        var ratings = document.querySelector('#ratings');
+                        ratings.addEventListener('core-change', function() {
+                            document.querySelector('#ratingsLabel').textContent = ratings.value;
+                        });
+
+                    </script>
+
+                </bs-col>
+            </bs-row>
+        </bs-container>
+    </section>
+
+    <section hero="" id="example7">
+
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-progress">Progress Bars</a></h3>
+
+        <style shim-shadowdom="">
+            body #example7 {
+                margin: 0;
+                padding: 24px;
+            }
+
+            #example7 paper-progress {
+                display: block;
+                width: 100%;
+                padding: 25px 0;
+            }
+        </style>
+
+        <bs-container>
+            <bs-row>
+                <bs-col style="text-align: left;">
+
+                    <paper-progress></paper-progress>
+
+                    <paper-button raised="" onclick="startProgress();" id="paperProgressStart" role="button" tabindex="0">Start</paper-button>
+
+                    <br><br>
+
+                    <paper-progress value="40" secondaryprogress="80"></paper-progress><br>
+
+                    <script>
+
+                        var progress = document.querySelector('paper-progress');
+                        var button = document.querySelector('#paperProgressStart');
+
+                        var repeat, maxRepeat = 5, animating = false;
+
+                        function nextProgress() {
+                            animating = true;
+                            if (progress.value < progress.max) {
+                                progress.value += (progress.step || 1);
+                            } else {
+                                if (++repeat >= maxRepeat) {
+                                    animating = false;
+                                    button.disabled = false;
+                                    return;
+                                }
+                                progress.value = progress.min;
+                            }
+                            progress.async(nextProgress);
+                        }
+
+                        function startProgress() {
+                            repeat = 0;
+                            progress.value = progress.min;
+                            button.disabled = true;
+                            if (!animating) {
+                                nextProgress();
+                            }
+                        }
+
+                        addEventListener('polymer-ready', function() {
+                            startProgress();
+                        });
+
+                    </script>
+
+                </bs-col>
+            </bs-row>
+        </bs-container>
+    </section>
+
+    <section>
+        <h3><a target="_blank" href="https://www.polymer-project.org/docs/elements/paper-elements.html#paper-spinner">Spinners</a></h3>
+
+        <div class="centered-panel">
+
+            <div center="" horizontal="" layout="">
+                <div flex="" style="padding-right: 30px;">Styled</div>&nbsp;
+                <paper-spinner active=""></paper-spinner>
+            </div>
+            <br>
+
+            <div center="" horizontal="" layout="">
+                <div flex="" style="padding-right: 30px;">Default</div>&nbsp;
+                <paper-spinner default-spinner="" active=""></paper-spinner>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section hero="" id="example12">
+
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-toast">Notifications</a></h3>
+
+        <style shim-shadowdom="">
+
+            #example12 paper-button {
+                margin: 20px;
+            }
+
+        </style>
+
+        <bs-container>
+            <bs-row>
+                <bs-col style="text-align: center;">
+
+                    <paper-button raised="" onclick="document.querySelector('#toast1').show()" role="button" tabindex="0">Discard Draft</paper-button>
+
+                    <paper-button raised="" onclick="document.querySelector('#toast2').show()" role="button" tabindex="0">Get Messages</paper-button>
+
+                    <paper-button raised="" onclick="document.querySelector('#toast3').show()" role="button" tabindex="0">Send Message</paper-button>
+
+                    <paper-toast id="toast1" text="Your draft has been discarded." role="status" touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;"></paper-toast>
+
+                    <paper-toast id="toast2" role="alert" text="Connection timed out. Showing limited messages." touch-action="none" tabindex="-1" class="core-transition core-transition-bottom" style="position: fixed; outline: none; display: none;">
+                        <div class="highlight" onclick="console.log('RETRY')">Retry</div>
+                    </paper-toast>
+
+                    <paper-toast id="toast3" class="capsule core-transition core-transition-bottom" text="Message sent" role="status" touch-action="none" tabindex="-1" style="position: fixed; outline: none; display: none;"></paper-toast>
+
+
+                </bs-col>
+            </bs-row>
+        </bs-container>
+    </section>
+
+    <section id="example11">
+
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-tabs">Tabs</a></h3>
+
+        <bs-container>
+            <bs-row>
+                <bs-col style="text-align: left;">
+
+                    <h3>A. No ink effect and no sliding bar</h3>
+
+                    <paper-tabs selected="0" noink="" nobar="" role="tablist" horizontal="" center="" layout="">
+
+                        <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="" class="core-selected" active="">ITEM ONE</paper-tab>
+                        <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="">ITEM TWO</paper-tab>
+                        <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="">ITEM THREE</paper-tab>
+
+                    </paper-tabs>
+
+                    <br>
+                    <br>
+
+                    <h3>B. The bar slides to the selected tab</h3>
+
+                    <paper-tabs selected="0" noink="" role="tablist" horizontal="" center="" layout="">
+
+                        <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="" class="core-selected" active="">ITEM ONE</paper-tab>
+                        <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="">ITEM TWO</paper-tab>
+                        <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="">ITEM THREE</paper-tab>
+
+                    </paper-tabs>
+
+                    <br>
+                    <br>
+
+                    <h3>C. Inky Tabs</h3>
+
+                    <paper-tabs selected="0" role="tablist" horizontal="" center="" layout="">
+
+                        <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="" class="core-selected" active="">ITEM ONE</paper-tab>
+                        <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="">ITEM TWO</paper-tab>
+                        <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="">ITEM THREE</paper-tab>
+
+                    </paper-tabs>
+
+                    <br>
+                    <br>
+
+                    <paper-tabs selected="0" class="transparent-teal" role="tablist" horizontal="" center="" layout="">
+
+                        <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="" class="core-selected" active="">ITEM ONE</paper-tab>
+                        <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="">ITEM TWO</paper-tab>
+                        <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="">ITEM THREE</paper-tab>
+
+                    </paper-tabs>
+
+                    <br>
+                    <br>
+<!--
+//Brian: core-toolbar causing major slowdown when starting up due to addEventListener failing and other problems.  Removing for now...
+                    <core-toolbar class="medium-tall">
+
+                        <paper-icon-button icon="menu" role="button" tabindex="0" aria-label="menu"></paper-icon-button>
+                        <div flex="">Title</div>
+                        <paper-icon-button icon="search" role="button" tabindex="0" aria-label="search"></paper-icon-button>
+                        <paper-icon-button icon="more-vert" role="button" tabindex="0" aria-label="more-vert"></paper-icon-button>
+
+                        <div class="bottom fit" horizontal="" layout="">
+
+                            <paper-tabs selected="0" flex="" style="max-width: 600px;" role="tablist" horizontal="" center="" layout="">
+
+                                <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="" class="core-selected" active="">ITEM ONE</paper-tab>
+                                <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="">ITEM TWO</paper-tab>
+                                <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="">ITEM THREE</paper-tab>
+
+                            </paper-tabs>
+
+                        </div>
+
+                    </core-toolbar>
+
+                    <br>
+                    <br>
+
+                    <core-toolbar class="tall">
+
+                        <paper-tabs selected="0" class="bottom indent" style="width: 200px;" self-end="" role="tablist" horizontal="" center="" layout="">
+
+                            <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="" class="core-selected" active="">ITEM ONE</paper-tab>
+                            <paper-tab role="tab" inline="" flex="" center-center="" horizontal="" layout="">ITEM TWO</paper-tab>
+
+                        </paper-tabs>
+
+                        <div class="bottom" flex=""></div>
+
+                        <paper-icon-button class="bottom" icon="search" role="button" tabindex="0" aria-label="search"></paper-icon-button>
+
+                    </core-toolbar>
+-->
+                </bs-col>
+            </bs-row>
+        </bs-container>
+    </section>
+
+    <section hero="" id="example6">
+
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-menu-button">Menu Buttons</a></h3>
+
+        <style shim-shadowdom="">
+
+            #example6 .card {
+                width: 320px;
+                height: 480px;
+                margin: 16px 12px;
+                border-radius: 3px;
+            }
+
+            #example6 .toolbar {
+                position: relative;
+                padding: 0.5em;
+                border-radius: 3px 3px 0 0;
+            }
+
+            #example6 .inner {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                z-index: -1;
+            }
+
+            #example6 core-menu {
+                margin: 0px;
+            }
+
+        </style>
+
+        <bs-container>
+            <bs-row>
+                <bs-col mdpush="3" md="6" layout="" horizontal="" center-justified="">
+
+                    <div class="card paper-shadow-top-z-1">
+                        <div class="inner paper-shadow-bottom-z-1"></div>
+                        <div layout="" horizontal="" class="toolbar paper-shadow-top-z-1">
+                            <div class="inner paper-shadow-bottom-z-1"></div>
+                            <paper-menu-button relative="" tabindex="0">
+                                <paper-icon-button icon="menu" role="button" tabindex="0" aria-label="menu"></paper-icon-button>
+                                <paper-dropdown class="dropdown" transition="" tabindex="-1" style="outline: none; display: none;">
+                                    <core-menu class="menu">
+                                        <paper-item tabindex="0">Menu Item 1</paper-item>
+                                        <paper-item tabindex="0">Menu Item 2</paper-item>
+                                        <paper-item tabindex="0">Menu Item 3</paper-item>
+                                    </core-menu>
+                                </paper-dropdown>
+                            </paper-menu-button>
+                            <div flex=""></div>
+                            <paper-icon-button icon="search" role="button" tabindex="0" aria-label="search"></paper-icon-button>
+                            <paper-menu-button relative="" tabindex="0">
+                                <paper-icon-button icon="more-vert" role="button" tabindex="0" aria-label="more-vert"></paper-icon-button>
+                                <paper-dropdown class="dropdown" transition="" halign="right" tabindex="-1" style="outline: none; display: none;">
+                                    <core-menu class="menu">
+                                        <paper-item tabindex="0">Refresh</paper-item>
+                                        <paper-item tabindex="0">Send Feedback</paper-item>
+                                        <paper-item tabindex="0">Settings</paper-item>
+                                        <paper-item tabindex="0">Help</paper-item>
+                                        <paper-item tabindex="0">Sign Out</paper-item>
+                                    </core-menu>
+                                </paper-dropdown>
+                            </paper-menu-button>
+                        </div>
+                    </div>
+
+                </bs-col>
+            </bs-row>
+        </bs-container>
+    </section>
+
+    <section id="example5">
+
+        <h3><a target="_blank" href="http://www.polymer-project.org/docs/elements/paper-elements.html#paper-item">Menu Items</a></h3>
+
+        <div class="example centered-panel">
+            <paper-item tabindex="0">
+                <core-icon icon="refresh" aria-label="refresh" role="img"><svg viewBox="0 0 24 24" height="100%" width="100%" preserveAspectRatio="xMidYMid meet" fit="" style="pointer-events: none; display: block;"><g><path d="M17.65 6.35c-1.45-1.45-3.44-2.35-5.65-2.35-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78l-3.22 3.22h7v-7l-2.35 2.35z"></path></g></svg></core-icon>
+                Item 1
+            </paper-item>
+            <paper-item tabindex="0">Item 2</paper-item>
+            <paper-item tabindex="0">Item 3</paper-item>
+        </div>
+    </section>
+
+    <section hero="" id="example-dialog">
+        <h3><a target="_blank" href="https://www.polymer-project.org/docs/elements/paper-elements.html#paper-dialog">Dialogs</a></h3>
+
+        <div class="example centered-panel">
+            <paper-button raised="" primary="" onclick="openDialog(this);" role="button" tabindex="0">
+                Plain
+                <paper-dialog role="dialog" tabindex="-1" style="position: fixed; outline: none; display: none;">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </paper-dialog>
+            </paper-button>
+            <paper-button raised="" primary="" onclick="openDialog(this);" role="button" tabindex="0">
+                Titled
+                <paper-dialog heading="The Lorem ipsum" role="dialog" aria-label="The Lorem ipsum" tabindex="-1" style="position: fixed; outline: none; display: none;">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </paper-dialog>
+            </paper-button>
+            <paper-button raised="" primary="" onclick="openDialog(this);" role="button" tabindex="0">
+                Actions
+                <paper-action-dialog heading="The Lorem ipsum" role="dialog" aria-label="The Lorem ipsum" tabindex="-1" style="position: fixed; outline: none; display: none;">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <paper-button dismissive="" role="button" tabindex="0">More...</paper-button>
+                    <paper-button affirmative="" role="button" tabindex="0">Decline</paper-button>
+                    <paper-button affirmative="" autofocus="" role="button" tabindex="0">Accept</paper-button>
+                </paper-action-dialog>
+            </paper-button>
+            <paper-button raised="" primary="" onclick="openDialog(this);" role="button" tabindex="0">
+                Modal
+                <paper-action-dialog backdrop="" autoclosedisabled="" heading="The Lorem ipsum" role="dialog" aria-label="The Lorem ipsum" tabindex="-1" style="position: fixed; outline: none; display: none;">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <paper-button affirmative="" autofocus="" role="button" tabindex="0">Okay</paper-button>
+                </paper-action-dialog>
+            </paper-button>
+        </div>
+
+        <script>
+            function openDialog(e) {
+                var dialog = e.querySelector("paper-dialog,paper-action-dialog");
+                if(dialog) {
+                    dialog.toggle();
+                }
+            }
+        </script>
+
+    </section>
+
+</div>
+<p>&nbsp;</p>
+<div id="TIWidgets" align="center"  style="font-size:x-large;vertical-align:middle;border:solid grey 1px;" class="core-header">
+TI Widgets
+</div>
+<a href="#PaperWidgets">Jump to Paper Widgets...</a><br/>
+<p>&nbsp;</p>
+
+
+
+    <section style="padding-top:40px">
+
+        <div>
+            <h2>ti-widget-menubar</h2>
+            <ti-widget-menubar style="left:0px;top:0px;width:100%" title="ti-widget-menubar">
+                <ti-widget-filemenu></ti-widget-filemenu>
+                <ti-widget-editmenu></ti-widget-editmenu>
+                <ti-widget-helpmenu></ti-widget-helpmenu>
+            </ti-widget-menubar>
+
+        </div>
+        <p>&nbsp;</p>
+        <section hero="" id="TIexample1">
+            <h3>ti-widget-button</h3>
+            <div class="example">
+                <ti-widget-button>Default</ti-widget-button>
+                <ti-widget-button buttonType="primary">Primary</ti-widget-button>
+                <ti-widget-button buttonType="secondary">Secondary</ti-widget-button>
+                <ti-widget-button buttonType="success">Success</ti-widget-button>
+                <ti-widget-button buttonType="info">Info</ti-widget-button>
+                <ti-widget-button buttonType="warning">Warning</ti-widget-button>
+                <ti-widget-button buttonType="error">Error</ti-widget-button>
+                <ti-widget-button buttonType="link">Link</ti-widget-button>
+            </div>
+            <div class="example">
+                <ti-widget-button raised="">Default</ti-widget-button>
+                <ti-widget-button raised="" buttonType="primary">Primary</ti-widget-button>
+                <ti-widget-button raised="" buttonType="secondary">Secondary</ti-widget-button>
+                <ti-widget-button raised="" buttonType="success">Success</ti-widget-button>
+                <ti-widget-button raised="" buttonType="info">Info</ti-widget-button>
+                <ti-widget-button raised="" buttonType="warning">Warning</ti-widget-button>
+                <ti-widget-button raised="" buttonType="error">Error</ti-widget-button>
+                <ti-widget-button raised="" buttonType="link">Link</ti-widget-button>
+            </div>
+            <div class="example">
+                <ti-widget-button disabled="" >Default</ti-widget-button>
+                <ti-widget-button disabled="" buttonType="primary" >Primary</ti-widget-button>
+                <ti-widget-button disabled="" buttonType="secondary">Secondary</ti-widget-button>
+                <ti-widget-button disabled="" buttonType="success">Success</ti-widget-button>
+                <ti-widget-button disabled="" buttonType="info">Info</ti-widget-button>
+                <ti-widget-button disabled="" buttonType="warning">Warning</ti-widget-button>
+                <ti-widget-button disabled="" buttonType="error">Error</ti-widget-button>
+                <ti-widget-button disabled="" buttonType="link">Link</ti-widget-button>
+            </div>
+        </section>
+
+        <p>&nbsp;</p>
+        <h2>ti-widget-bitfield-header</h2>
+        <ti-widget-bitfield-header bitValues="11,10,9,8,7,6,5,4,3,2,1,0"></ti-widget-bitfield-header>
+
+        <p>&nbsp;</p>
+        <h2>ti-widget-checkbox</h2>
+        <ti-widget-checkbox label="check me" id="checked"></ti-widget-checkbox><br/>
+        <ti-widget-checkbox label="disabled" id="disabled" disabled="true"></ti-widget-checkbox>
+
+        <p>&nbsp;</p>
+        <h2>ti-widget-container</h2><br/>
+        <div >
+            200px x 200px container:<br/>
+
+            <ti-widget-container id="ti_widget_container" style="width:200px;height:200px;">
+                <ti-widget-label label="This label is inside of a ti-widget-container" id="ti_widget_label2" style="white-space:normal"></ti-widget-label>
+            </ti-widget-container>
+        </div>
+        <p>&nbsp;</p>
+        <h2>ti-widget-droplist</h2>
+        <div style="position:relative;width:200px;">
+            <ti-widget-droplist selectedtext="normal" labels="a,b,c,100,200,300,400,500,600,700,800,900" initialindex="7" ></ti-widget-droplist>
+        </div>
+
+        <p>&nbsp;</p>
+        <h2>ti-widget-image</h2>
+        <ti-widget-image imagePath="../ti-widget-common/demo/ti-widget-image/images/chip.jpg" lockaspectratio></ti-widget-image>
+        <p>&nbsp;</p>
+        <h2>ti-widget-label</h2>
+        <ti-widget-label label="This label's text can be bound to the program model..."></ti-widget-label>
+        <p>&nbsp;</p>
+        <h2>ti-widget-multiimage</h2>
+        <ti-widget-multiimage imagePaths="../ti-widget-common/demo/ti-widget-image/images/work.png" lockaspectratio hoverEffect="enlarge">
+        </ti-widget-multiimage>
+        <p>&nbsp;</p>
+        <h2>ti-widget-numberbox</h2>
+        Max value: 100, Min Value: -100, 2 decimal places<br/>
+        <div style="position:relative;width:150px;">
+            <ti-widget-numberbox decimalplaces="2" value="99.56" intermediatechanges="true"   tooltip="This is a tooltip for the ti-widget-numberbox" id="ti_widget_numberbox" minvalue="-100" maxvalue="100"></ti-widget-numberbox>
+        </div>
+        <p>&nbsp;</p>
+        <h2>ti-widget-slider</h2>
+        <ti-widget-slider value="1" minvalue="0" maxvalue="10" increment="1" labels="0,1,2,3,4,5,6,7,8,9,10" showticks="true"  showpinvalue="true" id="ti_widget_slider" style="width:300px;"></ti-widget-slider>
+
+        <p>&nbsp;</p>
+        <h2>ti-widget-spinner</h2>
+        Max value: 100, Min Value: -100<br/>
+        <div style="position:relative;width:150px;">
+            <ti-widget-spinner value="89" minvalue="-100" maxvalue="100"></ti-widget-spinner>
+        </div>
+        <p>&nbsp;</p>
+        <h2>ti-widget-textbox</h2><br/>
+        <ti-widget-textbox value="Some text in a text box" style="width:150px"></ti-widget-textbox>
+
+        <p>&nbsp;</p>
+        <div  style="padding-top:40px">
+            <h2>ti-widget-propertygrid</h2>
+            <div>
+                <section>
+                    <ti-widget-propertygrid id="propertyGrid1"></ti-widget-propertygrid>
+                </section>
+            </div>
+        </div>
+        <div style="padding-top:40px">
+            <h2>ti-widget-filesview:</h2>
+            <div>
+                <ti-widget-filesview id="filesview" folderPath="../.."></ti-widget-filesview>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding-bottom:200px">
+        <h2>ti-widget-dial and ti-widget-analoggauge:</h2>
+        Note: currently the dial requires absolute positioning for the dial to receive mouse input correctly.<p>&nbsp;</p>
+        <div align="center">
+
+            <template id="dial-demo55" is="auto-binding">
+                <div>
+                    <div style="padding:10px;height:170px;width:170px;position:absolute;left:25px;">
+                        <ti-widget-dial value="20" id="ti_widget_dial55" size="170"></ti-widget-dial>
+                    </div>
+                    <div style="padding:10px;height:170px;width:170px;position:absolute;left:300px;">
+
+                        <ti-widget-analoggauge value="{{ $.ti_widget_dial55.value }}" id="ti_widget_analoggauge56" size="170"  ></ti-widget-analoggauge>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </section>
+    <p>&nbsp;</p>
+    <div >
+        <h2>ti-widget-registerview</h2>
+
+        <ti-widget-registerview  maxBitWidth="8" style="position:relative;width:100%;height:300px;"></ti-widget-registerview>
+    </div>
+    <p>&nbsp;</p>
+    <div>
+        <h2>ti-widget-statusbar</h2>
+        <div>
+            statusbar progress:
+            <span id="btnStartTI"><ti-widget-button buttonType="primary" raised onclick="startBtnTIOnClickHdlr()">Start</ti-widget-button></span>
+            <span id="btnStopTI" style="display:none"><ti-widget-button buttonType="secondary" raised onclick="stopBtnTIOnClickHdlr()">Stop</ti-widget-button></span>
+        </div>
+        <p>&nbsp;</p>
+        Status string demo:<p>&nbsp;</p>
+        &nbsp;&nbsp;<input type="text" id="inputText1" name="Text to display in status bar (statusString1)" value="" maxlength="900" style="width:400px;" placeholder="status string 1" />&nbsp;&nbsp;<ti-widget-button buttontype="default" raised onclick="setStatusString1BtnOnClickHdlr()">Submit</ti-widget-button>
+        <br/>
+        &nbsp;&nbsp;<input type="text" id="inputText2" name="Text to display in status bar (statusString2)" value="" maxlength="900" style="width:400px;" placeholder="status string 2" />&nbsp;&nbsp;<ti-widget-button buttontype="default" raised onclick="setStatusString2BtnOnClickHdlr()">Submit</ti-widget-button>
+        <br/>
+        &nbsp;&nbsp;<input type="text" id="inputText3" name="Text to display in status bar (statusString3)" value="" maxlength="900" style="width:400px;" placeholder="status string 3" />&nbsp;&nbsp;<ti-widget-button buttontype="default" raised onclick="setStatusString3BtnOnClickHdlr()">Submit</ti-widget-button>
+
+        <p>&nbsp;</p>
+        <div>
+            statusbar icon:
+            <select name="Icon List" id="iconList" onchange="iconListOnChangeHdlr()">
+                <option value="ti-core-icons:nolink">nolink</option>
+                <option value="ti-core-icons:link">link</option>
+                <option value="cloud-done">cloud-done (core-icons)</option>
+                <option value="settings-power">settings-power (core-icons)</option>
+                <option value="av:equalizer">equalizer (av-icons)</option>
+                <option value="ti-core-icons:ti-logo">ti-logo</option>
+            </select>
+        </div>
+    </div>
+    <ti-widget-statusbar id="footer" statusString1="Status field 1" statusString2="Status field 2" statusString3="Status field 3" progressBarEnabled="true" showProgressPercentString="false" ></ti-widget-statusbar>
+
+
+    <script>
+        var isNodeWebkit = (typeof process !== 'undefined');
+        var isChrome = false;
+        var defaultThemeName = 'ti-theme';
+        if (!isNodeWebkit) {
+            isChrome = (navigator.userAgent.indexOf("Chrome") !== -1);
+            defaultThemeName = 'selected-theme';
+        }
+
+        addEventListener('polymer-ready', function () {
+            var _self = this;
+            var cssName = document.getElementById("cssName");
+            var themeSelector = document.getElementById("themeSelector");
+
+
+            if (isNodeWebkit) {
+                var fs = require('fs');
+                var path = require('path');
+
+                try {
+                    // we're in node-webkit.
+                    var pThemes = getPolymerThemes();
+                    var pCurrentTheme = getPolymerThemeName();
+                    // update the label showing the currently selected theme.
+                    cssName.innerText = pCurrentTheme;
+                    var pCurrentIndex = getIndexOfSelectedTheme(pThemes, pCurrentTheme);
+                    themeSelector.labels = pThemes.join('|');
+                    themeSelector.initialIndex = pCurrentIndex;
+
+                }
+                catch (ex) {
+                    console.log('ti-core-stylesheets: ex=' + ex.toString())
+                }
+            } else {
+                // just use the default theme name
+                cssName.innerText = defaultThemeName;
+                themeSelector.labels = defaultThemeName;
+                themeSelector.initialIndex = 0;
+            }
+            themeSelector.addEventListener("selected",function(event){
+                console.log("received event");
+                _self.setPolymerThemeName(event);
+            });
+        });
+
+        var startBtnDiv = document.getElementById("btnStart");
+        var stopBtnDiv = document.getElementById("btnStop");
+        var input1TextField = document.getElementById("inputText1");
+        var input2TextField = document.getElementById("inputText2");
+        var input3TextField = document.getElementById("inputText3");
+        var isRunning = false;
+        var footer = document.getElementById('footer');
+        var myTimeout = undefined;
+        var iconList = document.getElementById("iconList");
+        var startBtnOnClickHdlr = function(e){
+            startBtnDiv.style.display = 'none';
+            stopBtnDiv.style.display='';
+            isRunning = true;
+            footer.progress = 0;
+            footer.progressBarEnabled = true;
+            _self = this;
+            myTimeout = window.setTimeout(function(){
+                _self.updateProgress(_self)
+            }, 25);
+        }
+
+        var getPolymerThemeName = function () {
+            // the process.cwd is in the splash folder, so we need to use a relative path from there
+            if (isNodeWebkit) {
+                var fs = require('fs');
+                var cssText = fs.readFileSync('../components/ti-core-stylesheets/selected-theme.css', 'utf8');
+                console.log('ti-core-stylesheets: cssText=' + cssText);
+                var startIndex = cssText.indexOf('(') + "themes/".length + 1;
+                var endIndex = cssText.indexOf('.css');
+                return ( cssText.substring(startIndex + 1, endIndex));
+            } else {
+                return('ti-theme');
+            }
+        };
+
+        var getPolymerThemes = function () {
+            var themes = [];
+            if (isNodeWebkit) {
+                var baseDir = "../components/ti-core-stylesheets/themes";
+                var fs = require('fs');
+                var files = fs.readdirSync(baseDir);
+                var filePath = baseDir;
+
+                for (var i = 0, l = files.length; i < l; i++) {
+                    if (files[i][0] !== '.') { // ignore hidden
+                        var index = files[i].indexOf('.css');
+                        if (index === files[i].length - 4) {
+                            var themeName = files[i].substring(0, index);
+                            themes.push(themeName);
+                        }
+                    }
+                }
+            } else {
+                themes.push('ti-theme');
+            }
+            return themes;
+        };
+        var getIndexOfSelectedTheme = function(themeNames,currentThemeName){
+            return themeNames.indexOf(currentThemeName);
+        }
+
+        this.setPolymerThemeName = function (event) {
+            var selector = event.target;
+            var oldThemeName = getPolymerThemeName();
+            var cssName = document.getElementById("cssName");
+            var themeName = selector.selectedText;
+            if (isNodeWebkit) {
+                var fs = require('fs');
+                var path = require('path');
+                console.log("Selected theme name = " + themeName);
+                try {
+                    // path is relative to the splash directory, where the designer application was started from
+                    var cssFilePath = "../components/ti-core-stylesheets/selected-theme.css";
+                    var cssText = fs.readFileSync(cssFilePath, 'utf8');
+                    cssText = cssText.replace(oldThemeName, themeName);
+                    fs.writeFileSync(cssFilePath, cssText);
+                    var htmlFilePath = "../components/ti-core-stylesheets/ti-core-stylesheets.html";
+                    cssText = fs.readFileSync(htmlFilePath,'utf8');
+                    cssText = cssText.replace(oldThemeName, themeName);
+                    fs.writeFileSync(htmlFilePath,cssText);
+                    // force the theme to be picked up by reloading the page
+                    window.location.reload(true);
+                }
+                catch (ex) {
+                    console.log('Exception updating polymer theme: ex=' + ex.toString());
+                }
+            } else {
+                window.location.reload(true);
+            }
+        };
+
+        var stopBtnOnClickHdlr = function(e){
+            stopBtnDiv.style.display = 'none';
+            startBtnDiv.style.display='';
+            isRunning = false;
+            window.clearTimeout(this.myTimeout);
+        }
+        var updateProgress = function(_self){
+            var progress = _self.footer.progress+1;
+            if (progress > 100){
+                progress = 100;
+                _self.footer.progress = 100;
+                _self.footer.progressBarEnabled = false;
+                stopBtnDiv.style.display = 'none';
+                startBtnDiv.style.display='';
+            } else {
+                _self.footer.progress = progress;
+                _self.myTimeout = window.setTimeout(function(){_self.updateProgress(_self)}, 25);
+            }
+        }
+        var setStatusString1BtnOnClickHdlr = function(e){
+            footer.statusString1 = input1TextField.value;
+            footer.tooltipStatusString1 = input1TextField.value;
+        }
+        var setStatusString2BtnOnClickHdlr = function(e){
+            footer.statusString2 = input2TextField.value;
+            footer.tooltipStatusString2 = input2TextField.value;
+
+        }
+        var setStatusString3BtnOnClickHdlr = function(e){
+            footer.statusString3 = input3TextField.value;
+            footer.tooltipStatusString3 = "And now, for something COMPLETELY different!";
+        }
+        var iconListOnChangeHdlr = function(){
+            if (iconList.value.indexOf("none") >= 0 ){
+                footer.iconName = '';
+            } else {
+                footer.iconName = iconList.value;
+                footer.tooltipIconImage = "The name of this image is "+iconList.value;
+            }
+        }
+    </script>
+
+    <script>
+        var isNodeWebkit = (typeof process !== 'undefined');
+        var isChrome = false;
+        var defaultThemeName = 'ti-theme';
+        if (!isNodeWebkit) {
+            isChrome = (navigator.userAgent.indexOf("Chrome") !== -1);
+            if (isChrome) {
+                defaultThemeName = 'selected-theme';
+            }
+        }
+        addEventListener('polymer-ready', function () {
+            var propertyGrid = document.getElementById("propertyGrid1");
+            propertyGrid.configure();
+        });
+
+        var startBtnTIDiv = document.getElementById("btnStartTI");
+        var stopBtnTIDiv = document.getElementById("btnStopTI");
+        var input1TextField = document.getElementById("inputText1");
+        var input2TextField = document.getElementById("inputText2");
+        var input3TextField = document.getElementById("inputText3");
+        var isRunning = false;
+        var footer = document.getElementById('footer');
+        var myTimeout = undefined;
+        var iconList = document.getElementById("iconList");
+        var startBtnTIOnClickHdlr = function(e){
+            startBtnTIDiv.style.display = 'none';
+            stopBtnTIDiv.style.display='';
+            isRunning = true;
+            footer.progress = 0;
+            footer.progressBarEnabled = true;
+            _self = this;
+            myTimeout = window.setTimeout(function(){
+                _self.updateProgressTI(_self)
+            }, 25);
+        }
+
+        var stopBtnTIOnClickHdlr = function(e){
+            stopBtnTIDiv.style.display = 'none';
+            startBtnTIDiv.style.display='';
+            isRunning = false;
+            window.clearTimeout(this.myTimeout);
+        }
+        var updateProgressTI = function(_self){
+            var progress = _self.footer.progress+1;
+            if (progress > 100){
+                progress = 100;
+                _self.footer.progress = 100;
+                _self.footer.progressBarEnabled = false;
+                stopBtnTIDiv.style.display = 'none';
+                startBtnTIDiv.style.display='';
+            } else {
+                _self.footer.progress = progress;
+                _self.myTimeout = window.setTimeout(function(){_self.updateProgressTI(_self)}, 25);
+            }
+        }
+        var setStatusString1BtnOnClickHdlr = function(e){
+            footer.statusString1 = input1TextField.value;
+            footer.tooltipStatusString1 = input1TextField.value;
+        }
+        var setStatusString2BtnOnClickHdlr = function(e){
+            footer.statusString2 = input2TextField.value;
+            footer.tooltipStatusString2 = input2TextField.value;
+
+        }
+        var setStatusString3BtnOnClickHdlr = function(e){
+            footer.statusString3 = input3TextField.value;
+            footer.tooltipStatusString3 = "And now, for something COMPLETELY different!";
+        }
+        var iconListOnChangeHdlr = function(){
+            if (iconList.value.indexOf("none") >= 0 ){
+                footer.iconName = '';
+            } else {
+                footer.iconName = iconList.value;
+                footer.tooltipIconImage = "The name of this image is "+iconList.value;
+            }
+        }
+    </script>
+</body>
+</html>

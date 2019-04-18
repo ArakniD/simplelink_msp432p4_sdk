@@ -1,0 +1,35 @@
+{
+    "name": "ti_logger",
+    "description": "A TI logging library for Node.js and Node-webkit",
+    "version": "0.1.4",
+    "private": true,
+    "author": {
+        "name": "Boualem S.",
+        "email": "boualem@ti.com"
+    },
+    "license": "BSD-3-Clause",
+    "keywords": [
+    "logging",
+    "tracing"
+  ],
+    "dependencies": {
+        "winston": "^0.9.x",
+        "util": "^0.10.x",
+        "mkdirp": "^0.5.x",
+        "ti_util": "git+ssh://git@gitorious.design.ti.com/guicomposer-nw/ti_util.git"
+    },
+    "devDependencies": {
+        "mocha": "^1.11.0",
+        "chai": "^1.9.1",
+        "spec-xunit-file": "^0.0.1-1"
+    },
+    "scripts": {
+        "test": "./node_modules/.bin/mocha -R spec-xunit-file --recursive -t 10000",
+        "coverage": "istanbul cover --report lcov --report cobertura node_modules/mocha/bin/_mocha -- -R spec --recursive -t 20000"
+    },
+    "main": "./lib/ti_logger",
+    "engines": {
+        "node": ">= 0.6.0"
+    },
+    "readmeFilename": "README.md"
+}

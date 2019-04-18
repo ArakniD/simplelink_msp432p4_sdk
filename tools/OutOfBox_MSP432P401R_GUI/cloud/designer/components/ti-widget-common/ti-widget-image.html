@@ -1,0 +1,250 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-button.html">
+<link rel="import" href="ti-widget-base.html">
+<polymer-element name="ti-widget-image" extends="ti-widget-base" attributes="imagePath lockAspectRatio hoverEffect">
+
+    <template>
+        <style>
+            * {
+                -webkit-box-sizing : border-box;
+                -moz-box-sizing : border-box;
+                box-sizing : border-box;
+                
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;   
+            }
+            :host {
+                display : inline-block;
+                text-align: center;
+            }
+            #imageWidget {
+                width:auto; 
+                height:auto;
+                max-width: 100%;
+                max-height: 100%;
+                vertical-align: inherit;
+
+                -webkit-transition: all .3s ease-in-out;
+                 transition: all .3s ease-in-out; 
+            }
+            #imageWidget.stretchHeight {
+                height: 100%;
+            }
+            #imageWidget.stretchWidth {
+                width: 100%;
+            }
+            #imageWidget.topAlign {
+                vertical-align: top;
+            }
+            #imageWidget.bottomAlign {
+                vertical-align: bottom;
+            }
+            #imageWidget.colorEffect, 
+            #imageWidget.colorEffect.disabled:hover, 
+            #imageWidget.colorEffect:hover:active,
+            #imageWidget.disabled {
+				filter: url(filters.svg#grayscale); /* Firefox 3.5+ */
+				filter: gray; /* IE5+ */
+				-webkit-filter: grayscale(1); /* Webkit Nightlies & Chrome Canary */
+		    }
+		    #imageWidget.colorEffect:hover { 
+				filter: none;
+				-webkit-filter: grayscale(0);
+			}
+			#imageWidget.enlargeEffect:hover {
+                -ms-transform: scale(1.1);
+                -webkit-transform: scale(1.1);
+                transform: scale(1.1);
+			} 
+            #imageWidget.enlargeEffect,			
+            #imageWidget.enlargeEffect.disabled:hover,
+            #imageWidget.enlargeEffect:hover:active {
+                -ms-transform: none;
+                -webkit-transform: none;
+                transform: none;
+            }
+            #imageWidget.buttonEffect, 
+            #imageWidget.buttonEffect.disabled:hover {
+                border: 3px outset transparent;
+                border-radius: 9px;
+            }
+            
+            #imageWidget.buttonEffect:hover:active {
+                border: 3px inset #F0F0F0;
+            }
+            #imageWidget.buttonEffect:hover {
+                border: 3px outset #F0F0F0;
+            }
+            .alignMiddleHelper {
+                height: 100%;
+                width:2px;
+                background-color: blue;
+                vertical-align: middle;
+            }
+        </style>
+        <img id="imageWidget" src="{{_imagePath}}" alt="" ondragstart="return false;"
+                on-error="{{_imageNotFoundHandler}}" on-load="{{_imageLoadHandler}}" on-click="{{_clickhandler}}"></img>
+    </template>
+    <script>
+        Polymer ('ti-widget-image', 
+        {
+            /**
+             * Fired when the image is selected with a click action.  use on-selected={{myHandler}} to receive callback
+             *
+             * @event click
+             */
+            imagePath : '',
+            lockAspectRatio : false,
+            hoverEffect : 'no',
+            imagePathChanged : function()
+            {
+            	this._altImagePath = undefined;
+            	this.updateImagePath(this.imagePath);
+            },
+            getElement : function() 
+            {
+                return this.$.imageWidget;
+            },
+            updateImagePath: function(imgPath)
+            {
+            	var img = this.$.imageWidget;
+                img.src = 'missing';
+                
+            	if (imgPath && imgPath.length > 0)
+            	{
+            	    if (window.global && global.document && global.document.gcGlobal && global.document.gcGlobal.projectName)
+            	    {
+                        var projectPath = encodeURI(global.document.gcGlobal.projectName + '/' + imgPath);
+                        
+                        if (img.src.indexOf('/designer/components/element/') > 0)
+                        {
+                        	// running from the designer
+                            img.src = '../../../' + projectPath;    
+                        }
+                        else if (img.src.indexOf('/designer/components/') > 0)
+                        {
+                        	// running demos 
+                        	img.src = encodeURI(imgPath);
+                        }
+                        else
+                        {
+                        	// running from preview
+                            img.src = '../' + projectPath;
+                        }
+            	    }
+            	    else
+            	    {
+            	    	img.src = encodeURI(imgPath);
+            	    }
+            	}
+            },
+            _imageNotFoundHandler : function()
+            {
+            	if (this.imagePath && this.imagePath.length > 0)
+            	{
+            		if (this._altImagePath === undefined)
+            		{
+		            	this._altImagePath = encodeURI('app/' + this.imagePath);
+	            		this.updateImagePath(this._altImagePath);
+	            	}
+	            	else if (window.gc && gc.widget)
+	            	{
+	            		// put an error indication on the widget
+	            		var message = "Can't find image located here: " + this.$.imageWidget.src;
+	            		gc.widget.StatusIndicator.Factory.get(this).addMessage(message);
+	            	}
+            	}
+            },
+            _imageLoadHandler : function()
+            {
+            	this.lockAspectRatioChanged();
+            },
+            lockAspectRatioChanged : function()
+            {
+                if (this.lockAspectRatio)
+                {
+                    var img = this.$.imageWidget;
+                    var height = img.naturalHeight; // || img.clientHeight;
+                    var width = img.naturalWidth; // || img.clientWidth;
+                    
+                    var naturalRatio = height / width;
+                    var actualRatio = this.clientHeight / this.clientWidth;
+                    img.className = (actualRatio < naturalRatio ? 'stretchHeight' : 'stretchWidth') + 
+                            (this.disabled ? ' disabled ' : ' ') + this._lastHoverEffect;
+                }
+                else
+                {
+                    this.$.imageWidget.className = (this.disabled ? ' disabled ' : ' ') +
+                        this._lastHoverEffect + ' stretchHeight stretchWidth';
+                }
+            },
+            _lastHoverEffect : 'noEffect',
+            hoverEffectChanged : function()
+            {
+            	var effect = 'no';
+            	var effects = [ 'button', 'enlarge', 'color' ];
+            	for(var i = effects.length; i--> 0; )
+            	{
+            		if (this.hoverEffect.indexOf(effects[i]) === 0)
+            		{
+            			effect = effects[i];
+            			break;
+            		}
+            	}
+            	effect = effect + 'Effect';
+            	if (effect !== this._lastHoverEffect)
+            	{
+            		this.removeClassName(this._lastHoverEffect, this.$.imageWidget);
+            		this._lastHoverEffect = effect;
+            		this.addClassName(effect, this.$.imageWidget);
+            	}
+            },
+            _clickhandler : function()
+            {
+            	this.fire('click');
+            },
+            _statusIndicatorLocationHint : "center-middle",
+            domReady : function() 
+            {
+            	this.super();
+            	
+            	if (window.gc && gc.widget)
+            	{
+	            	var oldPropertyNames = [ 'imageSource', 'imageFolderName', 'width', 'height', 'customImageName' ];
+	            	var newPropertyNames = [ 'imagePath', 'imagePath', undefined, undefined, 'imagePath' ];
+	            	
+	            	if (this.reportDeprecatedProperties(oldPropertyNames, newPropertyNames))
+	            	{
+	            		var imageSource = this.getAttribute('imageSource');
+	            		var customImageName = this.getAttribute('customImageName');
+	            		var imageFolderName = this.getAttribute('imageFolderName');
+	            		
+	            		if (imageSource === 'custom')
+	            		{
+	            			if (customImageName && customImageName.indexOf('{{') !== 0)
+	            			{
+	            				if (imageFolderName && imageFolderName.indexOf('{{') !== 0)
+	            				{
+	            					var pos = imageFolderName.indexOf('/');
+	            					if (pos > 0)
+	            					{
+	            						imageFolderName = imageFolderName.substring(pos+1);
+	            					}
+	            					this.imagePath = imageFolderName + '/' + customImageName;
+	            				}
+	            				else if (!imageFolderName)
+	            				{
+	            				    this.imagePath = customImageName;	            					
+	            				}
+	            			}
+	            		}
+	            	}
+                }
+            }
+        });
+    </script>
+</polymer-element>

@@ -1,0 +1,303 @@
+<html>
+<head>
+<title>module ti.sysbios.hal.MemProtect</title>
+<meta name="description" content="Memory protection manager">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.sysbios.hal.</span><span class="xdoc-id">MemProtect</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/sysbios/hal/Hwi.html" title="module Hwi"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/sysbios/hal/package.html" title="package ti.sysbios.hal"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/sysbios/hal/Power.html" title="module Power"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/sysbios/hal/MemProtect.html">index URL</a></div>
+<p class="xdocHdrSummary">Memory protection manager</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-1">DETAILS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-2">C SYNOPSIS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#xdoc-sect-3">MEMPROTECT FUNCTIONS</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+SYS/BIOS Memory Protection Extensions (MPE) add memory protection capability
+  to the SYS/BIOS kernel. With this extension enabled
+  (see <a class="xdoc-link" href="../../../ti/sysbios/BIOS.html#mpe.Enabled" title="ti.sysbios.BIOS.mpeEnabled">BIOS.mpeEnabled</a>), an application can
+  restrict the memory and peripherals a Task can access, thereby creating a
+  sandbox. The access restricted tasks run in unprivileged mode and are
+  therefore also restricted in terms of the type of CPU instructions they can
+  execute. For example, an access restricted or unprivileged task cannot
+  disable interrupts directly.
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/sysbios/hal/MemProtect-src.html"><span class="xdocLabelFile">ti/sysbios/hal/MemProtect.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/sysbios/hal/MemProtect.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">MemProtect_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">MemProtect_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">MemProtect_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">MemProtect_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">MemProtect_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">MemProtect_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">SYS/BIOS Memory Protection Extensions (MPE) add memory protection capability
+  to the SYS/BIOS kernel. With this extension enabled
+  (see <a class="xdoc-link" href="../../../ti/sysbios/BIOS.html#mpe.Enabled" title="ti.sysbios.BIOS.mpeEnabled">BIOS.mpeEnabled</a>), an application can
+  restrict the memory and peripherals a Task can access, thereby creating a
+  sandbox. The access restricted tasks run in unprivileged mode and are
+  therefore also restricted in terms of the type of CPU instructions they can
+  execute. For example, an access restricted or unprivileged task cannot
+  disable interrupts directly.</div>
+<div class="xdocText">SYS/BIOS MPE can be used to enhance the security of applications by
+  compartmentalizing the application into mutually isolated tasks. In the
+  simplest configuration, the security critical portions of the application
+  can be moved to privileged tasks and the rest of the application can be run
+  as unprivileged tasks. In a more advanced configuration, multiple mutually
+  isolated tasks may be used to compartmentalize the application at a finer
+  level of granularity.</div>
+<div class="xdocText">SYS/BIOS MPE introduces the notion of execution domains. A Domain is a
+  protected environment for the kernel and tasks to execute within and has
+  an Access Control List (ACL) that is defined at the time of creating the
+  domain. The kernel and privileged tasks execute in a special domain that
+  allows them to access the entire address space. User Task domains are more
+  restrictive and allow a user task to only access memory regions explicitly
+  owned by the domain or memory regions that are public and accessible to all
+  domains.</div>
+<div class="xdocText">A domain can be created in main() or a privileged task only. A User Task is
+  assigned to an existing domain at the time of its creation. A User Task may
+  create more threads which inherit its domain. A User Task cannot assign any
+  other domain to the tasks it creates.</div>
+<div class="xdocText">This module contains APIs used to create and/or construct domains at
+  runtime.</div>
+<div class="xdocText"><h3> Calling Context </h3>
+  <table border="1" cellpadding="3">
+    <colgroup span="1"></colgroup> <colgroup span="5" align="center">
+    </colgroup>
+
+    <tr><th> Function                 </th><th>  Hwi   </th><th>  Swi   </th>
+    <th>  Task  </th><th>  Main  </th><th>  Startup  </th></tr>
+    <!--                                                         -->
+    <tr><td> MemProtect_constructDomain </td><td>   N   </td><td>   N   </td>
+    <td>   Y    </td><td>   Y    </td><td>   N    </td></tr>
+    <tr><td> MemProtect_destructDomain </td><td>   N    </td><td>   N   </td>
+    <td>   Y    </td><td>   Y    </td><td>   N    </td></tr>
+    <tr><td colspan="6"> Definitions: <br />
+       <ul>
+         <li> <b>Hwi</b>: API is callable from a Hwi thread. </li>
+         <li> <b>Swi</b>: API is callable from a Swi thread. </li>
+         <li> <b>Task</b>: API is callable from a Task thread. </li>
+         <li> <b>Main</b>: API is callable during any of these phases: </li>
+           <ul>
+             <li> In your module startup after this module is started
+    (e.g. Hwi_Module_startupDone() returns TRUE). </li>
+             <li> During xdc.runtime.Startup.lastFxns. </li>
+             <li> During main().</li>
+             <li> During BIOS.startupFxns.</li>
+           </ul>
+         <li> <b>Startup</b>: API is callable during any of these phases:</li>
+           <ul>
+             <li> During xdc.runtime.Startup.firstFxns.</li>
+           </ul>
+       </ul>
+    </td></tr>
+
+  </table></div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"></div>
+<div class="xdocText"><PRE class="Example">  #include &lt;ti/sysbios/hal/MemProtect.h&gt;
+</PRE></div>
+<div class="xdocText"><h3> Macros </h3></div>
+<div class="xdocText"><PRE class="Example">  // Access Privilege Flags
+  #define MemProtect_USER_READ
+  #define MemProtect_USER_WRITE
+  #define MemProtect_USER_EXEC
+
+  #define MemProtect_PRIV_READ
+  #define MemProtect_PRIV_WRITE
+  #define MemProtect_PRIV_EXEC
+
+  // Memory Type Flags
+  #define MemProtect_DEVICE
+  #define MemProtect_DEVICE_UNBUFFERED
+  #define MemProtect_NONCACHEABLE
+  #define MemProtect_WRITEBACK
+  #define MemProtect_WRITETHROUGH
+  #define MemProtect_WRITEALLOCATE
+  #define MemProtect_SHAREABLE
+
+  // ACL Helper Macros
+  #define MemProtect_NUM_KERNEL_ACL_ENTRIES
+  #define MemProtect_NUM_USER_ACL_ENTRIES
+  #define MemProtect_NUM_ACL_ENTRIES
+</PRE></div>
+<div class="xdocText"><h3> Typedefs </h3></div>
+<div class="xdocText"><PRE class="Example">  typedef struct MemProtect_Acl {
+      Ptr    baseAddress;
+      SizeT  length;
+      UInt32 flags;
+  } MemProtect_Acl;
+
+  typedef MemProtect_Struct *MemProtect_Handle;
+</PRE></div>
+<div class="xdocText"><h3> Functions </h3></div>
+<div class="xdocText"><PRE class="Example">  Int MemProtect_constructDomain(MemProtect_Struct *obj, struct MemProtect_Acl *acl, UInt16 aclLength)
+ 
+  Void MemProtect_destructDomain(MemProtect_Struct *obj)
+</PRE></div>
+<span id="xdoc-sect-3"></span>
+<div class="xdocSect">MEMPROTECT FUNCTIONS</div>
+<div class="xdocText"></div>
+<div class="xdocText"><h3> MemProtect_constructDomain() </h3></div>
+<div class="xdocText">Construct an execution domain with given access control permissions</div>
+<div class="xdocText"><PRE class="Example">  Int MemProtect_constructDomain(MemProtect_Struct *obj, struct MemProtect_Acl *acl, UInt16 aclLength)
+</PRE></div>
+<div class="xdocText"><h4> ARGUMENTS </h4></div>
+<div class="xdocText"><PRE class="Example">  obj - Pointer to a statically created MemProtect object of type MemProtect_Struct
+  acl - Pointer to an array of ACL entries. ACL entries are of type MemProtect_Acl
+  aclLength - Length of ACL entry array
+</PRE></div>
+<div class="xdocText"><h4> RETURNS </h4></div>
+<div class="xdocText">Returns 0 on success. A negative return value indicates an error occurred.</div>
+<div class="xdocText"><h4> DETAILS </h4></div>
+<div class="xdocText">This function constructs an execution domain with the access permissions
+  specified by the Access Control List (ACL) passed to it.</div>
+<div class="xdocText"><br/>
+  <h3> MemProtect_destructDomain() </h3></div>
+<div class="xdocText">Destruct execution domain</div>
+<div class="xdocText"><PRE class="Example">  Int MemProtect_destructDomain(MemProtect_Struct *obj)
+</PRE></div>
+<div class="xdocText"><h4> ARGUMENTS </h4></div>
+<div class="xdocText"><PRE class="Example">  obj - Pointer to a statically created MemProtect object of type MemProtect_Struct
+</PRE></div>
+<div class="xdocText"><h4> RETURNS </h4></div>
+<div class="xdocText">Returns 0 on success. A negative return value indicates an error occurred.</div>
+<div class="xdocText"><h4> DETAILS </h4></div>
+<div class="xdocText">This function destructs a previously constructed execution domain.</div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/sysbios/hal/MemProtect.html" title="module MemProtect"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/sysbios/hal/MemProtect.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">MemProtect_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">MemProtect_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">MemProtect_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">MemProtect_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">MemProtect_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">MemProtect_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/sysbios/hal/MemProtect-src.html"><span class="xdocLabelFile">ti/sysbios/hal/MemProtect.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> MemProtect = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.sysbios.hal.MemProtect'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">MemProtect.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">MemProtect.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/sysbios/hal/MemProtect.html" title="module MemProtect"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/sysbios/hal/MemProtect.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>MemProtect.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+</div>
+<div id="xdocDate">generated on Wed, 21 Nov 2018 17:14:47 GMT</div>
+</div></div></body>
+</html>

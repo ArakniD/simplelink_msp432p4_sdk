@@ -1,0 +1,868 @@
+<html>
+<head>
+<title>module ti.uia.runtime.LogCtxChg</title>
+<meta name="description" content="Context Change Event logging manager for logging context change events">
+<link rel="stylesheet" type="text/css" href="../../../xdoc.css" />
+</head>
+<body><div id="xdocWrapper"><div id="xdocContent">
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">module</span> <span class="xdoc-id">ti.uia.runtime.</span><span class="xdoc-id">LogCtxChg</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/EventHdr.html" title="module EventHdr"><img class="xdocHdrArrow" src="../../../Arrow_left.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/package.html" title="package ti.uia.runtime"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogSnapshot.html" title="module LogSnapshot"><img class="xdocHdrArrow" src="../../../Arrow_right.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html">index URL</a></div>
+<p class="xdocHdrSummary">Context Change Event logging manager for logging context change events</p>
+<ul class="xdocToc">
+<li class="xdocToc"><a class="xdocToc" href="#targ-synop">C synopsis</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocElems">Individual elements</a></li>
+<li class="xdocToc"><a class="xdocToc" href="#meta-synop">Configuration settings</a></li>
+<li class="xdocToc2"><a class="xdocToc" href="#xdocMetaElems">Individual elements</a></li>
+</ul>
+<div class="xdocBrief">
+Allows context change events to be logged to a logger that is different from the one used by
+  xdc.runtime.Log.
+[&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
+</div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2">C</span></tt> synopsis</td>
+<td class="xdocLabelCenter">target-domain</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/LogCtxChg-src.html"><span class="xdocLabelFile">ti/uia/runtime/LogCtxChg.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynT">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw3">#include</span> <span class="xdoc-id">&lt;ti/uia/runtime/LogCtxChg.h&gt;</span>
+</div>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Functions</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#app"><span class="xdoc-id">LogCtxChg_app</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</span></span></a>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newAppId</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#channel"><span class="xdoc-id">LogCtxChg_channel</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</span></span></a>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newChanId</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#frame"><span class="xdoc-id">LogCtxChg_frame</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</span></span></a>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newFrameId</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#hwi.Start"><span class="xdoc-id">LogCtxChg_hwiStart</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</span></span></a>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">hwiId</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#hwi.Stop"><span class="xdoc-id">LogCtxChg_hwiStop</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</span></span></a>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">hwiId</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">UInt32</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#put.Ctx.Chg1"><span class="xdoc-id">LogCtxChg_putCtxChg1</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Unconditionally put the specified <tt>Types</tt> event along with file name, line number, fmt string and 1 arg</span></span></a>(<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Event" title="xdc.runtime.Types.Event">Types_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">syncPtSeqNum</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">arg1</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">UInt32</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#put.Ctx.Chg2"><span class="xdoc-id">LogCtxChg_putCtxChg2</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Unconditionally put the specified <tt>Types</tt> event along with file name, line number, fmt string and 2 args</span></span></a>(<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Event" title="xdc.runtime.Types.Event">Types_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">UInt32</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#put.Ctx.Chg8"><span class="xdoc-id">LogCtxChg_putCtxChg8</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Unconditionally put the specified <tt>Types</tt> event along with file name, line number, fmt string and 4 args</span></span></a>(<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Event" title="xdc.runtime.Types.Event">Types_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a3</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a4</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a5</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a6</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a7</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a8</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#swi.Start"><span class="xdoc-id">LogCtxChg_swiStart</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</span></span></a>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">swiId</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#swi.Stop"><span class="xdoc-id">LogCtxChg_swiStop</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</span></span></a>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">swiId</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#thread"><span class="xdoc-id">LogCtxChg_thread</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</span></span></a>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newThreadId</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#thread.And.Func"><span class="xdoc-id">LogCtxChg_threadAndFunc</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</span></span></a>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newThreadId</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">oldFunc</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newFunc</span>);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#user"><span class="xdoc-id">LogCtxChg_user</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</span></span></a>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newCtxId</span>);</div></td></tr>
+<tr><td class="xdocSynFxnCat" colspan="2"><div class="xdocSynFxnCat">Functions common to all target modules</div></td></tr>
+
+<tr>
+<td></td>
+<td>
+<div class="xdocSynTblPack">
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogCtxChg_Module_getMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogCtxChg_Module_hasMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test whether this module has a diagnostics mask</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogCtxChg_Module_heap</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;The heap from which this module allocates memory</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogCtxChg_Module_id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get this module's unique id</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogCtxChg_Module_setMask</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Set the diagnostics mask for this module</span></span></a>,
+<a class="xdocSynGo" href="#module-wide_built-ins"><span class="xdoc-id">LogCtxChg_Module_startupDone</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Test if this module has completed startup</span></span></a>
+</div>
+</td>
+</tr>
+<tr><td colspan='2'><div class='xdocSynTblHdr'>Constants</div></td></tr>
+
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#ctx.Filter.Enabled"><span class="xdoc-id">LogCtxChg_ctxFilterEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;set to true in the configuration script in order to enable context filtering</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#is.Timestamp.Enabled"><span class="xdoc-id">LogCtxChg_isTimestampEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;used to enable or disable logging the 64b local CPU timestamp
+  at the start of each event</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#logger.Defined"><span class="xdoc-id">LogCtxChg_loggerDefined</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;set to true in the configuration script when a logger that implements ILoggerSnapshot is attached</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Logger.Fxn2" title="xdc.runtime.Types.LoggerFxn2">Types_LoggerFxn2</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#logger.Fxn2"><span class="xdoc-id">LogCtxChg_loggerFxn2</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Logger.Fxn8" title="xdc.runtime.Types.LoggerFxn8">Types_LoggerFxn8</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#logger.Fxn8"><span class="xdoc-id">LogCtxChg_loggerFxn8</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a>;</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Ptr</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#logger.Obj"><span class="xdoc-id">LogCtxChg_loggerObj</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;handle of the logger that is to be used to log snapshot events</span></span></a>;</div></td></tr>
+</table>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<span id="xdoc-desc"></span>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">Allows context change events to be logged to a logger that is different from the one used by
+  xdc.runtime.Log.</div>
+<div class="xdocText">Users can provide a special function to inject context change information into trace or log
+  sync points whenever a context change is logged.  See ctxFilterEnabled config parameter for more info.</div>
+<div id="xdocSep">
+</div>
+<div id="xdocElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="ctx.Filter.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">ctxFilterEnabled</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#ctx.Filter.Enabled">index URL</a></div>
+<p class="xdocHdrSummaryDcl">set to true in the configuration script in order to enable context filtering</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LogCtxChg_ctxFilterEnabled</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">User can implement a custom function that is called instead of ti_uia_runtime_CtxFilter_isCtxEnabled()
+  to control context-aware filtering.  This function can also e.g. inject context information into
+  the GEM trace or log sync point information if desired.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/runtime/CtxFilter.html" title="ti.uia.runtime.CtxFilter">ti.uia.runtime.CtxFilter</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="is.Timestamp.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">isTimestampEnabled</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#is.Timestamp.Enabled">index URL</a></div>
+<p class="xdocHdrSummaryDcl">used to enable or disable logging the 64b local CPU timestamp
+  at the start of each event</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LogCtxChg_isTimestampEnabled</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="logger.Defined"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">loggerDefined</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#logger.Defined">index URL</a></div>
+<p class="xdocHdrSummaryDcl">set to true in the configuration script when a logger that implements ILoggerSnapshot is attached</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">LogCtxChg_loggerDefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="logger.Fxn2"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">loggerFxn2</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#logger.Fxn2">index URL</a></div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Logger.Fxn2" title="xdc.runtime.Types.LoggerFxn2">Types_LoggerFxn2</a>&nbsp;<span class="xdoc-id">LogCtxChg_loggerFxn2</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="logger.Fxn8"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">loggerFxn8</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#logger.Fxn8">index URL</a></div>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Logger.Fxn8" title="xdc.runtime.Types.LoggerFxn8">Types_LoggerFxn8</a>&nbsp;<span class="xdoc-id">LogCtxChg_loggerFxn8</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="logger.Obj"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">loggerObj</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#logger.Obj">index URL</a></div>
+<p class="xdocHdrSummaryDcl">handle of the logger that is to be used to log snapshot events</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">LogCtxChg_loggerObj</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="app"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">app</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#app">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogCtxChg_app</span>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newAppId</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/events/UIAAppCtx.html#ctx.Chg" title="ti.uia.events.UIAAppCtx.ctxChg">ti.uia.events.UIAAppCtx.ctxChg</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="channel"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">channel</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#channel">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogCtxChg_channel</span>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newChanId</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/events/UIAChanCtx.html#ctx.Chg" title="ti.uia.events.UIAChanCtx.ctxChg">ti.uia.events.UIAChanCtx.ctxChg</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="frame"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">frame</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#frame">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogCtxChg_frame</span>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newFrameId</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/events/UIAFrameCtx.html#ctx.Chg" title="ti.uia.events.UIAFrameCtx.ctxChg">ti.uia.events.UIAFrameCtx.ctxChg</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="hwi.Start"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">hwiStart</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#hwi.Start">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogCtxChg_hwiStart</span>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">hwiId</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/events/UIAHWICtx.html#start" title="ti.uia.events.UIAHWICtx.start">ti.uia.events.UIAHWICtx.start</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="hwi.Stop"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">hwiStop</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#hwi.Stop">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogCtxChg_hwiStop</span>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">hwiId</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/events/UIAHWICtx.html#stop" title="ti.uia.events.UIAHWICtx.stop">ti.uia.events.UIAHWICtx.stop</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="put.Ctx.Chg1"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">putCtxChg1</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#put.Ctx.Chg1">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Unconditionally put the specified <tt>Types</tt> event along with file name, line number, fmt string and 1 arg</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">LogCtxChg_putCtxChg1</span>(<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Event" title="xdc.runtime.Types.Event">Types_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">syncPtSeqNum</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">arg1</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">evt</span>
+<span class="xdocChildSum">&#151;&nbsp;the <tt>Types</tt> event to put into the log</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">mask</span>
+<span class="xdocChildSum">&#151;&nbsp;the diags mask of the event</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">syncPtSeqNum</span>
+<span class="xdocChildSum">&#151;&nbsp;the sync point sequence number to log with the event for correlation with trace</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">fmt</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that provides format specifiers for up to 6 additional parameters</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">arg1</span>
+<span class="xdocChildSum">&#151;&nbsp;the context change argument to log</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This method unconditionally puts the specified context change<tt><a class="xdoc-link" href="Types.html#.Event" title="Types.Event">Types.Event</a></tt>
+  <tt>evt</tt> into the log along with the fmt string, line and file name that the event was logged from,
+   and one parameter</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="put.Ctx.Chg2"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">putCtxChg2</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#put.Ctx.Chg2">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Unconditionally put the specified <tt>Types</tt> event along with file name, line number, fmt string and 2 args</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">LogCtxChg_putCtxChg2</span>(<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Event" title="xdc.runtime.Types.Event">Types_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">evt</span>
+<span class="xdocChildSum">&#151;&nbsp;the <tt>Types</tt> event to put into the log</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">mask</span>
+<span class="xdocChildSum">&#151;&nbsp;the diags mask of the event</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">a1</span>
+<span class="xdocChildSum">&#151;&nbsp;the first context change argument to log</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">a2</span>
+<span class="xdocChildSum">&#151;&nbsp;the second context change argument to log</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This method unconditionally puts the specified context change<tt><a class="xdoc-link" href="Types.html#.Event" title="Types.Event">Types.Event</a></tt>
+  <tt>evt</tt> into the log along with the fmt string, line and file name that the event was logged from,
+   and two parameters</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="put.Ctx.Chg8"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">putCtxChg8</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#put.Ctx.Chg8">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Unconditionally put the specified <tt>Types</tt> event along with file name, line number, fmt string and 4 args</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">UInt32</span>&nbsp;<span class="xdoc-id">LogCtxChg_putCtxChg8</span>(<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Event" title="xdc.runtime.Types.Event">Types_Event</a>&nbsp;<span class="xdoc-id">evt</span>, <a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>&nbsp;<span class="xdoc-id">mid</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a1</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a2</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a3</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a4</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a5</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a6</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a7</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">a8</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">ARGUMENTS</div>
+<div class="xdocChild"><span class="xdocChildId">evt</span>
+<span class="xdocChildSum">&#151;&nbsp;the <tt>Types</tt> event to put into the log</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">mask</span>
+<span class="xdocChildSum">&#151;&nbsp;the diags mask of the event</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">syncPtSeqNum</span>
+<span class="xdocChildSum">&#151;&nbsp;the sync point sequence number to log with the event for correlation with trace</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">fmt</span>
+<span class="xdocChildSum">&#151;&nbsp;a constant string that provides format specifiers for up to 6 additional parameters</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">a1</span>
+<span class="xdocChildSum">&#151;&nbsp;the first context change argument to log</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">a2</span>
+<span class="xdocChildSum">&#151;&nbsp;the second context change argument to log</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">a3</span>
+<span class="xdocChildSum">&#151;&nbsp;the third context change argument to log</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">a4</span>
+<span class="xdocChildSum">&#151;&nbsp;the fourth context change argument to log</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">a5</span>
+<span class="xdocChildSum">&#151;&nbsp;the fifth context change argument to log</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">a6</span>
+<span class="xdocChildSum">&#151;&nbsp;the sixth context change argument to log</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">a7</span>
+<span class="xdocChildSum">&#151;&nbsp;the seventh context change argument to log</span>
+</div>
+<div class="xdocChild"><span class="xdocChildId">a8</span>
+<span class="xdocChildSum">&#151;&nbsp;the eighth context change argument to log</span>
+</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">This method unconditionally puts the specified context change<tt><a class="xdoc-link" href="Types.html#.Event" title="Types.Event">Types.Event</a></tt>
+  <tt>evt</tt> into the log along with the fmt string, line and file name that the event was logged from,
+   and 4 parameters</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="swi.Start"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">swiStart</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#swi.Start">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogCtxChg_swiStart</span>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">swiId</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/events/UIASWICtx.html#start" title="ti.uia.events.UIASWICtx.start">ti.uia.events.UIASWICtx.start</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="swi.Stop"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">swiStop</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#swi.Stop">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogCtxChg_swiStop</span>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">swiId</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/events/UIASWICtx.html#stop" title="ti.uia.events.UIASWICtx.stop">ti.uia.events.UIASWICtx.stop</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="thread"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">thread</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#thread">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogCtxChg_thread</span>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newThreadId</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/events/UIAThreadCtx.html#ctx.Chg" title="ti.uia.events.UIAThreadCtx.ctxChg">ti.uia.events.UIAThreadCtx.ctxChg</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="thread.And.Func"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">threadAndFunc</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#thread.And.Func">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogCtxChg_threadAndFunc</span>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newThreadId</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">oldFunc</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newFunc</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/events/UIAThreadCtx.html#ctx.Chg.With.Func" title="ti.uia.events.UIAThreadCtx.ctxChgWithFunc">ti.uia.events.UIAThreadCtx.ctxChgWithFunc</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="user"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-id">LogCtxChg_</span><span class="xdoc-id">user</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#user">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Log a context change event that can be used to enable context-aware event
+  filtering, context-aware profiling, etc</p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><i>macro</i> <span class="xdoc-kw2">Void</span>&nbsp;<span class="xdoc-id">LogCtxChg_user</span>(<span class="xdoc-kw2">String</span>&nbsp;<span class="xdoc-id">fmt</span>, <span class="xdoc-kw2">IArg</span>&nbsp;<span class="xdoc-id">newCtxId</span>);
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/events/UIAUserCtx.html#ctx.Chg" title="ti.uia.events.UIAUserCtx.ctxChg">ti.uia.events.UIAUserCtx.ctxChg</a></div>
+<a class="xdocAnchor" id="module-wide_built-ins"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdocSynSum">Module-Wide Built-Ins</span></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#module-wide_built-ins">index URL</a></div>
+<p class="xdocHdrSummary"></p>
+<span id='targ-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
+<td class="xdocLabelRight">target-domain</td>
+</tr></table>
+<div class="xdocSynTdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a> <span class="xdoc-id">LogCtxChg_Module_id</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Get this module's unique id</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">LogCtxChg_Module_startupDone</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test if this module has completed startup</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><a class="xdoc-link" href="../../../xdc/runtime/IHeap.html#per-instance_object_types" title="xdc.runtime.IHeap.Handle">IHeap_Handle</a> <span class="xdoc-id">LogCtxChg_Module_heap</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;The heap from which this module allocates memory</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span> <span class="xdoc-id">LogCtxChg_Module_hasMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Test whether this module has a diagnostics mask</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">LogCtxChg_Module_getMask</span>();
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Returns the diagnostics mask for this module</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt></tt><tt></tt><span class="xdoc-kw2">Void</span> <span class="xdoc-id">LogCtxChg_Module_setMask</span>(<span class="xdoc-kw2">Bits16</span> <span class="xdoc-id">mask</span>);
+</div>
+<div class='xdocSynSum'><tt></tt><tt></tt>//&nbsp;Set the diagnostics mask for this module</div>
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight">sourced in <a class="xdocLink" href="../../../ti/uia/runtime/LogCtxChg-src.html"><span class="xdocLabelFile">ti/uia/runtime/LogCtxChg.xdc</span></a></td>
+</tr></table>
+<div class="xdocSynM">
+<div class="xdocSynCode">
+<tt></tt><span class="xdoc-kw1">var</span> LogCtxChg = <span class="xdoc-kw3">xdc.useModule</span>(<span class="xdoc-id">'ti.uia.runtime.LogCtxChg'</span>);
+</div>
+<div class='xdocSynHdr'>module-wide config parameters</div>
+
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metactx.Filter.Enabled">LogCtxChg.<span class="xdoc-id">ctxFilterEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;set to true in the configuration script in order to enable context filtering</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metais.Timestamp.Enabled">LogCtxChg.<span class="xdoc-id">isTimestampEnabled</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;used to enable or disable logging the 64b local CPU timestamp
+  at the start of each event</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metalogger.Defined">LogCtxChg.<span class="xdoc-id">loggerDefined</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;set to true in the configuration script when a logger that implements ILoggerSnapshot is attached</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metalogger.Fxn2">LogCtxChg.<span class="xdoc-id">loggerFxn2</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a> = <i><span class="xdoc-kw2">Void</span>(*)(<span class="xdoc-kw2">Ptr</span>,<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Log.Event" title="xdc.runtime.Types.LogEvent">Types.LogEvent</a>,<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types.ModuleId</a>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>)</i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metalogger.Fxn8">LogCtxChg.<span class="xdoc-id">loggerFxn8</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;</span></span></a> = <i><span class="xdoc-kw2">Void</span>(*)(<span class="xdoc-kw2">Ptr</span>,<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Log.Event" title="xdc.runtime.Types.LogEvent">Types.LogEvent</a>,<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types.ModuleId</a>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>)</i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#metalogger.Obj">LogCtxChg.<span class="xdoc-id">loggerObj</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;handle of the logger that is to be used to log snapshot events</span></span></a> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSynCode">
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#common$">LogCtxChg.<span class="xdoc-id">common$</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Common module configuration parameters</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+</div>
+<div id="xdocSep">
+</div>
+<div id="xdocMetaElems">
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metactx.Filter.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogCtxChg.</span><span class="xdoc-id">ctxFilterEnabled</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#ctx.Filter.Enabled">index URL</a></div>
+<p class="xdocHdrSummaryDcl">set to true in the configuration script in order to enable context filtering</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogCtxChg.<span class="xdoc-id">ctxFilterEnabled</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">User can implement a custom function that is called instead of ti_uia_runtime_CtxFilter_isCtxEnabled()
+  to control context-aware filtering.  This function can also e.g. inject context information into
+  the GEM trace or log sync point information if desired.</div>
+<span id="xdoc-sect-2"></span>
+<div class="xdocSect">SEE</div>
+<div class="xdocText"><a class="xdoc-link" href="../../../ti/uia/runtime/CtxFilter.html" title="ti.uia.runtime.CtxFilter">ti.uia.runtime.CtxFilter</a></div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#ctx.Filter.Enabled" title="LogCtxChg_ctxFilterEnabled">LogCtxChg_ctxFilterEnabled</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metais.Timestamp.Enabled"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogCtxChg.</span><span class="xdoc-id">isTimestampEnabled</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#is.Timestamp.Enabled">index URL</a></div>
+<p class="xdocHdrSummaryDcl">used to enable or disable logging the 64b local CPU timestamp
+  at the start of each event</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogCtxChg.<span class="xdoc-id">isTimestampEnabled</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#is.Timestamp.Enabled" title="LogCtxChg_isTimestampEnabled">LogCtxChg_isTimestampEnabled</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metalogger.Defined"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogCtxChg.</span><span class="xdoc-id">loggerDefined</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#logger.Defined">index URL</a></div>
+<p class="xdocHdrSummaryDcl">set to true in the configuration script when a logger that implements ILoggerSnapshot is attached</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogCtxChg.<span class="xdoc-id">loggerDefined</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">false</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#logger.Defined" title="LogCtxChg_loggerDefined">LogCtxChg_loggerDefined</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metalogger.Fxn2"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogCtxChg.</span><span class="xdoc-id">loggerFxn2</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#logger.Fxn2">index URL</a></div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogCtxChg.<span class="xdoc-id">loggerFxn2</span> = <i><span class="xdoc-kw2">Void</span>(*)(<span class="xdoc-kw2">Ptr</span>,<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Log.Event" title="xdc.runtime.Types.LogEvent">Types.LogEvent</a>,<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types.ModuleId</a>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>)</i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#logger.Fxn2" title="LogCtxChg_loggerFxn2">LogCtxChg_loggerFxn2</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metalogger.Fxn8"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogCtxChg.</span><span class="xdoc-id">loggerFxn8</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#logger.Fxn8">index URL</a></div>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogCtxChg.<span class="xdoc-id">loggerFxn8</span> = <i><span class="xdoc-kw2">Void</span>(*)(<span class="xdoc-kw2">Ptr</span>,<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Log.Event" title="xdc.runtime.Types.LogEvent">Types.LogEvent</a>,<a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types.ModuleId</a>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>)</i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#logger.Fxn8" title="LogCtxChg_loggerFxn8">LogCtxChg_loggerFxn8</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="metalogger.Obj"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogCtxChg.</span><span class="xdoc-id">loggerObj</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#logger.Obj">index URL</a></div>
+<p class="xdocHdrSummaryDcl">handle of the logger that is to be used to log snapshot events</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogCtxChg.<span class="xdoc-id">loggerObj</span> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<div class="xdocSect">C SYNOPSIS</div>
+<div class="xdocText"><a class="xdoc-link" href="#logger.Obj" title="LogCtxChg_loggerObj">LogCtxChg_loggerObj</a></div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<a class="xdocAnchor" id="common$"></a>
+<table class="xdocHdr"><tr>
+<td class="xdocHdrTitle"><span class="xdoc-kw1">metaonly </span><span class="xdoc-kw1">config</span> <span class="xdoc-id">LogCtxChg.</span><span class="xdoc-id">common$</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
+<td class="xdocHdrArrow">
+<a class="xdocHdrLink" href="../../../ti/uia/runtime/LogCtxChg.html" title="module LogCtxChg"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
+</table>
+<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/uia/runtime/LogCtxChg.html#common$">index URL</a></div>
+<p class="xdocHdrSummaryDcl">Common module configuration parameters</p>
+<span id='meta-synop'></span>
+<table class="xdocLabel"><tr>
+<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
+<td class="xdocLabelRight"></td>
+</tr></table>
+<div class="xdocSynMdcl">
+<div class="xdocSynCode">
+<tt></tt><tt></tt>LogCtxChg.<span class="xdoc-id">common$</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Types.html#.Common$" title="xdc.runtime.Types.Common$">Types.Common$</a></i> <span class="xdoc-kw2">undefined</span>;
+</div>
+</div>
+<div class="xdocSynSpacer">&nbsp;</div>
+<span id="xdoc-sect-1"></span>
+<div class="xdocSect">DETAILS</div>
+<div class="xdocText">All modules have this configuration parameter.  Its name
+  contains the '$' character to ensure it does not conflict with
+  configuration parameters declared by the module.  This allows
+  new configuration parameters to be added in the future without
+  any chance of breaking existing modules.</div>
+</div>
+<div id="xdocDate">generated on Sat, 17 Nov 2018 00:29:15 GMT</div>
+</div></div></body>
+</html>

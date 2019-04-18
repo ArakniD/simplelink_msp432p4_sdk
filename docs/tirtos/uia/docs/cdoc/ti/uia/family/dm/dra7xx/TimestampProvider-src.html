@@ -1,0 +1,809 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>module ti.uia.family.dm.dra7xx.TimestampProvider</title>
+<meta name="googlebot" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="../../../../../src.css"/>
+</head>
+<body>
+<pre class=src>
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> * Copyright (c) 2014-2016 Texas Instruments Incorporated - http://www.ti.com
+</span>     3    <span class="comment"> * All rights reserved.
+</span>     4    <span class="comment"> *
+</span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>     6    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>     7    <span class="comment"> * are met:
+</span>     8    <span class="comment"> *
+</span>     9    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    10    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    11    <span class="comment"> *
+</span>    12    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    13    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    14    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    15    <span class="comment"> *
+</span>    16    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    17    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    18    <span class="comment"> *    from this software without specific prior written permission.
+</span>    19    <span class="comment"> *
+</span>    20    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    21    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    22    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    23    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    24    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    25    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    26    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    27    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    28    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    29    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    30    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    31    <span class="comment"> */</span>
+    32    
+    33    <span class="comment">/*
+</span>    34    <span class="comment"> *  ======== TimestampProvider.xdc ========
+</span>    35    <span class="comment"> */</span>
+    36    
+    37    <span class=key>package</span> ti.uia.family.dm.dra7xx;
+    38    
+    39    import ti.uia.loggers.LoggerStopMode;
+    40    import xdc.rov.ViewInfo;
+    41    import xdc.runtime.Assert;
+    42    import xdc.runtime.Diags;
+    43    import xdc.runtime.Log;
+    44    import xdc.runtime.Types;
+    45    
+    46    <span class="xdoc">/*!
+</span>    47    <span class="xdoc"> *  ======== TimestampProvider ========
+</span>    48    <span class="xdoc"> *  System-wide timestamp provider
+</span>    49    <span class="xdoc"> *
+</span>    50    <span class="xdoc"> *  This timestamp provider is used by UIA to provide a common time
+</span>    51    <span class="xdoc"> *  base for all processors. This allows System Analyzer to correlate
+</span>    52    <span class="xdoc"> *  the log events from all processors to a common time base. Event
+</span>    53    <span class="xdoc"> *  correlation is required for the multi-core execution graph. Use
+</span>    54    <span class="xdoc"> *  this module as the global timestamp proxy for the
+</span>    55    <span class="xdoc"> *  {<b>@link</b> ti.uia.runtime.LogSync} module.
+</span>    56    <span class="xdoc"> *
+</span>    57    <span class="xdoc"> *  This module requires the use of a timer to provide a common system
+</span>    58    <span class="xdoc"> *  tick. The timer needs to have access to the 32 KHz clock. Not all
+</span>    59    <span class="xdoc"> *  timers are suitable for use by this module. See the {<b>@link</b> #timerId}
+</span>    60    <span class="xdoc"> *  configuration parameter for a list of recommended timers. Exactly one
+</span>    61    <span class="xdoc"> *  processor must be the owner of the timer. See {<b>@link</b> #owner} for details.
+</span>    62    <span class="xdoc"> *
+</span>    63    <span class="xdoc"> *  Ledgers are used internally by this module to keep track of the
+</span>    64    <span class="xdoc"> *  other processors in the system. The ledgers are shared across
+</span>    65    <span class="xdoc"> *  processor boundaries. You must provide the base address of a ledger
+</span>    66    <span class="xdoc"> *  so that all processors know where to find it. See the {<b>@link</b> #ledgers}
+</span>    67    <span class="xdoc"> *  configuration parameter for details. There are two types of ledgers:
+</span>    68    <span class="xdoc"> *  a group ledger, and a private ledger. One group ledger is mandatory,
+</span>    69    <span class="xdoc"> *  private ledgers are typically used by the EVE processors. Ledgers are
+</span>    70    <span class="xdoc"> *  defined by the role used to access them. See the {<b>@link</b> #Role}
+</span>    71    <span class="xdoc"> *  enumeration for details.
+</span>    72    <span class="xdoc"> *
+</span>    73    <span class="xdoc"> *  <b>@a(Configuration Example)</b>
+</span>    74    <span class="xdoc"> *
+</span>    75    <span class="xdoc"> *  This is a four processor example: DSP1 DSP2 EVE1 EVE2. In this example,
+</span>    76    <span class="xdoc"> *  DSP1 is to be the owner of the timer. Three ledgers will be used, one
+</span>    77    <span class="xdoc"> *  group ledger and two private ledgers. The group ledger is used by DSP1
+</span>    78    <span class="xdoc"> *  and DSP2. One private ledger is used by DSP1 and EVE1. The other private
+</span>    79    <span class="xdoc"> *  ledger is used by DSP2 and EVE2.
+</span>    80    <span class="xdoc"> *
+</span>    81    <span class="xdoc"> *  Add the following to your DSP1 configuration script.
+</span>    82    <span class="xdoc"> *
+</span>    83    <span class="xdoc"> *  <b>@p(code)</b>
+</span>    84    <span class="xdoc"> *  // add Timer3 (id=2) to SYS/BIOS available mask //
+</span>    85    <span class="xdoc"> *  var TimerSupport = xdc.useModule('ti.sysbios.family.shared.vayu.TimerSupport');
+</span>    86    <span class="xdoc"> *  TimerSupport.availMask |= (0x1 &lt;&lt; 2);
+</span>    87    <span class="xdoc"> *
+</span>    88    <span class="xdoc"> *  // configure timestamp proxy //
+</span>    89    <span class="xdoc"> *  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+</span>    90    <span class="xdoc"> *  TimestampProvider.timerId = 2;
+</span>    91    <span class="xdoc"> *  TimestampProvider.owner = true;
+</span>    92    <span class="xdoc"> *  TimestampProvider.eventId = 65;
+</span>    93    <span class="xdoc"> *  TimestampProvider.cpuIntrNum = 13;
+</span>    94    <span class="xdoc"> *  TimestampProvider.syncInterval = 33;
+</span>    95    <span class="xdoc"> *
+</span>    96    <span class="xdoc"> *  // group ledger
+</span>    97    <span class="xdoc"> *  TimestampProvider.ledgers.$add(
+</span>    98    <span class="xdoc"> *      new TimestampProvider.Ledger({
+</span>    99    <span class="xdoc"> *          role: TimestampProvider.Ledger_PEER,
+</span>   100    <span class="xdoc"> *          base: 0x40500000,
+</span>   101    <span class="xdoc"> *          size: 2, // DSP1 DSP2
+</span>   102    <span class="xdoc"> *          index: 0 // DSP1
+</span>   103    <span class="xdoc"> *      })
+</span>   104    <span class="xdoc"> *  );
+</span>   105    <span class="xdoc"> *
+</span>   106    <span class="xdoc"> *  // eve1 ledger
+</span>   107    <span class="xdoc"> *  TimestampProvider.ledgers.$add(
+</span>   108    <span class="xdoc"> *      new TimestampProvider.Ledger({
+</span>   109    <span class="xdoc"> *          role: TimestampProvider.Role_USER,
+</span>   110    <span class="xdoc"> *          base: 0x42020000
+</span>   111    <span class="xdoc"> *      })
+</span>   112    <span class="xdoc"> *  );
+</span>   113    <span class="xdoc"> *
+</span>   114    <span class="xdoc"> *  // enable event correlation
+</span>   115    <span class="xdoc"> *  var LogSync = xdc.useModule('ti.uia.runtime.LogSync');
+</span>   116    <span class="xdoc"> *  LogSync.GlobalTimestampProxy = TimestampProvider;
+</span>   117    <span class="xdoc"> *  LogSync.enableEventCorrelationForJTAG = true;
+</span>   118    <span class="xdoc"> *  <b>@p</b>
+</span>   119    <span class="xdoc"> *  Add the following to your DSP2 configuration script.
+</span>   120    <span class="xdoc"> *
+</span>   121    <span class="xdoc"> *  <b>@p(code)</b>
+</span>   122    <span class="xdoc"> *  // configure timestamp proxy for event correlation
+</span>   123    <span class="xdoc"> *  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+</span>   124    <span class="xdoc"> *
+</span>   125    <span class="xdoc"> *  TimestampProvider.timerId = 2;
+</span>   126    <span class="xdoc"> *  TimestampProvider.owner = false; // DSP1 is owner
+</span>   127    <span class="xdoc"> *  TimestampProvider.eventId = 65;
+</span>   128    <span class="xdoc"> *  TimestampProvider.cpuIntrNum = 13;
+</span>   129    <span class="xdoc"> *  TimestampProvider.syncInterval = 33;
+</span>   130    <span class="xdoc"> *
+</span>   131    <span class="xdoc"> *  // group ledger
+</span>   132    <span class="xdoc"> *  TimestampProvider.ledgers.$add(
+</span>   133    <span class="xdoc"> *      new TimestampProvider.Ledger({
+</span>   134    <span class="xdoc"> *          role: TimestampProvider.Role_PEER,
+</span>   135    <span class="xdoc"> *          base: 0x40500000,
+</span>   136    <span class="xdoc"> *          size: 2, // DSP1 DSP2
+</span>   137    <span class="xdoc"> *          index: 1 // DSP2
+</span>   138    <span class="xdoc"> *      })
+</span>   139    <span class="xdoc"> *  );
+</span>   140    <span class="xdoc"> *
+</span>   141    <span class="xdoc"> *  // eve2 ledger
+</span>   142    <span class="xdoc"> *  TimestampProvider.ledgers.$add(
+</span>   143    <span class="xdoc"> *      new TimestampProvider.Ledger({
+</span>   144    <span class="xdoc"> *          role: TimestampProvider.Role_USER,
+</span>   145    <span class="xdoc"> *          base: 0x42120000
+</span>   146    <span class="xdoc"> *      })
+</span>   147    <span class="xdoc"> *  );
+</span>   148    <span class="xdoc"> *
+</span>   149    <span class="xdoc"> *  // enable event correlation
+</span>   150    <span class="xdoc"> *  var LogSync = xdc.useModule('ti.uia.runtime.LogSync');
+</span>   151    <span class="xdoc"> *  LogSync.GlobalTimestampProxy = TimestampProvider;
+</span>   152    <span class="xdoc"> *  LogSync.enableEventCorrelationForJTAG = true;
+</span>   153    <span class="xdoc"> *  <b>@p</b>
+</span>   154    <span class="xdoc"> *  Add the following to your EVE1 configuration script.
+</span>   155    <span class="xdoc"> *
+</span>   156    <span class="xdoc"> *  <b>@p(code)</b>
+</span>   157    <span class="xdoc"> *  // configure timestamp proxy for event correlation
+</span>   158    <span class="xdoc"> *  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+</span>   159    <span class="xdoc"> *
+</span>   160    <span class="xdoc"> *  TimestampProvider.timerId = 2;
+</span>   161    <span class="xdoc"> *  TimestampProvider.owner = false; // DSP1 is owner
+</span>   162    <span class="xdoc"> *  TimestampProvider.eventId = 35;
+</span>   163    <span class="xdoc"> *  TimestampProvider.cpuIntrNum = 9;
+</span>   164    <span class="xdoc"> *  TimestampProvider.syncInterval = 33;
+</span>   165    <span class="xdoc"> *
+</span>   166    <span class="xdoc"> *  // use private ledger, role = owner
+</span>   167    <span class="xdoc"> *  TimestampProvider.ledgers.$add(
+</span>   168    <span class="xdoc"> *      new TimestampProvider.Ledger({
+</span>   169    <span class="xdoc"> *          role: TimestampProvider.Role_OWNER,
+</span>   170    <span class="xdoc"> *          base: 0x40020000
+</span>   171    <span class="xdoc"> *      })
+</span>   172    <span class="xdoc"> *  );
+</span>   173    <span class="xdoc"> *
+</span>   174    <span class="xdoc"> *  // enable event correlation
+</span>   175    <span class="xdoc"> *  var LogSync = xdc.useModule('ti.uia.runtime.LogSync');
+</span>   176    <span class="xdoc"> *  LogSync.GlobalTimestampProxy = TimestampProvider;
+</span>   177    <span class="xdoc"> *  LogSync.enableEventCorrelationForJTAG = true;
+</span>   178    <span class="xdoc"> *  <b>@p</b>
+</span>   179    <span class="xdoc"> *  Add the following to your EVE2 configuration script.
+</span>   180    <span class="xdoc"> *
+</span>   181    <span class="xdoc"> *  <b>@p(code)</b>
+</span>   182    <span class="xdoc"> *  // configure timestamp proxy for event correlation
+</span>   183    <span class="xdoc"> *  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+</span>   184    <span class="xdoc"> *
+</span>   185    <span class="xdoc"> *  TimestampProvider.timerId = 2;
+</span>   186    <span class="xdoc"> *  TimestampProvider.owner = false; // DSP1 is owner
+</span>   187    <span class="xdoc"> *  TimestampProvider.eventId = 35;
+</span>   188    <span class="xdoc"> *  TimestampProvider.cpuIntrNum = 9;
+</span>   189    <span class="xdoc"> *  TimestampProvider.syncInterval = 33;
+</span>   190    <span class="xdoc"> *
+</span>   191    <span class="xdoc"> *  // use private ledger, role = owner
+</span>   192    <span class="xdoc"> *  TimestampProvider.ledgers.$add(
+</span>   193    <span class="xdoc"> *      new TimestampProvider.Ledger({
+</span>   194    <span class="xdoc"> *          role: TimestampProvider.Role_OWNER,
+</span>   195    <span class="xdoc"> *          base: 0x40020000
+</span>   196    <span class="xdoc"> *      })
+</span>   197    <span class="xdoc"> *  );
+</span>   198    <span class="xdoc"> *
+</span>   199    <span class="xdoc"> *  // enable event correlation
+</span>   200    <span class="xdoc"> *  var LogSync = xdc.useModule('ti.uia.runtime.LogSync');
+</span>   201    <span class="xdoc"> *  LogSync.GlobalTimestampProxy = TimestampProvider;
+</span>   202    <span class="xdoc"> *  LogSync.enableEventCorrelationForJTAG = true;
+</span>   203    <span class="xdoc"> *  <b>@p</b>
+</span>   204    <span class="xdoc"> *
+</span>   205    <span class="xdoc"> *  <b>@a(CPU Frequency Configuration)</b>
+</span>   206    <span class="xdoc"> *
+</span>   207    <span class="xdoc"> *  In order for event correlation to be accurate, the cpu frequency must
+</span>   208    <span class="xdoc"> *  be set as accurately as possible. This module can be used to determine
+</span>   209    <span class="xdoc"> *  you actual cpu frequency.
+</span>   210    <span class="xdoc"> *
+</span>   211    <span class="xdoc"> *  Enable the timestamp sample buffer with the {<b>@link</b> #estCpuFreq}
+</span>   212    <span class="xdoc"> *  configuration parameter. Run your program continuously for 30 seconds.
+</span>   213    <span class="xdoc"> *  Use ROV to view the cpu frequency in the TimestampProvider module view.
+</span>   214    <span class="xdoc"> *
+</span>   215    <span class="xdoc"> *  Once you have determined your cpu frequency, use that value to configure
+</span>   216    <span class="xdoc"> *  the SYS/BIOS cpu frequency.
+</span>   217    <span class="xdoc"> *
+</span>   218    <span class="xdoc"> *  <b>@p(code)</b>
+</span>   219    <span class="xdoc"> *  var BIOS = xdc.useModule('ti.sysbios.BIOS');
+</span>   220    <span class="xdoc"> *  BIOS.cpuFreq = { hi: 0, lo: 609024002 };
+</span>   221    <span class="xdoc"> *  <b>@p</b>
+</span>   222    <span class="xdoc"> *
+</span>   223    <span class="xdoc"> *  Hint: disable the {<b>@link</b> #estCpuFreq} when done to reduce your data
+</span>   224    <span class="xdoc"> *  footprint.
+</span>   225    <span class="xdoc"> */</span>
+   226    
+   227    @ModuleStartup
+   228    @Template(<span class="string">"./TimestampProvider.xdt"</span>)
+   229    
+   230    <span class=key>module</span> TimestampProvider <span class=key>inherits</span> ti.uia.runtime.IUIATimestampProvider
+   231    {
+   232        <span class="xdoc">/*!
+</span>   233    <span class="xdoc">     *  ======== timerId ========
+</span>   234    <span class="xdoc">     *  Identify which timer to use as the timestamp clock source
+</span>   235    <span class="xdoc">     *
+</span>   236    <span class="xdoc">     *  The timers are named Timer1-Timer16; their corresponding ids
+</span>   237    <span class="xdoc">     *  are 0-15 (e.g. for Timer3, use id=2). Not all timers are
+</span>   238    <span class="xdoc">     *  appropriate clock sources for this module. Use one of the
+</span>   239    <span class="xdoc">     *  following timers:
+</span>   240    <span class="xdoc">     *
+</span>   241    <span class="xdoc">     *  <b>@p(html)</b>
+</span>   242    <span class="xdoc">     *  &lt;table&gt;
+</span>   243    <span class="xdoc">     *    &lt;style scoped&gt;th,td {padding:4px}&lt;/style&gt;
+</span>   244    <span class="xdoc">     *    &lt;tr style="text-align:left; background-color:LightGray"&gt;
+</span>   245    <span class="xdoc">     *      &lt;th&gt;Timer Name&lt;/th&gt;
+</span>   246    <span class="xdoc">     *      &lt;th&gt;Description&lt;/th&gt;
+</span>   247    <span class="xdoc">     *    &lt;/tr&gt;
+</span>   248    <span class="xdoc">     *    &lt;tr&gt;
+</span>   249    <span class="xdoc">     *      &lt;td&gt;Timer[3,4,9,11,13,14,15,16]&lt;/td&gt;
+</span>   250    <span class="xdoc">     *      &lt;td&gt;PD_L4PER power domain&lt;/td&gt;
+</span>   251    <span class="xdoc">     *    &lt;/tr&gt;
+</span>   252    <span class="xdoc">     *    &lt;tr&gt;
+</span>   253    <span class="xdoc">     *      &lt;td&gt;Timer[5,6,7,8]&lt;/td&gt;
+</span>   254    <span class="xdoc">     *      &lt;td&gt;PD_IPU power domain&lt;/td&gt;
+</span>   255    <span class="xdoc">     *    &lt;/tr&gt;
+</span>   256    <span class="xdoc">     *  &lt;/table&gt;
+</span>   257    <span class="xdoc">     *  <b>@p</b>
+</span>   258    <span class="xdoc">     *
+</span>   259    <span class="xdoc">     *  All executables must use the same timer in order to support
+</span>   260    <span class="xdoc">     *  event correlation in System Analyzer.
+</span>   261    <span class="xdoc">     */</span>
+   262        <span class=key>config</span> UInt timerId;
+   263    
+   264        <span class="xdoc">/*!
+</span>   265    <span class="xdoc">     *  ======== owner ========
+</span>   266    <span class="xdoc">     *  Determine ownership of the timer
+</span>   267    <span class="xdoc">     *
+</span>   268    <span class="xdoc">     *  When set to true, the timer will be enabled and configured
+</span>   269    <span class="xdoc">     *  during the boot phase. The owner should run before any other
+</span>   270    <span class="xdoc">     *  processor using this same timer. Only one processor should
+</span>   271    <span class="xdoc">     *  be configured as the owner of the timer. This processor will
+</span>   272    <span class="xdoc">     *  also listen for the timer interrupt and acknowledge it.
+</span>   273    <span class="xdoc">     *
+</span>   274    <span class="xdoc">     *  When set to false, it is expected that another processor will
+</span>   275    <span class="xdoc">     *  enable and configure the timer. This processor will simply
+</span>   276    <span class="xdoc">     *  listen for the timer interrupt and acknowledge it.
+</span>   277    <span class="xdoc">     *
+</span>   278    <span class="xdoc">     *  Note: The ARP32 does not support timer ownership. This config
+</span>   279    <span class="xdoc">     *  param must always be false when running on the ARP32.
+</span>   280    <span class="xdoc">     */</span>
+   281        <span class=key>config</span> Bool owner;
+   282    
+   283        <span class="xdoc">/*!
+</span>   284    <span class="xdoc">     *  ======== eventId ========
+</span>   285    <span class="xdoc">     *  Specify interrupt controller event to receive timer interrupt
+</span>   286    <span class="xdoc">     *
+</span>   287    <span class="xdoc">     *  The eventId specifies which interrupt controller event should
+</span>   288    <span class="xdoc">     *  receive the timer interrupt. This value is used to route the
+</span>   289    <span class="xdoc">     *  timer interrupt through the Interrupt Crossbar to the interrupt
+</span>   290    <span class="xdoc">     *  controller event. It is also used to route the interrupt event
+</span>   291    <span class="xdoc">     *  to the cpu interrupt specified in {<b>@link</b> #cpuIntrNum}.
+</span>   292    <span class="xdoc">     *
+</span>   293    <span class="xdoc">     *  The following table indicates possible event ids, but this is
+</span>   294    <span class="xdoc">     *  device specific. Please consult your manual.
+</span>   295    <span class="xdoc">     *
+</span>   296    <span class="xdoc">     *  <b>@p(html)</b>
+</span>   297    <span class="xdoc">     *  &lt;table&gt;
+</span>   298    <span class="xdoc">     *    &lt;style scoped&gt;th,td {padding:4px}&lt;/style&gt;
+</span>   299    <span class="xdoc">     *    &lt;tr style="text-align:left; background-color:LightGray"&gt;
+</span>   300    <span class="xdoc">     *      &lt;th&gt;Processor&lt;/th&gt;
+</span>   301    <span class="xdoc">     *      &lt;th&gt;Event ID&lt;/th&gt;
+</span>   302    <span class="xdoc">     *    &lt;/tr&gt;
+</span>   303    <span class="xdoc">     *    &lt;tr&gt;
+</span>   304    <span class="xdoc">     *      &lt;td&gt;DSP&lt;/td&gt;
+</span>   305    <span class="xdoc">     *      &lt;td&gt;63-78, 81&lt;/td&gt;
+</span>   306    <span class="xdoc">     *    &lt;/tr&gt;
+</span>   307    <span class="xdoc">     *    &lt;tr&gt;
+</span>   308    <span class="xdoc">     *      &lt;td&gt;EVE&lt;/td&gt;
+</span>   309    <span class="xdoc">     *      &lt;td&gt;32-39&lt;/td&gt;
+</span>   310    <span class="xdoc">     *    &lt;/tr&gt;
+</span>   311    <span class="xdoc">     *  &lt;/table&gt;
+</span>   312    <span class="xdoc">     *  <b>@p</b>
+</span>   313    <span class="xdoc">     */</span>
+   314        <span class=key>config</span> Int eventId;
+   315    
+   316        <span class="xdoc">/*!
+</span>   317    <span class="xdoc">     *  ======== cpuIntrNum ========
+</span>   318    <span class="xdoc">     *  Specify cpu interrupt to receive timer interrupt
+</span>   319    <span class="xdoc">     *
+</span>   320    <span class="xdoc">     *  For accurate event correlation in System Analyzer, it is
+</span>   321    <span class="xdoc">     *  recommended not to share this interrupt.
+</span>   322    <span class="xdoc">     *
+</span>   323    <span class="xdoc">     *  The following table indicates possible interrupt numbers, but
+</span>   324    <span class="xdoc">     *  this is device specific. Please consult your manual.
+</span>   325    <span class="xdoc">     *
+</span>   326    <span class="xdoc">     *  <b>@p(html)</b>
+</span>   327    <span class="xdoc">     *  &lt;table&gt;
+</span>   328    <span class="xdoc">     *    &lt;style scoped&gt;th,td {padding:4px}&lt;/style&gt;
+</span>   329    <span class="xdoc">     *    &lt;tr style="text-align:left; background-color:LightGray"&gt;
+</span>   330    <span class="xdoc">     *      &lt;th&gt;Processor&lt;/th&gt;
+</span>   331    <span class="xdoc">     *      &lt;th&gt;Timer ID&lt;/th&gt;
+</span>   332    <span class="xdoc">     *    &lt;/tr&gt;
+</span>   333    <span class="xdoc">     *    &lt;tr&gt;
+</span>   334    <span class="xdoc">     *      &lt;td&gt;DSP&lt;/td&gt;
+</span>   335    <span class="xdoc">     *      &lt;td&gt;4-15&lt;/td&gt;
+</span>   336    <span class="xdoc">     *    &lt;/tr&gt;
+</span>   337    <span class="xdoc">     *    &lt;tr&gt;
+</span>   338    <span class="xdoc">     *      &lt;td&gt;EVE&lt;/td&gt;
+</span>   339    <span class="xdoc">     *      &lt;td&gt;8-11&lt;/td&gt;
+</span>   340    <span class="xdoc">     *    &lt;/tr&gt;
+</span>   341    <span class="xdoc">     *  &lt;/table&gt;
+</span>   342    <span class="xdoc">     *  <b>@p</b>
+</span>   343    <span class="xdoc">     */</span>
+   344        <span class=key>config</span> Int cpuIntrNum;
+   345    
+   346        <span class="xdoc">/*!
+</span>   347    <span class="xdoc">     *  ======== syncInterval ========
+</span>   348    <span class="xdoc">     *  Specify the interval for logging sync events
+</span>   349    <span class="xdoc">     *
+</span>   350    <span class="xdoc">     *  UIA Sync events are used by System Analyzer to correlate the
+</span>   351    <span class="xdoc">     *  events from each processor onto a global time base. Only the
+</span>   352    <span class="xdoc">     *  last sync event is actually used.
+</span>   353    <span class="xdoc">     *
+</span>   354    <span class="xdoc">     *  This configuration parameter specifies how frequently the sync
+</span>   355    <span class="xdoc">     *  events should be raised. In order to maintain accurate event
+</span>   356    <span class="xdoc">     *  correlation, you should raise one sync event within each log
+</span>   357    <span class="xdoc">     *  data window. For example, if your log buffer contains 100 ms
+</span>   358    <span class="xdoc">     *  of data, then you should raise a sync event each 0.1 seconds
+</span>   359    <span class="xdoc">     *  (100 ms = 0.1 sec).
+</span>   360    <span class="xdoc">     *
+</span>   361    <span class="xdoc">     *  Each syncInterval is 0.001953125 seconds. Divide the data window
+</span>   362    <span class="xdoc">     *  by this value to get the syncInterval (round down).
+</span>   363    <span class="xdoc">     *
+</span>   364    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   365    <span class="xdoc">     *      0.1 sec / 0.001953125 sec = 51.2
+</span>   366    <span class="xdoc">     *
+</span>   367    <span class="xdoc">     *      TimestampProvider.syncInterval = 51;
+</span>   368    <span class="xdoc">     *  <b>@p</b>
+</span>   369    <span class="xdoc">     *
+</span>   370    <span class="xdoc">     *  When using multiple logger instances, the data window for each
+</span>   371    <span class="xdoc">     *  instance is probably different. Use System Analyzer to measure
+</span>   372    <span class="xdoc">     *  the data overlap of your region of interest. Use the length of
+</span>   373    <span class="xdoc">     *  this region to calculate the syncInterval.
+</span>   374    <span class="xdoc">     *
+</span>   375    <span class="xdoc">     *  The syncInterval should be as large as possible to reduce logging
+</span>   376    <span class="xdoc">     *  overhead, yet small enough to yield accurate event correlation.
+</span>   377    <span class="xdoc">     */</span>
+   378        <span class=key>config</span> UInt syncInterval = 50;
+   379    
+   380        <span class="xdoc">/*!
+</span>   381    <span class="xdoc">     *  ======== estCpuFreq ========
+</span>   382    <span class="xdoc">     *  Estimate the cpu frequency using timestamp sample buffer
+</span>   383    <span class="xdoc">     *
+</span>   384    <span class="xdoc">     *  When enabled, this module will save timestamps in the sample
+</span>   385    <span class="xdoc">     *  buffer which are then used to calculate an estimate of the
+</span>   386    <span class="xdoc">     *  cpu frequency. Run the processor continuously for 30 seconds
+</span>   387    <span class="xdoc">     *  to ensure the sample buffer is full. Open ROV and select the
+</span>   388    <span class="xdoc">     *  Module tab. The calculated cpu frequency is displayed in the
+</span>   389    <span class="xdoc">     *  estCpuFreq column. The timestamp samples are displayed in the
+</span>   390    <span class="xdoc">     *  Sample Buffer tab.
+</span>   391    <span class="xdoc">     *
+</span>   392    <span class="xdoc">     *  Set this config param to false to reduce the data footprint in
+</span>   393    <span class="xdoc">     *  your released product.
+</span>   394    <span class="xdoc">     */</span>
+   395        <span class=key>config</span> Bool estCpuFreq = <span class=key>false</span>;
+   396    
+   397        <span class="xdoc">/*!
+</span>   398    <span class="xdoc">     *  ======== Role ========
+</span>   399    <span class="xdoc">     *  Define roles for each ledger instance
+</span>   400    <span class="xdoc">     *
+</span>   401    <span class="xdoc">     *  There may be multiple ledger instances in a system. There are
+</span>   402    <span class="xdoc">     *  two types of ledgers: 1. a group ledger, and 2. a private ledger.
+</span>   403    <span class="xdoc">     *  A group ledger may have two or more users. A private ledger has
+</span>   404    <span class="xdoc">     *  exactly two users. When a processor creates a private ledger,
+</span>   405    <span class="xdoc">     *  that processor may not create any additional ledgers of any type.
+</span>   406    <span class="xdoc">     *  A private ledger is typicaly used by the ARP32 processor.
+</span>   407    <span class="xdoc">     *
+</span>   408    <span class="xdoc">     *  The ledger type is identified by the role used to access it.
+</span>   409    <span class="xdoc">     *
+</span>   410    <span class="xdoc">     *  <b>@p(html)</b>
+</span>   411    <span class="xdoc">     *  &lt;div class="xdocText"&gt;&lt;dl&gt;
+</span>   412    <span class="xdoc">     *  &lt;dt&gt;Role_PEER&lt;/dt&gt;
+</span>   413    <span class="xdoc">     *      &lt;dd&gt;
+</span>   414    <span class="xdoc">     *      This role is used to access a group ledger instance. This
+</span>   415    <span class="xdoc">     *      ledger instance is used by multiple processors. The ledger
+</span>   416    <span class="xdoc">     *      is an array of GroupLedgerElem elements. Each processor
+</span>   417    <span class="xdoc">     *      uses one entry in the ledger. The size of the ledger must
+</span>   418    <span class="xdoc">     *      equal the number of users.&lt;br&gt;&lt;br&gt;
+</span>   419    <span class="xdoc">     *
+</span>   420    <span class="xdoc">     *      All users of this ledger are peers. The ledger is not created
+</span>   421    <span class="xdoc">     *      by any processor, it must be defined in the memory map.&lt;br&gt;&lt;br&gt;
+</span>   422    <span class="xdoc">     *      &lt;/dd&gt;
+</span>   423    <span class="xdoc">     *
+</span>   424    <span class="xdoc">     *  &lt;dt&gt;Role_OWNER&lt;/dt&gt;
+</span>   425    <span class="xdoc">     *      &lt;dd&gt;
+</span>   426    <span class="xdoc">     *      This role is used to access a private ledger. This ledger
+</span>   427    <span class="xdoc">     *      is used by only two processors: the local processor (the
+</span>   428    <span class="xdoc">     *      owner) and a remote processor (the user). The ledger is
+</span>   429    <span class="xdoc">     *      allocated in the local processor's memory map. This same
+</span>   430    <span class="xdoc">     *      ledger must be defined by a Role_USER role on one other
+</span>   431    <span class="xdoc">     *      processor.&lt;br&gt;&lt;br&gt;
+</span>   432    <span class="xdoc">     *      &lt;/dd&gt;
+</span>   433    <span class="xdoc">     *
+</span>   434    <span class="xdoc">     *  &lt;dt&gt;Role_USER&lt;/dt&gt;
+</span>   435    <span class="xdoc">     *      &lt;dd&gt;
+</span>   436    <span class="xdoc">     *      This role is used to access a private ledger.  This role is the
+</span>   437    <span class="xdoc">     *      complement of the Role_OWNER role. When using a private ledger,
+</span>   438    <span class="xdoc">     *      the actual ledger is created by the other processor.&lt;br&gt;&lt;br&gt;
+</span>   439    <span class="xdoc">     *
+</span>   440    <span class="xdoc">     *      A processor using the Role_USER role, will access the ledger with
+</span>   441    <span class="xdoc">     *      the given address, but it does not allocate the ledger.&lt;br&gt;&lt;br&gt;
+</span>   442    <span class="xdoc">     *
+</span>   443    <span class="xdoc">     *      It is possible to access multiple private ledgers from the
+</span>   444    <span class="xdoc">     *      same processor. Each Role_USER corresponds to a private ledger
+</span>   445    <span class="xdoc">     *      created by another processor.&lt;br&gt;&lt;br&gt;
+</span>   446    <span class="xdoc">     *      &lt;/dd&gt;
+</span>   447    <span class="xdoc">     *  &lt;/dl&gt;
+</span>   448    <span class="xdoc">     *  <b>@p</b>
+</span>   449    <span class="xdoc">     */</span>
+   450        <span class=key>enum</span> Role {
+   451            Role_PEER = 0x01,               <span class="xdoc">/*! shared by multiple processors */</span>
+   452            Role_OWNER = 0x02,              <span class="xdoc">/*! shared with one remote processor */</span>
+   453            Role_USER = 0x03                <span class="xdoc">/*! shared with one remote processor */</span>
+   454        };
+   455    
+   456        <span class="xdoc">/*!
+</span>   457    <span class="xdoc">     *  ======== Ledger ========
+</span>   458    <span class="xdoc">     *  Define a ledger used in the system
+</span>   459    <span class="xdoc">     *
+</span>   460    <span class="xdoc">     *  A ledger is used to keep track of which processors are running.
+</span>   461    <span class="xdoc">     *  Depending on the ledger role, there can be two or more users of
+</span>   462    <span class="xdoc">     *  the same ledger instance. You can define multiple ledgers. See
+</span>   463    <span class="xdoc">     *  {<b>@link</b> #ledgers} for examples of creating ledgers.
+</span>   464    <span class="xdoc">     *
+</span>   465    <span class="xdoc">     *  <b>@field(role)</b>
+</span>   466    <span class="xdoc">     *  Defines how this processor will be using the ledger. The role
+</span>   467    <span class="xdoc">     *  also implicitly defines which type of ledger is created. See
+</span>   468    <span class="xdoc">     *  the {<b>@link</b> #Role} enumeration for details.
+</span>   469    <span class="xdoc">     *
+</span>   470    <span class="xdoc">     *  <b>@field(base)</b>
+</span>   471    <span class="xdoc">     *  The base address of the ledger as seen by the local processor.
+</span>   472    <span class="xdoc">     *
+</span>   473    <span class="xdoc">     *  <b>@field(size)</b>
+</span>   474    <span class="xdoc">     *  The number of users of the current ledger. When adding a new
+</span>   475    <span class="xdoc">     *  user to a ledger, be sure to update this value for all processors
+</span>   476    <span class="xdoc">     *  using the same ledger.
+</span>   477    <span class="xdoc">     *
+</span>   478    <span class="xdoc">     *  <b>@field(index)</b>
+</span>   479    <span class="xdoc">     *  The entry index in the ledger to be used by this processor. Each
+</span>   480    <span class="xdoc">     *  processor must have its own unique entry. The index is zero based
+</span>   481    <span class="xdoc">     *  (as in array indexing). Index values range from 0 - (size-1).
+</span>   482    <span class="xdoc">     */</span>
+   483        <span class=key>struct</span> Ledger {
+   484            Role role;                      <span class="xdoc">/*! role used to access the ledger */</span>
+   485            Ptr base;                       <span class="xdoc">/*! base address of the ledger */</span>
+   486            Int size;                       <span class="xdoc">/*! number of users */</span>
+   487            Int index;                      <span class="xdoc">/*! entry assigned to this processor */</span>
+   488        };
+   489    
+   490        <span class="xdoc">/*!
+</span>   491    <span class="xdoc">     *  ======== ledgers ========
+</span>   492    <span class="xdoc">     *  Define the ledgers to be managed by this processor
+</span>   493    <span class="xdoc">     *
+</span>   494    <span class="xdoc">     *  Ledgers are used to keep track of the other processors. This
+</span>   495    <span class="xdoc">     *  is needed to support the auto-logging feature and to issue
+</span>   496    <span class="xdoc">     *  LogSync events. Each processor must define at least one ledger.
+</span>   497    <span class="xdoc">     *
+</span>   498    <span class="xdoc">     *  There are two types of ledgers: a group ledger, and a private
+</span>   499    <span class="xdoc">     *  ledger. See the {<b>@link</b> #Role} enumeration for details.
+</span>   500    <span class="xdoc">     *
+</span>   501    <span class="xdoc">     *  Use as few ledgers as possible. However, some system constraints
+</span>   502    <span class="xdoc">     *  will require additional ledgers. For example, the EVE processors
+</span>   503    <span class="xdoc">     *  have very slow data access to on-chip or external memory. Therefore,
+</span>   504    <span class="xdoc">     *  we recommend that each EVE processor use a private ledger. Place
+</span>   505    <span class="xdoc">     *  the private ledger in DMEM to ensure fast memory access.
+</span>   506    <span class="xdoc">     *
+</span>   507    <span class="xdoc">     *  Add the following to your EVE1 configuration script.
+</span>   508    <span class="xdoc">     *
+</span>   509    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   510    <span class="xdoc">     *  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+</span>   511    <span class="xdoc">     *
+</span>   512    <span class="xdoc">     *  // use private ledger, role = owner
+</span>   513    <span class="xdoc">     *  TimestampProvider.ledgers.$add(
+</span>   514    <span class="xdoc">     *      new TimestampProvider.Ledger({
+</span>   515    <span class="xdoc">     *          role: TimestampProvider.Role_OWNER,
+</span>   516    <span class="xdoc">     *          base: 0x40020000
+</span>   517    <span class="xdoc">     *      })
+</span>   518    <span class="xdoc">     *  );
+</span>   519    <span class="xdoc">     *  <b>@p</b>
+</span>   520    <span class="xdoc">     *
+</span>   521    <span class="xdoc">     *  Each private ledger has exactly two users: an owner (Role_OWNER)
+</span>   522    <span class="xdoc">     *  and a user (Role_USER). In the example above, the EVE would always
+</span>   523    <span class="xdoc">     *  be the owner. Typically, the DSP would be the corresponding user.
+</span>   524    <span class="xdoc">     *
+</span>   525    <span class="xdoc">     *  Add the following to your DSP1 configuration script.
+</span>   526    <span class="xdoc">     *
+</span>   527    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   528    <span class="xdoc">     *  var TimestampProvider = xdc.useModule('ti.uia.family.dm.dra7xx.TimestampProvider');
+</span>   529    <span class="xdoc">     *
+</span>   530    <span class="xdoc">     *  // eve1 ledger, role = user
+</span>   531    <span class="xdoc">     *  TimestampProvider.ledgers.$add(
+</span>   532    <span class="xdoc">     *      new TimestampProvider.Ledger({
+</span>   533    <span class="xdoc">     *          role: TimestampProvider.Role_USER,
+</span>   534    <span class="xdoc">     *          base: 0x42020000
+</span>   535    <span class="xdoc">     *      })
+</span>   536    <span class="xdoc">     *  );
+</span>   537    <span class="xdoc">     * <b>@p</b>
+</span>   538    <span class="xdoc">     *
+</span>   539    <span class="xdoc">     *  Note in the example above, the EVE defines the ledger address
+</span>   540    <span class="xdoc">     *  using its local address (e.g. 0x40020000). However, the DSP must
+</span>   541    <span class="xdoc">     *  use the interconnect address (e.g. 0x42020000).
+</span>   542    <span class="xdoc">     *
+</span>   543    <span class="xdoc">     *  For the remaining processors in the system, you could use one
+</span>   544    <span class="xdoc">     *  group ledger. All processors using the same group must agree on
+</span>   545    <span class="xdoc">     *  the ledger address, and the number of entries. Each processor must
+</span>   546    <span class="xdoc">     *  be assigned its own entry in the ledger.
+</span>   547    <span class="xdoc">     *
+</span>   548    <span class="xdoc">     *  The following example defines a single group ledger used by two
+</span>   549    <span class="xdoc">     *  processors: DSP1 and DSP2. Add the following to your DSP1
+</span>   550    <span class="xdoc">     *  configuration script.
+</span>   551    <span class="xdoc">     *
+</span>   552    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   553    <span class="xdoc">     *  var TimerSupport = xdc.useModule('ti.sysbios.family.shared.vayu.TimerSupport');
+</span>   554    <span class="xdoc">     *
+</span>   555    <span class="xdoc">     *  // group ledger, role = peer
+</span>   556    <span class="xdoc">     *  TimestampProvider.ledgers.$add(
+</span>   557    <span class="xdoc">     *      new TimestampProvider.Ledger({
+</span>   558    <span class="xdoc">     *          role: TimestampProvider.Ledger_PEER,
+</span>   559    <span class="xdoc">     *          base: 0x40500000,
+</span>   560    <span class="xdoc">     *          size: 2, // DSP1 DSP2
+</span>   561    <span class="xdoc">     *          index: 0 // DSP1
+</span>   562    <span class="xdoc">     *      })
+</span>   563    <span class="xdoc">     *  );
+</span>   564    <span class="xdoc">     *  <b>@p</b>
+</span>   565    <span class="xdoc">     *  Add the following to your DSP2 configuration script.
+</span>   566    <span class="xdoc">     *
+</span>   567    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   568    <span class="xdoc">     *  var TimerSupport = xdc.useModule('ti.sysbios.family.shared.vayu.TimerSupport');
+</span>   569    <span class="xdoc">     *
+</span>   570    <span class="xdoc">     *  // group ledger, role = peer
+</span>   571    <span class="xdoc">     *  TimestampProvider.ledgers.$add(
+</span>   572    <span class="xdoc">     *      new TimestampProvider.Ledger({
+</span>   573    <span class="xdoc">     *          role: TimestampProvider.Role_PEER,
+</span>   574    <span class="xdoc">     *          base: 0x40500000,
+</span>   575    <span class="xdoc">     *          size: 2, // DSP1 DSP2
+</span>   576    <span class="xdoc">     *          index: 1 // DSP2
+</span>   577    <span class="xdoc">     *      })
+</span>   578    <span class="xdoc">     *  );
+</span>   579    <span class="xdoc">     *  <b>@p</b>
+</span>   580    <span class="xdoc">     *
+</span>   581    <span class="xdoc">     *  It is also possible to partition the remaining processors into
+</span>   582    <span class="xdoc">     *  groups and assign a group ledger to each processor group. This
+</span>   583    <span class="xdoc">     *  might be done to support independent application domains. However,
+</span>   584    <span class="xdoc">     *  one requirement is that the processor which owns the timer must
+</span>   585    <span class="xdoc">     *  participate in all group ledgers. For example, if DSP1 has
+</span>   586    <span class="xdoc">     *
+</span>   587    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   588    <span class="xdoc">     *  TimestampProvider.owner = true;
+</span>   589    <span class="xdoc">     *  <b>@p</b>
+</span>   590    <span class="xdoc">     *
+</span>   591    <span class="xdoc">     *  then DSP1 must participate in all group ledgers (i.e. Role_PEER).
+</span>   592    <span class="xdoc">     */</span>
+   593        <span class=key>config</span> Ledger ledgers[<span class=key>length</span>];
+   594    
+   595        <span class="xdoc">/*!
+</span>   596    <span class="xdoc">     *  ======== L_latch ========
+</span>   597    <span class="xdoc">     *  Log event raised at the end of the timer isr
+</span>   598    <span class="xdoc">     *
+</span>   599    <span class="xdoc">     *  The timer isr maintains a global tick value used by System
+</span>   600    <span class="xdoc">     *  Analyzer to correlate the log events across processor boundaries.
+</span>   601    <span class="xdoc">     *  This event is raised at the end of the timer isr. The latch count
+</span>   602    <span class="xdoc">     *  should be the same on all processors. The isr timestamp is also
+</span>   603    <span class="xdoc">     *  reported. This value can be used to measure the accuracy of the
+</span>   604    <span class="xdoc">     *  event correlation. The isr timestamp is captured at the very
+</span>   605    <span class="xdoc">     *  beginning of the timer isr.
+</span>   606    <span class="xdoc">     */</span>
+   607        <span class=key>config</span> Log.Event L_latch = {
+   608            mask: Diags.INFO,
+   609            msg: <span class="string">"L_latch: latch=0x%x:0x%x, isr ts=0x%x:0x%x"</span>
+   610        };
+   611    
+   612    
+   613        <span class="xdoc">/*!
+</span>   614    <span class="xdoc">     *  ======== L_suspend ========
+</span>   615    <span class="xdoc">     *  Log event raised when loggers are to be suspended
+</span>   616    <span class="xdoc">     *
+</span>   617    <span class="xdoc">     *  The module has determined that the system state is not nominal. To
+</span>   618    <span class="xdoc">     *  preserve the events in the log buffers leading up to this point,
+</span>   619    <span class="xdoc">     *  the loggers will be suspended. This event is raised shortly before
+</span>   620    <span class="xdoc">     *  the loggers are actually suspended.
+</span>   621    <span class="xdoc">     */</span>
+   622        <span class=key>config</span> Log.Event L_suspend = {
+   623            mask: Diags.INFO,
+   624            msg: <span class="string">"L_suspend: loggers suspended"</span>
+   625        };
+   626    
+   627        <span class="xdoc">/*! <b>@_nodoc</b> */</span>
+   628        <span class=key>override</span> <span class=key>metaonly</span> <span class=key>config</span> Bool canCpuCyclesPerTickBeChanged = <span class=key>false</span>;
+   629    
+   630        <span class="xdoc">/*! <b>@_nodoc</b> */</span>
+   631        <span class=key>override</span> <span class=key>metaonly</span> <span class=key>config</span> Bool canFrequencyBeChanged = <span class=key>false</span>;
+   632    
+   633        <span class="xdoc">/*! <b>@_nodoc</b> */</span>
+   634        <span class=key>override</span> <span class=key>metaonly</span> <span class=key>config</span> UInt32 cpuCyclesPerTick = 0;
+   635    
+   636    <span class=key>internal</span>:
+   637        <span class="comment">/* global timestamp frequency (Hz) */</span>
+   638        <span class=key>const</span> UInt GBL_FREQ = 200000000;
+   639    
+   640        <span class="comment">/* timer period for each sync interval */</span>
+   641        <span class=key>const</span> UInt TPRD = 64;
+   642    
+   643        <span class="comment">/* number of timestamp samples used for calibration */</span>
+   644        <span class=key>const</span> UInt TSSZ = (1 &lt;&lt; 6); <span class="comment">/* must be a power of 2 */</span>
+   645    
+   646        <span class="comment">/* number of global ticks for each cpu freq sample */</span>
+   647        <span class=key>const</span> UInt GBLTC = 100;
+   648    
+   649        <span class="comment">/* size of ledger array */</span>
+   650        <span class=key>const</span> UInt LEGSZ = 16;
+   651    
+   652        <span class="comment">/* size of logger instance array */</span>
+   653        <span class=key>const</span> UInt LOGSZ = 6;
+   654    
+   655        <span class="comment">/* latch timeout value in nano-seconds */</span>
+   656        <span class=key>const</span> UInt TIMEOUT = 1200;
+   657    
+   658        <span class="comment">/* isr spin count */</span>
+   659        <span class=key>config</span> UInt SPINCNT;
+   660    
+   661        <span class="comment">/* group ledger element */</span>
+   662        <span class=key>struct</span> GroupLedgerElem {
+   663            UInt32  masterLC_hi;            <span class="comment">/* master latch count (hi 32-bits) */</span>
+   664            UInt32  masterLC_lo;            <span class="comment">/* master latch count (lo 32-bits) */</span>
+   665            UInt32  latch;                  <span class="comment">/* local processor latch count */</span>
+   666            Bool    nominal;                <span class="comment">/* local group state */</span>
+   667        }
+   668    
+   669        <span class="comment">/* private ledger */</span>
+   670        <span class=key>struct</span> PrivateLedger {
+   671            UInt32  userLC;                 <span class="comment">/* global latch count */</span>
+   672            Bool    nominal;                <span class="comment">/* system state */</span>
+   673            UInt32  ownerLC;                <span class="comment">/* local latch count */</span>
+   674        }
+   675    
+   676        <span class="comment">/*
+</span>   677    <span class="comment">     *  ======== A_badRole ========
+</span>   678    <span class="comment">     *  Unknown ledger role
+</span>   679    <span class="comment">     *
+</span>   680    <span class="comment">     *  The current ledger role is not recognized as a valid member of
+</span>   681    <span class="comment">     *  the enum Role.
+</span>   682    <span class="comment">     */</span>
+   683        <span class=key>config</span> Assert.Id A_badRole = {
+   684            msg: <span class="string">"A_badRole: unknown ledger role"</span>
+   685        };
+   686    
+   687        <span class="comment">/*
+</span>   688    <span class="comment">     *  ======== A_noGroupLedger ========
+</span>   689    <span class="comment">     *  A group ledger was not found
+</span>   690    <span class="comment">     *
+</span>   691    <span class="comment">     *  There should always be at least one group ledger in the ledgers
+</span>   692    <span class="comment">     *  array. This is validated at config time, so it should always be
+</span>   693    <span class="comment">     *  true at runtime.
+</span>   694    <span class="comment">     */</span>
+   695        <span class=key>config</span> Assert.Id A_noGroupLedger = {
+   696            msg: <span class="string">"A_noGroupLedger: unable to find a group ledger"</span>
+   697        };
+   698    
+   699        <span class="comment">/*
+</span>   700    <span class="comment">     *  ======== A_badLoggerState ========
+</span>   701    <span class="comment">     *  Conflicting logger states
+</span>   702    <span class="comment">     *
+</span>   703    <span class="comment">     *  The system analysis should not result in the logger state to be
+</span>   704    <span class="comment">     *  both 'pause' and 'resume' at the same time.
+</span>   705    <span class="comment">     */</span>
+   706        <span class=key>config</span> Assert.Id A_badLoggerState = {
+   707            msg: <span class="string">"A_badLoggerState: logger state should not be both pause and resume at the same time."</span>
+   708        };
+   709    
+   710        <span class="comment">/*
+</span>   711    <span class="comment">     *  ======== enableTimer ========
+</span>   712    <span class="comment">     *  Function that enables the timer
+</span>   713    <span class="comment">     */</span>
+   714        Void enableTimer();
+   715    
+   716        <span class="comment">/*
+</span>   717    <span class="comment">     *  ======== startTimer ========
+</span>   718    <span class="comment">     *  Function that starts timer before main
+</span>   719    <span class="comment">     */</span>
+   720        Void startTimer();
+   721    
+   722        <span class="comment">/*
+</span>   723    <span class="comment">     *  ======== isr ========
+</span>   724    <span class="comment">     */</span>
+   725        @DirectCall
+   726        Void isr();
+   727    
+   728        <span class="comment">/*
+</span>   729    <span class="comment">     *  ======== grpRolloverIsr ========
+</span>   730    <span class="comment">     *  Timer rollover interrupt handler for group ledger
+</span>   731    <span class="comment">     */</span>
+   732        @DirectCall
+   733        Void grpRolloverIsr(UArg baseAddr);
+   734    
+   735        <span class="comment">/*
+</span>   736    <span class="comment">     *  ======== pvtRolloverIsr ========
+</span>   737    <span class="comment">     *  Timer rollover interrupt handler for private ledger
+</span>   738    <span class="comment">     */</span>
+   739        @DirectCall
+   740        Void pvtRolloverIsr(UArg baseAddr);
+   741    
+   742        <span class="comment">/*
+</span>   743    <span class="comment">     *  ======== pauseLoggers ========
+</span>   744    <span class="comment">     *  Pause all logger instances to preserve log events.
+</span>   745    <span class="comment">     */</span>
+   746        Void pauseLoggers();
+   747    
+   748        <span class="comment">/*
+</span>   749    <span class="comment">     *  ======== resumeLoggers ========
+</span>   750    <span class="comment">     *  Resume logging.
+</span>   751    <span class="comment">     */</span>
+   752        Void resumeLoggers();
+   753    
+   754        <span class="xdoc">/*!  <b>@_nodoc</b> */</span>
+   755        <span class=key>metaonly</span> <span class=key>struct</span> ModuleView {
+   756            String latchCount;
+   757            String estCpuFreq;
+   758        }
+   759    
+   760        <span class="xdoc">/*!  <b>@_nodoc</b> */</span>
+   761        <span class=key>metaonly</span> <span class=key>struct</span> SampleBufferView {
+   762            UInt    serial;
+   763            String  tsHi;
+   764            String  tsLo;
+   765        }
+   766    
+   767        <span class="xdoc">/*! <b>@_nodoc</b> */</span>
+   768        @Facet
+   769        <span class=key>metaonly</span> <span class=key>config</span> ViewInfo.Instance rovViewInfo =
+   770            ViewInfo.create({
+   771                viewMap: [
+   772                    [<span class="string">'Module'</span>,
+   773                        {
+   774                            type: ViewInfo.MODULE,
+   775                            viewInitFxn: <span class="string">'viewInitModule'</span>,
+   776                            structName: <span class="string">'ModuleView'</span>
+   777                        }
+   778                    ],
+   779                    [<span class="string">'Sample Buffer'</span>,
+   780                        {
+   781                            type: ViewInfo.MODULE_DATA,
+   782                            viewInitFxn: <span class="string">'viewInitSampleBuffer'</span>,
+   783                            structName: <span class="string">'SampleBufferView'</span>
+   784                        }
+   785                    ]
+   786                ]
+   787            });
+   788    
+   789        <span class="comment">/* module state structure */</span>
+   790        <span class=key>struct</span> Module_State {
+   791            Ptr                     timer;          <span class="comment">/* timer (owner=true) */</span>
+   792            Types.Timestamp64       latch;          <span class="comment">/* global latch counter */</span>
+   793            Bool                    logging;        <span class="comment">/* logging enabled flag */</span>
+   794            PrivateLedger *         ledgerPvt;      <span class="comment">/* private ledger */</span>
+   795            Int                     count;          <span class="comment">/* number of logger instances */</span>
+   796            LoggerStopMode.Handle   loggers[LOGSZ]; <span class="comment">/* logger instance handles */</span>
+   797            UInt                    tshead;         <span class="comment">/* tsbuf head pointer */</span>
+   798            Types.Timestamp64       tsbuf[];        <span class="comment">/* timestamp buffer */</span>
+   799        }
+   800    }
+</pre>
+</body></html>

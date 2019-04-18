@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<head>
+  <title>Demo of Program Model</title>
+  
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  
+    <script>
+        if ('registerElement' in document
+                && 'createShadowRoot' in HTMLElement.prototype
+                && 'import' in document.createElement('link')
+                && 'content' in document.createElement('template')) {
+            // We're using a browser with native WC support!
+        } else {
+            document.write('<script src="../../../webcomponentsjs/webcomponents.js"><\/script>');
+        }
+    </script>
+
+    <link rel="import" href="../../../ti-core-stylesheets/ti-core-stylesheets.html">
+    <link rel="import" href="../../../ti-widget-menubar/ti-widget-menubar.html"/>
+    <link rel="import" href="../../../ti-widget-menubar/ti-widget-filemenu.html"/>
+    <link rel="import" href="../../../ti-widget-menubar/ti-widget-editmenu.html"/>
+    <link rel="import" href="../../../ti-widget-menubar/ti-widget-helpmenu.html"/>
+ 
+    <link rel="import" href="../../../ti-core-backplane/ti-core-backplane.html">
+    <link rel="import" href="../../../ti-widget-statusbar/ti-widget-statusbar.html">
+    <link rel="import" href="../../../ti-core-icons/ti-core-icons.html">
+    <link rel="import" href="../../../ti-core-databind/ti-program-model.html">
+    <link rel="import" href="../../../ti-widget-dial/ti-widget-dial.html">
+    <link rel="import" href="../../../ti-widget-graphs/ti-widget-linegraph.html">
+    <link rel="import" href="../../../paper-checkbox/paper-checkbox.html">
+    <style type="text/css" media="screen, print, projection">
+        body,
+        html {
+            margin:0;
+            padding:0;
+            align:center;
+        }
+
+    </style>
+  <style shim-shadowdom>
+  
+    body {
+      font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+      margin: 0;
+      padding: 24px;
+    }
+    
+    ti-core-backplane {
+      display: block;
+      width: 100%;
+      padding: 25px 0;
+    }
+    
+    #dial {
+      width: 177px;
+      height: 177px;
+      left: 10px;
+      top: 120px;
+      position: absolute;
+    }
+    #graph {
+      width: 620px;
+      height: 390px;
+      left: 260px;
+      top: 25px;
+      position: absolute;
+    }
+    #toggle {
+      left: 10px;
+      top: 320px;
+      position: absolute;
+    }
+  </style>
+  
+</head>
+<body unresolved>
+    <ti-widget-menubar id="MenuBar">
+        <ti-widget-filemenu></ti-widget-filemenu>
+        <ti-widget-editmenu></ti-widget-editmenu>
+        <ti-widget-helpmenu></ti-widget-helpmenu>
+    </ti-widget-menubar>
+    
+    <h2 align="center">ti-program-model demo</h2>
+
+    <b><div id="boardName"></div></b><p></p>
+    <p></p>Device: <select id="deviceList" onchange="onDeviceSelectedHdlr()" style="width:400px"></select>
+    
+    <div id="main" style="position: relative">
+    <ti-widget-linegraph id="graph" autoScale="true" backgroundcolor="transparent"></ti-widget-linegraph>
+    <ti-widget-dial id="dial"></ti-widget-dial>
+    <paper-checkbox label="stop transmitter" id="toggle"></paper-checkbox>
+    </div>
+
+    <ti-program-model id="pm"></ti-program-model>
+
+  <script>
+    var programModel;
+    var deviceList = document.getElementById("deviceList");
+
+    var myDevices = [
+        {
+            boardName: 'MSP430F2617',
+            deviceName: 'MSP430F2617',
+            fileName: 'modem2617.out',
+            fileFolderName: 'components/ti-core-databind/demo/ti-program-model/',
+            runTargetToReadMemory: true,
+            startBtnName: 'P1.1',
+            msgWaitingForData: "Press the Start Button (S1 on your MSP430F2617 Launchpad) to start the monitor - the Green LED should turn on.",
+            msgConnectDevice: "Please connect your MSP430F2617 Launchpad to a USB port of your computer and then click Connect.",
+            boardImage: 'msp430f2617.jpg',
+            startBtnImage: 'startbutton-msp430f2617.jpg',
+            imageFolderName:'demo/images/'
+        }
+
+    ];
+
+    var selectedBoardIndex = 1;
+    var selectedConnectionIndex = 0;
+
+    var onDeviceSelectedHdlr = function(e) {
+        var index = deviceList.selectedIndex;
+        console.log('User selected device['+ index+'] '+myDevices[index].boardName+', deviceName='+ myDevices[index].deviceName);
+        selectedBoardIndex = index;
+        programModel.selectedDevice = myDevices[index];
+    };
+
+    addEventListener('polymer-ready', function() 
+    {
+        var i;
+        programModel = document.querySelector('ti-program-model');
+
+        while (deviceList.firstChild) {
+            deviceList.removeChild(deviceList.firstChild);
+        }
+        var html = "";
+        for (var i = 0; i < myDevices.length; i++) 
+        {
+            var device = myDevices[i];
+            html += "<option value=\"" + device.boardName + " ("+device.fileName+")"+"\">" + device.boardName + " ("+device.fileName+")"+"</option>\n";
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.text = device.boardName + " ("+device.fileName+")";
+
+            deviceList.appendChild(opt);
+            if (i == selectedBoardIndex) 
+            {
+                deviceList.options[i].selected = true;
+            }
+        }
+        deviceList.value = myDevices[selectedBoardIndex];
+    });
+  </script>
+  
+</body>
+</html>

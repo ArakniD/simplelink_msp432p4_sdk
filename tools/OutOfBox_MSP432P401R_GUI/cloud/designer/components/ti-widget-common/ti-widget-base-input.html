@@ -1,0 +1,82 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-base-text.html">
+<polymer-element name="ti-widget-base-input" extends="ti-widget-base-text" attributes="intermediateChanges selectOnClick">
+
+    <script>
+        Polymer ('ti-widget-base-input', 
+        {
+            /**
+             * Fired when the currentState changes.  use on-selected={{myHandler}} to receive callback
+             *
+             * @event changed
+             */
+            value : undefined,
+            intermediateChanges : false,
+            selectOnClick : false,
+
+            valueChanged : function() 
+            {
+                // ensure we only deal with true changes in the model, and not because we are setting the value. 
+                if (this.value !== this._lastValue)
+                {
+                    this._lastValue = this.value;
+                    
+                    var newValue = this.formatValue(this.value);
+                    var oldValue = this.getText();
+                    
+                    if (oldValue !== newValue)
+                    {
+                        this.setText(newValue);
+                    }
+                }
+            },
+            onChangeHandler : function()
+            {
+                var oldValue = this.getText();
+                var newValue = this.formatValue(oldValue);
+                this.updateValue(newValue);
+                
+                if (newValue !== oldValue)
+                { 
+                    // apply formating changes (like trimming extra spaces) when user finished typing.
+                    this.setText(newValue);
+                }
+            },
+            onIntermediateChangeHandler : function()
+            {
+                var oldValue = this.getText();
+                var newValue = this.formatIntermediateValue(oldValue);
+                if (oldValue !== newValue)
+                {
+                    this.setText(newValue);
+                }
+                if (this.intermediateChanges)
+                {
+                    // only updateValue() if intermediateChanges is true
+                    this.updateValue(this.formatChangedValue(newValue));
+                }
+            },
+            updateValue: function(newValue)
+            {
+                if (newValue !== this.value)
+                {
+                    this._lastValue = newValue;
+                    this.value = newValue;
+                    this.fire('changed');
+                }
+            },
+            formatIntermediateValue : function(value)
+            {
+                return value;
+            },
+            formatChangedValue : function(value)
+            {
+                return value;
+            },
+            formatValue : function(value)
+            {
+                return this.formatChangedValue(this.formatIntermediateValue(value));
+            }
+        });
+    </script>
+</polymer-element>

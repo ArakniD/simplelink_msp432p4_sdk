@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+<head>
+    <title>ti-widget-menubar</title>
+  
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+ 
+	<link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+    <link rel="import" href="../ti-widget-menubar/ti-widget-menubar.html"/>
+    <link rel="import" href="../ti-widget-menubar/ti-widget-filemenu.html"/>
+    <link rel="import" href="../ti-widget-menubar/ti-widget-editmenu.html"/>
+    <link rel="import" href="../ti-widget-menubar/ti-widget-optionsmenu.html"/>
+    <link rel="import" href="../ti-widget-menubar/ti-widget-helpmenu.html"/>
+    <link rel="import" href="../ti-service-serialio/ti-service-serialio.html">
+    <link rel="import" href="../ti-service-programloader/ti-service-programloader.html">
+    <link rel="import" href="../ti-service-programloader/ti-service-programloader-dialog.html">
+    <script>
+        if ('registerElement' in document
+                && 'createShadowRoot' in HTMLElement.prototype
+                && 'import' in document.createElement('link')
+                && 'content' in document.createElement('template')) {
+            // We're using a browser with native WC support!
+        } else {
+            document.write('<script src="../webcomponentsjs/webcomponents.js"><\/script>');
+        }
+    </script>
+    <script>
+        // add some test data to load and store.
+        gc.File.addDataProvider('test', 
+        { 
+            readData: function() { return { b : true, s : 'test string', n: -23, f: -4.093}},
+            writeData: function(data) {}
+        }); 
+    </script>
+  
+    <style type="text/css" media="screen, print, projection">
+        body,
+        html {
+            margin:0;
+            padding:0;
+            align:center;
+        }
+
+    </style>
+  <style shim-shadowdom>
+  
+    body {
+      font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+      margin: 0;
+      padding: 24px;
+    }
+  </style>
+  
+</head>
+<body unresolved style="background-color: #e0e0e0;">
+<ti-widget-menubar id="MenuBar">
+    <ti-widget-filemenu></ti-widget-filemenu>
+    <ti-widget-editmenu></ti-widget-editmenu>
+    <ti-widget-optionsmenu></ti-widget-optionsmenu>
+    <ti-widget-helpmenu></ti-widget-helpmenu>
+</ti-widget-menubar>
+<h2 align="center">ti-widget-menubar demo</h2>
+<p></p><div align="center">Device: <select id="deviceList" onchange="onDeviceSelectedHdlr()" style="width:400px"></select></div>
+<p></p>
+<ti-service-serialio id='serialIO'></ti-service-serialio>
+<ti-service-programloader id='programLoader'></ti-service-programloader>
+</body>
+<script>
+    var deviceList = document.getElementById('deviceList');
+    var serialIO = document.querySelector("ti-service-serialio");
+    var programLoader  = document.querySelector("ti-service-programloader");
+
+    var myDevices = [
+        {   boardName: 'MSP-EXP430G2 v1.5',
+            deviceName: 'MSP430G2553',
+            fileName: 'ReadTemp_2553.cpp.hex',
+            fileFolderName: '../ti-service-programloader/demo/binfiles/',
+            startBtnName: 'P1.3'
+        },
+        {   boardName: 'MSP-EXP430G2 v1.5',
+            deviceName: 'MSP430G2553',
+            fileName: 'MSP2553_uart_monitor.out',
+            fileFolderName: '../ti-service-programloader/demo/binfiles/',
+            startBtnName: 'P1.3'
+        },
+        {
+            boardName: 'MSP-EXP430F5529LP',
+            deviceName: 'MSP430F5529',
+            fileName: 'ReadTemp_5529.cpp.hex',
+            fileFolderName: '../ti-service-programloader/demo/binfiles/',
+            startBtnName: 'P1.1'
+        },
+        {
+            boardName: 'MSP-EXP430F5529LP',
+            deviceName: 'MSP430F5529',
+            fileName: 'BlinkAndEcho_5529.cpp.hex',
+            fileFolderName: '../ti-service-programloader/demo/binfiles/',
+            startBtnName: 'P1.1'
+        },
+        {
+            boardName: 'MSP-EXP432P401R',
+            deviceName: 'msp432p401r',
+            connectionID: 'TIXDS110_Connection',
+            fileName: 'OutOfBox_MSP432.out',
+            fileFolderName: '../ti-service-programloader/demo/binfiles/',
+            startBtnName: 'P1.1',
+        }
+
+    ];
+    var onDeviceSelectedHdlr = function(e) {
+        var index = deviceList.selectedIndex;
+        console.log('User selected device['+ index+'] '+myDevices[index].boardName+', deviceName='+ myDevices[index].deviceName);
+        selectedBoardIndex = index;
+        serialIO.selectedDevice = myDevices[index];
+        programLoader.selectedDevice = myDevices[index];
+    };
+    addEventListener('polymer-ready', function () {
+        console.log("ABOUT TO START DEMO!");
+        var selectedBoardIndex = 2;
+        serialIO.selectedDevice = myDevices[selectedBoardIndex];
+        programLoader.selectedDevice = myDevices[selectedBoardIndex];
+
+        while (deviceList.firstChild) {
+            deviceList.removeChild(deviceList.firstChild);
+        }
+        var html = "";
+        for (var i = 0; i < myDevices.length; i++) {
+            var device = myDevices[i];
+            html += "<option value=\"" + device.boardName + " ("+device.fileName+")"+"\">" + device.boardName + " ("+device.fileName+")"+"</option>\n";
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.text = device.boardName + " ("+device.fileName+")";
+            //opt.innerHTML = i;
+
+            deviceList.appendChild(opt);
+            if (i == selectedBoardIndex) {
+                deviceList.options[i].selected = true;
+            }
+        }
+
+        deviceList.value = myDevices[selectedBoardIndex];
+    });
+</script>
+</html>

@@ -1,0 +1,301 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icon/core-icon.html">
+
+<polymer-element name="ti-guicomposer-helpindex">
+
+    <template>
+
+        <div id="table_components"  style="width:{{colWidths[0]+colWidths[1]+colWidths[2]}};font-size:small;">
+
+
+
+            <div  id="table_content_div" style="height:100%;width:100%" >
+
+                <table id="table_content" style="border:solid grey 1px;">
+                    <tr style="border:solid grey 1px;">
+                        <th align="center"  >Component Name</th>
+                        <th align="center"  width="{{colWidths[1]}}px">Help</th>
+                        <th align="center"  width="{{colWidths[2]}}px">Demo</th>
+                        <th align="center"  width="{{colWidths[3]}}px">Folder</th>
+                    </tr>
+
+                    <template id="infoTemplate" repeat="{{component,componentIndex in componentList}}">
+                        <tr  style="height:28px;">
+                            <td    align="left" >
+                                {{component.componentName}}
+                            </td>
+                            <td width="{{colWidths[1]}}px" align="center">
+                                <template if="{{component.helpIndexPath.length > 0}}">
+                                    <core-icon id="help_{{componentIndex}}" on-click="{{openComponentHelp}}" icon="info" style="color:blue"></core-icon>
+                                </template>
+                            </td>
+                            <td width="{{colWidths[2]}}px" align="center">
+                                <template if="{{component.demoPath.length > 0}}">
+                                    <core-icon id="demo_{{componentIndex}}" on-click="{{openComponentDemo}}"  icon="launch"></core-icon>
+                                </template>
+                            </td>
+                            <td width="{{colWidths[3]}}px" align="left" style="padding-left:20px;">
+                                <section id="section_{{componentIndex}}" on-click="{{openComponentFolder}}">
+                                    <core-icon id="folder_{{componentIndex}}" on-click="{{openComponentFolder}}" icon="folder" style="color:gold"></core-icon>&nbsp;{{component.folderName}}
+                                </section>
+                            </td>
+                        </tr>
+                    </template>
+                </table>
+            </div>
+
+        </div>
+
+    </template>
+
+
+    <!-- ------------------------------------------------------------------------------------- -->
+    <script>
+
+
+
+        Polymer ('ti-guicomposer-helpindex', {
+            /**
+             * Fired when the projectFolder or componentName changes.
+             *
+             * @event projectFolderUpdatedEvent
+             */
+
+            gui: undefined,
+            win: undefined,
+            path: undefined,
+            fs: undefined,
+            spawn: undefined,
+            exec: undefined,
+            workingDir: undefined,
+            baseDir: undefined,
+            designerDir: undefined,
+            designerSplashDir: undefined,
+            colWidths: undefined,
+            publish: {
+                filterPrefix: 'ti-'
+            },
+            _getListOfComponents: function(rootDir){
+                //todo: refactor (duplicate of code in ti-guicomposer-quickstart
+                var folders = this.fs.readdirSync(rootDir);
+                var dirs = [];
+                folders.concat(this.fs.readdirSync(this.path.join(rootDir,'ti-widget-common','demo')));
+
+                for(var i=0; i<folders.length; i++) {
+                    if(folders[i][0] !== '.') { // ignore hidden
+                        var folderPath = this.path.join(rootDir, folders[i]);
+                        var folderName = this.path.basename(folders[i]);
+                        var stat = this.fs.statSync(folderPath);
+                        if (stat.isDirectory()) {
+                            // only include folders that are valid component names (i.e. that have a '-' character in them)
+                            if ((folderName.indexOf('-') > 0) && ((this.filterPrefix.length === 0)||(folderName.startsWith(this.filterPrefix)))) {
+                                switch (folderName) {
+                                    case 'paper-elements':
+                                        break;
+                                    case 'paper-calculator':  // has many elements that take up a lot of space in the help info for little benefit to user
+                                        break;
+                                    case 'core-elements':
+                                        break;
+                                    case 'ti-app-elements' :
+                                        break;
+                                    case 'ti-core-component-page' :
+                                        break;
+                                    case 'ace-element' :
+                                        break;
+                                    default:
+                                        if (!folderName.startsWith('ti-guicomposer-') ) {
+                                            // find all components in the folder.  components will start with the same
+                                            // prefix as the component family, and end in .html
+
+                                            var filesInFolder = this.fs.readdirSync(folderPath);
+                                            for (var j = 0; j < filesInFolder.length; j++) {
+                                                if (filesInFolder[j][0] !== '.') { // ignore hidden
+                                                    var fileName = this.path.basename(filesInFolder[j]);
+
+                                                    var filePath = this.path.join(folderPath, fileName);
+                                                    var stat2 = this.fs.statSync(filePath);
+                                                    if (!stat2.isDirectory()) {
+                                                        if (fileName.endsWith('html') && (fileName.indexOf('-') > 0) &&
+                                                                ( (this.filterPrefix.length === 0) || (fileName.startsWith(this.filterPrefix))) &&
+                                                                (!fileName.startsWith('ti-widget-base'))) {
+                                                            var componentName = fileName.substring(0, fileName.indexOf('.html'));
+                                                            var componentInfo = {
+                                                                "componentName": componentName,
+                                                                "componentPath": filePath,
+                                                                "folderName": folderName,
+                                                                "demoPath": '',
+                                                                "helpIndexPath": ''
+                                                            };
+                                                            var helpIndexPath = this.path.join(folderPath, "demo", componentName, "index.html");
+                                                            if (this.fs.existsSync(helpIndexPath)) {
+                                                                // specify a target link for cases where components extend a base class.
+                                                                // This allows the help to jump to the actual component's info page instead of the base class.
+                                                                componentInfo.helpIndexPath = helpIndexPath+'#'+componentName;
+                                                            } else {
+                                                                helpIndexPath = this.path.join(folderPath, "index.html");
+                                                                if (this.fs.existsSync(helpIndexPath)) {
+                                                                    componentInfo.helpIndexPath = helpIndexPath;
+                                                                }
+                                                            }
+                                                            var demoPath = this.path.join(folderPath, "demo", componentName, "demo.html")
+                                                            if (this.fs.existsSync(demoPath)) {
+                                                                componentInfo.demoPath = demoPath;
+                                                            } else {
+                                                                demoPath = this.path.join(folderPath, "demo.html");
+                                                                if (this.fs.existsSync(demoPath)) {
+                                                                    componentInfo.demoPath = demoPath;
+                                                                }
+                                                            }
+
+                                                            dirs.push(componentInfo);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                }
+                            }
+                        }
+                    }
+                }
+                return dirs;
+
+            },
+            getListOfComponents: undefined,
+
+            componentList: undefined,
+            compareComponentNames: function(a,b){
+                if (a.componentName < b.componentName)
+                    return -1;
+                if (a.componentName > b.componentName)
+                    return 1;
+                return 0;
+            },
+            openWindow: function(pathToFile,title){
+
+                var rootDir = 'components';
+                var relativeFilePath =  pathToFile.substring(pathToFile.indexOf(rootDir)+rootDir.length+1,pathToFile.length);
+                relativeFilePath = this.path.join('..',relativeFilePath);
+                var _self = this;
+                window.setTimeout(function () {
+
+                    try {
+                        var componentInfo = _self.gui.Window.open(relativeFilePath, {
+                            title: title,
+                            position: 'center',
+                            width: 1028,
+                            height: 800,
+                            toolbar: false,
+                            icon: "gui_icon.png"
+                        });
+
+                        function newWinPolicyHandler(frame, url, policy) {
+                            policy.setNewWindowManifest({
+                                position: 'center',
+                                frame: true,
+                                toolbar: false,
+                                width: 1028,
+                                height: 780,
+                                icon: "gui_icon.png"
+
+                            });
+                        }
+
+                        componentInfo.on('new-win-policy', newWinPolicyHandler);
+                        componentInfo.moveBy(25, 25); // stagger so that child windows will not overlay it completely
+                        componentInfo.focus();
+
+                    }
+                    catch (ex) {
+                        console.log("ti-guicomposer-helpindex: Exception when opening component help file: ex=" + ex.toString());
+                    }
+
+                }, 200);
+            },
+            openComponentHelp: function(event){
+                var target = event.target;
+                var index = this.getIndexFromId(target.id);
+                if (index >= 0) {
+                    var pathToHelp = this.componentList[index].helpIndexPath;
+                    this.openWindow(pathToHelp,this.componentList[index].componentName+' Info');
+                }
+            },
+            openComponentDemo: function(event){
+                var target = event.target;
+                var index = this.getIndexFromId(target.id);
+                if (index >= 0) {
+                    var pathToDemo = this.componentList[index].demoPath;
+                    this.openWindow(pathToDemo,this.componentList[index].componentName+' Demo');
+                }
+            },
+            _openExplorer: function(folderPath){
+                if (typeof process !== 'undefined') {
+                    var path = require('path');
+                    var exec = require('child_process').exec;
+                    if (this.getOS() === 'win') {
+                        var command = 'explorer "' + path.normalize(folderPath) + '"';
+                        try {
+                            exec(command);
+                        }
+                        catch (ex) {
+                            console.log('ti-guicomposer-helpindex: Exception while opening explorer: ex=' + ex.toString());
+                        }
+                    }
+                    // TODO: add support for other OSes
+                }
+            },
+            openExplorer: undefined,
+            openComponentFolder: function(event){
+                var target = event.target;
+                var index = this.getIndexFromId(target.id);
+                if (index >= 0) {
+                    var pathToFile = this.componentList[index].componentPath;
+                    var folderName = this.componentList[index].folderName;
+                    var pathToFolder = pathToFile.substring(0,pathToFile.indexOf(folderName)+folderName.length);
+                    this.openExplorer(pathToFolder);
+                }
+            },
+            getIndexFromId: function(id){
+                var index = -1;
+                if (id) {
+                    var indexOfUnderscore = id.indexOf("_");
+
+                    if (indexOfUnderscore >= 0) {
+                        var indexStr = id.substring(indexOfUnderscore + 1, id.length);
+                        index = parseInt(indexStr);
+                    }
+                }
+                return index;
+            },
+            getOS: function(){
+                var os = 'linux';
+                if (navigator.appVersion.indexOf("Mac") != -1)
+                    os = 'osx';
+                if (navigator.appVersion.indexOf("Win") != -1)
+                    os = 'win';
+                return os;
+            },
+            ready: function () {
+                this.colWidths = [250, 90, 90, 300];
+                this.gui = require('nw.gui');
+                this.win = this.gui.Window.get();
+                this.path = require('path');
+                this.fs = require('fs');
+                this.spawn = require("child_process").spawn;
+                this.exec = require('child_process').exec;
+                this.workingDir = this.path.normalize(process.cwd());
+                this.baseDir = this.path.join(this.workingDir, '../../designer/components');
+                this.getListOfComponents = this._getListOfComponents.bind(this);
+                this.componentList = this.getListOfComponents(this.baseDir);
+                this.componentList = this.componentList.sort(this.compareComponentNames);
+                this.openExplorer = this._openExplorer.bind(this);
+                console.log('baseDir = ' + this.baseDir);
+            }
+
+        });
+    </script>
+
+</polymer-element>

@@ -1,0 +1,395 @@
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+`ti-widget-dial` allows user to select a value from a range of values by
+moving the dial with the mouse.  The interactive nature of the dial makes it a 
+great choice for settings that reflect intensity levels, such as volume, 
+brightness, or color saturation.
+
+Example:
+
+    <ti-widget-dial></ti-widget-dial>
+
+Use `minValue` and `maxValue` to specify the dial range.  Default is 0 to 100.
+
+Example:
+
+    <ti-widget-dial minValue="10" maxValue="200" value="110"></ti-widget-dial>
+
+Styling ti-widget-dial:
+
+@group TI Widgets
+@element ti-widget-dial
+@homepage ../ti-guicomposer-helpindex/demo.html
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<script src="../ti-core-assets/scripts/steelseries.js"></script>
+<script src="Dial.js"></script>
+
+<polymer-element name="ti-widget-dial">
+    <template>
+        <style>
+            :host {
+                display: inline;
+            }
+        </style>
+
+        <div id="dialDiv" style="text-align:center;">
+            <canvas id="dialCanvas"  style="width:100%;height:100%;background: transparent;"></canvas>
+        </div>
+		<div class="pointer" id="pointer" style="display:none;"></div>
+		<div class="frame" id="frame" style="display:none;" ></div>
+		<div class="knob" id="knob" style="display:none;" ></div>
+    </template>
+    <script>
+
+        Polymer('ti-widget-dial', {
+            /**
+             * Fired when the dial's value changes.
+             *
+             * @event valueChanged
+             */
+
+
+            dialObj: undefined,
+            _checkDivSizeTimeout: undefined,
+            publish: {
+                /**
+                 * The number that represents the current value.
+                 *
+                 * @attribute value
+                 * @type number
+                 * @default 0
+                 */
+                value: 0, 
+                /**
+                 * The name of the visual style to be applied to the gauge.
+                 *
+                 * @attribute skin
+                 * @type string
+                 * @default flat
+                 */
+                skin: 'flat',
+                /**
+                 * The diameter of the gauge in pixels.
+                 *
+                 * @attribute size
+                 * @type number
+                 * @default 175
+                 */
+                size: 175,
+                /**
+                 * The number that represents the minimum value that can be displayed.
+                 *
+                 * @attribute minValue
+                 * @type number
+                 * @default 0
+                 */
+                minValue: 0,
+                /**
+                 * The number that represents the maximum value that can be displayed.
+                 *
+                 * @attribute maxValue
+                 * @type number
+                 * @default 100
+                 */
+                maxValue: 100,
+                /**
+                 * if a 'flat' skin is selected, this determines whether the colors are specified by CSS or by 
+				 * the colors specified by the user in the designer
+                 *
+                 * @attribute overrideCssColors
+                 * @type boolean
+                 * @default false
+                 */
+				overrideCssColors: false,
+                /**
+                 * if a 'flat' skin is selected, this color determines what color the frame will be
+                 *
+                 * @attribute flatFrameColor
+                 * @type color
+                 * @default White
+                 */
+                flatFrameColor: '#ffffff',
+                /**
+                 * if a 'flat' skin is selected, this color determines what color the knob will be
+                 *
+                 * @attribute flatKnobColor
+                 * @type color
+                 * @default White
+                 */
+                flatKnobColor: '#ffffff',
+                /**
+                 * if a 'flat' skin is selected, this color determines what color the font will be
+                 *
+                 * @attribute flatFontColor
+                 * @type color
+                 * @default Black
+                 */
+                flatFontColor: '#000000',
+                /**
+                 * @attribute pointerType
+                 * @type number
+                 * @default 1
+                 */
+                pointerType: 'large',
+                /**
+                 * if a 'flat' skin is selected, this color determines what color the font will be
+                 *
+                 * @attribute pointerColor
+                 * @type color
+                 * @default Red
+                 */
+                pointerColor: '#ff0000',
+                /**
+                 * Configures how numbers on the dial are displayed: [standard, scientific, fractional]
+                 *
+                 * @attribute numberFormat
+                 * @type string
+                 * @default 'standard'
+                 */
+                numberFormat: 'standard',
+                /**
+                 * Configures how many digits to the right of the decimal place are displayed for values on the dial
+                 *
+                 * @attribute fractionalScaleDecimals
+                 * @type number
+                 * @default 1
+                 */
+                fractionalScaleDecimals: 1
+            },
+
+
+            ready: function() {
+                this.checkDivSize = this._checkDivSize.bind(this);
+                this.enteredView();
+            },
+            debugPrint: function(str){
+                if (isDebuggingEnabled){
+                    console.log(str);
+                }
+            },
+            valueChanged: function() {
+                if (this.dialObj !== undefined){
+                    this.dialObj.setDialValue(this.value);
+                    console.log('updated dialObj: this.dialObj.value = '+this.dialObj.getDialValue());
+                }
+            },
+			overrideCssColorsChanged: function() {
+                console.log('ti-widget-dial.overrideCssColorsChanged function called');
+                this.domReady();
+			},
+            numberFormatChanged: function(){
+                console.log('ti-widget-dial.numberFormatChanged function called');
+                this.domReady();
+            },
+            fractionalScaleDecimalsChanged: function(){
+                console.log('ti-widget-dial.fractionalScaleDecimalsChanged function called');
+                this.domReady();
+            },
+            skinChanged: function() {
+                console.log('ti-widget-dial.skinChanged function called');
+                this.domReady();
+            },
+            flatFrameColorChanged: function() {
+			    if ((this.canvas)&&(this.overrideCssColors)){
+					console.log('ti-widget-dial.flatFrameColorChanged function called');
+					this.domReady();
+				}
+            },
+            flatKnobColorChanged: function() {
+			    if ((this.canvas)&&(this.overrideCssColors)){
+					console.log('ti-widget-dial.flatKnobColorChanged function called');
+					this.domReady();
+				}
+            },
+            flatFontColorChanged: function() {
+			    if ((this.canvas)&&(this.overrideCssColors)){
+					console.log('ti-widget-dial.flatFontColorChanged function called');
+					this.domReady();
+				}
+            },
+            pointerTypeChanged: function(){
+				if (this.canvas){
+                console.log('ti-widget-dial.pointerTypeChanged function called');
+                this.domReady();
+				}
+            },
+            pointerColorChanged: function(){
+			    if ((this.canvas)&&(this.overrideCssColors)){
+					console.log('ti-widget-dial.pointerTypeChanged function called');
+					this.domReady();
+				}
+            },
+            sizeChanged: function() {
+				if (this.canvas){
+                    console.log('ti-widget-dial.sizeChanged function called');
+                    this.domReady();
+				}
+            },
+            minValueChanged: function() {
+				if (this.canvas){
+                console.log('ti-widget-dial.minValueChanged function called');
+                this.domReady();
+				}
+            },
+            maxValueChanged: function() {
+				if (this.canvas) {
+					console.log('ti-widget-dial.maxValueChanged function called');
+					this.domReady();
+				}
+            },
+            getSteelSeriesClassName: function(){
+                var className = 'SteelSeries:' + this.skin+':'+
+                        this.size+':'+
+                        this.minValue+':'+
+                        this.maxValue+':'+
+                        this.flatFrameColor+':'+
+                        this.flatKnobColor+':'+
+                        this.flatFontColor+':'+
+                        this.pointerType.toString()+':'+
+                        this.pointerColor+':'+
+                        this.numberFormat+':'+
+                        this.fractionalScaleDecimals;
+                return className;
+            },
+            enteredView: function() {
+			},
+			parseColorStyle: function(colorStyle) {
+			    var leftBracketIndex = colorStyle.indexOf('(');
+				var rightBracketIndex = colorStyle.indexOf(')');
+			 	var r = 0;
+				var g = 0;
+				var b = 0;
+				if (leftBracketIndex < 0){
+					// hexadecimal input #112233
+					b = parseInt(colorStyle.substr(5, 2), 16);
+					g = parseInt(colorStyle.substr(3, 2), 16);
+					r = parseInt(colorStyle.substr(1, 2), 16);
+
+				} else {
+
+					var arguments = colorStyle.substr(leftBracketIndex+1,rightBracketIndex-leftBracketIndex-1);
+					var commaIndex1 = arguments.indexOf(',');
+					var commaIndex2 = arguments.lastIndexOf(',');
+					if ((commaIndex1 >= 0) && (commaIndex2 >= 0)){
+						r = parseInt(arguments.substr(0,commaIndex1).trim());
+						g = parseInt(arguments.substr(commaIndex1+1,commaIndex2).trim());
+						b = parseInt(arguments.substr(commaIndex2+1,arguments.length).trim());
+					}
+				}
+				var range = function (value, limit) {
+					var result = (value < 0 ? 0 : (value > limit ? limit : value));
+					return result;
+				};
+				var to8bHexStr = function(value){
+				    var result = range(value,255).toString(16);
+					while (result.length < 2){
+						result = '0'+result;
+					}
+					return result;
+				}
+
+				var red = to8bHexStr(r);
+				var green = to8bHexStr(g);
+				var blue = to8bHexStr(b);
+				
+				return '#' + red + green + blue;
+			},
+			domReady: function(){
+                // TODO(sorvell): create the canvas element manually becase ios
+                // does not render the canvas element if it is not created in the
+                // main document (component templates are created in a
+                // different document). See:
+                // https://bugs.webkit.org/show_bug.cgi?id=109073.
+				if (!this.overrideCssColors){
+					var knobStyles = window.getComputedStyle(this.$.knob);
+					if (knobStyles !== undefined){
+						this.flatKnobColor = this.parseColorStyle(knobStyles.backgroundColor);
+					}
+					var frameStyles = window.getComputedStyle(this.$.frame);
+					if (frameStyles !== undefined){
+						this.flatFrameColor = this.parseColorStyle(frameStyles.backgroundColor);
+						this.flatFontColor = this.parseColorStyle(frameStyles.color);
+					}
+					var pointerStyles = window.getComputedStyle(this.$.pointer);
+					if (pointerStyles !== undefined){
+						this.pointerColor = this.parseColorStyle(pointerStyles.color);
+					}
+				}
+                if (!this.skin) {
+                    var skins = Object.keys(Dial.config.skins);
+                    var i = Math.floor(Math.random() * skins.length);
+                    i = 0; // override to use swiss rail
+                    this.skin = skins[i];
+
+                    console.log('Dial skin[0] ='+skins[0]);
+                    console.log('Dial skin[1] ='+skins[1]);
+                }
+                if (!this.canvas){
+                    this.canvas = this.$.dialCanvas; //document.createElement('canvas');
+                };
+                this.canvas.className = this.getSteelSeriesClassName();
+                console.log('this.canvas.className = '+this.canvas.className);
+                // if not specified, choose a random skin
+                var _self = this;
+                this.async(function() {
+
+                    _self.dialObj = Dial.findAndCreateDials(_self.$.dialDiv);
+                    _self.dialObj.ti_widget_dial = _self;
+                    console.log('created dialObj: this.dialObj.maxValue = '+_self.dialObj.maxValue);
+                    var isInDesigner = _self.isInDesigner(_self);
+                    if (isInDesigner){
+                        if (_self._checkDivSizeTimeout){
+                            window.clearTimeout(_self._checkDivSizeTimeout);
+                        }
+                        _self.checkDivSize();
+                    }
+                });
+
+            },
+            isInDesigner: function(node) {
+                var result = false;
+				// a parent node with a local name of design-host or design-canvas indicates we are in the designer.
+                while ((node) && (!node.__designHost) && (node.localName !== null) && (node.localName.indexOf('design-') !== 0)) {
+                    node = node.parentNode;
+                }
+
+                if ((node !== null)&& (node.localName !== null) && (node.localName.indexOf('design-') === 0)){
+                    result = true;
+                }
+                return result;
+            },
+            _checkDivSize: function(){
+                this._checkDivSizeTimeout = undefined;
+                var rect = this.getBoundingClientRect();
+                var diameter = rect.width;
+                if (diameter > rect.height){
+                    diameter = rect.height;
+                }
+                if (diameter !== this.size){
+                    this.size = diameter;  // triggers sizeChanged function 
+                } else {
+					var _self = this;
+					var isInDesigner = _self.isInDesigner(_self);
+					if (isInDesigner){
+						var delay = 500;  // check to see if size has changed twice per second
+						this._checkDivSizeTimeout = window.setTimeout(_self.checkDivSize,delay);
+					}
+				}
+            },
+            checkDivSize: undefined
+
+        });
+
+
+    </script>
+</polymer-element>

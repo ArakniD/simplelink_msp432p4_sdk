@@ -1,0 +1,141 @@
+<!--
+`ti-widget-progressbar` is an implementation of the paper-progress widget that provides
+ properties to make it easier to configure the color of the progress bar
+
+Example:
+
+    <ti-widget-progressbar></ti-widget-progressbar>
+
+See demo for examples of the panels that are in the palette.
+
+@group TI Widgets
+@element ti-widget-progressbar
+@homepage https://gitorious.design.ti.com/guicomposer-nw/ti-widget-common
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+        its contributors may be used to endorse or promote products derived
+        from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-base.html">
+<polymer-element name="ti-widget-progressbar" extends="ti-widget-base">
+
+    <template>
+        <style>
+            :host {
+            }
+            body {
+                overflow:hidden;
+            }
+            #progressbar {
+                display: block;
+                width: 100%;
+                height: 6px;
+
+                z-index:9999;
+
+                padding:0;
+
+            }
+            #background {
+                display: block;
+                width: 100%;
+                height: 6px;
+
+                z-index:9998;
+
+                padding:0;
+
+            }
+
+            #progressbar > div {
+                width: 0%; /* Adjust with JavaScript */
+                height: 6px;
+
+            }
+        </style>
+        <div id="progressBarDiv" class="progressbox" style="position:{{position}};bottom:{{bottomPx}}px;left:{{leftPx}}px;right:{{rightPx}}px" layout horizontal>
+        <div id="progressbar" style="background-color:{{color}}"></div>
+        <div flex id="background" style="background-color:darkgrey;width:100%"></div>
+        </div>
+
+    </template>
+    <script>
+
+        Polymer ('ti-widget-progressbar', {
+            publish: {
+                /**
+                 * The amount of progress to display (do not add % suffix)
+                 *
+                 * @attribute progressPercent
+                 * @type number
+                 * @default 0
+                 */
+                progressPercent: 0,
+                /**
+                 * position attribute (fixed, absolute, relative, sticky)
+                 *
+                 * @attribute position
+                 * @type string
+                 * @default fixed
+                 */
+                position: "fixed",
+                bottomPx: 0,
+                leftPx: 0,
+                rightPx: 0,
+                /**
+                 * color of the line used to indicate progress
+                 *
+                 * @attribute color
+                 * @type string
+                 * @default "#cc0000"
+                 */
+                color: "#cc0000"
+            },
+            progressPercentChanged: function(){
+                var percent = this.progressPercent;
+                if (percent < 0){
+                    percent = 0;
+                }
+                if (percent > 100){
+                    percent = 100;
+                }
+                this.$.progressbar.style.width = percent.toString()+"%";
+            },
+            positionChanged: function(){
+                this.$.background.top = this.$.progressbar.top;
+            },
+            ready: function(){
+                this.positionChanged();
+                this.progressPercentChanged();
+            },
+            getElement : function() {
+                return this.$.progressBarDiv;
+            }
+        });
+    </script>
+</polymer-element>

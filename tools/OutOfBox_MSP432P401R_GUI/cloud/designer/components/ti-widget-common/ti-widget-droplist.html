@@ -1,0 +1,60 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-base-selector.html">
+<link rel="stylesheet" href="../ti-core-stylesheets/bootstrap.min.css">
+<link rel="stylesheet" href="../ti-core-stylesheets/rex.css">
+<link rel="stylesheet" href="../ti-core-stylesheets/custom.css">
+<polymer-element name="ti-widget-droplist" extends="ti-widget-base-selector">
+
+    <template>
+        <style>            
+            #selectorList {
+                width: 100%;
+                display: inline-block;
+            }
+        </style>
+
+        <select class="form-control" id="selectorList" on-change="{{onChangeHdlr}}"></select>
+
+    </template>
+    <script>
+        Polymer ('ti-widget-droplist', 
+        {
+            textAlign : undefined,
+            onChangeHdlr : undefined,
+            ready : function()
+            {
+                this.onChangeHdlr = this.onUserInputChanged.bind(this);
+            },
+			getElement : function()
+			{
+                return this.$.selectorList;
+			},
+			setSelectedIndex : function(newIndex) 
+			{
+                this.$.selectorList.selectedIndex = newIndex;
+			},
+			getSelectedIndex : function()
+			{
+                return this.$.selectorList.selectedIndex;
+            },
+            setOptions : function(newOptions)
+            {
+                // remove existing options
+                while (this.$.selectorList.firstChild) 
+                {
+                    this.$.selectorList.removeChild(this.$.selectorList.firstChild);
+                }
+                
+                // add new options
+                for (var i = 0; i < newOptions.length; i++) 
+                {
+                    var opt = document.createElement('option');
+                    var newOption = newOptions[i];
+                    opt.value = newOption.value;
+                    opt.text = newOption.text;
+                    this.$.selectorList.appendChild(opt);
+                }
+            }
+        });
+    </script>
+</polymer-element>

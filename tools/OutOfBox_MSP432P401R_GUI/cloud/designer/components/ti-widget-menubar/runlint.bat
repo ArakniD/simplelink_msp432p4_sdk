@@ -1,0 +1,1 @@
+jsl -conf jsl.conf -process src\*.js +recurse

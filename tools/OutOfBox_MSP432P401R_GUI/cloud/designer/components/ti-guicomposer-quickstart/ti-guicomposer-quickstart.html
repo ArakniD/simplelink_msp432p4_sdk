@@ -1,0 +1,211 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../ti-widget-common/ti-widget-image.html">
+<link rel="import" href="../ti-widget-common/ti-widget-droplist.html">
+<link rel="import" href="../ti-widget-common/ti-widget-label.html">
+<link rel="import" href="../ti-widget-common/ti-widget-panel.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../core-icon/core-icon.html">
+
+<polymer-element name="ti-guicomposer-quickstart">
+
+    <template id="quickstart" >
+
+        <paper-dialog id="paper_dialog" heading="{{heading}}" autoCloseDisabled="{{!projectAlreadyOpen}}"  transition="paper-dialog-transition" style="background-color:white; width:400px;height:310px">
+
+            <table >
+                <tr><td width="60px" align="center">
+                    <ti-widget-image style="width:40px; height:40px;" imagePath="elements/images/OpenFolder.svg" id="ti_widget_image1" on-click="{{openProjectHdlr}}" horizontal layout center center-justified></ti-widget-image></td>
+                    <td>
+                        <ti-widget-label fontsize="small" id="ti_widget_label" on-click="{{openProjectHdlr}}" label="OPEN A PROJECT"></ti-widget-label>
+                        <ti-widget-droplist id="project_selector" initialIndex="-1" on-selected="{{openProjectHdlr}}"></ti-widget-droplist>
+                    </td>
+                </tr>
+                <tr height="15px"></tr>
+                <!-- <ti-widget-label fontcolor="white" id="ti_widget_label1" onclick="newProjectHdlr();">Create a New Project</ti-widget-label>  -->
+                <tr>
+                    <td width="60px" align="center"><ti-widget-image style="width:40px; height:40px;" imagePath="elements/images/NewProject.svg" id="ti_widget_image" on-click="{{newProjectHdlr}}"  center horizontal layout center-justified></ti-widget-image></td>
+                    <td><paper-button id="button1" style="weight:bold;" on-click={{newProjectHdlr}}">Create a New Project</paper-button></td>
+                </tr>
+                <tr height="15px"></tr>
+                <tr>
+                    <td width="60px" align="center"><ti-widget-image style="width:30px; height:30px;" imagePath="elements/images/info.svg" id="ti_widget_image2" on-click="{{gettingStartedHdlr}}" center center-justified horizontal layout></ti-widget-image></td>
+                    <td><paper-button id="button2" style="weight:bold;" on-click={{gettingStartedHdlr}}">Getting Started</paper-button></td>
+                </tr>
+            </table>
+            <template if="{{projectAlreadyOpen}}">
+                <div  align="center" style="padding-left:80px;">
+                    <paper-button id="buttonCancel" on-click="{{toggle}}" style="float:right">Close<core-icon icon="close" style="width:18px;" ></core-icon></paper-button>
+                </div>
+            </template>
+        </paper-dialog>
+    </template>
+
+
+    <!-- ------------------------------------------------------------------------------------- -->
+    <script>
+        var gui;
+        var win;
+        var path;
+        var fs;
+        var workingDir;
+        var baseDir;
+
+        if (typeof process !== 'undefined'){
+            gui = require('nw.gui');
+            win = gui.Window.get();
+            path = require('path');
+            fs = require('fs');
+            workingDir = path.normalize(process.cwd());
+            baseDir = path.join(workingDir,'..');
+            if (baseDir.lastIndexOf("designer") === (baseDir.length-8)){
+                baseDir = path.join(baseDir,'..');
+            }
+            console.log('baseDir = '+baseDir);
+            gui.App.manifest.workspace_folder = baseDir;
+
+        }
+
+        Polymer ('ti-guicomposer-quickstart', {
+            /**
+             * Fired when the projectFolder or projectName changes.
+             *
+             * @event projectFolderUpdatedEvent
+             */
+            isDialogOpen: false,
+            projectAlreadyOpen: false,
+            heading: "Welcome to GUI Composer!",
+            dialogHeight2: 310,
+            myTimeout: undefined,
+            _toggle: function(transition){
+                var dialog = this.$.paper_dialog;
+                if ((document.gcGlobal.projectName !== undefined) && (document.gcGlobal.projectName.length > 0)){
+                    this.projectAlreadyOpen = true;
+                    this.dialogHeight2 = 300;
+                    this.heading = "";
+                } else {
+                    this.projectAlreadyOpen = false;
+                    this.dialogHeight2 = 310;
+                    this.heading = "Welcome to GUI Composer!";
+                }
+                this.isDialogOpen = !this.isDialogOpen;
+                if (this.isDialogOpen) {
+                    // ensure list of projects includes any newly created ones
+                    this.getListOfProjects();
+                }
+
+                dialog.toggle(transition);
+
+            },
+            toggle: undefined,
+            openProjectHdlr: function(e){
+                console.log("ti-guicomposer-quickstart-openProjectHdlr called.");
+                var projectSelector = this.$.project_selector;
+                var projectName = projectSelector.selectedText;
+                console.log("Open project "+projectName);
+                var projectPath;
+                if (typeof process !== 'undefined') {
+                    projectPath = path.join(baseDir, projectName);
+                } else {
+                    projectPath = '../'+projectName;
+                }
+                if (document.gcGlobal !== undefined){
+                    document.gcGlobal.projectFolder = projectPath;
+                    document.gcGlobal.projectName = projectName;
+                    document.gcGlobal.workspaceFolder = baseDir;
+                }
+                // wait for the global observer to update before firing the event
+                var _self = this;
+                if (this.myTimeout !== undefined){
+                    window.clearTimeout(this.myTimeout);
+                }
+                this.myTimeout = window.setTimeout(function(){
+                    _self.myTimeout = undefined;
+                    _self.fire("projectFolderUpdatedEvent");
+                    _self.toggle();
+                },150);
+
+            },
+            newProjectHdlr: function(){
+                console.log("New Project");
+                var newProjectDialog = document.querySelector("#newProjectDialog");
+                // Workaround to ensure paper dialog is properly position: see https://github.com/Polymer/paper-dialog/issues/44
+                newProjectDialog.addEventListener("core-overlay-open-completed", function (e) {
+                    newProjectDialog.repositionTarget();
+                });
+                newProjectDialog.toggle();
+
+                this.toggle();
+
+            },
+            gettingStartedHdlr: function(){
+                if (typeof process !== 'undefined') {
+                    var helpUrl = gui.App.manifest.help
+                    gui.Shell.openExternal(helpUrl);
+                    console.log("Getting Started: help URL = " + helpUrl);
+                }
+            },
+            getListOfProjects: function(){
+                var dirs = [];
+                var projectSelector = this.$.project_selector;
+                projectSelector.selectedIndex = -1;
+                if (typeof process !== 'undefined') {
+                    var files = fs.readdirSync(baseDir);
+                    var filePath = baseDir;
+
+                    for (var i = 0, l = files.length; i < l; i++) {
+                        if (files[i][0] !== '.') { // ignore hidden
+                            filePath = path.join(baseDir, files[i]);
+                            var stat = fs.statSync(filePath);
+                            if (stat.isDirectory()) {
+                                var folderName = path.basename(files[i]);
+                                switch (folderName) {
+                                    case 'win32':
+                                        break;
+                                    case 'linux':
+                                        break;
+                                    case 'mac' :
+                                        break;
+                                    case 'designer' :
+                                        // if the designer has been started in debug mode, add it to the list of projects
+                                        // so that we can generate the installer for it, save components for it, etc.
+                                        if (gui.App.manifest.debug_enabled) {
+                                            dirs.push(folderName);
+                                        }
+                                        break;
+                                    case 'node_modules':
+                                        break;
+                                    default:
+                                        // don't include old versions of the designer that have been renamed and left behind by the installer
+                                        if (folderName.indexOf("designer_") < 0){
+                                            dirs.push(folderName);
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    dirs.push('designer');
+                }
+                if ((projectSelector !== undefined) && (projectSelector !== null)) {
+                    projectSelector.labels = dirs.toString();
+                }
+
+            },
+            ready: function () {
+                this.toggle = this._toggle.bind(this);
+                var _self = this;
+                // Workaround to ensure paper dialog is properly position: see https://github.com/Polymer/paper-dialog/issues/44
+                this.$.paper_dialog.addEventListener("core-overlay-open-completed", function (e) {
+                    setTimeout(function(){
+                        //_self.$.paper_dialog.resetTargetDimensions();
+                        _self.$.paper_dialog.updateTargetDimensions();
+                    },400);
+                });
+            }
+
+        });
+    </script>
+
+</polymer-element>

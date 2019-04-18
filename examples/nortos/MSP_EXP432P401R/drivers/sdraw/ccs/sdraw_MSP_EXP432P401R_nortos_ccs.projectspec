@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectSpec>
+    <applicability>
+        <when>
+            <context
+                deviceFamily="MSP432"
+                deviceId="MSP432P401R"
+            />
+        </when>
+    </applicability>
+
+
+    <project
+        title="SDRaw"
+        name="sdraw_MSP_EXP432P401R_nortos_ccs"
+        toolChain="TI"
+        connection="TIXDS110_Connection.xml"
+        device="MSP432P401R"
+        ignoreDefaultDeviceSettings="true"
+        ignoreDefaultCCSSettings="true"
+        products="com.ti.SIMPLELINK_MSP432_SDK"
+        compilerBuildOptions=" -I${PROJECT_ROOT} -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include --advice:power=none -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/nortos -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/nortos/posix --silicon_version=7M4 --code_state=16 --little_endian --display_error_number --diag_warning=255 --diag_wrap=off --gen_func_subsections=on --float_support=FPv4SPD16 --symdebug:dwarf -I${CG_TOOL_ROOT}/include"
+        linkerBuildOptions=" -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source -lti/display/lib/display.aem4f -lti/grlib/lib/ccs/m4f/grlib.a -lthird_party/spiffs/lib/ccs/m4f/spiffs.a -lti/drivers/lib/drivers_msp432p401x.aem4f -lthird_party/fatfs/lib/ccs/m4f/fatfs.a --diag_suppress=10063 --entry_point=resetISR -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/nortos -llib/nortos_msp432p401x.aem4f -lti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib --warn_sections --display_error_number --diag_wrap=off --rom_model -i${CG_TOOL_ROOT}/lib -llibc.a"
+        description="An example of using an SD card without a filesystem">
+
+        <property name="buildProfile" value="release"/>
+        <property name="isHybrid" value="true"/>
+        <group id="sdraw.SIMPLELINK_MSP432_SDK.MSP_EXP432P401R.drivers.TI"/>
+        <file path="../main_nortos.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../sdraw.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../Board.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../MSP_EXP432P401R.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../MSP_EXP432P401R.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../ccs/MSP_EXP432P401R_NoRTOS.cmd" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/boards/MSP_EXP432P401R/Board.html" openOnCreation="false" excludeFromBuild="false" action="link">
+        </file>
+    </project>
+</projectSpec>
+

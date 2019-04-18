@@ -1,0 +1,127 @@
+<html>
+
+
+<head>
+  <script type="text/javascript" src="./src/internal/mqttws31.js"></script>
+  
+  <script type="text/javascript">
+  
+  var client;
+  var form = document.getElementById("tutorial");
+  
+  function doConnect() {
+      client = new Paho.MQTT.Client("vmtgbase03", 1883, "web_" + parseInt(Math.random() * 100, 10));
+      client.onConnect = onConnect;
+      client.onMessageArrived = onMessageArrived;
+      client.onConnectionLost = onConnectionLost;
+       var options = {
+            timeout: 3,
+            useSSL: false,
+            cleanSession: false,
+            onSuccess: onConnect
+			};
+      client.connect(options);
+  }
+  
+  function doSubscribe() {
+      client.subscribe("io1");
+      client.subscribe("io2");
+      client.subscribe("io3");
+      client.subscribe("io4");
+      client.subscribe("io5");
+  }
+  
+    function doDisconnect() {
+      client.disconnect();
+  }
+  
+  
+  // Web Messaging API callbacks
+  
+  function onConnect() {
+      var form = document.getElementById("example");
+      form.connected.checked= true;
+      client.subscribe("io1");
+      client.subscribe("io2");
+      client.subscribe("io3");
+      client.subscribe("io4");
+      client.subscribe("io5");
+ }
+  
+  function onConnectionLost(responseObject) {
+      var form = document.getElementById("example");
+      form.connected.checked= false;
+      if (responseObject.errorCode !== 0)
+          alert(client.clientId+"\n"+responseObject.errorCode);
+  }
+  
+  function onMessageArrived(message) {
+      var table = document.getElementById("mytable");
+      var msg = message.payloadString;
+	  var topic = message.destinationName;
+	  if ( topic == "io1" )
+		table.rows[1].cells[1].innerHTML = msg;
+	  if ( topic == "io2" )
+		table.rows[2].cells[1].innerHTML = msg;
+	  if ( topic == "io3" )
+		table.rows[3].cells[1].innerHTML = msg;
+	  if ( topic == "io4" )
+		table.rows[4].cells[1].innerHTML = msg;
+	  if ( topic == "io5" )
+		table.rows[5].cells[1].innerHTML = msg;
+  }
+  
+  </script>
+<style>thead {color:green;}
+tbody {color:blue;}
+tfoot {color:red;}
+table,th,td
+{border:1px solid black;}
+</style>
+</head> 
+
+<body>
+  <h1>Dashboard page.</h1>
+  <form id="example">
+  <fieldset>
+  <legend id="Connect" > Connect </legend>
+     <input type="button" value="Connect" onClick="doConnect(this.form)" name="Connect"/>
+    <input type="checkbox" name="connected" disabled="disabled"/>
+  </fieldset>
+  
+   <fieldset>
+  <legend id="Dashboard"> Dashboard </legend>
+<table id="mytable"  border="1" style="width:300px">
+<thead>
+<tr>
+<th>IO Port Name</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>io1</td>
+<td></td>
+</tr>
+<tr>
+<td>io2</td>
+<td></td>
+</tr>
+<tr>
+<td>io3</td>
+<td></td>
+</tr>
+<tr>
+<td>io4</td>
+<td></td>
+</tr>
+<tr>
+<td>io5</td>
+<td></td>
+</tr>
+</table>
+  </fieldset>
+  
+   </form>
+</body>
+</html>

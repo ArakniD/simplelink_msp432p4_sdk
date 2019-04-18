@@ -1,0 +1,53 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../ti-widget-common/ti-widget-base-textbox.html">
+
+<polymer-element name="ti-widget-textbox" extends="ti-widget-base-textbox" attributes="" >
+    <template>
+        <style>
+            :host 
+            {
+                padding: 0px;
+            }
+            #textbox 
+            {
+                width: 100%;
+                vert-align:middle; 
+            }
+        </style>
+
+        <input type="text" id="textbox" on-change="{{onChangeHandler}}" on-input="{{onIntermediateChangeHandler}}" 
+                on-focus="{{focusHandler}}" on-blur="{{blurHandler}}"></input>
+        <shadow></shadow>
+    </template>
+    
+    <script>
+        Polymer ('ti-widget-textbox', 
+        {
+            getElement : function() 
+            {
+                return this.$.textbox;
+            },
+            setText : function(newValue)
+            {
+                var element = this.getElement();
+                
+                // attempt to preserve cursor position
+                var start = element.selectionStart;
+                var end = element.selectionEnd;
+                element.value = newValue;
+                if (end > newValue.length)
+                {
+                    end = newValue.length;
+                }
+                if (start <= end && this.hasFocus())
+                {
+                    element.setSelectionRange(start, end);
+                }
+            },
+            getText : function()
+            {
+                return this.$.textbox.value;
+            } 
+        });
+    </script>
+</polymer-element>

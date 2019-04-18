@@ -1,0 +1,435 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../ti-widget-common/ti-widget-image.html">
+<link rel="import" href="../ti-widget-common/ti-widget-label.html">
+<link rel="import" href="../ti-widget-common/ti-widget-panel.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../ti-widget-propertygrid/ti-widget-propertygrid.html">
+<link rel="import" href="../core-icon-button/core-icon-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../core-tooltip/core-tooltip.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icon/core-icon.html">
+<polymer-element name="ti-guicomposer-newtemplatewizard">
+
+    <template>
+
+
+        <paper-dialog id="paper_dialog" heading="{{dialogTitle}}" transition="paper-dialog-transition" autoCloseDisabled="true" style="background-color: white; ">
+
+            <div align="center">
+                <ti-widget-propertygrid  id="newTemplatePropertyGrid" style="width:500px" minwidthproperty="180px" ></ti-widget-propertygrid>
+                <div align="left" style="font-size:x-small;font-style:italic;">* = required field</div>
+            </div>
+            <div  align="center" style="padding-left:80px;">
+                <paper-button id="buttonCreateTemplate"  on-click="{{onCreateButtonClickedHdlr}}" style="padding-top:3px;">{{createButtonCaption}}</paper-button>
+                <paper-button id="buttonCancel" on-click="{{toggle}}" style="float:right">Close<core-icon icon="close" style="width:18px;" ></core-icon></paper-button>
+            </div>
+            <div align="center">
+                <core-icon id="warningIcon" icon="info" style="display:none;color:darkorange" ></core-icon>
+                <ti-widget-label id="statusLabel" style="color:black;" wrap label="status info here."></ti-widget-label>
+            </div>
+        </paper-dialog>
+    </template>
+
+
+    <!-- ------------------------------------------------------------------------------------- -->
+    <script>
+
+
+
+        Polymer ('ti-guicomposer-newtemplatewizard', {
+            /**
+             * Fired when the projectFolder or templateName changes.
+             *
+             * @event projectFolderUpdatedEvent
+             */
+
+            statusLabel: undefined,
+            warningIcon: undefined,
+            gui: undefined,
+            win: undefined,
+            path: undefined,
+            fs: undefined,
+            spawn: undefined,
+            exec: undefined,
+            metadataFile: undefined,
+            bsdLicenceHeader: undefined,
+            workingDir: undefined,
+            newTemplateDir: undefined,
+            designerDir: undefined,
+            designerSplashDir: undefined,
+            isWizardOpen: false,
+            _myTimeout: undefined,
+            copyright: '',
+            hasProjectBeenCreated: false,
+            os: 'win',
+            propertyNameValues: "Template Name *,name to be displayed in drop-down list of available templates,"+
+            "Description,info about what type of project the template creates,"+
+            "Version,template version (e.g. 0.0.1)",
+            publish: {
+                enableTIbranding: true,
+                isPropertyEditingMode: false,
+                polymerVersion: "0.5.5",
+                createButtonCaption: "Create Template",
+                dialogTitle: "New Template Wizard"
+            },
+
+            /**
+             *
+             */
+            toggle: function() {
+                if (this._myTimeout) {
+                    window.clearTimeout(this._myTimeout);
+                }
+                var isPropertyEditor = false;
+                var dialog = this.$.paper_dialog;
+                if (!this.isWizardOpen) {
+                    if ((isPropertyEditor !== undefined)&&(isPropertyEditor !== null) &&(isPropertyEditor) ) {
+                        this.isPropertyEditingMode = true;
+                    } else {
+                        this.isPropertyEditingMode = false;
+                    }
+                    if (this.isPropertyEditingMode){
+                        this.createButtonCaption = "Update Properties";
+                        this.dialogTitle = "Template Properties";
+                    } else {
+                        this.createButtonCaption = "Create Template";
+                        this.dialogTitle = "New Template Wizard"
+                    }
+                } else {
+                    this.isPropertyEditingMode = false;
+                }
+                this.isWizardOpen = !this.isWizardOpen;
+                this.clearStatus();
+                dialog.toggle();
+            },
+            clearStatus: function(){
+                this.warningIcon.style.display = 'none';
+                this.warningIcon.style.color='blue';
+                this.warningIcon.icon=' ';
+                this.statusLabel.style.display = 'none';
+                this.statusLabel.style.color = 'black';
+                this.statusLabel.innerHtml = '';
+                this.hasProjectBeenCreated = false;
+            },
+            onCreateButtonClickedHdlr: function(){
+                console.log("create button clicked!");
+                var ok = true;
+                this.templateName = undefined;
+
+
+                // Create the project folder
+                this.properties = this.$.newTemplatePropertyGrid.getJSON();
+                var tempName = this.properties[0].value;
+
+                    if (tempName.length === 0){
+                        this.notifyUser("info","blue","Please enter a template name.","black");
+                        ok = false;
+                    }
+                    this.templateName = tempName;
+                this.description = this.properties[1].value;
+                if (!this.description){
+                    this.description = this.templateName;
+                }
+                if (!this.version){
+                    this.version = '0.0.1';
+                }
+                this.version = this.properties[2].value;
+                if (ok) {
+                    if (!this.templateName){
+                        this.notifyUser("info", "blue", "Please fill in all required fields.", "black");
+                        ok = false;
+                    } else {
+                        this.projectJsonObj = {
+                            "template": this.templateName,
+                            "description": this.description,
+                            "version": this.version
+                        };
+                    }
+                }
+                if (ok){
+                    var userSpecifiedDir = this.path.join(this.templateRootDir, this.templateName)
+                    if (this.fs.existsSync(userSpecifiedDir)){
+                        this.notifyUser("info","blue","A template named "+this.templateName+" already exists.  Please either remove the old template folder or use another name.","black");
+                        ok = false;
+                    }
+                }
+                if (ok) {
+                   // verify that the index.gui file in the current project folder exists
+                    var projectGuiPath = this.path.join(document.gcGlobal.projectFolder,"app/index.gui");
+                    ok = this.fs.existsSync(projectGuiPath);
+                    if (!ok){
+                        this.notifyUser("info","blue","Please create a project that contains a valid .gui file first.","black");
+                    }
+                }
+                if (ok) {
+                    // disable the close button so that user's don't close the dialog
+                    // before the first status message is displayed
+                    this.$.buttonCancel.disabled = true;
+                    if ((this.templateName !== undefined)&&(this.templateName !== null)) {
+                        this.notifyUser("info", "blue", "Copying over files... please wait", "black");
+                        // allow the notification to get displayed by pausing execution
+                        var _self = this;
+                        setTimeout(function () {
+                            _self.createTemplate();
+                        }, 10);
+                    }
+                }
+
+            },
+            _createTemplate: function(){
+                var _self = this;
+                try {
+                    var newTemplateDir = this.path.join(this.templateRootDir, this.templateName);
+                    var newTemplateAppDir= this.path.join(newTemplateDir, 'app');
+                    var newTemplateDirCreated = false;
+                    var isNewnewTemplateDir = false;
+
+                    if (!this.fs.existsSync(newTemplateDir)) {
+                        isNewnewTemplateDir = true;
+                        this.fs.mkdirSync(newTemplateDir);
+                        newTemplateDirCreated = true;
+                    }
+
+
+                    if (isNewnewTemplateDir){
+
+                        // copy the project's app folder directly into the template's folder
+                        var projectAppFolder = this.path.join(document.gcGlobal.projectFolder,'app');
+                        this.copyRecursiveSync(projectAppFolder,newTemplateAppDir, false, null, 0);
+                        this.copyFileSync(this.path.join(document.gcGlobal.projectFolder,"previewTemplate.html"),this.path.join(newTemplateDir,"previewTemplate.html"));
+                        // Fix up the index.gui file to avoid hard-coded project names in e.g. image paths
+                        var templateGuiPath = this.path.join(newTemplateAppDir,"index.gui");
+                        var guiFile = this.fs.readFileSync(templateGuiPath,"utf8");
+                        var searchStr = '="'+document.gcGlobal.projectName;
+                        var replaceStr = '="%PROJECT_NAME%';
+                        while (guiFile.indexOf(searchStr) > 0){
+                            guiFile = guiFile.replace(searchStr,replaceStr);
+                        }
+                        this.fs.writeFileSync(templateGuiPath,guiFile);
+                        // Generate the project.json file
+                        this.genProjectJson(newTemplateDir, this.projectJsonObj);
+                        this.warningIcon.style.display = '';
+                        this.statusLabel.style.color = 'black';
+                        var msgText = "Template created successfully!  Please restart to update the New Project Wizard's template list.";
+                        if (!newTemplateDirCreated) {
+                            msgText = 'Template properties updated.';
+                        }
+                        this.notifyUser("check-circle", "green", msgText, "black");
+                        // close the dialog automatically in 1 second
+                        _self._myTimeout = window.setTimeout(function(){_self.toggle();},1000);
+                    }
+                } catch (e) {
+                    var errMsg = e.toString();
+                    if ((errMsg === undefined) || (errMsg === null) || (errMsg.length === 0)) {
+                        errMsg = "Error. e.code = " + e.code;
+                    }
+                    console.log(e.toString());
+                    this.notifyUser("error", "red", errMsg, "red");
+                }
+            },
+            createTemplate: undefined,
+            _notifyUser: function(iconName,iconColor, msgText, textColor){
+                var _self = this;
+
+                this.async(function() {
+                    if (_self.statusLabel) {
+                        if ((msgText !== undefined) && (msgText !== null)) {
+                            _self.statusLabel.style.color = textColor;
+                            _self.statusLabel.label = msgText;
+                            _self.statusLabel.style.display = '';
+                        } else {
+                            _self.statusLabel.style.display = 'none';
+                        }
+                        if (iconName) {
+                            _self.warningIcon.style.color = iconColor;
+                            _self.warningIcon.icon = iconName;
+                            _self.warningIcon.style.display = '';
+                        } else {
+                            _self.warningIcon.style.display = 'none';
+                        }
+                        if (_self.$.buttonCancel.disabled){
+                            if ((iconColor === 'red')||(iconColor === 'green')){
+                                _self.$.buttonCancel.disabled = false;
+                            }
+                        }
+                    }
+
+                });
+            },
+            notifyUser: undefined,
+            numTimesWaiting: 0,
+            _waitForFile: function(fileName) {
+                var _self = this;
+                fs.exists(fileName),function(exists) {
+                    if (!exists) {
+                        console.log("wait " + _self.numTimesWaiting++);
+                        if (_self.numTimesWaiting > 100) {
+                            throw "waiting too long for " + fileName;
+                        } else {
+                            setTimeout(_self.waitForFile(fileName), 50);
+                        }
+
+                    } else {
+                        _self.numTimesWaiting = 0;
+                    }
+                }
+            },
+            waitForFile: undefined,
+            setDefaultProperties: function(){
+                    var groupRow = this.$.newTemplatePropertyGrid.findRow('group');
+                    if (groupRow >= 0) {
+                        this.$.newTemplatePropertyGrid.setValue(groupRow,"TI Apps");
+                    }
+            },
+            _genProjectJson: function(folderName, jsonObject){
+                var jsonFile = JSON.stringify(jsonObject);
+
+                try {
+                    this.fs.writeFileSync(this.path.join(folderName,"project.json"), jsonFile);
+                }
+                catch(exXml){
+                    console.log("Error writing "+folderName+"/project.json.  ex="+exXml.toString());
+                }
+
+            },
+            genProjectJson: undefined,
+            _copyFile: function(src,dest){
+                this.fs.createReadStream(src).pipe(this.fs.createWriteStream(dest));
+            },
+            copyFile: undefined,
+            _copyFileSync: function(src,dest){
+                // see http://stackoverflow.com/questions/19268723/nodejs-with-child-process-how-to-escape-my-command
+                    try {
+                        var buffer = this.fs.readFileSync(src, buffer);
+                        if (buffer.length > 0) {
+                            this.fs.writeFileSync(dest, buffer);
+                        } else {
+                            throw "attempted to copy an empty file: " + src;
+                        }
+                        //              this.execSync('xcopy "'+src+'" "'+dest+'" /y /i');
+                    }
+                    catch(ex){
+                        throw "error copying file "+src+" ex="+ex.toString();
+                    }
+            },
+            copyFileSync: undefined,
+            /**
+             *   if useLinks parameter is true, the files are linked using fs.linkSync instead of copying them.
+             *   This uses much less memory and time than synchronously copying over the files.
+             *   However, all changes made to the file in either the source or destination folder
+             *   will be seen in both folders (subject to cacheing??)
+             */
+            copyRecursiveSync: function(src, dest, useLinks, skipFolderLists,levelIndex) {
+                var exists = this.fs.existsSync(src);
+                var stats = exists && this.fs.statSync(src);
+                var isDirectory = exists && stats.isDirectory();
+                var _self = this;
+                if (exists && isDirectory) {
+                    var dirName = this.path.basename(src);
+                    var skipThisFolder = false;
+                    if ((skipFolderLists !== null) && (levelIndex >= 0) && (levelIndex < skipFolderLists.length)){
+                        var skipFolderList = skipFolderLists[levelIndex++];
+                        if (skipFolderList !== null) {
+                            for (var j = 0; j < skipFolderList.length; ++j) {
+                                var skipFolderName = skipFolderList[j];
+                                if (dirName === skipFolderName) {
+                                    skipThisFolder = true;
+                                    console.log("skipping folder ["+stats.size+"] "+src);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (!skipThisFolder) {
+                        this.fs.mkdirSync(dest);
+                        this.fs.readdirSync(src).forEach(function (childItemName) {
+                            _self.copyRecursiveSync(this.path.join(src, childItemName),
+                                    this.path.join(dest, childItemName), useLinks, skipFolderLists,levelIndex );
+                        });
+                    }
+                } else {
+                    if (useLinks){
+                        //  fs.linkSync creates a link of the file, not an actual copy
+                        //  however, this uses much less memory and time and is less prone to crashing
+                        //  than attempting to do an actual streaming copy of the file.
+                        this.fs.linkSync(src, dest);
+                    } else {
+                        _self.copyFileSync(src,dest);
+                    }
+                }
+            },
+            execSync: function(command){
+                //TODO: when nw.js has moved to Node.js v12.0 API or the io.js equivalent, replace the following with child_process.execSync
+                // The problem with the following is that it is NOT done synchronously, so execSync is a misnomer at this time.
+                var output = '';
+                try {
+                    this.exec(command);
+                }
+                catch(ex){
+                    console.log('Exception while running execSync: ex='+ex.toString());
+                }
+                return output;
+            },
+
+            _xcopyRecursive: function(src,dest){
+                if (this.os === 'win'){
+                    this.execSync('xcopy "'+src+'" "'+dest+'" /s /y /i');
+                } else {
+                    throw 'xcopy not supported on '+this.os;
+                }
+            },
+            xcopyRecursive: undefined,
+            ready: function () {
+                this.enableTIbranding =  document.gcGlobal.tiBrandingEnabled;
+                this.gui = require('nw.gui');
+                this.win = this.gui.Window.get();
+                this.path = require('path');
+                this.fs = require('fs');
+                this.onFinished = require('on-finished');
+                this.destroy = require('destroy');
+
+                this.workingDir = this.path.normalize(process.cwd());
+                this.templateRootDir = this.path.join(workingDir,'../../designer/templates');
+
+                console.log('newTemplateDir = '+this.templateRootDir);
+                this.statusLabel = this.$.statusLabel;
+                this.warningIcon = this.$.warningIcon;
+                this.genProjectJson = this._genProjectJson.bind(this);
+                this.createTemplate = this._createTemplate.bind(this);
+                this.notifyUser = this._notifyUser.bind(this);
+                this.waitForFile = this._waitForFile.bind(this);
+                this.spawn = require("child_process").spawn;
+                this.exec = require('child_process').exec;
+                this.copyFile = this._copyFile.bind(this);
+                this.copyFileSync = this._copyFileSync.bind(this);
+                this.xcopyRecursive = this._xcopyRecursive.bind(this);
+
+                this.$.newTemplatePropertyGrid.nameValuePairs = this.propertyNameValues;
+                this.$.newTemplatePropertyGrid.nameValuePairsChanged();  // avoid race condition by forcing the update of the nameValuePairs
+                this.setDefaultProperties();
+                this.os = 'linux';
+                if (navigator.appVersion.indexOf("Mac") != -1)
+                    this.os = 'osx';
+                if (navigator.appVersion.indexOf("Win") != -1)
+                    this.os = 'win';
+
+                var _self = this;
+                // Workaround to ensure paper dialog is properly position: see https://github.com/Polymer/paper-dialog/issues/44
+                this.$.paper_dialog.addEventListener("core-overlay-open-completed", function (e) {
+                    setTimeout(function(){
+                        //_self.$.paper_dialog.resetTargetDimensions();
+                        _self.$.paper_dialog.updateTargetDimensions();
+                    },400);
+                });
+
+            },
+            domReady: function(){
+                this.$.newTemplatePropertyGrid.configure();
+            }
+
+        });
+    </script>
+
+</polymer-element>

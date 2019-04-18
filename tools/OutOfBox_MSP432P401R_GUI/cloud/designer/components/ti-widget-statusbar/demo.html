@@ -1,0 +1,177 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+Copyright (c) 2014, Texas Instruments Incorporated
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+*   Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+*   Neither the name of Texas Instruments Incorporated nor the names of
+its contributors may be used to endorse or promote products derived
+from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+	<!--[if gte IE 6]>
+	<script type="text/javascript">
+		// this is IE greater than or equal to 6
+		var isInternetExplorer=true;
+	</script>
+	<![endif]-->
+
+	<script>
+		var isIE =   ((navigator.appName == 'Microsoft Internet Explorer') ||
+		((navigator.appName == 'Netscape') &&
+		(new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)));
+		if (window.isInternetExplorer) {
+			isIE =  true;
+		}
+
+		if ( isIE ){
+			var object = document.createElement("object");
+			object.setAttribute("id", "ticloudagentlauncher");
+			object.setAttribute("type", "application/x-ticloudagentlauncher");
+			object.setAttribute("width", "0");
+			object.setAttribute("height", "0");
+			document.head.appendChild( object );
+			window.TICloudAgent_HACK = {};
+			window. TICloudAgent_HACK.plugin = document.getElementById("ticloudagentlauncher");
+		}
+	</script>
+	<link rel="import" href="../polymer/polymer.html">
+	<script src="../webcomponentsjs/webcomponents.js"></script>
+	<style>
+		body {
+			height: 100%;
+			margin: 0;
+			padding: 20px;
+			font-family: sans-serif;
+		}
+		.icons {
+			color: red;
+		}
+		.wide { display: block; padding-left: 5px; padding-top:5px; vertical-align:bottom; background-color: gray; }
+		.container {height: 28px; width:120px;}
+	</style>
+	<link rel="import" href="../ti-core-stylesheets/ti-core-stylesheets.html">
+	<link rel="import" href="../ti-core-icons/ti-core-icons.html">
+	<link rel="import" href="../core-icons/core-icons.html">
+	<link rel="import" href="../core-icons/av-icons.html">
+	<link rel="import" href="ti-widget-statusbar.html">
+
+</head>
+
+<body style="padding-left:20px;">
+<h1 align="center">Demo of ti-widget-statusbar</h1><p>&nbsp;</p>
+The status bar is shown at the bottom of this page.    It is configured so that it always appears above any text that is scrolled.    <p>&nbsp;</p>
+<p>&nbsp;</p>
+Progress Bar demo: <span id="btnStart"><button onclick="startBtnOnClickHdlr()">Start</button></span> <span id="btnStop" style="display:none"><button onclick="stopBtnOnClickHdlr()">Stop</button></span>
+<p>&nbsp;</p>
+Status string demo:<p></p>
+&nbsp;&nbsp;<input type="text" id="inputText1" name="Text to display in status bar (statusString1)" value="" maxlength="900" style="width:400px;" placeholder="status string 1" />&nbsp;&nbsp;<button onclick="setStatusString1BtnOnClickHdlr()">Submit</button>
+<br/>
+&nbsp;&nbsp;<input type="text" id="inputText2" name="Text to display in status bar (statusString2)" value="" maxlength="900" style="width:400px;" placeholder="status string 2" />&nbsp;&nbsp;<button onclick="setStatusString2BtnOnClickHdlr()">Submit</button>
+<br/>
+&nbsp;&nbsp;<input type="text" id="inputText3" name="Text to display in status bar (statusString3)" value="" maxlength="900" style="width:400px;" placeholder="status string 3" />&nbsp;&nbsp;<button onclick="setStatusString3BtnOnClickHdlr()">Submit</button>
+<p>&nbsp;</p>
+Icon demo: <select name="Icon List" id="iconList" value="2" onchange="iconListOnChangeHdlr()">
+	<option value="none">None</option>
+	<option value="ti-core-icons:link">link</option>
+	<option value="ti-core-icons:nolink">nolink</option>
+	<option value="cloud-done">cloud-done (core-icons)</option>
+	<option value="settings-power">settings-power (core-icons)</option>`	
+	<option value="ti-core-icons:ti-logo">ti-logo</option>
+</select>
+<p></p>
+
+<ti-widget-statusbar id="footer">
+</ti-widget-statusbar>
+<script>
+	var startBtnDiv = document.getElementById("btnStart");
+	var stopBtnDiv = document.getElementById("btnStop");
+	var input1TextField = document.getElementById("inputText1");
+	var input2TextField = document.getElementById("inputText2");
+	var input3TextField = document.getElementById("inputText3");
+	var isRunning = false;
+	var footer = document.getElementById('footer');
+	var myTimeout = undefined;
+	var iconList = document.getElementById("iconList");
+	var startBtnOnClickHdlr = function(e){
+		startBtnDiv.style.display = 'none';
+		stopBtnDiv.style.display='';
+		isRunning = true;
+		footer.progress = 0;
+		footer.progressBarEnabled = true;
+		_self = this;
+		myTimeout = window.setTimeout(function(){_self.updateProgress(_self)}, 25);
+	}
+
+	var stopBtnOnClickHdlr = function(e){
+		stopBtnDiv.style.display = 'none';
+		startBtnDiv.style.display='';
+		isRunning = false;
+		window.clearTimeout(this.myTimeout);
+	}
+	var updateProgress = function(_self){
+		var progress = _self.footer.progress+1;
+		if (progress > 100){
+			progress = 100;
+			_self.footer.progress = 100;
+			_self.footer.progressBarEnabled = false;
+			stopBtnDiv.style.display = 'none';
+			startBtnDiv.style.display='';
+		} else {
+			_self.footer.progress = progress;
+			_self.myTimeout = window.setTimeout(function(){_self.updateProgress(_self)}, 25);
+		}
+	}
+	var setStatusString1BtnOnClickHdlr = function(e){
+		footer.statusString1 = input1TextField.value;
+		footer.tooltipStatusString1 = input1TextField.value;
+	}
+	var setStatusString2BtnOnClickHdlr = function(e){
+		footer.statusString2 = input2TextField.value;
+		footer.tooltipStatusString2 = input2TextField.value;
+
+	}
+	var setStatusString3BtnOnClickHdlr = function(e){
+		footer.statusString3 = input3TextField.value;
+		footer.tooltipStatusString3 = "And now, for something COMPLETELY different!";
+	}
+	var iconListOnChangeHdlr = function(){
+		if (iconList.value.indexOf("none") >= 0 ){
+			footer.iconName = '';
+		} else {
+			footer.iconName = iconList.value;
+			footer.tooltipIconImage = "The name of this image is "+iconList.value;
+		}
+	}
+</script>
+</body>
+</html>

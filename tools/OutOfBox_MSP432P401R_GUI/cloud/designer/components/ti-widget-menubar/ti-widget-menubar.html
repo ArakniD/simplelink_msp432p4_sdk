@@ -1,0 +1,338 @@
+<!--
+`ti-widget-menubar` a menu bar to which menu items can be added.
+    - 
+Example:
+
+    <ti-widget-menubar>
+        <ti-widget-menuitem></ti-widget-menuitem>
+        <ti-widget-menuitem></ti-widget-menuitem>
+        <ti-widget-menuitem></ti-widget-menuitem>
+    </ti-widget-menubar>
+
+See ../demo.html for a full working example of how to use this component.
+
+@group TI Widget
+@element ti-widget-menubar
+@homepage https://gitorious.design.ti.com/guicomposer-nw/ti-widget-menubar
+-->
+<!--
+    Copyright (c) 2015, Texas Instruments Incorporated
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    *   Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    *   Neither the name of Texas Instruments Incorporated nor the names of
+    its contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<script type='text/javascript' src="../ti-core-assets/scripts/q.js"></script>
+<script src='src/nav.js'></script>
+<link rel="import" href="../ti-core-icons/ti-core-icons.html">
+
+<polymer-element name="ti-widget-menubar" attributes="logoTitle logoImage">
+<template>
+    <style>
+        *{
+            Box-sizing: Border-box;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: -moz-none;
+            -o-user-select: none;
+            user-select: none;
+        } 
+        
+        :host {
+            position:relative;
+            top:0;
+            left:0;
+            width: 100%;
+            min-width: 100%;
+            height: 41px;
+            margin: 0 0 0 0;
+            padding: 0; 
+            display: block;
+            z-index: 1000;
+        }
+        
+        /* styles for the app drawer */
+        #navMenuLogo {
+            display:inline-block;
+            margin: 0px;
+            padding: 0 3px 0 10px;
+        }
+        #LogoImg {
+            height: 41px;
+        }
+        #moreMenuLogo {
+            position: absolute; 
+            right: 0;
+            top: 0;
+        }
+        #MoreImg {
+            height: 41px;
+        }
+        #navMenuList {
+            list-style-type: none; 
+            display:inline-block;
+            height:41px;
+            vertical-align:bottom;
+            margin:0px;
+            padding:0px;
+        }
+        
+        #hoverMenu {
+            z-index: 999;
+            position: absolute;
+            border-radius: 0 0 .3em .3em;
+            border-color: #118899;
+            border-style: solid;
+            border-width: 0 1px 1px 1px;
+            padding: 0.5em 0em 1em 0em;
+            right: 0px;
+            margin:0px;
+        }
+        
+        div, header, #hoverMenu {
+            background-color: inherit;
+        }
+        
+        #hoverMenu li {
+            padding: 8px 0 8px 0;
+            text-decoration:none; 
+            font-size:1.2em;
+            font-weight:500;
+        }
+    </style>
+    
+    <header>
+        <template if="{{logoImage}}">
+            <div id="navMenuLogo">
+                <a title="{{logoTitle}}" style="color:inherit; cursor:default"><core-icon id="LogoImg" icon="{{logoImage}}"/></a>
+            </div>
+        </template>
+        <ul id="navMenuList">
+            <content select=":not(.moreMenuItem)"></content>
+        </ul>
+        <div id="moreMenuLogo">
+            <a id="moreButton" tabindex="-1" title="more menu options" style="color:inherit; cursor:pointer" on-click="{{showHide}}"><core-icon id="MoreImg" icon="more-vert"/></a>
+            
+            <div>
+                <ul class="hoverMenu" id="hoverMenu" layout vertical style="display:none;list-style-type:none;">
+                    <content select=".moreMenuItem"></content>
+                </ul>
+            </div>
+        </div>
+    </header>
+</template>
+<script>
+    
+    Polymer('ti-widget-menubar', 
+    {
+        
+        logoTitle : '',
+        logoImage : '',
+        _moreIndex : 0,
+        _showing : false,
+        showHide : function() {
+            if (this._showing)
+            {
+                this.$.hoverMenu.style.display = "none";
+                this._showing = false;
+            }
+            else
+            {
+                this.$.hoverMenu.style.display = "";
+                this._showing = true;
+            }
+        },
+        show : function(event, detail, target) 
+        {
+            var menuItem = this.findMenuByName(target.innerText);
+            if (menuItem)
+            {
+                var y = target.getBoundingClientRect().top;
+                var x = this.$.hoverMenu.getBoundingClientRect().right-1;
+                menuItem.moveTo(x, y);
+                menuItem.show();
+            } 
+        },
+        hide : function(event, detail, target) 
+        { 
+            var menuItem = this.findMenuByName(target.innerText);
+            if (menuItem)
+            {   
+                menuItem.hide();
+            } 
+        },
+        findMenuByName : function(name)
+        {
+            name = name.trim();
+            for(var i = 0; i < this.menuItems.length; i++ )
+            {
+                var item = this.menuItems[i];
+                if (item.name === name)
+                {
+                    return item;
+                }
+            }
+            return null;
+        },
+        addClassName: function(name, element)
+        {
+            this.addRemoveClassName(true, name, element);
+        },
+        removeClassName: function(name, element)
+        {
+            this.addRemoveClassName(false, name, element);
+        },
+        addRemoveClassName: function(isAdd, name, element)
+        {
+            if (element.className.indexOf(name) < 0)
+            {
+                if (isAdd)
+                {
+                    // add because it doesn't exist yet and should
+                    element.className = (element.className + ' ' + name).trim();
+                }
+            }
+            else if (!isAdd)
+            {
+                // remove because it does exist and shouldn't
+                element.className = element.className.replace(name, "").trim();
+            }
+        },
+        onChildMenuItemsChanged : function() 
+        {
+        	if (this._domReadyWasCalled)
+        	{
+	            this._menuWidths = [];
+	            var items = this.children;
+	            var moreWidth = this.$.moreMenuLogo.scrollWidth
+	            var cumulativeWidth = moreWidth;
+	            if (this.logoImage)
+	            {
+	                cumulativeWidth += this.$.navMenuLogo.scrollWidth;
+	            }
+	            if (items)
+	            {
+	                this._moreIndex = items.length;
+	                for(var i = 0; i < items.length; i++ )
+	                {
+	                    var item = items[i];
+	                    if (item && item.getWidth)
+	                    {
+	                        this.removeClassName('moreMenuItem', item);
+	                        cumulativeWidth += item.getWidth();
+	                        this._menuWidths.push(cumulativeWidth);
+	                    }
+	                }
+	                this._menuWidths[this._menuWidths.length-1] -= moreWidth;
+	            }
+	            this.onresized();
+        	}
+        },
+        domReady : function() 
+        {
+        	this._domReadyWasCalled = true;
+        	
+        	this.onChildMenuItemsChanged();
+        	
+            var that = this;
+            window.addEventListener("resize", function() { that.onresized(); });
+            
+            // add lose of focus listener to more menu item to hide the popup menu if showing.
+            this.$.moreButton.addEventListener("blur", function() 
+            {
+                if (that._showing)
+                {
+                    setTimeout(function() 
+                    {
+                        that.showHide();
+                    }, 200);
+                }
+            }, true); 
+        },
+        onresized : function()
+        {
+            var rect = this.getBoundingClientRect();
+            var size = rect.right - rect.left;
+            
+            // attempt to move children from more icon
+            while(this._moreIndex < this._menuWidths.length)
+            {
+                var right = this._menuWidths[this._moreIndex];
+                if (right < size)
+                {
+                    // there is room in the regular menu
+                    var menuItem = this.children[this._moreIndex];
+                    this._moreIndex++;
+                    if (menuItem.popupOrientation)
+                    {
+                        menuItem.popupOrientation('bottom');
+                    }
+                    this.removeClassName('moreMenuItem', menuItem);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
+            // attempt to move children to more icon
+            while(this._moreIndex > 0)
+            {
+                var right = this._menuWidths[this._moreIndex-1];
+                if (right >= size)
+                {
+                    // no more room for this item, move to more menu
+                    this._moreIndex--;
+                    var menuItem = this.children[this._moreIndex];
+                    if (menuItem.popupOrientation)
+                    {
+                        menuItem.popupOrientation('side');
+                    }
+                    this.addClassName('moreMenuItem', menuItem);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
+            // show/hide more menu button as needed
+            if (this._moreIndex < this._menuWidths.length)
+            {
+                this.$.moreMenuLogo.style.display = "";
+            }
+            else
+            {
+                this.$.moreMenuLogo.style.display = "none";
+            }
+               
+        }
+    });
+   
+</script>
+</polymer-element>
+    

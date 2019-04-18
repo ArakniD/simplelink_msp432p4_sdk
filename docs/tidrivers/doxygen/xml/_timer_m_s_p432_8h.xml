@@ -1,0 +1,485 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="_timer_m_s_p432_8h" kind="file" language="C++">
+    <compoundname>TimerMSP432.h</compoundname>
+    <includes local="no">stdbool.h</includes>
+    <includes local="no">stdint.h</includes>
+    <includes refid="_power_8h" local="no">ti/drivers/Power.h</includes>
+    <includes refid="_timer_8h" local="no">ti/drivers/Timer.h</includes>
+    <includes local="no">ti/drivers/dpl/HwiP.h</includes>
+    <includes local="no">ti/drivers/dpl/SemaphoreP.h</includes>
+    <includedby refid="_capture_m_s_p432_8h" local="no">CaptureMSP432.h</includedby>
+    <incdepgraph>
+      <node id="285">
+        <label>stdbool.h</label>
+      </node>
+      <node id="288">
+        <label>ti/drivers/utils/List.h</label>
+        <link refid="_list_8h"/>
+        <childnode refid="286" relation="include">
+        </childnode>
+        <childnode refid="285" relation="include">
+        </childnode>
+        <childnode refid="289" relation="include">
+        </childnode>
+      </node>
+      <node id="286">
+        <label>stdint.h</label>
+      </node>
+      <node id="292">
+        <label>ti/drivers/dpl/SemaphoreP.h</label>
+      </node>
+      <node id="289">
+        <label>stddef.h</label>
+      </node>
+      <node id="291">
+        <label>ti/drivers/dpl/HwiP.h</label>
+      </node>
+      <node id="290">
+        <label>ti/drivers/Timer.h</label>
+        <link refid="_timer_8h"/>
+        <childnode refid="286" relation="include">
+        </childnode>
+      </node>
+      <node id="284">
+        <label>TimerMSP432.h</label>
+        <link refid="_timer_m_s_p432_8h"/>
+        <childnode refid="285" relation="include">
+        </childnode>
+        <childnode refid="286" relation="include">
+        </childnode>
+        <childnode refid="287" relation="include">
+        </childnode>
+        <childnode refid="290" relation="include">
+        </childnode>
+        <childnode refid="291" relation="include">
+        </childnode>
+        <childnode refid="292" relation="include">
+        </childnode>
+      </node>
+      <node id="287">
+        <label>ti/drivers/Power.h</label>
+        <link refid="_power_8h"/>
+        <childnode refid="285" relation="include">
+        </childnode>
+        <childnode refid="286" relation="include">
+        </childnode>
+        <childnode refid="288" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="293">
+        <label>TimerMSP432.h</label>
+        <link refid="_timer_m_s_p432_8h"/>
+        <childnode refid="294" relation="include">
+        </childnode>
+      </node>
+      <node id="294">
+        <label>CaptureMSP432.h</label>
+        <link refid="_capture_m_s_p432_8h"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="struct_timer_m_s_p432___h_w_attr__" prot="public">TimerMSP432_HWAttr_</innerclass>
+    <innerclass refid="struct_timer_m_s_p432___object__" prot="public">TimerMSP432_Object_</innerclass>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_timer_m_s_p432_8h_1ac3faa216806be0265d6a156e122bfbb3" prot="public" static="no">
+        <type>struct <ref refid="struct_timer_m_s_p432___h_w_attr__" kindref="compound">TimerMSP432_HWAttr_</ref></type>
+        <definition>typedef struct TimerMSP432_HWAttr_  TimerMSP432_HWAttrs</definition>
+        <argsstring></argsstring>
+        <name>TimerMSP432_HWAttrs</name>
+        <briefdescription>
+<para>TimerMSP432 Hardware Attributes. </para>        </briefdescription>
+        <detaileddescription>
+<para>Timer hardware attributes that tell the TimerMSP432 driver specific hardware configurations and interrupt priority settings.</para><para>The Timer32 only supports MCLK as a clock source. As a result, the clockSource field has no event for Timer32 instances.</para><para>A sample structure is shown below: <programlisting><codeline><highlight class="normal">const<sp/>TimerMSP432_HWAttrs<sp/>timerMSP432HWAttrs[]<sp/>=</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.timerBaseAddress<sp/>=<sp/>TIMER32_0_BASE,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>TIMER_A_CLOCKSOURCE_SMCLK,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_T32_INT1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>~0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.timerBaseAddress<sp/>=<sp/>TIMER_A1_BASE,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>TIMER_A_CLOCKSOURCE_SMCLK,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_TA1_0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>~0</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.timerBaseAddress<sp/>=<sp/>TIMER_A2_BASE,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>TIMER_A_CLOCKSOURCE_ACLK,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_TA2_0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>~0</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" line="220" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_timer_m_s_p432_8h_1acefcbb2fb4596bca2dd9338adddd53bd" prot="public" static="no">
+        <type>struct <ref refid="struct_timer_m_s_p432___object__" kindref="compound">TimerMSP432_Object_</ref></type>
+        <definition>typedef struct TimerMSP432_Object_  TimerMSP432_Object</definition>
+        <argsstring></argsstring>
+        <name>TimerMSP432_Object</name>
+        <briefdescription>
+<para>TimerMSP432 Object. </para>        </briefdescription>
+        <detaileddescription>
+<para>The application must not access any member variables of this structure! </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" line="238" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="_timer_m_s_p432_8h_1ad3b622d4875264bf82f29de28fcc9b9e" prot="public" static="no" mutable="no">
+        <type>const <ref refid="_timer_8h_1a97afbdd9735ae145134ecdb530a08cf4" kindref="member">Timer_FxnTable</ref></type>
+        <definition>const Timer_FxnTable TimerMSP432_Timer_A_fxnTable</definition>
+        <argsstring></argsstring>
+        <name>TimerMSP432_Timer_A_fxnTable</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" line="171" column="1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_timer_m_s_p432_8h_1adfc465b5a2bf4e50e5f30f996313fdf6" prot="public" static="no" mutable="no">
+        <type>const <ref refid="_timer_8h_1a97afbdd9735ae145134ecdb530a08cf4" kindref="member">Timer_FxnTable</ref></type>
+        <definition>const Timer_FxnTable TimerMSP432_Timer32_fxnTable</definition>
+        <argsstring></argsstring>
+        <name>TimerMSP432_Timer32_fxnTable</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" line="172" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_timer_m_s_p432_8h_1a4bfb67ec5f2dbd00d6c0274d42afa38c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool TimerMSP432_allocateTimerResource</definition>
+        <argsstring>(uint32_t baseAddress)</argsstring>
+        <name>TimerMSP432_allocateTimerResource</name>
+        <param>
+          <type>uint32_t</type>
+          <declname>baseAddress</declname>
+        </param>
+        <briefdescription>
+<para>Function to allocate a timer peripheral. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function is intended to be used by any driver which implements a timer hardware peripheral.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>baseAddress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The base address of a timer hardware peripheral.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A bool returning true if the timer resource was successfully allocated. If the base address is not valid or if the resource is not available, false is returned.</para></simplesect>
+<simplesect kind="see"><para><ref refid="_timer_m_s_p432_8h_1aa86618630f05a6439da89aa61987dc0c" kindref="member">TimerMSP432_freeTimerResource()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" line="254" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_timer_m_s_p432_8h_1aa86618630f05a6439da89aa61987dc0c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TimerMSP432_freeTimerResource</definition>
+        <argsstring>(uint32_t baseAddress)</argsstring>
+        <name>TimerMSP432_freeTimerResource</name>
+        <param>
+          <type>uint32_t</type>
+          <declname>baseAddress</declname>
+        </param>
+        <briefdescription>
+<para>Function to de-allocate a timer peripheral. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function is intended to be used by any driver which implements a timer hardware peripheral. Calling this function will release power constraints set in <ref refid="_timer_m_s_p432_8h_1a4bfb67ec5f2dbd00d6c0274d42afa38c" kindref="member">TimerMSP432_allocateTimerResource()</ref>;</para><para><simplesect kind="pre"><para>A successful call to <ref refid="_timer_m_s_p432_8h_1a4bfb67ec5f2dbd00d6c0274d42afa38c" kindref="member">TimerMSP432_allocateTimerResource()</ref> using the baseAddress must have been made prior to calling this API.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>baseAddress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The base address of a timer hardware peripheral.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="see"><para><ref refid="_timer_m_s_p432_8h_1a4bfb67ec5f2dbd00d6c0274d42afa38c" kindref="member">TimerMSP432_allocateTimerResource()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" line="270" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Timer driver interface for MSP432 devices. </para>    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+</para><para><heading level="1">Operation</heading>
+</para><para>This driver implements two independent hardware peripherals on the MSP432: Timer_A and Timer32. The Timer_A implementation supports two clock sources, SMCLK and ACLCK, with multiple clock dividers. The Timer32 implementation supports a single clock source, MCLK, with 3 clock dividers. For each driver instance, the configuration of the clock dividers is determined using the clock source, period, and period units. Note that the SMCLK and MCLK frequencies can change after <ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref>.</para><para><heading level="3">MPS432 Timer Driver Configuration</heading>
+</para><para>In order to use the Timer APIs, the application is required to define 4 configuration items in the application Board.c file:</para><para><orderedlist>
+<listitem><para>An array of TimerMSP432_Object elements, which will be used by by the driver to maintain instance state. Below is an example TimerMSP432_Object array appropriate for the MSP432 LaunchPad board: <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/Timer.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/timer/TimerMSP432.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TimerMSP432_Object<sp/>timerMSP432Objects[3];</highlight></codeline>
+</programlisting></para></listitem><listitem><para>An array of TimerMSP432_HWAttrs elements that defines which</para></listitem></orderedlist>
+</para><para>Below is an example TimerMSP432_HWAttrs array appropriate for the MSP432 LaunchPad board: <programlisting><codeline><highlight class="normal">const<sp/>TimerMSP432_HWAttrs<sp/>timerMSP432HWAttrs[3]<sp/>=</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.timerBaseAddress<sp/>=<sp/>TIMER32_0_BASE,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>TIMER_A_CLOCKSOURCE_SMCLK,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_T32_INT1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>~0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.timerBaseAddress<sp/>=<sp/>TIMER_A1_BASE,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>TIMER_A_CLOCKSOURCE_SMCLK,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_TA1_0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>~0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.timerBaseAddress<sp/>=<sp/>TIMER_A2_BASE,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>TIMER_A_CLOCKSOURCE_ACLK,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_TA2_0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>~0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting></para><para><orderedlist>
+<listitem><para>An array of <ref refid="_timer_8h_1a4c61ce326e1836cd5a5f9d9a728c1ac4" kindref="member">Timer_Config</ref> elements, one for each Timer instance. Each element of this array identifies the device-specific API function table, the device specific timer object instance, and the device specific Hardware Attributes to be used for each timer instance. Below is an example <ref refid="_timer_8h_1a4c61ce326e1836cd5a5f9d9a728c1ac4" kindref="member">Timer_Config</ref> array appropriate for the MSP432 LaunchPad board: <programlisting><codeline><highlight class="normal">const<sp/>Timer_Config<sp/>Timer_config[3]<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.fxnTablePtr<sp/>=<sp/>&amp;TimerMSP432_Timer32_fxnTable,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/>&amp;timerMSP432Objects[0],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;timerMSP432HWAttrs[0]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.fxnTablePtr<sp/>=<sp/>&amp;TimerMSP432_Timer_A_fxnTable,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/>&amp;timerMSP432Objects[1],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;timerMSP432HWAttrs[1]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.fxnTablePtr<sp/>=<sp/>&amp;TimerMSP432_Timer_A_fxnTable,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/>&amp;timerMSP432Objects[2],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;timerMSP432HWAttrs[2]</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting></para></listitem><listitem><para>A global variable, Timer_count, that informs the driver how many timer instances are defined: <programlisting><codeline><highlight class="normal">const<sp/>uint_least8_t<sp/>Timer_count<sp/>=<sp/>3;</highlight></codeline>
+</programlisting></para></listitem></orderedlist>
+</para><para><heading level="1">Resource Allocation</heading>
+</para><para>Allocation of each timer peripheral is managed through a set of resource allocation APIs. For example, the TimerMSP432_allocateTimerResource API will allocate a timer for exclusive use. Any attempt to allocate this resource in the future will result in a false value being returned from the allocation API. To free a timer resource, the TimerMSP432_freeTimerResource is used. The application is not responsible for calling these allocation APIs directly.</para><para><heading level="3">Power Management</heading>
+</para><para>The TI-RTOS power management framework will try to put the device into the most power efficient mode whenever possible. Please see the technical reference manual for further details on each power mode.</para><para>This driver supports dynamic power performance levels. The driver will determine which power performance levels are compatible with the desired period and period units. The driver prevents transitions to performance levels in which the period cannot be generated.</para><para>After a performance level change, the period is recalculated such that the generated period will remain the same. The exact period may vary after a performance level transition. This is due to a change in clock frequency and hence period per clock cycle.</para><para>The following statements are valid:<itemizedlist>
+<listitem><para>After <ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref>: Clocks are enabled to the timer resource. Dynamic performance level changes are allowed.</para></listitem><listitem><para>After <ref refid="_timer_8h_1ae2f09cd2a7f7251e5fffade75378c332" kindref="member">Timer_start()</ref>: DEEPSLEEP mode is disabled. The device can only go to Idle power mode. Performance level changes are not allowed.</para></listitem><listitem><para>After <ref refid="_timer_8h_1a3b951947aeec93b4610f87ba7b8a8621" kindref="member">Timer_stop()</ref>: Conditions are equal as for after Timer_open.</para></listitem><listitem><para>After <ref refid="_timer_8h_1a826779747913a65d4f683a627fd0759f" kindref="member">Timer_close()</ref>: The underlying GPTimer is turned off, and the clock to the timer and pin are disabled. </para></listitem></itemizedlist>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2016-2018,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>are<sp/>met:</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>Texas<sp/>Instruments<sp/>Incorporated<sp/>nor<sp/>the<sp/>names<sp/>of</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>its<sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>from<sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>THIS<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>BY<sp/>THE<sp/>COPYRIGHT<sp/>HOLDERS<sp/>AND<sp/>CONTRIBUTORS<sp/>&quot;AS<sp/>IS&quot;</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>AND<sp/>ANY<sp/>EXPRESS<sp/>OR<sp/>IMPLIED<sp/>WARRANTIES,<sp/>INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>THE<sp/>IMPLIED<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY<sp/>AND<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>PURPOSE<sp/>ARE<sp/>DISCLAIMED.<sp/>IN<sp/>NO<sp/>EVENT<sp/>SHALL<sp/>THE<sp/>COPYRIGHT<sp/>OWNER<sp/>OR</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>CONTRIBUTORS<sp/>BE<sp/>LIABLE<sp/>FOR<sp/>ANY<sp/>DIRECT,<sp/>INDIRECT,<sp/>INCIDENTAL,<sp/>SPECIAL,</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>EXEMPLARY,<sp/>OR<sp/>CONSEQUENTIAL<sp/>DAMAGES<sp/>(INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>PROCUREMENT<sp/>OF<sp/>SUBSTITUTE<sp/>GOODS<sp/>OR<sp/>SERVICES;<sp/>LOSS<sp/>OF<sp/>USE,<sp/>DATA,<sp/>OR<sp/>PROFITS;</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>OR<sp/>BUSINESS<sp/>INTERRUPTION)<sp/>HOWEVER<sp/>CAUSED<sp/>AND<sp/>ON<sp/>ANY<sp/>THEORY<sp/>OF<sp/>LIABILITY,</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>WHETHER<sp/>IN<sp/>CONTRACT,<sp/>STRICT<sp/>LIABILITY,<sp/>OR<sp/>TORT<sp/>(INCLUDING<sp/>NEGLIGENCE<sp/>OR</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>OTHERWISE)<sp/>ARISING<sp/>IN<sp/>ANY<sp/>WAY<sp/>OUT<sp/>OF<sp/>THE<sp/>USE<sp/>OF<sp/>THIS<sp/>SOFTWARE,</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>EVEN<sp/>IF<sp/>ADVISED<sp/>OF<sp/>THE<sp/>POSSIBILITY<sp/>OF<sp/>SUCH<sp/>DAMAGE.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">/*!****************************************************************************</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/><sp/>@file<sp/><sp/><sp/><sp/><sp/><sp/><sp/>TimerMSP432.h</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>Timer<sp/>driver<sp/>interface<sp/>for<sp/>MSP432<sp/>devices</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/><sp/>#<sp/>Operation<sp/>#</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/><sp/>This<sp/>driver<sp/>implements<sp/>two<sp/>independent<sp/>hardware<sp/>peripherals<sp/>on<sp/>the</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/>MSP432:<sp/>Timer_A<sp/>and<sp/>Timer32.<sp/>The<sp/>Timer_A<sp/>implementation<sp/>supports<sp/>two<sp/>clock</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/>sources,<sp/>SMCLK<sp/>and<sp/>ACLCK,<sp/>with<sp/>multiple<sp/>clock<sp/>dividers.<sp/>The<sp/>Timer32</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/><sp/>implementation<sp/>supports<sp/>a<sp/>single<sp/>clock<sp/>source,<sp/>MCLK,<sp/>with<sp/>3<sp/>clock</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/><sp/>dividers.<sp/>For<sp/>each<sp/>driver<sp/>instance,<sp/>the<sp/>configuration<sp/>of<sp/>the<sp/>clock<sp/>dividers</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/><sp/>is<sp/>determined<sp/>using<sp/>the<sp/>clock<sp/>source,<sp/>period,<sp/>and<sp/>period<sp/>units.<sp/>Note<sp/>that</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>SMCLK<sp/>and<sp/>MCLK<sp/>frequencies<sp/>can<sp/>change<sp/>after<sp/>Timer_open().</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>MPS432<sp/>Timer<sp/>Driver<sp/>Configuration<sp/>#</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>order<sp/>to<sp/>use<sp/>the<sp/>Timer<sp/>APIs,<sp/>the<sp/>application<sp/>is<sp/>required</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/><sp/>to<sp/>define<sp/>4<sp/>configuration<sp/>items<sp/>in<sp/>the<sp/>application<sp/>Board.c<sp/>file:</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/><sp/>1.<sp/><sp/>An<sp/>array<sp/>of<sp/>TimerMSP432_Object<sp/>elements,<sp/>which<sp/>will<sp/>be<sp/>used<sp/>by</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/><sp/>by<sp/>the<sp/>driver<sp/>to<sp/>maintain<sp/>instance<sp/>state.</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/><sp/>Below<sp/>is<sp/>an<sp/>example<sp/>TimerMSP432_Object<sp/>array<sp/>appropriate<sp/>for<sp/>the<sp/>MSP432</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/><sp/>LaunchPad<sp/>board:</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>#include<sp/>&lt;ti/drivers/Timer.h&gt;</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>#include<sp/>&lt;ti/drivers/timer/TimerMSP432.h&gt;</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>TimerMSP432_Object<sp/>timerMSP432Objects[3];</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/><sp/>2.<sp/><sp/>An<sp/>array<sp/>of<sp/>TimerMSP432_HWAttrs<sp/>elements<sp/>that<sp/>defines<sp/>which</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/><sp/>Below<sp/>is<sp/>an<sp/>example<sp/>TimerMSP432_HWAttrs<sp/>array<sp/>appropriate<sp/>for<sp/>the<sp/>MSP432</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/><sp/>LaunchPad<sp/>board:</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*<sp/><sp/>const<sp/>TimerMSP432_HWAttrs<sp/>timerMSP432HWAttrs[3]<sp/>=</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/><sp/>{</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.timerBaseAddress<sp/>=<sp/>TIMER32_0_BASE,</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>TIMER_A_CLOCKSOURCE_SMCLK,</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_T32_INT1,</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>~0,</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.timerBaseAddress<sp/>=<sp/>TIMER_A1_BASE,</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>TIMER_A_CLOCKSOURCE_SMCLK,</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_TA1_0,</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>~0,</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.timerBaseAddress<sp/>=<sp/>TIMER_A2_BASE,</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>TIMER_A_CLOCKSOURCE_ACLK,</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_TA2_0,</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>~0,</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/>*<sp/><sp/>};</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/>*<sp/><sp/>3.<sp/><sp/>An<sp/>array<sp/>of<sp/>@ref<sp/>Timer_Config<sp/>elements,<sp/>one<sp/>for<sp/>each<sp/>Timer<sp/>instance.</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/>*<sp/><sp/>Each<sp/>element<sp/>of<sp/>this<sp/>array<sp/>identifies<sp/>the<sp/>device-specific<sp/>API<sp/>function</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/>*<sp/><sp/>table,<sp/>the<sp/>device<sp/>specific<sp/>timer<sp/>object<sp/>instance,<sp/>and<sp/>the<sp/>device<sp/>specific</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/>*<sp/><sp/>Hardware<sp/>Attributes<sp/>to<sp/>be<sp/>used<sp/>for<sp/>each<sp/>timer<sp/>instance.</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/>*<sp/><sp/>Below<sp/>is<sp/>an<sp/>example<sp/>@ref<sp/>Timer_Config<sp/>array<sp/>appropriate<sp/>for<sp/>the<sp/>MSP432</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/>*<sp/><sp/>LaunchPad<sp/>board:</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>const<sp/>Timer_Config<sp/>Timer_config[3]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.fxnTablePtr<sp/>=<sp/>&amp;TimerMSP432_Timer32_fxnTable,</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/>&amp;timerMSP432Objects[0],</highlight></codeline>
+<codeline lineno="100"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;timerMSP432HWAttrs[0]</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.fxnTablePtr<sp/>=<sp/>&amp;TimerMSP432_Timer_A_fxnTable,</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/>&amp;timerMSP432Objects[1],</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;timerMSP432HWAttrs[1]</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="107"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.fxnTablePtr<sp/>=<sp/>&amp;TimerMSP432_Timer_A_fxnTable,</highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/>&amp;timerMSP432Objects[2],</highlight></codeline>
+<codeline lineno="110"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;timerMSP432HWAttrs[2]</highlight></codeline>
+<codeline lineno="111"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="113"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/>*<sp/><sp/>4.<sp/><sp/>A<sp/>global<sp/>variable,<sp/>Timer_count,<sp/>that<sp/>informs<sp/>the<sp/>driver<sp/>how<sp/>many</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/>*<sp/><sp/>timer<sp/>instances<sp/>are<sp/>defined:</highlight></codeline>
+<codeline lineno="117"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>const<sp/>uint_least8_t<sp/>Timer_count<sp/>=<sp/>3;</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/>*<sp/><sp/>#<sp/>Resource<sp/>Allocation<sp/>#</highlight></codeline>
+<codeline lineno="122"><highlight class="comment"><sp/>*<sp/><sp/>Allocation<sp/>of<sp/>each<sp/>timer<sp/>peripheral<sp/>is<sp/>managed<sp/>through<sp/>a<sp/>set<sp/>of<sp/>resource</highlight></codeline>
+<codeline lineno="123"><highlight class="comment"><sp/>*<sp/><sp/>allocation<sp/>APIs.<sp/>For<sp/>example,<sp/>the<sp/>TimerMSP432_allocateTimerResource<sp/>API</highlight></codeline>
+<codeline lineno="124"><highlight class="comment"><sp/>*<sp/><sp/>will<sp/>allocate<sp/>a<sp/>timer<sp/>for<sp/>exclusive<sp/>use.<sp/>Any<sp/>attempt<sp/>to<sp/>allocate<sp/>this</highlight></codeline>
+<codeline lineno="125"><highlight class="comment"><sp/>*<sp/><sp/>resource<sp/>in<sp/>the<sp/>future<sp/>will<sp/>result<sp/>in<sp/>a<sp/>false<sp/>value<sp/>being<sp/>returned<sp/>from<sp/>the</highlight></codeline>
+<codeline lineno="126"><highlight class="comment"><sp/>*<sp/><sp/>allocation<sp/>API.<sp/>To<sp/>free<sp/>a<sp/>timer<sp/>resource,<sp/>the<sp/>TimerMSP432_freeTimerResource</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"><sp/>*<sp/><sp/>is<sp/>used.<sp/>The<sp/>application<sp/>is<sp/>not<sp/>responsible<sp/>for<sp/>calling<sp/>these<sp/>allocation</highlight></codeline>
+<codeline lineno="128"><highlight class="comment"><sp/>*<sp/><sp/>APIs<sp/>directly.</highlight></codeline>
+<codeline lineno="129"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="130"><highlight class="comment"><sp/>*<sp/>###<sp/>Power<sp/>Management<sp/>#</highlight></codeline>
+<codeline lineno="131"><highlight class="comment"><sp/>*<sp/>The<sp/>TI-RTOS<sp/>power<sp/>management<sp/>framework<sp/>will<sp/>try<sp/>to<sp/>put<sp/>the<sp/>device<sp/>into<sp/>the</highlight></codeline>
+<codeline lineno="132"><highlight class="comment"><sp/>*<sp/>most<sp/>power<sp/>efficient<sp/>mode<sp/>whenever<sp/>possible.<sp/>Please<sp/>see<sp/>the<sp/>technical</highlight></codeline>
+<codeline lineno="133"><highlight class="comment"><sp/>*<sp/>reference<sp/>manual<sp/>for<sp/>further<sp/>details<sp/>on<sp/>each<sp/>power<sp/>mode.</highlight></codeline>
+<codeline lineno="134"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="135"><highlight class="comment"><sp/>*<sp/>This<sp/>driver<sp/>supports<sp/>dynamic<sp/>power<sp/>performance<sp/>levels.<sp/>The<sp/>driver<sp/>will</highlight></codeline>
+<codeline lineno="136"><highlight class="comment"><sp/>*<sp/>determine<sp/>which<sp/>power<sp/>performance<sp/>levels<sp/>are<sp/>compatible<sp/>with<sp/>the<sp/>desired</highlight></codeline>
+<codeline lineno="137"><highlight class="comment"><sp/>*<sp/>period<sp/>and<sp/>period<sp/>units.<sp/>The<sp/>driver<sp/>prevents<sp/>transitions<sp/>to<sp/>performance</highlight></codeline>
+<codeline lineno="138"><highlight class="comment"><sp/>*<sp/>levels<sp/>in<sp/>which<sp/>the<sp/>period<sp/>cannot<sp/>be<sp/>generated.</highlight></codeline>
+<codeline lineno="139"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="140"><highlight class="comment"><sp/>*<sp/>After<sp/>a<sp/>performance<sp/>level<sp/>change,<sp/>the<sp/>period<sp/>is<sp/>recalculated<sp/>such<sp/>that<sp/>the</highlight></codeline>
+<codeline lineno="141"><highlight class="comment"><sp/>*<sp/>generated<sp/>period<sp/>will<sp/>remain<sp/>the<sp/>same.<sp/>The<sp/>exact<sp/>period<sp/>may<sp/>vary<sp/>after<sp/>a</highlight></codeline>
+<codeline lineno="142"><highlight class="comment"><sp/>*<sp/>performance<sp/>level<sp/>transition.<sp/>This<sp/>is<sp/>due<sp/>to<sp/>a<sp/>change<sp/>in<sp/>clock<sp/>frequency<sp/>and</highlight></codeline>
+<codeline lineno="143"><highlight class="comment"><sp/>*<sp/>hence<sp/>period<sp/>per<sp/>clock<sp/>cycle.</highlight></codeline>
+<codeline lineno="144"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="145"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>following<sp/>statements<sp/>are<sp/>valid:</highlight></codeline>
+<codeline lineno="146"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>After<sp/>Timer_open():<sp/>Clocks<sp/>are<sp/>enabled<sp/>to<sp/>the<sp/>timer<sp/>resource.</highlight></codeline>
+<codeline lineno="147"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Dynamic<sp/>performance<sp/>level<sp/>changes<sp/>are<sp/>allowed.</highlight></codeline>
+<codeline lineno="148"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>After<sp/>Timer_start():<sp/>DEEPSLEEP<sp/>mode<sp/>is<sp/>disabled.<sp/>The<sp/>device<sp/>can<sp/>only<sp/>go</highlight></codeline>
+<codeline lineno="149"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>to<sp/>Idle<sp/>power<sp/>mode.<sp/>Performance<sp/>level<sp/>changes<sp/>are<sp/>not<sp/>allowed.</highlight></codeline>
+<codeline lineno="150"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>After<sp/>Timer_stop():<sp/>Conditions<sp/>are<sp/>equal<sp/>as<sp/>for<sp/>after<sp/>Timer_open.</highlight></codeline>
+<codeline lineno="151"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>After<sp/>Timer_close():<sp/>The<sp/>underlying<sp/>GPTimer<sp/>is<sp/>turned<sp/>off,<sp/>and<sp/>the</highlight></codeline>
+<codeline lineno="152"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>clock<sp/>to<sp/>the<sp/>timer<sp/>and<sp/>pin<sp/>are<sp/>disabled.</highlight></codeline>
+<codeline lineno="153"><highlight class="comment"><sp/>******************************************************************************</highlight></codeline>
+<codeline lineno="154"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ti_drivers_timer_TimerMSP432__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_drivers_timer_TimerMSP432__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_power_8h" kindref="compound">ti/drivers/Power.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_timer_8h" kindref="compound">ti/drivers/Timer.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/HwiP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/SemaphoreP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_timer___fxn_table__" kindref="compound">Timer_FxnTable</ref><sp/><ref refid="_timer_m_s_p432_8h_1ad3b622d4875264bf82f29de28fcc9b9e" kindref="member">TimerMSP432_Timer_A_fxnTable</ref>;</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_timer___fxn_table__" kindref="compound">Timer_FxnTable</ref><sp/><ref refid="_timer_m_s_p432_8h_1adfc465b5a2bf4e50e5f30f996313fdf6" kindref="member">TimerMSP432_Timer32_fxnTable</ref>;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="208" refid="struct_timer_m_s_p432___h_w_attr__" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_timer_m_s_p432___h_w_attr__" kindref="compound">TimerMSP432_HWAttr_</ref><sp/>{</highlight></codeline>
+<codeline lineno="210" refid="struct_timer_m_s_p432___h_w_attr___1aee448f9833084c652169ed1986484119" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_timer_m_s_p432___h_w_attr___1aee448f9833084c652169ed1986484119" kindref="member">timerBaseAddress</ref>;</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213" refid="struct_timer_m_s_p432___h_w_attr___1ab46fd843a42e5fc7267089c4812c6b0a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_timer_m_s_p432___h_w_attr___1ab46fd843a42e5fc7267089c4812c6b0a" kindref="member">clockSource</ref>;</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216" refid="struct_timer_m_s_p432___h_w_attr___1ab8b197409f94d23c41b461891b32d159" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_timer_m_s_p432___h_w_attr___1ab8b197409f94d23c41b461891b32d159" kindref="member">intNum</ref>;</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219" refid="struct_timer_m_s_p432___h_w_attr___1aea785ef3eed536a6170037d4bd2e08c0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_timer_m_s_p432___h_w_attr___1aea785ef3eed536a6170037d4bd2e08c0" kindref="member">intPriority</ref>;</highlight></codeline>
+<codeline lineno="220"><highlight class="normal">}<sp/><ref refid="_timer_m_s_p432_8h_1ac3faa216806be0265d6a156e122bfbb3" kindref="member">TimerMSP432_HWAttrs</ref>;</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight></codeline>
+<codeline lineno="227" refid="struct_timer_m_s_p432___object__" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_timer_m_s_p432___object__" kindref="compound">TimerMSP432_Object_</ref><sp/>{</highlight></codeline>
+<codeline lineno="228" refid="struct_timer_m_s_p432___object___1ada34d2eb0847e7827d5fafa8b0efa634" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>HwiP_Handle<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1ada34d2eb0847e7827d5fafa8b0efa634" kindref="member">hwiHandle</ref>;</highlight></codeline>
+<codeline lineno="229" refid="struct_timer_m_s_p432___object___1ac4d1b2ea5e78abff9faf53ba4110997d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>SemaphoreP_Handle<sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1ac4d1b2ea5e78abff9faf53ba4110997d" kindref="member">timerSem</ref>;</highlight></codeline>
+<codeline lineno="230" refid="struct_timer_m_s_p432___object___1a47d6a131be95f91b27d096e67a36eaa4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_power___notify_obj__" kindref="compound">Power_NotifyObj</ref><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1a47d6a131be95f91b27d096e67a36eaa4" kindref="member">perfChangeNotify</ref>;</highlight></codeline>
+<codeline lineno="231" refid="struct_timer_m_s_p432___object___1a68833cda93892f577e26d202f0bb8d99" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1a68833cda93892f577e26d202f0bb8d99" kindref="member">perfConstraintMask</ref>;</highlight></codeline>
+<codeline lineno="232" refid="struct_timer_m_s_p432___object___1a0b2c9ff444379b9ca433b3ab62b3235b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a051eb2c54ff6e078655c8bf575384cc4" kindref="member">Timer_CallBackFxn</ref><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1a0b2c9ff444379b9ca433b3ab62b3235b" kindref="member">callBack</ref>;</highlight></codeline>
+<codeline lineno="233" refid="struct_timer_m_s_p432___object___1a61a6690b329fc51b01f5e34e474a73d2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a9bdf0bac4961e11704f2bf087eefed4e" kindref="member">Timer_Mode</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1a61a6690b329fc51b01f5e34e474a73d2" kindref="member">mode</ref>;</highlight></codeline>
+<codeline lineno="234" refid="struct_timer_m_s_p432___object___1a4cad75b8c909fa23b79722b25e9af2d6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a446e5578acbc8ed7bcbc1bee3e2a2c61" kindref="member">Timer_PeriodUnits</ref><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1a4cad75b8c909fa23b79722b25e9af2d6" kindref="member">units</ref>;</highlight></codeline>
+<codeline lineno="235" refid="struct_timer_m_s_p432___object___1ace79babd8d57d374dc7da7318114047d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1ace79babd8d57d374dc7da7318114047d" kindref="member">rawPeriod</ref>;</highlight></codeline>
+<codeline lineno="236" refid="struct_timer_m_s_p432___object___1aa15ef8485abf3b51a9018646cd2005b6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1aa15ef8485abf3b51a9018646cd2005b6" kindref="member">period</ref>;</highlight></codeline>
+<codeline lineno="237" refid="struct_timer_m_s_p432___object___1a91e0838fe8b0e40abaa2d2601bdb4444" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1a91e0838fe8b0e40abaa2d2601bdb4444" kindref="member">isRunning</ref>;</highlight></codeline>
+<codeline lineno="238"><highlight class="normal">}<sp/><ref refid="_timer_m_s_p432_8h_1acefcbb2fb4596bca2dd9338adddd53bd" kindref="member">TimerMSP432_Object</ref>;</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_timer_m_s_p432_8h_1a4bfb67ec5f2dbd00d6c0274d42afa38c" kindref="member">TimerMSP432_allocateTimerResource</ref>(uint32_t<sp/>baseAddress);</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_timer_m_s_p432_8h_1aa86618630f05a6439da89aa61987dc0c" kindref="member">TimerMSP432_freeTimerResource</ref>(uint32_t<sp/>baseAddress);</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="273"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="275"><highlight class="normal"></highlight></codeline>
+<codeline lineno="276"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_timer_TimerMSP432__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h"/>
+  </compounddef>
+</doxygen>

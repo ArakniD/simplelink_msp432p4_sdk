@@ -1,0 +1,217 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="ti-widget-base-text.html">
+<polymer-element name="ti-widget-base-selector" extends="ti-widget-base-text" attributes="selectedText labels selectedIndex selectedValue values sorted initialIndex">
+    <script>
+        Polymer ('ti-widget-base-selector', 
+        {
+            /**
+             * Fired when the currentState changes.  use on-selected={{myHandler}} to receive callback
+             *
+             * @event selected
+             */
+            selectedText : "item1",
+            labels : "item1|item2",
+            selectedIndex : 0,
+            selectedValue : 1,
+            values : undefined,
+            sorted : false,
+            initialIndex : undefined,
+            
+            _options : [ ],
+        
+            findOption : function(propertyName, value)
+            {
+                if (value !== null && value !== undefined && (propertyName !== 'index' || (value >= 0 && value < this._options.length)))
+                {
+                    for(var i = this._options.length; i-- > 0; )
+                    {
+                        var option = this._options[i];
+                            
+                        if (option[propertyName] == value)
+                        {
+                            return { option: option, selectedIndex: i};
+                        }
+                    }
+                }
+                return null;
+            },
+            updateProperties : function()
+            {
+                var result = null;
+                if (this._options.length > 0)
+                {
+                    if (this._desired === undefined)
+                    {
+                        // preserve by index 
+                        result = this.findOption('index', this.initialIndex === undefined ? this.selectedIndex : this.initialIndex);
+                    }
+                    else 
+                    {
+                        // preserve by desired state
+                        result = this.findOption(this._desired.toLowerCase(), this['selected' + this._desired]);
+                    }
+                }
+                
+                if (result !== null)
+                {
+                    var option = result.option;
+                    if (this._desired !== 'Index' && this.selectedIndex != option.index)
+                    {
+                        this.selectedIndex = option.index;
+                    }
+                    if (this._desired !== 'Text' && this.selectedText != option.text)
+                    {
+                        this.selectedText = option.text;
+                    }
+                    if (this._desired !== 'Value' && this.selectedValue != option.value)
+                    {
+                        this.selectedValue = option.value;
+                    }
+                    if (result.selectedIndex != this.getSelectedIndex())
+                    {
+                        this.setSelectedIndex(result.selectedIndex);
+                    }
+                }
+                else
+                {
+                    if (this._desired !== 'Index' && this.selectedIndex != -1)
+                    {
+                        this.selectedIndex = -1;
+                    }
+                    if (this._desired !== 'Text' && this.selectedText !== undefined)
+                    {
+                        this.selectedText = undefined;
+                    }
+                    if (this._desired !== 'Value' && this.selectedValue !== undefined)
+                    {
+                        this.selectedValue = undefined;
+                    }
+                    if (this.getSelectedIndex() != -1)
+                    {
+                        this.setSelectedIndex(-1);
+                    }
+                }
+            },
+            valuesChanged : function()
+            {
+                this._valuesArray = this.values == "" ? undefined : this.parseArray(this.values);
+                
+                for(var i = this._options.length; i-- > 0; )
+                {
+                    var option = this._options[i];
+                    option.value = this._valuesArray ? this._valuesArray[option.index] : option.index+1;
+                }
+                this.updateProperties();
+            },
+            labelsChanged : function()
+            {
+                var labelsArray = this.parseArray(this.labels);
+                
+                this._options = [];
+                for(var i = 0; i < labelsArray.length; i++ )
+                {
+                    var option = { text: labelsArray[i], index: i };
+                    option.value = this._valuesArray ? this._valuesArray[i] : i+1;
+                    this._options.push(option);
+                }
+                
+                if (this.sorted)
+                {
+                    this.doSort();
+                }
+                
+                this.setOptions(this._options);
+                
+                // refresh 
+                this.updateProperties();
+            },
+            doSort : function()
+            {
+                if (this._options.length > 0)
+                {
+                    if (this.sorted)
+                    {
+                        this._options = this._options.sort(function(a, b) 
+                        { 
+                            return a.text.toLocaleLowerCase().localeCompare(b.text.toLocaleLowerCase()); 
+                        });
+                    }
+                    else 
+                    {
+                        this._options = this._options.sort(function(a, b) 
+                        {
+                            return a.index - b.index; 
+                        });
+                    }
+                }
+            },
+            sortedChanged : function()
+            {
+                this.doSort();
+                
+                // update widget with new order of options
+                this.setOptions(this._options);
+                
+                var result = this.findOption('index', this.selectedIndex)
+                this.setSelectedIndex(result === null ? -1 : result.selectedIndex);
+            },
+            selectedValueChanged : function()
+            {
+                var i = this.getSelectedIndex();
+                if ( (i >= 0 && i < this._options.length) ? this._options[i].value != this.selectedValue : this.selectedValue !== undefined) 
+                {
+                    this._desired = 'Value';
+                    
+                    this.updateProperties();
+                }
+            },
+            selectedTextChanged : function()
+            {
+                var i = this.getSelectedIndex();
+                if ( (i >= 0 && i < this._options.length) ? this._options[i].text != this.selectedText : this.selectedText !== undefined) 
+                {
+                    this._desired = 'Text';
+                    
+                    this.updateProperties();
+                }
+            },
+            selectedIndexChanged : function()
+            {
+                var i = this.getSelectedIndex();
+                if ( (i >= 0 && i < this._options.length) ? this._options[i].index != this.selectedIndex : this.selectedIndex !== undefined) 
+                {
+                    this._desired = 'Index';
+                    
+                    this.updateProperties();
+                }
+            },
+            onUserInputChanged : function()
+            {
+                if (this._desired === undefined)
+                {
+                    // arbitrarily choose to preserve index if user makes changes before model does.
+                    this._desired = 'Index';
+                }
+                
+                var index = this.getSelectedIndex();
+                var option = this._options[index];
+                this.selectedIndex = option.index;
+                this.selectedValue = option.value;
+                this.selectedText = option.text;
+                
+                this.fire('selected');
+            },
+            initialIndexChanged : function()
+            {
+                if (this._desired === undefined)
+                {
+                    var i = this.getSelectedIndex();
+                    if ( (i >= 0 && i < this._options.length) ? this._options[i].index != this.initialIndex : this.initialIndex !== undefined)
+                    { 
+                        this.updateProperties();
+                    }
+                }
+            }
+        });
+    </script>
+</polymer-element>
