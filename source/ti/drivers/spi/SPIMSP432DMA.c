@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -571,7 +571,7 @@ SPI_Handle SPIMSP432DMA_open(SPI_Handle handle, SPI_Params *params)
          * Verify if driver can be opened with ACLK; ACLK does not change
          * in any performance level.
          */
-        if (params->bitRate >= powerFreqs.ACLK) {
+        if (params->bitRate > powerFreqs.ACLK) {
             Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
 
             object->isOpen = false;
@@ -581,7 +581,7 @@ SPI_Handle SPIMSP432DMA_open(SPI_Handle handle, SPI_Params *params)
         clockFreq = powerFreqs.ACLK;
     }
     else {    /* hwAttrs->clockSource == EUSCI_B_SPI_CLOCKSOURCE_SMCLK */
-        if (params->bitRate >= powerFreqs.SMCLK) {
+        if (params->bitRate > powerFreqs.SMCLK) {
             Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
 
             object->isOpen = false;
@@ -596,7 +596,7 @@ SPI_Handle SPIMSP432DMA_open(SPI_Handle handle, SPI_Params *params)
          */
         for (i = 0; i < numPerfLevels; i++) {
             PowerMSP432_getFreqs(i, &powerFreqs);
-            if (params->bitRate >= powerFreqs.SMCLK) {
+            if (params->bitRate > powerFreqs.SMCLK) {
                 /* Set constraint and keep track of it in perfConstraintMask */
                 object->perfConstraintMask |= (1 << i);
                 Power_setConstraint(PowerMSP432_DISALLOW_PERFLEVEL_0 + i);

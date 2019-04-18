@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@
  */
 
 /*
- *  ======== SHA2.syscfg.js ========
+ *  ======== SHA2CC26X2.syscfg.js ========
  */
 
 "use strict";
@@ -51,13 +51,15 @@ intPriority.description = "Crypto peripheral interrupt priority";
  */
 let devSpecific = {
     config: [
-        intPriority,
+        intPriority
     ],
 
     templates : {
         boardc: "/ti/drivers/sha2/SHA2CC26X2.Board.c.xdt",
         boardh: "/ti/drivers/sha2/SHA2.Board.h.xdt"
-    }
+    },
+
+    modules: Common.autoForceModules(["Board", "Power", "DMA"])
 };
 
 /*

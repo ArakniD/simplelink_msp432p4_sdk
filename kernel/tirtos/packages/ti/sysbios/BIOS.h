@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 
 /*
@@ -104,7 +104,7 @@ typedef enum ti_sysbios_BIOS_LibType ti_sysbios_BIOS_LibType;
 typedef xdc_Void (*ti_sysbios_BIOS_StartupFuncPtr)(xdc_Void );
 
 /* version */
-#define ti_sysbios_BIOS_version (0x67500)
+#define ti_sysbios_BIOS_version (0x67600)
 
 
 /*

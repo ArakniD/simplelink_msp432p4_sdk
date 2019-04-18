@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -706,13 +706,18 @@ void UARTMSP432_close(UART_Handle handle)
         }
         object->perfConstraintMask >>= 1;
     }
-    if (object->state.rxEnabled) {
 
- #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
+    if (object->state.rxEnabled) {
+#if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
         Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+#else
+        if (hwAttrs->clockSource != EUSCI_A_UART_CLOCKSOURCE_ACLK) {
+            Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+        }
 #endif
         Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
     }
+
     Power_unregisterNotify(&object->perfChangeNotify);
 
     object->state.opened = false;
@@ -762,6 +767,10 @@ int_fast16_t UARTMSP432_control(UART_Handle handle, uint_fast16_t cmd,
                  */
 #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
                 Power_setConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+#else
+                if (hwAttrs->clockSource != EUSCI_A_UART_CLOCKSOURCE_ACLK) {
+                    Power_setConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+                }
 #endif
                 Power_setConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
                 MAP_UART_enableInterrupt(hwAttrs->baseAddr,
@@ -788,6 +797,10 @@ int_fast16_t UARTMSP432_control(UART_Handle handle, uint_fast16_t cmd,
                  */
 #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
                 Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+#else
+                if (hwAttrs->clockSource != EUSCI_A_UART_CLOCKSOURCE_ACLK) {
+                    Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+                }
 #endif
                 Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
                 object->state.rxEnabled = false;
@@ -953,8 +966,8 @@ UART_Handle UARTMSP432_open(UART_Handle handle, UART_Params *params)
         pin, GPIO_PRIMARY_MODULE_FUNCTION);
 
     /*
-     * Add power management support - Disable performance transitions while
-     * opening the driver is open.  This constraint remains active until a
+     * Add power management support - Disable performance transitions when
+     * opening the driver.  This constraint remains active until a
      * UART_control() disables receive interrupts.  Afterwards performance
      * levels can be changed by the application.  A UART_control() call can
      * enable RX interrupts again and set the pertinent constraints.
@@ -1014,14 +1027,23 @@ UART_Handle UARTMSP432_open(UART_Handle handle, UART_Params *params)
         }
     }
 
-    /*
-     * For MSP432P401x devices the DEEPSLEEP_0 constraint is set to allow the
-     * UART peripheral to continue to receive data.  This constraint is not
-     * used with later MSP432 devices, because on later devices the CPU can
-     * enter deep sleep without stopping the UART peripheral.
-     */
 #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
+    /*
+     * For MSP432P401x devices a transition to deepsleep will halt the UART
+     * functional clock.  Set a power constraint to prohibit deepsleep when
+     * RX is enabled.
+     */
     Power_setConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+#else
+    /*
+     * For MSP432P4x1xl devices, if the CPU enters deepsleep a UART can
+     * continue to function, but only if ACLK is used as its functional
+     * clock. If ACLK is not selected, set a power constraint to prohibit
+     * deepsleep when RX is enabled.
+     */
+    if (hwAttrs->clockSource != EUSCI_A_UART_CLOCKSOURCE_ACLK) {
+        Power_setConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+    }
 #endif
 
     /* Register function to reconfigure peripheral on perf level changes */
@@ -1265,7 +1287,8 @@ int_fast32_t UARTMSP432_write(UART_Handle handle, const void *buffer,
 
     key = HwiP_disable();
 
-    if (object->writeCount) {
+    if (object->writeCount ||
+            MAP_UART_queryStatusFlags(hwAttrs->baseAddr, EUSCI_A_UART_BUSY)) {
         HwiP_restore(key);
         DebugP_log1("UART:(%p) Could not write data, uart in use.",
             hwAttrs->baseAddr);

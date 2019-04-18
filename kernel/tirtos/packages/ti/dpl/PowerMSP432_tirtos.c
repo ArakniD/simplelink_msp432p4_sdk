@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,9 +64,7 @@ void PowerMSP432_deepSleepPolicy()
     CPU_cpsid();
 
     /* disable Swi scheduling */
-    if (Hwi_swiDisable != NULL) {
-        swiKey = Hwi_swiDisable();
-    }
+    swiKey = Hwi_swiDisable();
 
     /* disable Task scheduling */
     taskKey = Task_disable();
@@ -116,9 +114,7 @@ void PowerMSP432_deepSleepPolicy()
     CPU_cpsie();
 
     /* restore Swi scheduling */
-    if ((Hwi_swiRestoreHwi != NULL) && (Hwi_swiDisable != NULL)) {
-        Hwi_swiRestoreHwi(swiKey);
-    }
+    Hwi_swiRestore(swiKey);
 
     /* restore Task scheduling */
     Task_restore(taskKey);
@@ -143,9 +139,7 @@ void PowerMSP432_sleepPolicy()
     CPU_cpsid();
 
     /* disable Swi scheduling */
-    if (Hwi_swiDisable != NULL) {
-        swiKey = Hwi_swiDisable();
-    }
+    swiKey = Hwi_swiDisable();
 
     /* disable Task scheduling */
     taskKey = Task_disable();
@@ -167,9 +161,7 @@ void PowerMSP432_sleepPolicy()
     CPU_cpsie();
 
     /* restore Swi scheduling */
-    if ((Hwi_swiRestoreHwi != NULL) && (Hwi_swiDisable != NULL)) {
-        Hwi_swiRestoreHwi(swiKey);
-    }
+    Hwi_swiRestore(swiKey);
 
     /* restore Task scheduling */
     Task_restore(taskKey);
@@ -193,9 +185,7 @@ void PowerMSP432_initPolicy()
 void PowerMSP432_schedulerDisable()
 {
     PowerMSP432_taskKey = Task_disable();
-    if (Hwi_swiDisable != NULL) {
-        PowerMSP432_swiKey = Hwi_swiDisable();
-    }
+    PowerMSP432_swiKey = Hwi_swiDisable();
 }
 
 /*
@@ -203,9 +193,7 @@ void PowerMSP432_schedulerDisable()
  */
 void PowerMSP432_schedulerRestore()
 {
-    if ((Hwi_swiRestoreHwi != NULL) && (Hwi_swiDisable != NULL)) {
-        Hwi_swiRestoreHwi(PowerMSP432_swiKey);
-    }
+    Hwi_swiRestore(PowerMSP432_swiKey);
     Task_restore(PowerMSP432_taskKey);
 }
 

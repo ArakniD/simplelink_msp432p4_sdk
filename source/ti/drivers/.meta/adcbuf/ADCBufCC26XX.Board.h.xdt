@@ -1,6 +1,6 @@
 %%{
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,6 +42,9 @@
     let Common = system.getScript("/ti/drivers/Common.js");
 
     let instances = ADCBuf.$instances;
+    if (instances.length == 0) {
+        return;
+    }
     let defs = Common.genBoardHeader(instances, ADCBuf);
 %%}
 `defs`
@@ -49,23 +52,50 @@
 /*
  *  ======== ADCBuf Channels ========
  */
-
-% for (let i = 0; i < instances.length; i++) {
-    % let inst = instances[i];
-    % let j;
-%     for (j = 0; j < inst.channels; j++) {
-#define `inst.$name`CHANNEL`j`       `j`
+% let totalChans= 0;
+% let maxLineLength = 30;
+% let lines =[];
+% let padding = Array(80).join(' ');
+% let inst = instances[0];
+% let j;
+% for (j = 0; j < inst.channels; j++) {
+%     let chan = inst["adcBufChannel" + j];
+%     let line = "#define " + inst.$name + chan.$name;
+%     lines.push(line);
+%     if (line.length > maxLineLength) {
+%         maxLineLength = line.length;
 %     }
-    % if (inst.includeVDDS) {
-#define `inst.$name`CHANNEL`j`       `j`
-    %     j += 1;
-    % }
-    % if (inst.includeDCOUPL) {
-#define `inst.$name`CHANNEL`j`       `j`
-    %     j += 1;
-    % }
-    % if (inst.includeVSS) {
-#define `inst.$name`CHANNEL`j`       `j`
-    % }
-
+%     totalChans++;
 % }
+%
+% if (inst.batteryChannel) {
+%     let line = "#define " + inst.$name + inst.adcBufChannelBattery.$name;
+%     lines.push(line);
+%     if (line.length > maxLineLength) {
+%          maxLineLength = line.length;
+%      }
+%      totalChans++;
+% }
+% if (inst.decouplingChannel) {
+%     let line = "#define " + inst.$name + inst.adcBufChannelDecoupling.$name;
+%     lines.push(line);
+%     if (line.length > maxLineLength) {
+%          maxLineLength = line.length;
+%      }
+%      totalChans++;
+% }
+% if (inst.groundChannel) {
+%     let line = "#define " + inst.$name + inst.adcBufChannelGround.$name;
+%     lines.push(line);
+%     if (line.length > maxLineLength) {
+%          maxLineLength = line.length;
+%      }
+%      totalChans++;
+% }
+% maxLineLength = ((maxLineLength + 3) & 0xfffc) + 4;
+% for (let i = 0; i < totalChans; i++) {
+%     lines[i] += padding.substring(0, maxLineLength - lines[i].length);
+%     lines[i] += i;
+% }
+% lines = lines.join("\n");
+`lines`

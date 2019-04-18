@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,12 +64,23 @@ function validate(inst, validation)
 let base = {
     displayName: "Capture",
     description: "Input Capture Driver",
-    longDescription: "The input capture driver is used to detect and time edge"
-        + " triggered events on a GPIO pin.",
-    documentation: "/tidrivers/doxygen/html/_capture_8h.html",
+    longDescription: `
+The [__Capture driver__][1] allows you to detect and time edge triggered events
+on a GPIO pin. 
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+
+[1]: /tidrivers/doxygen/html/_capture_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_capture_8h.html#ti_drivers_Capture_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_capture_8h.html#ti_drivers_Capture_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#Capture_Configuration_Options "Configuration options reference"
+`,
     defaultInstanceName: "Board_CAPTURE",
-    config: config,
-    validate: validate
+    config: Common.addNameConfig(config, "/ti/drivers/Capture", "Board_CAPTURE"),
+    validate: validate,
+    modules: Common.autoForceModules(["Board", "Power"])
 };
 
 /* extend the base exports to include family-specific content */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ let devSpecific = {
         displayName: "SPI Driver Configuration",
 
         /* bring in DMA and Power modules */
-        modules: Common.autoForcePowerAndDMAModules
+        modules: Common.autoForceModules(["Board", "Power", "DMA"])
     },
 
     /* override generic requirements with  device-specific reqs (if any) */
@@ -75,12 +75,35 @@ let devSpecific = {
         boardh: "/ti/drivers/spi/SPI.Board.h.xdt"
     },
 
-    /* bring in DMA and Power modules */
-    modules: Common.autoForcePowerAndDMAModules,
-
     /* PIN instances */
-    moduleInstances: moduleInstances
+    moduleInstances: moduleInstances,
+
+    onHardwareChanged: onHardwareChanged
 };
+
+/*
+ *  ======== onHardwareChange ========
+ */
+function onHardwareChanged(inst, ui)
+{
+    if (inst.$hardware) {
+
+        let result;
+        result = Common.findSignalTypes(inst.$hardware, ["SPI_SS", "SPISelect"]);
+
+        if (result == true) {
+            inst.mode = "Four Pin SS Active Low";
+        }
+        else {
+            /*
+             * If hardware is assigned and there is no SS pin, we must use
+             * Three Pin mode.
+             */
+            inst.mode = "Three Pin";
+        }
+    }
+
+}
 
 /*
  *  ======== pinmuxRequirements ========
@@ -96,11 +119,19 @@ function pinmuxRequirements(inst)
             misoRequired = true;
             mosiRequired = true;
             break;
-        case "Transmit Only":
+        case "Master TX Only":
             misoRequired = false;
             mosiRequired = true;
             break;
-        case "Receive Only":
+        case "Slave RX Only":
+            misoRequired = false;
+            mosiRequired = true;
+            break;
+        case "Master RX Only":
+            misoRequired = true;
+            mosiRequired = false;
+            break;
+        case "Slave TX Only":
             misoRequired = true;
             mosiRequired = false;
             break;
@@ -125,6 +156,7 @@ function pinmuxRequirements(inst)
         spi.resources.push({
             name: "misoPin",
             displayName: "MISO Pin",
+            description: "Master Input Slave Output pin",
             interfaceNames: ["RX"]});
     }
 
@@ -132,6 +164,7 @@ function pinmuxRequirements(inst)
         spi.resources.push({
             name: "mosiPin",
             displayName: "MOSI Pin",
+            description: "Master Output Slave Input pin",
             interfaceNames: ["TX"]});
     }
 
@@ -140,6 +173,7 @@ function pinmuxRequirements(inst)
         spi.resources.push({
                 name: "ssPin",
                 displayName: "SS Pin",
+                description: "Slave Select / Chip Select",
                 interfaceNames: ["FSS"]
             });
     }
@@ -239,17 +273,20 @@ function moduleInstances(inst)
  */
 function extend(base)
 {
-    devSpecific.config = base.config.concat(devSpecific.config);
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
 
     /* duplex not currently supported */
-    let index = devSpecific.config.findIndex(index => index.name === "duplex");
+    let index = result.config.findIndex(index => index.name === "duplex");
     if (index) {
-        devSpecific.config[index].hidden = true;
-        devSpecific.config[index].readOnly = true;
+        result.config[index].hidden = true;
+        result.config[index].readOnly = true;
     }
 
-    /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    return (result);
 }
 
 /*

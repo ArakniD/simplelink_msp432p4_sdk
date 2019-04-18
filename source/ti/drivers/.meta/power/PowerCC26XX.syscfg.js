@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,6 +48,14 @@ let config = [
         name        : "enablePolicy",
         displayName : "Enable Policy",
         description : "Enable the power policy to run when the CPU is idle.",
+        longDescription:`
+If enabled, the policy function will be invoked once for each pass of the
+idle loop.
+
+In addition to this static setting, the Power Policy can be dynamically
+enabled and disabled at runtime, via the Power_enablePolicy() and
+Power_disablePolicy() APIs, respectively.
+`,
         onChange    : onChangeEnablePolicy,
         default     : true
     },
@@ -57,20 +65,46 @@ let config = [
         name        : "policyFunction",
         displayName : "Policy Function",
         description : "Power policy function called from the idle loop.",
+        longDescription:`
+When enabled, this function is invoked in the idle loop, to opportunistically
+select and activate sleep states.
+
+Two reference policies are provided:
+
+* __PowerCC26XX_standbyPolicy__
+* __PowerCC26XX_doWFI__
+
+In addition to this static selection, the Power Policy can be
+dynamically changed at runtime, via the Power_setPolicy() API.
+`,
         default     : "PowerCC26XX_standbyPolicy",
         onChange    : onChangePolicyFxn,
         options     :
         [
-            { name: "PowerCC26XX_standbyPolicy" },
-            { name: "PowerCC26XX_doWFI" },
-            { name: "Custom" }
+            {
+                name: "PowerCC26XX_standbyPolicy",
+                description: "An agressive policy that checks constraints and"
+                  + " time until next scheduled work, and optionally chooses"
+                  + " STANDBY, IDLE (power down), or WFI, in that"
+                  + " order of preference."
+            },
+            {
+                name: "PowerCC26XX_doWFI",
+                description: "A simple policy that will invoke CPU wait for"
+                    + " interrupt (WFI)."
+            },
+            {
+                name: "Custom",
+                description: "Custom policies can be written and specified"
+                    + " via configuration of a Custom Policy Function."
+            }
         ]
     },
 
     {
         name        : "policyCustomFunction",
-        displayName : "Policy Custom Function",
-        description : "User provided Power policy function. Usage not typical.",
+        displayName : "Custom Policy Function",
+        description : "User-provided Custom Policy Function.",
         default     : "customPolicyFxn",
         hidden      : true
     },
@@ -83,15 +117,24 @@ let config = [
         description : "The initialization function for the Power policy.",
         options     :
         [
-            { name: "Not Required" },
-            { name: "Custom" }
+            {
+                name: "Not Required",
+                description: "The selected Policy Function does not require an"
+                  + " Init function."
+            },
+            {
+                name: "Custom",
+                description: "A custom initialization function can be written"
+                  + " and specified via configuration of a Custom Policy Init"
+                  + " Function."
+            }
         ]
     },
 
     {
         name        : "policyInitCustomFunction",
-        displayName : "Policy Init Custom Function",
-        description : "User provided Power policy init function. " +
+        displayName : "Custom Policy Init Function",
+        description : "User-provided Custom Policy Init Function. " +
                       "Usage not typical.",
         default     : "customPolicyInitFxn",
         hidden      : true
@@ -99,32 +142,61 @@ let config = [
 
     {
         name        : "calibrateFunction",
-        displayName : "Calibrate Function",
-        description : "Optional function. ",
+        displayName : "RCOSC Calibration Function",
+        description : "Function to be used for RC Oscillator (RCOSC) calibration.",
+        longDescription:`
+The High Frequency RC Oscillator (RCOSC_HF) and Low Frequency RC Oscillator
+ (RCOSC_LF), are typically re-calibrated on each device wakeup
+ from STANDBY.  This calibration enables high accuracy RCOSC operation, and
+ faster High Frequency crystal oscillator (XOSC_HF) startups.  The name of
+ the calibration function to be used is specified with this configuration
+ parameter.
+`,
         default     : "PowerCC26XX_calibrate",
         options     :
         [
-            { name: "PowerCC26XX_calibrate" },
-            { name: "PowerCC26XX_noCalibrate" },
+            {
+              name: "PowerCC26XX_calibrate",
+              description : "The typical function used for performing"
+                + " RCOSC calibration."
+            },
+            {
+              name: "PowerCC26XX_noCalibrate",
+              description : "No calibration. This function can be"
+                + " used to disable RCOSC calibration, and remove the"
+                + " corresponding code and data from the program image."
+            }
         ]
-    },
-
-    {
-        name        : "vddrRechargeMargin",
-        displayName : "vddr Recharge Margin",
-        default     : 0
     },
 
     {
         name        : "calibrateRCOSC_LF",
         displayName : "Calibrate RCOSC_LF",
+        description : "Enable calibration of RCOSC_LF.",
         default     : true
     },
 
     {
         name        : "calibrateRCOSC_HF",
         displayName : "Calibrate RCOSC_HF",
+        description : "Enable calibration of RCOSC_HF.",
         default     : true
+    },
+
+    {
+        name        : "vddrRechargeMargin",
+        displayName : "VDDR Recharge Margin",
+        description : "Margin to adjust initial VDDR recharge period (in"
+          + " units of SCLK_LF periods).",
+        longDescription:`
+While in STANDBY the VDDR rail will be adaptively recharged to maintain the
+ STANDBY state of the device.  Before the next entry to STANDBY, the initial
+ recharge period can be reduced (with this margin) from the maximum recharge
+ period used during the previous STANDBY interval.  This margin may be useful
+ in high temperature environments, but is typically left as zero, and no
+ margin is used.
+`,
+        default     : 0
     }
 ];
 
@@ -136,7 +208,8 @@ let devSpecific = {
     getClockFrequencies : getClockFrequencies,
     moduleStatic        : {
         config   : config,
-        validate : validate
+        validate : validate,
+        modules: Common.autoForceModules(["Board"])
     },
     templates           : {
         boardc      : "/ti/drivers/power/PowerCC26XX.Board.c.xdt",

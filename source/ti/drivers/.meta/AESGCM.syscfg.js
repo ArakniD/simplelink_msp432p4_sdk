@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,10 +44,7 @@ let Common = system.getScript("/ti/drivers/Common.js");
 /* get /ti/drivers family name from device object */
 let family = Common.device2Family(system.deviceData, "AESGCM");
 
-let longDescription = "AESGCM combines GHASH with the AES block cipher"
-        + " in CTR mode of operation. This combination of block cipher mode"
-        + " and GHASH based MAC enables GCM to encrypt messages of any"
-        + " length and not only multiples of the block cipher block size.";
+let config = [];
 
 /*
  *  ======== validate ========
@@ -67,11 +64,26 @@ function validate(inst, validation)
  */
 let base = {
     displayName         : "AESGCM",
-    description         : "AES GCM mode",
-    longDescription     : longDescription,
-    documentation       : "/tidrivers/doxygen/html/_a_e_s_g_c_m_8h.html",
+    description         : "AES (Advanced Encryption Standard) Galois"
+        + " Counter Mode (GCM) Driver ",
+    longDescription     : `
+The [__AESGCM driver__][1] combines GHASH with the AES block cipher
+in CTR mode of operation. This combination of block cipher mode
+and GHASH based MAC enables GCM to encrypt messages of any
+length and not only multiples of the block cipher block size.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+[1]: /tidrivers/doxygen/html/_a_e_s_g_c_m_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_a_e_s_g_c_m_8h.html#ti_drivers_GCM_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_a_e_s_g_c_m_8h.html#ti_drivers_GCM_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#AESGCM_Configuration_Options "Configuration options reference"
+`,
     validate            : validate,
-    defaultInstanceName : "Board_AESGCM"
+    defaultInstanceName : "Board_AESGCM",
+    config              : Common.addNameConfig(config, "/ti/drivers/AESGCM", "Board_AESGCM"),
+    modules             : Common.autoForceModules(["Board", "Power", "DMA"])
 };
 
 /* extend the base exports to include family-specific content */

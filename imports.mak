@@ -18,15 +18,16 @@
 # will build using each non-empty *_ARMCOMPILER cgtool.
 #
 
-XDC_INSTALL_DIR        ?= c:/ti/xdctools_3_51_01_18_core
-SYSCONFIG_TOOL         ?= c:/ti/ccsv8/utils/sysconfig/cli.js
-NODE_JS                ?= c:/ti/ccsv8/tools/node/node.exe
+XDC_INSTALL_DIR        ?= c:/ti/xdctools_3_51_02_21_core
+SYSCONFIG_TOOL         ?= c:/ti/ccs900/ccs/utils/sysconfig/cli.js
+NODE_JS                ?= c:/ti/ccs900/ccs/tools/node/node.exe
 
-FREERTOS_INSTALL_DIR   ?= c:/FreeRTOSv10.0.0
+FREERTOS_INSTALL_DIR   ?= c:/FreeRTOSv10.1.1
 
-CCS_ARMCOMPILER        ?= c:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.4.LTS
-GCC_ARMCOMPILER        ?= c:/ti/ccsv8/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major-win32
-IAR_ARMCOMPILER        ?= c:/Program Files (x86)/IAR Systems/Embedded Workbench 8.0/arm
+CCS_ARMCOMPILER        ?= c:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS
+CLANG_ARMCOMPILER      ?= c:/path/to/clang/compiler
+GCC_ARMCOMPILER        ?= c:/ti/ccs900/ccs/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major-win32
+IAR_ARMCOMPILER        ?= c:/Program Files (x86)/IAR Systems/Embedded Workbench 8.2/arm
 
 ifeq ("$(SHELL)","sh.exe")
 # for Windows/DOS shell

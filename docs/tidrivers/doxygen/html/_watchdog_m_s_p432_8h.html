@@ -71,12 +71,12 @@ $(function() {
 <p>The Watchdog header file for MSP432 should be included in an application as follows: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_watchdog_8h.html">ti/drivers/Watchdog.h</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_watchdog_m_s_p432_8h.html">ti/drivers/watchdog/WatchdogMSP432.h</a>&gt;</span></div></div><!-- fragment --><p>Refer to <a class="el" href="_watchdog_8h.html">Watchdog.h</a> for a complete description of APIs &amp; example of use.</p>
 <h2>Overview</h2>
 <p>The MSP432 Watchdog Timer will cause resets at an interval based on the count calculated from the clock source and clock divider specified in the <a class="el" href="struct_watchdog_m_s_p432___h_w_attrs.html" title="Watchdog hardware attributes for MSP432 These fields are used by driverlib APIs and therefore must be...">WatchdogMSP432_HWAttrs</a>. By default the Watchdog driver has resets turned on. This means that if <a class="el" href="_watchdog_8h.html#a396decd6b1807db10c636f9987c3be4c" title="Clears the Watchdog. ">Watchdog_clear()</a> is not called to reset the Watchdog timer before it times out, a reset will be generated. <a class="el" href="_watchdog_8h.html#a1c0dfea7011b06f303d01afb631ffbdd" title="Function to close a Watchdog peripheral specified by the Watchdog handle.It stops (holds) the Watchdo...">Watchdog_close()</a> will stop the Watchdog timer. To restart it again, <a class="el" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced" title="Opens a Watchdog. ">Watchdog_open()</a> must be called.</p>
-<p>Opening the Watchdog driver with resets turned off (using the resetMode parameter) allows the Watchdog Timer to be used like another timer interrupt. The callback fxn provided in the params will be executed when the timer expires.</p>
+<p>Opening the Watchdog driver with resets turned off (Using the <a class="el" href="struct_watchdog___params__.html#ac695f58c6e582d98c9171bf02a760c12">Watchdog_Params.resetMode</a> parameter) allows the Watchdog Timer to be used like another timer interrupt. The callback fxn provided in the params will be executed when the timer expires.</p>
 <h2>Unsupported Functionality</h2>
 <ol type="1">
-<li>Watchdog_Params debugStallMode is not supported by this implementation.</li>
-<li>Watchdog_Params callbackFxn is not supported when using Watchdog_RESET_ON mode.</li>
-<li><a class="el" href="_watchdog_8h.html#a63ea82dda83e42e236578b9810e56880" title="Sets the Watchdog reload value. ">Watchdog_setReload()</a> and WatchdogMSP432_convertMsToTicks() APIs are not supported by this implementation. </li>
+<li><a class="el" href="struct_watchdog___params__.html#adfd763090a1a67a2cb8069c5c5ba135a">Watchdog_Params.debugStallMode</a> is not supported by this implementation.</li>
+<li><a class="el" href="struct_watchdog___params__.html#a26a219dd0a8c1972a721a40aca0b52e6">Watchdog_Params.callbackFxn</a> is not supported when using <a class="el" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546faafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a> mode.</li>
+<li><a class="el" href="_watchdog_8h.html#a63ea82dda83e42e236578b9810e56880" title="Sets the Watchdog reload value. ">Watchdog_setReload()</a> and <a class="el" href="_watchdog_8h.html#a7b93cd0bd3a6f11aa28b0c7219755979" title="Converts milliseconds to Watchdog clock ticks. ">Watchdog_convertMsToTicks()</a> APIs are not supported by this implementation. </li>
 </ol>
 </div><div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
@@ -176,7 +176,7 @@ Variables</h2></td></tr>
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->
 <hr class="footer"/><small>
-  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2018</a>, Texas Instruments Incorporated. All rights reserved. <br>
+  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
   <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
 </small>
 </body>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,6 +63,7 @@
 #include <ti/devices/msp432p4xx/driverlib/wdt_a.h>
 #include <ti/devices/msp432p4xx/driverlib/rtc_c.h>
 #include <ti/devices/msp432p4xx/driverlib/pcm.h>
+#include <ti/devices/msp432p4xx/driverlib/cs.h>
 #include <ti/devices/msp432p4xx/driverlib/interrupt.h>
 
 #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
@@ -891,7 +892,12 @@ int_fast16_t Power_setPerformanceLevel(uint_fast16_t level)
                 if (status == Power_SOK) {
 
                     /* now change clocks and dividers */
-                    MAP_CS_setDCOCenteredFrequency(perfNew.DCORESEL);
+                    if (perfNew.DCORESEL == CS_DCO_TUNE_FREQ) {
+                        MAP_CS_setDCOFrequency(perfNew.tuneFreqDCO);
+                    }
+                    else {
+                        MAP_CS_setDCOCenteredFrequency(perfNew.DCORESEL);
+                    }
                     MAP_CS_initClockSignal(CS_MCLK, perfNew.SELM, perfNew.DIVM);
                     MAP_CS_initClockSignal(CS_HSMCLK, perfNew.SELS,
                         perfNew.DIVHS);
@@ -1654,7 +1660,12 @@ static bool initPerfControl(unsigned int initLevel)
             }
 
             /* now setup clocks */
-            MAP_CS_setDCOCenteredFrequency(perfNew.DCORESEL);
+            if (perfNew.DCORESEL == CS_DCO_TUNE_FREQ) {
+                MAP_CS_setDCOFrequency(perfNew.tuneFreqDCO);
+            }
+            else {
+                MAP_CS_setDCOCenteredFrequency(perfNew.DCORESEL);
+            }
             MAP_CS_initClockSignal(CS_MCLK, perfNew.SELM, perfNew.DIVM);
             MAP_CS_initClockSignal(CS_HSMCLK, perfNew.SELS, perfNew.DIVHS);
             MAP_CS_initClockSignal(CS_SMCLK, perfNew.SELS, perfNew.DIVS);

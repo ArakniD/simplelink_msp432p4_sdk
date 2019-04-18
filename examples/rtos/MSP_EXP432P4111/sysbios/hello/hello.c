@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,8 +41,7 @@
 /* BIOS Module Headers */
 #include <ti/sysbios/BIOS.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+#include <ti/drivers/Board.h>
 
 /*
  *  ======== main ========

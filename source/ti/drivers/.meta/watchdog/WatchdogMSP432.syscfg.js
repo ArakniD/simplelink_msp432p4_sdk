@@ -74,7 +74,6 @@ let devSpecific = {
  */
 function addPeriodChoices(config)
 {
-
     let divide_ratios = [31, 27, 23, 19, 15, 13, 9, 6];
     let frequencies   = Power.getClockFrequencies('ACLK');
 
@@ -94,30 +93,31 @@ function addPeriodChoices(config)
         }
     }
 
-    if (period === undefined) {
-        throw new Error('Watchdog Metacode is not in sync with Metadata. ');
+    /* define period's options */
+    if (period != null) {
+        let freq = frequencies[0];
+
+        period.options = [];
+        for (let idx = 0; idx < divide_ratios.length; idx++) {
+            let periodMs = (Math.pow(2, divide_ratios[idx]) / freq) * 1000;
+            period.options[idx] = { name: periodMs };
+        }
     }
-
-    let freq = frequencies[0];
-
-    period.options = [];
-    for (let idx=0; idx<divide_ratios.length; idx++) {
-        let periodMs = (Math.pow(2, divide_ratios[idx]) / freq) * 1000;
-        period.options[idx] = { name: periodMs };
-    }
-
-    return (config);
 }
 
 /*
  *  ======== extend ========
  */
-function extend (base)
+function extend(base)
 {
-    devSpecific.config = devSpecific.config.concat(base.config);
-    devSpecific.config = addPeriodChoices(devSpecific.config);
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
 
-    return Object.assign({}, base, devSpecific);
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+    addPeriodChoices(result.config);
+
+    return (result);
 }
 
 /*

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,14 +65,15 @@ let config = [
         description  : "Size of the region in bytes. Must be a non-zero"
             + " multiple of the Sector Size",
         displayFormat: "hex",
-        default      : SECTORSIZE,
+        default      : SECTORSIZE
     },
     {
         name         : "sectorSize",
         displayName  : "Sector Size",
         description  : "Size of the erase sector in bytes",
+        displayFormat: "hex",
         default      : SECTORSIZE,
-        hidden       : true,
+        hidden       : false,
         readOnly     : true
     }
 ];

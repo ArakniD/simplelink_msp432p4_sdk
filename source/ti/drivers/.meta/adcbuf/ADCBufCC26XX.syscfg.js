@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,8 @@
 
 "use strict";
 
+const MAXCHANNELS = 8; /* max number of channels per ADCBuf */
+
 /* get Common /ti/drivers utility functions */
 let Common = system.getScript("/ti/drivers/Common.js");
 let logError = Common.logError;
@@ -61,45 +63,43 @@ let devSpecific = {
         swiPriority,
         {
             name: "channels",
-            displayName: "Channels (External)",
-            description: "Number of external channels to configure. Select '0'"
-                + " if you only wish to use one of the Battery, Decoupling,"
-                + " or Ground channel(s).",
-            default: 1,
-            options: [
-                { name: 0 }, { name: 1 }, { name: 2 }, { name: 3 }, { name: 4 },
-                { name: 5 }, { name: 6 }, { name: 7 }, { name: 8 }
-            ]
+            displayName: "Channels",
+            description: "Number of external channels to configure. Must be"
+                + " between 0 and " + MAXCHANNELS + ".",
+            longDescription:
+`Select __0__ if you only wish to use one of the __Battery__,
+__Decoupling__, or __Ground__ channel(s).
+`,
+            default: 1
         },
         {
             name: "batteryChannel",
             displayName: "Battery Channel",
             description: "Adds a channel to sample the internal"
                 + " battery voltage, VDDS.",
-            default: false,
+            default: false
         },
         {
             name: "decouplingChannel",
             displayName: "Decoupling Channel",
             description: "Adds a channel to sample the decoupling capacitor"
-                + " voltage, DCOUPL. The digital core is supplied by a 1.28-V"
+                + " voltage, DCOUPL.",
+            longDescription:"The digital core is supplied by a 1.28-V"
                 + " regulator connected to VDDR. The output of this"
                 + " regulator requires an external decoupling capacitor"
                 + " for proper operation; this capcitor is connected to"
                 + " DCOUPL.",
-            default: false,
+            default: false
         },
         {
             name: "groundChannel",
             displayName: "Ground Channel",
             description: "Adds a channel to sample the ground voltage, VSS.",
-            default: false,
+            default: false
         }
     ],
 
     moduleInstances: moduleInstances,
-
-    modules: Common.autoForceDMAModule,
 
     validate: validate,
 
@@ -118,9 +118,14 @@ function validate(inst, vo)
         if (inst.batteryChannel == false &&
             inst.decouplingChannel == false &&
             inst.groundChannel == false) {
-            logError(vo, inst, "channels", "Must select atleast one"
+            logError(vo, inst, "channels", "Must select at least one"
                 + " channel to configure.");
         }
+    }
+
+    if (inst.channels > MAXCHANNELS || !Number.isInteger(inst.channels)) {
+        logError(vo, inst, "channels", "Channels must be an integer between"
+            + " 0 and " + MAXCHANNELS);
     }
 }
 
@@ -144,14 +149,47 @@ function moduleInstances(inst)
         }
     );
 
-    for (let i = 0; i < inst.channels; i++) {
+    if (inst.batteryChannel == true) {
+        modInstances.push({
+            name: "adcBufChannelBattery",
+            displayName: "ADCBuf Channel Battery",
+            moduleName: "/ti/drivers/adcbuf/ADCBufChanCC26XX",
+            args: {
+                channelString: "Battery"
+            }
+        });
+    }
+    if (inst.decouplingChannel == true) {
+        modInstances.push({
+            name: "adcBufChannelDecoupling",
+            displayName: "ADCBuf Channel Decoupling",
+            moduleName: "/ti/drivers/adcbuf/ADCBufChanCC26XX",
+            args: {
+                channelString: "Decoupling"
+            }
+        });
+    }
+    if (inst.groundChannel == true) {
+        modInstances.push({
+            name: "adcBufChannelGround",
+            displayName: "ADCBuf Channel Ground",
+            moduleName: "/ti/drivers/adcbuf/ADCBufChanCC26XX",
+            args: {
+                channelString: "Ground"
+            }
+        });
+    }
+
+    /* limit the loop because validate is not called before this method */
+    let max = Math.min(inst.channels, MAXCHANNELS);
+    for (let i = 0; i < max; i++) {
         modInstances.push({
             name: "adcBufChannel" + i,
             displayName: "ADCBuf Channel " + i,
             moduleName: "/ti/drivers/adcbuf/ADCBufChanCC26XX",
             hardware: inst.$hardware,
             args: {
-                channelNumber: i
+                channelString: i.toString()
             }
         });
     }
@@ -168,11 +206,13 @@ function moduleInstances(inst)
  */
 function extend(base)
 {
-
-    devSpecific.config = base.config.concat(devSpecific.config);
-
     /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

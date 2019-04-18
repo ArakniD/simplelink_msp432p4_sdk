@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,10 +51,13 @@ if (deviceId.match(/CC13.0|CC26.0/)) {
             modules: [
                 "/ti/drivers/ADC",
                 "/ti/drivers/ADCBuf",
+                "/ti/drivers/AESCTR",
+                "/ti/drivers/AESCTRDRBG",
                 "/ti/display/Display",
                 "/ti/drivers/DMA",
                 "/ti/drivers/GPIO",
                 "/ti/drivers/I2C",
+                "/ti/drivers/I2S",
                 "/ti/drivers/NVS",
                 "/ti/drivers/Power",
                 "/ti/drivers/PWM",
@@ -80,6 +83,7 @@ if (deviceId.match(/CC13.0|CC26.0/)) {
                 "/ti/drivers/ADCBuf",
                 "/ti/drivers/AESCBC",
                 "/ti/drivers/AESCTR",
+                "/ti/drivers/AESCTRDRBG",
                 "/ti/drivers/AESCCM",
                 "/ti/drivers/AESGCM",
                 "/ti/drivers/AESECB",
@@ -90,6 +94,7 @@ if (deviceId.match(/CC13.0|CC26.0/)) {
                 "/ti/drivers/ECJPAKE",
                 "/ti/drivers/GPIO",
                 "/ti/drivers/I2C",
+                "/ti/drivers/I2S",
                 "/ti/drivers/NVS",
                 "/ti/drivers/Power",
                 "/ti/drivers/PWM",
@@ -171,8 +176,10 @@ if (deviceId.match(/CC13.0|CC26.0/)) {
                 "/ti/drivers/ADCBuf",
                 "/ti/drivers/AESCBC",
                 "/ti/drivers/AESCTR",
+                "/ti/drivers/AESCTRDRBG",
                 "/ti/drivers/AESCCM",
                 "/ti/drivers/AESGCM",
+                "/ti/drivers/CRC",
                 "/ti/drivers/DMA",
                 "/ti/drivers/EMAC",
                 "/ti/drivers/GPIO",
@@ -195,12 +202,12 @@ let templates = [
     {
         "name": "/ti/drivers/templates/Board.c.xdt",
         "outputPath": "Board.c",
-        "alwaysRun": true
+        "alwaysRun": false
     },
     {
         "name": "/ti/drivers/templates/Board.h.xdt",
         "outputPath": "Board.h",
-        "alwaysRun": true
+        "alwaysRun": false
     }
 ];
 

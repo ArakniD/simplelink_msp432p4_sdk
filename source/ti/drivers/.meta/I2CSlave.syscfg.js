@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,6 @@ let Common = system.getScript("/ti/drivers/Common.js");
 let family = Common.device2Family(system.deviceData, "I2CSlave");
 
 let config = [];
-
 
 /*
  *  ======== pinmuxRequirements ========
@@ -104,17 +103,6 @@ function filterHardware(component)
 }
 
 /*
- *  ======== modules ========
- *  Return all used modules
- */
-function modules(inst)
-{
-    return [
-        {name : "Power", moduleName: "/ti/drivers/Power"}
-    ];
-}
-
-/*
  *  ======== validate ========
  *  Validate this inst's configuration
  *
@@ -131,16 +119,25 @@ function validate(inst, validation)
  *  Define the base properties and methods
  */
 let base = {
-    /* generic sysconfig module interface */
-    displayName: "I2CSlave",
-    description: "Inter-Integrated Circuit (I2C) Slave Bus Driver",
-    longDescription: "The I2CSlave driver operates as a slave on an I2C bus in"
-        + " either I2CSLAVE_MODE_BLOCKING or I2CSLAVE_MODE_CALLBACK.",
-    documentation: "/tidrivers/doxygen/html/_i2_c_slave_8h.html",
+    displayName: "I2C Slave",
+    description: "Inter-Integrated Circuit (I2C) Slave Driver",
+    longDescription:`
+ The [__I2C Slave driver__][1] allows you to send and recieve I2C transfers
+ from an I2C master.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+
+[1]: /tidrivers/doxygen/html/_i2_c_slave_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_i2_c_slave_8h.html#ti_drivers_I2CSlave_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_i2_c_slave_8h.html#ti_drivers_I2CSlave_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#I2CSlave_Configuration_Options "Configuration options reference"
+`,
     defaultInstanceName: "Board_I2CSLAVE",
-    config: config,
+    config: Common.addNameConfig(config, "/ti/drivers/I2CSlave", "Board_I2CSLAVE"),
     validate: validate,
-    modules: modules,
+    modules: Common.autoForceModules(["Board", "Power"]),
     busModule: true, /* true => instances of this module can be shared */
     filterHardware: filterHardware,
     pinmuxRequirements: pinmuxRequirements

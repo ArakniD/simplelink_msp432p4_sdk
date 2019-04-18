@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,10 +39,11 @@
 extern "C" {
 #endif
 
-#include "MSP_EXP432P401R.h"
+#include <ti/drivers/Board.h>
 
-#define Board_init                  MSP_EXP432P401R_initGeneral
-#define Board_initGeneral           MSP_EXP432P401R_initGeneral
+#define Board_initGeneral()     Board_init()  /* deprecated */
+
+#include "MSP_EXP432P401R.h"
 
 #define Board_ADC0                  MSP_EXP432P401R_ADC0
 #define Board_ADC1                  MSP_EXP432P401R_ADC1

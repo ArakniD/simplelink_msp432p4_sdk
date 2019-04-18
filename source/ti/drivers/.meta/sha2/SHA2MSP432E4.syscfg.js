@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@
  */
 
 /*
- *  ======== SHA2.syscfg.js ========
+ *  ======== SHA2MSP432E4.syscfg.js ========
  */
 
 "use strict";
@@ -51,7 +51,7 @@ intPriority.description = "Crypto peripheral interrupt priority";
  */
 let devSpecific = {
     config: [
-        intPriority,
+        intPriority
     ],
 
     templates : {

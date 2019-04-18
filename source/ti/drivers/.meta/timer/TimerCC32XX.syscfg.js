@@ -85,9 +85,13 @@ function pinmuxRequirements(inst)
  */
 function extend(base)
 {
-    devSpecific.config = devSpecific.config.concat(base.config);
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
 
-    return (Object.assign({}, base, devSpecific));
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

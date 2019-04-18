@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,9 @@
 
 "use strict";
 
+/* get Common /ti/drivers utility functions */
+let Common = system.getScript("/ti/drivers/Common.js");
+
 /*
  *  ======== devSpecific ========
  *  Device-specific extensions to be added to base ADC configuration
@@ -48,19 +51,55 @@ let devSpecific = {
         {
             name: "referenceVoltage",
             displayName: "Reference Voltage",
+            description: "Specifies the ADC's reference voltage source.",
+            longDescription:`
+Specifies the ADC's reference voltage source.
+`,
             default: "VDD",
             options: [
                 { name: "VDD" },
                 { name: "1.2V" },
                 { name: "1.45V" },
                 { name: "2.5V" },
-                { name: "External" },
-                { name: "External Buffered" }
-            ]
+                {
+                    name: "External",
+                    description: "Select this option if you are supplying an"
+                        + " external reference voltage to the device.",
+                    longDescription:`
+"The external reference voltage can be specified using the
+__External Reference Voltage__ configuration option.
+`
+                },
+                {
+                    name: "External Buffered",
+                    description: "Select this option if you are supplying a "
+                        + "buffered external reference voltage to the device.",
+                    longDescription:`
+"The external reference voltage can be specified using the
+__External Reference Voltage__ configuration option.
+`
+                }
+            ],
+            onChange: onReferenceVoltageChange
+        },
+        {
+            name: "externalReferenceVoltage",
+            displayName: "External Reference Voltage",
+            description: "Specifies the external reference voltage in"
+                + " microvolts.",
+            longDescription:`
+Specifies the external reference voltage in microvolts.
+This value can only be modified when the __Reference Voltage__ is configured
+as __External__ or __External Buffered__. Otherwise, this value is read only
+and indicates the internal voltage used in microvolts.
+`,
+            default: 3300000,
+            readOnly: true
         },
         {
             name: "resolution",
             displayName: "Resolution",
+            description: "Specifies the ADC's resolution",
             default: "14 Bits",
             options: [
                 { name: "8 Bits" },
@@ -73,6 +112,8 @@ let devSpecific = {
 
     /* override generic requirements with dev-specific reqs (if any) */
     pinmuxRequirements: pinmuxRequirements,
+
+    modules: Common.autoForceModules(["Board", "Power"]),
 
     templates: {
         boardc: "/ti/drivers/adc/ADCMSP432.Board.c.xdt",
@@ -117,6 +158,35 @@ function pinmuxRequirements(inst)
     return ([adc]);
 }
 
+/*
+ *  ======== onReferenceVoltageChange ========
+ */
+ function onReferenceVoltageChange(inst, ui)
+{
+    ui.externalReferenceVoltage.readOnly = true;
+
+    switch (inst.referenceVoltage) {
+        case "VDD":
+            inst.externalReferenceVoltage = 3300000;
+            break;
+        case "1.2V":
+            inst.externalReferenceVoltage = 1200000;
+            break;
+        case "1.45V":
+            inst.externalReferenceVoltage = 1450000;
+            break;
+        case "2.5V":
+            inst.externalReferenceVoltage = 2500000;
+            break;
+        case "External":
+            ui.externalReferenceVoltage.readOnly = false;
+            break;
+        case "External Buffered":
+            ui.externalReferenceVoltage.readOnly = false;
+            break;
+    }
+}
+
 
 /*
  *  ======== extend ========
@@ -127,11 +197,13 @@ function pinmuxRequirements(inst)
  */
 function extend(base)
 {
-
-    devSpecific.config = base.config.concat(devSpecific.config);
-
     /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

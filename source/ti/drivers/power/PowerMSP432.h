@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,10 +29,9 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/** ============================================================================
+/*!****************************************************************************
  *  @file       PowerMSP432.h
- *
- *  @brief      Power manager interface for the MSP432
+ *  @brief      Power Driver interface for the MSP432P4
  *
  *  The Power header file should be included in an application as follows:
  *  @code
@@ -42,7 +41,7 @@
  *
  *  Refer to @ref Power.h for a complete description of APIs.
  *
- *  ============================================================================
+ ******************************************************************************
  */
 
 #ifndef ti_drivers_power_PowerMSP432__include
@@ -50,14 +49,8 @@
 
 #include <stdint.h>
 
-#include <ti/devices/DeviceFamily.h>
-
 #include <ti/drivers/utils/List.h>
 #include <ti/drivers/Power.h>
-
-/* driverlib header files */
-#include <ti/devices/msp432p4xx/driverlib/pcm.h>
-#include <ti/devices/msp432p4xx/driverlib/cs.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -216,6 +209,9 @@ extern "C" {
 #define PowerMSP432_SHUTDOWN_0              0x0   /*!< Device state of LPM3.5 */
 #define PowerMSP432_SHUTDOWN_1              0x1   /*!< Device state of LPM4.5 */
 
+/* Flag to indicate a custom, tuned DCO frequency */
+#define CS_DCO_TUNE_FREQ                    0x7   /*!< Tuned DCO frequency */
+
 /*!
  *  @brief Structure defining a performance level.
  *
@@ -361,6 +357,14 @@ typedef struct PowerMSP432_PerfLevel {
      *  active states are: PCM_AM_LDO_VCORE0, PM_AM_LDO_VCORE1,
      *  PCM_AM_DCDC_VCORE0, PCM_AM_DCDC_VCORE1.  Usage of DCDC states requires
      *  that the DCDC is available for the device and board configuration.
+     *
+     *  Active states refer to any power state in which CPU execution is
+     *  possible. Two core voltage level settings are supported: VCORE0 and
+     *  VCORE1. See #PowerMSP432_PerfLevel.VCORE. Three active states are
+     *  associated with each core voltage level. The various active states
+     *  allow for optimal power and performance across a broad range of
+     *  application requirements. The core voltage can be supplied by either
+     *  a low dropout (LDO) regulator or a DC/DC (DCDC) regulator.
      */
     unsigned int activeState;
     /*!
@@ -368,6 +372,16 @@ typedef struct PowerMSP432_PerfLevel {
      *
      *  The supported levels are '0' indicating VCORE0, and '1' indicating
      *  VCORE1.
+     *
+     *  The Power Supply System (PSS) uses an integrated voltage regulator to
+     *  produce a secondary core voltage (VCORE) from the primary voltage that
+     *  is applied to the device (VCC). In general, VCORE supplies the CPU,
+     *  memories, and the digital modules, while VCC supplies the I/Os and
+     *  analog modules. The VCORE output is maintained using a dedicated
+     *  voltage reference. VCORE voltage level is programmable to allow power
+     *  savings if the maximum device speed is not required. Modifying this
+     *  configurable will impact the max frequencies available for the
+     *  MCLK, HSMCLK, and SMCLK.
      */
     unsigned int VCORE;
     /*!
@@ -444,6 +458,17 @@ typedef struct PowerMSP432_PerfLevel {
      *  level.
      *
      *  The number of wait-states is specified as a positive integer value.
+     *
+     *  The flash controller is configurable in terms of the number of memory
+     *  bus cycles it takes to service any read command. This allows the CPU
+     *  execution frequency to be higher than the maximum read frequency
+     *  supported by the flash memory. If the bus clock speed is higher than
+     *  the native frequency of the flash, the access is stalled for the
+     *  configured number of wait states, allowing data from the flash to
+     *  be accessed reliably.
+     *
+     *  @note See the device data sheet for CPU execution frequency and
+     *  wait-state requirements.
      */
     unsigned int flashWaitStates;
     /*!
@@ -452,6 +477,22 @@ typedef struct PowerMSP432_PerfLevel {
      *
      *  If 'true', buffering will be enabled; if 'false', buffering will be
      *  disabled.
+     *
+     *  When read buffering is enabled, the flash memory always reads an
+     *  entire 128-bit line irrespective of the access size of 8, 16, or 32
+     *  bits. The 128-bit data and its associated address is internally
+     *  buffered by the flash controller, so subsequent accesses (expected to
+     *  be contiguous in nature) within the same 128-bit address boundary are
+     *  serviced by the buffer. Hence, the flash accesses see wait-states only
+     *  when the 128-bit boundary is crossed, while read accesses within the
+     *  buffer's range are serviced without any bus stalls. If read buffering
+     *  is disabled, accesses to the flash bypasses the buffer, and the data
+     *  read from the flash is limited to the width of the access (8, 16, or
+     *  32 bits). Each bank has independent settings for the read buffering.
+     *  In addition, within each bank, the application has independent
+     *  flexibility to enable read buffering for instruction and data fetches.
+     *  Read buffers are bypassed during any program or erase operation by
+     *  the controller to ensure data coherency.
      */
     bool enableFlashBuffer;
     /*!
@@ -485,6 +526,12 @@ typedef struct PowerMSP432_PerfLevel {
      *  32768 Hz is supported.
      */
     unsigned int ACLK;
+    /*!
+     *  @brief The target center frequency for custom tuning of the DCO, in Hz.
+     *  This frequency value is used only when DCORESEL is specified as
+     *  CS_DCO_TUNE_FREQ.
+     */
+    unsigned int tuneFreqDCO;
 } PowerMSP432_PerfLevel;
 
 /*! @brief  Structure holding device frequencies (in Hz) */
@@ -566,8 +613,8 @@ typedef struct PowerMSP432_ConfigV1 {
     bool enablePerf;
     /*!
      *  @brief Boolean specifying if pull resistors should be automatically
-     *  applied to input pins during PowerMSP432_DEEPSLEEP_0 and
-     *  PowerMSP432_DEEPSLEEP_1
+     *  applied to input pins during #PowerMSP432_DEEPSLEEP_0 and
+     *  #PowerMSP432_DEEPSLEEP_1
      *
      *  Leaving an input pin floating during a device deepsleep state will
      *  result in an increase in power consumption.  The Power Manager provides
@@ -587,7 +634,7 @@ typedef struct PowerMSP432_ConfigV1 {
      *  If 'false', pull resistors will not be automatically applied during
      *  deepsleep states.
      *
-     *  SPECIAL NOTE: When auto pin parking is enabled special attention must
+     *  @note When auto pin parking is enabled special attention must
      *  be paid to the interrupt trigger selection for GPIO pins that are
      *  expected to wake the device from deepsleep.  Specifically, the
      *  interrupt should be triggered on the leading edge of the signal
@@ -595,17 +642,17 @@ typedef struct PowerMSP432_ConfigV1 {
      *
      *  As an example, consider a pin that is connected via a debounced
      *  button switch to ground.  An internal pull-up resistor is used
-     *  versus an external pull-up resistor.  The GPIO driver is used to
+     *  versus an external pull-up resistor.  The @ref GPIO.h driver is used to
      *  manage this pin, with the following entry in the pin configuration
      *  array:
-     *      ...,
+     *  @code
      *      GPIOMSP432_P1_1 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
-     *      ...,
+     *   @endcode
      *
-     *  Note that the "FALLING" edge is specifically selected so that the
+     *  @note #GPIO_CFG_IN_INT_FALLING is specifically selected so that the
      *  interrupt triggers immediately upon a button press.
      *
-     *  If instead the "RISING" edge were selected, in certain situations there
+     *  If #GPIO_CFG_IN_INT_RISING were selected, in certain situations there
      *  may be a problem with this pin being able to trigger a wakeup from
      *  deepsleep. For example, consider the case where there is an additional
      *  mechanism to wake the device from deepsleep, for example, the watchdog

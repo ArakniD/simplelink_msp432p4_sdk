@@ -4,7 +4,6 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 
 
 SYSCONFIG_PRODUCT := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json
-BOARD := /ti/boards/.meta/MSP_EXP432P4111
 
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
@@ -48,7 +47,7 @@ Board.c Board.h : syscfg
 
 syscfg: ../uartecho.syscfg
 	@ echo Generating configuration files...
-	@ $(NODE_JS) $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --board $(BOARD) --output $(@D) $<
+	@ $(NODE_JS) $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
 
 Board.obj: Board.c
 	@ echo Building $@

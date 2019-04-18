@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_timers_dmtimer
 {
-    static final String VERS = "@(#) xdc-F07\n";
+    static final String VERS = "@(#) xdc-F09\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -679,7 +679,7 @@ public class ti_sysbios_timers_dmtimer
                 po.addFld("$hostonly", $$T_Num, 0, "r");
         if (isCFG) {
             po.addFld("timerId", Proto.Elm.newCNum("(xdc_UInt)"), Global.eval("~0"), "w");
-            po.addFld("useClockTimer", $$T_Bool, $$UNDEF, "w");
+            po.addFld("useClockTimer", $$T_Bool, false, "w");
         }//isCFG
         fxn = Global.get(cap, "module$use");
         if (fxn != null) om.bind("ti.sysbios.timers.dmtimer.TimestampProvider$$module$use", true);

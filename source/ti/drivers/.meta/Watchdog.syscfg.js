@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,13 +40,6 @@
 let Common   = system.getScript("/ti/drivers/Common.js");
 let family   = Common.device2Family(system.deviceData, "Watchdog");
 let logError = Common.logError;
-
-/* Intro splash on GUI */
-let longDescription = "A watchdog timer can be used to generate "
-    + "a reset signal if a system has become unresponsive. The "
-    + "Watchdog driver simplifies configuring and starting the "
-    + "watchdog peripherals. The watchdog peripheral can be configured "
-    + "with resets either on or off and a user-specified timeout period.";
 
 /* Array of Watchdog configurables that are common across device families */
 let config = [
@@ -102,10 +95,26 @@ let base = {
     displayName         : "Watchdog",
     description         : "Watchdog Timer Driver",
     defaultInstanceName : "Board_WATCHDOG",
-    longDescription     : longDescription,
+    longDescription     : `
+The [__Watchdog driver__][1] allows you to configure the system watchdog.
+A watchdog timer is used to reset the system if it has become unresponsive.
+Parameters such as reset behavior and timeout can be configured[2].
+* [Usage Synopsis][3]
+* [Examples][4]
+* [Configuration][5]
+[1]: /tidrivers/doxygen/html/_watchdog_8h.html "C API reference"
+[2]:
+/tidrivers/doxygen/html/_watchdog_8h.html#ti_drivers_Watchdog_example_callback
+"Example: Configure the watchdog"
+[3]: /tidrivers/doxygen/html/_watchdog_8h.html#ti_drivers_Watchdog_Synopsis
+"Basic C usage summary"
+[4]: /tidrivers/doxygen/html/_watchdog_8h.html#ti_drivers_Watchdog_Examples
+"C usage examples"
+[5]: /tidrivers/syscfg/html/ConfigDoc.html#Watchdog_Configuration_Options "Configuration options reference"
+`,
     documentation: "/tidrivers/doxygen/html/_watchdog_8h.html",
-    modules             : Common.autoForcePowerModule,
-    config              : config,
+    modules             : Common.autoForceModules(["Board", "Power"]),
+    config              : Common.addNameConfig(config, "/ti/drivers/Watchdog", "Board_WATCHDOG"),
     pinmuxRequirements  : pinmuxRequirements,
     validate            : validate
 };

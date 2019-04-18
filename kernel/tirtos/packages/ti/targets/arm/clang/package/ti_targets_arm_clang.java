@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_targets_arm_clang
 {
-    static final String VERS = "@(#) xdc-F07\n";
+    static final String VERS = "@(#) xdc-F09\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -278,7 +278,7 @@ public class ti_targets_arm_clang
         po.addFld("cc", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmclang -c", "opts", "-mcpu=cortex-m33 -mfloat-abi=hard -mfpu=fpv5-sp-d16"), "rh");
         po.addFld("asm", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmclang -c -x assembler-with-cpp", "opts", "-mcpu=cortex-m33 -mfloat-abi=hard -mfpu=fpv5-sp-d16"), "rh");
         po.addFld("lnk", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmclang", "opts", "-mcpu=cortex-m33 -mfloat-abi=hard -mfpu=fpv5-sp-d16"), "rh");
-        po.addFld("ar", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmar", "opts", "q"), "rh");
+        po.addFld("ar", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmar -c", "opts", "-q"), "rh");
         po.addFld("ccOpts", (Proto)om.findStrict("xdc.bld.ITarget2.Options", "ti.targets.arm.clang"), Global.newObject("prefix", "", "suffix", ""), "wh");
         po.addFld("ccConfigOpts", (Proto)om.findStrict("xdc.bld.ITarget2.Options", "ti.targets.arm.clang"), Global.newObject("prefix", "$(ccOpts.prefix)", "suffix", "$(ccOpts.suffix)"), "wh");
         po.addFld("asmOpts", (Proto)om.findStrict("xdc.bld.ITarget2.Options", "ti.targets.arm.clang"), Global.newObject("prefix", "", "suffix", ""), "wh");
@@ -348,7 +348,7 @@ public class ti_targets_arm_clang
         po.addFld("cc", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmclang -c", "opts", "-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16"), "rh");
         po.addFld("asm", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmclang -c -x assembler-with-cpp", "opts", "-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16"), "rh");
         po.addFld("lnk", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmclang", "opts", "-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16"), "rh");
-        po.addFld("ar", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmar", "opts", "q"), "rh");
+        po.addFld("ar", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmar -c", "opts", "-q"), "rh");
         po.addFld("ccOpts", (Proto)om.findStrict("xdc.bld.ITarget2.Options", "ti.targets.arm.clang"), Global.newObject("prefix", "", "suffix", ""), "wh");
         po.addFld("ccConfigOpts", (Proto)om.findStrict("xdc.bld.ITarget2.Options", "ti.targets.arm.clang"), Global.newObject("prefix", "$(ccOpts.prefix)", "suffix", "$(ccOpts.suffix)"), "wh");
         po.addFld("asmOpts", (Proto)om.findStrict("xdc.bld.ITarget2.Options", "ti.targets.arm.clang"), Global.newObject("prefix", "", "suffix", ""), "wh");
@@ -418,7 +418,7 @@ public class ti_targets_arm_clang
         po.addFld("cc", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmclang -c", "opts", "-mcpu=cortex-m4 -mfloat-abi=soft -mfpu=none"), "rh");
         po.addFld("asm", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmclang -c -x assembler-with-cpp", "opts", "-mcpu=cortex-m4 -mfloat-abi=soft -mfpu=none"), "rh");
         po.addFld("lnk", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmclang", "opts", "-mcpu=cortex-m4 -mfloat-abi=soft -mfpu=none"), "rh");
-        po.addFld("ar", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmar", "opts", "q"), "rh");
+        po.addFld("ar", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmar -c", "opts", "-q"), "rh");
         po.addFld("ccOpts", (Proto)om.findStrict("xdc.bld.ITarget2.Options", "ti.targets.arm.clang"), Global.newObject("prefix", "", "suffix", ""), "wh");
         po.addFld("ccConfigOpts", (Proto)om.findStrict("xdc.bld.ITarget2.Options", "ti.targets.arm.clang"), Global.newObject("prefix", "$(ccOpts.prefix)", "suffix", "$(ccOpts.suffix)"), "wh");
         po.addFld("asmOpts", (Proto)om.findStrict("xdc.bld.ITarget2.Options", "ti.targets.arm.clang"), Global.newObject("prefix", "", "suffix", ""), "wh");
@@ -488,7 +488,7 @@ public class ti_targets_arm_clang
         po.addFld("cc", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmclang -c", "opts", "-mcpu=cortex-m3 -mfloat-abi=soft -mfpu=none"), "rh");
         po.addFld("asm", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmclang -c -x assembler-with-cpp", "opts", "-mcpu=cortex-m3 -mfloat-abi=soft -mfpu=none"), "rh");
         po.addFld("lnk", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmclang", "opts", "-mcpu=cortex-m3 -mfloat-abi=soft -mfpu=none"), "rh");
-        po.addFld("ar", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmar", "opts", "q"), "rh");
+        po.addFld("ar", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "ti.targets.arm.clang"), Global.newObject("cmd", "tiarmar -c", "opts", "-q"), "rh");
         po.addFld("ccOpts", (Proto)om.findStrict("xdc.bld.ITarget2.Options", "ti.targets.arm.clang"), Global.newObject("prefix", "", "suffix", ""), "wh");
         po.addFld("ccConfigOpts", (Proto)om.findStrict("xdc.bld.ITarget2.Options", "ti.targets.arm.clang"), Global.newObject("prefix", "$(ccOpts.prefix)", "suffix", "$(ccOpts.suffix)"), "wh");
         po.addFld("asmOpts", (Proto)om.findStrict("xdc.bld.ITarget2.Options", "ti.targets.arm.clang"), Global.newObject("prefix", "", "suffix", ""), "wh");

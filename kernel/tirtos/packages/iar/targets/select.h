@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018 by Texas Instruments Incorporated.
+ *  Copyright 2019 by Texas Instruments Incorporated.
  *
  */
 
@@ -55,7 +55,7 @@
 #  endif
 #endif
 /*
- *  @(#) iar.targets; 1, 0, 1,2; 10-26-2018 10:20:00; /db/ztree/library/trees/xdctargets/xdctargets-s01/src/ xlibrary
+ *  @(#) iar.targets; 1, 0, 1,1; 2-9-2019 16:22:34; /db/ztree/library/trees/xdctargets/xdctargets-t01/src/ xlibrary
 
  */
 

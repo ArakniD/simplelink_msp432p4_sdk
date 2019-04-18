@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -126,8 +126,8 @@ void *mainThread(void *arg0)
      * the result in microseconds
      */
     Capture_Params_init(&captureParams);
-    captureParams.mode = CAPTURE_MODE_RISING_RISING;
-    captureParams.periodUnit = CAPTURE_PERIOD_US;
+    captureParams.mode = Capture_RISING_EDGE;
+    captureParams.periodUnit = Capture_PERIOD_US;
     captureParams.callbackFxn = captureCallback;
 
     capture = Capture_open(Board_CAPTURE1, &captureParams);

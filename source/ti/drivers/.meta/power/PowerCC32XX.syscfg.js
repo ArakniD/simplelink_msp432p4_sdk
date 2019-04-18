@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,24 +48,58 @@ let config = [
         name        : "enablePolicy",
         displayName : "Enable Policy",
         description : "Enable the power policy to run when the CPU is idle.",
+        longDescription:`
+If enabled, the policy function will be invoked once for each pass of the
+idle loop.
+
+In addition to this static setting, the Power Policy can be dynamically
+enabled and disabled at runtime, via the [Power_enablePolicy()][1] and
+[Power_disablePolicy()][2] functions, respectively.
+
+[1]: /tidrivers/docs/tidrivers/doxygen/html/_power_8h.html#ti_drivers_Power_Examples_enable
+"Enabling power policy"
+[2]: /tidrivers/docs/tidrivers/doxygen/html/_power_8h.html#ti_drivers_Power_Examples_disable
+"Disabling power policy"
+`,
         onChange    : onChangeEnablePolicy,
         default     : false
     },
-
-    /* Policy function handling */
     {
         name        : "policyFunction",
         displayName : "Policy Function",
         description : "Power policy function called from the idle loop.",
+        longDescription:`
+When enabled, this function is invoked in the idle loop, to opportunistically
+select and activate sleep states.
+
+One reference policy is provided:
+
+* __PowerCC32XX_sleepPolicy()__
+
+In addition to this static selection, the Power Policy can be
+dynamically changed at runtime, via the Power_setPolicy() API.
+`,
         onChange    : onChangePolicyFxn,
         default     : "PowerCC32XX_sleepPolicy",
         options     :
         [
-            { name: "PowerCC32XX_sleepPolicy" },
-            { name: "Custom" }
+            {
+                name: "PowerCC32XX_sleepPolicy",
+                description: "A reference power policy is provided which can"
+                    + " transition the MCU from the active state to one of two"
+                    + " sleep states: Low-Power Deep Sleep (LPDS) or Sleep.",
+                longDescription:`The policy looks at the estimated idle time
+remaining, and the active constraints, and determine which sleep state to
+transition to. The policy will give first preference to choosing LPDS, but if
+that is not appropriate (e.g., not enough idle time), it will choose Sleep.`
+            },
+            {
+                name: "Custom",
+                description: "Custom policies can be written, and specified"
+                    + " via the Policy Custom Function configuration."
+            }
         ]
     },
-
     {
         name        : "policyCustomFunction",
         displayName : "Policy Custom Function",
@@ -78,85 +112,87 @@ let config = [
         name        : "policyInitFunction",
         displayName : "Policy Init Function",
         description : "The initialization function for the Power policy.",
+        longDescription:`
+This is an optional policy initialization function that will be called during
+application startup, during Power Manager initialization.
+`,
         default     : "PowerCC32XX_initPolicy",
         onChange    : onChangePolicyInitFxn,
         options     :
         [
             { name: "PowerCC32XX_initPolicy" },
-            { name: "Custom" }
+            {
+                name: "Custom",
+                description: "Custom initialization policies can be written"
+                    + "and specified via the Policy Init Custom Function"
+                    + " configuration."
+            }
         ]
     },
-
     {
         name        : "policyInitCustomFunction",
         displayName : "Policy Init Custom Function",
-        description : "User provided Power policy init function. " +
+        description : "User provided Power policy initialization function. " +
                       "Usage not typical.",
         default     : "customPolicyInitFxn",
         hidden      : true
     },
-
     {
         name        : "enterLPDSHookFunction",
         displayName : "Enter LPDS Hook Function",
-        description : "Optional hook function to call on entry into LPDS",
+        description : "Optional hook function to call on entry into Low-Power"
+            +" Deep Sleep (LPDS)",
+        longDescription:`This function is called after any notifications are
+complete, and before any pins are parked, just before entry to LPDS.`,
         placeholder : "Enter a function name to enable",
         default     : ""
     },
-
     {
         name        : "resumeLPDSHookFunction",
         displayName : "Resume LPDS Hook Function",
-        description : "Optional hook function to call on resuming from LPDS",
+        description : "Optional hook function to call on resuming from"
+            + " Low-Power Deep Sleep (LPDS)",
+        longDescription:`This function is called early in the wake sequence,
+before any notification functions are run.`,
         placeholder : "Enter a function name to enable",
         default     : ""
     },
-
-
     {
         name        : "enableNetworkWakeupLPDS",
         displayName : "Enable Network Wakeup LPDS",
-        description : "Enable Network Activity as a Wakeup Source for LPDS",
+        description : "Enable Network Activity as a wakeup source for"
+            + " Low-Power Deep Sleep (LPDS)",
         default     : true
     },
-
-    {
-        name         : "ramRetentionMaskLPDS",
-        displayName  : "RAM Retention Mask LPDS",
-        description  : "SRAM retention mask for LPDS",
-        hidden       : true,
-        default      : ["SRAM_COL_1", "SRAM_COL_2", "SRAM_COL_3", "SRAM_COL_4"],
-        minSelections: 0,
-        options      :
-        [
-            { name: "SRAM_COL_1" },
-            { name: "SRAM_COL_2" },
-            { name: "SRAM_COL_3" },
-            { name: "SRAM_COL_4" }
-        ]
-    },
-
     {
         name        : "keepDebugActiveDuringLPDS",
         displayName : "Keep Debug Active During LPDS",
-        description : "Keep debug interface active during LPDS",
+        description : "Keep debug interface active during Low-Power Deep Sleep"
+            + " (LPDS)",
+        longDescription:`
+This controls whether the debug interface is active when LPDS is
+entered. For better power savings this should be disabled. Setting this flag
+to true will prevent full LPDS and result in increased power consumption.
+`,
         default     : false
     },
-
     {
         name        : "enableGPIOWakeupLPDS",
         displayName : "Enable GPIO Wakeup LPDS",
-        description : "Enable GPIO as a Wakeup Source for LPDS",
+        description : "Enable GPIO as a Wakeup Source for Low-Power Deep Sleep"
+            + " (LPDS).",
         onChange    : onChangeEnableGPIOWakeupLPDS,
         default     : true
     },
-
     {
         name        : "wakeupGPIOSourceLPDS",
         displayName : "Wakeup GPIO Source LPDS",
-        description : "GPIO Source for wakeup from LPDS",
+        description : "GPIO Source for wakeup from Low-Power Deep Sleep"
+            + " (LPDS)",
+        longDescription: "Only one of the following GPIOs can be specified as"
+            + " a wake source from LPDS.",
         default     : "GPIO13",
-        hidden      : false,  /* because enableGPIOWakeupLPDS is true */
+        hidden      : false,  /* because enableGPIOWakeupLPDS default is true */
         options     :
         [
             { name: "GPIO2" },
@@ -172,21 +208,46 @@ let config = [
         name        : "wakeupGPIOTypeLPDS",
         displayName : "Wakeup GPIO Type LPDS",
         description : "GPIO Trigger Type for wakeup from LPDS",
-        hidden      : false,  /* because enableGPIOWakeupLPDS is true */
+        hidden      : false,  /* because enableGPIOWakeupLPDS default is true */
         default     : "FALL_EDGE",
         options     :
         [
-            { name: "LOW_LEVEL"  },
-            { name: "HIGH_LEVEL" },
-            { name: "FALL_EDGE"  },
-            { name: "RISE_EDGE"  }
+            {
+                name: "LOW_LEVEL",
+                description: "Wake up is active low"
+            },
+            {
+                name: "HIGH_LEVEL",
+                description: "Wake up is active high"
+            },
+            {
+                name: "FALL_EDGE",
+                description: "Wake up is active on a falling edge"
+            },
+            {
+                name: "RISE_EDGE",
+                description: "Wake up is active on a rising edge"
+            }
         ]
     },
     {
         name        : "wakeupGPIOLPDSFunction",
         displayName : "Wakeup GPIO LPDS Function",
-        description : "Optianal hook function to call on LPDS wakeup "
-                      + "triggered by GPIO",
+        description : "Optional hook function to call on Low-Power Deep Sleep"
+            + " (LPDS) wakeup triggered by GPIO",
+        longDescription:`
+An argument for this wakeup function can be specified via the
+__Wakeup GPIO LPDS Function Arg__ configurable.
+
+During LPDS the internal GPIO module is powered off. No GPIO interrupt service
+routine (ISR) will be triggered in this case (even if an ISR is configured,
+and used normally to detect GPIO interrupts when not in LPDS). This function
+can be used in lieu of a GPIO ISR, to take specific action upon LPDS wakeup.
+
+This wakeup function will be called as one of the last steps in Power_sleep(),
+after all notifications have been sent out, and after pins have been restored
+to their previous (non-parked) states.
+`,
         onChange    : onChangeWakeupGPIOFxnLPDS,
         placeholder : "Enter a function name to enable",
         hidden      : false,  /* because enableGPIOWakeupLPDS is true */
@@ -195,12 +256,12 @@ let config = [
     {
         name        : "wakeupGPIOLPDSFunctionArg",
         displayName : "Wakeup GPIO LPDS Function Arg",
-        description : "Integer argument to Function called on GPIO "
-                      + "triggered wakeup from LPDS",
+        description : "Byte argument to the function called on a GPIO"
+                      + " triggered wakeup event from Low-Power Deep Sleep"
+                      + " (LPDS).",
         hidden      : true,
         default     : 0
     },
-
     {
         name        : "enableGPIOWakeupShutdown",
         displayName : "Enable GPIO Wakeup Shutdown",
@@ -208,11 +269,12 @@ let config = [
         onChange    : onChangeEnableGPIOWakeupShutdown,
         default     : true
     },
-
     {
         name        : "wakeupGPIOSourceShutdown",
         displayName : "Wakeup GPIO Source Shutdown",
         description : "GPIO Source for wakeup from Shutdown",
+        longDescription: "Only one of the following GPIOs can be specified as"
+            + " a wake source from Shutdown.",
         hidden      : false,  /* because enableGPIOWakeupShutdown is true */
         default     : "GPIO13",
         options     :
@@ -226,7 +288,6 @@ let config = [
             { name: "GPIO26" }
         ]
     },
-
     {
         name        : "wakeupGPIOTypeShutdown",
         displayName : "Wakeup GPIO Type Shutdown",
@@ -235,25 +296,62 @@ let config = [
         default     : "RISE_EDGE",
         options     :
         [
-            { name: "LOW_LEVEL"  },
-            { name: "HIGH_LEVEL" },
-            { name: "FALL_EDGE"  },
-            { name: "RISE_EDGE"  }
+            {
+                name: "LOW_LEVEL",
+                description: "Wake up is active low"
+            },
+            {
+                name: "HIGH_LEVEL",
+                description: "Wake up is active high"
+            },
+            {
+                name: "FALL_EDGE",
+                description: "Wake up is active on a falling edge"
+            },
+            {
+                name: "RISE_EDGE",
+                description: "Wake up is active on a rising edge"
+            }
         ]
     },
-
+    {
+        name         : "ramRetentionMaskLPDS",
+        displayName  : "RAM Retention Mask LPDS",
+        description  : "SRAM retention mask for Low-Power Deep Sleep (LPDS)",
+        default      : ["SRAM_COL_1", "SRAM_COL_2", "SRAM_COL_3", "SRAM_COL_4"],
+        minSelections: 0,
+        options      :
+        [
+            { name: "SRAM_COL_1" },
+            { name: "SRAM_COL_2" },
+            { name: "SRAM_COL_3" },
+            { name: "SRAM_COL_4" }
+        ]
+    },
     {
         name         : "ioRetentionShutdown",
-        displayName  : "IO retention Shutdown",
-        description  : "IO retention mask for Shutdown",
+        displayName  : "IO Retention Shutdown",
+        description  : "IO groups to be retained during Shutdown",
         default      : [ "GRP_0", "GRP_1", "GRP_2", "GRP_3" ],
         minSelections: 0,
         options      :
         [
-            { name: "GRP_0" },
-            { name: "GRP_1" },
-            { name: "GRP_2" },
-            { name: "GRP_3" }
+            {
+                name: "GRP_0",
+                description: "All pins except sFlash and JTAG interface"
+            },
+            {
+                name: "GRP_1",
+                description: "sFlash interface pins 11, 12, 13, 14"
+            },
+            {
+                name: "GRP_2",
+                description: "JTAG TDI and TDO interface pins 16, 17"
+            },
+            {
+                name: "GRP_3",
+                description: "JTAG TCK and TMS interface pins 19, 20"
+            }
         ]
     }
 ];
@@ -268,7 +366,8 @@ let devSpecific = {
     moduleStatic : {
         config          : config,
         moduleInstances : modulesInstances,
-        validate        : validate
+        validate        : validate,
+        modules: Common.autoForceModules(["Board"])
     },
 
     templates           : {
@@ -357,6 +456,8 @@ function modulesInstances(inst)
 {
     return ([{
         name : 'parkPins',
+        displayName: "Park Pins",
+        description: "Pin Park States",
         moduleName : '/ti/drivers/power/PowerCC32XXPins',
         collapsed : true
     }]);

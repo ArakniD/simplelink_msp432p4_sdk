@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,6 +35,11 @@
  *  ======== ADCCC26XX.syscfg.js ========
  */
 
+"use strict";
+
+/* get Common /ti/drivers utility functions */
+let Common = system.getScript("/ti/drivers/Common.js");
+
 /*
  *  ======== devSpecific ========
  *  Device-specific extensions to be added to base ADC configuration
@@ -57,6 +62,7 @@ let devSpecific = {
         {
             name: "resolution",
             displayName: "Resolution",
+            description: "Specifies the ADC's resolution",
             default: "12 Bits",
             hidden: true,
             options: [
@@ -110,7 +116,7 @@ let devSpecific = {
         {
             name: "internalSignal",
             displayName: "Internal Signal",
-            description: "Specifies if an internal signal will be used as the"
+            description: "Specifies internal signal(s) to use as a"
                 + " sample source.",
             default: "None",
             options: [
@@ -118,20 +124,22 @@ let devSpecific = {
                 {
                     name: "Battery Channel",
                     description: "Adds a channel to sample the internal"
-                        + " battery voltage, VDDS.",
+                        + " battery voltage, VDDS."
                 },
                 {
                     name: "Decoupling Channel",
-                    description: "Adds a channel to sample the decoupling capacitor"
-                        + " voltage, DCOUPL. The digital core is supplied by a 1.28-V"
-                        + " regulator connected to VDDR. The output of this"
-                        + " regulator requires an external decoupling capacitor"
-                        + " for proper operation; this capcitor is connected to"
-                        + " DCOUPL.",
+                    description: "Adds a channel to sample the decoupling"
+                        + " capacitor voltage, DCOUPL.",
+                    longDescription:`
+The digital core is supplied by a 1.28-V regulator connected to VDDR.
+The output of this regulator requires an external decoupling capacitor
+for proper operation; this capcitor is connected to DCOUPL.
+`
                 },
                 {
                     name: "Ground Channel",
-                    description: "Adds a channel to sample the ground voltage, VSS.",
+                    description: "Adds a channel to sample the ground voltage,"
+                        + " VSS."
                 }
             ]
         }
@@ -139,6 +147,8 @@ let devSpecific = {
 
     /* override generic requirements with device-specific reqs (if any) */
     pinmuxRequirements: pinmuxRequirements,
+
+    modules: Common.autoForceModules(["Board", "Power"]),
 
     /* PIN instances */
     moduleInstances: moduleInstances,
@@ -225,11 +235,13 @@ function moduleInstances(inst)
  */
 function extend(base)
 {
-    /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
-
     /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

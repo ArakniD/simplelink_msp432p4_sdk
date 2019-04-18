@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,16 +64,26 @@ function validate(inst, validation)
 let base = {
     displayName: "ADCBuf",
     description: "Buffered Analog to Digital Conversion (ADCBuf) Input Driver",
-    longDescription: "The ADCBuf driver samples an "
-        + "analog waveform at a specified frequency. The resulting "
-        + "samples are transferred to a buffer provided by the application. "
-        + "The driver can either take n samples once, or continuously "
-        + "sample by double-buffering and providing a callback to process "
-        + "each finished buffer.",
-    documentation: "/tidrivers/doxygen/html/_a_d_c_buf_8h.html",
+    longDescription:
+`
+The [__ADCBuf driver__][1] allows you to sample and convert analog signals at
+a specified frequency. The resulting samples are placed in a buffer provided
+by the application.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+
+[1]: /tidrivers/doxygen/html/_a_d_c_buf_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_a_d_c_buf_8h.html#ti_drivers_ADCBuf_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_a_d_c_buf_8h.html#ti_drivers_ADCBuf_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#ADCBuf_Configuration_Options "Configuration options reference"
+`,
+
     defaultInstanceName: "Board_ADCBUF",
-    config: config,
-    validate: validate
+    config: Common.addNameConfig(config, "/ti/drivers/ADC", "Board_ADCBUF"),
+    validate: validate,
+    modules: Common.autoForceModules(["Board", "Power", "DMA"])
 };
 
 /* extend the base exports to include family-specific content */

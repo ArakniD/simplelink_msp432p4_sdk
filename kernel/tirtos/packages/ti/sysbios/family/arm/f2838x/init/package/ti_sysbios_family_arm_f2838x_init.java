@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_family_arm_f2838x_init
 {
-    static final String VERS = "@(#) xdc-F07\n";
+    static final String VERS = "@(#) xdc-F09\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -125,7 +125,7 @@ public class ti_sysbios_family_arm_f2838x_init
                 po.addFld("$hostonly", $$T_Num, 0, "r");
         if (isCFG) {
             po.addFld("rovViewInfo", (Proto)om.findStrict("xdc.rov.ViewInfo.Instance", "ti.sysbios.family.arm.f2838x.init"), $$UNDEF, "wh");
-            po.addFld("disableWatchdog", $$T_Bool, true, "wh");
+            po.addFld("disableWatchdog", $$T_Bool, false, "wh");
         }//isCFG
         fxn = Global.get(cap, "module$use");
         if (fxn != null) om.bind("ti.sysbios.family.arm.f2838x.init.Boot$$module$use", true);

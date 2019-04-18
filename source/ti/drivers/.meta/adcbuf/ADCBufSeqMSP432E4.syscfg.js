@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,19 +51,31 @@ exports = {
         {
             name: "priority",
             displayName: "Priority",
-            descriptions: "Specify this sequencer's priority. The highest"
+            description: "Specify this sequencer's priority. The highest"
                 + " priority is 0.",
             default: 0,
             options: [
-                { name: 0 },
+                { name: 0, description: "Highest priority" },
                 { name: 1 },
                 { name: 2 },
-                { name: 3 }
+                { name: 3, description: "Lowest priority" }
             ]
         },
         {
             name: "triggerSource",
             displayName: "Trigger Source",
+            description: "Selects the trigger source for this sequencer.",
+            longDescription:`
+When __Auto__ is selected, automatically and continuously trigger ADC sampling.
+Precaution should be taken when using this mode with multiple sequencers.
+If the sequencer's priority using the software trigger is too high, it is
+possible to starve other lower priority sequencers. Generally, a sequencer
+using __Auto__ should be set to the lowest sequencer priority.
+
+When __Timer__ is selected, trigger ADC samples using a general purpose timer.
+When using both ADC peripherals, both will use the same general
+purpose timer.
+`,
             default: "Timer",
             options: [
                 { name: "Timer" },
@@ -75,8 +87,7 @@ exports = {
             displayName: "Channels",
             description: "Specifies the number of channels to configure for"
                 + " this sequencer.",
-            default: 1,
-            onChange: onChannelChange
+            default: 1
         },
         {
             /* Used to internally pass enableDMA argument */
@@ -112,28 +123,17 @@ function pinmuxRequirements(inst)
 {
     let requirements = [];
 
-    if (inst.number === -1) {
+    if (inst.number === -1 || inst.enableDMA === false) {
         return (requirements);
     }
 
     let adc = {
-        name: "adc",
-        displayName: "ADC",
-        interfaceName: "ADC",
-        canShareWith: inst.$ownedBy.$name,
+        extend: inst.$ownedBy.adc,
         hidden: true,
-        resources: []
+        name: "dmaChannel",
+        displayName: "DMA Channel",
+        interfaceNames: [SEQUENCER_DMA[inst.number]]
     };
-
-    if (inst.enableDMA === true) {
-        adc.resources.push({
-            name: "dmaChannel",
-            displayName: "DMA Channel",
-            interfaceNames: [SEQUENCER_DMA[inst.number]],
-            hidden: true,
-            readOnly: true
-        });
-    }
 
     requirements.push(adc);
 
@@ -154,16 +154,16 @@ function validate(inst, validation)
             }
         }
     }
-}
 
-/*
- *  ======== onChanneChange ========
- */
-function onChannelChange(inst, ui)
-{
-    if (inst.maxChans != -1) {
+    if (inst.maxChans !== -1) {
         if (inst.channels > inst.maxChans) {
-            inst.channels = inst.maxChans;
+            logError(validation, inst, "channels",
+                "Only " + inst.maxChans + " channels are supported"
+                 + " for Sequencer" + inst.number + ".");
+        }
+        if (inst.channels < 0 || !Number.isInteger(inst.channels)) {
+            logError(validation, inst, "channels", "Channels must be between"
+                + "an integer 0 and " + inst.maxChans);
         }
     }
 }

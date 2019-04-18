@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,8 +46,7 @@
 #include <ti/sysbios/heaps/HeapBuf.h>
 #include <ti/sysbios/heaps/HeapMem.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+#include <ti/drivers/Board.h>
 
 #define TASK0BUFSIZE    32       /* size of allocations */
 #define TASK0NUMBUFS    2        /* number of buffers */

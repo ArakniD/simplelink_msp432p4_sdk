@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,9 +44,7 @@ let Common = system.getScript("/ti/drivers/Common.js");
 /* get /ti/drivers family name from device object */
 let family = Common.device2Family(system.deviceData, "ECDSA");
 
-let longDescription = "The Elliptic Curve Digital Signature Algorithm" +
-        + " (ECDSA) module provides APIs for generating and verifying digital"
-        + " signatures.";
+let config = [];
 
 /*
  *  ======== validate ========
@@ -66,11 +64,23 @@ function validate(inst, validation)
  */
 let base = {
     displayName         : "ECDSA",
-    description         : "Elliptic Curve Digital Signature Algorithm Module",
-    longDescription     : longDescription,
-    documentation: "/tidrivers/doxygen/html/_e_c_d_s_a_8h.html",
+    description         : "Elliptic Curve Digital Signature Algorithm (ECDSA) Driver",
+    longDescription     : `
+The [__ECDSA driver__][1] provides APIs for generating
+and verifying digital signatures.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+[1]: /tidrivers/doxygen/html/_e_c_d_s_a_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_e_c_d_s_a_8h.html#ti_drivers_ECDSA_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_e_c_d_s_a_8h.html#ti_drivers_ECDSA_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#ECDSA_Configuration_Options "Configuration options reference"
+`,
     validate            : validate,
-    defaultInstanceName : "Board_ECDSA"
+    defaultInstanceName : "Board_ECDSA",
+    config              : Common.addNameConfig(config, "/ti/drivers/ECDSA", "Board_ECDSA"),
+    modules             : Common.autoForceModules(["Board", "Power"])
 };
 
 /* extend the base exports to include family-specific content */

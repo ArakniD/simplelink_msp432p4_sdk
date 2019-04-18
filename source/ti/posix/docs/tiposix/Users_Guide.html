@@ -95,6 +95,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#thread-default-stack-size-and-thread-default-priority">Thread default stack size and thread default priority</a></li>
 <li><a href="#thread-scheduling-policy">Thread scheduling policy</a></li>
 <li><a href="#ti-posix-on-freertos">TI-POSIX on FreeRTOS</a></li>
+<li><a href="#binary-semaphore">Binary Semaphore</a></li>
 </ul></li>
 </ul>
 </div>
@@ -1117,30 +1118,48 @@ ti/posix/freertos/aeabi_portable.c</code></pre>
 <td></td>
 </tr>
 <tr class="even">
+<td><strong>sleep</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>nanosleep</td>
+<td>High resolution sleep</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
 <td><strong>timer</strong></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>timer_create</td>
 <td>Create a timer</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>timer_delete</td>
 <td>Delete a timer</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>timer_gettime</td>
 <td>Fetch the amount of time until the timer expires</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>timer_settime</td>
 <td>Set the time until the next expiration of the timer</td>
 <td>Yes</td>
@@ -1212,6 +1231,32 @@ pthread_mutexattr_setprioceiling() - not supported for FreeRTOS</code></pre>
 <p>Only CLOCK_REALTIME is supported with <code>clock_settime()</code>.</p>
 <p><code>timer_settime()</code> - this is a blocking call, unlike on TI-RTOS</p>
 <p>Task cleanup is done by the Idle task in FreeRTOS. If pthreads are deleted, make sure the Idle task gets a chance to run to free allocated memory for the deleted thread.</p>
+<h3 id="binary-semaphore">Binary Semaphore</h3>
+<p>POSIX does not support a binary semaphore. That is, a semaphore which can be posted multiple times, but the count goes no greater than 1. The next pend will reduce the count to 0.</p>
+<p>Fortunately, it is easy to build a binary semaphore using a mutex and condition variable. The following is a pseudo code example.</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">struct</span> binary_semaphore {
+    pthread_mutex_t mutex;
+    pthread_cond_t cvar;
+    <span class="dt">int</span> v;
+};
+
+<span class="dt">void</span> mysem_post(<span class="kw">struct</span> binary_semaphore *p)
+{
+    pthread_mutex_lock(&amp;p-&gt;mutex);
+    p-&gt;v = <span class="dv">1</span>;
+    pthread_cond_signal(&amp;p-&gt;cvar);
+    pthread_mutex_unlock(&amp;p-&gt;mutex);
+}
+
+<span class="dt">void</span> mysem_pend(<span class="kw">struct</span> binar_semaphore *p)
+{
+    pthread_mutex_lock(&amp;p-&gt;mutex);
+    <span class="cf">while</span> (!p-&gt;v) {
+        pthread_cond_wait(&amp;p-&gt;cvar, &amp;p-&gt;mutex);
+    }
+    p-&gt;v = <span class="dv">0</span>;
+    pthread_mutex_unlock(&amp;p-&gt;mutex);
+}</code></pre></div>
 <!-- Close div from before_body_template.html -->
 </div>
 <footer id="tiFooter">
@@ -1219,7 +1264,7 @@ pthread_mutexattr_setprioceiling() - not supported for FreeRTOS</code></pre>
   with 100,000+ analog ICs and embedded processors, along with software, tools
   and the industry‘s largest sales/support staff.</p>
   <p>
-    <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">© Copyright 1995-2018</a>, Texas Instruments Incorporated. All rights reserved. <br>
+    <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">© Copyright 1995-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
     <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
   </p>
 </footer>

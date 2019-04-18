@@ -1,21 +1,13 @@
 var searchData=
 [
-  ['uart_5fclose',['UART_close',['../_u_a_r_t_8h.html#a6b49b65f3db709c408dc4db23a68895d',1,'UART.h']]],
-  ['uart_5fcontrol',['UART_control',['../_u_a_r_t_8h.html#a5ce79dc51ddc3ef73e8f08983bfee2c7',1,'UART.h']]],
-  ['uart_5finit',['UART_init',['../_u_a_r_t_8h.html#ab60a36f7295d704926120d22f806dcd1',1,'UART.h']]],
-  ['uart_5fopen',['UART_open',['../_u_a_r_t_8h.html#ab6d1d6b7b1f9922484f9b8a0f78ed030',1,'UART.h']]],
-  ['uart_5fparams_5finit',['UART_Params_init',['../_u_a_r_t_8h.html#a40e5c0823bb7ffd2e8fbf19f9f20b399',1,'UART.h']]],
-  ['uart_5fread',['UART_read',['../_u_a_r_t_8h.html#a15d77f489566ff9f7c9c28d25e9a0135',1,'UART.h']]],
-  ['uart_5freadcancel',['UART_readCancel',['../_u_a_r_t_8h.html#a51ed7e94d5b409ca1fcb2d65c5a25c3c',1,'UART.h']]],
-  ['uart_5freadpolling',['UART_readPolling',['../_u_a_r_t_8h.html#a3ac6ed8cfd03b84198ba6adcd8c248e6',1,'UART.h']]],
-  ['uart_5fwrite',['UART_write',['../_u_a_r_t_8h.html#a1036c2d5258ff70e9afe6cbfc326544f',1,'UART.h']]],
-  ['uart_5fwritecancel',['UART_writeCancel',['../_u_a_r_t_8h.html#a0482cd0ab9ee7e802c8e785a5754d16d',1,'UART.h']]],
-  ['uart_5fwritepolling',['UART_writePolling',['../_u_a_r_t_8h.html#ad8cda326eb3c05ee05950680bee42e5a',1,'UART.h']]],
-  ['udmamsp432_5fclose',['UDMAMSP432_close',['../_u_d_m_a_m_s_p432_8h.html#a76ee23b43026354e4e7501d8fd678503',1,'UDMAMSP432.h']]],
-  ['udmamsp432_5finit',['UDMAMSP432_init',['../_u_d_m_a_m_s_p432_8h.html#ae40c04086fef24a842242051767f5d34',1,'UDMAMSP432.h']]],
-  ['udmamsp432_5fopen',['UDMAMSP432_open',['../_u_d_m_a_m_s_p432_8h.html#aaf348ae644551d6b1233929bc71a3e8a',1,'UDMAMSP432.h']]],
-  ['udmamsp432_5fpingpongtogglebuffer',['UDMAMSP432_PingPongToggleBuffer',['../_u_d_m_a_m_s_p432_8h.html#ab562c19730dc6bd92c052f550ae3d64b',1,'UDMAMSP432.h']]],
-  ['udmamsp432_5fsetuppingpongtransfer',['UDMAMSP432_setupPingPongTransfer',['../_u_d_m_a_m_s_p432_8h.html#aa21e23f39982008f7d65931b03ba0d79',1,'UDMAMSP432.h']]],
-  ['udmamsp432_5fsetuptransfer',['UDMAMSP432_setupTransfer',['../_u_d_m_a_m_s_p432_8h.html#a2d30df7ef59882ae920b017bf637bf7f',1,'UDMAMSP432.h']]],
-  ['usleep',['usleep',['../unistd_8h.html#a59715f1a0a2ee4dc75e8343aca15c1dd',1,'unistd.h']]]
+  ['timer_5fclose',['Timer_close',['../_timer_8h.html#a826779747913a65d4f683a627fd0759f',1,'Timer.h']]],
+  ['timer_5fcontrol',['Timer_control',['../_timer_8h.html#ab27a6e779a8f6872cff60fdeab349700',1,'Timer.h']]],
+  ['timer_5fgetcount',['Timer_getCount',['../_timer_8h.html#a29ed26e8d3139f8ac21746c14d8b7abc',1,'Timer.h']]],
+  ['timer_5finit',['Timer_init',['../_timer_8h.html#ace12508d33b354c0194b6f72cfc3bf12',1,'Timer.h']]],
+  ['timer_5fopen',['Timer_open',['../_timer_8h.html#a85fff65681abf4b7d65309aeac73c52c',1,'Timer.h']]],
+  ['timer_5fparams_5finit',['Timer_Params_init',['../_timer_8h.html#ae5309d35d8dfc6b2f0b24c7eec556dec',1,'Timer.h']]],
+  ['timer_5fstart',['Timer_start',['../_timer_8h.html#ae2f09cd2a7f7251e5fffade75378c332',1,'Timer.h']]],
+  ['timer_5fstop',['Timer_stop',['../_timer_8h.html#a3b951947aeec93b4610f87ba7b8a8621',1,'Timer.h']]],
+  ['timermsp432_5fallocatetimerresource',['TimerMSP432_allocateTimerResource',['../_timer_m_s_p432_8h.html#a4bfb67ec5f2dbd00d6c0274d42afa38c',1,'TimerMSP432.h']]],
+  ['timermsp432_5ffreetimerresource',['TimerMSP432_freeTimerResource',['../_timer_m_s_p432_8h.html#aa86618630f05a6439da89aa61987dc0c',1,'TimerMSP432.h']]]
 ];

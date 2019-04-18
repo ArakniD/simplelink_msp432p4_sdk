@@ -62,6 +62,7 @@ extern Void ti_sysbios_family_xxx_Hwi_switchAndRunFunc(Void (*func)());
 #define Hwi_vectorsBase ti_sysbios_family_c7x_Hwi_vectorsBase
 
 extern char Hwi_vectorsBase[];
+extern __FAR__ char _stack[0x10001];
 
 #ifdef ti_sysbios_family_c7x_Hwi_dispatcherTaskSupport__D
 /* disable unused local variable warning during optimized compile */
@@ -83,13 +84,17 @@ extern char Hwi_vectorsBase[];
 #define SWI_RESTORE Hwi_swiRestoreHwi
 #endif
 
+/*
+ * ECSP stores an 8 KB context for each interrupt, up to a maximum of 8
+ * nesting levels (1 per priority level).
+ */
+#define HWI_ECSP_SIZE (0x10000)
 
 /*
  *  ======== Hwi_Module_startup ========
  */
 Int Hwi_Module_startup(Int phase)
 {
-    __extern __FAR__ char _stack[8];
     Int i;
     Hwi_Object *hwi;
 
@@ -118,13 +123,13 @@ Int Hwi_Module_startup(Int phase)
     Hwi_module->isrStack = Hwi_getIsrStackAddress() - 16;
     __ECSP_S = (UInt64)_stack;
     __ECSP_SS = (UInt64)_stack;
-    __TCSP = (UInt64)(_stack + 0x10000);
+    __TCSP = (UInt64)(_stack + HWI_ECSP_SIZE);
 
     /* signal that we're executing on the ISR stack */
     Hwi_module->taskSP = (Char *)-1;
 
     /* initialize event mapping */
-    for (i = 4; i < Hwi_NUM_INTERRUPTS; i++) {
+    for (i = 0; i < Hwi_NUM_INTERRUPTS; i++) {
         if (Hwi_module->intEvents[i] != -1) {
             Hwi_eventMap(i, Hwi_module->intEvents[i]);
         }
@@ -179,7 +184,6 @@ Int Hwi_Instance_init(Hwi_Object *hwi, Int intNum,
 
     Hwi_reconfig(hwi, fxn, params);
     hwi->intNum = intNum;
-    Hwi_setPriority(hwi->intNum, hwi->priority);
 
 #ifndef ti_sysbios_hal_Hwi_DISABLE_ALL_HOOKS
     if (Hwi_hooks.length > 0) {
@@ -312,7 +316,7 @@ Void Hwi_eventMap(Int vectId, Int eventId)
     /* Program CLEC to map external eventId to internal interrupt (event) */
 
     /* clear any residual interrupt */
-    __set_indexed(__EFCLR, 0, 1 << vectId);
+    __set_indexed(__EFCLR, 0, 1L << vectId);
 
     ti_sysbios_family_c7x_Hwi_restore__E(mask);
 }
@@ -396,7 +400,10 @@ Void Hwi_setPriority(UInt intNum, UInt priority)
  */
 UInt Hwi_disableInterrupt(UInt intNum)
 {
-    return (Hwi_disableIER(1 << intNum));
+    ULong mask = 1L << intNum;
+
+    /* Hwi_disableIER() returns old EER */
+    return ((Hwi_disableIER(mask) & mask) != 0L);
 }
 
 /*
@@ -404,7 +411,9 @@ UInt Hwi_disableInterrupt(UInt intNum)
  */
 UInt Hwi_enableInterrupt(UInt intNum)
 {
-    return (Hwi_enableIER(1 << intNum));
+    ULong mask = 1L << intNum;
+
+    return ((Hwi_enableIER(mask) & mask) != 0L);
 }
 
 /*
@@ -412,7 +421,7 @@ UInt Hwi_enableInterrupt(UInt intNum)
  */
 Void Hwi_restoreInterrupt(UInt intNum, UInt key)
 {
-    if (key & (1 << (intNum))) {
+    if (key) {
         Hwi_enableInterrupt(intNum);
     }
     else {
@@ -425,7 +434,7 @@ Void Hwi_restoreInterrupt(UInt intNum, UInt key)
  */
 Void Hwi_clearInterrupt(UInt intNum)
 {
-    __set_indexed(__EFCLR, 0, 1 << intNum);
+    __set_indexed(__EFCLR, 0, 1L << intNum);
 }
 
 /*
@@ -468,7 +477,7 @@ Hwi_Irp Hwi_getIrp(Hwi_Object *hwi)
  */
 Void Hwi_post(UInt intNum)
 {
-    __set_indexed(__EFSET, 0, 1 << intNum);
+    __set_indexed(__EFSET, 0, 1L << intNum);
 }
 
 /*
@@ -522,8 +531,8 @@ Void Hwi_reconfig(Hwi_Object *hwi, Hwi_FuncPtr fxn, const Hwi_Params *params)
             break;
         default:
         case Hwi_MaskingOption_SELF:
-            hwi->disableMask = 1 << intNum;
-            hwi->restoreMask = 1 << intNum;
+            hwi->disableMask = 1L << intNum;
+            hwi->restoreMask = 1L << intNum;
             break;
         case Hwi_MaskingOption_BITMASK:
             hwi->disableMask = params->disableMask;
@@ -558,7 +567,6 @@ Void Hwi_switchFromBootStack()
  */
 Char *Hwi_getIsrStackAddress()
 {
-    __extern __FAR__ char _stack[8];
     __extern __FAR__ UInt8 __TI_STACK_SIZE;
     UInt64 isrStack;
 
@@ -577,15 +585,14 @@ Char *Hwi_getIsrStackAddress()
  */
 Bool Hwi_getStackInfo(Hwi_StackInfo *stkInfo, Bool computeStackDepth)
 {
-    __extern __FAR__ char _stack[8];
     __extern __FAR__ UInt8 __TI_STACK_SIZE;
 
     Char *isrSP;
     Bool stackOverflow;
 
     /* Copy the stack base address and size */
-    stkInfo->hwiStackSize = (SizeT)_symval(&__TI_STACK_SIZE);
-    stkInfo->hwiStackBase = (Ptr)_stack;
+    stkInfo->hwiStackSize = (SizeT)_symval(&__TI_STACK_SIZE) - HWI_ECSP_SIZE;
+    stkInfo->hwiStackBase = _stack + HWI_ECSP_SIZE;
 
     isrSP = stkInfo->hwiStackBase;
 

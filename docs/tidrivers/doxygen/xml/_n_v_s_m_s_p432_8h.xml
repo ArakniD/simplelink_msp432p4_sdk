@@ -5,123 +5,23 @@
     <includes local="no">stdint.h</includes>
     <includes local="no">stdbool.h</includes>
     <incdepgraph>
-      <node id="160">
+      <node id="161">
         <label>stdbool.h</label>
       </node>
-      <node id="159">
+      <node id="160">
         <label>stdint.h</label>
       </node>
-      <node id="158">
+      <node id="159">
         <label>NVSMSP432.h</label>
         <link refid="_n_v_s_m_s_p432_8h"/>
-        <childnode refid="159" relation="include">
-        </childnode>
         <childnode refid="160" relation="include">
+        </childnode>
+        <childnode refid="161" relation="include">
         </childnode>
       </node>
     </incdepgraph>
     <innerclass refid="struct_n_v_s_m_s_p432___h_w_attrs" prot="public">NVSMSP432_HWAttrs</innerclass>
     <innerclass refid="struct_n_v_s_m_s_p432___object" prot="public">NVSMSP432_Object</innerclass>
-      <sectiondef kind="typedef">
-      <memberdef kind="typedef" id="_n_v_s_m_s_p432_8h_1abb2a84e45907dbb9c358ab8110d883cf" prot="public" static="no">
-        <type>struct <ref refid="struct_n_v_s_m_s_p432___h_w_attrs" kindref="compound">NVSMSP432_HWAttrs</ref></type>
-        <definition>typedef struct NVSMSP432_HWAttrs  NVSMSP432_HWAttrs</definition>
-        <argsstring></argsstring>
-        <name>NVSMSP432_HWAttrs</name>
-        <briefdescription>
-<para>NVSMSP432 attributes. </para>        </briefdescription>
-        <detaileddescription>
-<para>The &apos;regionBase&apos; field must point to the base address of the region to be managed.</para><para>The regionSize must be an integer multiple of the flash sector size. For most MSP432 devices, the flash sector size is 4096 bytes. The NVSMSP432 driver will determine the device&apos;s actual sector size by reading internal system configuration registers.</para><para>Care must be taken to ensure that the linker does not unintentionally place application content (e.g., code/data) in the flash regions.</para><para>For CCS and IAR tools, defining and reserving flash memory regions can be done entirely within the Board.c file. For GCC, additional content is required in the application&apos;s linker command file to achieve the same result.</para><para>The example below defines a char array &apos;flashBuf&apos; and uses CCS and IAR compiler pragmas to place &apos;flashBuf&apos; at a specific address within the flash memory.</para><para>For GCC, the &apos;flashBuf&apos; array is placed into a named linker section. Corresponding linker commands are added to the application&apos;s linker command file to place the section at a specific flash memory address. The section placement command is carefully chosen to only RESERVE space for the &apos;flashBuf&apos; array, and not to actually initialize it during the application load process, thus preserving the content of flash.</para><para>The &apos;regionBase&apos; fields of the two HWAttrs region instances are initialized to point to the base address of &apos;flashBuf&apos; and to some offset from the base of the char array.</para><para>The linker command syntax is carefully chosen to only RESERVE space for the char array and not to actually initialize it during application load.</para><para><programlisting><codeline><highlight class="normal"><sp/>#define<sp/>SECTORSIZE<sp/>0x1000</highlight></codeline>
-<codeline><highlight class="normal"><sp/>#define<sp/>FLASH_REGION_BASE<sp/>0x3b000</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal"><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/>//<sp/>Reserve<sp/>flash<sp/>sectors<sp/>for<sp/>NVS<sp/>driver<sp/>use</highlight></codeline>
-<codeline><highlight class="normal"><sp/>//<sp/>by<sp/>placing<sp/>an<sp/>uninitialized<sp/>byte<sp/>array</highlight></codeline>
-<codeline><highlight class="normal"><sp/>//<sp/>at<sp/>the<sp/>desired<sp/>flash<sp/>address.</highlight></codeline>
-<codeline><highlight class="normal"><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/>#if<sp/>defined(__TI_COMPILER_VERSION__)</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal"><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/>//<sp/><sp/>Place<sp/>uninitialized<sp/>array<sp/>at<sp/>FLASH_REGION_BASE</highlight></codeline>
-<codeline><highlight class="normal"><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/>#pragma<sp/>LOCATION(flashBuf,<sp/>FLASH_REGION_BASE);</highlight></codeline>
-<codeline><highlight class="normal"><sp/>#pragma<sp/>NOINIT(flashBuf);</highlight></codeline>
-<codeline><highlight class="normal"><sp/>char<sp/>flashBuf[SECTORSIZE<sp/>*<sp/>4];</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal"><sp/>#elif<sp/>defined(__IAR_SYSTEMS_ICC__)</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal"><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/>//<sp/><sp/>Place<sp/>uninitialized<sp/>array<sp/>at<sp/>FLASH_REGION_BASE</highlight></codeline>
-<codeline><highlight class="normal"><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/>__no_init<sp/>char<sp/>flashBuf[SECTORSIZE<sp/>*<sp/>4]<sp/>@<sp/>FLASH_REGION_BASE;</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal"><sp/>#elif<sp/>defined(__GNUC__)</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal"><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/>//<sp/><sp/>Place<sp/>the<sp/>flash<sp/>buffers<sp/>in<sp/>the<sp/>.nvs<sp/>section<sp/>created<sp/>in<sp/>the<sp/>gcc<sp/>linker<sp/>file.</highlight></codeline>
-<codeline><highlight class="normal"><sp/>//<sp/><sp/>The<sp/>.nvs<sp/>section<sp/>enforces<sp/>alignment<sp/>on<sp/>a<sp/>sector<sp/>boundary<sp/>but<sp/>may</highlight></codeline>
-<codeline><highlight class="normal"><sp/>//<sp/><sp/>be<sp/>placed<sp/>anywhere<sp/>in<sp/>flash<sp/>memory.<sp/><sp/>If<sp/>desired<sp/>the<sp/>.nvs<sp/>section<sp/>can<sp/>be<sp/>set</highlight></codeline>
-<codeline><highlight class="normal"><sp/>//<sp/><sp/>to<sp/>a<sp/>fixed<sp/>address<sp/>by<sp/>changing<sp/>the<sp/>following<sp/>in<sp/>the<sp/>gcc<sp/>linker<sp/>file:</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal">.nvs<sp/>(FIXED_FLASH_ADDR)<sp/>(NOLOAD)<sp/>:<sp/>AT<sp/>(FIXED_FLASH_ADDR)<sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*(.nvs)</highlight></codeline>
-<codeline><highlight class="normal">}<sp/>&gt;<sp/>REGION_TEXT</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal"><sp/>__attribute__<sp/>((section<sp/>(&quot;.nvs&quot;)))</highlight></codeline>
-<codeline><highlight class="normal"><sp/>char<sp/>flashBuf[SECTORSIZE<sp/>*<sp/>4];</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal"><sp/>#endif</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal"><sp/>NVSMSP432_HWAttrs<sp/>nvsMSP432HWAttrs[2]<sp/>=<sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>//<sp/>region<sp/>0<sp/>is<sp/>1<sp/>flash<sp/>sector<sp/>in<sp/>length.</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionBase<sp/>=<sp/>(void<sp/>*)flashBuf,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionSize<sp/>=<sp/>SECTORSIZE,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>//<sp/>region<sp/>1<sp/>is<sp/>3<sp/>flash<sp/>sectors<sp/>in<sp/>length.</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionBase<sp/>=<sp/>(void<sp/>*)(flashBuf<sp/>+<sp/>SECTORSIZE),</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionSize<sp/>=<sp/>SECTORSIZE*3,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline><highlight class="normal"><sp/>};</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal"><sp/>Example<sp/>GCC<sp/>linker<sp/>command<sp/>file<sp/>content<sp/>reserves<sp/>flash<sp/>space</highlight></codeline>
-<codeline><highlight class="normal"><sp/>but<sp/>does<sp/>not<sp/>initialize<sp/>it:</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal"><sp/>MEMORY</highlight></codeline>
-<codeline><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>MAIN_FLASH<sp/>(RX)<sp/>:<sp/>ORIGIN<sp/>=<sp/>0x00000000,<sp/>LENGTH<sp/>=<sp/>0x00040000</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>INFO_FLASH<sp/>(RX)<sp/>:<sp/>ORIGIN<sp/>=<sp/>0x00200000,<sp/>LENGTH<sp/>=<sp/>0x00004000</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>SRAM_CODE<sp/><sp/>(RWX):<sp/>ORIGIN<sp/>=<sp/>0x01000000,<sp/>LENGTH<sp/>=<sp/>0x00010000</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>SRAM_DATA<sp/><sp/>(RW)<sp/>:<sp/>ORIGIN<sp/>=<sp/>0x20000000,<sp/>LENGTH<sp/>=<sp/>0x00010000</highlight></codeline>
-<codeline><highlight class="normal"><sp/>}</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal"><sp/>.nvs<sp/>(0x3b000)<sp/>(NOLOAD)<sp/>:<sp/>AT<sp/>(0x3b000)<sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>KEEP<sp/>(*(.nvs))</highlight></codeline>
-<codeline><highlight class="normal"><sp/>}<sp/>&gt;<sp/>NVS</highlight></codeline>
-</programlisting> </para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSMSP432.h" line="200" column="1"/>
-      </memberdef>
-      <memberdef kind="typedef" id="_n_v_s_m_s_p432_8h_1a803f6ee99663150697fa5f4f34189b95" prot="public" static="no">
-        <type>struct <ref refid="struct_n_v_s_m_s_p432___object" kindref="compound">NVSMSP432_Object</ref></type>
-        <definition>typedef struct NVSMSP432_Object  NVSMSP432_Object</definition>
-        <argsstring></argsstring>
-        <name>NVSMSP432_Object</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSMSP432.h" line="209" column="1"/>
-      </memberdef>
-      </sectiondef>
       <sectiondef kind="var">
       <memberdef kind="variable" id="_n_v_s_m_s_p432_8h_1af8403f3c883b81d3171fb6f030a26542" prot="public" static="no" mutable="no">
         <type>const <ref refid="struct_n_v_s___fxn_table" kindref="compound">NVS_FxnTable</ref></type>
@@ -143,7 +43,7 @@
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2017,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2019,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
 <codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
 <codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
@@ -190,44 +90,46 @@
 <codeline lineno="46"><highlight class="normal"></highlight></codeline>
 <codeline lineno="79"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_n_v_s___fxn_table" kindref="compound">NVS_FxnTable</ref><sp/><ref refid="_n_v_s_m_s_p432_8h_1af8403f3c883b81d3171fb6f030a26542" kindref="member">NVSMSP432_fxnTable</ref>;</highlight></codeline>
 <codeline lineno="80"><highlight class="normal"></highlight></codeline>
-<codeline lineno="197" refid="struct_n_v_s_m_s_p432___h_w_attrs" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_n_v_s_m_s_p432___h_w_attrs" kindref="compound">NVSMSP432_HWAttrs</ref><sp/>{</highlight></codeline>
-<codeline lineno="198" refid="struct_n_v_s_m_s_p432___h_w_attrs_1a00f78f3742a497680be8f27f4f96f4eb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_n_v_s_m_s_p432___h_w_attrs_1a00f78f3742a497680be8f27f4f96f4eb" kindref="member">regionBase</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="199" refid="struct_n_v_s_m_s_p432___h_w_attrs_1a811c92dc4217f903e0ff7d78ccff9253" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_m_s_p432___h_w_attrs_1a811c92dc4217f903e0ff7d78ccff9253" kindref="member">regionSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="200"><highlight class="normal">}<sp/><ref refid="_n_v_s_m_s_p432_8h_1abb2a84e45907dbb9c358ab8110d883cf" kindref="member">NVSMSP432_HWAttrs</ref>;</highlight></codeline>
-<codeline lineno="201"><highlight class="normal"></highlight></codeline>
-<codeline lineno="202"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="203"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>NVSMSP432<sp/>Object</highlight></codeline>
-<codeline lineno="204"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="205"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>application<sp/>must<sp/>not<sp/>access<sp/>any<sp/>member<sp/>variables<sp/>of<sp/>this<sp/>structure!</highlight></codeline>
-<codeline lineno="206"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="207" refid="struct_n_v_s_m_s_p432___object" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_n_v_s_m_s_p432___object" kindref="compound">NVSMSP432_Object</ref><sp/>{</highlight></codeline>
-<codeline lineno="208" refid="struct_n_v_s_m_s_p432___object_1a1649b2acd89704e7539735a9aeca42ba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_m_s_p432___object_1a1649b2acd89704e7539735a9aeca42ba" kindref="member">opened</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Has<sp/>this<sp/>region<sp/>been<sp/>opened<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="209"><highlight class="normal">}<sp/><ref refid="_n_v_s_m_s_p432_8h_1a803f6ee99663150697fa5f4f34189b95" kindref="member">NVSMSP432_Object</ref>;</highlight></codeline>
-<codeline lineno="210"><highlight class="normal"></highlight></codeline>
-<codeline lineno="211"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="212"><highlight class="comment"><sp/>*<sp/><sp/>@cond<sp/>NODOC</highlight></codeline>
-<codeline lineno="213"><highlight class="comment"><sp/>*<sp/><sp/>NVSMSP432<sp/>driver<sp/>public<sp/>APIs</highlight></codeline>
-<codeline lineno="214"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="215"><highlight class="normal"></highlight></codeline>
-<codeline lineno="216"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSMSP432_close(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
-<codeline lineno="217"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSMSP432_control(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint_fast16_t<sp/>cmd,</highlight></codeline>
-<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uintptr_t<sp/>arg);</highlight></codeline>
-<codeline lineno="219"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSMSP432_erase(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
-<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size);</highlight></codeline>
-<codeline lineno="221"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSMSP432_getAttrs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/><ref refid="struct_n_v_s___attrs" kindref="compound">NVS_Attrs</ref><sp/>*attrs);</highlight></codeline>
-<codeline lineno="222"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSMSP432_init();</highlight></codeline>
-<codeline lineno="223"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSMSP432_lock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint32_t<sp/>timeout);</highlight></codeline>
-<codeline lineno="224"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/><ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/><sp/><sp/>NVSMSP432_open(uint_least8_t<sp/>index,<sp/><ref refid="struct_n_v_s___params" kindref="compound">NVS_Params</ref><sp/>*params);</highlight></codeline>
-<codeline lineno="225"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSMSP432_read(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
-<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize);</highlight></codeline>
-<codeline lineno="227"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSMSP432_unlock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
-<codeline lineno="228"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSMSP432_write(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
-<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize,<sp/>uint_fast16_t<sp/>flags);</highlight></codeline>
-<codeline lineno="232"><highlight class="preprocessor">#if<sp/>defined<sp/>(__cplusplus)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="233"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="234"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>defined<sp/>(__cplusplus)<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="235"><highlight class="normal"></highlight></codeline>
-<codeline lineno="237"><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_nvs_NVSMSP432__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+<codeline lineno="197" refid="struct_n_v_s_m_s_p432___h_w_attrs" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="199" refid="struct_n_v_s_m_s_p432___h_w_attrs_1a00f78f3742a497680be8f27f4f96f4eb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_n_v_s_m_s_p432___h_w_attrs_1a00f78f3742a497680be8f27f4f96f4eb" kindref="member">regionBase</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="200" refid="struct_n_v_s_m_s_p432___h_w_attrs_1a811c92dc4217f903e0ff7d78ccff9253" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_m_s_p432___h_w_attrs_1a811c92dc4217f903e0ff7d78ccff9253" kindref="member">regionSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="201"><highlight class="normal">}<sp/><ref refid="struct_n_v_s_m_s_p432___h_w_attrs" kindref="compound">NVSMSP432_HWAttrs</ref>;</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="204"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>NVSMSP432<sp/>Object</highlight></codeline>
+<codeline lineno="205"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="206"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>application<sp/>must<sp/>not<sp/>access<sp/>any<sp/>member<sp/>variables<sp/>of<sp/>this<sp/>structure!</highlight></codeline>
+<codeline lineno="207"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="208" refid="struct_n_v_s_m_s_p432___object" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="210" refid="struct_n_v_s_m_s_p432___object_1a1649b2acd89704e7539735a9aeca42ba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_m_s_p432___object_1a1649b2acd89704e7539735a9aeca42ba" kindref="member">opened</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Has<sp/>this<sp/>region<sp/>been<sp/>opened<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal">}<sp/><ref refid="struct_n_v_s_m_s_p432___object" kindref="compound">NVSMSP432_Object</ref>;</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="214"><highlight class="comment"><sp/>*<sp/><sp/>@cond<sp/>NODOC</highlight></codeline>
+<codeline lineno="215"><highlight class="comment"><sp/>*<sp/><sp/>NVSMSP432<sp/>driver<sp/>public<sp/>APIs</highlight></codeline>
+<codeline lineno="216"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSMSP432_close(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSMSP432_control(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint_fast16_t<sp/>cmd,</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uintptr_t<sp/>arg);</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSMSP432_erase(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size);</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSMSP432_getAttrs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/><ref refid="struct_n_v_s___attrs" kindref="compound">NVS_Attrs</ref><sp/>*attrs);</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSMSP432_init();</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSMSP432_lock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint32_t<sp/>timeout);</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/><ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/><sp/><sp/>NVSMSP432_open(uint_least8_t<sp/>index,<sp/><ref refid="struct_n_v_s___params" kindref="compound">NVS_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSMSP432_read(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize);</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSMSP432_unlock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSMSP432_write(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize,<sp/>uint_fast16_t<sp/>flags);</highlight></codeline>
+<codeline lineno="234"><highlight class="preprocessor">#if<sp/>defined<sp/>(__cplusplus)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>defined<sp/>(__cplusplus)<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight></codeline>
+<codeline lineno="239"><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_nvs_NVSMSP432__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
     <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSMSP432.h"/>
   </compounddef>

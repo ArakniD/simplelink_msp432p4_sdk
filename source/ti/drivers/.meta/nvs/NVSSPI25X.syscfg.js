@@ -78,7 +78,7 @@ let config = [
         description: "If the external flash responds with a busy status,"
             + " the driver waits this many microseconds before polling again.",
         default: 100
-    },
+    }
 ];
 
 /*

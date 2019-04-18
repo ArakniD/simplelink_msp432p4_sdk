@@ -1,0 +1,2107 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=9"/>
+    <title>MSP432 Configuration Reference</title>
+    <link href="tiapistylesheet.css" rel="stylesheet" type="text/css" />
+    <link href="../../doxygen/html/tiapistylesheet.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="contents">
+      <div class="textblock">
+        <div id="Display_Configuration_Options">
+          <h3 title="Summary of all Display configuration options">Display Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_display_Display_$name"><code>.$name</code></a><code> = 'Board_Display{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_display_Display_displayType"><code>.displayType</code></a><code> = 'UART';</code></td><td><code>// Display Type</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_display_Display_lcdSize"><code>.lcdSize</code></a><code> = 128;</code></td><td><code>// LCD Size</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_display_Display_uartBufferSize"><code>.uartBufferSize</code></a><code> = 1024;</code></td><td><code>// UART Buffer Size</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_display_Display_enableANSI"><code>.enableANSI</code></a><code> = false;</code></td><td><code>// Enable ANSI</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_display_Display_maxPrintLength"><code>.maxPrintLength</code></a><code> = 256;</code></td><td><code>// Maximum Print Length</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_display_Display_mutexTimeout"><code>.mutexTimeout</code></a><code> = 'Never Timeout';</code></td><td><code>// Mutex Timeout</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_display_Display_mutexTimeoutValue"><code>.mutexTimeoutValue</code></a><code> = 1;</code></td><td><code>// Mutex Timeout Value</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_display_Display_baudRate"><code>.baudRate</code></a><code> = 115200;</code></td><td><code>// Baud Rate</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="Display_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added Display instance">Display Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_display_Display_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_Display{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to Display runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_Display</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_display_Display_displayType"></a>Display Type
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.displayType = 'UART'</code>]
+               </a></dt><dd>
+              <em></em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'UART'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'LCD'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Host'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_display_Display_lcdSize"></a>LCD Size
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.lcdSize = 128</code>]
+               </a></dt><dd>
+              <em></em> Size of the LCD in pixels.<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_display_Display_uartBufferSize"></a>UART Buffer Size
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.uartBufferSize = 1024</code>]
+               </a></dt><dd>
+              <em></em> UART display buffer size in bytes<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_display_Display_enableANSI"></a>Enable ANSI
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.enableANSI = false</code>]
+               </a></dt><dd>
+              <em></em> Enables or disables ANSI cursor support.<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_display_Display_maxPrintLength"></a>Maximum Print Length
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.maxPrintLength = 256</code>]
+               </a></dt><dd>
+              <em></em> <p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_display_Display_mutexTimeout"></a>Mutex Timeout
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.mutexTimeout = 'Never Timeout'</code>]
+               </a></dt><dd>
+              <em></em> Timeout to acquire mutex for synchronizing access to UART.<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'Never Timeout'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Never Wait'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Custom'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Custom number of RTOS ticks</td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_display_Display_mutexTimeoutValue"></a>Mutex Timeout Value
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.mutexTimeoutValue = 1</code>]
+               </a></dt><dd>
+              <em></em> <p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_display_Display_baudRate"></a>Baud Rate
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.baudRate = 115200</code>]
+               </a></dt><dd>
+              <em></em> UART baud rate<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>1200</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>2400</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>4800</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>9600</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>19200</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>38400</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>57600</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>115200</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>230400</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>460800</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>921600</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="ADC_Configuration_Options">
+          <h3 title="Summary of all ADC configuration options">ADC Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_ADC_$name"><code>.$name</code></a><code> = 'Board_ADC{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_ADC_referenceVoltage"><code>.referenceVoltage</code></a><code> = 'VDD';</code></td><td><code>// (MSP432P4 only) Reference Voltage</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_ADC_externalReferenceVoltage"><code>.externalReferenceVoltage</code></a><code> = 3300000;</code></td><td><code>// (MSP432P4 only) External Reference Voltage</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_ADC_resolution"><code>.resolution</code></a><code> = '14 Bits';</code></td><td><code>// (MSP432P4 only) Resolution</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="ADC_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added ADC instance">ADC Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_ADC_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_ADC{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to ADC runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_ADC</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_ADC_referenceVoltage"></a>Reference Voltage
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.referenceVoltage = 'VDD'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Specifies the ADC's reference voltage source.<p /><p>Specifies the ADC&#39;s reference voltage source.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'VDD'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1.2V'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1.45V'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'2.5V'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'External'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Select this option if you are supplying an external reference voltage to the device.<br><p>&quot;The external reference voltage can be specified using the
+<strong>External Reference Voltage</strong> configuration option.</p>
+</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'External Buffered'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Select this option if you are supplying a buffered external reference voltage to the device.<br><p>&quot;The external reference voltage can be specified using the
+<strong>External Reference Voltage</strong> configuration option.</p>
+</td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_ADC_externalReferenceVoltage"></a>External Reference Voltage
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.externalReferenceVoltage = 3300000</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Specifies the external reference voltage in microvolts.<p /><p>Specifies the external reference voltage in microvolts.
+This value can only be modified when the <strong>Reference Voltage</strong> is configured
+as <strong>External</strong> or <strong>External Buffered</strong>. Otherwise, this value is read only
+and indicates the internal voltage used in microvolts.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_ADC_resolution"></a>Resolution
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.resolution = '14 Bits'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Specifies the ADC's resolution<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'8 Bits'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'10 Bits'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'12 Bits'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'14 Bits'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="ADCBuf_Configuration_Options">
+          <h3 title="Summary of all ADCBuf configuration options">ADCBuf Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_ADCBuf_$name"><code>.$name</code></a><code> = 'Board_ADCBUF{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_ADCBuf_channels"><code>.channels</code></a><code> = 1;</code></td><td><code>// (MSP432P4 only) Channels</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_ADCBuf_clockSource"><code>.clockSource</code></a><code> = 'ADC';</code></td><td><code>// (MSP432P4 only) Clock Source</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_ADCBuf_enableDMA"><code>.enableDMA</code></a><code> = true;</code></td><td><code>// (MSP432P4 only) Enable DMA</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_ADCBuf_triggerSource"><code>.triggerSource</code></a><code> = 'Timer';</code></td><td><code>// (MSP432P4 only) Trigger Source</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_ADCBuf_timerDutyCycle"><code>.timerDutyCycle</code></a><code> = 50;</code></td><td><code>// (MSP432P4 only) Timer Duty Cycle</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_ADCBuf_timerCaptureCompare"><code>.timerCaptureCompare</code></a><code> = 1;</code></td><td><code>// (MSP432P4 only) Timer Capture Compare</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_ADCBuf_interruptPriority"><code>.interruptPriority</code></a><code> = '7';</code></td><td><code>// (MSP432P4 only) Interrupt Priority</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="ADCBuf_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added ADCBuf instance">ADCBuf Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_ADCBuf_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_ADCBUF{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to ADC runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_ADCBUF</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_ADCBuf_channels"></a>Channels
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.channels = 1</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Number of ADCBuf channels to configure. Must be between 1 and 24<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_ADCBuf_clockSource"></a>Clock Source
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.clockSource = 'ADC'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Clock source used by the ADC peripheral<p /><p>The frequency of the clock sources are configured
+per <strong>Power Performance Level</strong> configured in the <strong>Power Module</strong>.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'ADC'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'SYSOSC'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'ACLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'MCLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'SMCLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'HSMCLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_ADCBuf_enableDMA"></a>Enable DMA
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.enableDMA = true</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Specifies if the DMA is used.<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_ADCBuf_triggerSource"></a>Trigger Source
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.triggerSource = 'Timer'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Specifies the trigger to initiate a sample sequence.<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'Timer'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Auto'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_ADCBuf_timerDutyCycle"></a>Timer Duty Cycle
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.timerDutyCycle = 50</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Specifies the timer duty cycle as a percentage between 1 and 99.<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_ADCBuf_timerCaptureCompare"></a>Timer Capture Compare
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.timerCaptureCompare = 1</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Specifies the capture compare number to use for the specified timer peripheral used as the trigger source<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>1</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>2</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_ADCBuf_interruptPriority"></a>Interrupt Priority
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.interruptPriority = '7'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> If the DMA is enabled, this is the DMA interrupt priority. Otherwise, this is the ADC interrupt priority.<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'7'</code></td><td style="padding:10px"><code>7 - Lowest Priority</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'6'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'5'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'4'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'3'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'2'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1'</code></td><td style="padding:10px"><code>1 - Highest Priority</code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="Capture_Configuration_Options">
+          <h3 title="Summary of all Capture configuration options">Capture Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_Capture_$name"><code>.$name</code></a><code> = 'Board_CAPTURE{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_Capture_clockSource"><code>.clockSource</code></a><code> = 'SMCLK';</code></td><td><code>// (MSP432P4 only) Clock Source</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_Capture_clockDivider"><code>.clockDivider</code></a><code> = 2;</code></td><td><code>// (MSP432P4 only) Clock Divider</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_Capture_interruptPriority"><code>.interruptPriority</code></a><code> = '7';</code></td><td><code>// (MSP432P4 only) Interrupt Priority</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="Capture_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added Capture instance">Capture Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_Capture_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_CAPTURE{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to Capture runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_CAPTURE</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Capture_clockSource"></a>Clock Source
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.clockSource = 'SMCLK'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Specifies the timer peripheral clock source.<p /><p>The frequency of the clock sources are configured
+per <strong>Power Performance Level</strong> configured in the <strong>Power Module</strong>.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'ACLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'SMCLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'External TXCLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Inverted External TXCLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Capture_clockDivider"></a>Clock Divider
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.clockDivider = 2</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Specifies the clock source divider.<p /><p>The <strong>Clock Source</strong> will be divided by this value before being used by the timer peripheral</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>1</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>2</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>3</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>4</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>5</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>6</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>7</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>8</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>10</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>12</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>14</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>16</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>20</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>24</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>28</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>32</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>40</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>48</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>56</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>64</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Capture_interruptPriority"></a>Interrupt Priority
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.interruptPriority = '7'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'7'</code></td><td style="padding:10px"><code>7 - Lowest Priority</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'6'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'5'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'4'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'3'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'2'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1'</code></td><td style="padding:10px"><code>1 - Highest Priority</code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="DMA_Configuration_Options">
+          <h3 title="Summary of all DMA configuration options">DMA Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>DMA</var><a href="#ti_drivers_DMA_dmaErrorFunction"><code>.dmaErrorFunction</code></a><code> = 'dmaErrorFxn';</code></td><td><code>// DMA Error Function</code></td></tr>
+            <tr><td><var>DMA</var><a href="#ti_drivers_DMA_interruptPriority"><code>.interruptPriority</code></a><code> = '7';</code></td><td><code>// Interrupt Priority</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+        <div id="DMA_Module_Configuration_Options">
+          <h3 title="Options that apply to the DMA driver as a whole">DMA Module Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_DMA_dmaErrorFunction"></a>DMA Error Function
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>DMA</var><code>.dmaErrorFunction = 'dmaErrorFxn']</code>
+               </a></dt><dd>
+              <em></em> Specifies function invoked when a DMA error occurs.<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_DMA_interruptPriority"></a>Interrupt Priority
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>DMA</var><code>.interruptPriority = '7']</code>
+               </a></dt><dd>
+              <em></em> DMA interrupt priority.<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'7'</code></td><td style="padding:10px"><code>7 - Lowest Priority</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'6'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'5'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'4'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'3'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'2'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1'</code></td><td style="padding:10px"><code>1 - Highest Priority</code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Module_Configuration_Options -->
+
+        <div id="GPIO_Configuration_Options">
+          <h3 title="Summary of all GPIO configuration options">GPIO Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>GPIO</var><a href="#ti_drivers_GPIO_interruptPriority"><code>.interruptPriority</code></a><code> = '7';</code></td><td><code>// Interrupt Priority</code></td></tr>
+            <tr><td><var>GPIO</var><a href="#ti_drivers_GPIO_optimizeCallbackTableSize"><code>.optimizeCallbackTableSize</code></a><code> = false;</code></td><td><code>// Optimize Callback Table Size</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_GPIO_$name"><code>.$name</code></a><code> = 'Board_GPIO{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_GPIO_mode"><code>.mode</code></a><code> = 'Input';</code></td><td><code>// Mode</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_GPIO_outputType"><code>.outputType</code></a><code> = 'Standard';</code></td><td><code>// Output Type</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_GPIO_outputStrength"><code>.outputStrength</code></a><code> = 'Medium';</code></td><td><code>// Output Strength</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_GPIO_initialOutputState"><code>.initialOutputState</code></a><code> = 'Low';</code></td><td><code>// Initial Output State</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_GPIO_pull"><code>.pull</code></a><code> = 'None';</code></td><td><code>// Pull</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_GPIO_interruptTrigger"><code>.interruptTrigger</code></a><code> = 'None';</code></td><td><code>// Interrupt Trigger</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_GPIO_callbackFunction"><code>.callbackFunction</code></a><code> = '';</code></td><td><code>// Callback Function</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_GPIO_comment"><code>.comment</code></a><code> = '';</code></td><td><code>// Comment</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+        <div id="GPIO_Module_Configuration_Options">
+          <h3 title="Options that apply to the GPIO driver as a whole">GPIO Module Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_GPIO_interruptPriority"></a>Interrupt Priority
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>GPIO</var><code>.interruptPriority = '7']</code>
+               </a></dt><dd>
+              <em></em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'7'</code></td><td style="padding:10px"><code>7 - Lowest Priority</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'6'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'5'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'4'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'3'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'2'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1'</code></td><td style="padding:10px"><code>1 - Highest Priority</code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_GPIO_optimizeCallbackTableSize"></a>Optimize Callback Table Size
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>GPIO</var><code>.optimizeCallbackTableSize = false]</code>
+               </a></dt><dd>
+              <em></em> Enabling this option removes unnecessary entries in the GPIO callback table. Before enabling this option, carefully review the detailed help for runtime benefits AND caveats.<p /><p>This option causes the GPIO driver tables to be sorted so that all GPIOs that trigger interrupts appear first in the GPIO table. This allows the table of GPIO callbacks, which is also indexed by the GPIO index, to be substantially shorter then the table of all GPIOs.</p>
+<p>However, this also means that calls to <code>GPIO_setCallback()</code> must <strong>never</strong> be made to GPIOs whose callbacks are configured as the empty string (which is shown as &#39;&lt;no callback is needed&gt;&#39; in the GUI).</p>
+
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Module_Configuration_Options -->
+
+        <div id="GPIO_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added GPIO instance">GPIO Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_GPIO_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_GPIO{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to GPIO runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_GPIO</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_GPIO_mode"></a>Mode
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.mode = 'Input'</code>]
+               </a></dt><dd>
+              <em></em> Select the GPIO mode<p /><p>The mode configuration parameter is used to determine the initial state of GPIO, eliminating the need to configure the GPIO pin at runtime prior to using it.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'Input'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - This GPIO is always used for input</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Output'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - This GPIO is always used for output</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Dynamic'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - This GPIO is dynamically reconfigured at runtime using the GPIO APIs<br><p>This mode indicates that the application will dynamically configure the GPIO at runtime using the GPIO APIs. As a result, it&#39;s assumed that this GPIO requires an entry in the table of GPIO callback functions; see <a href="../../../tidrivers/syscfg/html/ConfigDoc.html#ti_drivers_GPIO_optimizeCallbackTableSize">Optimize Callback Table Size</a>.</p>
+</td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_GPIO_outputType"></a>Output Type
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.outputType = 'Standard'</code>]
+               </a></dt><dd>
+              <em></em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'Standard'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Open Drain'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_GPIO_outputStrength"></a>Output Strength
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.outputStrength = 'Medium'</code>]
+               </a></dt><dd>
+              <em></em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'High'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Medium'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Low'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_GPIO_initialOutputState"></a>Initial Output State
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.initialOutputState = 'Low'</code>]
+               </a></dt><dd>
+              <em></em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'High'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Low'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_GPIO_pull"></a>Pull
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.pull = 'None'</code>]
+               </a></dt><dd>
+              <em></em> Specifies the internal pull-up or pull-down resistor configuration of this GPIO pin.<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'None'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Pull Up'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Pull Down'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_GPIO_interruptTrigger"></a>Interrupt Trigger
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.interruptTrigger = 'None'</code>]
+               </a></dt><dd>
+              <em></em> Specifies when or if interrupts are triggered<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'None'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'High'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Low'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Falling Edge'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Rising Edge'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Both Edges'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_GPIO_callbackFunction"></a>Callback Function
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.callbackFunction = ''</code>]
+               </a></dt><dd>
+              <em></em> The name of the callback function called when this GPIO pin triggers an interrupt, or 'NULL' if it's specified at runtime<p /><p>If you need to set the callback at runtime, set this configuration parameter
+to &#39;NULL&#39; and call <a href="../../../tidrivers/doxygen/html/_g_p_i_o_8h.html#a24c401f32e65f60f11a1594fdafb9d2a"><code>GPIO_setCallback()</code></a> with the name of the function you
+want to be triggered.</p>
+<p>If this config is not set, GPIO assumes that no callback will ever be set for
+this GPIO and, as a result, no space will be allocated to save the address of
+the callback; thus, it&#39;s important to never use <code>GPIO_setCallback()</code> on a
+GPIO for which this config is empty.</p>
+<p>This function is of type <a href="../../../tidrivers/doxygen/html/_g_p_i_o_8h.html#a46b0c9afbe998c88539abc92082a1173"><code>GPIO_CallbackFxn</code></a>,
+it&#39;s called in the context of a hardware ISR, and it&#39;s passed
+a single parameter: the index of the GPIO that triggered the interrupt.</p>
+<p>Example: <a href="../../../tidrivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Example_callback" title="C/C++ source">Creating an input callback</a>.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_GPIO_comment"></a>Comment
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.comment = ''</code>]
+               </a></dt><dd>
+              <em></em> User specified comment to add the generated files.<p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="I2C_Configuration_Options">
+          <h3 title="Summary of all I2C configuration options">I2C Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_I2C_$name"><code>.$name</code></a><code> = 'Board_I2C{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_I2C_maxBitRate"><code>.maxBitRate</code></a><code> = 0;</code></td><td><code>// Maximum Bit Rate</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_I2C_ignoreUnusedAddressConflicts"><code>.ignoreUnusedAddressConflicts</code></a><code> = false;</code></td><td><code>// Ignore Unused Address Conflicts</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_I2C_addressChecks"><code>.addressChecks</code></a><code> = 'Fail';</code></td><td><code>// Address Checks</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_I2C_speedChecks"><code>.speedChecks</code></a><code> = 'Fail';</code></td><td><code>// Speed Checks</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_I2C_clockSource"><code>.clockSource</code></a><code> = 'SMCLK';</code></td><td><code>// (MSP432P4 only) Clock Source</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_I2C_interruptPriority"><code>.interruptPriority</code></a><code> = '7';</code></td><td><code>// (MSP432P4 only) Interrupt Priority</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="I2C_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added I2C instance">I2C Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_I2C_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_I2C{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to I2C runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_I2C</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_I2C_maxBitRate"></a>Maximum Bit Rate
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.maxBitRate = 0</code>]
+               </a></dt><dd>
+              <em></em> Maximum bit rate (Kbps) supported by this bus<p /><p>This parameter determines the values of a symbol declared in the generated <code>Board.h</code> file: <var>{bus_name}</var><code>_MAXBITRATE</code>, where <var>{bus_name}</var> is the name of this bus instance. This symbol is used to portably open the bus at a speed that&#39;s likely to work.</p>
+<p>If this configuration parameter is set to zero, the maximum speed for this instance is the maximum speed supported by the slowest attached slave.  If no slave devices are attached, the maximum bit rate is 100 Kbps.
+For example, if an I2C instance named <code>SENSORS</code> is defined in SysConfig, the following snippet opens it at an appropriate speed.</p>
+<pre><code>    #include &quot;Board.h&quot; // defines I2C id SENSORS
+
+    // initialize optional I2C bus parameters
+    I2C_Params params;
+    I2C_Params_init(&amp;params);
+    params.bitRate = SENSORS_MAXBITRATE;
+
+    // Open I2C bus for usage
+    I2C_Handle i2cHandle = I2C_open(SENSORS, &amp;params);</code></pre><p>By default, SysConfig triggers an error in the event that the declared maximum speed of an attached slave is less then this value.  You can disable this error by setting the  <a href="../../../tidrivers/syscfg/html/ConfigDoc.html#ti_drivers_I2C_speedChecks">speedChecks</a> configuration parameter to either <code>&#39;Warn&#39;</code> or <code>&#39;Remark&#39;</code>.</p>
+<p><strong>Note</strong>: The maximum bit rate for an I2C bus is a function of the electrical capacitance and resistance on the I2C signal lines and the speed supported by the slowest slave.  Even if all devices on the bus are capable of supporting the specified bit rate, you may need to lower it if the electrical characteristics of your hardware imply large  bus signal rise-times. This can be caused by long wires, which increase the capacitance of a circuit.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_I2C_ignoreUnusedAddressConflicts"></a>Ignore Unused Address Conflicts
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.ignoreUnusedAddressConflicts = false</code>]
+               </a></dt><dd>
+              <em></em> Don't warn about address conflicts between unused components on this bus<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_I2C_addressChecks"></a>Address Checks
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.addressChecks = 'Fail'</code>]
+               </a></dt><dd>
+              <em></em> How to handle detected peripheral address conflicts<p /><p> By default, SysConfig triggers an error if two or more devices in this bus have the same address.  You can override this error by setting this configuration parameter to either <code>&#39;Warn&#39;</code> or <code>&#39;Remark&#39;</code>.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'Fail'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Trigger an error if two or more devices in the bus have the same address</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Warn'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Warn if two or more devices on the bus have the same address</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Remark'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Emit a remark if two or more devices on the bus have the same address</td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_I2C_speedChecks"></a>Speed Checks
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.speedChecks = 'Fail'</code>]
+               </a></dt><dd>
+              <em></em> How to handle detected bit rate conflicts<p /><p> By default, SysConfig triggers an error if a slave device on the bus has a maximum speed below the maximum bit rate specified for the bus. You can override this error by setting this configuration parameter to either <code>&#39;Warn&#39;</code> or <code>&#39;Remark&#39;</code>.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'Fail'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Trigger an error if the bus speed exceeds a slave's maximum speed</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Warn'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Warn if the bus speed exceeds any slave's maximum speed</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Remark'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Emit a remark if the bus speed exceeds a slave's maximum speed</td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_I2C_clockSource"></a>Clock Source
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.clockSource = 'SMCLK'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Specifies the clock source for the I2C peripheral.<p /><p>The frequency of the clock sources are configured
+per <strong>Power Performance Level</strong> configured in the <strong>Power Module</strong>.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'ACLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'SMCLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_I2C_interruptPriority"></a>Interrupt Priority
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.interruptPriority = '7'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'7'</code></td><td style="padding:10px"><code>7 - Lowest Priority</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'6'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'5'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'4'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'3'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'2'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1'</code></td><td style="padding:10px"><code>1 - Highest Priority</code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="I2CSlave_Configuration_Options">
+          <h3 title="Summary of all I2CSlave configuration options">I2CSlave Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_I2CSlave_$name"><code>.$name</code></a><code> = 'Board_I2CSLAVE{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_I2CSlave_slaveAddress"><code>.slaveAddress</code></a><code> = 32;</code></td><td><code>// (MSP432P4 only) Slave Address</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_I2CSlave_interruptPriority"><code>.interruptPriority</code></a><code> = '7';</code></td><td><code>// (MSP432P4 only) Interrupt Priority</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="I2CSlave_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added I2CSlave instance">I2CSlave Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_I2CSlave_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_I2CSLAVE{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to I2CSlave runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_I2CSLAVE</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_I2CSlave_slaveAddress"></a>Slave Address
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.slaveAddress = 32</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> I2C Slave address used to address this instance.<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_I2CSlave_interruptPriority"></a>Interrupt Priority
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.interruptPriority = '7'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'7'</code></td><td style="padding:10px"><code>7 - Lowest Priority</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'6'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'5'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'4'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'3'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'2'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1'</code></td><td style="padding:10px"><code>1 - Highest Priority</code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="NVS_Configuration_Options">
+          <h3 title="Summary of all NVS configuration options">NVS Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_NVS_$name"><code>.$name</code></a><code> = 'Board_NVS{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_NVS_nvsType"><code>.nvsType</code></a><code> = 'Internal';</code></td><td><code>// NVS Type</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="NVS_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added NVS instance">NVS Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_NVS_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_NVS{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to NVS runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_NVS</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_NVS_nvsType"></a>NVS Type
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.nvsType = 'Internal'</code>]
+               </a></dt><dd>
+              <em></em> Specifies the type of non-volatile storage used by the NVS region.<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'Internal'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Normal CPU directly addressable flash memory.</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'External'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - SPI Flash. Not directly addressable flash memory.</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'RAM'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Region is in CPU directly addressable RAM.<br><p>Typically used to emulate flash memory while developing applications that use
+real flash memory. This avoids wearing out device flash during software development.</p>
+</td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="Power_Configuration_Options">
+          <h3 title="Summary of all Power configuration options">Power Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_enablePolicy"><code>.enablePolicy</code></a><code> = true;</code></td><td><code>// (MSP432P4 only) Enable Policy</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_policyFunction"><code>.policyFunction</code></a><code> = 'PowerMSP432_sleepPolicy';</code></td><td><code>// (MSP432P4 only) Policy Function</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_policyCustomFunction"><code>.policyCustomFunction</code></a><code> = 'customPolicyFxn';</code></td><td><code>// (MSP432P4 only) Policy Custom Function</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_policyInitFunction"><code>.policyInitFunction</code></a><code> = 'PowerMSP432_initPolicy';</code></td><td><code>// (MSP432P4 only) Policy Init Function</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_policyInitCustomFunction"><code>.policyInitCustomFunction</code></a><code> = 'customPolicyInitFxn';</code></td><td><code>// (MSP432P4 only) Policy Init Custom Function</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_enablePinParking"><code>.enablePinParking</code></a><code> = false;</code></td><td><code>// (MSP432P4 only) Enable Pin Parking</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_resumeShutdownHookFunction"><code>.resumeShutdownHookFunction</code></a><code> = '';</code></td><td><code>// (MSP432P4 only) Resume Shutdown Hook Function</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_initialPerformanceLevel"><code>.initialPerformanceLevel</code></a><code> = 2;</code></td><td><code>// (MSP432P4 only) Initial Performance Level</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_enablePerformanceLevels"><code>.enablePerformanceLevels</code></a><code> = true;</code></td><td><code>// (MSP432P4 only) Enable Performance Levels</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_customPerformanceLevels"><code>.customPerformanceLevels</code></a><code> = 0;</code></td><td><code>// (MSP432P4 only) Custom Performance Levels</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_advancedConfiguration"><code>.advancedConfiguration</code></a><code> = false;</code></td><td><code>// (MSP432P4 only) Advanced Configuration</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_clockSystemCallback"><code>.clockSystemCallback</code></a><code> = '';</code></td><td><code>// (MSP432P4 only) Clock System Callback</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_clockSystemInterruptPriority"><code>.clockSystemInterruptPriority</code></a><code> = '7';</code></td><td><code>// (MSP432P4 only) Clock System Interrupt Priority</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_enableHFXTClock"><code>.enableHFXTClock</code></a><code> = false;</code></td><td><code>// (MSP432P4 only) Enable HFXT Clock</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_bypassHFXT"><code>.bypassHFXT</code></a><code> = false;</code></td><td><code>// (MSP432P4 only) Bypass HFXT</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_hfxtFrequency"><code>.hfxtFrequency</code></a><code> = 48000000;</code></td><td><code>// (MSP432P4 only) HFXT Frequency</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_enableLFXTClock"><code>.enableLFXTClock</code></a><code> = false;</code></td><td><code>// (MSP432P4 only) Enable LFXT Clock</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_bypassLFXT"><code>.bypassLFXT</code></a><code> = false;</code></td><td><code>// (MSP432P4 only) Bypass LFXT</code></td></tr>
+            <tr><td><var>Power</var><a href="#ti_drivers_Power_lfxtDriveLevel"><code>.lfxtDriveLevel</code></a><code> = 0;</code></td><td><code>// (MSP432P4 only) LFXT Drive Level</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+        <div id="Power_Module_Configuration_Options">
+          <h3 title="Options that apply to the Power driver as a whole">Power Module Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_enablePolicy"></a>Enable Policy
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.enablePolicy = true]</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Enable the power policy to run when the CPU is idle.<p /><p>If enabled, the policy function will be invoked once for each pass of the
+idle loop.</p>
+<p>In addition to this static setting, the Power Policy can be dynamically
+enabled and disabled at runtime, via the <a href="/tidrivers/doxygen/html/_power_8h.html#ti_drivers_Power_Examples_enable" title="Enabling power policy">Power_enablePolicy()</a> and
+<a href="/tidrivers/doxygen/html/_power_8h.html#ti_drivers_Power_Examples_disable" title="Disabling power policy">Power_disablePolicy()</a> functions, respectively.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_policyFunction"></a>Policy Function
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.policyFunction = 'PowerMSP432_sleepPolicy']</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Power policy function called from the idle loop.<p /><p>When enabled, this function is invoked in the idle loop, to opportunistically
+select and activate sleep states.</p>
+<p>Two reference policies are provided:</p>
+<ul>
+<li><strong>PowerMSP432_sleepPolicy</strong></li>
+<li><strong>PowerMSP432_deepSleepPolicy</strong></li>
+</ul>
+<p>In addition to this static selection, the Power Policy can be
+dynamically changed at runtime, via the Power_setPolicy() API.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'PowerMSP432_sleepPolicy'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - A simple policy that will put the device in either the PowerMSP432_SLEEP state (unless there is a constraint prohibiting this), or CPU wait for interrupt (WFI).</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'PowerMSP432_deepSleepPolicy'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - An agressive policy that checks constraints and optionally chooses PowerMSP432_DEEPSLEEP_1, PowerMSP432_DEEPSLEEP_0, PowerMSP432_SLEEP, or WFI, in that order of preference.</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Custom'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Custom policies can be written, and specified via the Policy Custom Function configuration.</td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_policyCustomFunction"></a>Policy Custom Function
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.policyCustomFunction = 'customPolicyFxn']</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> User provided Power policy function. Usage not typical.<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_policyInitFunction"></a>Policy Init Function
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.policyInitFunction = 'PowerMSP432_initPolicy']</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> The initialization function for the Power policy.<p /><p>This is an optional policy initialization function that will be called during
+application startup, during Power Manager initialization.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'PowerMSP432_initPolicy'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Custom'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Custom initialization policies can be writtenand specified via the Policy Init Custom Function configuration.</td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_policyInitCustomFunction"></a>Policy Init Custom Function
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.policyInitCustomFunction = 'customPolicyInitFxn']</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> User provided Power policy init function. Usage not typical.<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_enablePinParking"></a>Enable Pin Parking
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.enablePinParking = false]</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Enable automatic pin parking during LPM3 and LPM4.<p /><p>Specifies if internal pull resistors should be automatically applied to input
+pins during PowerMSP432_DEEPSLEEP_0 and PowerMSP432_DEEPSLEEP_1.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_resumeShutdownHookFunction"></a>Resume Shutdown Hook Function
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.resumeShutdownHookFunction = '']</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Optional hook function to be called on resume from shutdown<p /><p>This function is called when the device wakes and resumes from a
+previous entry into either the SHUTDOWN_0 or SHUTDOWN_1 states.
+If this function is defined (i.e., not an empty string), it will
+be called during Power_init(), right before the Power driver clears
+the LOCKLPM5 and LOCKBKUP bits in the PMCTL1 register, to unlock I/Os
+and the backup domain.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_initialPerformanceLevel"></a>Initial Performance Level
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.initialPerformanceLevel = 2]</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> The performance level at system start up.<p /><p>Levels 0-3 are always available. Levels 4-7 are available if
+<strong>Custom Performance Levels</strong> are defined.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>0</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>1</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>2</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>3</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>4</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>5</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>6</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>7</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_enablePerformanceLevels"></a>Enable Performance Levels
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.enablePerformanceLevels = true]</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Enable performance level control. Strongly recommended.<p /><p>If enabled, the performance scaling feature will be enabled for the
+application. The <strong>Initial Performance Level</strong> will be established
+during Power Manager initialization.</p>
+<p>See the <strong>Performance Level Configuration</strong> for more information.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_customPerformanceLevels"></a>Custom Performance Levels
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.customPerformanceLevels = 0]</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Advanced option. Select the number of Custom Performance Levels to configure.<p /><p>See the <em>Performance Level Configuration_</em> for more information.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>0</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>1</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>2</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>3</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>4</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_advancedConfiguration"></a>Advanced Configuration
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.advancedConfiguration = false]</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Show Advanced Power Configuration<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_clockSystemCallback"></a>Clock System Callback
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.clockSystemCallback = '']</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Clock System (CS) callback function to serve as the interrupt service routine.<p /><p>The function specified will be configured for catching Clock System (CS)
+interrupts. If left empty, interrupts from the CS will not be enabled.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_clockSystemInterruptPriority"></a>Clock System Interrupt Priority
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.clockSystemInterruptPriority = '7']</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'7'</code></td><td style="padding:10px"><code>7 - Lowest Priority</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'6'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'5'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'4'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'3'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'2'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1'</code></td><td style="padding:10px"><code>1 - Highest Priority</code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_enableHFXTClock"></a>Enable HFXT Clock
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.enableHFXTClock = false]</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Enable high frequency crystal (HFXT) clock.<p /><p>If enabled, the high frequency crystal (HFXT) clock pin will be configured
+for HFXT function.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_bypassHFXT"></a>Bypass HFXT
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.bypassHFXT = false]</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Configure high frequency crystal (HFXT) pin for bypass<p /><p>If enabled, the high frequency crystal (HFXT) pin will be configured for
+HFXT bypass.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_hfxtFrequency"></a>HFXT Frequency
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.hfxtFrequency = 48000000]</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> High frequency crystal (HFXT) frequency<p /><p>The source is specified via an enumerated value from cs.h, for
+example <strong>CS_48MHZ</strong>, <strong>CS_24MHZ</strong>, etc..</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>1000000</code></td><td style="padding:10px"><code>1 MHz</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>1500000</code></td><td style="padding:10px"><code>1.5 MHz</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>3000000</code></td><td style="padding:10px"><code>3 MHz</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>4000000</code></td><td style="padding:10px"><code>4 MHz</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>6000000</code></td><td style="padding:10px"><code>6 MHz</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>8000000</code></td><td style="padding:10px"><code>8 MHz</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>12000000</code></td><td style="padding:10px"><code>12 MHz</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>16000000</code></td><td style="padding:10px"><code>16 MHz</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>24000000</code></td><td style="padding:10px"><code>24 MHz</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>32000000</code></td><td style="padding:10px"><code>32 MHz</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>40000000</code></td><td style="padding:10px"><code>40 MHz</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>48000000</code></td><td style="padding:10px"><code>48 MHz</code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_enableLFXTClock"></a>Enable LFXT Clock
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.enableLFXTClock = false]</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Enable low frequency crystal (LFXT) clock<p /><p>If enabled, the low frequency crystal (LFXT) clock pin will be configured
+for LFXT function.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_bypassLFXT"></a>Bypass LFXT
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.bypassLFXT = false]</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Configure low frequency crystal (LFXT) pin for bypass<p /><p>If enabled, the low frequency crystal (LFXT) pin will be configured for
+LFXT bypass.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Power_lfxtDriveLevel"></a>LFXT Drive Level
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>Power</var><code>.lfxtDriveLevel = 0]</code>
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> The low frequency crystal (LFXT) drive level<p /><p>The source is specified via an enumerated value from <strong>cs.h</strong>, for example:
+<strong>CS_LFXT_DRIVE3</strong>, <strong>CS_LFXT_DRIVE2</strong>, etc.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>0</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - CS_LFXT_DRIVE0</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>1</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - CS_LFXT_DRIVE1</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>2</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - CS_LFXT_DRIVE2</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>3</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - CS_LFXT_DRIVE3</td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Module_Configuration_Options -->
+
+        <div id="PWM_Configuration_Options">
+          <h3 title="Summary of all PWM configuration options">PWM Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_PWM_$name"><code>.$name</code></a><code> = 'Board_PWM{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_PWM_clockSource"><code>.clockSource</code></a><code> = 'SMCLK';</code></td><td><code>// Clock Source</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="PWM_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added PWM instance">PWM Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_PWM_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_PWM{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to PWM runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_PWM</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_PWM_clockSource"></a>Clock Source
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.clockSource = 'SMCLK'</code>]
+               </a></dt><dd>
+              <em></em> Specifies the clock source<p /><p>The frequency of the clock sources are configured
+per <strong>Power Performance Level</strong> configured in the <strong>Power Module</strong>.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'ACLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'SMCLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="RTOS_Configuration_Options">
+          <h3 title="Summary of all RTOS configuration options">RTOS Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>RTOS</var><a href="#ti_drivers_RTOS_timerID"><code>.timerID</code></a><code> = 0;</code></td><td><code>// Timer ID</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+        <div id="RTOS_Module_Configuration_Options">
+          <h3 title="Options that apply to the RTOS driver as a whole">RTOS Module Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_RTOS_timerID"></a>Timer ID
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Module parameter's script
+                 name and its default value">
+                 [<var>RTOS</var><code>.timerID = 0]</code>
+               </a></dt><dd>
+              <em></em> Timer's numeric ID<p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Module_Configuration_Options -->
+
+        <div id="SD_Configuration_Options">
+          <h3 title="Summary of all SD configuration options">SD Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_SD_$name"><code>.$name</code></a><code> = 'Board_SD{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_SD_useFatFS"><code>.useFatFS</code></a><code> = false;</code></td><td><code>// Use FatFS</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="SD_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added SD instance">SD Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_SD_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_SD{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to SD runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_SD</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_SD_useFatFS"></a>Use FatFS
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.useFatFS = false</code>]
+               </a></dt><dd>
+              <em></em> Enables the driver to use the SDFatFS driver interface<p /><p>When enabled, the <a href="/tidrivers/doxygen/html/_s_d_fat_f_s_8h.html#details" title="C API reference"><strong>SDFatFS</strong></a> driver interface
+will be accessible by the application.</p>
+
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="SPI_Configuration_Options">
+          <h3 title="Summary of all SPI configuration options">SPI Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_SPI_$name"><code>.$name</code></a><code> = 'Board_SPI{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_SPI_mode"><code>.mode</code></a><code> = 'Three Pin';</code></td><td><code>// Mode</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_SPI_defaultTxBufferValue"><code>.defaultTxBufferValue</code></a><code> = '~0';</code></td><td><code>// Default TX Buffer Value</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_SPI_minDmaTransferSize"><code>.minDmaTransferSize</code></a><code> = 10;</code></td><td><code>// Min DMA Transfer Size</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_SPI_duplex"><code>.duplex</code></a><code> = 'Full';</code></td><td><code>// Duplex</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_SPI_dmaInterruptPriority"><code>.dmaInterruptPriority</code></a><code> = '7';</code></td><td><code>// DMA Interrupt Priority</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="SPI_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added SPI instance">SPI Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_SPI_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_SPI{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to SPI runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_SPI</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_SPI_mode"></a>Mode
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.mode = 'Three Pin'</code>]
+               </a></dt><dd>
+              <em></em> In three pin mode the SS signal is not used.<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'Three Pin'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Four Pin SS Active Low'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Four Pin SS Active High'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_SPI_defaultTxBufferValue"></a>Default TX Buffer Value
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.defaultTxBufferValue = '~0'</code>]
+               </a></dt><dd>
+              <em></em> Specifies the default transmit buffer value.<p /><p>Value sent when a TX buffer is not specified.This value must be provided in hexadecimal format;0 and ~0 also acceptable inputs.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_SPI_minDmaTransferSize"></a>Min DMA Transfer Size
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.minDmaTransferSize = 10</code>]
+               </a></dt><dd>
+              <em></em> Specifies the minimum transfer size in bytes for which the DMA will be used. Otherwise a polling transfer will occur with some exceptions.<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_SPI_duplex"></a>Duplex
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.duplex = 'Full'</code>]
+               </a></dt><dd>
+              <em></em> One or both device transmit/receive<p /><p>In a typical SPI transfer, both participants transmit and receive at the same time (full duplex) but in some situations only one side will ever transmit and the other side may only need to receive. In these cases some pins can stay unassigned. If full duplex is not required, the user may select the role of this SPI.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'Full'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Master TX Only'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Master RX Only'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Slave TX Only'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Slave RX Only'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_SPI_dmaInterruptPriority"></a>DMA Interrupt Priority
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.dmaInterruptPriority = '7'</code>]
+               </a></dt><dd>
+              <em></em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'7'</code></td><td style="padding:10px"><code>7 - Lowest Priority</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'6'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'5'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'4'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'3'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'2'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1'</code></td><td style="padding:10px"><code>1 - Highest Priority</code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="Timer_Configuration_Options">
+          <h3 title="Summary of all Timer configuration options">Timer Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_Timer_$name"><code>.$name</code></a><code> = 'Board_TIMER{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_Timer_interruptPriority"><code>.interruptPriority</code></a><code> = '7';</code></td><td><code>// Interrupt Priority</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_Timer_timerType"><code>.timerType</code></a><code> = '16 Bits';</code></td><td><code>// (MSP432P4 only) Timer Type</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_Timer_clockSource"><code>.clockSource</code></a><code> = 'ACLK';</code></td><td><code>// (MSP432P4 only) Clock Source</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="Timer_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added Timer instance">Timer Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_Timer_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_TIMER{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to Timer runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_TIMER</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Timer_interruptPriority"></a>Interrupt Priority
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.interruptPriority = '7'</code>]
+               </a></dt><dd>
+              <em></em> Timer Interrupt Priority<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'7'</code></td><td style="padding:10px"><code>7 - Lowest Priority</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'6'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'5'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'4'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'3'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'2'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1'</code></td><td style="padding:10px"><code>1 - Highest Priority</code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Timer_timerType"></a>Timer Type
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.timerType = '16 Bits'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'32 Bits'</code></td><td style="padding:10px"><code>Timer32</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'16 Bits'</code></td><td style="padding:10px"><code>Timer_A</code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Timer_clockSource"></a>Clock Source
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.clockSource = 'ACLK'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Specifies the clock source of the timer peripheral<p /><p>The frequency of the clock sources are configured
+per <strong>Power Performance Level</strong> configured in the <strong>Power Module</strong>.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'ACLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'SMCLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'EXTERNAL TXCLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'INVERTED EXTERNAL TXCLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="UART_Configuration_Options">
+          <h3 title="Summary of all UART configuration options">UART Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_UART_$name"><code>.$name</code></a><code> = 'Board_UART{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_UART_dataDirection"><code>.dataDirection</code></a><code> = 'Send and Receive';</code></td><td><code>// Data Direction</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_UART_errorCallbackFunction"><code>.errorCallbackFunction</code></a><code> = '';</code></td><td><code>// Error callback function</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_UART_baudRates"><code>.baudRates</code></a><code> = 115200;</code></td><td><code>// Baud Rates</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_UART_clockSource"><code>.clockSource</code></a><code> = 'Any';</code></td><td><code>// (MSP432P4 only) Clock Source</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_UART_ringBufferSize"><code>.ringBufferSize</code></a><code> = 32;</code></td><td><code>// (MSP432P4 only) Ring Buffer Size</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_UART_bitOrder"><code>.bitOrder</code></a><code> = 'LSB_FIRST';</code></td><td><code>// (MSP432P4 only) Bit Order</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_UART_interruptPriority"><code>.interruptPriority</code></a><code> = '7';</code></td><td><code>// (MSP432P4 only) Interrupt Priority</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="UART_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added UART instance">UART Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_UART_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_UART{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to UART runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_UART</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_UART_dataDirection"></a>Data Direction
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.dataDirection = 'Send and Receive'</code>]
+               </a></dt><dd>
+              <em></em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'Send and Receive'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Send Only'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Receive Only'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_UART_errorCallbackFunction"></a>Error callback function
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.errorCallbackFunction = ''</code>]
+               </a></dt><dd>
+              <em></em> Optional application defined error function to be called on receive errors.<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_UART_baudRates"></a>Baud Rates
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.baudRates = 115200</code>]
+               </a></dt><dd>
+              <em></em> The set of baud rates that are used by this instance. On some devices, these rates are used to pre-compute a table of clock dividers necessary for each rate.<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>1200</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>2400</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>4800</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>9600</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>19200</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>38400</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>57600</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>115200</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>230400</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>460800</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>921600</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_UART_clockSource"></a>Clock Source
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.clockSource = 'Any'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Specifies the clock source for the UART peripheral<p /><p>If &#39;Any&#39; is selected, an appropriate clock source
+will be auto selected. For maximum portability to other devices, it is
+recommended that this option be left in it&#39;s default state of &#39;Any&#39;.</p>
+<p>The frequency of the clock sources are configured per
+<strong>Power Performance Level</strong> configured in the <strong>Power Module</strong>.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'Any'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'ACLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'SMCLK'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_UART_ringBufferSize"></a>Ring Buffer Size
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.ringBufferSize = 32</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Number of bytes in the ring buffer<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_UART_bitOrder"></a>Bit Order
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.bitOrder = 'LSB_FIRST'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> Almost always LSB First<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'MSB_FIRST'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'LSB_FIRST'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_UART_interruptPriority"></a>Interrupt Priority
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.interruptPriority = '7'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> UART peripheral interrupt priority<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'7'</code></td><td style="padding:10px"><code>7 - Lowest Priority</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'6'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'5'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'4'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'3'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'2'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1'</code></td><td style="padding:10px"><code>1 - Highest Priority</code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="Watchdog_Configuration_Options">
+          <h3 title="Summary of all Watchdog configuration options">Watchdog Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_Watchdog_$name"><code>.$name</code></a><code> = 'Board_WATCHDOG{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_Watchdog_period"><code>.period</code></a><code> = 1000;</code></td><td><code>// Period</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_Watchdog_interruptPriority"><code>.interruptPriority</code></a><code> = '7';</code></td><td><code>// (MSP432P4 only) Interrupt Priority</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="Watchdog_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added Watchdog instance">Watchdog Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_Watchdog_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'Board_WATCHDOG{num}'</code>]
+               </a></dt><dd>
+              <em></em> The C/C++ identifier used in applications as the index parameter passed to Watchdog runtime APIs<p /><p>This name is declared in the generated Board.h file so applications can reference this instance symbolically.  It can be set to any globally unique name that is also a valid C/C++ identifier.</p>
+<p>The SysConfig tooling ensures that <em>all</em> names defined in a configuration are unique.  When instances are first created, SysConfig gives them a default name, <code>Board_WATCHDOG</code>, that&#39;s made unique by appending a numeric id.  If you provide a name, it&#39;s checked against all other instance names in the configuration and, if another instance has the same name, an error is triggered.</p>
+<p>Note: since not all names are added to Board.h, it&#39;s possible that some names will not be allowed even though they do not actually collide in the generated files.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Watchdog_period"></a>Period
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.period = 1000</code>]
+               </a></dt><dd>
+              <em></em> Watchdog timer period in milliseconds<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>65536000</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>4096000</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>256000</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>16000</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>1000</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>250</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>15.625</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>1.953125</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_Watchdog_interruptPriority"></a>Interrupt Priority
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.interruptPriority = '7'</code>]
+               </a></dt><dd>
+              <em>(MSP432P4 only)</em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'7'</code></td><td style="padding:10px"><code>7 - Lowest Priority</code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'6'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'5'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'4'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'3'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'2'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1'</code></td><td style="padding:10px"><code>1 - Highest Priority</code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <div id="ADCBufChanMSP432_Configuration_Options">
+          <h3 title="Summary of all ADCBufChanMSP432 configuration options">ADCBufChanMSP432 Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_adcbuf_ADCBufChanMSP432_$name"><code>.$name</code></a><code> = 'undefined{num}';</code></td><td><code>// Name</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_adcbuf_ADCBufChanMSP432_referenceSource"><code>.referenceSource</code></a><code> = 'VDD';</code></td><td><code>// Reference Source</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_adcbuf_ADCBufChanMSP432_referenceVoltage"><code>.referenceVoltage</code></a><code> = 3300000;</code></td><td><code>// Reference Voltage</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_adcbuf_ADCBufChanMSP432_inputSource"><code>.inputSource</code></a><code> = 'External Pin';</code></td><td><code>// Input Source</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_adcbuf_ADCBufChanMSP432_mode"><code>.mode</code></a><code> = 'Non Differential';</code></td><td><code>// Mode</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="ADCBufChanMSP432_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added ADCBufChanMSP432 instance">ADCBufChanMSP432 Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_adcbuf_ADCBufChanMSP432_$name"></a>Name
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.$name = 'undefined{num}'</code>]
+               </a></dt><dd>
+              <em></em> C identifier used to identify this ADCBuf channel.<p /><p>This name is concatenated to the end of the name <strong>Name</strong> specified in the ADCBuf module configuration above.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_adcbuf_ADCBufChanMSP432_referenceSource"></a>Reference Source
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.referenceSource = 'VDD'</code>]
+               </a></dt><dd>
+              <em></em> <p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'VDD'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1.2V'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'1.45V'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'2.5V'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'External'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'External Buffered'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_adcbuf_ADCBufChanMSP432_referenceVoltage"></a>Reference Voltage
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.referenceVoltage = 3300000</code>]
+               </a></dt><dd>
+              <em></em> Reference voltage in microvolts.<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_adcbuf_ADCBufChanMSP432_inputSource"></a>Input Source
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.inputSource = 'External Pin'</code>]
+               </a></dt><dd>
+              <em></em> Specifies the channel input source.<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'External Pin'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Internal Temperature'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Internal Battery'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_adcbuf_ADCBufChanMSP432_mode"></a>Mode
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.mode = 'Non Differential'</code>]
+               </a></dt><dd>
+              <em></em> Specifies the channel's operation mode<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'Non Differential'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'Differential'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+
+        <div id="PowerMSP432PerfLevels_Configuration_Options">
+          <h3 title="Summary of all PowerMSP432PerfLevels configuration options">PowerMSP432PerfLevels Configuration Synopsis</h3>
+          <table style="margin-left:35px">
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_dcoFrequency"><code>.dcoFrequency</code></a><code> = 3000000;</code></td><td><code>// DCO Frequency</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_customDcoFrequency"><code>.customDcoFrequency</code></a><code> = 3500000;</code></td><td><code>// Custom DCO Frequency</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_mclk"><code>.mclk</code></a><code> = 3000000;</code></td><td><code>// MCLK</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_mclkSource"><code>.mclkSource</code></a><code> = 'DCO';</code></td><td><code>// MCLK Source</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_mclkDivider"><code>.mclkDivider</code></a><code> = 1;</code></td><td><code>// MCLK Divider</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_hsmclk"><code>.hsmclk</code></a><code> = 3000000;</code></td><td><code>// HSMCLK</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_hsmclkSource"><code>.hsmclkSource</code></a><code> = 'DCO';</code></td><td><code>// HSMCLK Source</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_hsmclkDivider"><code>.hsmclkDivider</code></a><code> = 1;</code></td><td><code>// HSMCLK Divider</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_smclk"><code>.smclk</code></a><code> = 3000000;</code></td><td><code>// SMCLK</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_smclkDivider"><code>.smclkDivider</code></a><code> = 1;</code></td><td><code>// SMCLK Divider</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_aclk"><code>.aclk</code></a><code> = 32768;</code></td><td><code>// ACLK</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_aclkSource"><code>.aclkSource</code></a><code> = 'REFO';</code></td><td><code>// ACLK Source</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_aclkDivider"><code>.aclkDivider</code></a><code> = 1;</code></td><td><code>// ACLK Divider</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_bclk"><code>.bclk</code></a><code> = 32768;</code></td><td><code>// BCLK</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_bclkSource"><code>.bclkSource</code></a><code> = 'REFO';</code></td><td><code>// BCLK Source</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_activeState"><code>.activeState</code></a><code> = 'LDO';</code></td><td><code>// Active State</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_coreVoltageLevel"><code>.coreVoltageLevel</code></a><code> = 'VCORE0';</code></td><td><code>// Core Voltage Level</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_flashWaitStates"><code>.flashWaitStates</code></a><code> = 0;</code></td><td><code>// Flash Wait-States</code></td></tr>
+            <tr><td><var>inst</var><a href="#ti_drivers_power_PowerMSP432PerfLevels_enableFlashBuffer"><code>.enableFlashBuffer</code></a><code> = false;</code></td><td><code>// Enable Flash Buffer</code></td></tr>
+          </table>
+          <hr />
+        </div> <!-- end Configuration_Options summary -->
+
+        <div id="PowerMSP432PerfLevels_Instance_Configuration_Options">
+          <h3 title="Options that are separately set for each added PowerMSP432PerfLevels instance">PowerMSP432PerfLevels Instance Configuration Options</h3>
+          <dl style="list-style-type:none">
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_dcoFrequency"></a>DCO Frequency
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.dcoFrequency = 3000000</code>]
+               </a></dt><dd>
+              <em></em> Specify the center frequency to use in Hertz for the Digitally Controller Oscillator (DCO).<p /><p>Specifies a list of nominal center frequencies to use for the DCO. If
+a <strong>Custom</strong> frequency is required, configure the desired frequency using the
+<strong>Custom DCO Frequency</strong> configurable.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>0</code></td><td style="padding:10px"><code>Custom</code></td><td style="padding:10px"> - Specify a custom frequency for the DCO.<br><p>You can specify the custom frequency using the <strong>Custom Center Frequency</strong> configurable.</p>
+</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>1500000</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - 1 MHz to 2 MHz</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>3000000</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - 2 MHz to 4 MHz</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>6000000</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - 4 MHz to 8 MHz</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>12000000</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - 8 MHz to 16 MHz</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>24000000</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - 16 MHz to 32 MHz</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>48000000</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - 32 MHz to 64 MHz</td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_customDcoFrequency"></a>Custom DCO Frequency
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.customDcoFrequency = 3500000</code>]
+               </a></dt><dd>
+              <em></em> Custom center frequency to tune Digital Controlled Oscillator (DCO)<p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_mclk"></a>MCLK
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.mclk = 3000000</code>]
+               </a></dt><dd>
+              <em></em> Master Clock (MCLK) frequency for this performance level<p /><p>Master Clock (MCLK) is used by the CPU and peripheral module interfaces. The
+clock source can be configured using the <strong>MCLK Source</strong> configurable.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_mclkSource"></a>MCLK Source
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.mclkSource = 'DCO'</code>]
+               </a></dt><dd>
+              <em></em> Master Clock (MCLK) source for this performance level.<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'DCO'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'HFXT'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'LFXT'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'VLO'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'REFO'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'MODOSC'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_mclkDivider"></a>MCLK Divider
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.mclkDivider = 1</code>]
+               </a></dt><dd>
+              <em></em> Master Clock (MCLK) divider<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>1</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>2</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>4</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>8</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>16</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>32</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>64</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>128</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_hsmclk"></a>HSMCLK
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.hsmclk = 3000000</code>]
+               </a></dt><dd>
+              <em></em> Subsystem Master Clock (HSMCLK) frequency for this performance level<p /><p>The Subsystem Master Clock (HSMCLK) is software selectable by individual
+peripheral modules.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_hsmclkSource"></a>HSMCLK Source
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.hsmclkSource = 'DCO'</code>]
+               </a></dt><dd>
+              <em></em> Subsystem Master Clock (HSMCLK) source.<p /><p>Specifies the HSMCLK source. The Low-Speed Subsytem Master Clock (SMCLK) uses
+the same clock source as HSMCLK.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'DCO'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'HFXT'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'LFXT'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'VLO'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'REFO'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'MODOSC'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_hsmclkDivider"></a>HSMCLK Divider
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.hsmclkDivider = 1</code>]
+               </a></dt><dd>
+              <em></em> Subsystem Master Clock (HSMCLK) divider.<p />
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>1</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>2</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>4</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>8</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>16</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>32</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>64</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>128</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_smclk"></a>SMCLK
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.smclk = 3000000</code>]
+               </a></dt><dd>
+              <em></em> Low-Speed Subsystem Master Clock (SMCLK) frequency for this performance level<p /><p>SMCLK can be divided independently from HSMCLK. SMCLK is limited in frequency
+to half the rated maximum frequency of HSMCLK. SMCLK is software
+selectable by individual peripheral modules.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_smclkDivider"></a>SMCLK Divider
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.smclkDivider = 1</code>]
+               </a></dt><dd>
+              <em></em> The Low-Speed Subsystem Master Clock (SMCLK) uses the same clock source as HSMCLK.<p /><p>SMCLK can be divided independently from HSMCLK. SMCLK is limited in frequency
+to half the rated maximum frequency of HSMCLK. SMCLK is software
+selectable by individual peripheral modules.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>1</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>2</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>4</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>8</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>16</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>32</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>64</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>128</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_aclk"></a>ACLK
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.aclk = 32768</code>]
+               </a></dt><dd>
+              <em></em> Auxiliary Clock (ACLK) frequency for this performance level<p /><p>ACLK is software selectable by individual peripheral modules. ACLK is restricted to maximum frequency of operation of 128 kHz.</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_aclkSource"></a>ACLK Source
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.aclkSource = 'REFO'</code>]
+               </a></dt><dd>
+              <em></em> Auxiliary Clock (ACLK) source.<p /><p>ACLK is software selectable by individual peripheral modules. ACLK is restricted to maximum frequency of operation of 128 kHz.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'LFXT'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'VLO'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'REFO'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_aclkDivider"></a>ACLK Divider
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.aclkDivider = 1</code>]
+               </a></dt><dd>
+              <em></em> Auxiliary Clock (ACLK) divider<p /><p>ACLK is software selectable by individual peripheral modules. ACLK is restricted to maximum frequency of operation of 128 kHz.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>1</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>2</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>4</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>8</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>16</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>32</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>64</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>128</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_bclk"></a>BCLK
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.bclk = 32768</code>]
+               </a></dt><dd>
+              <em></em> Low-Speed Backup Domain Clock (BCLK} frequency for this performance level<p /><p>BCLK is used primarily in the backup domain and is restricted to a maximum frequency of 32.768 kHz</p>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_bclkSource"></a>BCLK Source
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.bclkSource = 'REFO'</code>]
+               </a></dt><dd>
+              <em></em> Low-Speed Backup Domain Clock (BCLK} source.<p /><p>BCLK is used primarily in the backup domain and is restricted to a maximum frequency of 32.768 kHz</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'LFXT'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'REFO'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_activeState"></a>Active State
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.activeState = 'LDO'</code>]
+               </a></dt><dd>
+              <em></em> Active State for the Device<p /><p>Active states refer to any power state in which CPU execution is possible.
+Two core voltage level settings are supported: <strong>VCORE0</strong> and <strong>VCORE1</strong>. See
+the <strong>Core Voltage Level</strong> configurable for more on core voltage levels. Three
+active modes are associated with each core voltage level. The various active
+modes allow for optimal power and performance across a broad range of
+application requirements. The core voltage can be supplied by either
+a low dropout (<strong>LDO</strong>) regulator or a DC/DC (<strong>DCDC</strong>) regulator.</p>
+<p>Low Frequency (LF) active states are useful for low-frequency operation. The
+low-frequency active states limit the maximum frequency of operation to 128
+kHz. The application must not perform flash program or erase operations or
+any change to SRAM bank enable or retention enable configurations while in
+low-frequency active states. This allows the power management system to be
+optimized to support the lower power demands in these operating states.
+Low-frequency active states are based on LDO operation only.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'LDO'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Low Dropout</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'DCDC'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - DC/DC Regulator</td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'LF'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"> - Low Frequency</td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_coreVoltageLevel"></a>Core Voltage Level
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.coreVoltageLevel = 'VCORE0'</code>]
+               </a></dt><dd>
+              <em></em> Selects generation voltage for the device core<p /><p>The Power Supply System (PSS) uses an integrated voltage regulator to produce
+a secondary core voltage (VCORE) from the primary voltage that is applied to
+the device (VCC). In general, VCORE supplies the CPU, memories, and the
+digital modules, while VCC supplies the I/Os and analog modules.
+The VCORE output is maintained using a dedicated voltage reference.
+VCORE voltage level is programmable to allow power savings if the maximum
+device speed is not required. Modifying this configurable will impact
+the max frequencies available for the <strong>MCLK</strong>, <strong>HSMCLK</strong>, and <strong>SMCLK</strong>.</p>
+
+              <p style="margin-bottom:2px;">Valid options include the following:</p>
+              <table style="margin-left:35px">
+  <tr><td style="padding:10px;vertical-align: top"><code>'VCORE0'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+  <tr><td style="padding:10px;vertical-align: top"><code>'VCORE1'</code></td><td style="padding:10px"><code></code></td><td style="padding:10px"></td></tr>
+</table><p />
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_flashWaitStates"></a>Flash Wait-States
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.flashWaitStates = 0</code>]
+               </a></dt><dd>
+              <em></em> Number of Flash Wait-States<p /><p>The flash controller is configurable in terms of the number of memory
+bus cycles it takes to service any read command. This allows the CPU
+execution frequency to be higher than the maximum read frequency
+supported by the flash memory. If the bus clock speed is higher than
+the native frequency of the flash, the access is stalled for the
+configured number of wait states, allowing data from the flash to
+be accessed reliably.</p>
+<blockquote>
+<p>See the device data sheet for CPU execution frequency and
+wait-state requirements.</p>
+</blockquote>
+
+            </dd>
+            <dt style="font-weight: bold;"><a id="ti_drivers_power_PowerMSP432PerfLevels_enableFlashBuffer"></a>Enable Flash Buffer
+              <a href="#How_to_Read_SysConfig_Synopsis_Lines"
+                 title="Instance parameter's script
+                 name and its default value">
+                 [<var>inst</var><code>.enableFlashBuffer = false</code>]
+               </a></dt><dd>
+              <em></em> Enable Flash Read Buffering<p /><p>When read buffering is enabled, the flash memory always reads an
+entire 128-bit line irrespective of the access size of 8, 16, or 32
+bits. The 128-bit data and its associated address is internally
+buffered by the flash controller, so subsequent accesses (expected to
+be contiguous in nature) within the same 128-bit address boundary are
+serviced by the buffer. Hence, the flash accesses see wait-states only
+when the 128-bit boundary is crossed, while read accesses within the
+buffer&#39;s range are serviced without any bus stalls. If read buffering
+is disabled, accesses to the flash bypasses the buffer, and the data
+read from the flash is limited to the width of the access (8, 16, or
+32 bits). Each bank has independent settings for the read buffering.
+In addition, within each bank, the application has independent
+flexibility to enable read buffering for instruction and data fetches.
+Read buffers are bypassed during any program or erase operation by
+the controller to ensure data coherency.</p>
+
+            </dd>
+          </dl>
+          <hr />
+        </div> <!-- end Instance_Configuration_Options -->
+        <a id="How_to_Read_SysConfig_Synopsis_Lines"></a>
+        <h3>How to Read SysConfig Synopsis Lines</h3>
+        <p>SysConfig configuration scripts consist of a sequence of assignments
+          to configuration parameters defined by the modules used in an
+          application.  There are two types of assignments: assignments to
+          module-level configuration parameters (that apply to all
+          instances of the module) and assignments to instance-level
+          configuration parameters (which are specific to the instance
+          alone). All configuration parameters have a default value
+          that's used in the event that it's not explicitly set in the
+          configuration script.
+        </p>
+        <p>Synopsis lines of the form<br>
+          <table style="margin-left:35px">
+            <tr><td>
+              <var>MOD</var><code>.paramName = defaultValue</code>
+            </td></tr>
+          </table>
+          illustrate an assignment of a module configuration
+          parameter's default value to the configuration
+          parameter itself.
+        </p>
+        <p>Similarily,<br>
+          <table style="margin-left:35px">
+            <tr><td>
+              <var>inst</var><code>.paramName = defaultValue</code>
+            </td></tr>
+          </table>
+          illustrates an assignment of a instance configuration
+          parameter's default value to the configuration
+          parameter itself.
+        </p>
+        <p>For example, the following is a snippet of a SysConfg
+          script that configures the GPIO module and a GPIO instance.
+        </p>
+        <div class="fragment">
+          <div class="line"><span class="comment">// Add the GPIO module to this configuration</span></div>
+          <div class="line"><span class="keyword">var</span> GPIO = system.addModule('/ti/drivers/GPIO');</div>
+          <div class="line"></div>
+          <div class="line"><span class="comment">// Set a GPIO module configuration parameter</span></div>
+          <div class="line">GPIO.optimizeCallbackTableSize = true;</div>
+          <div class="line"></div>
+          <div class="line"><span class="comment">// Add a new GPIO instance</span></div>
+          <div class="line"><span class="keyword">var</span> led = GPIO.addInstance();</div>
+          <div class="line"></div>
+          <div class="line"><span class="comment">// Set this instance's configuration parameters</span></div>
+          <div class="line">led.$name = 'LED';</div>
+          <div class="line">led.mode = 'Output';</div>
+        </div> <!-- end class "fragment" -->
+      </div> <!-- end class "textblock" -->
+    </div> <!-- end class "contents" -->
+  </body>
+</html>

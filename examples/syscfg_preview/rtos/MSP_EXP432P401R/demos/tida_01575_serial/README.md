@@ -1,3 +1,7 @@
+### SysConfig Notice
+
+All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
+
 ## Example Summary
 
 The demo software is a code for the TI Reference Design TIDA-01575. The MSP432P4x Host MCU captures the analog output from the 3-axis Accelerometer, computes the FFT and transmits it using the serial COM port.

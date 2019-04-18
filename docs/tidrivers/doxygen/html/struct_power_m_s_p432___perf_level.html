@@ -124,6 +124,9 @@ Data Fields</h2></td></tr>
 <tr class="memitem:afca031b655668dbed6ad8bfbbb918cd5"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_power_m_s_p432___perf_level.html#afca031b655668dbed6ad8bfbbb918cd5">ACLK</a></td></tr>
 <tr class="memdesc:afca031b655668dbed6ad8bfbbb918cd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ACLK frequency for this performance level. Currently only 32768 Hz is supported.  <a href="#afca031b655668dbed6ad8bfbbb918cd5">More...</a><br /></td></tr>
 <tr class="separator:afca031b655668dbed6ad8bfbbb918cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2404b7d8870a764f17a35bc8701bf827"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_power_m_s_p432___perf_level.html#a2404b7d8870a764f17a35bc8701bf827">tuneFreqDCO</a></td></tr>
+<tr class="memdesc:a2404b7d8870a764f17a35bc8701bf827"><td class="mdescLeft">&#160;</td><td class="mdescRight">The target center frequency for custom tuning of the DCO, in Hz. This frequency value is used only when DCORESEL is specified as CS_DCO_TUNE_FREQ.  <a href="#a2404b7d8870a764f17a35bc8701bf827">More...</a><br /></td></tr>
+<tr class="separator:a2404b7d8870a764f17a35bc8701bf827"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure defining a performance level. </p>
@@ -150,7 +153,8 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The active state for the device. </p>
-<p>The states are identified by the enumerations in pcm.h. The supported active states are: PCM_AM_LDO_VCORE0, PM_AM_LDO_VCORE1, PCM_AM_DCDC_VCORE0, PCM_AM_DCDC_VCORE1. Usage of DCDC states requires that the DCDC is available for the device and board configuration. </p>
+<p>The states are identified by the enumerations in pcm.h. The supported active states are: PCM_AM_LDO_VCORE0, PM_AM_LDO_VCORE1, PCM_AM_DCDC_VCORE0, PCM_AM_DCDC_VCORE1. Usage of DCDC states requires that the DCDC is available for the device and board configuration.</p>
+<p>Active states refer to any power state in which CPU execution is possible. Two core voltage level settings are supported: VCORE0 and VCORE1. See <a class="el" href="struct_power_m_s_p432___perf_level.html#a6c0084d8e2d45959783590ce98074b3b" title="The core voltage level. ">PowerMSP432_PerfLevel.VCORE</a>. Three active states are associated with each core voltage level. The various active states allow for optimal power and performance across a broad range of application requirements. The core voltage can be supplied by either a low dropout (LDO) regulator or a DC/DC (DCDC) regulator. </p>
 
 </div>
 </div>
@@ -167,7 +171,8 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The core voltage level. </p>
-<p>The supported levels are '0' indicating VCORE0, and '1' indicating VCORE1. </p>
+<p>The supported levels are '0' indicating VCORE0, and '1' indicating VCORE1.</p>
+<p>The Power Supply System (PSS) uses an integrated voltage regulator to produce a secondary core voltage (VCORE) from the primary voltage that is applied to the device (VCC). In general, VCORE supplies the CPU, memories, and the digital modules, while VCC supplies the I/Os and analog modules. The VCORE output is maintained using a dedicated voltage reference. VCORE voltage level is programmable to allow power savings if the maximum device speed is not required. Modifying this configurable will impact the max frequencies available for the MCLK, HSMCLK, and SMCLK. </p>
 
 </div>
 </div>
@@ -354,7 +359,9 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The number of Flash wait-states to be used for this performance level. </p>
-<p>The number of wait-states is specified as a positive integer value. </p>
+<p>The number of wait-states is specified as a positive integer value.</p>
+<p>The flash controller is configurable in terms of the number of memory bus cycles it takes to service any read command. This allows the CPU execution frequency to be higher than the maximum read frequency supported by the flash memory. If the bus clock speed is higher than the native frequency of the flash, the access is stalled for the configured number of wait states, allowing data from the flash to be accessed reliably.</p>
+<dl class="section note"><dt>Note</dt><dd>See the device data sheet for CPU execution frequency and wait-state requirements. </dd></dl>
 
 </div>
 </div>
@@ -371,7 +378,8 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Boolean specifying if Flash read buffering should be enabled for this performance level. </p>
-<p>If 'true', buffering will be enabled; if 'false', buffering will be disabled. </p>
+<p>If 'true', buffering will be enabled; if 'false', buffering will be disabled.</p>
+<p>When read buffering is enabled, the flash memory always reads an entire 128-bit line irrespective of the access size of 8, 16, or 32 bits. The 128-bit data and its associated address is internally buffered by the flash controller, so subsequent accesses (expected to be contiguous in nature) within the same 128-bit address boundary are serviced by the buffer. Hence, the flash accesses see wait-states only when the 128-bit boundary is crossed, while read accesses within the buffer's range are serviced without any bus stalls. If read buffering is disabled, accesses to the flash bypasses the buffer, and the data read from the flash is limited to the width of the access (8, 16, or 32 bits). Each bank has independent settings for the read buffering. In addition, within each bank, the application has independent flexibility to enable read buffering for instruction and data fetches. Read buffers are bypassed during any program or erase operation by the controller to ensure data coherency. </p>
 
 </div>
 </div>
@@ -458,6 +466,22 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
+<a id="a2404b7d8870a764f17a35bc8701bf827"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2404b7d8870a764f17a35bc8701bf827">&sect;&nbsp;</a></span>tuneFreqDCO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int PowerMSP432_PerfLevel::tuneFreqDCO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The target center frequency for custom tuning of the DCO, in Hz. This frequency value is used only when DCORESEL is specified as CS_DCO_TUNE_FREQ. </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="_power_m_s_p432_8h_source.html">PowerMSP432.h</a></li>
 </ul>
@@ -465,7 +489,7 @@ Data Fields</h2></td></tr>
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->
 <hr class="footer"/><small>
-  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2018</a>, Texas Instruments Incorporated. All rights reserved. <br>
+  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
   <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
 </small>
 </body>

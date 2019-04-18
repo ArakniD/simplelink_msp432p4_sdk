@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -73,7 +73,7 @@ void *threadFxn0(void *arg0)
     adc = ADC_open(Board_ADC0, &params);
 
     if (adc == NULL) {
-        Display_printf(display, 0, 0, "Error initializing ADC channel 0\n");
+        Display_printf(display, 0, 0, "Error initializing ADC0\n");
         while (1);
     }
 
@@ -84,12 +84,12 @@ void *threadFxn0(void *arg0)
 
         adcValue0MicroVolt = ADC_convertRawToMicroVolts(adc, adcValue0);
 
-        Display_printf(display, 0, 0, "ADC channel 0 raw result: %d\n", adcValue0);
-        Display_printf(display, 0, 0, "ADC channel 0 convert result: %d uV\n",
+        Display_printf(display, 0, 0, "ADC0 raw result: %d\n", adcValue0);
+        Display_printf(display, 0, 0, "ADC0 convert result: %d uV\n",
             adcValue0MicroVolt);
     }
     else {
-        Display_printf(display, 0, 0, "ADC channel 0 convert failed\n");
+        Display_printf(display, 0, 0, "ADC0 convert failed\n");
     }
 
     ADC_close(adc);
@@ -113,7 +113,7 @@ void *threadFxn1(void *arg0)
     adc = ADC_open(Board_ADC1, &params);
 
     if (adc == NULL) {
-        Display_printf(display, 0, 0, "Error initializing ADC channel 1\n");
+        Display_printf(display, 0, 0, "Error initializing ADC1\n");
         while (1);
     }
 
@@ -124,13 +124,13 @@ void *threadFxn1(void *arg0)
 
             adcValue1MicroVolt[i] = ADC_convertRawToMicroVolts(adc, adcValue1[i]);
 
-            Display_printf(display, 0, 0, "ADC channel 1 raw result (%d): %d\n", i,
+            Display_printf(display, 0, 0, "ADC1 raw result (%d): %d\n", i,
                            adcValue1[i]);
-            Display_printf(display, 0, 0, "ADC channel 1 convert result (%d): %d uV\n", i,
+            Display_printf(display, 0, 0, "ADC1 convert result (%d): %d uV\n", i,
                 adcValue1MicroVolt[i]);
         }
         else {
-            Display_printf(display, 0, 0, "ADC channel 1 convert failed (%d)\n", i);
+            Display_printf(display, 0, 0, "ADC1 convert failed (%d)\n", i);
         }
     }
 

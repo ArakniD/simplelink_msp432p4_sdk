@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,11 +36,11 @@
  */
 
 /*
- * I2C speed configuration (Philips I2C specification 
+ * I2C speed configuration (Philips I2C specification
  * http://www.nxp.com/documents/user_manual/UM10204.pdf):
  *    Standard-mode, Fast-mode (Fm), Fast-mode Plus (Fm+), and High-speed
- *    mode (Hs-mode) devices are downward-compatible - any device may be 
- *    operated at a lower bus speed. Ultra Fast-mode devices are not 
+ *    mode (Hs-mode) devices are downward-compatible - any device may be
+ *    operated at a lower bus speed. Ultra Fast-mode devices are not
  *    compatible with previous versions since the bus is unidirectional.
  *        Bidirectional bus:
  *            o Standard-mode (Sm), with a bit rate up to 100 kbit/s
@@ -49,10 +49,10 @@
  *            o High-speed mode (Hs-mode), with a bit rate up to 3.4 Mbit/s.
  *        Unidirectional bus:
  *            o Ultra Fast-mode (UFm), with a bit rate up to 5 Mbit/s
- * 
+ *
  * Each device connected to the bus is software addressable by a unique
  * address and simple master/slave relationships exist at all times.
- * 
+ *
  * A master is the device which initiates a data transfer on the bus and
  * generates the clock signals to permit that transfer. At that time,
  * any device addressed is considered a slave.
@@ -74,14 +74,50 @@ let config = [
     {
         name        : "maxBitRate",
         displayName : "Maximum Bit Rate",
-        description : "Maximum bit rate (Kbps) supported by the board",
-        longDescription: "The maximum bit rate for an I2C bus is a function of"
-            + " the electrical capacitance and resistance on the I2C signal"
-            + " lines.  By default, a warning will be triggered in the event"
+        description : "Maximum bit rate (Kbps) supported by this bus",
+        longDescription: "This parameter determines the values of a symbol"
+            + " declared in the generated `Board.h` file:"
+            + " <var>{bus_name}</var>`_MAXBITRATE`, where"
+            + " <var>{bus_name}</var> is the name of this bus instance."
+            + " This symbol is used to"
+            + " portably open the bus at a speed that's likely to work."
+            + "\n\nIf this configuration parameter is set to zero,"
+            + " the maximum speed for this instance is the maximum"
+            + " speed supported by the slowest attached slave.  If no slave"
+            + " devices are attached, the maximum bit rate is 100 Kbps."
+            + "\n[More ...](/tidrivers/syscfg/html/ConfigDoc.html"
+            + "#ti_drivers_I2C_maxBitRate \"Full description of"
+            + " this parameter\")\n",
+
+        documentation: "For example, if an I2C instance named `SENSORS` is"
+            + " defined in SysConfig, the following snippet opens it at an"
+            + " appropriate speed.\n"
+            + "        #include \"Board.h\" // defines I2C id SENSORS\n"
+            + "\n"
+            + "        // initialize optional I2C bus parameters\n"
+            + "        I2C_Params params;\n"
+            + "        I2C_Params_init(&params);\n"
+            + "        params.bitRate = SENSORS_MAXBITRATE;\n"
+            + "\n"
+            + "        // Open I2C bus for usage\n"
+            + "        I2C_Handle i2cHandle = I2C_open(SENSORS, &params);\n"
+            + "\n"
+            + "By default, SysConfig triggers an error in the event that"
             + " the declared maximum speed of an attached slave is less then"
-            + " this value.  If this configuration parameter is set to zero,"
-            + " the assumed maximum speed for this instance is the maximum"
-            + " speed supported by all attached slaves.",
+            + " this value.  You can disable this error by setting the "
+            + " [speedChecks](/tidrivers/syscfg/html/ConfigDoc.html"
+            + "#ti_drivers_I2C_speedChecks) configuration parameter to either"
+            + " `'Warn'` or `'Remark'`.\n"
+            + "\n**Note**: The maximum bit rate for an I2C bus is a function"
+            + " of the electrical capacitance and resistance on the I2C signal"
+            + " lines and the speed supported by the slowest slave.  Even if"
+            + " all devices on the bus are capable of"
+            + " supporting the specified bit rate, you may need to lower it"
+            + " if the electrical characteristics of your hardware imply large"
+            + "  bus signal rise-times. This can be"
+            + " caused by long wires, which increase the capacitance of a"
+            + " circuit.",
+
         default     : 0
     },
     {
@@ -94,26 +130,54 @@ let config = [
     {
         name        : "addressChecks",
         displayName : "Address Checks",
+        longDescription: " By default, SysConfig triggers an error if two"
+                         + " or more devices in this bus have the same"
+                         + " address.  You can override this error by setting"
+                         + " this configuration parameter to either `'Warn'`"
+                         + " or `'Remark'`.",
         description : "How to handle detected peripheral address conflicts",
         default     : "Fail",
         options     : [
-            { name:  "Warn"},
-            { name:  "Fail"},
-            { name:  "Remark"}
+            { name:  "Fail", description:
+                     "Trigger an error if two or more devices in the bus have"
+                     + " the same address"
+            },
+            { name:  "Warn", description:
+                     "Warn if two or more devices on the bus have the same"
+                     + " address"
+            },
+            { name:  "Remark", description:
+                     "Emit a remark if two or more devices on the bus have"
+                     + " the same address"
+            }
         ]
     },
     {
         name        : "speedChecks",
         displayName : "Speed Checks",
-        description : "How to handle detected bus speed conflicts",
+        description : "How to handle detected bit rate conflicts",
+        longDescription: " By default, SysConfig triggers an error if a"
+                         + " slave device on the bus has a maximum speed below"
+                         + " the maximum bit rate specified for the bus."
+                         + " You can override this error by setting this"
+                         + " configuration parameter to either `'Warn'` or"
+                         + " `'Remark'`.",
         default     : "Fail",
         options     : [
-            { name:  "Warn"},
-            { name:  "Fail"},
-            { name:  "Remark"}
+            { name:  "Fail", description:
+                     "Trigger an error if the bus speed exceeds a slave's"
+                     + " maximum speed"
+            },
+            { name:  "Warn", description:
+                     "Warn if the bus speed exceeds any slave's maximum speed"
+            },
+            { name:  "Remark", description:
+                     "Emit a remark if the bus speed exceeds a slave's"
+                     + " maximum speed"
+            }
         ]
     }
-]; 
+];
 
 /* map validation options to validation logging functions */
 let logHandlers = {"Warn": logWarning, "Fail": logError, "Remark": logInfo};
@@ -167,7 +231,7 @@ function getAddresses(component)
  *  ======== getCompAddress ========
  *  Get a component's assigned address
  */
-function getCompAddress(comp) 
+function getCompAddress(comp)
 {
     /* first check the HW for the range of addresses */
     let addr = comp.settings.address;
@@ -182,7 +246,7 @@ function getCompAddress(comp)
         }
         addr = addr[0]; /* the default address when there's a choice */
     }
-    
+
     /* the HW supports > 1 possible address, so get it from SW */
     for (let moduleName in system.modules) {
         let mod = system.modules[moduleName];
@@ -201,10 +265,56 @@ function getCompAddress(comp)
 }
 
 /*
- *  ======== getCompSpeed ========
- *  Get a component's maximum supported spped 
+ *  ======== getDisabledAddrs ========
+ *  Disables the I2C addresses that are not allowed by the board files
+ *
+ *  @param {Object} component - a board component assigned to $hardware; note,
+ *                              a bus modules $hardware is an array of such
+ *                              components.
+ *  @param {Object[]} i2cAddrs - array of I2C address config option object
+ *  @param {number} i2cAddrs[].name - numeric I2C address value
+ *
+ *  @returns {Array} - array of objects defining the instance's config option
+ *      that should be disabled and a "reason" why it's disabled:
+ *          {
+ *              name  : "config_option_name",
+ *              reason: "short unformated hint"
+ *          }
  */
-function getCompSpeed(comp, unknownDefault) 
+function getDisabledAddrs(component, i2cAddrs)
+{
+    let result = [];
+
+    /* get allowable I2C addresses as defined by the board data */
+    let addrs = getAddresses(component);
+    if (addrs.length) {
+        let i;
+
+        /* create a hash of valid I2C addresses defined by the board */
+        let valid = {};
+        for (i = 0; i < addrs.length; i++) {
+            valid[addrs[i]] = true;
+        }
+
+        /* disable all I2C addresses not supported by the board */
+        for (i = 0; i < i2cAddrs.length; i++) {
+            if (!valid[i2cAddrs[i].name]) {
+                var hwName = Common.getCompName(component);
+                result.push({
+                    name: i2cAddrs[i].name,
+                    reason: hwName + " doesn't support this address"
+                });
+            }
+        }
+    }
+    return (result);
+}
+
+/*
+ *  ======== getCompSpeed ========
+ *  Get a component's maximum supported speed (declared in board files)
+ */
+function getCompSpeed(comp, unknownDefault)
 {
     let speed = comp.settings.maxSpeed;
     if (speed != null)  {
@@ -214,25 +324,13 @@ function getCompSpeed(comp, unknownDefault)
         return (100); /* standard mode 100 Kbps */
     }
 
-    return (unknownDefault); 
-}
-
-/*
- *  ======== modules ========
- *  Return all used modules
- */
-function modules(inst)
-{
-    return [
-        {name : "Power", moduleName: "/ti/drivers/Power", hidden: true}
-    ];
+    return (unknownDefault);
 }
 
 /*
  *  ======== validate ========
  *  Validate this inst's configuration
  *
- *            
  *  @param inst - I2C instance to be validated
  *  @param vo   - object to hold detected validation issues
  */
@@ -240,7 +338,7 @@ function validate(inst, vo)
 {
     if (inst.$hardware != null) {
         /* get _all_ HW components attached to this I2C bus */
-        let components = inst.$hardware != null ? inst.$hardware.$parents : [];
+        let components = inst.$hardware.$parents;
 
         //Common.print(components, "I2C_validate(" + inst.$name + "), comp: ", 2);
 
@@ -367,7 +465,7 @@ function _genConflictMsg(ca, msgs, header)
         return ("");
     }
 
-    let msg = (header == null ? "" : header) 
+    let msg = (header == null ? "" : header)
               + "Conflicting I2C addresses between ";
 
     /* compute the last fatal conflict's addresses (solver sets index = -1) */
@@ -398,7 +496,7 @@ function _genConflictMsg(ca, msgs, header)
         comp.index = 0;          /* reset previous search state */
         comp.addrs = comp.range; /* search the full range of HW addresses */
     }
-    
+
     /* append a suggestion: a solution supported by the HW */
     if (_solve(ca) == false) {
         msg += "; this appears to be an irreconcilable conflict. "
@@ -437,7 +535,7 @@ function _genConflictMsg(ca, msgs, header)
             msg += addr + '\n';
             for (let j = 0; j < usedBy.length; j++) {
                 msgs.push({
-                    inst: usedBy[j], 
+                    inst: usedBy[j],
                     msg: prefix + "; try address: " + addr
                 });
             }
@@ -488,7 +586,7 @@ function _genSolutionMsg(ca, header)
 /*
  *  ======== _makeCompAddrArray ========
  *  Return an array of component address objects, one per HW component
- * 
+ *
  *  The returned array is used to find valid I2C address assignments for
  *  each component.  Specifically:
  *     o all used components must have unique addresses allowed by the HW
@@ -496,7 +594,7 @@ function _genSolutionMsg(ca, header)
  *     o no unused component's address can be shared with a used component
  *
  *  Components are "used" (i.e., referenced) by an instance object's
- *  $hardware config _or_ by a module's static configs. An instance, say 
+ *  $hardware config _or_ by a module's static configs. An instance, say
  *  inst, uses a component comp iff
  *      inst.$hardware.name = comp.name
  *
@@ -570,9 +668,9 @@ function _makeCompAddrArray(components, useInstAddr)
         let addrs = addr ? [addr] : range;
         if (addrs.length > 0) {
             ca.push({
-                name: comp.name, 
-                addrs: addrs, 
-                index: 0, 
+                name: comp.name,
+                addrs: addrs,
+                index: 0,
                 range: range,
                 usedBy: (ia == null) ? [] : ia
             });
@@ -586,13 +684,13 @@ function _makeCompAddrArray(components, useInstAddr)
  *  ======== _solve ========
  *  Find a valid assignment of I2C addresses for the specified components
  *
- *  @param ca  - an array of components and their allowable addresses 
+ *  @param ca  - an array of components and their allowable addresses
  *               returned by _makeCompAddrArray
  *
  *  @returns   - true => there is a solution, false => no solution
  *               In addition, the ca array contains the solution or a
  *               set of conflicting components
- * 
+ *
  *  Elements of ca are objects of the form:
  *  {
  *      name: <comp_name>,    // name of HW component
@@ -672,7 +770,7 @@ function _solve(ca)
 /*
  *  ======== _validateAddrs ========
  *  Check for address conflicts and log actionable messages
- *  
+ *
  *  In general, HW components can specify a range of
  *  addresses that are initialized at runtime; e.g., the INA226
  *  on the BOOSTXL-TLV8544PIR.  We use a simple solver to tell
@@ -684,7 +782,7 @@ function _solve(ca)
  *        the application.
  *
  *  Assumptions:
- *      o all I2C addresses are configured by module instances that have 
+ *      o all I2C addresses are configured by module instances that have
  *        a config property named "i2cAddress".
  *      o each module instance using an I2C bus validates that its I2C
  *        address is in the set of addresses allowed by the HW component.
@@ -696,7 +794,7 @@ function _solve(ca)
  *  Address Checks:
  *      o all _used_ components connected to the I2C bus have unique addresses.
  *            - detects BoosterPack combos that break the application, but
- *            - intentionally allows conflicts between unused components 
+ *            - intentionally allows conflicts between unused components
  *      o the set of default addresses of all unused components is disjoint
  *        from the set of addresses assigned to the used components.
  *            - detects an initialization problem (unused HW interfering with
@@ -706,25 +804,25 @@ function _solve(ca)
  *            - detects probable user error (requires runtime I2C addr control)
  *      o all components on the bus have unique default addresses
  *            - detects potential issue using the conflicting components
- *      
+ *
  *  Validation Messages:
- *      o in the event of address conflict between two used components, a 
+ *      o in the event of address conflict between two used components, a
  *        valid assignment is computed.  If there is a solution:
- *            all references are "tagged" with an error message suggesting 
+ *            all references are "tagged" with an error message suggesting
  *            the valid computed alternative
  *        otherwise:
  *            the I2C bus is tagged with an irreconcilable conflict error
  *      o in the event of a conflict between used and unused components:
- *            all references are tagged with an error that identifies the 
+ *            all references are tagged with an error that identifies the
  *            conflicting unused component.
  *      o in the event that different addresses are used to reference the
  *        same component:
  *            all references are tagged with an error that lists all
- *            instances referencing the same component and the address 
+ *            instances referencing the same component and the address
  *            they're using
  *      o in the event that different unused components have the same
  *        default address:
- *            optionally emit a warning identifying the overlapping 
+ *            optionally emit a warning identifying the overlapping
  *            components
  */
 function _validateAddrs(inst, components, vo)
@@ -802,7 +900,7 @@ function _validateAddrs(inst, components, vo)
 
                 /* TODO: suggest solution: electrically disconnect unused
                  * or, if the unused device supports more than one addr,
-                 * use a driver to initialize the unused device to the 
+                 * use a driver to initialize the unused device to the
                  * computed valid address.
                  */
                 /* plant error on all instances that use this address */
@@ -817,7 +915,7 @@ function _validateAddrs(inst, components, vo)
     if (inst.ignoreUnusedAddressConflicts == false) {
         for (let addr in unused) {
             if (unused[addr].length > 1) {
-                let msg = "unused components " 
+                let msg = "unused components "
                     + unused[addr] + " share the same address: " + addr;
                 logWarning(vo, inst, "$hardware", msg);
             }
@@ -832,13 +930,37 @@ function _validateAddrs(inst, components, vo)
  *
  * Speed Checks:
  *      o the declared max speeds of all components on the bus are verified
- *        to be >= the I2C bus's maxBitRate 
- *  
+ *        to be >= the I2C bus's maxBitRate
+ *
  *  Validation Messages:
- *      o if a HW component's declared maxSeed values is less that the bus's
+ *      o if a HW component's declared maxSeed values is less than the bus's
  *        maxBitRate:
  *            the maxBitRate configuration parameter is tagged with a message
  *            that identifies the offending components
+ *
+ * http://cache.freescale.com/files/sensors/doc/app_note/AN4481.pdf
+ *     "All Freescale sensors support an I2C bus speed of 400 kHz. Faster
+ *     speeds are possible for some sensors; please refer to the sensor's data
+ *     sheet for further information. The I2C bus should only run as fast as
+ *     the slowest device on the bus."
+ *
+ * https://elinux.org/BCM2835_datasheet_errata#p35_I2C_clock_stretching
+ *     "The BCM2835 I2C master does not support clock stretching at arbitrary
+ *     points."
+ *
+ * http://www.advamation.com/knowhow/raspberrypi/rpi-i2c-bug.html
+ *     o Don't use I2C-devices which use clock-stretching with the Raspberry
+ *       Pi. Fortunately, many I2C-sensors do not use clock-stretching.
+ *     o If you know how fast your I2C-device is, you could chose a slower
+ *       I2C-clock-frequency, so that the device does not stretch the clock.
+ *
+ * https://www.i2cchip.com/pdfs/I2C_Clock_Stretch_Probe.pdf
+ *     "Dedicated I2C hardware seldom uses [clock stretching]"
+ *
+ * https://hackaday.com/2016/07/19/what-could-go-wrong-i2c-edition
+ *     "my solution to multi-mastering and clock-stretching issues is
+ *      to avoid them."
+ *     "Are you running the bus at the right speed for the slowest slave?"
  */
 function _validateSpeed(inst, components, vo)
 {
@@ -863,14 +985,27 @@ let base = {
     /* generic sysconfig module interface */
     displayName:         "I2C",
     description:         "Inter-Integrated Circuit (I2C) Bus Driver",
-    longDescription:     "The I2C driver provides a simplified application"
-        + " interface to access peripherals on an I2C bus.",
-    documentation: "/tidrivers/doxygen/html/_i2_c_8h.html",
+
+    longDescription: `
+The [__I2C driver__][1] provides a portable application
+interface to access peripherals on an I2C bus.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+
+[1]: /tidrivers/doxygen/html/_i2_c_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_i2_c_8h.html#ti_drivers_I2C_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_i2_c_8h.html#ti_drivers_I2C_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#I2C_Configuration_Options "Configuration options reference"
+`,
+
     defaultInstanceName: "Board_I2C",
 
     /* instance properties and methods */
-    config:              config,
-    modules:             modules,    /* used modules */
+    config:              Common.addNameConfig(
+                             config, "/ti/drivers/I2C", "Board_I2C"),
+    modules:             Common.autoForceModules(["Board", "Power"]),
     validate:            validate,
 
     /* pinmux interface */
@@ -882,6 +1017,7 @@ let base = {
     getAddresses:        getAddresses,
     getCompAddress:      getCompAddress,
     getCompSpeed:        getCompSpeed,
+    getDisabledAddrs:    getDisabledAddrs,
 
     /* internal methods exposed for testing only */
     _genConflictMsg:     _genConflictMsg,

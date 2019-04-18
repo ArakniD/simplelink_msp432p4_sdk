@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_family_c7x
 {
-    static final String VERS = "@(#) xdc-F07\n";
+    static final String VERS = "@(#) xdc-F09\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -83,12 +83,9 @@ public class ti_sysbios_family_c7x
         om.bind("ti.sysbios.family.c7x.Cache.Type", om.findStrict("ti.sysbios.interfaces.ICache.Type", "ti.sysbios.family.c7x"));
         spo = (Proto.Obj)om.bind("ti.sysbios.family.c7x.Cache$$ModuleView", new Proto.Obj());
         om.bind("ti.sysbios.family.c7x.Cache.ModuleView", new Proto.Str(spo, false));
-        spo = (Proto.Obj)om.bind("ti.sysbios.family.c7x.Cache$$MarRegisterView", new Proto.Obj());
-        om.bind("ti.sysbios.family.c7x.Cache.MarRegisterView", new Proto.Str(spo, false));
         om.bind("ti.sysbios.family.c7x.Cache.Mode", new Proto.Enm("ti.sysbios.family.c7x.Cache.Mode"));
         om.bind("ti.sysbios.family.c7x.Cache.L1Size", new Proto.Enm("ti.sysbios.family.c7x.Cache.L1Size"));
         om.bind("ti.sysbios.family.c7x.Cache.L2Size", new Proto.Enm("ti.sysbios.family.c7x.Cache.L2Size"));
-        om.bind("ti.sysbios.family.c7x.Cache.Mar", new Proto.Enm("ti.sysbios.family.c7x.Cache.Mar"));
         spo = (Proto.Obj)om.bind("ti.sysbios.family.c7x.Cache$$Size", new Proto.Obj());
         om.bind("ti.sysbios.family.c7x.Cache.Size", new Proto.Str(spo, false));
     }
@@ -221,38 +218,30 @@ public class ti_sysbios_family_c7x
         om.bind("ti.sysbios.family.c7x.Cache.L2Size_256K", xdc.services.intern.xsr.Enum.make((Proto.Enm)om.findStrict("ti.sysbios.family.c7x.Cache.L2Size", "ti.sysbios.family.c7x"), "ti.sysbios.family.c7x.Cache.L2Size_256K", xdc.services.intern.xsr.Enum.intValue(4L)+0));
         om.bind("ti.sysbios.family.c7x.Cache.L2Size_512K", xdc.services.intern.xsr.Enum.make((Proto.Enm)om.findStrict("ti.sysbios.family.c7x.Cache.L2Size", "ti.sysbios.family.c7x"), "ti.sysbios.family.c7x.Cache.L2Size_512K", xdc.services.intern.xsr.Enum.intValue(5L)+0));
         om.bind("ti.sysbios.family.c7x.Cache.L2Size_1024K", xdc.services.intern.xsr.Enum.make((Proto.Enm)om.findStrict("ti.sysbios.family.c7x.Cache.L2Size", "ti.sysbios.family.c7x"), "ti.sysbios.family.c7x.Cache.L2Size_1024K", xdc.services.intern.xsr.Enum.intValue(6L)+0));
-        om.bind("ti.sysbios.family.c7x.Cache.Mar_DISABLE", xdc.services.intern.xsr.Enum.make((Proto.Enm)om.findStrict("ti.sysbios.family.c7x.Cache.Mar", "ti.sysbios.family.c7x"), "ti.sysbios.family.c7x.Cache.Mar_DISABLE", xdc.services.intern.xsr.Enum.intValue(0L)+0));
-        om.bind("ti.sysbios.family.c7x.Cache.Mar_ENABLE", xdc.services.intern.xsr.Enum.make((Proto.Enm)om.findStrict("ti.sysbios.family.c7x.Cache.Mar", "ti.sysbios.family.c7x"), "ti.sysbios.family.c7x.Cache.Mar_ENABLE", xdc.services.intern.xsr.Enum.intValue(1L)+0));
         om.bind("ti.sysbios.family.c7x.Cache.PC", 1L);
         om.bind("ti.sysbios.family.c7x.Cache.WTE", 2L);
         om.bind("ti.sysbios.family.c7x.Cache.PCX", 4L);
         om.bind("ti.sysbios.family.c7x.Cache.PFX", 8L);
-        om.bind("ti.sysbios.family.c7x.Cache.L2CFG", 0x01840000L);
-        om.bind("ti.sysbios.family.c7x.Cache.L1PCFG", 0x01840020L);
-        om.bind("ti.sysbios.family.c7x.Cache.L1PCC", 0x01840024L);
-        om.bind("ti.sysbios.family.c7x.Cache.L1DCFG", 0x01840040L);
-        om.bind("ti.sysbios.family.c7x.Cache.L1DCC", 0x01840044L);
-        om.bind("ti.sysbios.family.c7x.Cache.MAR", 0x01848000L);
         om.bind("ti.sysbios.family.c7x.Cache.enable", new Extern("ti_sysbios_family_c7x_Cache_enable__E", "xdc_Void(*)(xdc_Bits16)", true, false));
         om.bind("ti.sysbios.family.c7x.Cache.inv", new Extern("ti_sysbios_family_c7x_Cache_inv__E", "xdc_Void(*)(xdc_Ptr,xdc_SizeT,xdc_Bits16,xdc_Bool)", true, false));
         om.bind("ti.sysbios.family.c7x.Cache.wb", new Extern("ti_sysbios_family_c7x_Cache_wb__E", "xdc_Void(*)(xdc_Ptr,xdc_SizeT,xdc_Bits16,xdc_Bool)", true, false));
         om.bind("ti.sysbios.family.c7x.Cache.wbInv", new Extern("ti_sysbios_family_c7x_Cache_wbInv__E", "xdc_Void(*)(xdc_Ptr,xdc_SizeT,xdc_Bits16,xdc_Bool)", true, false));
         om.bind("ti.sysbios.family.c7x.Cache.wait", new Extern("ti_sysbios_family_c7x_Cache_wait__E", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.family.c7x.Cache.disable", new Extern("ti_sysbios_family_c7x_Cache_disable__E", "xdc_Void(*)(xdc_Bits16)", true, false));
-        om.bind("ti.sysbios.family.c7x.Cache.getMode", new Extern("ti_sysbios_family_c7x_Cache_getMode__E", "ti_sysbios_family_c7x_Cache_Mode(*)(xdc_Bits16)", true, false));
-        om.bind("ti.sysbios.family.c7x.Cache.setMode", new Extern("ti_sysbios_family_c7x_Cache_setMode__E", "ti_sysbios_family_c7x_Cache_Mode(*)(xdc_Bits16,ti_sysbios_family_c7x_Cache_Mode)", true, false));
         om.bind("ti.sysbios.family.c7x.Cache.getSize", new Extern("ti_sysbios_family_c7x_Cache_getSize__E", "xdc_Void(*)(ti_sysbios_family_c7x_Cache_Size*)", true, false));
         om.bind("ti.sysbios.family.c7x.Cache.setSize", new Extern("ti_sysbios_family_c7x_Cache_setSize__E", "xdc_Void(*)(ti_sysbios_family_c7x_Cache_Size*)", true, false));
-        om.bind("ti.sysbios.family.c7x.Cache.getMar", new Extern("ti_sysbios_family_c7x_Cache_getMar__E", "xdc_UInt32(*)(xdc_Ptr)", true, false));
-        om.bind("ti.sysbios.family.c7x.Cache.setMar", new Extern("ti_sysbios_family_c7x_Cache_setMar__E", "xdc_Void(*)(xdc_Ptr,xdc_SizeT,xdc_UInt32)", true, false));
-        om.bind("ti.sysbios.family.c7x.Cache.invL1pAll", new Extern("ti_sysbios_family_c7x_Cache_invL1pAll__E", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.family.c7x.Cache.wbAll", new Extern("ti_sysbios_family_c7x_Cache_wbAll__E", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.family.c7x.Cache.wbL1dAll", new Extern("ti_sysbios_family_c7x_Cache_wbL1dAll__E", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.family.c7x.Cache.wbInvAll", new Extern("ti_sysbios_family_c7x_Cache_wbInvAll__E", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.family.c7x.Cache.wbInvL1dAll", new Extern("ti_sysbios_family_c7x_Cache_wbInvL1dAll__E", "xdc_Void(*)(xdc_Void)", true, false));
-        om.bind("ti.sysbios.family.c7x.Cache.invPrefetchBuffer", new Extern("ti_sysbios_family_c7x_Cache_invPrefetchBuffer__I", "xdc_Void(*)(xdc_Void)", true, false));
-        om.bind("ti.sysbios.family.c7x.Cache.all", new Extern("ti_sysbios_family_c7x_Cache_all__I", "xdc_Void(*)(xdc_UInt32*)", true, false));
-        om.bind("ti.sysbios.family.c7x.Cache.block", new Extern("ti_sysbios_family_c7x_Cache_block__I", "xdc_Void(*)(xdc_Ptr,xdc_SizeT,xdc_Bool,xdc_UInt32*)", true, false));
+        om.bind("ti.sysbios.family.c7x.Cache.setL2CFG", new Extern("ti_sysbios_family_c7x_Cache_setL2CFG__E", "xdc_Void(*)(xdc_UInt)", true, false));
+        om.bind("ti.sysbios.family.c7x.Cache.getL2CFG", new Extern("ti_sysbios_family_c7x_Cache_getL2CFG__E", "xdc_ULong(*)(xdc_Void)", true, false));
+        om.bind("ti.sysbios.family.c7x.Cache.setL1DCFG", new Extern("ti_sysbios_family_c7x_Cache_setL1DCFG__E", "xdc_Void(*)(xdc_UInt)", true, false));
+        om.bind("ti.sysbios.family.c7x.Cache.getL1DCFG", new Extern("ti_sysbios_family_c7x_Cache_getL1DCFG__E", "xdc_ULong(*)(xdc_Void)", true, false));
+        om.bind("ti.sysbios.family.c7x.Cache.setL2WB", new Extern("ti_sysbios_family_c7x_Cache_setL2WB__E", "xdc_Void(*)(xdc_UInt)", true, false));
+        om.bind("ti.sysbios.family.c7x.Cache.setL2WBINV", new Extern("ti_sysbios_family_c7x_Cache_setL2WBINV__E", "xdc_Void(*)(xdc_UInt)", true, false));
+        om.bind("ti.sysbios.family.c7x.Cache.setL1DWB", new Extern("ti_sysbios_family_c7x_Cache_setL1DWB__E", "xdc_Void(*)(xdc_UInt)", true, false));
+        om.bind("ti.sysbios.family.c7x.Cache.setL1DWBINV", new Extern("ti_sysbios_family_c7x_Cache_setL1DWBINV__E", "xdc_Void(*)(xdc_UInt)", true, false));
         om.bind("ti.sysbios.family.c7x.Cache.startup", new Extern("ti_sysbios_family_c7x_Cache_startup__I", "xdc_Void(*)(xdc_Void)", true, false));
     }
 
@@ -492,14 +481,6 @@ public class ti_sysbios_family_c7x
     {
         Proto.Fxn fxn;
 
-        // fxn Cache.getMarMeta
-        fxn = (Proto.Fxn)om.bind("ti.sysbios.family.c7x.Cache$$getMarMeta", new Proto.Fxn(om.findStrict("ti.sysbios.family.c7x.Cache.Module", "ti.sysbios.family.c7x"), Proto.Elm.newCNum("(xdc_UInt32)"), 1, 1, false));
-                fxn.addArg(0, "baseAddr", new Proto.Adr("xdc_Ptr", "Pv"), $$UNDEF);
-        // fxn Cache.setMarMeta
-        fxn = (Proto.Fxn)om.bind("ti.sysbios.family.c7x.Cache$$setMarMeta", new Proto.Fxn(om.findStrict("ti.sysbios.family.c7x.Cache.Module", "ti.sysbios.family.c7x"), null, 3, 3, false));
-                fxn.addArg(0, "baseAddr", new Proto.Adr("xdc_Ptr", "Pv"), $$UNDEF);
-                fxn.addArg(1, "byteSize", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF);
-                fxn.addArg(2, "value", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF);
     }
 
     void Clobber$$FUNCTIONS()
@@ -787,25 +768,10 @@ public class ti_sysbios_family_c7x
                 po.addFld("WTE", Proto.Elm.newCNum("(xdc_UInt32)"), 2L, "rh");
                 po.addFld("PCX", Proto.Elm.newCNum("(xdc_UInt32)"), 4L, "rh");
                 po.addFld("PFX", Proto.Elm.newCNum("(xdc_UInt32)"), 8L, "rh");
-                po.addFld("L2CFG", Proto.Elm.newCNum("(xdc_UInt32)"), 0x01840000L, "rh");
-                po.addFld("L1PCFG", Proto.Elm.newCNum("(xdc_UInt32)"), 0x01840020L, "rh");
-                po.addFld("L1PCC", Proto.Elm.newCNum("(xdc_UInt32)"), 0x01840024L, "rh");
-                po.addFld("L1DCFG", Proto.Elm.newCNum("(xdc_UInt32)"), 0x01840040L, "rh");
-                po.addFld("L1DCC", Proto.Elm.newCNum("(xdc_UInt32)"), 0x01840044L, "rh");
-                po.addFld("MAR", Proto.Elm.newCNum("(xdc_UInt32)"), 0x01848000L, "rh");
         if (isCFG) {
             po.addFld("rovViewInfo", (Proto)om.findStrict("xdc.rov.ViewInfo.Instance", "ti.sysbios.family.c7x"), $$UNDEF, "wh");
             po.addFld("initSize", (Proto)om.findStrict("ti.sysbios.family.c7x.Cache.Size", "ti.sysbios.family.c7x"), Global.newObject("l1pSize", om.find("ti.sysbios.family.c7x.Cache.L1Size_32K"), "l1dSize", om.find("ti.sysbios.family.c7x.Cache.L1Size_32K"), "l2Size", om.find("ti.sysbios.family.c7x.Cache.L2Size_0K")), "w");
-            po.addFld("MAR0_31", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "wh");
-            po.addFld("MAR32_63", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "wh");
-            po.addFld("MAR64_95", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "wh");
-            po.addFld("MAR96_127", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "wh");
-            po.addFld("MAR128_159", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "wh");
-            po.addFld("MAR160_191", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "wh");
-            po.addFld("MAR192_223", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "wh");
-            po.addFld("MAR224_255", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "wh");
             po.addFld("atomicBlockSize", Proto.Elm.newCNum("(xdc_UInt32)"), 1024L, "w");
-            po.addFld("marvalues", new Proto.Arr(Proto.Elm.newCNum("(xdc_UInt32)"), false, xdc.services.intern.xsr.Enum.intValue(256L)), $$DEFAULT, "w");
         }//isCFG
         fxn = Global.get(cap, "module$use");
         if (fxn != null) om.bind("ti.sysbios.family.c7x.Cache$$module$use", true);
@@ -819,8 +785,6 @@ public class ti_sysbios_family_c7x
         fxn = Global.get(cap, "module$validate");
         if (fxn != null) om.bind("ti.sysbios.family.c7x.Cache$$module$validate", true);
         if (fxn != null) po.addFxn("module$validate", $$T_Met, fxn);
-                po.addFxn("getMarMeta", (Proto.Fxn)om.findStrict("ti.sysbios.family.c7x.Cache$$getMarMeta", "ti.sysbios.family.c7x"), Global.get(cap, "getMarMeta"));
-                po.addFxn("setMarMeta", (Proto.Fxn)om.findStrict("ti.sysbios.family.c7x.Cache$$setMarMeta", "ti.sysbios.family.c7x"), Global.get(cap, "setMarMeta"));
         // struct Cache.ModuleView
         po = (Proto.Obj)om.findStrict("ti.sysbios.family.c7x.Cache$$ModuleView", "ti.sysbios.family.c7x");
         po.init("ti.sysbios.family.c7x.Cache.ModuleView", null);
@@ -831,17 +795,6 @@ public class ti_sysbios_family_c7x
                 po.addFld("L1DMode", $$T_Str, $$UNDEF, "w");
                 po.addFld("L2CacheSize", $$T_Str, $$UNDEF, "w");
                 po.addFld("L2Mode", $$T_Str, $$UNDEF, "w");
-        // struct Cache.MarRegisterView
-        po = (Proto.Obj)om.findStrict("ti.sysbios.family.c7x.Cache$$MarRegisterView", "ti.sysbios.family.c7x");
-        po.init("ti.sysbios.family.c7x.Cache.MarRegisterView", null);
-                po.addFld("$hostonly", $$T_Num, 1, "r");
-                po.addFld("number", Proto.Elm.newCNum("(xdc_UInt)"), $$UNDEF, "w");
-                po.addFld("addr", new Proto.Adr("xdc_Ptr", "Pv"), $$UNDEF, "w");
-                po.addFld("startAddrRange", new Proto.Adr("xdc_Ptr", "Pv"), $$UNDEF, "w");
-                po.addFld("endAddrRange", new Proto.Adr("xdc_Ptr", "Pv"), $$UNDEF, "w");
-                po.addFld("cacheable", $$T_Bool, $$UNDEF, "w");
-                po.addFld("prefetchable", $$T_Bool, $$UNDEF, "w");
-                po.addFld("marRegisterValue", $$T_Str, $$UNDEF, "w");
         // struct Cache.Size
         po = (Proto.Obj)om.findStrict("ti.sysbios.family.c7x.Cache$$Size", "ti.sysbios.family.c7x");
         po.init("ti.sysbios.family.c7x.Cache.Size", null);
@@ -1309,6 +1262,7 @@ public class ti_sysbios_family_c7x
         if (isCFG) {
             po.addFld("defaultStackSize", Proto.Elm.newCNum("(xdc_SizeT)"), 0x4000L, "r");
             po.addFld("stackAlignment", Proto.Elm.newCNum("(xdc_UInt)"), 0x2000L, "r");
+            po.addFld("A_stackSizeTooSmall", (Proto)om.findStrict("xdc.runtime.Assert$$Id", "ti.sysbios.family.c7x"), Global.newObject("msg", "A_stackSizeTooSmall: Task stack size must be >= 16KB."), "w");
         }//isCFG
         fxn = Global.get(cap, "module$use");
         if (fxn != null) om.bind("ti.sysbios.family.c7x.TaskSupport$$module$use", true);
@@ -1535,18 +1489,13 @@ public class ti_sysbios_family_c7x
         vo.bind("Type", om.findStrict("ti.sysbios.interfaces.ICache.Type", "ti.sysbios.family.c7x"));
         vo.bind("ModuleView", om.findStrict("ti.sysbios.family.c7x.Cache.ModuleView", "ti.sysbios.family.c7x"));
         tdefs.add(om.findStrict("ti.sysbios.family.c7x.Cache.ModuleView", "ti.sysbios.family.c7x"));
-        vo.bind("MarRegisterView", om.findStrict("ti.sysbios.family.c7x.Cache.MarRegisterView", "ti.sysbios.family.c7x"));
-        tdefs.add(om.findStrict("ti.sysbios.family.c7x.Cache.MarRegisterView", "ti.sysbios.family.c7x"));
         vo.bind("Mode", om.findStrict("ti.sysbios.family.c7x.Cache.Mode", "ti.sysbios.family.c7x"));
         vo.bind("L1Size", om.findStrict("ti.sysbios.family.c7x.Cache.L1Size", "ti.sysbios.family.c7x"));
         vo.bind("L2Size", om.findStrict("ti.sysbios.family.c7x.Cache.L2Size", "ti.sysbios.family.c7x"));
-        vo.bind("Mar", om.findStrict("ti.sysbios.family.c7x.Cache.Mar", "ti.sysbios.family.c7x"));
         vo.bind("Size", om.findStrict("ti.sysbios.family.c7x.Cache.Size", "ti.sysbios.family.c7x"));
         tdefs.add(om.findStrict("ti.sysbios.family.c7x.Cache.Size", "ti.sysbios.family.c7x"));
         mcfgs.add("initSize");
         mcfgs.add("atomicBlockSize");
-        mcfgs.add("marvalues");
-        icfgs.add("marvalues");
         vo.bind("Type_L1P", om.findStrict("ti.sysbios.interfaces.ICache.Type_L1P", "ti.sysbios.family.c7x"));
         vo.bind("Type_L1D", om.findStrict("ti.sysbios.interfaces.ICache.Type_L1D", "ti.sysbios.family.c7x"));
         vo.bind("Type_L1", om.findStrict("ti.sysbios.interfaces.ICache.Type_L1", "ti.sysbios.family.c7x"));
@@ -1571,8 +1520,6 @@ public class ti_sysbios_family_c7x
         vo.bind("L2Size_256K", om.findStrict("ti.sysbios.family.c7x.Cache.L2Size_256K", "ti.sysbios.family.c7x"));
         vo.bind("L2Size_512K", om.findStrict("ti.sysbios.family.c7x.Cache.L2Size_512K", "ti.sysbios.family.c7x"));
         vo.bind("L2Size_1024K", om.findStrict("ti.sysbios.family.c7x.Cache.L2Size_1024K", "ti.sysbios.family.c7x"));
-        vo.bind("Mar_DISABLE", om.findStrict("ti.sysbios.family.c7x.Cache.Mar_DISABLE", "ti.sysbios.family.c7x"));
-        vo.bind("Mar_ENABLE", om.findStrict("ti.sysbios.family.c7x.Cache.Mar_ENABLE", "ti.sysbios.family.c7x"));
         vo.bind("$$tdefs", Global.newArray(tdefs.toArray()));
         vo.bind("$$proxies", Global.newArray(proxies.toArray()));
         vo.bind("$$mcfgs", Global.newArray(mcfgs.toArray()));
@@ -1600,22 +1547,22 @@ public class ti_sysbios_family_c7x
         vo.bind("wbInv", om.findStrict("ti.sysbios.family.c7x.Cache.wbInv", "ti.sysbios.family.c7x"));
         vo.bind("wait", om.findStrict("ti.sysbios.family.c7x.Cache.wait", "ti.sysbios.family.c7x"));
         vo.bind("disable", om.findStrict("ti.sysbios.family.c7x.Cache.disable", "ti.sysbios.family.c7x"));
-        vo.bind("getMode", om.findStrict("ti.sysbios.family.c7x.Cache.getMode", "ti.sysbios.family.c7x"));
-        vo.bind("setMode", om.findStrict("ti.sysbios.family.c7x.Cache.setMode", "ti.sysbios.family.c7x"));
         vo.bind("getSize", om.findStrict("ti.sysbios.family.c7x.Cache.getSize", "ti.sysbios.family.c7x"));
         vo.bind("setSize", om.findStrict("ti.sysbios.family.c7x.Cache.setSize", "ti.sysbios.family.c7x"));
-        vo.bind("getMar", om.findStrict("ti.sysbios.family.c7x.Cache.getMar", "ti.sysbios.family.c7x"));
-        vo.bind("setMar", om.findStrict("ti.sysbios.family.c7x.Cache.setMar", "ti.sysbios.family.c7x"));
-        vo.bind("invL1pAll", om.findStrict("ti.sysbios.family.c7x.Cache.invL1pAll", "ti.sysbios.family.c7x"));
         vo.bind("wbAll", om.findStrict("ti.sysbios.family.c7x.Cache.wbAll", "ti.sysbios.family.c7x"));
         vo.bind("wbL1dAll", om.findStrict("ti.sysbios.family.c7x.Cache.wbL1dAll", "ti.sysbios.family.c7x"));
         vo.bind("wbInvAll", om.findStrict("ti.sysbios.family.c7x.Cache.wbInvAll", "ti.sysbios.family.c7x"));
         vo.bind("wbInvL1dAll", om.findStrict("ti.sysbios.family.c7x.Cache.wbInvL1dAll", "ti.sysbios.family.c7x"));
-        vo.bind("invPrefetchBuffer", om.findStrict("ti.sysbios.family.c7x.Cache.invPrefetchBuffer", "ti.sysbios.family.c7x"));
-        vo.bind("all", om.findStrict("ti.sysbios.family.c7x.Cache.all", "ti.sysbios.family.c7x"));
-        vo.bind("block", om.findStrict("ti.sysbios.family.c7x.Cache.block", "ti.sysbios.family.c7x"));
+        vo.bind("setL2CFG", om.findStrict("ti.sysbios.family.c7x.Cache.setL2CFG", "ti.sysbios.family.c7x"));
+        vo.bind("getL2CFG", om.findStrict("ti.sysbios.family.c7x.Cache.getL2CFG", "ti.sysbios.family.c7x"));
+        vo.bind("setL1DCFG", om.findStrict("ti.sysbios.family.c7x.Cache.setL1DCFG", "ti.sysbios.family.c7x"));
+        vo.bind("getL1DCFG", om.findStrict("ti.sysbios.family.c7x.Cache.getL1DCFG", "ti.sysbios.family.c7x"));
+        vo.bind("setL2WB", om.findStrict("ti.sysbios.family.c7x.Cache.setL2WB", "ti.sysbios.family.c7x"));
+        vo.bind("setL2WBINV", om.findStrict("ti.sysbios.family.c7x.Cache.setL2WBINV", "ti.sysbios.family.c7x"));
+        vo.bind("setL1DWB", om.findStrict("ti.sysbios.family.c7x.Cache.setL1DWB", "ti.sysbios.family.c7x"));
+        vo.bind("setL1DWBINV", om.findStrict("ti.sysbios.family.c7x.Cache.setL1DWBINV", "ti.sysbios.family.c7x"));
         vo.bind("startup", om.findStrict("ti.sysbios.family.c7x.Cache.startup", "ti.sysbios.family.c7x"));
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_family_c7x_Cache_Module__startupDone__E", "ti_sysbios_family_c7x_Cache_enable__E", "ti_sysbios_family_c7x_Cache_inv__E", "ti_sysbios_family_c7x_Cache_wb__E", "ti_sysbios_family_c7x_Cache_wbInv__E", "ti_sysbios_family_c7x_Cache_wait__E", "ti_sysbios_family_c7x_Cache_disable__E", "ti_sysbios_family_c7x_Cache_getMode__E", "ti_sysbios_family_c7x_Cache_setMode__E", "ti_sysbios_family_c7x_Cache_getSize__E", "ti_sysbios_family_c7x_Cache_setSize__E", "ti_sysbios_family_c7x_Cache_getMar__E", "ti_sysbios_family_c7x_Cache_setMar__E", "ti_sysbios_family_c7x_Cache_invL1pAll__E", "ti_sysbios_family_c7x_Cache_wbAll__E", "ti_sysbios_family_c7x_Cache_wbL1dAll__E", "ti_sysbios_family_c7x_Cache_wbInvAll__E", "ti_sysbios_family_c7x_Cache_wbInvL1dAll__E"));
+        vo.bind("$$fxntab", Global.newArray("ti_sysbios_family_c7x_Cache_Module__startupDone__E", "ti_sysbios_family_c7x_Cache_enable__E", "ti_sysbios_family_c7x_Cache_inv__E", "ti_sysbios_family_c7x_Cache_wb__E", "ti_sysbios_family_c7x_Cache_wbInv__E", "ti_sysbios_family_c7x_Cache_wait__E", "ti_sysbios_family_c7x_Cache_disable__E", "ti_sysbios_family_c7x_Cache_getSize__E", "ti_sysbios_family_c7x_Cache_setSize__E", "ti_sysbios_family_c7x_Cache_wbAll__E", "ti_sysbios_family_c7x_Cache_wbL1dAll__E", "ti_sysbios_family_c7x_Cache_wbInvAll__E", "ti_sysbios_family_c7x_Cache_wbInvL1dAll__E", "ti_sysbios_family_c7x_Cache_setL2CFG__E", "ti_sysbios_family_c7x_Cache_getL2CFG__E", "ti_sysbios_family_c7x_Cache_setL1DCFG__E", "ti_sysbios_family_c7x_Cache_getL1DCFG__E", "ti_sysbios_family_c7x_Cache_setL2WB__E", "ti_sysbios_family_c7x_Cache_setL2WBINV__E", "ti_sysbios_family_c7x_Cache_setL1DWB__E", "ti_sysbios_family_c7x_Cache_setL1DWBINV__E"));
         vo.bind("$$logEvtCfgs", Global.newArray());
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());
@@ -2200,6 +2147,7 @@ public class ti_sysbios_family_c7x
         vo.bind("FuncPtr", om.findStrict("ti.sysbios.interfaces.ITaskSupport.FuncPtr", "ti.sysbios.family.c7x"));
         mcfgs.add("defaultStackSize");
         mcfgs.add("stackAlignment");
+        mcfgs.add("A_stackSizeTooSmall");
         vo.bind("$$tdefs", Global.newArray(tdefs.toArray()));
         vo.bind("$$proxies", Global.newArray(proxies.toArray()));
         vo.bind("$$mcfgs", Global.newArray(mcfgs.toArray()));
@@ -2230,7 +2178,7 @@ public class ti_sysbios_family_c7x
         vo.bind("$$fxntab", Global.newArray("ti_sysbios_family_c7x_TaskSupport_Module__startupDone__E", "ti_sysbios_family_c7x_TaskSupport_start__E", "ti_sysbios_family_c7x_TaskSupport_swap__E", "ti_sysbios_family_c7x_TaskSupport_checkStack__E", "ti_sysbios_family_c7x_TaskSupport_stackUsed__E", "ti_sysbios_family_c7x_TaskSupport_getStackAlignment__E", "ti_sysbios_family_c7x_TaskSupport_getDefaultStackSize__E"));
         vo.bind("$$logEvtCfgs", Global.newArray());
         vo.bind("$$errorDescCfgs", Global.newArray());
-        vo.bind("$$assertDescCfgs", Global.newArray());
+        vo.bind("$$assertDescCfgs", Global.newArray("A_stackSizeTooSmall"));
         Value.Map atmap = (Value.Map)vo.getv("$attr");
         atmap.setElem("", true);
         atmap.seal("length");
@@ -2356,7 +2304,7 @@ public class ti_sysbios_family_c7x
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.family.c7x.TimestampProvider", "ti.sysbios.family.c7x"));
         if (isCFG) {
             vo = (Value.Obj)om.findStrict("ti.sysbios.family.c7x.Cache", "ti.sysbios.family.c7x");
-            Global.put(vo, "rovViewInfo", Global.callFxn("create", (Scriptable)om.find("xdc.rov.ViewInfo"), Global.newObject("viewMap", Global.newArray(new Object[]{Global.newArray(new Object[]{"Module", Global.newObject("type", om.find("xdc.rov.ViewInfo.MODULE"), "viewInitFxn", "viewInitModule", "structName", "ModuleView")}), Global.newArray(new Object[]{"MARs", Global.newObject("type", om.find("xdc.rov.ViewInfo.MODULE_DATA"), "viewInitFxn", "viewInitMarRegisters", "structName", "MarRegisterView")})}))));
+            Global.put(vo, "rovViewInfo", Global.callFxn("create", (Scriptable)om.find("xdc.rov.ViewInfo"), Global.newObject("viewMap", Global.newArray(new Object[]{Global.newArray(new Object[]{"Module", Global.newObject("type", om.find("xdc.rov.ViewInfo.MODULE"), "viewInitFxn", "viewInitModule", "structName", "ModuleView")})}))));
         }//isCFG
         if (isCFG) {
             vo = (Value.Obj)om.findStrict("ti.sysbios.family.c7x.Exception", "ti.sysbios.family.c7x");

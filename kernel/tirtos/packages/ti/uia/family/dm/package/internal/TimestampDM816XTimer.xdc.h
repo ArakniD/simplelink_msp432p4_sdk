@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 
 #ifndef ti_uia_family_dm_TimestampDM816XTimer__INTERNAL__

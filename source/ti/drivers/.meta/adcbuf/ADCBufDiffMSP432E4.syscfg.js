@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,17 +53,11 @@ let adcChanNames = [
 function pinmuxRequirements(inst)
 {
     let adcBufChan = {
-        name: "adc",
-        displayName: "ADC Peripheral",
-        hidden: true,
-        interfaceName: "ADC",
-        canShareWith: inst.$ownedBy.$ownedBy.$ownedBy.$name,
-        signalTypes: { adcPin: ["AIN"] },
-        resources: [{
-            name: "adcDifferentialPin",
-            displayName: "ADC Differential Pin",
-            interfaceNames: adcChanNames
-        }]
+        extend: inst.$ownedBy.$ownedBy.$ownedBy.adc,
+        name: "adcDifferentialPin",
+        displayName: "ADC Differential Pin",
+        signalTypes: ["AIN"],
+        interfaceNames: adcChanNames
     };
 
     return ([adcBufChan]);

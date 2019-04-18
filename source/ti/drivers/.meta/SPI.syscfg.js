@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,6 +50,7 @@ let config = [
         name: "mode",
         displayName: "Mode",
         default: "Three Pin",
+        description: "In three pin mode the SS signal is not used.",
         options: [
             { name: "Three Pin" },
             { name: "Four Pin SS Active Low" },
@@ -59,32 +60,38 @@ let config = [
     {
         name: "defaultTxBufferValue",
         displayName: "Default TX Buffer Value",
-        description: "Specifies the default transmit buffer value. This value"
-            + " must be provided in hexadecimal format. 0 and ~0 are"
-            + " also acceptable inputs.",
+        description: "Specifies the default transmit buffer value.",
+        longDescription: "Value sent when a TX buffer is not specified."
+            + "This value must be provided in hexadecimal format;"
+            + "0 and ~0 also acceptable inputs.",
         default: "~0"
     },
     {
         name: "minDmaTransferSize",
         displayName: "Min DMA Transfer Size",
         description: "Specifies the minimum transfer size in bytes for which"
-            + " the DMA will be used.",
+            + " the DMA will be used. Otherwise a polling transfer will occur"
+            + " with some exceptions.",
         default: 10
     },
     {
         name: "duplex",
         displayName: "Duplex",
         hidden : false,
-        description: "Useful in situations where the SPI bus master will"
-            + " transmit data to the slaves but is not interested in the data"
-            + " returned by the slaves OR where the master will not"
-            + " transmit meaningful data but is interested in receiving data"
-            + " from slaves. Slaves must ignore incoming data from master.",
+        description: "One or both device transmit/receive",
+        longDescription: "In a typical SPI transfer,"
+            + " both participants transmit and receive at the same time"
+            + " (full duplex) but in some situations only one side will ever"
+            + " transmit and the other side may only need to receive. In these"
+            + " cases some pins can stay unassigned. If full duplex is not"
+            + " required, the user may select the role of this SPI.",
         default: "Full",
         options: [
             { name: "Full" },
-            { name: "Transmit Only" },
-            { name: "Receive Only" }
+            { name: "Master TX Only" },
+            { name: "Master RX Only" },
+            { name: "Slave TX Only" },
+            { name: "Slave RX Only" }
 
         ]
     }
@@ -136,20 +143,27 @@ function validate(inst, validation)
 let base = {
     displayName: "SPI",
     description: "Serial Peripheral Interface (SPI) Bus Driver",
-    longDescription: "The Serial Peripheral Interface (SPI) "
-    + "driver is a generic, full-duplex driver that transmits "
-    + "and receives data on a SPI bus. SPI is sometimes called SSI "
-    + "(Synchronous Serial Interface). The SPI protocol defines "
-    + "the format of a data transfer over the SPI bus, but it "
-    + "leaves flow control, data formatting, and handshaking "
-    + "mechanisms to higher-level software layers.",
+        longDescription: `
+The [__SPI driver__][1] provides a portable application
+interface to control onboard Serial Peripheral Interfaces (SPI).
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+
+[1]: /tidrivers/doxygen/html/_s_p_i_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_s_p_i_8h.html#ti_drivers_SPI_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_s_p_i_8h.html#ti_drivers_SPI_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#SPI_Configuration_Options "Configuration options reference"
+`,
     documentation: "/tidrivers/doxygen/html/_s_p_i_8h.html",
     defaultInstanceName: "Board_SPI",
-    config: config,
+    config: Common.addNameConfig(config, "/ti/drivers/SPI", "Board_SPI"),
     filterHardware: filterHardware,
     validate: validate,
     busModule: true,
-    allowStaticOnly: true
+    allowStaticOnly: true,
+    modules: Common.autoForceModules(["Board", "Power", "DMA"])
 };
 
 /* extend the base exports to include family-specific content */

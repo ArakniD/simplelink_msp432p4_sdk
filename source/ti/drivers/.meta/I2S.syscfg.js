@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,32 +43,121 @@ let Common = system.getScript("/ti/drivers/Common.js");
 /* get /ti/drivers family name from device object */
 let family = Common.device2Family(system.deviceData, "I2S");
 
-let config = [];
+let intPriority = Common.newIntPri()[0];
+intPriority.displayName = "Hardware Interrupt Priority";
+intPriority.name = "interruptPriority";
+
+let config = [
+    intPriority,
+    {
+        name        : "sd1DataDirection",
+        displayName : "SD1 Data Direction",
+        description : "Serial Data Line",
+        longDescription : "May also be referred to as the AD or McAXR.",
+        default     : 'Input',
+        options     : [
+            { name:'Input'},
+            { name:'Output'},
+            { name:'Disabled'}
+        ]
+    },
+    {
+        name        : "sd0DataDirection",
+        displayName : "SD0 Data Direction",
+        description : "Serial Data Line",
+        longDescription : "May also be referred to as the AD or McAXR",
+        default     : 'Output',
+        options     : [
+            { name:'Input'},
+            { name:'Output'},
+            { name:'Disabled'}
+        ]
+    },
+    {
+        name        : "masterSlaveSelection",
+        displayName : "Master Slave Selection",
+        description : "Select the I2S module role",
+        default     : 'Master',
+        options     : [
+            {
+                name: 'Master',
+                description: "Clocks internally generated"
+            },
+            {
+                name: 'Slave',
+                description: "Clocks externally generated"
+            }
+        ]
+    }
+];
 
 /*
  *  ======== validate ========
+ *  Validate this inst's configuration
+ *
+ *  @param inst       - I2S instance to be validated
+ *  @param validation - object to hold detected validation issues
  */
 function validate(inst, validation)
 {
     Common.validateNames(inst, validation);
+
+    /* Don't allow to disable both interfaces*/
+    if((inst.sd0DataDirection == "Disabled") &&
+        (inst.sd1DataDirection == "Disabled")) {
+            Common.logInfo(validation, inst, "sd0DataDirection",
+              "Consider activate one of the two data interfaces (SD0 or SD1)");
+    }
+
+    if((inst.sd0DataDirection == "Disabled") &&
+        (inst.sd1DataDirection == "Disabled")) {
+            Common.logInfo(validation, inst, "sd1DataDirection",
+              "Consider activate one of the two data interfaces (SD0 or SD1)");
+    }
+}
+
+/*
+ *  ========= filterHardware ========
+ *  Check 'component' signals for compatibility with I2S
+ *
+ *  @param component - hardware object describing signals and
+ *                     resources they're attached to
+ *  @returns matching pinmuxRequirement object if I2S is supported.
+ */
+function filterHardware(component)
+{
+    if (Common.typeMatches(component.type, ["I2S"])) {
+        return (true);
+    }
+
+    return (false);
 }
 
 /*
  *  ======== base ========
- *  Define the base/common I2S properties and methods
+ *  Define the base I2S properties and methods
  */
 let base = {
     displayName: "I2S",
-    description: "Inter-Integrated Sound (I2S) Driver",
-    longDescription: "The I2S driver provides a simplified "
-        + "application interface to access peripherals on an I2S bus.",
-    documentation: "/tidrivers/doxygen/html/_i2_s_8h.html",
+    description: "Inter-Integrated Circuit Sound (I2S) Bus Driver",
+    longDescription:`
+The [__I2S driver__][1] provides a simplified application interface to access
+peripherals on an I2S bus.
+
+* [Examples][2]
+* [Configuration Options][3]
+
+[1]: /tidrivers/doxygen/html/_i2_s_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_i2_s_8h.html#ti_drivers_I2S_Examples "C usage examples"
+[3]: /tidrivers/syscfg/html/ConfigDoc.html#I2S_Configuration_Options "Configuration options reference"
+`,
     defaultInstanceName: "Board_I2S",
-    config: config,
+    config: Common.addNameConfig(config, "/ti/drivers/I2S", "Board_I2S"),
     validate: validate,
-    busModule: true
+    busModule: true,
+    filterHardware: filterHardware
 };
 
-/* extend base to include the family-specific content */
-let deviceI2S = system.getScript("/ti/drivers/i2s/I2S" + family + "DMA");
+/* extend the base exports to include family-specific content */
+let deviceI2S = system.getScript("/ti/drivers/i2s/I2S" + family);
 exports = deviceI2S.extend(base);

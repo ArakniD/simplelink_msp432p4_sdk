@@ -82,9 +82,15 @@ function module$use()
 {
     Semaphore = this;
 
-    xdc.useModule('xdc.runtime.Log');
-    xdc.useModule('xdc.runtime.Assert');
     BIOS = xdc.module('ti.sysbios.BIOS');
+    if (!(BIOS.libType == BIOS.LibType_Custom && BIOS.logsEnabled == false)) {
+        xdc.useModule('xdc.runtime.Log');
+    }
+    if (!(BIOS.libType == BIOS.LibType_Custom
+        && BIOS.assertsEnabled == false)) {
+        xdc.useModule('xdc.runtime.Assert');
+    }
+
     Program = xdc.module('xdc.cfg.Program');
     Queue = xdc.useModule('ti.sysbios.knl.Queue');
     xdc.useModule("ti.sysbios.hal.Hwi");
@@ -134,7 +140,7 @@ function instance$static$init(obj, count, params)
 {
     obj.mode = params.mode;
     obj.count = count;
-    
+
     if (obj.mode == Semaphore.Mode_BINARY) {
         if ((count != 0) && (count != 1)) {
             Semaphore.$logError("Count must be 0 or 1 for binary semaphores!",
@@ -233,7 +239,7 @@ function viewInitBasic(view, obj)
         view.event = "none";
         view.eventId = "n/a";
     }
-        
+
     switch (obj.mode) {
         case Semaphore.Mode_COUNTING:
             view.mode = "counting";
@@ -248,14 +254,14 @@ function viewInitBasic(view, obj)
             view.mode = "binary (priority)";
             break;
     }
-    
+
     view.count = obj.count;
 
     /* Validate count is not greater than one if binary sem */
     if ((obj.count > 1) && (obj.mode == Semaphore.Mode_BINARY)) {
         view.$status["count"] = "Error: Count value of binary semaphore should not be greater than 1.";
     }
-    
+
     /* Scan the pendQ to get its elements */
     try {
         var pendQView = Program.scanObjectView('ti.sysbios.knl.Queue', obj.pendQ, 'Basic');
@@ -264,7 +270,7 @@ function viewInitBasic(view, obj)
         view.$status["pendElems"] = "Error: Problem scanning pend Queue: " + e.toString();
         return;
     }
-    
+
     /* Add to the pendQ label */
     pendQView.label = (view.label + ".pendQ");
 
@@ -313,8 +319,8 @@ function viewInitBasic(view, obj)
                 pendState = "Waiting forever";
                 break;
         }
-        
-        /* 
+
+        /*
          * The PendElem struct contains a handle to a Task instance.
          * Scan the handle. 
          */
@@ -327,7 +333,7 @@ function viewInitBasic(view, obj)
                                         ": " + e.toString();
             return;
         }
-        
+
         var pendElemString = Task.getNickName(taskView) + 
                              ", priority: " + taskView.priority + 
                              ", pendState: " + pendState;

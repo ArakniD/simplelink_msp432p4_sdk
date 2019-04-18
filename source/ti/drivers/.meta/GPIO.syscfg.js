@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,15 +54,36 @@ let config = [
     {
         name: "mode",
         displayName: "Mode",
-        description: "Select the GPIO mode. `Dynamic` mode indicates the"
-            + " application will dynamically configure the GPIO at runtime"
-            + " using the GPIO APIs",
+        description: "Select the GPIO mode",
+        longDescription: "The mode configuration parameter is used to"
+            + " determine the initial state of GPIO, eliminating the need to"
+            + " configure the GPIO pin at runtime prior to using it."
+            + "\n[More ...](/tidrivers/syscfg/html/ConfigDoc.html"
+            + "#ti_drivers_GPIO_mode \"Full descriptions of all GPIO modes\""
+            + ")",
+
         default: "Input",
         options: [
-            { name: "Input" },
-            { name: "Output" },
-            { name: "Dynamic",
-              description: "Dynamically configure the GPIO at runtime." }
+            {
+                name: "Input",
+                description: "This GPIO is always used for input"
+            },
+            {
+                name: "Output" ,
+                description: "This GPIO is always used for output"
+            },
+            {
+                name: "Dynamic",
+                description: "This GPIO is dynamically reconfigured at"
+                  + " runtime using the GPIO APIs",
+                longDescription: "This mode indicates that the"
+                  + " application will dynamically configure the GPIO at"
+                  + " runtime using the GPIO APIs. As a result, it's assumed"
+                  + " that this GPIO requires an entry in the table of GPIO"
+                  + " callback functions; see [Optimize Callback Table Size]"
+                  + "(/tidrivers/syscfg/html/ConfigDoc.html#"
+                  + "ti_drivers_GPIO_optimizeCallbackTableSize)."
+            }
         ],
         onChange: updateConfigs
     },
@@ -120,6 +141,7 @@ let config = [
     {
         name: "interruptTrigger",
         displayName: "Interrupt Trigger",
+        description: "Specifies when or if interrupts are triggered",
         hidden: false,
         default: "None",
         options: [
@@ -135,14 +157,38 @@ let config = [
         name: "callbackFunction",
         hidden: false,
         displayName: "Callback Function",
+        description: "The name of the callback function called when this GPIO pin triggers an interrupt, or 'NULL' if it's specified at runtime",
+        longDescription: `
+If you need to set the callback at runtime, set this configuration parameter
+to 'NULL' and call [\`GPIO_setCallback()\`](/tidrivers/doxygen/html/_g_p_i_o_8h.html#a24c401f32e65f60f11a1594fdafb9d2a) with the name of the function you
+want to be triggered.
+
+If this config is not set, GPIO assumes that no callback will ever be set for
+this GPIO and, as a result, no space will be allocated to save the address of
+the callback; thus, it's important to never use \`GPIO_setCallback()\` on a
+GPIO for which this config is empty.
+
+[More ...](/tidrivers/syscfg/html/ConfigDoc.html#ti_drivers_GPIO_callbackFunction "Function's type signature and an example")
+`,
+        documentation: `
+This function is of type [\`GPIO_CallbackFxn\`](/tidrivers/doxygen/html/_g_p_i_o_8h.html#a46b0c9afbe998c88539abc92082a1173),
+it's called in the context of a hardware ISR, and it's passed
+a single parameter: the index of the GPIO that triggered the interrupt.
+
+Example: [Creating an input callback](/tidrivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Example_callback "C/C++ source").
+`,
+
+        placeholder: "<no callback is needed>",
         default: "",
+
         onChange: updateConfigs
     },
     {
         name: "comment",
         displayName: "Comment",
         hidden: true,
-        default: ""
+        default: "",
+        description: "User specified comment to add the generated files."
     }
 ];
 
@@ -612,17 +658,29 @@ function addComment(line, inst, index, pin)
  */
 let base = {
     displayName: "GPIO",
-    defaultInstanceName: "Board_GPIO",
     description: "General Purpose I/O Driver",
-    longDescription: "The GPIO module allows you to manage General Purpose I/O"
-        + " resources via simple and portable APIs. GPIO pin behavior is"
-        + " usually configured statically, but can also be configured or"
-        + " reconfigured at runtime.",
-    documentation: "/tidrivers/doxygen/html/_g_p_i_o_8h.html",
+
+    longDescription: `
+The [__GPIO driver__][1] allows you to manage General Purpose I/O
+resources via simple and portable APIs. GPIO pin behavior is
+configured statically, but can also be [reconfigured at runtime][2].
+
+* [Usage Synopsis][3]
+* [Examples][4]
+* [Configuration Options][5]
+
+[1]: /tidrivers/doxygen/html/_g_p_i_o_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Example_reconfigure "Example: Reconfiguring a GPIO pin"
+[3]: /tidrivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Synopsis "Basic C usage summary"
+[4]: /tidrivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Examples "C usage examples"
+[5]: /tidrivers/syscfg/html/ConfigDoc.html#GPIO_Configuration_Options "Configuration options reference"
+`,
+
     pinmuxRequirements: pinmuxRequirements,
     validate: validate,
 
-    config: config,
+    defaultInstanceName: "Board_GPIO",
+    config: Common.addNameConfig(config, "/ti/drivers/GPIO", "Board_GPIO"),
 
     moduleStatic: {
         name: "gpioGlobal",
@@ -632,11 +690,25 @@ let base = {
             {
                 name: "optimizeCallbackTableSize",
                 displayName: "Optimize Callback Table Size",
-                description: "Enabling this option will remove unnecessary"
-                    + " entries in the GPIO callback table. When enabled, care"
-                    + " must be taken at runtime to not enable interrupts on"
-                    + " GPIOs without an existing entry in the GPIO callback"
-                    + " table.",
+
+                description: "Enabling this option removes unnecessary"
+                    + " entries in the GPIO callback table."
+                    + " Before enabling this option, carefully review the"
+                    + " detailed help for runtime benefits AND caveats.",
+
+                longDescription: "This option causes the GPIO driver tables"
+                    + " to be sorted so that all GPIOs that trigger interrupts"
+                    + " appear first in the GPIO table. This allows the table"
+                    + " of GPIO callbacks, which is also indexed by the GPIO"
+                    + " index, to be substantially shorter then the table of"
+                    + " all GPIOs."
+                    + "\n\n"
+                    + "However, this also means that calls to"
+                    + " `GPIO_setCallback()` must **never** be made to GPIOs"
+                    + " whose callbacks are configured as the empty string"
+                    + " (which is shown as '&lt;no callback is"
+                    + " needed&gt;' in the GUI).",
+
                 hidden: false,
                 default: false
             }
@@ -646,7 +718,8 @@ let base = {
         getFullPinName: getFullPinName,
         getAttrs: getAttrs,
         collectCallbacks: collectCallbacks,
-        addComment: addComment
+        addComment: addComment,
+        modules: Common.autoForceModules(["Board", "Power"])
     },
 
     /* common sort for GPIO tables to minimize GPIO ISR table size */

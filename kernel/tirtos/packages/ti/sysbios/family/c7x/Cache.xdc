@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Texas Instruments Incorporated
+ * Copyright (c) 2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -115,20 +115,6 @@ module Cache inherits ti.sysbios.interfaces.ICache
     };
 
     /*!
-     *  ======== MarRegisterView ========
-     *  @_nodoc
-     */
-    metaonly struct MarRegisterView {
-        UInt    number;
-        Ptr     addr;
-        Ptr     startAddrRange;
-        Ptr     endAddrRange;
-        Bool    cacheable;
-        Bool    prefetchable;
-        String  marRegisterValue;
-    };
-
-    /*!
      *  ======== rovViewInfo ========
      *  @_nodoc
      */
@@ -143,13 +129,6 @@ module Cache inherits ti.sysbios.interfaces.ICache
                         structName: 'ModuleView'
                     }
                 ],
-                ['MARs',
-                    {
-                        type: xdc.rov.ViewInfo.MODULE_DATA,
-                        viewInitFxn: 'viewInitMarRegisters',
-                        structName: 'MarRegisterView'
-                    }
-                ]
             ]
         });
 
@@ -180,12 +159,6 @@ module Cache inherits ti.sysbios.interfaces.ICache
         L2Size_1024K = 6 /*! Amount of cache is 1024K */
     };
 
-    /*! MAR register setting type definition. */
-    enum Mar {
-        Mar_DISABLE = 0, /*! The Permit Copy bit of MAR register is disabled */
-        Mar_ENABLE = 1   /*! The Permit Copy bit of MAR register is enabled */
-    };
-
     const UInt32 PC  = 1;     /*! Permit Caching                     */
     const UInt32 WTE = 2;     /*! Write through enabled              */
     const UInt32 PCX = 4;     /*! Permit caching in external cache   */
@@ -208,73 +181,6 @@ module Cache inherits ti.sysbios.interfaces.ICache
     };
 
     /*! @_nodoc
-     *  MAR 00 - 31 register bitmask. (for addresses 0x00000000 - 0x1FFFFFFF)
-     *
-     *  If undefined by the user, this parameter is configured to match the
-     *  memory map of the platform.
-     *  Each memory region defined in the platform will have all of its
-     *  corresponding MAR bits set.
-     *
-     *  To override the default behavior you must initialize this parameter
-     *  in your configuration script:
-     *
-     *  @p(code)
-     *  // disable MAR bits for addresses 0x00000000 to 0x1FFFFFFF
-     *  Cache.MAR0_31 = 0x00000000;
-     *  @p
-     */
-    metaonly config UInt32 MAR0_31;
-
-    /*! @_nodoc
-     *  MAR 32 - 63 register bitmask (for addresses 0x20000000 - 0x3FFFFFFF)
-     *
-     *  see {@link #MAR0_31} for more info
-     */
-    metaonly config UInt32 MAR32_63;
-
-    /*! @_nodoc
-     *  MAR 64 - 95 register bitmask (for addresses 0x40000000 - 0x5FFFFFFF)
-     *
-     *  see {@link #MAR0_31} for more info
-     */
-    metaonly config UInt32 MAR64_95;
-
-    /*! @_nodoc
-     *  MAR 96 - 127 register bitmask (for addresses 0x60000000 - 0x7FFFFFFF)
-     *
-     *  see {@link #MAR0_31} for more info
-     */
-    metaonly config UInt32 MAR96_127;
-
-    /*! @_nodoc
-     *  MAR 128 - 159 register bitmask (for addresses 0x80000000 - 0x9FFFFFFF)
-     *
-     *  see {@link #MAR0_31} for more info
-     */
-    metaonly config UInt32 MAR128_159;
-
-    /*! @_nodoc
-     *  MAR 160 - 191 register bitmask (for addresses 0xA0000000 - 0xBFFFFFFF)
-     *
-     *  see {@link #MAR0_31} for more info
-     */
-    metaonly config UInt32 MAR160_191;
-
-    /*! @_nodoc
-     *  MAR 192 - 223 register bitmask (for addresses 0xC0000000 - 0xDFFFFFFF)
-     *
-     *  see {@link #MAR0_31} for more info
-     */
-    metaonly config UInt32 MAR192_223;
-
-    /*! @_nodoc
-     *  MAR 224 - 255 register bitmask (for addresses 0xE0000000 - 0xFFFFFFFF)
-     *
-     *  see {@link #MAR0_31} for more info
-     */
-    metaonly config UInt32 MAR224_255;
-
-    /*! @_nodoc
      *
      *  This parameter is used to break up large blocks into multiple
      *  small blocks which are done atomically.  Each block of the
@@ -285,63 +191,12 @@ module Cache inherits ti.sysbios.interfaces.ICache
     config UInt32 atomicBlockSize = 1024;
 
     /*!
-     *  ======== getMarMeta ========
-     *  Gets the current MAR value for the specified base address
-     *
-     *  @param(baseAddr)  address for which MAR value is requested
-     *
-     *  @b(returns)       MAR value for specified address
-     */
-    metaonly UInt32 getMarMeta(Ptr baseAddr);
-
-    /*!
-     *  ======== setMarMeta ========
-     *  Set MAR register(s) that corresponds to the specified address range.
-     *
-     *  The 'pc' ("Permit Caching") field is enabled for all memory regions
-     *  in the device platform.  Only set the fields of the Mar structure
-     *  which need to be modified.  Any field not set retains its reset value.
-     *
-     *  All MAR registers that corresponds within the specified base address
-     *  and base address + size are set to the specified value.
-     *
-     *  @a(Note)
-     *  The 'wte' (Bit 1) and 'pcx' (Bit 2) MAR bits are reserved on
-     *  C66x CorePac devices.
-     *
-     *  @param(baseAddr)        start address for which to set MAR
-     *  @param(byteSize)        size (in bytes) of memory block
-     *  @param(value)           value for setting MAR register
-     */
-    metaonly Void setMarMeta(Ptr baseAddr, SizeT byteSize, UInt32 value);
-
-    /*!
      *  ======== disable ========
      *  Disables the 'type' cache(s)
      *
      *  Disabling of L2 cache is currently not supported.
      */
     override Void disable(Bits16 type);
-
-    /*!
-     *  ======== getMode ========
-     *  Get mode of a cache
-     *
-     *  @param(type)     bit mask of cache type
-     *  @b(returns)      mode of specified level of cache
-     */
-    Mode getMode(Bits16 type);
-
-    /*!
-     *  ======== setMode ========
-     *  Set mode of a cache
-     *
-     *  @param(type)    bit mask of cache type
-     *  @param(mode)    mode of cache
-     *
-     *  @b(returns)     previous mode of cache
-     */
-    Mode setMode(Bits16 type, Mode mode);
 
     /*!
      *  ======== getSize ========
@@ -358,44 +213,6 @@ module Cache inherits ti.sysbios.interfaces.ICache
      *  @param(size)    pointer to structure of type Cache_Size
      */
     Void setSize(Size *size);
-
-    /*!
-     *  ======== getMar ========
-     *  Gets the MAR register for the specified base address
-     *
-     *  @param(baseAddr)  address for which MAR is requested
-     *
-     *  @b(returns)       value of MAR register
-     */
-    UInt32 getMar(Ptr baseAddr);
-
-    /*!
-     *  ======== setMar ========
-     *  Set MAR register(s) that corresponds to the specified address range.
-     *
-     *  All cached entries in L1 and L2 are written back and invalidated.
-     *
-     *  All MAR registers that corresponds within the specified base address
-     *  and base address + size are set to the specified value.
-     *
-     *  @a(Note)
-     *  The 'wte' (Bit 1) and 'pcx' (Bit 2) MAR bits are reserved on
-     *  C66x CorePac devices.
-     *
-     *  @param(baseAddr)        start address for which to set MAR
-     *  @param(byteSize)        size (in bytes) of memory block
-     *  @param(value)           value for setting MAR register
-     */
-    Void setMar(Ptr baseAddr, SizeT byteSize, UInt32 value);
-
-    /*!
-     *  ======== invL1pAll ========
-     *  Invalidate all of L1 Program cache
-     *
-     *  Performs a global invalidate of L1P cache.
-     *  Polls the L1P invalidate register until done.
-     */
-    Void invL1pAll();
 
     /*!
      *  ======== wbAll ========
@@ -451,36 +268,16 @@ module Cache inherits ti.sysbios.interfaces.ICache
      */
     Void wbInvL1dAll();
 
+    Void setL2CFG(UInt size);
+    ULong getL2CFG();
+    Void setL1DCFG(UInt size);
+    ULong getL1DCFG();
+    Void setL2WB(UInt flag);
+    Void setL2WBINV(UInt flag);
+    Void setL1DWB(UInt flag);
+    Void setL1DWBINV(UInt flag);
+
 internal:
-
-    /*!
-     *  ======== invPrefetchBuffer ========
-     *  Invalidate the prefetch buffer
-     */
-    Void invPrefetchBuffer();
-
-    /*
-     *  ======== Cache_all ========
-     */
-    Void all(volatile UInt32 *cacheReg);
-
-    /*
-     *  ======== block ========
-     *  This internal function used by the block cache APIs.
-     */
-    Void block(Ptr blockPtr, SizeT byteCnt, Bool wait,
-               volatile UInt32 *barReg);
-
-    /* cache configuration registers */
-    const UInt32 L2CFG  = 0x01840000;
-    const UInt32 L1PCFG = 0x01840020;
-    const UInt32 L1PCC  = 0x01840024;
-    const UInt32 L1DCFG = 0x01840040;
-    const UInt32 L1DCC  = 0x01840044;
-    const UInt32 MAR    = 0x01848000;
-
-    /* For setting the MAR registers at startup */
-    config UInt32 marvalues[256];
 
     /*
      *  ======== startup ========

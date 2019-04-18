@@ -166,7 +166,7 @@ void *mainThread(void *arg0)
 
     /* Configure the conversion struct */
     continuousConversion.arg = NULL;
-    continuousConversion.adcChannel = Board_ADCBUF0CHANNEL0;
+    continuousConversion.adcChannel = Board_ADCBUF0CHANNEL_0;
     continuousConversion.sampleBuffer = sampleBufferOne;
     continuousConversion.sampleBufferTwo = sampleBufferOne;
     continuousConversion.samplesRequestedCount = ADCBUFFERSIZE;

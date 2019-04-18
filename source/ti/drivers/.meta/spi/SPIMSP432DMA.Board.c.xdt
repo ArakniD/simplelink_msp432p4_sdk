@@ -1,6 +1,6 @@
 %%{
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -107,20 +107,35 @@ const SPIMSP432DMA_HWAttrsV1 spiMSP432DMAHWAttrs[`countDef`] = {
     %     txDmaId = id.substring(0,1) == "A" ? "" : choice(txDmaCh, id.substring(1));
     %     txDmaCh = "DMA_CH" + txDmaCh + "_EUSCI" + id + "TX" + txDmaId;
     % }
-    % else if (inst.duplex == "Receive Only") {
+    % else if (inst.duplex == "Master RX Only") {
     %     misoPin += getPort(spi.misoPin) + "_UC" + id + "SOMI";
     %     mosiPin += "PIN_NO_CONFIG";
     %     rxDmaCh = spi.dmaRxChannel.$solution.devicePinName.substring(6);
     %     rxDmaId = id.substring(0,1) == "A" ? "" : choice(rxDmaCh, id.substring(1));
     %     rxDmaCh = "DMA_CH" + rxDmaCh + "_EUSCI" + id + "RX" + rxDmaId;
     % }
-    % else if (inst.duplex == "Transmit Only") {
+    % else if (inst.duplex == "Slave TX Only") {
+    %     misoPin += getPort(spi.misoPin) + "_UC" + id + "SOMI";
+    %     mosiPin += "PIN_NO_CONFIG";
+    %     txDmaCh = spi.dmaTxChannel.$solution.devicePinName.substring(6);
+    %     txDmaId = id.substring(0,1) == "A" ? "" : choice(txDmaCh, id.substring(1));
+    %     txDmaCh = "DMA_CH" + txDmaCh + "_EUSCI" + id + "TX" + txDmaId;
+    % }
+    % else if (inst.duplex == "Master TX Only") {
     %     mosiPin += getPort(spi.mosiPin) + "_UC" + id + "SIMO";
     %     misoPin += "PIN_NO_CONFIG";
     %     txDmaCh = spi.dmaTxChannel.$solution.devicePinName.substring(6);
     %     txDmaId = id.substring(0,1) == "A" ? "" : choice(txDmaCh, id.substring(1));
     %     txDmaCh = "DMA_CH" + txDmaCh + "_EUSCI" + id + "TX" + txDmaId;
     % }
+    % else if (inst.duplex == "Slave RX Only") {
+    %     mosiPin += getPort(spi.mosiPin) + "_UC" + id + "SIMO";
+    %     misoPin += "PIN_NO_CONFIG";
+    %     rxDmaCh = spi.dmaRxChannel.$solution.devicePinName.substring(6);
+    %     rxDmaId = id.substring(0,1) == "A" ? "" : choice(rxDmaCh, id.substring(1));
+    %     rxDmaCh = "DMA_CH" + rxDmaCh + "_EUSCI" + id + "RX" + rxDmaId;
+    % }
+    %
     % let ssPin = "SPIMSP432DMA_";
     % if (inst.mode !== "Three Pin") {
     %     ssPin += getPort(spi.ssPin) + "_UC" + id + "STE";

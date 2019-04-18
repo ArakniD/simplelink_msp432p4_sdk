@@ -5,62 +5,23 @@
     <includes local="no">stdint.h</includes>
     <includes local="no">stdbool.h</includes>
     <incdepgraph>
-      <node id="164">
+      <node id="165">
         <label>stdbool.h</label>
       </node>
-      <node id="163">
+      <node id="164">
         <label>stdint.h</label>
       </node>
-      <node id="162">
+      <node id="163">
         <label>NVSRAM.h</label>
         <link refid="_n_v_s_r_a_m_8h"/>
-        <childnode refid="163" relation="include">
-        </childnode>
         <childnode refid="164" relation="include">
+        </childnode>
+        <childnode refid="165" relation="include">
         </childnode>
       </node>
     </incdepgraph>
     <innerclass refid="struct_n_v_s_r_a_m___h_w_attrs" prot="public">NVSRAM_HWAttrs</innerclass>
     <innerclass refid="struct_n_v_s_r_a_m___object" prot="public">NVSRAM_Object</innerclass>
-      <sectiondef kind="typedef">
-      <memberdef kind="typedef" id="_n_v_s_r_a_m_8h_1a413e17582057903268e6a83b1c8d2a9f" prot="public" static="no">
-        <type>struct <ref refid="struct_n_v_s_r_a_m___h_w_attrs" kindref="compound">NVSRAM_HWAttrs</ref></type>
-        <definition>typedef struct NVSRAM_HWAttrs  NVSRAM_HWAttrs</definition>
-        <argsstring></argsstring>
-        <name>NVSRAM_HWAttrs</name>
-        <briefdescription>
-<para>NVSRAM Hardware Attributes. </para>        </briefdescription>
-        <detaileddescription>
-<para>The &apos;sectorSize&apos; is the minimal amount of data to that is cleared on an erase operation. Devices which feature internal FLASH memory usually have a 4096 byte sector size (refer to device specific documentation). It is recommended that the &apos;sectorSize&apos; used match the FLASH memory sector size.</para><para>The &apos;regionBase&apos; field must point to the base address of the region to be managed. It is also required that the region be aligned on a sectorSize boundary (example below to demonstrate how to do this).</para><para>The &apos;regionSize&apos; must be an integer multiple of the &apos;sectorSize&apos;.</para><para>Defining and reserving RAM memory regions can be done entirely within the Board.c file.</para><para>The example below defines a char array, &apos;ramBuf&apos; and uses compiler pragmas to place &apos;ramBuf&apos; at an aligned address within RAM.</para><para><programlisting><codeline><highlight class="normal">#define<sp/>SECTORSIZE<sp/>(4096)</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal">static<sp/>char<sp/>ramBuf[SECTORSIZE<sp/>*<sp/>4]<sp/>__attribute__<sp/>((aligned<sp/>(4096)));</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal">NVSRAM_HWAttrs<sp/>NVSRAMHWAttrs[1]<sp/>=<sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionBase<sp/>=<sp/>(void<sp/>*)<sp/>ramBuf,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionSize<sp/>=<sp/>SECTORSIZE<sp/>*<sp/>4,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.sectorSize<sp/>=<sp/>SECTORSIZE</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline><highlight class="normal">};</highlight></codeline>
-</programlisting> </para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSRAM.h" line="135" column="1"/>
-      </memberdef>
-      <memberdef kind="typedef" id="_n_v_s_r_a_m_8h_1a6e39c65011cbff923515daa0368a658e" prot="public" static="no">
-        <type>struct <ref refid="struct_n_v_s_r_a_m___object" kindref="compound">NVSRAM_Object</ref></type>
-        <definition>typedef struct NVSRAM_Object  NVSRAM_Object</definition>
-        <argsstring></argsstring>
-        <name>NVSRAM_Object</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSRAM.h" line="145" column="1"/>
-      </memberdef>
-      </sectiondef>
       <sectiondef kind="var">
       <memberdef kind="variable" id="_n_v_s_r_a_m_8h_1a311a36a2f7b071ff09c7aed038ce5668" prot="public" static="no" mutable="no">
         <type>const <ref refid="struct_n_v_s___fxn_table" kindref="compound">NVS_FxnTable</ref></type>
@@ -85,7 +46,7 @@
  </para>    </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2017,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2017-2019,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
 <codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
 <codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
@@ -127,47 +88,49 @@
 <codeline lineno="59"><highlight class="normal"></highlight></codeline>
 <codeline lineno="92"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_n_v_s___fxn_table" kindref="compound">NVS_FxnTable</ref><sp/><ref refid="_n_v_s_r_a_m_8h_1a311a36a2f7b071ff09c7aed038ce5668" kindref="member">NVSRAM_fxnTable</ref>;</highlight></codeline>
 <codeline lineno="93"><highlight class="normal"></highlight></codeline>
-<codeline lineno="131" refid="struct_n_v_s_r_a_m___h_w_attrs" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_n_v_s_r_a_m___h_w_attrs" kindref="compound">NVSRAM_HWAttrs</ref><sp/>{</highlight></codeline>
-<codeline lineno="132" refid="struct_n_v_s_r_a_m___h_w_attrs_1a06f0a7a3323a55f6740f7c0a362dcf7d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/>*<ref refid="struct_n_v_s_r_a_m___h_w_attrs_1a06f0a7a3323a55f6740f7c0a362dcf7d" kindref="member">regionBase</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="133" refid="struct_n_v_s_r_a_m___h_w_attrs_1ae07d198b33dae009dedfa38897d69b36" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><ref refid="struct_n_v_s_r_a_m___h_w_attrs_1ae07d198b33dae009dedfa38897d69b36" kindref="member">regionSize</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="134" refid="struct_n_v_s_r_a_m___h_w_attrs_1aa52893b2c1da0f062d69db8ef4128be9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><ref refid="struct_n_v_s_r_a_m___h_w_attrs_1aa52893b2c1da0f062d69db8ef4128be9" kindref="member">sectorSize</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="135"><highlight class="normal">}<sp/><ref refid="_n_v_s_r_a_m_8h_1a413e17582057903268e6a83b1c8d2a9f" kindref="member">NVSRAM_HWAttrs</ref>;</highlight></codeline>
-<codeline lineno="136"><highlight class="normal"></highlight></codeline>
-<codeline lineno="137"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="138"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>NVSRAM<sp/>Object</highlight></codeline>
-<codeline lineno="139"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="140"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>application<sp/>must<sp/>not<sp/>access<sp/>any<sp/>member<sp/>variables<sp/>of<sp/>this<sp/>structure!</highlight></codeline>
-<codeline lineno="141"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="142" refid="struct_n_v_s_r_a_m___object" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_n_v_s_r_a_m___object" kindref="compound">NVSRAM_Object</ref><sp/>{</highlight></codeline>
-<codeline lineno="143" refid="struct_n_v_s_r_a_m___object_1a21a3e3f641687421de4908c9ee2bf393" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="struct_n_v_s_r_a_m___object_1a21a3e3f641687421de4908c9ee2bf393" kindref="member">sectorBaseMask</ref>;</highlight></codeline>
-<codeline lineno="144" refid="struct_n_v_s_r_a_m___object_1af14797e6df756e8d18d27db5a75925d5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><ref refid="struct_n_v_s_r_a_m___object_1af14797e6df756e8d18d27db5a75925d5" kindref="member">isOpen</ref>;</highlight></codeline>
-<codeline lineno="145"><highlight class="normal">}<sp/><ref refid="_n_v_s_r_a_m_8h_1a6e39c65011cbff923515daa0368a658e" kindref="member">NVSRAM_Object</ref>;</highlight></codeline>
-<codeline lineno="146"><highlight class="normal"></highlight></codeline>
-<codeline lineno="147"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="148"><highlight class="comment"><sp/>*<sp/><sp/>@cond<sp/>NODOC</highlight></codeline>
-<codeline lineno="149"><highlight class="comment"><sp/>*<sp/><sp/>NVSRAM<sp/>driver<sp/>public<sp/>APIs</highlight></codeline>
-<codeline lineno="150"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="151"><highlight class="normal"></highlight></codeline>
-<codeline lineno="152"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>NVSRAM_close(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
-<codeline lineno="153"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSRAM_control(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint_fast16_t<sp/>cmd,</highlight></codeline>
-<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>uintptr_t<sp/>arg);</highlight></codeline>
-<codeline lineno="155"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSRAM_erase(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
-<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size);</highlight></codeline>
-<codeline lineno="157"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>NVSRAM_getAttrs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/><ref refid="struct_n_v_s___attrs" kindref="compound">NVS_Attrs</ref><sp/>*attrs);</highlight></codeline>
-<codeline lineno="158"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>NVSRAM_init();</highlight></codeline>
-<codeline lineno="159"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSRAM_lock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint32_t<sp/>timeout);</highlight></codeline>
-<codeline lineno="160"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/><ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>NVSRAM_open(uint_least8_t<sp/>index,<sp/><ref refid="struct_n_v_s___params" kindref="compound">NVS_Params</ref><sp/>*params);</highlight></codeline>
-<codeline lineno="161"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSRAM_read(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
-<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize);</highlight></codeline>
-<codeline lineno="163"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>NVSRAM_unlock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
-<codeline lineno="164"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSRAM_write(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
-<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize,<sp/>uint_fast16_t<sp/>flags);</highlight></codeline>
-<codeline lineno="166"><highlight class="normal"></highlight></codeline>
-<codeline lineno="169"><highlight class="preprocessor">#if<sp/>defined<sp/>(__cplusplus)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="170"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="171"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>defined<sp/>(__cplusplus)<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="172"><highlight class="normal"></highlight></codeline>
-<codeline lineno="174"><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_nvs_NVSRAM__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+<codeline lineno="131" refid="struct_n_v_s_r_a_m___h_w_attrs" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="133" refid="struct_n_v_s_r_a_m___h_w_attrs_1a06f0a7a3323a55f6740f7c0a362dcf7d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/>*<ref refid="struct_n_v_s_r_a_m___h_w_attrs_1a06f0a7a3323a55f6740f7c0a362dcf7d" kindref="member">regionBase</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="134" refid="struct_n_v_s_r_a_m___h_w_attrs_1ae07d198b33dae009dedfa38897d69b36" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><ref refid="struct_n_v_s_r_a_m___h_w_attrs_1ae07d198b33dae009dedfa38897d69b36" kindref="member">regionSize</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="135" refid="struct_n_v_s_r_a_m___h_w_attrs_1aa52893b2c1da0f062d69db8ef4128be9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><ref refid="struct_n_v_s_r_a_m___h_w_attrs_1aa52893b2c1da0f062d69db8ef4128be9" kindref="member">sectorSize</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="136"><highlight class="normal">}<sp/><ref refid="struct_n_v_s_r_a_m___h_w_attrs" kindref="compound">NVSRAM_HWAttrs</ref>;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="139"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>NVSRAM<sp/>Object</highlight></codeline>
+<codeline lineno="140"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="141"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>application<sp/>must<sp/>not<sp/>access<sp/>any<sp/>member<sp/>variables<sp/>of<sp/>this<sp/>structure!</highlight></codeline>
+<codeline lineno="142"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143" refid="struct_n_v_s_r_a_m___object" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="145" refid="struct_n_v_s_r_a_m___object_1a21a3e3f641687421de4908c9ee2bf393" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="struct_n_v_s_r_a_m___object_1a21a3e3f641687421de4908c9ee2bf393" kindref="member">sectorBaseMask</ref>;</highlight></codeline>
+<codeline lineno="146" refid="struct_n_v_s_r_a_m___object_1af14797e6df756e8d18d27db5a75925d5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><ref refid="struct_n_v_s_r_a_m___object_1af14797e6df756e8d18d27db5a75925d5" kindref="member">isOpen</ref>;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal">}<sp/><ref refid="struct_n_v_s_r_a_m___object" kindref="compound">NVSRAM_Object</ref>;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="150"><highlight class="comment"><sp/>*<sp/><sp/>@cond<sp/>NODOC</highlight></codeline>
+<codeline lineno="151"><highlight class="comment"><sp/>*<sp/><sp/>NVSRAM<sp/>driver<sp/>public<sp/>APIs</highlight></codeline>
+<codeline lineno="152"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>NVSRAM_close(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSRAM_control(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint_fast16_t<sp/>cmd,</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>uintptr_t<sp/>arg);</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSRAM_erase(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>NVSRAM_getAttrs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/><ref refid="struct_n_v_s___attrs" kindref="compound">NVS_Attrs</ref><sp/>*attrs);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>NVSRAM_init();</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSRAM_lock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint32_t<sp/>timeout);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/><ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>NVSRAM_open(uint_least8_t<sp/>index,<sp/><ref refid="struct_n_v_s___params" kindref="compound">NVS_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSRAM_read(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize);</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>NVSRAM_unlock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSRAM_write(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize,<sp/>uint_fast16_t<sp/>flags);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="preprocessor">#if<sp/>defined<sp/>(__cplusplus)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>defined<sp/>(__cplusplus)<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_nvs_NVSRAM__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
     <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSRAM.h"/>
   </compounddef>

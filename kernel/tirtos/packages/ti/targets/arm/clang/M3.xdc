@@ -1,10 +1,10 @@
 /*
- *  Copyright 2018 by Texas Instruments Incorporated.
+ *  Copyright 2019 by Texas Instruments Incorporated.
  *
  */
 
 /*
- * Copyright (c) 2018, Texas Instruments Incorporated
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -69,8 +69,8 @@ metaonly module M3 inherits ti.targets.arm.elf.IArm {
     };
 
     override readonly config xdc.bld.ITarget2.Command ar = {
-        cmd:  "tiarmar",
-        opts: "q"
+        cmd:  "tiarmar -c",
+        opts: "-q"
     };
 
     /*!
@@ -142,7 +142,7 @@ metaonly module M3 inherits ti.targets.arm.elf.IArm {
     ];
 }
 /*
- *  @(#) ti.targets.arm.clang; 1, 0, 0,2; 10-26-2018 10:20:32; /db/ztree/library/trees/xdctargets/xdctargets-s01/src/ xlibrary
+ *  @(#) ti.targets.arm.clang; 1, 0, 0,1; 2-9-2019 16:22:58; /db/ztree/library/trees/xdctargets/xdctargets-t01/src/ xlibrary
 
  */
 

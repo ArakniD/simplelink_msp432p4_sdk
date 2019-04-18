@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,9 +56,7 @@ let devSpecific = {
     templates: {
         boardc: "/ti/drivers/pwm/PWMTimerCC26XX.Board.c.xdt",
         boardh: "/ti/drivers/pwm/PWMTimer.Board.h.xdt"
-    },
-
-    modules: Common.autoForcePowerModule
+    }
 };
 
 /*
@@ -115,11 +113,13 @@ function moduleInstances(inst)
  */
 function extend(base)
 {
-    /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
-
     /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

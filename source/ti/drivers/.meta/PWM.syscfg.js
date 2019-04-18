@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,28 +45,6 @@ let family = Common.device2Family(system.deviceData, "PWM");
 /* generic configuration parameters for PWM instances */
 let pwmConfig = []; /* nothing (yet) beyond generic driver configs */
 
-/* Intro splash on GUI */
-let longDescription = "The PWM driver in TI-RTOS facilitates the generation "
-    + "of Pulse Width Modulated signals via simple and "
-    + "portable APIs. PWM instances must be opened by "
-    + "calling PWM_open() while passing in a PWM index "
-    + "and a parameters data structure."
-    + "\nThe driver APIs serve as an interface to a typical "
-    + "TI-RTOS application. The specific peripheral "
-    + "implementations are responsible for creating all "
-    + "OS specific primitives to allow for thread-safe "
-    + "operation."
-    + "\nWhen a PWM instance is opened, the period, duty "
-    + "cycle and idle level are configured and the PWM is "
-    + "stopped (waveforms not generated until PWM_start() is "
-    + "called). The maximum period and duty supported is "
-    + "device dependent; refer to the implementation "
-    + "specific documentation for values."
-    + "\nPWM outputs are active-high, meaning the duty will "
-    + "control the duration of high output on the pin (at "
-    + "0% duty, the output is always low, at 100% duty, the "
-    + "output is always high).";
-
 /*
  *  ======== validate ========
  *  Validate this inst's configuration
@@ -86,11 +64,23 @@ function validate(inst, validation)
 let base = {
     displayName: "PWM",
     description: "Pulse Width Modulation (PWM) Output Driver",
-    longDescription: longDescription,
-    documentation: "/tidrivers/doxygen/html/_p_w_m_8h.html",
+    longDescription: `
+The [__PWM driver__][1] allows you to generate Pulse Width Modulated signals
+via simple and portable APIs.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+
+[1]: /tidrivers/doxygen/html/_p_w_m_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_p_w_m_8h.html#ti_drivers_PWM_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_p_w_m_8h.html#ti_drivers_PWM_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#PWM_Configuration_Options "Configuration options reference"
+`,
     defaultInstanceName: "Board_PWM",
-    config: pwmConfig,
-    validate: validate
+    config: Common.addNameConfig(pwmConfig, "/ti/drivers/PWM", "Board_PWM"),
+    validate: validate,
+    modules: Common.autoForceModules(["Board", "Power"])
 };
 
 /* Get family-specific PWM module. Some PWM drivers are based on a timer

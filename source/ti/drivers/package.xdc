@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,12 +35,6 @@ requires ti.dpl;
 
 /*!
  *  ======== package.xdc ========
- *  The ti.drivers package defines the Config module, used for the TI-Drivers
- *  Grace page.
- *
  */
-
 package ti.drivers [1,0,0] {
-    module Config;
-    module Power;
 };

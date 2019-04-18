@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,26 +52,23 @@ let adcChanNames = [
  */
 function pinmuxRequirements(inst)
 {
-    let adcBufChan = {
-        name: "adc",
-        displayName: "ADC Peripheral",
-        hidden: true,
-        interfaceName: "ADC",
-        canShareWith: inst.$ownedBy.$ownedBy.$name,
-        resources: [
-        ]
-    };
+    let requirements = [];
 
-    if (inst.inputSource == "External Pin") {
-        adcBufChan.resources.push({
-            name: "adcPin",
-            displayName: "ADC Pin",
-            interfaceNames: adcChanNames
-        });
-        adcBufChan.signalTypes = { adcPin: ["AIN"] };
+    if (inst.inputSource != "External Pin") {
+        return (requirements);
     }
 
-    return ([adcBufChan]);
+    let adcBufChan = {
+        extend: inst.$ownedBy.$ownedBy.adc,
+        name: "adcPin",
+        displayName: "ADC Pin",
+        interfaceNames: adcChanNames,
+        signalTypes : ["AIN"]
+    };
+
+    requirements.push(adcBufChan);
+
+    return (requirements);
 }
 
 /*
@@ -114,12 +111,12 @@ function onInputSourceChange(inst, ui)
     if (inst.inputSource === "External Pin") {
         ui.mode.hidden = false;
         if (ui.$hardware) {
-            ui.$hardware.hidden = false;
+            //ui.$hardware.hidden = false;
         }
     }
     else {
         if (ui.$hardware) {
-            ui.$hardware.hidden = true;
+            //ui.$hardware.hidden = true;
             inst.$hardware = null;
         }
         ui.mode.hidden = true;
@@ -133,6 +130,15 @@ function onInputSourceChange(inst, ui)
 exports = {
     config: [
         {
+            name: "$name",
+            defaultPrefix: "CHANNEL_",
+            description: "C identifier used to identify this ADCBuf channel.",
+            longDescription: "This name is concatenated to the end of the name"
+                + " __Name__ specified in the ADCBuf module configuration"
+                + " above.",
+                hidden: false
+        },
+        {
             name: "referenceVoltage",
             displayName: "Reference Voltage",
             description: "Reference voltage in microvolts.",
@@ -144,19 +150,35 @@ exports = {
             description: "Specifies the channel input source.",
             default: "External Pin",
             options: [
-                { name: "External Pin" },
-                { name: "Internal Temperature" }
+                {
+                    name: "External Pin",
+                    description: "This channel will sample an external analog"
+                        + " signal"
+                },
+                {
+                    name: "Internal Temperature",
+                    description: "This channel will sample the internal"
+                        + " temperature analog signal"
+                }
             ],
             onChange : onInputSourceChange
         },
         {
             name: "mode",
             displayName: "Mode",
-            description: "Specifies the channel's operation mode",
+            description: "Specifies the ADC channel's operation mode",
             default: "Non Differential",
             options: [
-                { name: "Non Differential" },
-                { name: "Differential" }
+                {
+                    name: "Non Differential",
+                    description: "Sample a single analog signal with this"
+                    +   " channel"
+                },
+                {
+                    name: "Differential",
+                    description: "Measure the voltage potential between 2"
+                    +   " analog signals."
+                }
             ]
         }
     ],

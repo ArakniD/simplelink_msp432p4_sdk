@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,12 @@
 #include <xdc/runtime/Error.h>
 
 #include <ti/sysbios/BIOS.h>
+
+#if defined(xdc_target__isaCompatible_v8M)
+#include <ti/sysbios/family/arm/v8m/Hwi.h>
+#else
 #include <ti/sysbios/family/arm/m3/Hwi.h>
+#endif
 
 /*
  *  ======== HwiP_clearInterrupt ========

@@ -389,7 +389,7 @@ Int Task_setPri(Task_Object *tsk, Int priority)
     Int oldPri;
     UInt newMask, tskKey, hwiKey, tskAffinity;
     Queue_Handle newQ;
-    UInt coreId, curCoreId, otherCoreMask;
+    UInt coreId, curCoreId, otherCoreMask, i;
 
     Assert_isTrue((((priority == -1) || (priority > 0) ||
                   ((priority == 0 && Task_module->idleTask == NULL))) &&
@@ -476,10 +476,21 @@ Int Task_setPri(Task_Object *tsk, Int priority)
 
             /* Wait for scheduler to run */
             while ((Task_module->workFlag & otherCoreMask) != 0) {
-                Core_hwiRestore(hwiKey);
-                Task_enable();
-                /* Allow other core's task scheduler to run */
+                Task_enableOtherCores();
+
+                /*
+                 * Only other cores' task schedulers will run here.
+                 * Leave window open long enough for other core to
+                 * grab the intercore lock.
+                 */
+                for (i = 0; i < 20; i++) {
+                    if ((Task_module->workFlag & otherCoreMask) == 0) {
+                        break;
+                    }
+                }
+
                 Task_disable();
+                Core_hwiRestore(hwiKey); /* local interrupt latency reduction */
                 hwiKey = Core_hwiDisable();
             }
         }
@@ -808,7 +819,12 @@ Void Task_yield()
 
     curTask = Task_module->smpCurTask[coreId];
 
-    if (Task_module->smpCurMask[coreId]) {
+    /*
+     * Only disturb the currently running thread
+     * if it is not in a transient state (ie in Task_exit())
+     */
+    if ((Task_module->smpCurMask[coreId]) &&
+        (curTask->mode == Task_Mode_RUNNING)) {
         /* Change from RUNNING to READY */
         curTask->mode = Task_Mode_READY;
         /* And place it at the end of its readyQ */
@@ -1097,6 +1113,16 @@ Void Task_enable()
 }
 
 /*
+ *  ======== Task_enableOtherCores ========
+ *  Do NOT enable interrupts locally
+ */
+Void Task_enableOtherCores()
+{
+    Task_module->locked = FALSE; /* release the scheduler lock */
+    Core_unlock();               /* release the inter-core lock */
+}
+
+/*
  *  ======== Task_restore ========
  */
 Void Task_restore(UInt tskKey)
@@ -1239,8 +1265,9 @@ Void Task_exit()
 
     Log_write2(Task_LD_exit, (UArg)tsk, (UArg)tsk->fxn);
 
-    tskKey = Task_disable();
     hwiKey = Hwi_disable();
+
+    tskKey = Task_disable();
 
     Task_blockI(tsk);
 
@@ -1857,11 +1884,30 @@ UInt Task_getAffinity(Task_Object *tsk)
  */
 Task_Mode Task_getMode(Task_Object *tsk)
 {
+    UInt hwiKey;
+    Task_Mode mode;
+    UInt tskCoreId;
+
     if (tsk->priority == -1) {
         return (Task_Mode_INACTIVE);
     }
     else {
-        return (tsk->mode);
+        hwiKey = Hwi_disable();
+        mode = tsk->mode;
+        tskCoreId = tsk->curCoreId;
+        if (tskCoreId != Core_numCores) {
+            /*
+             * Under certain transient conditions (ie within Task_exit()),
+             * a running task's mode may not be RUNNING.
+             * Always return RUNNING if the task is currently
+             * running on it's respective core.
+             */
+            if (Task_module->smpCurTask[tskCoreId] == tsk) {
+                mode = Task_Mode_RUNNING;
+            }
+        }
+        Hwi_restore(hwiKey);
+        return (mode);
     }
 }
 
@@ -1870,6 +1916,11 @@ Task_Mode Task_getMode(Task_Object *tsk)
  */
 Void Task_stat(Task_Object *tsk, Task_Stat *statbuf)
 {
+    UInt hwiKey;
+
+    /* collect a coherent set */    
+    hwiKey = Hwi_disable();
+
     statbuf->priority = tsk->priority;
     statbuf->stack = tsk->stack;
     statbuf->stackSize = tsk->stackSize;
@@ -1878,6 +1929,12 @@ Void Task_stat(Task_Object *tsk, Task_Stat *statbuf)
     statbuf->mode = Task_getMode(tsk);
     statbuf->sp = tsk->context;
 
+    Hwi_restore(hwiKey);
+
+    /*
+     * allow stack used to be non-coherent with other stats
+     * to avoid latency hit
+     */
     statbuf->used = Task_SupportProxy_stackUsed((Char *)tsk->stack,
         tsk->stackSize);
 }

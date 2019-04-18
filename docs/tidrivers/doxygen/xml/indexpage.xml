@@ -6,7 +6,8 @@
     <detaileddescription>
 <sect1 id="index_1drivers">
 <title>Drivers</title>
-<para>Shown below is a matrix of available links to driver documentation.</para><para>NOTE: Please view the <bold>Device Specific</bold> driver implementations as they may contain or exclude certain features that are defined in the top level interfaces.</para><para><table rows="16" cols="2"><row>
+<para>Shown below is a matrix of available links to driver documentation.</para><para><simplesect kind="note"><para>Please view the <bold>Device Specific</bold> driver implementations as they may contain or exclude certain features that are defined in the top level interfaces.</para></simplesect>
+<table rows="16" cols="2"><row>
 <entry thead="yes"><para>Driver Interfaces </para></entry><entry thead="yes"><para>MSP432<linebreak/>
  Implementations  </para></entry></row>
 <row>
@@ -49,26 +50,58 @@
 <row>
 <entry thead="no"><para><ref refid="_watchdog_8h" kindref="compound">Watchdog.h</ref> </para></entry><entry thead="no"><para><ref refid="_watchdog_m_s_p432_8h" kindref="compound">WatchdogMSP432.h</ref>  </para></entry></row>
 </table>
+<hruler/>
 </para></sect1>
 <sect1 id="index_1display">
 <title>Display Driver</title>
-<para>The Display driver is designed to abstract operations &amp; considerations specific to a given output method.</para><para><table rows="2" cols="2"><row>
-<entry thead="yes"><para>Display Driver Interface </para></entry><entry thead="yes"><para>Implementations  </para></entry></row>
+<para><para>The Display driver is designed to abstract operations &amp; considerations specific to a given output method. </para> <para><table rows="2" cols="2"><row>
+<entry thead="yes"><para>Display Driver Interface </para></entry><entry thead="yes"><para>Implementations </para></entry></row>
 <row>
 <entry thead="no"><para><ref refid="_display_8h" kindref="compound">Display.h</ref> </para></entry><entry thead="no"><para><ref refid="_display_host_8h" kindref="compound">DisplayHost.h</ref> <linebreak/>
  <ref refid="_display_uart_8h" kindref="compound">DisplayUart.h</ref> </para></entry></row>
 </table>
+</para><hruler/>
 </para></sect1>
 <sect1 id="index_1utilities">
 <title>Driver Utilities</title>
-<para>Shown below is a list of utility modules available to drivers:<itemizedlist>
-<listitem><para><ref refid="_list_8h" kindref="compound">List.h</ref></para></listitem><listitem><para><ref refid="_ring_buf_8h" kindref="compound">RingBuf.h</ref></para></listitem><listitem><para><ref refid="_s_d_fat_f_s_8h" kindref="compound">SDFatFS.h</ref></para></listitem><listitem><para><ref refid="_s_p_i_f_f_s_n_v_s_8h" kindref="compound">SPIFFSNVS.h</ref></para></listitem></itemizedlist>
-</para><para>Note: The SDFatFS interface is a wrapper to enable the use of the FatFS filesystem via the SD driver.</para><para>Note: The SPIFFSNVS is a wrapper to enable NVS as the physical layer to read/write memory for the SPIFFS file system. See <ref refid="spiffs_8h" kindref="compound">spiffs.h</ref>.</para></sect1>
+<para><para>These utilities are helper modules available to drivers.</para><para><table rows="6" cols="2"><row>
+<entry thead="yes"><para>Module </para></entry><entry thead="yes"><para>Description </para></entry></row>
+<row>
+<entry thead="no"><para><ref refid="_list_8h" kindref="compound">List.h</ref> </para></entry><entry thead="no"><para>Double linked list </para></entry></row>
+<row>
+<entry thead="no"><para><ref refid="_random_8h" kindref="compound">Random.h</ref> </para></entry><entry thead="no"><para>Fast and light-weight pseudo random number generator  </para></entry></row>
+<row>
+<entry thead="no"><para><ref refid="_ring_buf_8h" kindref="compound">RingBuf.h</ref> </para></entry><entry thead="no"><para>Array-based ring buffer for bytes </para></entry></row>
+<row>
+<entry thead="no"><para><ref refid="_s_d_fat_f_s_8h" kindref="compound">SDFatFS.h</ref> </para></entry><entry thead="no"><para>Wrapper to enable the use of file systems for the SD driver. </para></entry></row>
+<row>
+<entry thead="no"><para><ref refid="_s_p_i_f_f_s_n_v_s_8h" kindref="compound">SPIFFSNVS.h</ref> </para></entry><entry thead="no"><para>Enables NVS as the physical layer to read/write memory for the SPIFFS file system </para></entry></row>
+</table>
+</para><hruler/>
+</para></sect1>
+<sect1 id="index_1driver_configuration">
+<title>Driver Configuration</title>
+<para><para>The generic driver interface defines a configuration structure using the <computeroutput>typedef</computeroutput> keyword. The name of this declared type follows the naming pattern <computeroutput>&lt;driver&gt;_Config</computeroutput>. A driver is configured by declaring an array of this configuration data structure. Each <computeroutput>config</computeroutput> array index contains pointers to other data objects necessary for the driver to function at runtime. These data objects may include a <ref refid="index_1driver_hardware_attributes" kindref="member">hardware attributes</ref>, a <ref refid="index_1driver_function_table" kindref="member">function table</ref>, and <ref refid="index_1driver_objects" kindref="member">object memory</ref>. Multiple indexes of the <computeroutput>config</computeroutput> array should not share these data objects--with the exception of the <ref refid="index_1driver_function_table" kindref="member">function table</ref>. Each index of the <computeroutput>config</computeroutput> array supports an independent instance of the driver.</para><para><simplesect kind="warning"><para>The declared array, <computeroutput>&lt;driver&gt;_Config</computeroutput>, must have a specific C identifier. This identifies follows the case-sensitive pattern <computeroutput>&lt;driver&gt;_config</computeroutput>.</para></simplesect>
+<simplesect kind="warning"><para>The configuration must also contain a count of indexes in the <computeroutput>&lt;driver&gt;_config</computeroutput>. This must also have a specific C identifier following the case-sensitive pattern <computeroutput>&lt;driver&gt;_count</computeroutput>. The data type must be a <computeroutput>uint_least8_t</computeroutput>.</para></simplesect>
+The driver interface is joined together during the link process at build time. The <computeroutput>&lt;driver&gt;_config</computeroutput> and <computeroutput>&lt;driver&gt;_count</computeroutput> symbols are resolved. </para><hruler/>
+</para><sect2 id="index_1driver_objects">
+<title>Driver Objects</title>
+<para><para>The driver objects are device specific structures that hold data for an instance of a driver. The driver objects are used exclusively by the driver and should never be accessed by the application. Device specific drivers define an object structure as a new type using the <computeroutput>typedef</computeroutput> keyword. Each index in a driver&apos;s <ref refid="index_1driver_configuration" kindref="member">configuration</ref> will contain a pointer to a driver object. </para><hruler/>
+</para></sect2>
+<sect2 id="index_1driver_hardware_attributes">
+<title>Driver Hardware Attributes</title>
+<para><para>The hardware attributes, also commonly referred to as <computeroutput>HWAttrs</computeroutput>, are device specific settings that typically do not change during runtime operation of a driver. The hardware attributes aid in abstracting the generic driver interface from the hardware. Device specific drivers define a hardware attribute structure as a new type using the <computeroutput>typedef</computeroutput> keyword. Each index in a driver&apos;s <ref refid="index_1driver_configuration" kindref="member">configuration</ref> will contain a pointer to a hardware attribute structure. </para><hruler/>
+</para></sect2>
+<sect2 id="index_1driver_function_table">
+<title>Driver Function Table</title>
+<para><para>The function pointer table is a structure simply containing pointers to functions. Each index in a driver&apos;s <ref refid="index_1driver_configuration" kindref="member">configuration</ref> will contain a pointer to a function pointer table. The TI-Driver&apos;s interface uses function pointers to abstract a generic driver from a device specific driver. Each device specific driver declares a default function pointer table which may be referenced by default in the driver&apos;s <ref refid="index_1driver_configuration" kindref="member">configuration</ref>. </para><hruler/>
+</para></sect2>
+</sect1>
 <sect1 id="index_1nortos">
 <title>NoRTOS Framework Module</title>
-<para>The NoRTOS framework module is provided to enable use of drivers without an underlying operating system. The module provides interfaces used by drivers to perform delays, block execution, register interrupts and more. NoRTOS module documentation and usage can be found:<itemizedlist>
+<para><para>The NoRTOS framework module is provided to enable use of drivers without an underlying operating system. The module provides interfaces used by drivers to perform delays, block execution, register interrupts and more. NoRTOS module documentation and usage can be found:<itemizedlist>
 <listitem><para><ref refid="_no_r_t_o_s_8h" kindref="compound">NoRTOS.h</ref> </para></listitem></itemizedlist>
-</para></sect1>
+</para></para></sect1>
     </detaileddescription>
   </compounddef>
 </doxygen>

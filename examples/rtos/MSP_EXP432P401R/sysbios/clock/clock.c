@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,8 +42,7 @@
 #include <ti/sysbios/BIOS.h>
 #include <ti/sysbios/knl/Clock.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+#include <ti/drivers/Board.h>
 
 Void clk0Fxn(UArg arg0);
 Void clk1Fxn(UArg arg0);

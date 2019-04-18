@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,287 +37,13 @@
 #include <xdc/runtime/Error.h>
 #include <xdc/runtime/Startup.h>
 #include <ti/sysbios/hal/Hwi.h>
-#ifdef ti_sysbios_BIOS_useSK__D
-#include <ti/sk/sk.h>
-#endif
+
+#include <c6x_migration.h>
+#include <c7x.h>
 
 #include "package/internal/Cache.xdc.h"
 
-//#ifdef xdc_target__isa_64P
-#if 1
-#define _mfence()
-#else
-/* This is for mfence trace workaround - see SDOCM00118415 */
-#define _mfence() {     \
-    asm("    mfence \n" \
-        "    nop \n"    \
-        "    mark 0");  \
-}
-#endif
-
-#define L2CFG    (volatile UInt32 *)0x01840000
-#define L1PCFG   (volatile UInt32 *)0x01840020
-#define L1PCC    (volatile UInt32 *)0x01840024
-#define L1DCFG   (volatile UInt32 *)0x01840040
-#define L1DCC    (volatile UInt32 *)0x01840044
-#define L2WBAR   (volatile UInt32 *)0x01844000
-#define L2WWC    (volatile UInt32 *)0x01844004
-#define L2WIBAR  (volatile UInt32 *)0x01844010
-#define L2IBAR   (volatile UInt32 *)0x01844018
-#define L2WB     (volatile UInt32 *)0x01845000
-#define L2WBINV  (volatile UInt32 *)0x01845004
-#define L1PINV   (volatile UInt32 *)0x01845028
-#define L1DWB    (volatile UInt32 *)0x01845040
-#define L1DWBINV (volatile UInt32 *)0x01845044
-#define MAR      (volatile UInt32 *)0x01848000
-#define XPFCMD   (volatile UInt32 *)0x08000300
-
-#define L2CFG_L2CC_MASK         0x00000018      /* L2 CC mask */
-#define L2CFG_L2CC_ENABLE       0x00000000      /* L2 CC enable mode */
-#define L2CFG_L2CC_FREEZE       0x00000008      /* L2 CC freeze mode */
-#define L2CFG_L2CC_BYPASS       0x00000010      /* L2 CC bypass mode */
 #define L2CFG_MODE_MASK         0x00000007      /* L2 Mode mask */
-#define L1PCC_OPER_MASK         0x00000007      /* L1P OPER mask */
-#define L1PCC_OPER_FREEZE       0x00000001      /* L1P OPER freeze */
-#define L1PCC_OPER_NORMAL       0x00000000      /* L1P OPER normal */
-#define L1PCC_POPER_MASK        0x00070000      /* L1P POPER mask */
-#define L1PCC_POPER_FREEZE      0x00010000      /* L1P POPER freeze */
-#define L1PCC_POPER_NORMAL      0x00000000      /* L1P POPER normal */
-#define L1DCC_OPER_MASK         0x00000007      /* L1D OPER mask */
-#define L1DCC_OPER_FREEZE       0x00000001      /* L1D OPER freeze */
-#define L1DCC_OPER_NORMAL       0x00000000      /* L1D OPER normal */
-#define L1DCC_POPER_MASK        0x00070000      /* L1D POPER mask */
-#define L1DCC_POPER_FREEZE      0x00010000      /* L1D POPER freeze */
-#define L1DCC_POPER_NORMAL      0x00000000      /* L1D POPER normal */
-
-#define MAXWC    0xFF00      /* Max word count per cache operations */
-
-#define MAR16        0x10
-#define MAR32        0x20
-#define MAR64        0x40
-#define MAR96        0x60
-#define MAR128       0x80
-#define MAR160       0xA0
-#define MAR192       0xC0
-#define MAR224       0xE0
-
-#if 0
-/*
- *  ======== mapL1dOper ========
- *  Maps the L1D cache mode Oper field to one of the values of Cache_Mode
- */
-static inline Cache_Mode mapL1dOper(UInt mode)
-{
-    if (mode == L1DCC_OPER_FREEZE) {
-        return Cache_Mode_FREEZE;
-    }
-    else {
-        return Cache_Mode_NORMAL;
-    }
-}
-
-/*
- *  ======== mapL1dPoper ========
- *  Maps the L1D cache mode Poper field to one of the values of Cache_Mode
- */
-static inline Cache_Mode mapL1dPoper(UInt mode)
-{
-    if (mode == L1DCC_POPER_FREEZE) {
-        return Cache_Mode_FREEZE;
-    }
-    else {
-        return Cache_Mode_NORMAL;
-    }
-}
-
-/*
- *  ======== mapL1pOper ========
- *  Maps the L1P cache mode Oper field to one of the values of Cache_Mode
- */
-static inline Cache_Mode mapL1pOper(UInt mode)
-{
-    if (mode == L1PCC_OPER_FREEZE) {
-        return Cache_Mode_FREEZE;
-    }
-    else {
-        return Cache_Mode_NORMAL;
-    }
-}
-
-/*
- *  ======== mapL1pPoper ========
- *  Maps the L1P cache mode Poper field to one of the values of Cache_Mode
- */
-static inline Cache_Mode mapL1pPoper(UInt mode)
-{
-    if (mode == L1PCC_POPER_FREEZE) {
-        return Cache_Mode_FREEZE;
-    }
-    else {
-        return Cache_Mode_NORMAL;
-    }
-}
-
-/*
- *  ======== mapL2Mode ========
- *  Maps the L2 cache mode to one of the values of Cache_Mode
- */
-static inline Cache_Mode mapL2Mode(UInt mode)
-{
-    if (mode == L2CFG_L2CC_FREEZE) {
-        return Cache_Mode_FREEZE;
-    }
-    else if (mode == L2CFG_L2CC_ENABLE) {
-        return Cache_Mode_NORMAL;
-    }
-    else {
-        return Cache_Mode_BYPASS;
-    }
-}
-#endif
-
-/*
- *  ======== Cache_all ========
- */
-Void Cache_all(volatile UInt32 *cacheReg)
-{
-#if 0
-    UInt mask;
-
-    /* disable interrupts */
-    mask = Hwi_disable();
-
-    /* wait for any previous cache operation to complete */
-    while (*L2WWC != 0) {
-        /* open a window for interrupts */
-        Hwi_restore(mask);
-
-        /* disable interrupts */
-        mask = Hwi_disable();
-    }
-
-    /* perform global write back of cache */
-    *cacheReg = 1;
-
-    /* restore interrupts */
-    Hwi_restore(mask);
-
-    /* wait until cache operation completes */
-    while (*cacheReg) {
-        ;
-    }
-#endif
-}
-
-/*
- *  ======== Cache_block ========
- *  This internal function used by the block cache APIs.
- */
-Void Cache_block(Ptr blockPtr, SizeT byteCnt, Bool wait,
-    volatile UInt32 *barReg)
-{
-#if 0
-    volatile UInt32 *bar;
-    volatile UInt32 *wc;
-    volatile UInt32 *marBase;
-    UInt32 maxAddr, marNum;
-    UInt32 firstMar, lastMar;
-    Int wordCnt, incCnt;
-    UInt mask;
-    UInt32 alignAddr;
-
-    /*
-     *  Get the base address and word count register.
-     *  wc is one word after bar on c64x+ cache.
-     */
-    bar = barReg;
-    wc = bar + 1;
-
-    /* word align the base address */
-    alignAddr = ((UInt32)blockPtr & ~3);
-
-    /* convert from byte to word since cache operation takes words */
-    wordCnt = (byteCnt + 3 + ((UInt32)blockPtr - alignAddr)) >> 2;
-
-    /* determine the increment count */
-    if (Cache_atomicBlockSize) {
-        incCnt = Cache_atomicBlockSize;
-    }
-    else {
-        incCnt = MAXWC;
-    }
-
-    /* loop until word count is zero or less */
-    while (wordCnt > 0) {
-
-        /* critical section -- disable interrupts */
-        mask = Hwi_disable();
-
-        /* wait for any previous cache operation to complete */
-        while (*L2WWC != 0) {
-            /* open a window for interrupts */
-            Hwi_restore(mask);
-
-            /* disable interrupts */
-            mask = Hwi_disable();
-        }
-
-        /* set the word address and number of words to invalidate */
-        *bar = alignAddr;
-        *wc = (wordCnt > incCnt) ? incCnt : wordCnt;
-
-        /*
-         *  Silicon errata sprz331a Advisory 14.
-         *  Due to c66 silicon bug [see SDOCM00076053] spin with
-         *  interrupts disabled here if atomicBlockSize != 0.
-         *  Cache_wait() is doing 2 mfences so no need to spin for 16 NOPs
-         */
-        if (Cache_atomicBlockSize) {
-            Cache_wait();
-        }
-
-        /* end of critical section -- restore interrupts */
-        Hwi_restore(mask);
-
-        /*
-         * reduce word count by the increment count and
-         * increase base address by increment count.
-         */
-        wordCnt -= incCnt;
-        alignAddr += (incCnt * sizeof(Int));
-    }
-
-    /* invalidate prefetch buffer if necessary */
-    if ((barReg == L2WIBAR) || (barReg == L2IBAR)) {
-        /* set the marBase addr */
-        marBase = MAR;
-
-        /* caculate the maximum address */
-        maxAddr = (UInt32)blockPtr + (byteCnt - 1);
-
-        /* range of MAR's that need to be modified */
-        firstMar = (UInt32)blockPtr >> 24;
-        lastMar = (UInt32)maxAddr >> 24;
-
-        /* loop through the number of MAR registers */
-        for (marNum = firstMar; marNum <= lastMar; marNum++) {
-            /* if prefetch bit enabled, invalidate prefetch buffer */
-            if (marBase[marNum] & Cache_PFX) {
-                Cache_invPrefetchBuffer();
-                break;
-            }
-        }
-    }
-
-    /*
-     *  Only wait here if atomicBlockSize is 0 and 'wait' is true.
-     *  When atomicBlockSize != 0, the wait already happens above.
-     */
-    if ((Cache_atomicBlockSize == 0) && wait) {
-        Cache_wait();
-    }
-#endif
-}
 
 /*
  *  ======== Cache_startup ========
@@ -330,8 +56,7 @@ Void Cache_startup()
 
 /*
  *  ======== Cache_enable ========
- *  For L1P and L1D, set the size to the Cache_initSize.
- *  For L2, set the cache mode to NORMAL.
+ *  Set the size to the Cache_initSize.
  */
 Void Cache_enable(Bits16 type)
 {
@@ -339,26 +64,13 @@ Void Cache_enable(Bits16 type)
 
     Cache_getSize(&size);
 
-    if (type == Cache_Type_L1P) {
-        size.l1pSize = Cache_initSize.l1pSize;
-        Cache_setSize(&size);
-    }
-    else if (type == Cache_Type_L1D) {
+    if (type == Cache_Type_L1D) {
         size.l1dSize = Cache_initSize.l1dSize;
         Cache_setSize(&size);
     }
-    else {
-#ifdef ti_sysbios_BIOS_useSK__D
-        /*
-         *  Assumes that the Cache comes up in normal mode.
-         *  Not allowed to set the mode for L2 in secure kernel.
-         */
-
-#else
-        /* set the L2 mode to normal */
-        Cache_setMode(Cache_Type_L2, Cache_Mode_NORMAL);
-
-#endif
+    else if (type == Cache_Type_L2) {
+        size.l2Size = Cache_initSize.l2Size;
+        Cache_setSize(&size);
     }
 }
 
@@ -374,141 +86,14 @@ Void Cache_disable(Bits16 type)
 
     Cache_getSize(&size);
 
-    if (type == Cache_Type_L1P) {
-        size.l1pSize = Cache_L1Size_0K;
-        Cache_setSize(&size);
-    }
-    else if (type == Cache_Type_L1D) {
+    if (type == Cache_Type_L1D) {
         size.l1dSize = Cache_L1Size_0K;
         Cache_setSize(&size);
     }
-    else {
-        /* Disable of L2 Cache here is not allowed */
-        Assert_isTrue(FALSE, NULL);
+    else if (type == Cache_Type_L2) {
+        size.l2Size = Cache_L2Size_0K;
+        Cache_setSize(&size);
     }
-}
-
-/*
- *  ======== Cache_getMode ========
- *  Returns the current cache operating mode for the specified cache.
- */
-Cache_Mode Cache_getMode(Bits16 type)
-{
-#if 0
-    UInt mode;
-
-    /* determine which cache to get the mode */
-    if (type == Cache_Type_L1P) {
-        /* case of L1P cache */
-        mode = *L1PCC & L1PCC_OPER_MASK;
-        return mapL1pOper(mode);
-    }
-    else if (type == Cache_Type_L1D) {
-        /* case of L1D cache */
-        mode = *L1DCC & L1DCC_OPER_MASK;
-        return mapL1dOper(mode);
-    }
-    else {
-        /* case of L2 cache */
-        mode = *L2CFG & L2CFG_L2CC_MASK;
-        return mapL2Mode(mode);
-    }
-#else
-    return (Cache_Mode)0;
-#endif
-}
-
-/*
- *  ======== Cache_setMode ========
- *  Set either L1D, L1P, or L2 cache operating mode depending on the argument
- *  that was passed in.
- */
-Cache_Mode Cache_setMode(Bits16 type, Cache_Mode mode)
-{
-#if 0
-    UInt        mask;
-    UInt prevmode;
-    Cache_Mode returnVal;
-#ifndef ti_sysbios_BIOS_useSK__D
-    UInt regVal;
-#endif
-
-    /* critical section -- disable interrupts */
-    mask = Hwi_disable();
-
-    /* determine which mode we want to set */
-    if (type == Cache_Type_L1P) {
-        /*
-         * case we want to set L1P cache
-         */
-        if (mode == Cache_Mode_NORMAL) {
-            *L1PCC = L1PCC_OPER_NORMAL;
-        }
-        else if (mode == Cache_Mode_FREEZE) {
-            *L1PCC = L1PCC_OPER_FREEZE;
-        }
-        prevmode = *L1PCC & L1PCC_POPER_MASK,
-
-        returnVal = mapL1pPoper(prevmode);
-    }
-    else if (type == Cache_Type_L1D) {
-        /*
-         * case we want to set L1D cache
-         */
-        if (mode == Cache_Mode_NORMAL) {
-            *L1DCC = L1DCC_OPER_NORMAL;
-        }
-        else if (mode == Cache_Mode_FREEZE) {
-            /*
-             *  there should be no data accesses two cycles prior to changing
-             *  L1D cache to freeze to work around silicon issue.
-             *  GEM_arch.bts_dmc.26
-             */
-            asm("       nop 2");
-            *L1DCC = L1DCC_OPER_FREEZE;
-        }
-        prevmode = *L1DCC & L1DCC_POPER_MASK,
-
-        returnVal = mapL1dPoper(prevmode);
-    }
-    else {
-#ifdef ti_sysbios_BIOS_useSK__D
-        /* Not allowed to set L2 Mode in secure kernel */
-        Assert_isTrue(FALSE, NULL);
-
-#else
-        /*
-         * case we want to set L2 cache
-         */
-        regVal = *L2CFG;
-        prevmode = regVal & L2CFG_L2CC_MASK;
-        if (mode == Cache_Mode_NORMAL) {
-            *L2CFG = (regVal & ~L2CFG_L2CC_MASK) |
-                (L2CFG_L2CC_ENABLE);
-        }
-        else if (mode == Cache_Mode_FREEZE) {
-            *L2CFG = (regVal & ~L2CFG_L2CC_MASK) |
-                (L2CFG_L2CC_FREEZE);
-        }
-        else if (mode == Cache_Mode_BYPASS) {
-            /* Not allowed to set Cache to BYPASS mode in latest specs */
-            Assert_isTrue(FALSE, NULL);
-        }
-        regVal = *L2CFG;
-
-        returnVal = mapL2Mode(prevmode);
-
-#endif
-    }
-
-    /* end of critical section -- restore interrupts */
-    Hwi_restore(mask);
-
-    /* return previous mode of the cache that was modified */
-    return (returnVal);
-#else
-    return (Cache_Mode)0;
-#endif
 }
 
 /*
@@ -517,7 +102,6 @@ Cache_Mode Cache_setMode(Bits16 type, Cache_Mode mode)
  */
 Void Cache_setSize(Cache_Size *size)
 {
-#if 0
     UInt        mask;
 
     /* critical section -- disable interrupts */
@@ -527,36 +111,21 @@ Void Cache_setSize(Cache_Size *size)
      *  Set size of L2 cache.
      *  Read back CFG, this stalls CPU until the mode change completes.
      */
-#ifdef ti_sysbios_BIOS_useSK__D
-    SK_cacheL2ChangeSize(size->l2Size);
+    Cache_setL2CFG(size->l2Size);
 
-#else
-    *L2CFG = size->l2Size;
-
-#endif
-
-    *L2CFG;
+    Cache_getL2CFG();
 
     /*
      *  Set size of L1D cache.
      *  Set size of L1P cache.
      *  Read back CFG, this stalls CPU until the mode change completes.
      */
-#ifdef ti_sysbios_BIOS_useSK__D
-    SK_cacheL1DChangeSize(size->l1dSize);
-    SK_cacheL1PChangeSize(size->l1pSize);
+    Cache_setL1DCFG(size->l1dSize);
 
-#else
-    *L1DCFG = size->l1dSize;
-    *L1PCFG = size->l1pSize;
-
-#endif
-    *L1DCFG;
-    *L1PCFG;
+    Cache_getL1DCFG();
 
     /* end of critical section -- restore interrupts */
     Hwi_restore(mask);
-#endif
 }
 
 /*
@@ -566,10 +135,11 @@ Void Cache_setSize(Cache_Size *size)
  *  Cache_L2_1024K.
  *  If value of L1 size is greater than Cache_L1_32K then return
  *  Cache_L1_32K.
+ *  If value of L1 size is less than Cache_L1_8K then return
+ *  Cache_L1_8K.
  */
 Void Cache_getSize(Cache_Size *size)
 {
-#if 0
     UInt        tmpSize;
 
     /*
@@ -577,7 +147,7 @@ Void Cache_getSize(Cache_Size *size)
      *  Return Cache_L2Size_1024K if register value is equal or greater than
      *  Cache_L2Size_1024K. This is the largest size defined in the .xdc file.
      */
-    tmpSize = *L2CFG & L2CFG_MODE_MASK;
+    tmpSize = Cache_getL2CFG() & L2CFG_MODE_MASK;
     if (tmpSize > Cache_L2Size_1024K) {
         tmpSize = Cache_L2Size_1024K;
     }
@@ -587,34 +157,22 @@ Void Cache_getSize(Cache_Size *size)
      *  Read the L1D register
      *  Its possible the register value is greater than 4 in which case
      *  we simply return 4 since values greater than 4 is equivalent to 4.
+     *  Its possible the register value is less than 2 in which case
+     *  we simply return 2 since values less than 2 is equivalent to 2.
      */
-    tmpSize = *L1DCFG;
+    tmpSize = Cache_getL1DCFG();
     if (tmpSize > Cache_L1Size_32K) {
         tmpSize = Cache_L1Size_32K;
+    }
+    else if (tmpSize < Cache_L1Size_8K) {
+        tmpSize = Cache_L1Size_8K;
     }
     size->l1dSize = (Cache_L1Size)tmpSize;
 
     /*
-     *  Read the L1P register
-     *  Its possible the register value is greater than 4 in which case
-     *  we simply return 4 since values greater than 4 is equivalent to 4.
+     * L1P is a non-configurable 32KB cache.
      */
-    tmpSize = *L1PCFG;
-    if (tmpSize > Cache_L1Size_32K) {
-        tmpSize = Cache_L1Size_32K;
-    }
-    size->l1pSize = (Cache_L1Size)tmpSize;
-#endif
-}
-
-/*
- *  ======== Cache_invL1pAll ========
- *  Performs a global invalidate of L1P cache.
- *  Polls the L1P invalidate register until done.
- */
-Void Cache_invL1pAll()
-{
-    Cache_all(L1PINV);
+    size->l1pSize = Cache_L1Size_32K;
 }
 
 /*
@@ -626,7 +184,7 @@ Void Cache_invL1pAll()
  */
 Void Cache_wbAll()
 {
-    Cache_all(L2WB);
+    Cache_setL2WB(1);
 }
 
 /*
@@ -635,7 +193,7 @@ Void Cache_wbAll()
  */
 Void Cache_wbL1dAll()
 {
-    Cache_all(L1DWB);
+    Cache_setL1DWB(1);
 }
 
 /*
@@ -647,7 +205,7 @@ Void Cache_wbL1dAll()
  */
 Void Cache_wbInvAll()
 {
-    Cache_all(L2WBINV);
+    Cache_setL2WBINV(1);
 }
 
 /*
@@ -656,7 +214,7 @@ Void Cache_wbInvAll()
  */
 Void Cache_wbInvL1dAll()
 {
-    Cache_all(L1DWBINV);
+    Cache_setL1DWBINV(1);
 }
 
 /*
@@ -669,7 +227,11 @@ Void Cache_wbInvL1dAll()
  */
 Void Cache_inv(Ptr blockPtr, SizeT byteCnt, Bits16 type, Bool wait)
 {
-    Cache_block(blockPtr, byteCnt, wait, L2IBAR);
+    __se_cache_op((void *)blockPtr, __DCICNS, byteCnt);
+
+    if (wait) {
+        Cache_wait();
+    }
 }
 
 /*
@@ -684,7 +246,11 @@ Void Cache_inv(Ptr blockPtr, SizeT byteCnt, Bits16 type, Bool wait)
  */
 Void Cache_wb(Ptr blockPtr, SizeT byteCnt, Bits16 type, Bool wait)
 {
-    Cache_block(blockPtr, byteCnt, wait, L2WBAR);
+    __se_cache_op((void *)blockPtr, __DCCCNS, byteCnt);
+
+    if (wait) {
+        Cache_wait();
+    }
 }
 
 /*
@@ -699,22 +265,11 @@ Void Cache_wb(Ptr blockPtr, SizeT byteCnt, Bits16 type, Bool wait)
  */
 Void Cache_wbInv(Ptr blockPtr, SizeT byteCnt, Bits16 type, Bool wait)
 {
-    Cache_block(blockPtr, byteCnt, wait, L2WIBAR);
-}
+    __se_cache_op((void *)blockPtr, __DCCICNS, byteCnt);
 
-/*
- *  ======== Cache_invPrefetchBuffer ========
- *  Invalidate the prefetch buffer.
- */
-Void Cache_invPrefetchBuffer()
-{
-#if 0
-    volatile UInt32 *xpfcmd;
-
-    xpfcmd = XPFCMD;
-
-    xpfcmd[0] = 1;
-#endif
+    if (wait) {
+        Cache_wait();
+    }
 }
 
 /*
@@ -728,7 +283,6 @@ Void Cache_invPrefetchBuffer()
  */
 Void Cache_wait()
 {
-#if 0
     /*
      *  Stall CPU while memory system is busy.
      */
@@ -736,5 +290,4 @@ Void Cache_wait()
 
     /* do a 2nd mfence as per single mfence silicon errata */
     _mfence();
-#endif
 }

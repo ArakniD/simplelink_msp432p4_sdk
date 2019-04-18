@@ -10,5 +10,6 @@ var searchData=
   ['erasefxn',['eraseFxn',['../struct_n_v_s___fxn_table.html#a638a6cf443ca76532ba9b7b564379de2',1,'NVS_FxnTable']]],
   ['err_5fcode',['err_code',['../structspiffs__t.html#a5a2359dde97d3ce7158b0ed37ecca219',1,'spiffs_t']]],
   ['errorfxn',['errorFxn',['../struct_u_a_r_t_m_s_p432___h_w_attrs_v1.html#a7f5aaf37bb47f9cc0645a0e1baf3b730',1,'UARTMSP432_HWAttrsV1']]],
-  ['eventtypes',['eventTypes',['../struct_power___notify_obj__.html#adb0fa41aea52ab44984ba3ed2d4181ee',1,'Power_NotifyObj_']]]
+  ['eventtypes',['eventTypes',['../struct_power___notify_obj.html#a2fc010ad9ca5f6827323308aa56709ca',1,'Power_NotifyObj']]],
+  ['execution',['execution',['../doxygen__drivers_8txt.html#a9917c979dcc462431c4539f38f63c90e',1,'doxygen_drivers.txt']]]
 ];

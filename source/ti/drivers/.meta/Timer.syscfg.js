@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,15 +40,6 @@
 let Common   = system.getScript("/ti/drivers/Common.js");
 let family   = Common.device2Family(system.deviceData, "Timer");
 
-/* Intro splash on GUI */
-let longDescription = "The timer driver serves as the main interface "
-    + "for a typical RTOS application. Its purpose is to redirect the "
-    + "timer APIs to device specific implementations which are specified "
-    + "using a pointer to a Timer_FxnTable. The device specific "
-    + "implementations are responsible for creating all the RTOS "
-    + "specific primitives to allow for thead-safe operation.";
-
-
 let intPriority = Common.newIntPri()[0];
 intPriority.name = "interruptPriority";
 intPriority.displayName = "Interrupt Priority";
@@ -88,11 +79,22 @@ function validate(inst, validation)
 let base = {
     displayName         : "Timer",
     description         : "Timer Driver",
-    longDescription     : longDescription,
-    documentation: "/tidrivers/doxygen/html/_timer_8h.html",
+    longDescription     : `
+The [__Timer driver__][1] allows you to manage a Timer peripheral via simple 
+and portable APIs.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+
+[1]: /tidrivers/doxygen/html/_timer_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_timer_8h.html#ti_drivers_Timer_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_timer_8h.html#ti_drivers_Timer_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#Timer_Configuration_Options "Configuration options reference"
+`,
     defaultInstanceName : "Board_TIMER",
-    config              : timerConfig,
-    modules             : Common.autoForcePowerModule,
+    config              : Common.addNameConfig(timerConfig, "/ti/drivers/Timer", "Board_TIMER"),
+    modules             : Common.autoForceModules(["Board", "Power"]),
     validate            : validate
 };
 

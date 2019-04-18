@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,16 +45,16 @@ let config = [
     {
         name: "manager",
         displayName: "Manager",
-        description: "Manger of the SPI driver instance.",
+        description: "Manager of the SPI driver instance.",
         default: "NVS",
         options: [
             {
                 name: "NVS",
-                description: "NVS driver internally creates a SPI instance.",
+                description: "NVS driver internally creates a SPI instance."
             },
             {
                 name: "User",
-                description: "User responsible for a SPI instance.",
+                description: "User responsible for a SPI instance."
             }
         ],
         onChange: updateConfigs
@@ -206,7 +206,7 @@ function sharedModuleInstances(inst) {
  */
 exports = {
     config: config,
-    defaultInstanceName: "SPI_Flash_Device",
+    defaultInstanceName: "Board_NVS_SPI",
     filterHardware: filterHardware,
     sharedModuleInstances: sharedModuleInstances,
     moduleInstances: moduleInstances,

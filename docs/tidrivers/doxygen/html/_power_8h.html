@@ -67,20 +67,45 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Power Manager interface. </p>
-<p>============================================================================</p>
-<p>The Power header file should be included in an application as follows: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_power_8h.html">ti/drivers/Power.h</a>&gt;</span></div></div><!-- fragment --><h1>Operation</h1>
-<p>The Power Manager facilitates the transition of the MCU from active states to sleep states and vice versa. It provides other drivers the ability to set and release dependencies on hardware resources, and keeps reference counts on each resource to know when to enable or disable the resource. It provides drivers the ability to register callback functions to be invoked upon specific power events. In addition, drivers and applications can set or release constraints to prevent the MCU from transitioning into specific active or sleep states.</p>
-<p><b>The Power Manager APIs and configuration parameters are described here. For a detailed description of terms and concepts, and usage by different types of software components (peripheral drivers, power policies, and applications) please see the <a href="../../Power_Management.pdf">SimpleLink SDK Power Management User's Guide</a>.</b> </p><hr/>
-</div><div class="textblock"><code>#include &lt;stdbool.h&gt;</code><br />
-<code>#include &lt;stdint.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="_list_8h_source.html">ti/drivers/utils/List.h</a>&gt;</code><br />
+<div class="textblock"><p>Power Manager. </p>
+<hr/>
+<p><a class="anchor" id="ti_drivers_Power_Overview"></a></p><h1>Overview</h1>
+<p>The Power Manager facilitates the transition of the MCU from active states to sleep states and vice versa. It provides other drivers the ability to set and release dependencies on hardware resources, and keeps reference counts on each resource to know when to enable or disable the resource. It provides drivers the ability to register callback functions to be invoked upon specific power events. In addition, drivers and applications can set or release constraints to prevent the MCU from transitioning into specific active or sleep states. Refer to the device specific power driver header file device specific information.</p>
+<hr/>
+<p> <a class="anchor" id="ti_drivers_Power_Usage"></a></p><h1>Usage</h1>
+<p>This documentation provides a basic <a class="el" href="_power_8h.html#ti_drivers_Power_Synopsis">usage summary</a> and a set of <a class="el" href="_power_8h.html#ti_drivers_Power_Examples">examples</a> in the form of commented code fragments. Detailed descriptions of the APIs are provided in subsequent sections. <a class="anchor" id="ti_drivers_Power_Synopsis"></a></p><h2>Synopsis</h2>
+<p><a class="anchor" id="ti_drivers_Power_Synopsis_Code"></a> </p><dl class="section note"><dt>Note</dt><dd><b> The following example demonstrates usage of some of the Power driver APIs.This example is intended for reference only and is not intended for application use. You should refer to the device specific Power driver header for valid API usage and arguments. </b></dd></dl>
+<div class="fragment"><div class="line"><span class="comment">// Import Power Driver definitions</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_power_8h.html">ti/drivers/Power.h</a>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">// One-time initialization of Power manager</span></div><div class="line"><a class="code" href="_power_8h.html#a3c4e1eab2809636848b2758fb201707c">Power_init</a>();</div><div class="line"></div><div class="line"><span class="comment">// Set power dependency on a resource</span></div><div class="line">status = <a class="code" href="_power_8h.html#a25f2b780b7ea1ff1f515115fe1c2f519">Power_setDependency</a>(resourceId);</div><div class="line"><span class="keywordflow">if</span> (status != <a class="code" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>) {</div><div class="line">    <span class="comment">// Error occurred</span></div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Set a power constraint</span></div><div class="line">status = <a class="code" href="_power_8h.html#a45bde4b6fc658e81dc70701e8bdc947a">Power_setConstraint</a>(constraintId);</div><div class="line"><span class="keywordflow">if</span> (status != <a class="code" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>) {</div><div class="line">    <span class="comment">// Error occurred</span></div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Other application code</span></div><div class="line"></div><div class="line"><span class="comment">// Release a previously set power constraint</span></div><div class="line">status = <a class="code" href="_power_8h.html#acc3b76add2f8fadd70bb747d7dd0f8e8">Power_releaseConstraint</a>(constraintId);</div><div class="line"><span class="keywordflow">if</span> (status != <a class="code" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>) {</div><div class="line">    <span class="comment">// Error occurred</span></div><div class="line">}</div><div class="line"></div><div class="line">status = <a class="code" href="_power_8h.html#a74f45b58c200fa042614e4a892f58a2d">Power_releaseDependency</a>(resourceId);</div><div class="line"><span class="keywordflow">if</span> (status != <a class="code" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>) {</div><div class="line">    <span class="comment">// Error occurred</span></div><div class="line">}</div></div><!-- fragment --><hr/>
+<p> <a class="anchor" id="ti_drivers_Power_Examples"></a></p><h1>Examples</h1>
+<dl class="section note"><dt>Note</dt><dd><b>The following examples are intended for reference only and are not intended for application use. You should refer to the device specific Power driver header file for more usage information.</b></dd></dl>
+<ul>
+<li><a class="el" href="_power_8h.html#ti_drivers_Power_Examples_enable">Enabling power policy</a> </li>
+<li><a class="el" href="_power_8h.html#ti_drivers_Power_Examples_disable">Disabling power policy</a> </li>
+<li><a class="el" href="_power_8h.html#ti_drivers_Power_Examples_constraint">Using power constraints</a> </li>
+<li><a class="el" href="_power_8h.html#ti_drivers_Power_Examples_dependency">Using power dependency</a> </li>
+<li><a class="el" href="_power_8h.html#ti_drivers_Power_Examples_notify">Using power notify</a> </li>
+<li><a class="el" href="_power_8h.html#ti_drivers_Power_Examples_transistion">Power transitions</a></li>
+</ul>
+<p><a class="anchor" id="ti_drivers_Power_Examples_enable"></a></p><h2>Enabling Power Policy</h2>
+<div class="fragment"><div class="line"><span class="comment">// Import Power Driver definitions</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_power_8h.html">ti/drivers/Power.h</a>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">// One-time initialization of Power manager</span></div><div class="line"><a class="code" href="_power_8h.html#a3c4e1eab2809636848b2758fb201707c">Power_init</a>();</div><div class="line"></div><div class="line"><span class="comment">// Enable power policy</span></div><div class="line"><a class="code" href="_power_8h.html#ae8d6092a8fb35b6db52a69a35fcc327f">Power_enablePolicy</a>();</div></div><!-- fragment --><p><a class="anchor" id="ti_drivers_Power_Examples_disable"></a></p><h2>Disabling Power Policy</h2>
+<div class="fragment"><div class="line"><span class="comment">// Import Power Driver definitions</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_power_8h.html">ti/drivers/Power.h</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keywordtype">bool</span> flag;</div><div class="line"></div><div class="line"><span class="comment">// One-time initialization of Power manager</span></div><div class="line"><a class="code" href="_power_8h.html#a3c4e1eab2809636848b2758fb201707c">Power_init</a>();</div><div class="line"></div><div class="line"><span class="comment">// Disable power policy</span></div><div class="line">flag = <a class="code" href="_power_8h.html#acf9706c39bd0fa07ec977dd643e5dd2a">Power_disablePolicy</a>();</div><div class="line"><span class="keywordflow">if</span> (flag == <span class="keyword">false</span>) {</div><div class="line">    <span class="comment">// Power policy was already disabled</span></div><div class="line">}</div></div><!-- fragment --><p><a class="anchor" id="ti_drivers_Power_Examples_constraint"></a></p><h2>Using Power Constraints</h2>
+<div class="fragment"><div class="line"><span class="comment">// Import Power Driver definitions</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_power_8h.html">ti/drivers/Power.h</a>&gt;</span></div><div class="line"></div><div class="line">uint32_t mask;</div><div class="line">int16_t status;</div><div class="line"></div><div class="line"><span class="comment">// One-time initialization of Power manager</span></div><div class="line"><a class="code" href="_power_8h.html#a3c4e1eab2809636848b2758fb201707c">Power_init</a>();</div><div class="line"></div><div class="line"><span class="comment">// Set a power constraint</span></div><div class="line">status = <a class="code" href="_power_8h.html#a45bde4b6fc658e81dc70701e8bdc947a">Power_setConstraint</a>(constraintId);</div><div class="line"><span class="keywordflow">if</span> (status != <a class="code" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>) {</div><div class="line">    <span class="comment">// Error occurred setting constraint</span></div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Read mask of currently set power constraints</span></div><div class="line">mask = <a class="code" href="_power_8h.html#a5a014bc499484e3340eed32b2aad9b56">Power_getConstraintMask</a>();</div><div class="line"></div><div class="line"><span class="comment">// Release previously set constraint</span></div><div class="line">status = <a class="code" href="_power_8h.html#acc3b76add2f8fadd70bb747d7dd0f8e8">Power_releaseConstraint</a>(constraintId);</div><div class="line"><span class="keywordflow">if</span> (status != <a class="code" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>) {</div><div class="line">    <span class="comment">// Error occurred releasing constraint</span></div><div class="line">}</div></div><!-- fragment --><p><a class="anchor" id="ti_drivers_Power_Examples_dependency"></a></p><h2>Using Power Dependency</h2>
+<div class="fragment"><div class="line"><span class="comment">// Import Power Driver definitions</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_power_8h.html">ti/drivers/Power.h</a>&gt;</span></div><div class="line"></div><div class="line">int16_t count;</div><div class="line">int16_t status;</div><div class="line"></div><div class="line"><span class="comment">// One-time initialization of Power manager</span></div><div class="line"><a class="code" href="_power_8h.html#a3c4e1eab2809636848b2758fb201707c">Power_init</a>();</div><div class="line"></div><div class="line"><span class="comment">// Set a power dependency</span></div><div class="line">status = <a class="code" href="_power_8h.html#a25f2b780b7ea1ff1f515115fe1c2f519">Power_setDependency</a>(resourceId);</div><div class="line"><span class="keywordflow">if</span> (status != <a class="code" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>) {</div><div class="line">    <span class="comment">// Error occurred setting dependency</span></div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Get the dependency count of the resource</span></div><div class="line">count = <a class="code" href="_power_8h.html#a3c4f3e678659b683126eef65aef4400b">Power_getDependencyCount</a>(resourceId);</div><div class="line"><span class="keywordflow">if</span> (count == <a class="code" href="group___power___status.html#ga200ab87d1e0ffbc4eb3864d18646e0f7">Power_EINVALIDINPUT</a>) {</div><div class="line">    <span class="comment">// Invalid resourceId used</span></div><div class="line">}</div><div class="line"></div><div class="line"><span class="keywordflow">if</span> (count &gt; 0) {</div><div class="line">    <span class="comment">// At least 1 dependency exists for the resource.</span></div><div class="line">    <span class="comment">// Regardless, we may safely release the dependency when we</span></div><div class="line">    <span class="comment">// no longer need the resource.</span></div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Release a power dependency</span></div><div class="line">status = <a class="code" href="_power_8h.html#a74f45b58c200fa042614e4a892f58a2d">Power_releaseDependency</a>(resourceId);</div><div class="line"><span class="keywordflow">if</span> (status != <a class="code" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>) {</div><div class="line">    <span class="comment">// Error occurred releasing dependency</span></div><div class="line">}</div></div><!-- fragment --><p><a class="anchor" id="ti_drivers_Power_Examples_notify"></a></p><h2>Using Power Notify</h2>
+<p>The application must define a <a class="el" href="_power_8h.html#ad6c365f54d37429c5bd32181e5dbf463" title="Power notify callback function used with the Power_registerNotify() ">Power_NotifyFxn</a> function and allocate memory for the <a class="el" href="struct_power___notify_obj.html" title="Power notify object structure. ">Power_NotifyObj</a> object.</p>
+<div class="fragment"><div class="line"><span class="comment">// Import Power Driver definitions</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_power_8h.html">ti/drivers/Power.h</a>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">// Application Power_NotifyObj object</span></div><div class="line"><a class="code" href="struct_power___notify_obj.html">Power_NotifyObj</a> powerNotifyObj;</div><div class="line"></div><div class="line"><span class="comment">// Application Power_NotifyFxn function prototype</span></div><div class="line"><span class="keyword">static</span> <span class="keywordtype">int</span> postNotifyFxn(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> eventType, uintptr_t eventArg,</div><div class="line">                         uintptr_t clientArg);</div></div><!-- fragment --><p>The application must register for the event. Here, we use pseudo event names. You should refer to the device specific power driver header file for eventTypes. Inside the infinite loop, we wait for a semaphore to be post from our notification callback.</p>
+<div class="fragment"><div class="line"><span class="comment">// Application thread</span></div><div class="line"><span class="keywordtype">void</span> thread(<span class="keywordtype">void</span>)</div><div class="line">{</div><div class="line">    int16_t status;</div><div class="line">    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> eventTypes = LOW_POWER_EXIT | LOW_POWER_ENTER;</div><div class="line">    uintptr_t clientArg = semaphoreHandle;</div><div class="line"></div><div class="line">    status = <a class="code" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e">Power_registerNotify</a>(&amp;powerNotifyObj, eventTypes,</div><div class="line">                                  postNotifyFxn, clientArg);</div><div class="line"></div><div class="line">    <span class="keywordflow">while</span> (1)</div><div class="line">    {</div><div class="line">        sem_wait(semaphoreHandle);</div><div class="line">        <span class="comment">// Do something</span></div><div class="line"></div><div class="line">        <span class="comment">// Unregister for the notification. After this call,</span></div><div class="line">        <span class="comment">// our postNotifyFxn() will never be called again unless</span></div><div class="line">        <span class="comment">// we use Power_registerNotify() again.</span></div><div class="line">        <a class="code" href="_power_8h.html#ac32c17ce6da099da97957f08ddb000b4">Power_unregisterNotify</a>(&amp;powerNotifyObj);</div><div class="line"></div><div class="line">        <span class="keywordflow">break</span>;</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><p>The application may implement the power notify function to fit their needs. The <a class="el" href="_power_8h.html#ad6c365f54d37429c5bd32181e5dbf463" title="Power notify callback function used with the Power_registerNotify() ">Power_NotifyFxn</a> should always return <a class="el" href="group___power___notify___response.html#ga98c91c03b469de0cf4f53b89a867ee19">Power_NOTIFYDONE</a> or <a class="el" href="group___power___notify___response.html#ga98066f45fce59fd38d8edcb6f2ac96fd">Power_NOTIFYERROR</a>.</p>
+<div class="fragment"><div class="line"><span class="comment">// Application Power_NotifyFxn function implementation</span></div><div class="line"><span class="keyword">static</span> <span class="keywordtype">int</span> postNotifyFxn(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> eventType, uintptr_t eventArg,</div><div class="line">                         uintptr_t clientArg)</div><div class="line">{</div><div class="line">    sem_t semaphoreHandle = (sem_t) clientArg;</div><div class="line"></div><div class="line">    <span class="keywordflow">if</span> (eventType == LOW_POWER_EXIT) {</div><div class="line">        sem_post(semaphoreHandle);</div><div class="line">        <span class="keywordflow">return</span> (<a class="code" href="group___power___notify___response.html#ga98c91c03b469de0cf4f53b89a867ee19">Power_NOTIFYDONE</a>);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="keywordflow">if</span> (eventType == LOW_POWER_ENTER) {</div><div class="line">        <span class="comment">// Store something in RAM</span></div><div class="line">        <span class="keywordflow">return</span> (<a class="code" href="group___power___notify___response.html#ga98c91c03b469de0cf4f53b89a867ee19">Power_NOTIFYDONE</a>);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="comment">// We received an unexpected event type</span></div><div class="line">    <span class="keywordflow">return</span> (<a class="code" href="group___power___notify___response.html#ga98066f45fce59fd38d8edcb6f2ac96fd">Power_NOTIFYERROR</a>);</div><div class="line">}</div></div><!-- fragment --><p><a class="anchor" id="ti_drivers_Power_Examples_transistion"></a></p><h2>Power transitions</h2>
+<div class="fragment"><div class="line"><span class="comment">// Import Power Driver definitions</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_power_8h.html">ti/drivers/Power.h</a>&gt;</span></div><div class="line"></div><div class="line">uint32_t totalLatency, resumeLatency;</div><div class="line">int16_t status;</div><div class="line"></div><div class="line"><span class="comment">// One-time initialization of Power manager</span></div><div class="line"><a class="code" href="_power_8h.html#a3c4e1eab2809636848b2758fb201707c">Power_init</a>();</div><div class="line"></div><div class="line"><span class="comment">// Get the current power transition state</span></div><div class="line">status = <a class="code" href="_power_8h.html#a20509b474f5e68c9d36832199d167b9b">Power_getTransitionState</a>();</div><div class="line"></div><div class="line"><span class="keywordflow">switch</span> (status)</div><div class="line">{</div><div class="line">    <span class="keywordflow">case</span> <a class="code" href="group___power___transition___state.html#ga01074d8221d330077fbe040b9143e183">Power_ACTIVE</a>:</div><div class="line">      <span class="comment">// No transitions in progress</span></div><div class="line">      <span class="keywordflow">break</span>;</div><div class="line">    <span class="keywordflow">case</span> <a class="code" href="group___power___transition___state.html#ga6038b3877b09c908834af7d46595b989">Power_ENTERING_SLEEP</a>:</div><div class="line">      <span class="comment">// Transition to sleep in progress</span></div><div class="line">      <span class="keywordflow">break</span>;</div><div class="line">    <span class="keywordflow">case</span> <a class="code" href="group___power___transition___state.html#ga1ea41cdfb6fb053eaed2792c4edf886d">Power_EXITING_SLEEP</a>:</div><div class="line">      <span class="comment">// Transition from sleep in progress</span></div><div class="line">      <span class="keywordflow">break</span>;</div><div class="line">    <span class="keywordflow">case</span> <a class="code" href="group___power___transition___state.html#ga2b7d4ba49a9418af10c84132a8cbf108">Power_CHANGING_PERF_LEVEL</a>:</div><div class="line">      <span class="comment">// Performance level change in progress</span></div><div class="line">      <span class="keywordflow">break</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Get the Power_TOTAL and Power_RESUME transition latency for a</span></div><div class="line"><span class="comment">// device specific sleepState. Latency is in microseconds.</span></div><div class="line">totalLatency = <a class="code" href="_power_8h.html#a54c4704ee529e55633288b0bd49ad583">Power_getTransitionLatency</a>(sleepState, <a class="code" href="group___power___latency___type.html#gaa5e33b10202cc5a261c1800b4ae1de3e">Power_TOTAL</a>);</div><div class="line">resumeLatency = <a class="code" href="_power_8h.html#a54c4704ee529e55633288b0bd49ad583">Power_getTransitionLatency</a>(sleepState, <a class="code" href="group___power___latency___type.html#ga7343f6504f2df361dca3760a97584371">Power_RESUME</a>);</div></div><!-- fragment --><hr/>
+<p> <a class="anchor" id="ti_drivers_Power_Configuration"></a></p><h1>Configuration</h1>
+<dl class="section note"><dt>Note</dt><dd>The Power Manager APIs and configuration parameters are described here. For a detailed description of terms and concepts, and usage by different types of software components (peripheral drivers, power policies, and applications) please see the <a href="../../Power_Management.pdf">SimpleLink SDK Power Management User's Guide</a>. <hr/>
+ </dd></dl>
+</div><div class="textblock"><code>#include &lt;<a class="el" href="_list_8h_source.html">ti/drivers/utils/List.h</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Power.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_power_8h__incl.png" border="0" usemap="#_power_8h" alt=""/></div>
 <map name="_power_8h" id="_power_8h">
-<area shape="rect" id="node4" href="_list_8h.html" title="Linked List interface for use in drivers. " alt="" coords="75,80,211,107"/>
+<area shape="rect" id="node2" href="_list_8h.html" title="Linked List interface for use in drivers. " alt="" coords="65,80,201,107"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -88,11 +113,11 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_power_8h__dep__incl.png" border="0" usemap="#_power_8hdep" alt=""/></div>
 <map name="_power_8hdep" id="_power_8hdep">
-<area shape="rect" id="node2" href="_a_d_c_m_s_p432_8h.html" title="ADC driver implementation for the ADC peripheral on MSP432. " alt="" coords="5,80,117,107"/>
+<area shape="rect" id="node2" href="_a_d_c_m_s_p432_8h.html" title="ADC driver implementation for the ADC peripheral on MSP432P4. " alt="" coords="5,80,117,107"/>
 <area shape="rect" id="node3" href="_a_d_c_buf_m_s_p432_8h.html" title="ADC driver implementation for a MSP432 analog&#45;to&#45;digital converter. " alt="" coords="142,80,274,107"/>
 <area shape="rect" id="node4" href="_i2_c_m_s_p432_8h.html" title="I2C driver implementation for the EUSCI controller on MSP432. " alt="" coords="299,80,403,107"/>
 <area shape="rect" id="node5" href="_i2_c_slave_m_s_p432_8h.html" title="I2CSlave driver implementation for the EUSCI controller on MSP432. " alt="" coords="427,80,565,107"/>
-<area shape="rect" id="node6" href="_power_m_s_p432_8h.html" title="Power manager interface for the MSP432. " alt="" coords="589,80,709,107"/>
+<area shape="rect" id="node6" href="_power_m_s_p432_8h.html" title="Power Driver interface for the MSP432P4. " alt="" coords="589,80,709,107"/>
 <area shape="rect" id="node7" href="_p_w_m_timer_m_s_p432_8h.html" title="PWM driver implementation using MSP432 Timer_A peripherals. " alt="" coords="733,80,883,107"/>
 <area shape="rect" id="node8" href="_s_p_i_m_s_p432_d_m_a_8h.html" title="SPI driver implementation for a EUSCI peripheral on MSP432 using the micro DMA controller. " alt="" coords="907,80,1042,107"/>
 <area shape="rect" id="node9" href="_timer_m_s_p432_8h.html" title="Timer driver interface for MSP432 devices. " alt="" coords="1066,80,1182,107"/>
@@ -105,42 +130,42 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_power___notify_obj__.html">Power_NotifyObj_</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power notify object structure.  <a href="struct_power___notify_obj__.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_power___notify_obj.html">Power_NotifyObj</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power notify object structure.  <a href="struct_power___notify_obj.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:aa5e33b10202cc5a261c1800b4ae1de3e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#aa5e33b10202cc5a261c1800b4ae1de3e">Power_TOTAL</a>&#160;&#160;&#160;(1U)</td></tr>
-<tr class="separator:aa5e33b10202cc5a261c1800b4ae1de3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7343f6504f2df361dca3760a97584371"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a7343f6504f2df361dca3760a97584371">Power_RESUME</a>&#160;&#160;&#160;(2U)</td></tr>
-<tr class="separator:a7343f6504f2df361dca3760a97584371"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98c91c03b469de0cf4f53b89a867ee19"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a98c91c03b469de0cf4f53b89a867ee19">Power_NOTIFYDONE</a>&#160;&#160;&#160;(0)</td></tr>
-<tr class="separator:a98c91c03b469de0cf4f53b89a867ee19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98066f45fce59fd38d8edcb6f2ac96fd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a98066f45fce59fd38d8edcb6f2ac96fd">Power_NOTIFYERROR</a>&#160;&#160;&#160;(-1)</td></tr>
-<tr class="separator:a98066f45fce59fd38d8edcb6f2ac96fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92eed670a5d7e3d43f612ca0da9d3fe2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>&#160;&#160;&#160;(0)</td></tr>
-<tr class="separator:a92eed670a5d7e3d43f612ca0da9d3fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed2f92a8c72bfa183e14d10a2e35789f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#aed2f92a8c72bfa183e14d10a2e35789f">Power_EFAIL</a>&#160;&#160;&#160;(-1)</td></tr>
-<tr class="separator:aed2f92a8c72bfa183e14d10a2e35789f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a200ab87d1e0ffbc4eb3864d18646e0f7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a200ab87d1e0ffbc4eb3864d18646e0f7">Power_EINVALIDINPUT</a>&#160;&#160;&#160;(-2)</td></tr>
-<tr class="separator:a200ab87d1e0ffbc4eb3864d18646e0f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d24bacb087e8282be2e4394503a429a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a0d24bacb087e8282be2e4394503a429a">Power_EINVALIDPOINTER</a>&#160;&#160;&#160;(-3)</td></tr>
-<tr class="separator:a0d24bacb087e8282be2e4394503a429a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4e7b580b1c9c026036bf53befe5723b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#aa4e7b580b1c9c026036bf53befe5723b">Power_ECHANGE_NOT_ALLOWED</a>&#160;&#160;&#160;(-4)</td></tr>
-<tr class="separator:aa4e7b580b1c9c026036bf53befe5723b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3132904395c5631392bd6301d9a2181e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a3132904395c5631392bd6301d9a2181e">Power_EBUSY</a>&#160;&#160;&#160;(-5)</td></tr>
-<tr class="separator:a3132904395c5631392bd6301d9a2181e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01074d8221d330077fbe040b9143e183"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a01074d8221d330077fbe040b9143e183">Power_ACTIVE</a>&#160;&#160;&#160;(1U)</td></tr>
-<tr class="separator:a01074d8221d330077fbe040b9143e183"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6038b3877b09c908834af7d46595b989"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a6038b3877b09c908834af7d46595b989">Power_ENTERING_SLEEP</a>&#160;&#160;&#160;(2U)</td></tr>
-<tr class="separator:a6038b3877b09c908834af7d46595b989"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ea41cdfb6fb053eaed2792c4edf886d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a1ea41cdfb6fb053eaed2792c4edf886d">Power_EXITING_SLEEP</a>&#160;&#160;&#160;(3U)</td></tr>
-<tr class="separator:a1ea41cdfb6fb053eaed2792c4edf886d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad09d75dfaa5d799c4f044df9814db485"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#ad09d75dfaa5d799c4f044df9814db485">Power_ENTERING_SHUTDOWN</a>&#160;&#160;&#160;(4U)</td></tr>
-<tr class="separator:ad09d75dfaa5d799c4f044df9814db485"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b7d4ba49a9418af10c84132a8cbf108"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a2b7d4ba49a9418af10c84132a8cbf108">Power_CHANGING_PERF_LEVEL</a>&#160;&#160;&#160;(5U)</td></tr>
-<tr class="separator:a2b7d4ba49a9418af10c84132a8cbf108"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa5e33b10202cc5a261c1800b4ae1de3e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___latency___type.html#gaa5e33b10202cc5a261c1800b4ae1de3e">Power_TOTAL</a>&#160;&#160;&#160;(1U)</td></tr>
+<tr class="separator:gaa5e33b10202cc5a261c1800b4ae1de3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7343f6504f2df361dca3760a97584371"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___latency___type.html#ga7343f6504f2df361dca3760a97584371">Power_RESUME</a>&#160;&#160;&#160;(2U)</td></tr>
+<tr class="separator:ga7343f6504f2df361dca3760a97584371"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga98c91c03b469de0cf4f53b89a867ee19"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___notify___response.html#ga98c91c03b469de0cf4f53b89a867ee19">Power_NOTIFYDONE</a>&#160;&#160;&#160;(0)</td></tr>
+<tr class="separator:ga98c91c03b469de0cf4f53b89a867ee19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga98066f45fce59fd38d8edcb6f2ac96fd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___notify___response.html#ga98066f45fce59fd38d8edcb6f2ac96fd">Power_NOTIFYERROR</a>&#160;&#160;&#160;(-1)</td></tr>
+<tr class="separator:ga98066f45fce59fd38d8edcb6f2ac96fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga92eed670a5d7e3d43f612ca0da9d3fe2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>&#160;&#160;&#160;(0)</td></tr>
+<tr class="separator:ga92eed670a5d7e3d43f612ca0da9d3fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaed2f92a8c72bfa183e14d10a2e35789f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___status.html#gaed2f92a8c72bfa183e14d10a2e35789f">Power_EFAIL</a>&#160;&#160;&#160;(-1)</td></tr>
+<tr class="separator:gaed2f92a8c72bfa183e14d10a2e35789f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga200ab87d1e0ffbc4eb3864d18646e0f7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___status.html#ga200ab87d1e0ffbc4eb3864d18646e0f7">Power_EINVALIDINPUT</a>&#160;&#160;&#160;(-2)</td></tr>
+<tr class="separator:ga200ab87d1e0ffbc4eb3864d18646e0f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0d24bacb087e8282be2e4394503a429a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___status.html#ga0d24bacb087e8282be2e4394503a429a">Power_EINVALIDPOINTER</a>&#160;&#160;&#160;(-3)</td></tr>
+<tr class="separator:ga0d24bacb087e8282be2e4394503a429a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa4e7b580b1c9c026036bf53befe5723b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___status.html#gaa4e7b580b1c9c026036bf53befe5723b">Power_ECHANGE_NOT_ALLOWED</a>&#160;&#160;&#160;(-4)</td></tr>
+<tr class="separator:gaa4e7b580b1c9c026036bf53befe5723b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3132904395c5631392bd6301d9a2181e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___status.html#ga3132904395c5631392bd6301d9a2181e">Power_EBUSY</a>&#160;&#160;&#160;(-5)</td></tr>
+<tr class="separator:ga3132904395c5631392bd6301d9a2181e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga01074d8221d330077fbe040b9143e183"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___transition___state.html#ga01074d8221d330077fbe040b9143e183">Power_ACTIVE</a>&#160;&#160;&#160;(1U)</td></tr>
+<tr class="separator:ga01074d8221d330077fbe040b9143e183"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6038b3877b09c908834af7d46595b989"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___transition___state.html#ga6038b3877b09c908834af7d46595b989">Power_ENTERING_SLEEP</a>&#160;&#160;&#160;(2U)</td></tr>
+<tr class="separator:ga6038b3877b09c908834af7d46595b989"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1ea41cdfb6fb053eaed2792c4edf886d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___transition___state.html#ga1ea41cdfb6fb053eaed2792c4edf886d">Power_EXITING_SLEEP</a>&#160;&#160;&#160;(3U)</td></tr>
+<tr class="separator:ga1ea41cdfb6fb053eaed2792c4edf886d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad09d75dfaa5d799c4f044df9814db485"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___transition___state.html#gad09d75dfaa5d799c4f044df9814db485">Power_ENTERING_SHUTDOWN</a>&#160;&#160;&#160;(4U)</td></tr>
+<tr class="separator:gad09d75dfaa5d799c4f044df9814db485"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2b7d4ba49a9418af10c84132a8cbf108"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___power___transition___state.html#ga2b7d4ba49a9418af10c84132a8cbf108">Power_CHANGING_PERF_LEVEL</a>&#160;&#160;&#160;(5U)</td></tr>
+<tr class="separator:ga2b7d4ba49a9418af10c84132a8cbf108"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -151,11 +176,8 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:a333038d1e9cd5f93dda7b83f8a1afa8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power policy function pointer.  <a href="#a333038d1e9cd5f93dda7b83f8a1afa8b">More...</a><br /></td></tr>
 <tr class="separator:a333038d1e9cd5f93dda7b83f8a1afa8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6c365f54d37429c5bd32181e5dbf463"><td class="memItemLeft" align="right" valign="top">typedef int_fast16_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#ad6c365f54d37429c5bd32181e5dbf463">Power_NotifyFxn</a>) (uint_fast16_t eventType, uintptr_t eventArg, uintptr_t clientArg)</td></tr>
-<tr class="memdesc:ad6c365f54d37429c5bd32181e5dbf463"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power notify function pointer.  <a href="#ad6c365f54d37429c5bd32181e5dbf463">More...</a><br /></td></tr>
+<tr class="memdesc:ad6c365f54d37429c5bd32181e5dbf463"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power notify callback function used with the <a class="el" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e" title="Register a function to be called upon a specific power event. ">Power_registerNotify()</a>  <a href="#ad6c365f54d37429c5bd32181e5dbf463">More...</a><br /></td></tr>
 <tr class="separator:ad6c365f54d37429c5bd32181e5dbf463"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a380d08b754e6f3f096349ab5fc464209"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_power___notify_obj__.html">Power_NotifyObj_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a380d08b754e6f3f096349ab5fc464209">Power_NotifyObj</a></td></tr>
-<tr class="memdesc:a380d08b754e6f3f096349ab5fc464209"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power notify object structure.  <a href="#a380d08b754e6f3f096349ab5fc464209">More...</a><br /></td></tr>
-<tr class="separator:a380d08b754e6f3f096349ab5fc464209"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -186,7 +208,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a3c4e1eab2809636848b2758fb201707c"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a3c4e1eab2809636848b2758fb201707c">Power_init</a> (void)</td></tr>
 <tr class="memdesc:a3c4e1eab2809636848b2758fb201707c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power initialization function.  <a href="#a3c4e1eab2809636848b2758fb201707c">More...</a><br /></td></tr>
 <tr class="separator:a3c4e1eab2809636848b2758fb201707c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa89d120c82d4f23e6d4a337720b6300e"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e">Power_registerNotify</a> (<a class="el" href="_power_8h.html#a380d08b754e6f3f096349ab5fc464209">Power_NotifyObj</a> *pNotifyObj, uint_fast16_t eventTypes, <a class="el" href="_power_8h.html#ad6c365f54d37429c5bd32181e5dbf463">Power_NotifyFxn</a> notifyFxn, uintptr_t clientArg)</td></tr>
+<tr class="memitem:aa89d120c82d4f23e6d4a337720b6300e"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e">Power_registerNotify</a> (<a class="el" href="struct_power___notify_obj.html">Power_NotifyObj</a> *pNotifyObj, uint_fast16_t eventTypes, <a class="el" href="_power_8h.html#ad6c365f54d37429c5bd32181e5dbf463">Power_NotifyFxn</a> notifyFxn, uintptr_t clientArg)</td></tr>
 <tr class="memdesc:aa89d120c82d4f23e6d4a337720b6300e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a function to be called upon a specific power event.  <a href="#aa89d120c82d4f23e6d4a337720b6300e">More...</a><br /></td></tr>
 <tr class="separator:aa89d120c82d4f23e6d4a337720b6300e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc3b76add2f8fadd70bb747d7dd0f8e8"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#acc3b76add2f8fadd70bb747d7dd0f8e8">Power_releaseConstraint</a> (uint_fast16_t constraintId)</td></tr>
@@ -213,236 +235,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a45e1e0f3168cc39a2309fce40c3e271d"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#a45e1e0f3168cc39a2309fce40c3e271d">Power_sleep</a> (uint_fast16_t sleepState)</td></tr>
 <tr class="memdesc:a45e1e0f3168cc39a2309fce40c3e271d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transition the device into a sleep state.  <a href="#a45e1e0f3168cc39a2309fce40c3e271d">More...</a><br /></td></tr>
 <tr class="separator:a45e1e0f3168cc39a2309fce40c3e271d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac32c17ce6da099da97957f08ddb000b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#ac32c17ce6da099da97957f08ddb000b4">Power_unregisterNotify</a> (<a class="el" href="_power_8h.html#a380d08b754e6f3f096349ab5fc464209">Power_NotifyObj</a> *pNotifyObj)</td></tr>
+<tr class="memitem:ac32c17ce6da099da97957f08ddb000b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_power_8h.html#ac32c17ce6da099da97957f08ddb000b4">Power_unregisterNotify</a> (<a class="el" href="struct_power___notify_obj.html">Power_NotifyObj</a> *pNotifyObj)</td></tr>
 <tr class="memdesc:ac32c17ce6da099da97957f08ddb000b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregister previously registered notifications.  <a href="#ac32c17ce6da099da97957f08ddb000b4">More...</a><br /></td></tr>
 <tr class="separator:ac32c17ce6da099da97957f08ddb000b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="aa5e33b10202cc5a261c1800b4ae1de3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5e33b10202cc5a261c1800b4ae1de3e">&sect;&nbsp;</a></span>Power_TOTAL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_TOTAL&#160;&#160;&#160;(1U)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>total latency </p>
-
-</div>
-</div>
-<a id="a7343f6504f2df361dca3760a97584371"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7343f6504f2df361dca3760a97584371">&sect;&nbsp;</a></span>Power_RESUME</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_RESUME&#160;&#160;&#160;(2U)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>resume latency </p>
-
-</div>
-</div>
-<a id="a98c91c03b469de0cf4f53b89a867ee19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98c91c03b469de0cf4f53b89a867ee19">&sect;&nbsp;</a></span>Power_NOTIFYDONE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_NOTIFYDONE&#160;&#160;&#160;(0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>OK, notify completed </p>
-
-</div>
-</div>
-<a id="a98066f45fce59fd38d8edcb6f2ac96fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98066f45fce59fd38d8edcb6f2ac96fd">&sect;&nbsp;</a></span>Power_NOTIFYERROR</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_NOTIFYERROR&#160;&#160;&#160;(-1)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>an error occurred during notify </p>
-
-</div>
-</div>
-<a id="a92eed670a5d7e3d43f612ca0da9d3fe2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92eed670a5d7e3d43f612ca0da9d3fe2">&sect;&nbsp;</a></span>Power_SOK</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_SOK&#160;&#160;&#160;(0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>OK, operation succeeded </p>
-
-</div>
-</div>
-<a id="aed2f92a8c72bfa183e14d10a2e35789f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed2f92a8c72bfa183e14d10a2e35789f">&sect;&nbsp;</a></span>Power_EFAIL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_EFAIL&#160;&#160;&#160;(-1)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>general failure </p>
-
-</div>
-</div>
-<a id="a200ab87d1e0ffbc4eb3864d18646e0f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a200ab87d1e0ffbc4eb3864d18646e0f7">&sect;&nbsp;</a></span>Power_EINVALIDINPUT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_EINVALIDINPUT&#160;&#160;&#160;(-2)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>invalid data value </p>
-
-</div>
-</div>
-<a id="a0d24bacb087e8282be2e4394503a429a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d24bacb087e8282be2e4394503a429a">&sect;&nbsp;</a></span>Power_EINVALIDPOINTER</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_EINVALIDPOINTER&#160;&#160;&#160;(-3)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>invalid pointer </p>
-
-</div>
-</div>
-<a id="aa4e7b580b1c9c026036bf53befe5723b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4e7b580b1c9c026036bf53befe5723b">&sect;&nbsp;</a></span>Power_ECHANGE_NOT_ALLOWED</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_ECHANGE_NOT_ALLOWED&#160;&#160;&#160;(-4)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>change is not allowed </p>
-
-</div>
-</div>
-<a id="a3132904395c5631392bd6301d9a2181e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3132904395c5631392bd6301d9a2181e">&sect;&nbsp;</a></span>Power_EBUSY</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_EBUSY&#160;&#160;&#160;(-5)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>busy with another transition </p>
-
-</div>
-</div>
-<a id="a01074d8221d330077fbe040b9143e183"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01074d8221d330077fbe040b9143e183">&sect;&nbsp;</a></span>Power_ACTIVE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_ACTIVE&#160;&#160;&#160;(1U)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>normal active state </p>
-
-</div>
-</div>
-<a id="a6038b3877b09c908834af7d46595b989"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6038b3877b09c908834af7d46595b989">&sect;&nbsp;</a></span>Power_ENTERING_SLEEP</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_ENTERING_SLEEP&#160;&#160;&#160;(2U)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>entering a sleep state </p>
-
-</div>
-</div>
-<a id="a1ea41cdfb6fb053eaed2792c4edf886d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ea41cdfb6fb053eaed2792c4edf886d">&sect;&nbsp;</a></span>Power_EXITING_SLEEP</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_EXITING_SLEEP&#160;&#160;&#160;(3U)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>exiting a sleep state </p>
-
-</div>
-</div>
-<a id="ad09d75dfaa5d799c4f044df9814db485"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad09d75dfaa5d799c4f044df9814db485">&sect;&nbsp;</a></span>Power_ENTERING_SHUTDOWN</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_ENTERING_SHUTDOWN&#160;&#160;&#160;(4U)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>entering a shutdown state </p>
-
-</div>
-</div>
-<a id="a2b7d4ba49a9418af10c84132a8cbf108"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b7d4ba49a9418af10c84132a8cbf108">&sect;&nbsp;</a></span>Power_CHANGING_PERF_LEVEL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define Power_CHANGING_PERF_LEVEL&#160;&#160;&#160;(5U)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>moving to new performance level </p>
-
-</div>
-</div>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a435fdeb71d13ea6be86f599c9b6a0d78"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a435fdeb71d13ea6be86f599c9b6a0d78">&sect;&nbsp;</a></span>Power_PolicyInitFxn</h2>
@@ -488,24 +284,29 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Power notify function pointer. </p>
-
-</div>
-</div>
-<a id="a380d08b754e6f3f096349ab5fc464209"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a380d08b754e6f3f096349ab5fc464209">&sect;&nbsp;</a></span>Power_NotifyObj</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_power___notify_obj__.html">Power_NotifyObj_</a>  <a class="el" href="_power_8h.html#a380d08b754e6f3f096349ab5fc464209">Power_NotifyObj</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Power notify object structure. </p>
-<p>This struct specification is for internal use. Notification clients must pre-allocate a notify object when registering for a notification; <a class="el" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e" title="Register a function to be called upon a specific power event. ">Power_registerNotify()</a> will take care initializing the internal elements appropriately. </p>
+<p>Power notify callback function used with the <a class="el" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e" title="Register a function to be called upon a specific power event. ">Power_registerNotify()</a> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">eventType</td><td>The eventTypes parameter identifies the type of power event for which the notify callback function was called.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eventArg</td><td>An optional <code>eventType</code> specific argument.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">clientArg</td><td>Pointer to a custom argument.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___power___notify___response.html#ga98c91c03b469de0cf4f53b89a867ee19">Power_NOTIFYDONE</a></td><td>if the client processed the notification successfully</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___notify___response.html#ga98066f45fce59fd38d8edcb6f2ac96fd">Power_NOTIFYERROR</a></td><td>if an error occurred during notification.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e" title="Register a function to be called upon a specific power event. ">Power_registerNotify()</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ac32c17ce6da099da97957f08ddb000b4" title="Unregister previously registered notifications. ">Power_unregisterNotify()</a> </dd>
+<dd>
+<a class="el" href="struct_power___notify_obj.html" title="Power notify object structure. ">Power_NotifyObj</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ti_drivers_Power_Examples_notify">Using power notify</a> </dd></dl>
 
 </div>
 </div>
@@ -529,7 +330,11 @@ Functions</h2></td></tr>
 <p>Disable the configured power policy from running when the CPU is idle. </p>
 <p>Calling this function clears the flag that controls whether the configured power policy function is invoked on each pass through the Idle loop. This function call will override both a 'true' setting of the "enablePolicy" setting in the Power Manager configuration object, as well as a previous runtime call to the <a class="el" href="_power_8h.html#ae8d6092a8fb35b6db52a69a35fcc327f" title="Enable the configured power policy to run when the CPU is idle. ">Power_enablePolicy()</a> function.</p>
 <dl class="section return"><dt>Returns</dt><dd>The old value of "enablePolicy".</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#ae8d6092a8fb35b6db52a69a35fcc327f" title="Enable the configured power policy to run when the CPU is idle. ">Power_enablePolicy</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#ae8d6092a8fb35b6db52a69a35fcc327f" title="Enable the configured power policy to run when the CPU is idle. ">Power_enablePolicy()</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ti_drivers_Power_Examples_enable">Enabling power policy</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ti_drivers_Power_Examples_disable">Disabling power policy</a> </dd></dl>
 
 </div>
 </div>
@@ -552,7 +357,11 @@ Functions</h2></td></tr>
 <p>Enable the configured power policy to run when the CPU is idle. </p>
 <p>Calling this function sets a flag that will cause the configured power policy function to be invoked on each pass through the Idle loop. This function call will override both a 'false' setting of the "enablePolicy" setting in the Power Manager configuration object, as well as a previous runtime call to the <a class="el" href="_power_8h.html#acf9706c39bd0fa07ec977dd643e5dd2a" title="Disable the configured power policy from running when the CPU is idle. ">Power_disablePolicy()</a> function.</p>
 <p>For some processor families, automatic power transitions can make initial application development more difficult, as well as being at odds with basic debugger operation. This convenience function allows an application to be initially configured, built, and debugged, without automatic power transitions during idle time. When the application is found to be working, this function can be called (typically in main()) to enable the policy to run, without having to change the application configuration.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#acf9706c39bd0fa07ec977dd643e5dd2a" title="Disable the configured power policy from running when the CPU is idle. ">Power_disablePolicy</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#acf9706c39bd0fa07ec977dd643e5dd2a" title="Disable the configured power policy from running when the CPU is idle. ">Power_disablePolicy()</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ti_drivers_Power_Examples_enable">Enabling power policy</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ti_drivers_Power_Examples_disable">Disabling power policy</a> </dd></dl>
 
 </div>
 </div>
@@ -574,9 +383,11 @@ Functions</h2></td></tr>
 
 <p>Get the constraints that have been declared with Power. </p>
 <p>This function returns a bitmask indicating the constraints that are currently declared to the Power Manager (via previous calls to <a class="el" href="_power_8h.html#a45bde4b6fc658e81dc70701e8bdc947a" title="Declare an operational constraint. ">Power_setConstraint()</a>). For each constraint that is currently declared, the corresponding bit in the bitmask will be set. For example, if two clients have independently declared two different constraints, the returned bitmask will have two bits set.</p>
-<p>Constraint identifiers are device specific, and defined in the device-specific Power include file. For example, the constraints for MSP432 are defined in <a class="el" href="_power_m_s_p432_8h.html" title="Power manager interface for the MSP432. ">PowerMSP432.h</a>. The corresponding bit in the bitmask returned by this function can be derived by a left-shift using the constraint identifier. For example, for MSP432, for the corresponding bit for the PowerMSP432_DISALLOW_SLEEP constraint, the bit position is determined by the operation: (1 &lt;&lt; PowerMSP432_DISALLOW_SLEEP)</p>
+<p>Constraint identifiers are device specific, and defined in the device-specific Power include file. For example, the constraints for MSP432 are defined in <a class="el" href="_power_m_s_p432_8h.html" title="Power Driver interface for the MSP432P4. ">PowerMSP432.h</a>. The corresponding bit in the bitmask returned by this function can be derived by a left-shift using the constraint identifier. For example, for MSP432, for the corresponding bit for the PowerMSP432_DISALLOW_SLEEP constraint, the bit position is determined by the operation: (1 &lt;&lt; PowerMSP432_DISALLOW_SLEEP)</p>
 <dl class="section return"><dt>Returns</dt><dd>A bitmask of the currently declared constraints.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#a45bde4b6fc658e81dc70701e8bdc947a" title="Declare an operational constraint. ">Power_setConstraint</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#a45bde4b6fc658e81dc70701e8bdc947a" title="Declare an operational constraint. ">Power_setConstraint()</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ti_drivers_Power_Examples_constraint">Using power constraints</a> </dd></dl>
 
 </div>
 </div>
@@ -601,12 +412,20 @@ Functions</h2></td></tr>
 <p>Resource identifiers are device specific, and defined in the device-specific Power include file. For example, the resources for CC32XX are defined in PowerCC32XX.h.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">resourceId</td><td>resource id</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">resourceId</td><td>resource id</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The number of dependencies declared for the resource. Power_EINVALIDINPUT if the resourceId is invalid.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#a25f2b780b7ea1ff1f515115fe1c2f519" title="Declare a dependency upon a resource. ">Power_setDependency</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of dependencies declared for the resource.</dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#ga200ab87d1e0ffbc4eb3864d18646e0f7">Power_EINVALIDINPUT</a></td><td>if the <code>resourceId</code> is invalid or this function is not supported by the device specific implementation.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#a25f2b780b7ea1ff1f515115fe1c2f519" title="Declare a dependency upon a resource. ">Power_setDependency()</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ti_drivers_Power_Examples_dependency">Using power dependency</a> </dd></dl>
 
 </div>
 </div>
@@ -630,7 +449,7 @@ Functions</h2></td></tr>
 <p>This function returns the current device performance level in effect.</p>
 <p>If performance scaling is not supported for the device, this function will always indicate a performance level of zero.</p>
 <dl class="section return"><dt>Returns</dt><dd>The current performance level.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#ae40483e9ed7c626a02399996d3a7878a" title="Set the MCU performance level. ">Power_setPerformanceLevel</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#ae40483e9ed7c626a02399996d3a7878a" title="Set the MCU performance level. ">Power_setPerformanceLevel()</a> </dd></dl>
 
 </div>
 </div>
@@ -666,12 +485,13 @@ Functions</h2></td></tr>
 <p>This function is typically called by the power policy function. The latency is reported in units of microseconds.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sleepState</td><td>the sleep state</td></tr>
-    <tr><td class="paramname">type</td><td>the latency type (Power_TOTAL or Power_RESUME)</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sleepState</td><td>the sleep state</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td><a class="el" href="group___power___latency___type.html">Power_Latency_Type</a> (<a class="el" href="group___power___latency___type.html#gaa5e33b10202cc5a261c1800b4ae1de3e">Power_TOTAL</a> or <a class="el" href="group___power___latency___type.html#ga7343f6504f2df361dca3760a97584371">Power_RESUME</a>)</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The latency value, in units of microseconds. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The latency value, in units of microseconds.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#ti_drivers_Power_Examples_transistion">Power transitions</a> </dd></dl>
 
 </div>
 </div>
@@ -692,8 +512,17 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get the current transition state of the Power Manager. </p>
-<p>This function returns the current transition state for the Power Manager. For example, when no transitions are in progress, a status of Power_ACTIVE is returned. Power_ENTERING_SLEEP is returned during the transition to sleep, before sleep has occurred. Power_EXITING_SLEEP is returned after wakeup, as the device is being transitioned back to Power_ACTIVE. And Power_CHANGING_PERF_LEVEL is returned when a change is being made to the performance level.</p>
-<dl class="section return"><dt>Returns</dt><dd>The current Power Manager transition state. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current <a class="el" href="group___power___transition___state.html">Power_Transition_State</a>.</dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___power___transition___state.html#ga01074d8221d330077fbe040b9143e183">Power_ACTIVE</a></td><td>returned when no transitions are in progress.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___transition___state.html#ga6038b3877b09c908834af7d46595b989">Power_ENTERING_SLEEP</a></td><td>returned during the transition to sleep, before sleep has occurred.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___transition___state.html#ga1ea41cdfb6fb053eaed2792c4edf886d">Power_EXITING_SLEEP</a></td><td>returned after wakeup, as the device is being transitioned back to <a class="el" href="group___power___transition___state.html#ga01074d8221d330077fbe040b9143e183">Power_ACTIVE</a>.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___transition___state.html#ga2b7d4ba49a9418af10c84132a8cbf108">Power_CHANGING_PERF_LEVEL</a></td><td>returned when a change is being made to the performance level.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#ti_drivers_Power_Examples_transistion">Power transitions</a> </dd></dl>
 
 </div>
 </div>
@@ -735,8 +564,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Power initialization function. </p>
-<p>This function initializes Power Manager internal state. It must be called prior to any other Power API. This function is normally called as part of TI-RTOS board initialization, for example, from within the &lt;board name&gt;_initGeneral() function.</p>
-<dl class="section return"><dt>Returns</dt><dd>Power_SOK </dd></dl>
+<p>This function initializes Power Manager internal state.</p>
+<dl class="section warning"><dt>Warning</dt><dd>The application is responsible for ensuring this function is called prior to any other Power API. Additionally, this function must be be called prior to any other TI-Driver's APIs. This function is normally called prior to any operating system initialization.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a> </dd></dl>
 
 </div>
 </div>
@@ -749,7 +579,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int_fast16_t Power_registerNotify </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_power_8h.html#a380d08b754e6f3f096349ab5fc464209">Power_NotifyObj</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_power___notify_obj.html">Power_NotifyObj</a> *&#160;</td>
           <td class="paramname"><em>pNotifyObj</em>, </td>
         </tr>
         <tr>
@@ -781,21 +611,29 @@ Functions</h2></td></tr>
 <p>Register a function to be called upon a specific power event. </p>
 <p>This function registers a function to be called when a Power event occurs. Registrations and the corresponding notifications are processed in first-in-first-out (FIFO) order. The function registered must behave as described later, below.</p>
 <p>The pNotifyObj parameter is a pointer to a pre-allocated, opaque object that will be used by Power to support the notification. This object could be dynamically allocated, or declared as a global object. This function will properly initialized the object's fields as appropriate; the caller just needs to provide a pointer to this pre-existing object.</p>
-<p>The eventTypes parameter identifies the type of power event(s) for which the notify function being registered is to be called. (Event identifiers are device specific, and defined in the device-specific Power include file. For example, the events for MSP432 are defined in <a class="el" href="_power_m_s_p432_8h.html" title="Power manager interface for the MSP432. ">PowerMSP432.h</a>.) The eventTypes parameter for this function call is treated as a bitmask, so multiple event types can be registered at once, using a common callback function. For example, to call the specified notifyFxn when both the entering deepsleep and awake from deepsleep events occur, eventTypes should be specified as: PowerMSP432_ENTERING_DEEPSLEEP | PowerMSP432_AWAKE_DEEPSLEEP</p>
+<p>The eventTypes parameter identifies the type of power event(s) for which the notify function being registered is to be called. (Event identifiers are device specific, and defined in the device-specific Power include file. For example, the events for MSP432 are defined in <a class="el" href="_power_m_s_p432_8h.html" title="Power Driver interface for the MSP432P4. ">PowerMSP432.h</a>.) The eventTypes parameter for this function call is treated as a bitmask, so multiple event types can be registered at once, using a common callback function. For example, to call the specified notifyFxn when both the entering deepsleep and awake from deepsleep events occur, eventTypes should be specified as: PowerMSP432_ENTERING_DEEPSLEEP | PowerMSP432_AWAKE_DEEPSLEEP</p>
 <p>The notifyFxn parameter specifies a callback function to be called when the specified Power event occurs. The notifyFxn must implement the following signature: status = notifyFxn(eventType, eventArg, clientArg);</p>
-<p>Where: eventType identifies the event being signalled, eventArg is an optional event-specific argument, and clientArg is an abitrary argument specified by the client at registration. Note that multipe types of events can be specified when registering the notification callback function, but when the callback function is actually called by Power, only a single eventType will be specified for the callback (i.e., the current event). The status returned by the client notification function must be one of the following constants: Power_NOTIFYDONE if the client processed the notification successfully, or Power_NOTIFYERROR if an error occurred during notification.</p>
+<p>Where: eventType identifies the event being signaled, eventArg is an optional event-specific argument, and clientArg is an arbitrary argument specified by the client at registration. Note that multiple types of events can be specified when registering the notification callback function, but when the callback function is actually called by Power, only a single eventType will be specified for the callback (i.e., the current event). The status returned by the client notification function must be one of the following constants: Power_NOTIFYDONE if the client processed the notification successfully, or Power_NOTIFYERROR if an error occurred during notification.</p>
 <p>The clientArg parameter is an arbitrary, client-defined argument to be passed back to the client upon notification. This argument may allow one notify function to be used by multiple instances of a driver (that is, the clientArg can be used to identify the instance of the driver that is being notified).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pNotifyObj</td><td>notification object (preallocated by caller)</td></tr>
-    <tr><td class="paramname">eventTypes</td><td>event type or types</td></tr>
-    <tr><td class="paramname">notifyFxn</td><td>client's callback function</td></tr>
-    <tr><td class="paramname">clientArg</td><td>client-specified argument to pass with notification</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pNotifyObj</td><td><a class="el" href="struct_power___notify_obj.html" title="Power notify object structure. ">Power_NotifyObj</a> preallocated by caller</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eventTypes</td><td>event type or types</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">notifyFxn</td><td>client's <a class="el" href="_power_8h.html#ad6c365f54d37429c5bd32181e5dbf463" title="Power notify callback function used with the Power_registerNotify() ">Power_NotifyFxn</a> function</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">clientArg</td><td>client-specified argument to pass with notification</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Power_SOK on success. Power_EINVALIDPOINTER if either pNotifyObj or notifyFxn are NULL.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#ac32c17ce6da099da97957f08ddb000b4" title="Unregister previously registered notifications. ">Power_unregisterNotify</a> </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a></td><td>on success.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#ga0d24bacb087e8282be2e4394503a429a">Power_EINVALIDPOINTER</a></td><td>if either <code>pNotifyObj</code> or <code>notifyFxn</code> are NULL.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#ac32c17ce6da099da97957f08ddb000b4" title="Unregister previously registered notifications. ">Power_unregisterNotify()</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ti_drivers_Power_Examples_notify">Using power notify</a> </dd></dl>
 
 </div>
 </div>
@@ -817,19 +655,22 @@ Functions</h2></td></tr>
 
 <p>Release a previously declared constraint. </p>
 <p>This function releases a constraint that was previously declared with <a class="el" href="_power_8h.html#a45bde4b6fc658e81dc70701e8bdc947a" title="Declare an operational constraint. ">Power_setConstraint()</a>. For example, if a device driver is starting an I/O transaction and wants to prohibit activation of a sleep state during the transaction, it uses <a class="el" href="_power_8h.html#a45bde4b6fc658e81dc70701e8bdc947a" title="Declare an operational constraint. ">Power_setConstraint()</a> to declare the constraint, before starting the transaction. When the transaction completes, the driver calls this function to release the constraint, to allow the Power manager to once again allow transitions to sleep.</p>
-<p>Constraint identifiers are device specific, and defined in the device-specific Power include file. For example, the constraints for MSP432 are defined in <a class="el" href="_power_m_s_p432_8h.html" title="Power manager interface for the MSP432. ">PowerMSP432.h</a>.</p>
+<p>Constraint identifiers are device specific, and defined in the device-specific Power include file. For example, the constraints for MSP432 are defined in <a class="el" href="_power_m_s_p432_8h.html" title="Power Driver interface for the MSP432P4. ">PowerMSP432.h</a>.</p>
 <p>Only one constraint can be specified with each call to this function; to release multiple constraints this function must be called multiple times.</p>
 <p>It is critical that clients call <a class="el" href="_power_8h.html#acc3b76add2f8fadd70bb747d7dd0f8e8" title="Release a previously declared constraint. ">Power_releaseConstraint()</a> when operational constraints no longer exists. Otherwise, Power may be left unnecessarily restricted from activating power savings.</p>
+<dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_power_8h.html#a45bde4b6fc658e81dc70701e8bdc947a" title="Declare an operational constraint. ">Power_setConstraint()</a> must have been called first.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">constraintId</td><td>constraint id</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">constraintId</td><td>constraint id</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><b>CC26XX/CC13XX only</b>: Power_SOK. To minimize code size asserts are used internally to check that the constraintId is valid,valid, and that the constraint count is not already zero; the function always returns Power_SOK.</dd>
+<dl class="section return"><dt>Returns</dt><dd><b>CC26XX/CC13XX only</b>: <a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>. To minimize code size asserts are used internally to check that the constraintId is valid,valid, and that the constraint count is not already zero; the function always returns <a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>.</dd>
 <dd>
-<b>All other devices</b>: Power_SOK on success, Power_EINVALIDINPUT if the constraintId is invalid, and Power_EFAIL if the constraint count is already zero.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#a45bde4b6fc658e81dc70701e8bdc947a" title="Declare an operational constraint. ">Power_setConstraint</a> </dd></dl>
+<b>All other devices</b>: <a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a> on success, <a class="el" href="group___power___status.html#ga200ab87d1e0ffbc4eb3864d18646e0f7">Power_EINVALIDINPUT</a> if the constraintId is invalid, and <a class="el" href="group___power___status.html#gaed2f92a8c72bfa183e14d10a2e35789f">Power_EFAIL</a> if the constraint count is already zero.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#a45bde4b6fc658e81dc70701e8bdc947a" title="Declare an operational constraint. ">Power_setConstraint()</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ti_drivers_Power_Examples_constraint">Using power constraints</a> </dd></dl>
 
 </div>
 </div>
@@ -854,14 +695,16 @@ Functions</h2></td></tr>
 <p>Resource identifiers are device specific, and defined in the device-specific Power include file. For example, the resources for CC32XX are defined in PowerCC32XX.h.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">resourceId</td><td>resource id</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">resourceId</td><td>resource id</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><b>CC26XX/CC13XX only</b>: Power_SOK. To minimize code size asserts are used internally to check that the resourceId is valid, and that the resource reference count is not already zero; the function always returns Power_SOK.</dd>
+<dl class="section return"><dt>Returns</dt><dd><b>CC26XX/CC13XX only</b>: <a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>. To minimize code size asserts are used internally to check that the resourceId is valid, and that the resource reference count is not already zero; the function always returns <a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>.</dd>
 <dd>
-<b>All other devices</b>: Power_SOK on success, Power_EINVALIDINPUT if the resourceId is invalid, and Power_EFAIL if the resource reference count is already zero.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#a25f2b780b7ea1ff1f515115fe1c2f519" title="Declare a dependency upon a resource. ">Power_setDependency</a> </dd></dl>
+<b>All other devices</b>: <a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a> on success, <a class="el" href="group___power___status.html#ga200ab87d1e0ffbc4eb3864d18646e0f7">Power_EINVALIDINPUT</a> if the resourceId is invalid, and <a class="el" href="group___power___status.html#gaed2f92a8c72bfa183e14d10a2e35789f">Power_EFAIL</a> if the resource reference count is already zero.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#a25f2b780b7ea1ff1f515115fe1c2f519" title="Declare a dependency upon a resource. ">Power_setDependency()</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ti_drivers_Power_Examples_dependency">Using power dependency</a> </dd></dl>
 
 </div>
 </div>
@@ -883,18 +726,20 @@ Functions</h2></td></tr>
 
 <p>Declare an operational constraint. </p>
 <p>Before taking certain actions, the Power Manager checks to see if the requested action would conflict with a client-declared constraint. If the action does conflict, Power will not proceed with the request. This is the function that allows clients to declare their constraints with Power.</p>
-<p>Constraint identifiers are device specific, and defined in the device-specific Power include file. For example, the constraints for MSP432 are defined in <a class="el" href="_power_m_s_p432_8h.html" title="Power manager interface for the MSP432. ">PowerMSP432.h</a>.</p>
+<p>Constraint identifiers are device specific, and defined in the device-specific Power include file. For example, the constraints for MSP432 are defined in <a class="el" href="_power_m_s_p432_8h.html" title="Power Driver interface for the MSP432P4. ">PowerMSP432.h</a>.</p>
 <p>Only one constraint can be specified with each call to this function; to declare multiple constraints this function must be called multiple times.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">constraintId</td><td>constraint id</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">constraintId</td><td>constraint id</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><b>CC26XX/CC13XX only</b>: Power_SOK. To minimize code size an assert is used internally to check that the constraintId is valid; the function always returns Power_SOK.</dd>
+<dl class="section return"><dt>Returns</dt><dd><b>CC26XX/CC13XX only</b>: <a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>. To minimize code size an assert is used internally to check that the constraintId is valid; the function always returns <a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>.</dd>
 <dd>
-<b>All other devices</b>: Power_SOK on success, Power_EINVALIDINPUT if the constraintId is invalid.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#acc3b76add2f8fadd70bb747d7dd0f8e8" title="Release a previously declared constraint. ">Power_releaseConstraint</a> </dd></dl>
+<b>All other devices</b>: <a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a> on success, <a class="el" href="group___power___status.html#ga200ab87d1e0ffbc4eb3864d18646e0f7">Power_EINVALIDINPUT</a> if the constraintId is invalid.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#acc3b76add2f8fadd70bb747d7dd0f8e8" title="Release a previously declared constraint. ">Power_releaseConstraint()</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ti_drivers_Power_Examples_constraint">Using power constraints</a> </dd></dl>
 
 </div>
 </div>
@@ -920,14 +765,16 @@ Functions</h2></td></tr>
 <p>Resource identifiers are device specific, and defined in the device-specific Power include file. For example, the resources for CC32XX are defined in PowerCC32XX.h.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">resourceId</td><td>resource id</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">resourceId</td><td>resource id</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><b>CC26XX/CC13XX only</b>: Power_SOK. To minimize code size an assert is used internally to check that the resourceId is valid; the function always returns Power_SOK.</dd>
+<dl class="section return"><dt>Returns</dt><dd><b>CC26XX/CC13XX only</b>: <a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>. To minimize code size an assert is used internally to check that the resourceId is valid; the function always returns <a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a>.</dd>
 <dd>
-<b>All other devices</b>: Power_SOK on success, Power_EINVALIDINPUT if the reseourceId is invalid.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#a74f45b58c200fa042614e4a892f58a2d" title="Release a previously declared dependency. ">Power_releaseDependency</a> </dd></dl>
+<b>All other devices</b>: <a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a> on success, <a class="el" href="group___power___status.html#ga200ab87d1e0ffbc4eb3864d18646e0f7">Power_EINVALIDINPUT</a> if the reseourceId is invalid.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#a74f45b58c200fa042614e4a892f58a2d" title="Release a previously declared dependency. ">Power_releaseDependency()</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ti_drivers_Power_Examples_dependency">Using power dependency</a> </dd></dl>
 
 </div>
 </div>
@@ -948,16 +795,25 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set the MCU performance level. </p>
-<p>This function manages a transition to a new device performance level. Before the actual transition is initiated, notifications will be sent to any clients who've registered (with <a class="el" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e" title="Register a function to be called upon a specific power event. ">Power_registerNotify()</a>) for a 'start change performance level' notification. The event name is device specific, and defined in the device-specific Power include file. For example, for MSP432, the event is "PowerMSP432_START_CHANGE_PERF_LEVEL", which is defined in <a class="el" href="_power_m_s_p432_8h.html" title="Power manager interface for the MSP432. ">PowerMSP432.h</a>. Once notifications have been completed, the change to the performance level is initiated. After the level change is completed, there is a comparable event that can be used to signal a client that the change has completed. For example, on MSP432 the "PowerMSP432_DONE_CHANGE_PERF_LEVEL" event can be used to signal completion.</p>
+<p>This function manages a transition to a new device performance level. Before the actual transition is initiated, notifications will be sent to any clients who've registered with <a class="el" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e" title="Register a function to be called upon a specific power event. ">Power_registerNotify()</a> for a 'start change performance level' notification. The event name is device specific, and defined in the device-specific Power include file. For example, for MSP432, the event is "PowerMSP432_START_CHANGE_PERF_LEVEL", which is defined in <a class="el" href="_power_m_s_p432_8h.html" title="Power Driver interface for the MSP432P4. ">PowerMSP432.h</a>. Once notifications have been completed, the change to the performance level is initiated. After the level change is completed, there is a comparable event that can be used to signal a client that the change has completed. For example, on MSP432 the "PowerMSP432_DONE_CHANGE_PERF_LEVEL" event can be used to signal completion.</p>
 <p>This function will not return until the new performance level is in effect. If performance scaling is not supported for the device, or is prohibited by an active constraint, or if the specified level is invalid, then an error status will be returned.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">level</td><td>the new performance level</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">level</td><td>the new performance level</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Power_SOK on success. Power_EINVALIDINPUT if the specified performance level is out of range of valid levels. Power_EBUSY if another transition is already in progress, or if a single constraint is set to prohibit any change to the performance level. Power_ECHANGE_NOT_ALLOWED if a level-specific constraint prohibits a change to the requested level. Power_EFAIL if performance scaling is not supported, if an error occurred during initialization, or if an error occurred during client notifications.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#a33830ca68bc594b1f24c7285a62f0475" title="Get the current performance level. ">Power_getPerformanceLevel</a> </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a></td><td>on success.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#ga200ab87d1e0ffbc4eb3864d18646e0f7">Power_EINVALIDINPUT</a></td><td>if the specified performance level is out of range of valid levels.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#ga3132904395c5631392bd6301d9a2181e">Power_EBUSY</a></td><td>if another transition is already in progress, or if a single constraint is set to prohibit any change to the performance level.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#gaa4e7b580b1c9c026036bf53befe5723b">Power_ECHANGE_NOT_ALLOWED</a></td><td>if a level-specific constraint prohibits a change to the requested level.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#gaed2f92a8c72bfa183e14d10a2e35789f">Power_EFAIL</a></td><td>if performance scaling is not supported, if an error occurred during initialization, or if an error occurred during client notifications.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#a33830ca68bc594b1f24c7285a62f0475" title="Get the current performance level. ">Power_getPerformanceLevel()</a> </dd></dl>
 
 </div>
 </div>
@@ -978,10 +834,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set a new Power policy. </p>
-<p>This function allows a new Power policy function to be selected at runtime.</p>
+<p>This function allows a new <a class="el" href="_power_8h.html#a333038d1e9cd5f93dda7b83f8a1afa8b" title="Power policy function pointer. ">Power_PolicyFxn</a> function to be selected at runtime.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">policy</td><td>the new Power policy function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">policy</td><td>the new <a class="el" href="_power_8h.html#a333038d1e9cd5f93dda7b83f8a1afa8b" title="Power policy function pointer. ">Power_PolicyFxn</a> function </td></tr>
   </table>
   </dd>
 </dl>
@@ -1017,15 +873,23 @@ Functions</h2></td></tr>
 <p>Put the device into a shutdown state. </p>
 <p>This function will transition the device into a shutdown state. Before the actual transition is initiated, notifications will be sent to any clients who've registered (with <a class="el" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e" title="Register a function to be called upon a specific power event. ">Power_registerNotify()</a>) for an 'entering shutdown' event. The event name is device specific, and defined in the device-specific Power include file. For example, for CC32XX, the event is "PowerCC32XX_ENTERING_SHUTDOWN", which is defined in PowerCC32XX.h. Once notifications have been completed, the device shutdown will commence.</p>
 <p>If the device is successfully transitioned to shutdown, this function call will never return. Upon wakeup, the device and application will be rebooted (through a device reset). If the transition is not successful, one of the error codes listed below will be returned.</p>
-<p>On some devices a timed wakeup from shutdown can be specified, using the shutdownTime parameter. This enables an autonomous application reboot at a future time. For example, an application can go to shutdown, and then automatically reboot at a future time to do some work. And once that work is done, the application can shutdown again, for another timed interval. The time interval is specified via the shutdownTime parameter. (On devices that do not support this feature, any value specified for shutdownTime will be ignored.) If the specified shutdownTime is less than the total shutdown latency for the device, then shutdownTime will be ignored. The shutdown latency for the device can be found in the device-specific Power include file. For example, for the CC32XX, this latency is defined in PowerCC32XX.h, as "PowerCC32XX_TOTALTIMESHUTDOWN".)</p>
+<p>On some devices a timed wakeup from shutdown can be specified, using the shutdownTime parameter. This enables an autonomous application reboot at a future time. For example, an application can go to shutdown, and then automatically reboot at a future time to do some work. And once that work is done, the application can shutdown again, for another timed interval. The time interval is specified via the shutdownTime parameter. (On devices that do not support this feature, any value specified for shutdownTime will be ignored.) If the specified shutdownTime is zero, or otherwise less than the total shutdown latency for the device, the shutdownTime parameter will be ignored. The shutdown latency for the device can be found in the device-specific Power include file. For example, for the CC32XX, this latency is defined in PowerCC32XX.h, as "PowerCC32XX_TOTALTIMESHUTDOWN".)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">shutdownState</td><td>the device-specific shutdown state</td></tr>
-    <tr><td class="paramname">shutdownTime</td><td>the amount of time (in milliseconds) to keep the the device in the shutdown state; this parameter is not supported on all device families</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">shutdownState</td><td>the device-specific shutdown state</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">shutdownTime</td><td>the amount of time (in milliseconds) to keep the the device in the shutdown state; this parameter is not supported on all device families.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Power_ECHANGE_NOT_ALLOWED if a constraint is prohibiting shutdown. Power_EFAIL if an error occurred during client notifications. Power_EINVALIDINPUT if the shutdownState is invalid. Power_EBUSY if another transition is already in progress. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#gaa4e7b580b1c9c026036bf53befe5723b">Power_ECHANGE_NOT_ALLOWED</a></td><td>if a constraint is prohibiting shutdown.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#gaed2f92a8c72bfa183e14d10a2e35789f">Power_EFAIL</a></td><td>if an error occurred during client notifications.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#ga200ab87d1e0ffbc4eb3864d18646e0f7">Power_EINVALIDINPUT</a></td><td>if the shutdownState is invalid.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#ga3132904395c5631392bd6301d9a2181e">Power_EBUSY</a></td><td>if another transition is already in progress. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1047,14 +911,22 @@ Functions</h2></td></tr>
 
 <p>Transition the device into a sleep state. </p>
 <p>This function is called from the power policy when it has made a decision to put the device in a specific sleep state. This function returns to the caller (the policy function) once the device has awoken from sleep.</p>
-<p>This function must be called with interrupts disabled, and should not be called directly by the application, or by any drivers. This function does not check declared constraints; the policy function must check constraints before calling this function to initiate sleep.</p>
+<dl class="section warning"><dt>Warning</dt><dd>This function must be called with interrupts disabled, and should not be called directly by the application, or by any drivers. This function does not check declared constraints; the policy function must check constraints before calling this function to initiate sleep.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sleepState</td><td>the sleep state</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sleepState</td><td>the sleep state</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Power_SOK on success, the device has slept and is awake again. Power_EFAIL if an error occurred during client notifications, or if a general failure occurred. Power_EINVALIDINPUT if the sleepState is invalid. Power_EBUSY if another transition is already in progress. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#ga92eed670a5d7e3d43f612ca0da9d3fe2">Power_SOK</a></td><td>on success, the device has slept and is awake again.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#gaed2f92a8c72bfa183e14d10a2e35789f">Power_EFAIL</a></td><td>if an error occurred during client notifications, or if a general failure occurred.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#ga200ab87d1e0ffbc4eb3864d18646e0f7">Power_EINVALIDINPUT</a></td><td>if the <code>sleepState</code> is invalid.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___power___status.html#ga3132904395c5631392bd6301d9a2181e">Power_EBUSY</a></td><td>if another transition is already in progress. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1067,7 +939,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void Power_unregisterNotify </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_power_8h.html#a380d08b754e6f3f096349ab5fc464209">Power_NotifyObj</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_power___notify_obj.html">Power_NotifyObj</a> *&#160;</td>
           <td class="paramname"><em>pNotifyObj</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1078,11 +950,13 @@ Functions</h2></td></tr>
 <p>This function unregisters for event notifications that were previously registered with <a class="el" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e" title="Register a function to be called upon a specific power event. ">Power_registerNotify()</a>. The caller must specify a pointer to the same notification object used during registration.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pNotifyObj</td><td>notify object</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pNotifyObj</td><td>The <a class="el" href="struct_power___notify_obj.html" title="Power notify object structure. ">Power_NotifyObj</a> used with the original call to <a class="el" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e" title="Register a function to be called upon a specific power event. ">Power_registerNotify()</a></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e" title="Register a function to be called upon a specific power event. ">Power_registerNotify</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_power_8h.html#aa89d120c82d4f23e6d4a337720b6300e" title="Register a function to be called upon a specific power event. ">Power_registerNotify()</a> </dd>
+<dd>
+<a class="el" href="_power_8h.html#ti_drivers_Power_Examples_notify">Using power notify</a> </dd></dl>
 
 </div>
 </div>
@@ -1090,7 +964,7 @@ Functions</h2></td></tr>
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->
 <hr class="footer"/><small>
-  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2018</a>, Texas Instruments Incorporated. All rights reserved. <br>
+  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
   <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
 </small>
 </body>

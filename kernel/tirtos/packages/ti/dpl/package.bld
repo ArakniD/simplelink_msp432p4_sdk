@@ -64,6 +64,10 @@ var msp432PowerSrcList = [
     "./PowerMSP432_tirtos.c"
 ];
 
+var mtxxPowerSrcList = [
+    //".PowerMTL_tirtos.c"
+];
+
 /* Get deviceWare directories from XDCARGS */
 var xdcArgs = java.lang.System.getenv("XDCARGS");
 var deviceWareOpts =
@@ -164,6 +168,14 @@ if (deviceWareOpts.msp432e4DriverLib) {
     /* build one library for the super-set part */
     libBuilder.makeLibs("lib/dpl_msp432e4", libBuilder.m4fTargets,
         dplFiles.concat(msp432e4PowerSrcList), " -DDeviceFamily_MSP432E411Y");
+}
+
+if (deviceWareOpts.hwpi_mtxx) {
+    var copts = " ";
+
+    /* build one library for the super-set part */
+    libBuilder.makeLibs("lib/dpl_mtxx", libBuilder.m33fTargets,
+            dplFiles, copts);
 }
 
 /* Include source files in the release package */

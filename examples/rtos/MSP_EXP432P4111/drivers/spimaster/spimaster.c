@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Texas Instruments Incorporated
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,6 @@
 /*
  *  ======== spimaster.c ========
  */
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
@@ -43,13 +42,15 @@
 #include <semaphore.h>
 #include <unistd.h>
 
+/* Example/Board Header files */
+#include "Board.h"
+
 /* Driver Header files */
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/SPI.h>
 #include <ti/display/Display.h>
-
-/* Example/Board Header files */
-#include "Board.h"
+#include <ti/drivers/Power.h>
+#include <ti/drivers/power/PowerMSP432.h>
 
 #define THREADSTACKSIZE (1024)
 
@@ -143,6 +144,7 @@ void *masterThread(void *arg0)
     /* Open SPI as master (default) */
     SPI_Params_init(&spiParams);
     spiParams.frameFormat = SPI_POL0_PHA1;
+    spiParams.bitRate = 10000000;
     masterSpi = SPI_open(Board_SPI_MASTER, &spiParams);
     if (masterSpi == NULL) {
         Display_printf(display, 0, 0, "Error initializing master SPI\n");
@@ -222,6 +224,10 @@ void *mainThread(void *arg0)
     /* Configure the LED pins */
     GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
     GPIO_setConfig(Board_GPIO_LED1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+
+    /* Set performance level to allow custom SPI Frequency */
+    Power_releaseConstraint(PowerMSP432_DISALLOW_PERFLEVEL_4);
+    Power_setPerformanceLevel(4);
 
     /* Open the display for output */
     display = Display_open(Display_Type_UART, NULL);

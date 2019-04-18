@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,11 +44,7 @@ let Common = system.getScript("/ti/drivers/Common.js");
 /* get /ti/drivers family name from device object */
 let family = Common.device2Family(system.deviceData, "AESECB");
 
-let longDescription = "The Electronic Code Book (ECB) mode of operation is"
-        + " a generic encryption block cipher mode. It can be used with any"
-        + " block cipher. AESECB encrypts or decrypts one or multiple blocks"
-        + " of plain-text or cipher-text using the Advanced Encryption"
-        + " Standard (AES) block cipher.";
+let config = [];
 
 /*
  *  ======== validate ========
@@ -68,11 +64,25 @@ function validate(inst, validation)
  */
 let base = {
     displayName         : "AESECB",
-    description         : "AES ECB mode ",
-    longDescription     : longDescription,
-    documentation: "/tidrivers/doxygen/html/_a_e_s_e_c_b_8h.html",
+    description         : "AES (Advanced Encryption Standard) Electronic"
+        + " Code Book (ECB) Driver",
+    longDescription     : `
+The [__AESECB driver__][1] encrypts or decrypts one or multiple blocks
+of plain-text or cipher-text by directly encrypting or decrypting
+input blocks using AES.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+[1]: /tidrivers/doxygen/html/_a_e_s_e_c_b_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_a_e_s_e_c_b_8h.html#ti_drivers_ECB_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_a_e_s_e_c_b_8h.html#ti_drivers_ECB_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#AESECB_Configuration_Options "Configuration options reference"
+`,
     validate            : validate,
-    defaultInstanceName : "Board_AESECB"
+    defaultInstanceName : "Board_AESECB",
+    config              : Common.addNameConfig(config, "/ti/drivers/AESECB", "Board_AESECB"),
+    modules: Common.autoForceModules(["Board", "Power", "DMA"])
 };
 
 

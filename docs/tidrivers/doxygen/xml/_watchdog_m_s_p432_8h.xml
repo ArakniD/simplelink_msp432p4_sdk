@@ -7,31 +7,31 @@
     <includes refid="_watchdog_8h" local="no">ti/drivers/Watchdog.h</includes>
     <includes local="no">ti/drivers/dpl/HwiP.h</includes>
     <incdepgraph>
-      <node id="338">
+      <node id="341">
         <label>stdbool.h</label>
       </node>
-      <node id="337">
+      <node id="340">
         <label>stdint.h</label>
       </node>
-      <node id="336">
+      <node id="339">
         <label>WatchdogMSP432.h</label>
         <link refid="_watchdog_m_s_p432_8h"/>
-        <childnode refid="337" relation="include">
-        </childnode>
-        <childnode refid="338" relation="include">
-        </childnode>
-        <childnode refid="339" relation="include">
-        </childnode>
         <childnode refid="340" relation="include">
         </childnode>
+        <childnode refid="341" relation="include">
+        </childnode>
+        <childnode refid="342" relation="include">
+        </childnode>
+        <childnode refid="343" relation="include">
+        </childnode>
       </node>
-      <node id="340">
+      <node id="343">
         <label>ti/drivers/dpl/HwiP.h</label>
       </node>
-      <node id="339">
+      <node id="342">
         <label>ti/drivers/Watchdog.h</label>
         <link refid="_watchdog_8h"/>
-        <childnode refid="337" relation="include">
+        <childnode refid="340" relation="include">
         </childnode>
       </node>
     </incdepgraph>
@@ -98,13 +98,13 @@
 </para><para>The Watchdog header file for MSP432 should be included in an application as follows: <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/Watchdog.h&gt;</highlight></codeline>
 <codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/watchdog/WatchdogMSP432.h&gt;</highlight></codeline>
 </programlisting></para><para>Refer to <ref refid="_watchdog_8h" kindref="compound">Watchdog.h</ref> for a complete description of APIs &amp; example of use.</para><para><heading level="2">Overview</heading>
-</para><para>The MSP432 Watchdog Timer will cause resets at an interval based on the count calculated from the clock source and clock divider specified in the <ref refid="struct_watchdog_m_s_p432___h_w_attrs" kindref="compound">WatchdogMSP432_HWAttrs</ref>. By default the Watchdog driver has resets turned on. This means that if <ref refid="_watchdog_8h_1a396decd6b1807db10c636f9987c3be4c" kindref="member">Watchdog_clear()</ref> is not called to reset the Watchdog timer before it times out, a reset will be generated. <ref refid="_watchdog_8h_1a1c0dfea7011b06f303d01afb631ffbdd" kindref="member">Watchdog_close()</ref> will stop the Watchdog timer. To restart it again, <ref refid="_watchdog_8h_1a26795f67f599b74de830ca7bf36bdced" kindref="member">Watchdog_open()</ref> must be called.</para><para>Opening the Watchdog driver with resets turned off (using the resetMode parameter) allows the Watchdog Timer to be used like another timer interrupt. The callback fxn provided in the params will be executed when the timer expires.</para><para><heading level="2">Unsupported Functionality</heading>
+</para><para>The MSP432 Watchdog Timer will cause resets at an interval based on the count calculated from the clock source and clock divider specified in the <ref refid="struct_watchdog_m_s_p432___h_w_attrs" kindref="compound">WatchdogMSP432_HWAttrs</ref>. By default the Watchdog driver has resets turned on. This means that if <ref refid="_watchdog_8h_1a396decd6b1807db10c636f9987c3be4c" kindref="member">Watchdog_clear()</ref> is not called to reset the Watchdog timer before it times out, a reset will be generated. <ref refid="_watchdog_8h_1a1c0dfea7011b06f303d01afb631ffbdd" kindref="member">Watchdog_close()</ref> will stop the Watchdog timer. To restart it again, <ref refid="_watchdog_8h_1a26795f67f599b74de830ca7bf36bdced" kindref="member">Watchdog_open()</ref> must be called.</para><para>Opening the Watchdog driver with resets turned off (Using the <ref refid="struct_watchdog___params___1ac695f58c6e582d98c9171bf02a760c12" kindref="member">Watchdog_Params.resetMode</ref> parameter) allows the Watchdog Timer to be used like another timer interrupt. The callback fxn provided in the params will be executed when the timer expires.</para><para><heading level="2">Unsupported Functionality</heading>
 </para><para><orderedlist>
-<listitem><para>Watchdog_Params debugStallMode is not supported by this implementation.</para></listitem><listitem><para>Watchdog_Params callbackFxn is not supported when using Watchdog_RESET_ON mode.</para></listitem><listitem><para><ref refid="_watchdog_8h_1a63ea82dda83e42e236578b9810e56880" kindref="member">Watchdog_setReload()</ref> and WatchdogMSP432_convertMsToTicks() APIs are not supported by this implementation. </para></listitem></orderedlist>
+<listitem><para><ref refid="struct_watchdog___params___1adfd763090a1a67a2cb8069c5c5ba135a" kindref="member">Watchdog_Params.debugStallMode</ref> is not supported by this implementation.</para></listitem><listitem><para><ref refid="struct_watchdog___params___1a26a219dd0a8c1972a721a40aca0b52e6" kindref="member">Watchdog_Params.callbackFxn</ref> is not supported when using <ref refid="_watchdog_8h_1a14a5aaacb2ab91f555ec55e349d9546faafccd6330c396d9ffc2786524625bf1f" kindref="member">Watchdog_RESET_ON</ref> mode.</para></listitem><listitem><para><ref refid="_watchdog_8h_1a63ea82dda83e42e236578b9810e56880" kindref="member">Watchdog_setReload()</ref> and <ref refid="_watchdog_8h_1a7b93cd0bd3a6f11aa28b0c7219755979" kindref="member">Watchdog_convertMsToTicks()</ref> APIs are not supported by this implementation. </para></listitem></orderedlist>
 </para>    </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2017,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2019,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
 <codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
 <codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
@@ -158,16 +158,16 @@
 <codeline lineno="53"><highlight class="comment"><sp/>*<sp/><sp/>stop<sp/>the<sp/>Watchdog<sp/>timer.<sp/>To<sp/>restart<sp/>it<sp/>again,<sp/>Watchdog_open()<sp/>must<sp/>be</highlight></codeline>
 <codeline lineno="54"><highlight class="comment"><sp/>*<sp/><sp/>called.</highlight></codeline>
 <codeline lineno="55"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="56"><highlight class="comment"><sp/>*<sp/><sp/>Opening<sp/>the<sp/>Watchdog<sp/>driver<sp/>with<sp/>resets<sp/>turned<sp/>off<sp/>(using<sp/>the<sp/>resetMode</highlight></codeline>
-<codeline lineno="57"><highlight class="comment"><sp/>*<sp/><sp/>parameter)<sp/>allows<sp/>the<sp/>Watchdog<sp/>Timer<sp/>to<sp/>be<sp/>used<sp/>like<sp/>another<sp/>timer</highlight></codeline>
-<codeline lineno="58"><highlight class="comment"><sp/>*<sp/><sp/>interrupt.<sp/><sp/>The<sp/>callback<sp/>fxn<sp/>provided<sp/>in<sp/>the<sp/>params<sp/>will<sp/>be<sp/>executed<sp/>when</highlight></codeline>
-<codeline lineno="59"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>timer<sp/>expires.</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/><sp/>Opening<sp/>the<sp/>Watchdog<sp/>driver<sp/>with<sp/>resets<sp/>turned<sp/>off<sp/>(Using<sp/>the</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/><sp/>#Watchdog_Params.resetMode<sp/>parameter)<sp/>allows<sp/>the<sp/>Watchdog<sp/>Timer<sp/>to<sp/>be<sp/>used</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/><sp/>like<sp/>another<sp/>timer<sp/>interrupt.<sp/><sp/>The<sp/>callback<sp/>fxn<sp/>provided<sp/>in<sp/>the<sp/>params<sp/>will</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/><sp/>be<sp/>executed<sp/>when<sp/>the<sp/>timer<sp/>expires.</highlight></codeline>
 <codeline lineno="60"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="61"><highlight class="comment"><sp/>*<sp/><sp/>##<sp/>Unsupported<sp/>Functionality<sp/>#</highlight></codeline>
-<codeline lineno="62"><highlight class="comment"><sp/>*<sp/><sp/>1.<sp/><sp/>Watchdog_Params<sp/>debugStallMode<sp/>is<sp/>not<sp/>supported<sp/>by<sp/>this<sp/>implementation.</highlight></codeline>
-<codeline lineno="63"><highlight class="comment"><sp/>*<sp/><sp/>2.<sp/><sp/>Watchdog_Params<sp/>callbackFxn<sp/>is<sp/>not<sp/>supported<sp/>when<sp/>using</highlight></codeline>
-<codeline lineno="64"><highlight class="comment"><sp/>*<sp/><sp/>Watchdog_RESET_ON<sp/>mode.</highlight></codeline>
-<codeline lineno="65"><highlight class="comment"><sp/>*<sp/><sp/>3.<sp/><sp/>Watchdog_setReload()<sp/>and<sp/>WatchdogMSP432_convertMsToTicks()<sp/>APIs<sp/>are<sp/>not</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/><sp/>1.<sp/><sp/>#Watchdog_Params.debugStallMode<sp/>is<sp/>not<sp/>supported<sp/>by<sp/>this<sp/>implementation.</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/><sp/>2.<sp/><sp/>#Watchdog_Params.callbackFxn<sp/>is<sp/>not<sp/>supported<sp/>when<sp/>using</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/><sp/>#Watchdog_RESET_ON<sp/>mode.</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/><sp/>3.<sp/><sp/>Watchdog_setReload()<sp/>and<sp/>Watchdog_convertMsToTicks()<sp/>APIs<sp/>are<sp/>not</highlight></codeline>
 <codeline lineno="66"><highlight class="comment"><sp/>*<sp/><sp/>supported<sp/>by<sp/>this<sp/>implementation.</highlight></codeline>
 <codeline lineno="67"><highlight class="comment"><sp/>******************************************************************************</highlight></codeline>
 <codeline lineno="68"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>

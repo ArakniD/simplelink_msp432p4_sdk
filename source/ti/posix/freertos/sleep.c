@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2016-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,13 +35,74 @@
  */
 
 #include <errno.h>
+#include <time.h>
 #include <unistd.h>
 
 #include <FreeRTOS.h>
 #include <task.h>
 
 /* number of microseconds per tick */
-#define TICK_PERIOD_USECS (1000000 / configTICK_RATE_HZ)
+#define TICK_PERIOD_USECS (1000000L / configTICK_RATE_HZ)
+
+/*  The maximum number of ticks before the tick count rolls over. We use
+ *  0xFFFFFFFF instead of 0x100000000 to avoid 64-bit math.
+ */
+#define MAX_TICKS 0xFFFFFFFFL
+#define TICKS_PER_SEC (1000000L / TICK_PERIOD_USECS)
+
+/* integral number of seconds in a period of MAX_TICKS */
+#define MAX_SECONDS (MAX_TICKS / TICKS_PER_SEC)
+
+
+/*
+ *  ======== nanosleep ========
+ */
+int nanosleep(const struct timespec *rqtp, struct timespec *rmtp)
+{
+    TickType_t ticks;
+
+    /* max interval to avoid tick count overflow */
+    if (rqtp->tv_sec >= MAX_SECONDS) {
+        errno = EINVAL;
+        return (-1);
+    }
+    if ((rqtp->tv_nsec < 0) || (rqtp->tv_nsec >= 1000000000)) {
+        errno = EINVAL;
+        return (-1);
+    }
+    if ((rqtp->tv_sec == 0) && (rqtp->tv_nsec == 0)) {
+        return (0);
+    }
+
+    ticks = rqtp->tv_sec * (1000000 / TICK_PERIOD_USECS);
+
+    /* compute ceiling value */
+    ticks += (rqtp->tv_nsec + TICK_PERIOD_USECS * 1000 - 1) /
+            (TICK_PERIOD_USECS * 1000);
+
+    /*  Add one tick to ensure the timeout is not less than the
+     *  amount of time requested. The clock may be about to tick,
+     *  and that counts as one tick even though the amount of time
+     *  until this tick is less than a full tick period.
+     */
+    ticks++;
+
+    /* suspend for the requested time interval */
+    vTaskDelay(ticks);
+
+    /*  If the rmtp argument is non-NULL, the structure referenced
+     *  by it should contain the amount of time remaining in the
+     *  interval. Signals are not supported, therefore, this will
+     *  always be zero. Caution: the rqtp and rmtp arguments may
+     *  point to the same object.
+     */
+    if (rmtp != NULL) {
+        rmtp->tv_sec = 0;
+        rmtp->tv_nsec = 0;
+    }
+
+    return (0);
+}
 
 /*
  *  ======== sleep ========
@@ -49,13 +110,27 @@
 unsigned sleep(unsigned seconds)
 {
     TickType_t xDelay;
+    unsigned long secs;         /* at least 32-bit */
+    unsigned max_secs, rval;    /* native size, might be 16-bit */
 
-    /* maximum sleep is ~50 days at 1000 tics per second */
-    xDelay = seconds * configTICK_RATE_HZ;
+    max_secs = MAX_SECONDS;
 
-    vTaskDelay(xDelay);
+    if (seconds < max_secs) {
+        secs = seconds;
+        rval = 0;
+    }
+    else {
+        secs = max_secs;
+        rval = seconds - max_secs;
+    }
 
-    return (0);
+    /* compute requested ticks */
+    xDelay = secs * configTICK_RATE_HZ;
+
+    /* must add one tick to ensure a full duration of requested ticks */
+    vTaskDelay(xDelay + 1);
+
+    return (rval);
 }
 
 /*

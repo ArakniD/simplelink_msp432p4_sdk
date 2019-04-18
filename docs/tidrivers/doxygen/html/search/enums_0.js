@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['adcbuf_5frecurrence_5fmode_5f',['ADCBuf_Recurrence_Mode_',['../_a_d_c_buf_8h.html#ae5620b285f881fdecb49b75a73f1400f',1,'ADCBuf.h']]],
-  ['adcbuf_5freturn_5fmode_5f',['ADCBuf_Return_Mode_',['../_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433',1,'ADCBuf.h']]],
+  ['adcbuf_5frecurrence_5fmode',['ADCBuf_Recurrence_Mode',['../_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1',1,'ADCBuf.h']]],
+  ['adcbuf_5freturn_5fmode',['ADCBuf_Return_Mode',['../_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6ee',1,'ADCBuf.h']]],
   ['adcbufmsp432_5fclocksource',['ADCBufMSP432_ClockSource',['../_a_d_c_buf_m_s_p432_8h.html#afe77254ddb3c2413bf84b46c99fcd274',1,'ADCBufMSP432.h']]],
   ['adcbufmsp432_5fdifferentialmode',['ADCBufMSP432_DifferentialMode',['../_a_d_c_buf_m_s_p432_8h.html#a12aff21b65a8a974217d372c65e79330',1,'ADCBufMSP432.h']]],
   ['adcbufmsp432_5finternalsourcemode',['ADCBufMSP432_InternalSourceMode',['../_a_d_c_buf_m_s_p432_8h.html#aa48fbbd51df11f11e78a85c806ca5854',1,'ADCBufMSP432.h']]],

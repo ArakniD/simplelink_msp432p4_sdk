@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 
 #ifndef ti_sysbios_family_c7x_Cache__INTERNAL__
@@ -45,14 +45,6 @@
 #undef ti_sysbios_family_c7x_Cache_disable
 #define ti_sysbios_family_c7x_Cache_disable ti_sysbios_family_c7x_Cache_disable__E
 
-/* getMode */
-#undef ti_sysbios_family_c7x_Cache_getMode
-#define ti_sysbios_family_c7x_Cache_getMode ti_sysbios_family_c7x_Cache_getMode__E
-
-/* setMode */
-#undef ti_sysbios_family_c7x_Cache_setMode
-#define ti_sysbios_family_c7x_Cache_setMode ti_sysbios_family_c7x_Cache_setMode__E
-
 /* getSize */
 #undef ti_sysbios_family_c7x_Cache_getSize
 #define ti_sysbios_family_c7x_Cache_getSize ti_sysbios_family_c7x_Cache_getSize__E
@@ -60,18 +52,6 @@
 /* setSize */
 #undef ti_sysbios_family_c7x_Cache_setSize
 #define ti_sysbios_family_c7x_Cache_setSize ti_sysbios_family_c7x_Cache_setSize__E
-
-/* getMar */
-#undef ti_sysbios_family_c7x_Cache_getMar
-#define ti_sysbios_family_c7x_Cache_getMar ti_sysbios_family_c7x_Cache_getMar__E
-
-/* setMar */
-#undef ti_sysbios_family_c7x_Cache_setMar
-#define ti_sysbios_family_c7x_Cache_setMar ti_sysbios_family_c7x_Cache_setMar__E
-
-/* invL1pAll */
-#undef ti_sysbios_family_c7x_Cache_invL1pAll
-#define ti_sysbios_family_c7x_Cache_invL1pAll ti_sysbios_family_c7x_Cache_invL1pAll__E
 
 /* wbAll */
 #undef ti_sysbios_family_c7x_Cache_wbAll
@@ -89,14 +69,37 @@
 #undef ti_sysbios_family_c7x_Cache_wbInvL1dAll
 #define ti_sysbios_family_c7x_Cache_wbInvL1dAll ti_sysbios_family_c7x_Cache_wbInvL1dAll__E
 
-/* invPrefetchBuffer */
-#define Cache_invPrefetchBuffer ti_sysbios_family_c7x_Cache_invPrefetchBuffer__I
+/* setL2CFG */
+#undef ti_sysbios_family_c7x_Cache_setL2CFG
+#define ti_sysbios_family_c7x_Cache_setL2CFG ti_sysbios_family_c7x_Cache_setL2CFG__E
 
-/* all */
-#define Cache_all ti_sysbios_family_c7x_Cache_all__I
+/* getL2CFG */
+#undef ti_sysbios_family_c7x_Cache_getL2CFG
+#define ti_sysbios_family_c7x_Cache_getL2CFG ti_sysbios_family_c7x_Cache_getL2CFG__E
 
-/* block */
-#define Cache_block ti_sysbios_family_c7x_Cache_block__I
+/* setL1DCFG */
+#undef ti_sysbios_family_c7x_Cache_setL1DCFG
+#define ti_sysbios_family_c7x_Cache_setL1DCFG ti_sysbios_family_c7x_Cache_setL1DCFG__E
+
+/* getL1DCFG */
+#undef ti_sysbios_family_c7x_Cache_getL1DCFG
+#define ti_sysbios_family_c7x_Cache_getL1DCFG ti_sysbios_family_c7x_Cache_getL1DCFG__E
+
+/* setL2WB */
+#undef ti_sysbios_family_c7x_Cache_setL2WB
+#define ti_sysbios_family_c7x_Cache_setL2WB ti_sysbios_family_c7x_Cache_setL2WB__E
+
+/* setL2WBINV */
+#undef ti_sysbios_family_c7x_Cache_setL2WBINV
+#define ti_sysbios_family_c7x_Cache_setL2WBINV ti_sysbios_family_c7x_Cache_setL2WBINV__E
+
+/* setL1DWB */
+#undef ti_sysbios_family_c7x_Cache_setL1DWB
+#define ti_sysbios_family_c7x_Cache_setL1DWB ti_sysbios_family_c7x_Cache_setL1DWB__E
+
+/* setL1DWBINV */
+#undef ti_sysbios_family_c7x_Cache_setL1DWBINV
+#define ti_sysbios_family_c7x_Cache_setL1DWBINV ti_sysbios_family_c7x_Cache_setL1DWBINV__E
 
 /* startup */
 #define Cache_startup ti_sysbios_family_c7x_Cache_startup__I

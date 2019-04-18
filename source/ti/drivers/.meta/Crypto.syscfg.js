@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,6 +43,8 @@ let Common = system.getScript("/ti/drivers/Common.js");
 /* get /ti/drivers family name from device object */
 let family = Common.device2Family(system.deviceData, "Crypto");
 
+let config = [];
+
 /*
  *  ======== validate ========
  *  Validate this instance's configuration
@@ -62,11 +64,23 @@ function validate(inst, validation)
 let base = {
     displayName         : "Crypto",
     description         : "Crypto Driver",
-    longDescription     : "The Crypto driver simplifies reading and writing to"
-        + " the crypto peripheral with multiple modes of operation and"
-        + " performance.",
+    longDescription     : `
+The [__Crypto driver__][1] simplifies reading and writing to
+the crypto peripheral with multiple modes of operation and
+performance.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+[1]: /tidrivers/doxygen/html/_c_r_y_p_t_o_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_c_r_y_p_t_o_8h.html#ti_drivers_Crypto_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_c_r_y_p_t_o_8h.html#ti_drivers_Crypto_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#Crypto_Configuration_Options "Configuration options reference"
+`,
     validate            : validate,
-    defaultInstanceName : "Board_Crypto"
+    defaultInstanceName : "Board_Crypto",
+    config              : Common.addNameConfig(config, "/ti/drivers/Crypto", "Board_Crypto"),
+    modules: Common.autoForceModules(["Board", "Power"])
 };
 
 /* extend the base exports to include family-specific content */

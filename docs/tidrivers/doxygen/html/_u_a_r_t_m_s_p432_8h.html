@@ -104,10 +104,10 @@ Include dependency graph for UARTMSP432.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_u_a_r_t_m_s_p432_8h__incl.png" border="0" usemap="#_u_a_r_t_m_s_p432_8h" alt=""/></div>
 <map name="_u_a_r_t_m_s_p432_8h" id="_u_a_r_t_m_s_p432_8h">
-<area shape="rect" id="node8" href="_power_8h.html" title="Power Manager interface. " alt="" coords="431,87,555,114"/>
-<area shape="rect" id="node11" href="_u_a_r_t_8h.html" title="UART driver interface. " alt="" coords="25,169,149,196"/>
-<area shape="rect" id="node12" href="_ring_buf_8h.html" title="ti/drivers/utils/RingBuf.h" alt="" coords="225,169,387,196"/>
-<area shape="rect" id="node9" href="_list_8h.html" title="Linked List interface for use in drivers. " alt="" coords="411,169,547,196"/>
+<area shape="rect" id="node8" href="_power_8h.html" title="Power Manager. " alt="" coords="366,87,490,114"/>
+<area shape="rect" id="node11" href="_u_a_r_t_8h.html" title="Universal Asynchronous Receiver&#45;Transmitter (UART) Driver. " alt="" coords="23,169,147,196"/>
+<area shape="rect" id="node12" href="_ring_buf_8h.html" title="ti/drivers/utils/RingBuf.h" alt="" coords="172,169,335,196"/>
+<area shape="rect" id="node9" href="_list_8h.html" title="Linked List interface for use in drivers. " alt="" coords="359,169,495,196"/>
 </map>
 </div>
 </div>
@@ -2599,7 +2599,7 @@ Variables</h2></td></tr>
 
 <p>UARTMSP432 Hardware attributes. </p>
 <p>These fields are used by driverlib APIs and therefore must be populated by driverlib macro definitions. For MSP432Ware these definitions are found in:</p><ul>
-<li><a class="el" href="_u_a_r_t_8h.html" title="UART driver interface. ">uart.h</a></li>
+<li><a class="el" href="_u_a_r_t_8h.html" title="Universal Asynchronous Receiver-Transmitter (UART) Driver. ">uart.h</a></li>
 </ul>
 <p>intPriority is the UART peripheral's interrupt priority, as defined by the underlying OS. It is passed unmodified to the underlying OS's interrupt handler creation code, so you need to refer to the OS documentation for usage. For example, for SYS/BIOS applications, refer to the ti.sysbios.family.arm.m3.Hwi documentation for SYS/BIOS usage of interrupt priorities. If the driver uses the ti.dpl interface instead of making OS calls directly, then the HwiP port handles the interrupt priority in an OS specific way. In the case of the SYS/BIOS port, intPriority is passed unmodified to Hwi_create().</p>
 <p>A sample structure is shown below: </p><div class="fragment"><div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> uartMSP432RingBuffer[2][32];</div><div class="line"></div><div class="line"><span class="keyword">const</span> <a class="code" href="struct_u_a_r_t_m_s_p432___h_w_attrs_v1.html">UARTMSP432_HWAttrsV1</a> uartMSP432HWAttrs[MSP_EXP432P401R_UARTCOUNT] = {</div><div class="line">    {</div><div class="line">        .<a class="code" href="struct_u_a_r_t_m_s_p432___h_w_attrs_v1.html#ab2a93d74fdde525f1300f7213e889c40">baseAddr</a> = EUSCI_A0_BASE,</div><div class="line">        .intNum = INT_EUSCIA0,</div><div class="line">        .intPriority = (~0),</div><div class="line">        .clockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK,</div><div class="line">        .bitOrder = EUSCI_A_UART_LSB_FIRST,</div><div class="line">        .numBaudrateEntries = <span class="keyword">sizeof</span>(uartMSP432Baudrates) /</div><div class="line">                              <span class="keyword">sizeof</span>(<a class="code" href="_u_a_r_t_m_s_p432_8h.html#a928164bf503e9f2e23b9ed0c0f4a0ae7">UARTMSP432_BaudrateConfig</a>),</div><div class="line">        .baudrateLUT = uartMSP432Baudrates,</div><div class="line">        .ringBufPtr  = uartMSP432RingBuffer[0],</div><div class="line">        .ringBufSize = <span class="keyword">sizeof</span>(uartMSP432RingBuffer[0]),</div><div class="line">        .errorFxn = NULL</div><div class="line">    },</div><div class="line">    {</div><div class="line">        .baseAddr = EUSCI_A2_BASE,</div><div class="line">        .intNum = INT_EUSCIA2,</div><div class="line">        .intPriority = (~0),</div><div class="line">        .clockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK,</div><div class="line">        .bitOrder = EUSCI_A_UART_LSB_FIRST,</div><div class="line">        .numBaudrateEntries = <span class="keyword">sizeof</span>(uartMSP432Baudrates) /</div><div class="line">                              <span class="keyword">sizeof</span>(<a class="code" href="_u_a_r_t_m_s_p432_8h.html#a928164bf503e9f2e23b9ed0c0f4a0ae7">UARTMSP432_BaudrateConfig</a>),</div><div class="line">        .baudrateLUT = uartMSP432Baudrates</div><div class="line">        .ringBufPtr  = uartMSP432RingBuffer[1],</div><div class="line">        .ringBufSize = <span class="keyword">sizeof</span>(uartMSP432RingBuffer[1]),</div><div class="line">        .errorFxn = NULL</div><div class="line">    }</div><div class="line">};</div></div><!-- fragment --> 
@@ -2655,7 +2655,7 @@ Variables</h2></td></tr>
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->
 <hr class="footer"/><small>
-  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2018</a>, Texas Instruments Incorporated. All rights reserved. <br>
+  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
   <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
 </small>
 </body>

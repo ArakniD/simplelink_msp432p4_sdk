@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -81,6 +81,7 @@ let config = [
     {
         name        : "mutexTimeout",
         displayName : "Mutex Timeout",
+        description : "Timeout to acquire mutex for synchronizing access to UART.",
         default     : "Never Timeout",
         onChange    : onChangeMutexTimeout,
         options     : [
@@ -337,12 +338,22 @@ function onHardwareChanged(inst, ui)
 let base = {
     displayName           : "Display",
     description           : "Display Driver",
-    longDescription       : "The Display middleware-driver in TI-RTOS is"
-        + " designed to abstract operations and considerations specific to"
-        + " given output method.",
+    longDescription: `
+The [__Display driver__][1] allows you to manage Display instances via simple
+and portable APIs.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+
+[1]: /tidrivers/doxygen/html/_display_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_display_8h.html#ti_drivers_Display_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_display_8h.html#ti_drivers_Display_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#Display_Configuration_Options "Configuration options reference"
+`,
     documentation: "/tidrivers/doxygen/html/_display_8h.html",
     defaultInstanceName   : "Board_Display",
-    config                : config,
+    config                : Common.addNameConfig(config, "ti/drivers/Display","Board_Display"),
     validate              : validate,
     maxInstances          : 3,
     filterHardware        : filterHardware,

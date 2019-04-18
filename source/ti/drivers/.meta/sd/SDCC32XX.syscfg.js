@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -77,7 +77,7 @@ let devSpecific = {
 
     moduleInstances : moduleInstances,
 
-    modules: Common.autoForcePowerAndDMAModules,
+    modules: Common.autoForceModules(["Board", "Power", "DMA"]),
 
     filterHardware: filterHardware,
 
@@ -162,8 +162,15 @@ function pinmuxRequirements(inst)
                     displayName: "DMA RX Channel",
                     interfaceNames: ["DMA_RX"]
                 }
-            ]
+            ],
+
+            signalTypes: {
+                clkPin: ["SDHost_CLK"],
+                cmdPin: ["SDHost_CMD"],
+                dataPin: ["SDHost_DATA"]
+            }
         };
+        
         return ([sdHost]);
     }
 
@@ -175,7 +182,6 @@ function pinmuxRequirements(inst)
  */
 function filterHardware(component)
 {
-
     let clk, cmd, data;
 
     /* component must have SD Host signals */
@@ -248,9 +254,13 @@ function onHardwareChanged(inst, ui)
  */
 function extend(base)
 {
-    devSpecific.config = base.config.concat(devSpecific.config);
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
 
-    return (Object.assign({}, base, devSpecific));
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

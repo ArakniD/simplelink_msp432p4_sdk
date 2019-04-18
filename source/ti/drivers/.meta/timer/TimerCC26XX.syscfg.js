@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,6 +38,15 @@
 "use strict";
 
 let Common = system.getScript("/ti/drivers/Common.js");
+
+let longDescription =`The [__Timer driver__][1] allows you to manage a Timer peripheral via simple
+and portable APIs.
+
+* [Configuration Options][2]
+
+[1]: /tidrivers/doxygen/html//_g_p_timer_c_c26_x_x_8h.html#details "C API reference"
+[2]: /tidrivers/syscfg/html/ConfigDoc.html#Timer_Configuration_Options "Configuration options reference"
+`;
 
 /*
  *  ======== devSpecific ========
@@ -122,7 +131,6 @@ function pinmuxRequirements(inst)
                 ]
             }];
             timer.signalTypes = { pwmPin: ["PWM"] };
-            inst.interruptPriority.hidden = true;
             break;
         }
         case "Capture": {
@@ -136,7 +144,6 @@ function pinmuxRequirements(inst)
                 ]
             }];
             timer.signalTypes = { capturePin: ["DIN"] };
-            inst.interruptPriority.hidden = true;
             break;
         }
     }
@@ -258,8 +265,15 @@ function onHardwareChanged(inst, ui)
  */
 function extend(base)
 {
-    devSpecific.config = devSpecific.config.concat(base.config);
-    return Object.assign({}, base, devSpecific);
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    result.longDescription = longDescription;
+
+    return (result);
 }
 
 /*

@@ -34,6 +34,7 @@
  */
 
 #include <xdc/std.h>
+#include <xdc/runtime/Assert.h>
 #include <xdc/runtime/Error.h>
 
 #define ti_sysbios_knl_Task__internalaccess
@@ -105,6 +106,13 @@ Ptr TaskSupport_start(Ptr currTsk, ITaskSupport_FuncPtr enter, ITaskSupport_Func
     UInt size;
     Char *sptr;
     Task_Object *tsk = (Task_Object *)(currTsk);
+
+    Assert_isTrue((tsk->stackSize >= Task_defaultStackSize),
+                  TaskSupport_A_stackSizeTooSmall);
+
+    if (tsk->stackSize < Task_defaultStackSize) {
+        return (NULL);
+    }
 
     if (Task_initStackFlag) {
         sptr = (Char *)tsk->stack;

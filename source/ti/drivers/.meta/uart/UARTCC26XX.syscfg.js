@@ -285,11 +285,13 @@ function extend(base)
     /* save base properies/methods, to use in our methods */
     $super = base;
 
-    /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
-
     /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

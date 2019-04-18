@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -197,42 +197,3 @@ Void Hwi_setHookContext(Hwi_Object *hwi, Int id, Ptr hookContext)
 {
     Hwi_HwiProxy_setHookContext((Hwi_HwiProxy_Handle)hwi, id, hookContext);
 }
-
-/*
- * Below APIs provided for backward compatability.
- */
-
-#ifdef __ti__
-#pragma CODE_SECTION(ti_sysbios_hal_Hwi_disable__E, ".text:ti_sysbios_hal_Hwi_disable__E")
-#pragma CODE_SECTION(ti_sysbios_hal_Hwi_enable__E, ".text:ti_sysbios_hal_Hwi_enable__E")
-#pragma CODE_SECTION(ti_sysbios_hal_Hwi_restore__E, ".text:ti_sysbios_hal_Hwi_restore__E")
-#pragma FUNC_EXT_CALLED(ti_sysbios_hal_Hwi_disable__E);
-#pragma FUNC_EXT_CALLED(ti_sysbios_hal_Hwi_enable__E);
-#pragma FUNC_EXT_CALLED(ti_sysbios_hal_Hwi_restore__E);
-#endif
-
-/*
- *  ======== Hwi_disable ========
- */
-UInt ti_sysbios_hal_Hwi_disable__E()
-{
-    return Hwi_HwiProxy_disable();
-}
-
-/*
- *  ======== Hwi_enable ========
- */
-UInt ti_sysbios_hal_Hwi_enable__E()
-{
-    return Hwi_HwiProxy_enable();
-}
-
-/*
- *  ======== Hwi_restore ========
- */
-Void ti_sysbios_hal_Hwi_restore__E(UInt key)
-{
-    Hwi_HwiProxy_restore(key);
-}
-
-

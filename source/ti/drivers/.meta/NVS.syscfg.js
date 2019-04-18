@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,27 +44,43 @@ let Common = system.getScript("/ti/drivers/Common.js");
 let family = Common.device2Family(system.deviceData, "NVS");
 
 /* Intro splash on GUI */
-let longDescription = "The NVS module allows you to manage non-volatile "
-    + "memory. Using the NVS APIs, you can read and write data from and to "
-    + "persistent storage."
-    + "Each NVS object manages a 'region' of non-volatile memory of a size "
-    + "specified in the NVS object's hardware attributes. A 'sector' refers "
-    + "to the smallest unit of non-volatile storage that can be erased at "
-    + "one time, and the 'sectorSize' is the size of this unit. Flash sector "
-    + "size is hardware specific and may be meaningless for some persistent "
-    + "storage systems. However, in the case of flash memory devices, the "
-    + "size of a managed region must be an integer multiple of the sector size.";
+let longDescription = `
+The [__NVS driver__][1] allows you to read, write, and erase non-volatile
+memory regions via simple and portable APIs.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+
+[1]: /tidrivers/doxygen/html/_n_v_s_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_n_v_s_8h.html#ti_drivers_NVS_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_n_v_s_8h.html#ti_drivers_NVS_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#NVS_Configuration_Options "Configuration options reference"
+`;
 
 let configs = [
     {
         name: "nvsType",
         displayName: "NVS Type",
-        description: "Specifies the type of non-volatile storage used.",
+        description: "Specifies the type of non-volatile storage used by the NVS region.",
         default: "Internal",
         options: [
-            { name: "Internal" },
-            { name: "External" },
-            { name: "RAM" }
+            {
+                name: "Internal",
+                description: "Normal CPU directly addressable flash memory."
+            },
+            {
+                name: "External",
+                description: "SPI Flash. Not directly addressable flash memory."
+            },
+            {
+                name: "RAM",
+                description: "Region is in CPU directly addressable RAM.",
+                longDescription: `
+Typically used to emulate flash memory while developing applications that use
+real flash memory. This avoids wearing out device flash during software development.
+`
+            }
         ]
     }
 ];
@@ -149,9 +165,10 @@ exports = {
     description: "Non-Volatile Storage Driver",
     longDescription: longDescription,
     documentation: "/tidrivers/doxygen/html/_n_v_s_8h.html",
-    config: configs,
+    config: Common.addNameConfig(configs, "/ti/drivers/NVS", "Board_NVS"),
     validate: validate,
     moduleInstances: moduleInstances,
+    modules: Common.autoForceModules(["Board"]),
     filterHardware: filterHardware,
     onHardwareChanged: onHardwareChanged,
     templates: {

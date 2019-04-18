@@ -23,7 +23,7 @@ package/ti.sysbios.family.c7x.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F07
+package/.xdc-F09
 package/ti_sysbios_family_c7x.java
 package/ti_sysbios_family_c7x.class
 package/package_ti.sysbios.family.c7x.c

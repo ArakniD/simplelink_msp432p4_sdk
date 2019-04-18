@@ -1,5 +1,5 @@
 ;
-;  Copyright (c) 2013-2018, Texas Instruments Incorporated
+;  Copyright (c) 2013-2019, Texas Instruments Incorporated
 ;  All rights reserved.
 ;
 ;  Redistribution and use in source and binary forms, with or without
@@ -313,8 +313,15 @@ ti_sysbios_family_arm_m3_Hwi_excHandlerAsm__I:
         stmfd   sp!, {r4-r11}   ; save r4-r11 while we're at it
         mov     r0, sp          ; pass sp to exception handler
         mov     r1, lr          ; pass lr too
+        mov     r4, lr          ; preserve LR in r4
 
-        ldr     pc, excHandlerAddr
+        ldr     r2, excHandlerAddr
+        blx     r2
+
+        mov     r0, sp          ; for ROV
+        mov     r1, r4          ; for ROV
+$1
+        b       $1              ; spin here indefinitely
 
 excHandlerAddr:
         .word          ti_sysbios_family_arm_m3_Hwi_excHandler__I

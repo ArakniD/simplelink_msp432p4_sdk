@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -58,6 +58,9 @@ let devSpecific = {
             name        : "clockSource",
             displayName : "Clock Source",
             description : "Specifies the clock source for the I2C peripheral.",
+            longDescription:`The frequency of the clock sources are configured
+per __Power Performance Level__ configured in the __Power Module__.
+`,
             default     : "SMCLK",
             options     : [
                 {name: "ACLK"},
@@ -83,10 +86,13 @@ let devSpecific = {
  */
 function extend(base)
 {
-    /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
 
-    return (Object.assign({}, base, devSpecific));
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,29 +40,35 @@
 let Common = system.getScript("/ti/drivers/Common.js");
 let family = Common.device2Family(system.deviceData, "Power");
 
-/* Intro splash on GUI */
-let longDescription = "The Power manager facilitates the transition " +
-    "of the MCU from active state to one of the sleep states and vice " +
-    "versa. It provides drivers the ability to set and release dependencies " +
-    "on hardware resources and keeps a reference count on each resource to " +
-    "know when to enable or disable the peripheral clock to the resource. " +
-    "It provides drivers the ability to register a callback function upon a " +
-    "specific power event. In addition, drivers and apps can set or release " +
-    "constraints to prevent the MCU from transitioning into a particular " +
-    "sleep state.";
-
-/* The base exports for the Power module */
+/*
+ *  ======== base ========
+ *  Define the base Power properties and methods
+ */
 let base = {
     displayName         : "Power",
     description         : "Power Driver",
-    longDescription     : longDescription,
-    documentation       : "/tidrivers/doxygen/html/_power_8h.html",
+    longDescription: `
+The [__Power driver__][1] facilitates the transition of the MCU from active
+states to one of the sleep states and vice
+versa. The Power driver enables the other driver modules to minimize power
+consumption. In addition, applications can set or release power
+constraints to prevent the MCU from transitioning into a particular
+sleep state.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+
+[1]: /tidrivers/doxygen/html/_power_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_power_8h.html#ti_drivers_Power_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_power_8h.html#ti_drivers_Power_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#Power_Configuration_Options "Configuration options reference"
+`,
     defaultInstanceName : "Board_Power",
     maxInstances        : 1,
     initPriority        : -1 /* lower numbers init earlier */
 };
 
 /* get family-specific Power module */
-let devPower = system.getScript("/ti/drivers/power/Power" + family);
-
-exports = devPower.extend(base);
+let devicePower = system.getScript("/ti/drivers/power/Power" + family);
+exports = devicePower.extend(base);

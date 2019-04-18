@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,103 +29,123 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/** ============================================================================
- *  @file       I2CSlave.h
+/*!****************************************************************************
+ *  @file   I2CSlave.h
+ *  @brief  Inter-Integrated Circuit (I2C) Slave Driver
  *
- *  @brief      I2CSlave driver interface
+ *  @anchor ti_drivers_I2CSlave_Overview
+ *  # Overview
  *
- *  The I2CSlave header file should be included in an application as follows:
+ *  The I2C Slave driver allows you to send and recieve I2C transfers.
+ *  This driver complements the @ref I2C.h driver which operates
+ *  as an I2C master.
+ *
+ *  <hr>
+ *  @anchor ti_drivers_I2CSlave_Usage
+ *  # Usage
+ *
+  *  This documentation provides a basic @ref ti_drivers_I2CSlave_Synopsis
+ *  "usage summary" and a set of @ref ti_drivers_I2CSlave_Examples "examples"
+ *  in the form of commented code fragments. Detailed descriptions of the
+ *  APIs are provided in subsequent sections.
+
+
+ *  @anchor ti_drivers_I2CSlave_Synopsis
+ *  ## Synopsis #
+ *  @anchor ti_drivers_I2CSlave_Synopsis_Code
  *  @code
+ *  // Import I2C Slave Driver definitions
  *  #include <ti/drivers/I2CSlave.h>
+ *
+ *  // Define name for an index of an I2C Slave
+ *  #define MASTER_BUS 0
+ *
+ *  // One-time init of I2C driver
+ *  I2CSlave_init();
+ *
+ *  // initialize optional I2C parameters
+ *  I2CSlave_Params params;
+ *  I2CSlave_Params_init(&params);
+ *  params.transferMode = I2CSLAVE_MODE_BLOCKING;
+ *
+ *  // Open I2C Slavefor usage
+ *  I2CSlave_Handle i2cHandle = I2CSlave_open(MASTER_BUS, &params);
+ *
+ *  // Wait for a write from an I2C master device
+ *  I2CSlave_read(i2cHandle, buffer, 4);
+ *
+ *  // Write to the I2C master device
+ *  I2CSlave_write(i2cHandle, buffer, 2);
+ *
+ *  // Close I2C
+ *  I2CSlave_close(i2cHandle);
  *  @endcode
  *
- *  # Operation #
- *  The I2CSlave driver operates as a slave on an I2C bus in either
- *  I2CSLAVE_MODE_BLOCKING or I2CSLAVE_MODE_CALLBACK.
- *  In blocking mode, the task's execution is blocked during the I2CSlave
- *  read/write transfer. When the transfer has completed, code execution will
- *  resume. In callback mode, the task's execution is not blocked, allowing
- *  for other transactions to be queued up or to process some other code. When
- *  the transfer has completed, the I2CSlave driver will call a user-specified
- *  callback function (from a HWI context).
+ *  @anchor ti_drivers_I2CSlave_Examples
+ *  ## Examples
  *
- *  The APIs in this driver serve as an interface to a typical TI-RTOS
- *  application. The specific peripheral implementations are responsible to
- *  create all the SYS/BIOS specific primitives to allow for thread-safe
- *  operation.
+ *  @li @ref ti_drivers_I2CSlave_Example_open "Getting an I2C Slave handle"
+ *  @li @ref ti_drivers_I2CSlave_Example_transferring "Transferring data"
  *
- *  ## Opening the driver #
+ *  @anchor ti_drivers_I2CSlave_Example_open
+ *  ## Opening the driver
  *
  *  @code
- *  I2CSlave_Handle      handle;
- *  I2CSlave_Params      params;
+ *  // Define name for an index of an I2C Slave
+ *  #define MASTER_BUS 0
+ *
+ *  I2CSlave_Handle handle;
+ *  I2CSlave_Params params;
+ *
+ *  // One-time init of I2C Slave driver
+ *  I2CSlave_init();
  *
  *  I2CSlave_Params_init(&params);
  *  params.transferMode  = I2CSLAVE_MODE_CALLBACK;
- *  params.transferCallbackFxn = someI2CSlaveCallbackFunction;
- *  handle = I2CSlave_open(Board_I2CSLAVE0, &params);
+ *  params.transferCallbackFxn = callbackFxn;
+ *
+ *  handle = I2CSlave_open(0, &params);
  *  if (handle == NULL) {
  *      // I2C Slave failed to open
- *      while (1);
+ *      while (1) {}
  *  }
  *  @endcode
  *
- *  ## Transferring data #
- *  A I2CSlave transaction with a I2CSlave peripheral is started by calling
- *  I2CSlave_read() or I2CSlave_write().
- *  Each transfer is performed atomically with the I2CSlave peripheral.
+ *  @anchor ti_drivers_I2CSlave_Example_transferring
+ *  ## Transferring data
  *
  *  @code
- *  ret = I2CSlave_read(i2cSlave, buffer, 5)
- *  if (!ret) {
+ *  status = I2CSlave_read(handle, buffer, 5)
+ *  if (status == false) {
  *      //Unsuccessful I2CSlave read
  *  }
  *
- *  I2CSlave_write(i2cSlave, buffer, 3);
- *  if (!ret) {
+ *  status = I2CSlave_write(handle, buffer, 3);
+ *  if (status == false) {
  *      //Unsuccessful I2CSlave write
  *  }
-
  *  @endcode
  *
- *  # Implementation #
+ *  <hr>
+ *  @anchor ti_drivers_I2CSlave_Configuration
+ *  # Configuration
  *
- *  This module serves as the main interface for TI-RTOS
- *  applications. Its purpose is to redirect the module's APIs to specific
- *  peripheral implementations which are specified using a pointer to a
- *  I2CSlave_FxnTable.
- *
- *  The I2CSlave driver interface module is joined (at link time) to a
- *  NULL-terminated array of I2CSlave_Config data structures named
- *  *I2CSlave_config*. *I2CSlave_config* is implemented in the application
- *  with each entry being an instance of a I2CSlave peripheral. Each entry in
- *  *I2CSlave_config* contains a:
- *  - (I2CSlave_FxnTable *) to a set of functions that implement an I2CSlave
- *  - (void *) data object that is associated with the I2CSlave_FxnTable
- *  - (void *) hardware attributes that are associated to the I2CSlave_FxnTable
- *
- *  # Instrumentation #
- *  The I2CSlave driver interface produces log statements if instrumentation is
- *  enabled.
- *
- *  Diagnostics Mask | Log details |
- *  ---------------- | ----------- |
- *  Diags_USER1      | basic operations performed |
- *  Diags_USER2      | detailed operations performed |
- *
- *  ============================================================================
+ *  Refer to the @ref driver_configuration "Driver's Configuration" section
+ *  for driver configuration information.
+ *  <hr>
+ ******************************************************************************
  */
 
 #ifndef ti_drivers_I2CSLAVE__include
 #define ti_drivers_I2CSLAVE__include
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  *  @defgroup I2CSLAVE_CONTROL I2CSlave_control command and status codes
@@ -193,7 +213,7 @@ extern "C" {
 
 /**
  *  @defgroup I2CSLAVE_CMD Command Codes
- *  I2C_CMD_* macros are general command codes for I2CSlave_control(). Not all I2CSlave
+ *  I2CSlave_CMD_* macros are general command codes for I2CSlave_control(). Not all I2CSlave
  *  driver implementations support these command codes.
  *  @{
  *  @ingroup I2CSLAVE_CONTROL
@@ -211,80 +231,98 @@ extern "C" {
 typedef struct I2CSlave_Config_      *I2CSlave_Handle;
 
 /*!
+ *  @private
  *  @brief  I2CSlave mode
  *
- *  This enum defines the state of the I2CSlave driver's state-machine. Do not
- *  modify.
+ *  This enum defines the state of the I2CSlave driver's state-machine.
  */
-typedef enum I2CSlave_Mode_ {
+typedef enum {
     I2CSLAVE_IDLE_MODE = 0,  /*!< I2CSlave is not performing a transaction */
-    I2CSLAVE_WRITE_MODE = 1, /*!< I2CSlave is currently performing write */
+    I2CSLAVE_WRITE_MODE = 1,  /*!< I2CSlave is currently performing write */
     I2CSLAVE_READ_MODE = 2,  /*!< I2CSlave is currently performing read */
-    I2CSLAVE_START_MODE = 3, /*!< I2CSlave received a START from a master */
-    I2CSLAVE_ERROR = 0xFF    /*!< I2CSlave error has occurred, exit gracefully */
+    I2CSLAVE_START_MODE = 3,  /*!< I2CSlave received a START from a master */
+    I2CSLAVE_ERROR = 0xFF  /*!< I2CSlave error has occurred, exit gracefully */
 } I2CSlave_Mode;
 
 /*!
- *  @brief  I2CSlave transfer mode
+ *  @brief    Return behavior of I2CSlave_write() and I2CSlave_read()
+ *  specified in the #I2CSlave_Params.
  *
- *  I2CSLAVE_MODE_BLOCKING block task execution      a I2CSlave transfer is in
- *  progress. I2CSLAVE_MODE_CALLBACK does not block task execution; but calls a
- *  callback function when the I2CSlave transfer has completed
+ *  @sa  #I2CSlave_Params
  */
-typedef enum I2CSlave_TransferMode_ {
-    I2CSLAVE_MODE_BLOCKING,  /*!< I2CSlave read/write blocks execution*/
-    I2CSLAVE_MODE_CALLBACK   /*!< I2CSlave read/wrire queues transactions and
-                                  does not block */
+typedef enum {
+    /*
+     *  In #I2CSLAVE_MODE_BLOCKING, calls to I2CSlave_read() and
+     *  I2CSlave_write() block until the transfer completes. Other threads
+     *  calling I2CSlave_read() or I2CSlave_write() while a transfer is in
+     *  progress are also placed into a blocked state. If multiple threads are
+     *  blocked, the thread with the highest priority will be unblocked first.
+     *  This implies that arbitration will not be executed in chronological
+     *  order.
+     *
+     *  @note When using #I2CSLAVE_MODE_BLOCKING, I2CSlave_write() and
+     *  I2CSlave_read() must be called from a thread context.
+     */
+    I2CSLAVE_MODE_BLOCKING,
+
+    /*
+     *  In #I2CSLAVE_MODE_CALLBACK, calls to I2CSlave_read() and
+     *  I2CSlave_write() return immediately. The application's callback
+     *  function, #I2CSlave_Params.transferCallbackFxn, is called when the
+     *  transfer is complete. The #I2CSlave_Params.transferCallbackFxn function
+     *  will be called asynchronously as each transaction is completed.
+     */
+    I2CSLAVE_MODE_CALLBACK
 } I2CSlave_TransferMode;
 
 /*!
- *  @brief  I2CSlave callback function
+ *  @brief  The definition of a callback function.
  *
- *  User definable callback function prototype. The I2CSlave driver will call
- *  the defined function and pass in the I2CSlave driver's handle, and the
- *  return value of I2CSlave_read/I2CSlave_write.
+ *  When operating in #I2CSLAVE_MODE_CALLBACK, the callback function is called
+ *  when a transfer completes. The application is responsible for
+ *  declaring an #I2CSlave_CallbackFxn function and providing a pointer
+ *  in #I2CSlave_Params.transferCallbackFxn.
  *
- *  @param  I2CSlave_Handle          I2CSlave_Handle
+ *  @warning  The callback function is called from an interrupt context.
+ *
+ *  @param[out]  handle    #I2CSlave_Handle used with the initial
+ *  call to I2CSlave_read() or I2CSlave_write()
 
- *  @param  bool                     Results of the I2CSlave transaction
+ *  @param [out]  status    Boolean indicating if the I2C transfer was
+ *  successful. If @p true, the transfer was successful. If @p false,
+ *  the transfer failed.
  */
 typedef void (*I2CSlave_CallbackFxn)(I2CSlave_Handle handle, bool status);
 
 /*!
- *  @brief  I2CSlave Parameters
+ *  @brief I2CSlave parameters used with I2CSlave_open().
  *
- *  I2CSlave parameters are used to with the I2CSlave_open() call. Default
- *  values for
- *  these parameters are set using I2CSlave_Params_init().
+ *  I2CSlave_Params_init() must be called prior to setting fields in
+ *  this structure.
  *
- *  If I2CSlave_TransferMode is set to I2CSLAVE_MODE_BLOCKING then I2CSlave_read
- *  or I2CSlave_write function calls will block thread execution until the
- *  transaction has completed.
- *
- *  If I2CSlave_TransferMode is set to I2CSLAVE_MODE_CALLBACK then
- *  I2CSlave read/write will not block thread execution and it will call the
- *  function specified by transferCallbackFxn.
- *  (regardless of error state).
- *
- *
- *  @sa     I2CSlave_Params_init()
+ *  @sa  I2CSlave_Params_init()
  */
-typedef struct I2CSlave_Params_ {
-    /*! Blocking or Callback mode */
+typedef struct {
+    /*! Specifies the #I2CSlave_TransferMode */
     I2CSlave_TransferMode   transferMode;
-    /*! Callback function pointer */
+
+    /*! Pointer to a #I2CSlave_CallbackFxn to be invoked after a
+     *  transfer completes when operating in #I2CSLAVE_MODE_CALLBACK. */
     I2CSlave_CallbackFxn    transferCallbackFxn;
-    /*! Custom argument used by driver implementation */
+
+    /*! Custom argument used by a device specific implementation */
     void                   *custom;
 } I2CSlave_Params;
 
 /*!
+ *  @private
  *  @brief      A function pointer to a driver specific implementation of
  *              I2CSlave_close().
  */
 typedef void        (*I2CSlave_CloseFxn)    (I2CSlave_Handle handle);
 
 /*!
+ *  @private
  *  @brief      A function pointer to a driver specific implementation of
  *              I2CSlave_control().
  */
@@ -293,12 +331,14 @@ typedef int_fast16_t (*I2CSlave_ControlFxn)  (I2CSlave_Handle handle,
                                         void *arg);
 
 /*!
+ *  @private
  *  @brief      A function pointer to a driver specific implementation of
  *              I2CSlave_init().
  */
 typedef void        (*I2CSlave_InitFxn)     (I2CSlave_Handle handle);
 
 /*!
+ *  @private
  *  @brief      A function pointer to a driver specific implementation of
  *              I2CSlave_open().
  */
@@ -306,6 +346,7 @@ typedef I2CSlave_Handle  (*I2CSlave_OpenFxn)     (I2CSlave_Handle handle,
                                         I2CSlave_Params *params);
 
 /*!
+ *  @private
  *  @brief      A function pointer to a driver specific implementation of
  *              I2CSlave_WriteTransaction().
  */
@@ -314,6 +355,7 @@ typedef bool        (*I2CSlave_WriteFxn) (I2CSlave_Handle handle,
 
 
 /*!
+ *  @private
  *  @brief      A function pointer to a driver specific implementation of
  *              I2CSlave_ReadFxn().
  */
@@ -326,7 +368,7 @@ typedef bool        (*I2CSlave_ReadFxn) (I2CSlave_Handle handle, void *buffer,
  *              required set of functions to control a specific I2CSlave
  *              driver implementation.
  */
-typedef struct I2CSlave_FxnTable_ {
+typedef struct {
     /*! Function to close the specified peripheral */
     I2CSlave_CloseFxn        closeFxn;
 
@@ -347,106 +389,79 @@ typedef struct I2CSlave_FxnTable_ {
 } I2CSlave_FxnTable;
 
 /*!
- *  @brief  I2CSlave Global configuration
+ *  @brief I2C Slave driver's custom @ref driver_configuration "configuration"
+ *  structure.
  *
- *  The I2CSlave_Config structure contains a set of pointers used to
- *  characterize the I2CSlave driver implementation.
- *
- *  This structure needs to be defined before calling I2CSlave_init() and it
- *  must not be changed thereafter.
- *
- *  @sa     I2CSlave_init()
+ *  @sa  I2CSlave_init()
+ *  @sa  I2CSlave_open()
  */
 typedef struct I2CSlave_Config_ {
-    /*! Pointer to a table of driver-specific implementations of I2CSlave APIs*/
+    /*! Pointer to a @ref driver_function_table "function pointer table"
+     *  with driver-specific implementations of I2CSlave APIs */
     I2CSlave_FxnTable const *fxnTablePtr;
 
-    /*! Pointer to a driver specific data object */
+    /*! Pointer to a driver specific @ref driver_objects "data object". */
     void               *object;
 
-    /*! Pointer to a driver specific hardware attributes structure */
+    /*! Pointer to a driver specific @ref driver_hardware_attributes
+     *  "hardware attributes structure". */
     void         const *hwAttrs;
 } I2CSlave_Config;
 
 
 /*!
- *  @brief  Function to close a I2CSlave peripheral specified by the I2CSlave
- *  handle
- *  @pre    I2CSlave_open() had to be called first.
+ *  @brief  Function to close an I2CSlave driver instance
  *
- *  @param  handle  A I2CSlave_Handle returned from I2CSlave_open
+ *  @pre  I2CSlave_open() has to be called first.
  *
- *  @sa     I2CSlave_open()
+ *  @param[in]  handle     An #I2CSlave_Handle returned from I2CSlave_open()
  */
 extern void I2CSlave_close(I2CSlave_Handle handle);
 
 /*!
- *  @brief  Function performs implementation specific features on a given
- *          I2CSlave_Handle.
- *
- *  Commands for I2CSlave_control can originate from I2CSlave.h or from implementation
- *  specific I2CSlave*.h (_I2CMSP432.h_, etc.. ) files.
- *  While commands from I2CSlave.h are API portable across driver implementations,
- *  not all implementations may support all these commands.
- *  Conversely, commands from driver implementation specific I2CSlave*.h files add
- *  unique driver capabilities but are not API portable across all I2CSlave driver
- *  implementations.
- *
- *  Commands supported by I2CSlave.h follow a I2CSLAVE_CMD_\<cmd\> naming
- *  convention.<br>
- *  Commands supported by I2CSlave*.h follow a I2CSLAVE*_CMD_\<cmd\> naming
- *  convention.<br>
- *  Each control command defines @b arg differently. The types of @b arg are
- *  documented with each command.
- *
- *  See @ref I2CSLAVE_CMD "I2CSlave_control command codes" for command codes.
- *
- *  See @ref I2CSLAVE_STATUS "I2CSlave_control return status codes" for status codes.
+ *  @brief  Function performs implementation specific features on a
+ *          driver instance.
  *
  *  @pre    I2CSlave_open() has to be called first.
  *
- *  @param  handle      A I2CSlave handle returned from I2CSlave_open()
+ *  @param[in]  handle   An #I2CSlave_Handle returned from I2CSlave_open()
  *
- *  @param  cmd         A command value defined by the driver specific
+ *  @param[in]  cmd     A command value defined by the device specific
  *                      implementation
  *
- *  @param  arg         An optional R/W (read/write) argument that is
- *                      accompanied with cmd
+ *  @param[in]  arg     An optional R/W (read/write) argument that is
+ *                      accompanied with @p cmd
  *
  *  @return Implementation specific return codes. Negative values indicate
  *          unsuccessful operations.
  *
- *  @sa     I2CSlave_open()
+ *  @retval #I2CSLAVE_STATUS_UNDEFINEDCMD  The @p cmd value is not supported
+ *  by the device specific implementation.
  */
 extern int_fast16_t I2CSlave_control(I2CSlave_Handle handle, uint_fast16_t cmd,
     void *arg);
 
 /*!
- *  @brief  Function to initializes the I2CSlave module
+ *  @brief  Function to initialize the I2C Slave driver.
  *
- *  @pre    The I2CSlave_config structure must exist and be persistent before
- *          this function can be called. This function must also be called
- *          before any other I2CSlave driver APIs. This function call does not
- *          modify any peripheral registers.
+ *  This function must also be called before any other I2CSlave driver APIs.
  */
 extern void I2CSlave_init(void);
 
 /*!
- *  @brief  Function to initialize a given I2CSlave peripheral specified by the
- *          particular index value. The parameter specifies which mode the
- *          I2CSlave will operate.
+ *  @brief  Function to initialize the I2CSlave peripheral
  *
- *  @pre    I2CSlave controller has been initialized
+ *  Function to initialize the I2CSlave peripheral specified by the
+ *  particular index value.
  *
- *  @param  index         Logical peripheral number for the I2CSlave indexed
- *                        into the I2CSlave_config table
+ *  @pre    I2CSlave_init() has been called
  *
- *  @param  params        Pointer to an parameter block, if NULL it will use
- *                        default values. All the fields in this structure are
- *                        RO (read-only).
  *
- *  @return A I2CSlave_Handle on success or a NULL on an error or if it has
- *          been opened already.
+ *  @param[in]  index     Index in the @p I2CSlave_Config[] array.
+ *  @param[in]  params    Pointer to an initialized #I2CSlave_Params structure.
+ *                        If NULL, the default #I2CSlave_Params values are used.
+ *
+ *  @return An #I2CSlave_Handle on success or NULL on error.
  *
  *  @sa     I2CSlave_init()
  *  @sa     I2CSlave_close()
@@ -455,85 +470,69 @@ extern I2CSlave_Handle I2CSlave_open(uint_least8_t index,
     I2CSlave_Params *params);
 
 /*!
- *  @brief  Function to initialize the I2CSlave_Params struct to its defaults
+ *  @brief  Initialize an #I2CSlave_Params structure to its default values.
  *
- *  @param  params      An pointer to I2CSlave_Params structure for
- *                      initialization
+ *  @param[in]  params  A pointer to an #I2CSlave_Params structure.
  *
  *  Defaults values are:
- *      transferMode = I2CSLAVE_MODE_BLOCKING
- *      transferCallbackFxn = NULL
+ *  @arg #I2CSlave_Params.transferMode = #I2CSLAVE_MODE_BLOCKING
+ *  @arg #I2CSlave_Params.transferCallbackFxn = NULL
+ *  @arg #I2CSlave_Params.custom = NULL
+ *
+ *  @sa  I2CSlave_open()
  */
 extern void I2CSlave_Params_init(I2CSlave_Params *params);
 
 /*!
- *  @brief  Function that handles the I2CSlave read for SYS/BIOS
+ *  @brief  Perform an I2C read from an I2C master
  *
- *  This function will start a I2CSlave read and can only be called from a
- *  Task context when in I2CSLAVE_MODE_BLOCKING.
- *  The I2CSlave read procedure starts with evaluating how many bytes are to be
- *  readby the I2CSlave peripheral.
+ *  This function will perform an I2C read transfer.
+ *
+ *  @note When using #I2CSLAVE_MODE_BLOCKING, this must be called from a thread
+ *  context.
  *
  *  The data written by the I2CSlave is synchronized with the START and STOP
- *  from the master.
+ *  condition from an I2C master.
  *
- *  In I2CSLAVE_MODE_BLOCKING, I2CSlave read/write will block task execution until
- *  the transaction has completed.
+ *  @param[in]  handle    An #I2CSlave_Handle returned from I2CSlave_open()
  *
- *  In I2CSLAVE_MODE_CALLBACK, I2CSlave read/write does not block task execution
- *  and calls a callback function specified by transferCallbackFxn. If a
- *  transfer is already taking place, the transaction is put on an internal
- *  queue. The queue is serviced in a first come first served basis.
+ *  @param[in,out]  buffer    A pointer to buffer to store data read
  *
- *  @param  handle      A I2CSlave_Handle
+ *  @param[in]  size    The number of bytes to read into @p buffer
  *
- *  @param  buffer      A RO (read-only) pointer to an empty buffer in which
- *                      received data should be written to.
+ *  @retval  true on successful read
+ *  @retval  false on an error
  *
- *  @param  size        The number of bytes to be written into buffer
- *
- *  @return \p true on successful transfer,
- *          \p false on an error
- *
- *  @sa     I2CSlave_open
+ *  @sa  I2CSlave_read
+ *  @sa  I2CSlave_TransferMode
  */
-
 extern bool I2CSlave_read(I2CSlave_Handle handle, void *buffer,
         size_t size);
+
 /*!
- *  @brief  Function that handles the I2CSlave write for SYS/BIOS
+ *  @brief  Perform an I2C write to an I2C master
  *
- *  This function will start a I2CSlave write and can only be called from a
- *  Task context when in I2CSLAVE_MODE_BLOCKING.
- *  The I2CSlave transfer procedure starts with evaluating how many bytes are
- *  to be written.
+ *  This function will perform an I2C write transfer.
+ *
+ *  @note When using #I2CSLAVE_MODE_BLOCKING, this must be called from a thread
+ *  context.
  *
  *  The data written by the I2CSlave is synchronized with the START and STOP
- *  from the master. If slave does not have as many bytes requested by master
- *  it writes 0xFF. I2CSlave keeps sending 0xFF till master sends a STOP.
+ *  conditions from an I2C master.
  *
- *  In I2CSLAVE_MODE_BLOCKING, I2CSlave read/write will block task execution
- *  until the transaction has completed.
+ *  @param[in]  handle    An #I2CSlave_Handle
  *
- *  In I2CSLAVE_MODE_CALLBACK, I2CSlave read/write does not block task execution
- *  and calls a callback function specified by transferCallbackFxn. If a
- *  transfer is already taking place, the transaction is put on an internal
- *  queue. The queue is serviced in a first come first served basis.
- *  The I2CSlave_Transaction structure must stay persistent until the
- *   I2CSlave read/write function has completed!
+ *  @param[in]  buffer    A pointer to buffer containing data to write
  *
- *  @param  handle      A I2CSlave_Handle
+ *  @param[in]  size    The number of bytes in @p buffer to write. If the I2C
+ *  master requests more than @p size bytes, this driver will transmit @p 0xFF
+ *  until a STOP condition is recieved.
  *
- *  @param  buffer      A WO (write-only) pointer to buffer containing data to
- *                      be written to the master.
+ *  @retval  true on successful write
+ *  @retval  false on an error
  *
- *  @param  size        The number of bytes in buffer that should be written
- *                      onto the master.
- *
- *  @return \p true on successful write
- *          \p false on an error
- *
- *  @sa     I2CSlave_open
+ *  @sa  I2CSlave_write
+ *  @sa  I2CSlave_TransferMode
  */
 extern bool I2CSlave_write(I2CSlave_Handle handle, const void *buffer,
         size_t size);

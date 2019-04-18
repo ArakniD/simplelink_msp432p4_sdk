@@ -2,10 +2,11 @@ var searchData=
 [
   ['datalength',['dataLength',['../struct_u_a_r_t_m_s_p432___object.html#ad04640ade69534d04836de08fb23698f',1,'UARTMSP432_Object::dataLength()'],['../struct_u_a_r_t___params__.html#a37be40bc926b38cba71c494ccd1c2d15',1,'UART_Params_::dataLength()']]],
   ['datapin',['dataPin',['../struct_i2_c_m_s_p432___h_w_attrs_v1.html#a692daec32f2086bacff69d55fc12f8d7',1,'I2CMSP432_HWAttrsV1::dataPin()'],['../struct_i2_c_slave_m_s_p432___h_w_attrs.html#a70e8204f6c88d072a239177a9728d37c',1,'I2CSlaveMSP432_HWAttrs::dataPin()']]],
-  ['datasize',['dataSize',['../struct_s_p_i___params__.html#a39376e78235d5329b958ca7561b9fea8',1,'SPI_Params_']]],
+  ['datasize',['dataSize',['../struct_s_p_i___params.html#a30722b1de5e3b089ecf0c669da42ed2d',1,'SPI_Params']]],
   ['dcoresel',['DCORESEL',['../struct_power_m_s_p432___perf_level.html#a09e1fe7c19c829a647b222312d19fc38',1,'PowerMSP432_PerfLevel']]],
   ['debugstallmode',['debugStallMode',['../struct_watchdog___params__.html#adfd763090a1a67a2cb8069c5c5ba135a',1,'Watchdog_Params_']]],
   ['defaulttxbufvalue',['defaultTxBufValue',['../struct_s_p_i_m_s_p432_d_m_a___h_w_attrs_v1.html#a8bc0707956d14c3c2ff472f7c6d0d440',1,'SPIMSP432DMA_HWAttrsV1']]],
+  ['delays',['delays',['../doxygen__drivers_8txt.html#afc52680c2bc95313269255c0ed39f5c9',1,'doxygen_drivers.txt']]],
   ['diskstate',['diskState',['../struct_s_d_fat_f_s___object__.html#a6734f09df3533a39262c747ad632aebd',1,'SDFatFS_Object_']]],
   ['displaybuf',['displayBuf',['../struct_display_sharp___h_w_attrs_v1.html#a6e11d2f8c113a4f09ee630011e25dfe9',1,'DisplaySharp_HWAttrsV1']]],
   ['displaybuffer',['displayBuffer',['../struct_display_sharp___object.html#a268dce94be3fcbae2e9d317810269932',1,'DisplaySharp_Object']]],
@@ -31,6 +32,6 @@ var searchData=
   ['drivenum',['driveNum',['../struct_s_d_fat_f_s___object__.html#a5229d7b39c9dd4a2cc3e17a14cb1c23e',1,'SDFatFS_Object_']]],
   ['dummy',['dummy',['../struct_display_host___object.html#a636a6b965c094235003c75f758fecefb',1,'DisplayHost_Object']]],
   ['duties',['duties',['../struct_p_w_m_timer_m_s_p432___status.html#ab0c2bfbe68c7d3ca612e3b08e7640e81',1,'PWMTimerMSP432_Status']]],
-  ['dutyunits',['dutyUnits',['../struct_p_w_m_timer_m_s_p432___object.html#a2325e5cebb8ea26bcc720b2959f8eb62',1,'PWMTimerMSP432_Object::dutyUnits()'],['../struct_p_w_m___params__.html#af38fb2e3a11fd285b1268193b21b4af5',1,'PWM_Params_::dutyUnits()']]],
-  ['dutyvalue',['dutyValue',['../struct_p_w_m___params__.html#a5e81721a07b2970fe6f6d9e566d22a6e',1,'PWM_Params_']]]
+  ['dutyunits',['dutyUnits',['../struct_p_w_m_timer_m_s_p432___object.html#a2325e5cebb8ea26bcc720b2959f8eb62',1,'PWMTimerMSP432_Object::dutyUnits()'],['../struct_p_w_m___params.html#aa8616ac3e487fe6b46fd0486c10873d3',1,'PWM_Params::dutyUnits()']]],
+  ['dutyvalue',['dutyValue',['../struct_p_w_m___params.html#ad0ed6daabdc32e1eecfae60ebe13e975',1,'PWM_Params']]]
 ];

@@ -68,38 +68,28 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>ADCBuf driver interface. </p>
-<p>============================================================================</p>
-<p>The ADCBuf header file should be included in an application as follows: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_a_d_c_buf_8h.html">ti/drivers/ADCBuf.h</a>&gt;</span></div></div><!-- fragment --><h1>Operation</h1>
-<p>The ADCBuf driver in TI-RTOS samples an analogue waveform at a specified frequency. The resulting samples are transferred to a buffer provided by the application. The driver can either take n samples once, or continuously sample by double-buffering and providing a callback to process each finished buffer.</p>
-<p>The APIs in this driver serve as an interface to a typical TI-RTOS application. The specific peripheral implementations are responsible to create all the SYS/BIOS specific primitives to allow for thread-safe operation.</p>
-<p>User can use the ADC driver or the ADCBuf driver. But both ADC and ADCBuf cannot be used together in an application.</p>
-<h2>Opening the driver</h2>
-<div class="fragment"><div class="line"><a class="code" href="struct_a_d_c_buf___config__.html">ADCBuf_Handle</a> adcBufHandle;</div><div class="line"><a class="code" href="struct_a_d_c_buf___params__.html">ADCBuf_Params</a> adcBufParams;</div><div class="line"></div><div class="line"><a class="code" href="_a_d_c_buf_8h.html#ae6ddd34c34fd06cdede98fb01033cc47">ADCBuf_Params_init</a>(&amp;adcBufParams);</div><div class="line">adcBufHandle = <a class="code" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b">ADCBuf_open</a>(Board_ADCBUF0, &amp;adcBufParams);</div></div><!-- fragment --><h2>Making a conversion</h2>
-<p>In this context, a conversion refers to taking multiple ADC samples and transferring them to an application-provided buffer. To start a conversion, the application must configure an ADCBuf_Conversion struct and call <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="This function starts a set of conversions on one or more channels. ">ADCBuf_convert()</a>. In blocking mode, <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="This function starts a set of conversions on one or more channels. ">ADCBuf_convert()</a> will return when the conversion is finished and the desired number of samples have been made. In callback mode, <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="This function starts a set of conversions on one or more channels. ">ADCBuf_convert()</a> will return immediately and the application will get a callback when the conversion is done.</p>
-<div class="fragment"><div class="line"><a class="code" href="struct_a_d_c_buf___conversion__.html">ADCBuf_Conversion</a> blockingConversion;</div><div class="line"></div><div class="line">blockingConversion.<a class="code" href="struct_a_d_c_buf___conversion__.html#ae3faf2fae30ceb64ca571f7739017f45">arg</a> = NULL;</div><div class="line">blockingConversion.<a class="code" href="struct_a_d_c_buf___conversion__.html#a36a37e1ac1e9489d240e02d46e2557ee">adcChannel</a> = Board_ADCBUF0CHANNEL0;</div><div class="line">blockingConversion.<a class="code" href="struct_a_d_c_buf___conversion__.html#aceb8ea6ca0a788c2fc1c249523cccb0e">sampleBuffer</a> = sampleBufferOnePtr;</div><div class="line">blockingConversion.<a class="code" href="struct_a_d_c_buf___conversion__.html#a61cf0b33f40586ef431c0e697fd8f877">sampleBufferTwo</a> = NULL;</div><div class="line">blockingConversion.<a class="code" href="struct_a_d_c_buf___conversion__.html#a06235de0f9b2a313856993589fca5392">samplesRequestedCount</a> = ADCBUFFERSIZE;</div><div class="line"></div><div class="line"><span class="keywordflow">if</span> (!<a class="code" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97">ADCBuf_convert</a>(adcBuf, &amp;continuousConversion, 1)) {</div><div class="line">    <span class="comment">// handle error</span></div><div class="line">}</div></div><!-- fragment --><h2>Canceling a conversion</h2>
-<p><a class="el" href="_a_d_c_buf_8h.html#a5201c27bddf11b9f9ae902807bded40d" title="This function cancels an ADC conversion that is in progress. ">ADCBuf_convertCancel()</a> is used to cancel an ADCBuf conversion when the driver is used in <a class="el" href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433a633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>.</p>
-<p>Calling this API while no conversion is in progress has no effect. If a conversion is in progress, it is canceled and the provided callback function is called.</p>
-<p>In <a class="el" href="_a_d_c_buf_8h.html#ae5620b285f881fdecb49b75a73f1400fac10945188f88ddadd4322c4e117d5b3c">ADCBuf_RECURRENCE_MODE_CONTINUOUS</a>, this function must be called to stop the conversion. The driver will continue providing callbacks with fresh samples until thie <a class="el" href="_a_d_c_buf_8h.html#a5201c27bddf11b9f9ae902807bded40d" title="This function cancels an ADC conversion that is in progress. ">ADCBuf_convertCancel()</a> function is called. The callback function is not called after <a class="el" href="_a_d_c_buf_8h.html#a5201c27bddf11b9f9ae902807bded40d" title="This function cancels an ADC conversion that is in progress. ">ADCBuf_convertCancel()</a> while in <a class="el" href="_a_d_c_buf_8h.html#ae5620b285f881fdecb49b75a73f1400fac10945188f88ddadd4322c4e117d5b3c">ADCBuf_RECURRENCE_MODE_CONTINUOUS</a>.</p>
-<h1>Implementation</h1>
-<p>This module serves as the main interface for TI-RTOS applications. Its purpose is to redirect the module's APIs to specific peripheral implementations which are specified using a pointer to an ADCBuf_FxnTable.</p>
-<p>The ADCBuf driver interface module is joined (at link time) to a NULL-terminated array of ADCBuf_Config data structures named <em>ADCBuf_config</em>. <em>ADCBuf_config</em> is implemented in the application with each entry being an instance of an ADCBuf peripheral. Each entry in <em>ADCBuf_config</em> contains a:</p><ul>
-<li>(ADCBuf_FxnTable *) to a set of functions that implement an ADCBuf peripheral</li>
-<li>(void *) data object that is associated with the ADCBuf_FxnTable</li>
-<li>(void *) hardware attributes that are associated to the ADCBuf_FxnTable</li>
-</ul>
-<h1>Instrumentation</h1>
-<p>The ADCBuf driver interface produces log statements if instrumentation is enabled.</p>
-<table class="doxtable">
-<tr>
-<th>Diagnostics Mask </th><th>Log details  </th></tr>
-<tr>
-<td>Diags_USER1 </td><td>basic operations performed </td></tr>
-<tr>
-<td>Diags_USER2 </td><td>detailed operations performed </td></tr>
-</table>
+<div class="textblock"><p>Analog to Digital Conversion Buffer (ADCBuf) Input Driver. </p>
 <hr/>
-</div><div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
+<p><a class="anchor" id="ti_drivers_ADCBuf_Overview"></a></p><h1>Overview</h1>
+<p>The ADCBuf driver allows you to sample and convert analog signals at a specified frequency. The resulting samples are placed in a buffer provided by the application. The driver can either take <code>N</code> samples once or continuously sample by double-buffering and providing a callback to process each finished buffer.</p>
+<hr/>
+<p> <a class="anchor" id="ti_drivers_ADCBuf_Usage"></a></p><h1>Usage</h1>
+<p>This documentation provides a basic <a class="el" href="_a_d_c_buf_8h.html#ti_drivers_ADCBuf_Synopsis">usage summary</a> and a set of <a class="el" href="_a_d_c_buf_8h.html#ti_drivers_ADCBuf_Examples">examples</a> in the form of commented code fragments. Detailed descriptions of the APIs are provided in subsequent sections.</p>
+<p><a class="anchor" id="ti_drivers_ADCBuf_Synopsis"></a></p><h2>Synopsis</h2>
+<p><a class="anchor" id="ti_drivers_ADCBuf_Synopsis_Code"></a></p><div class="fragment"><div class="line"><span class="comment">// Import ADCBuf Driver definitions</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_a_d_c_buf_8h.html">ti/drivers/ADCBuf.h</a>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">// Define name for ADCBuf channel index</span></div><div class="line"><span class="preprocessor">#define PIEZOMETER_OUT    0</span></div><div class="line"></div><div class="line"><span class="comment">// Create buffer for samples</span></div><div class="line"><span class="preprocessor">#define ADCBUFFERSIZE     10</span></div><div class="line">uint16_t buffer[ADCBUFFERSIZE];</div><div class="line">uint32_t microvoltBuffer[ADCBUFFERSIZE];</div><div class="line"></div><div class="line"><span class="comment">// One time init of ADCBuf driver</span></div><div class="line"><a class="code" href="_a_d_c_buf_8h.html#a88a0ab421304465b22417a7adef6c0c2">ADCBuf_init</a>();</div><div class="line"></div><div class="line"><span class="comment">// Initialize optional ADCBuf parameters</span></div><div class="line"><a class="code" href="struct_a_d_c_buf___params.html">ADCBuf_Params</a> params;</div><div class="line"><a class="code" href="_a_d_c_buf_8h.html#ae6ddd34c34fd06cdede98fb01033cc47">ADCBuf_Params_init</a>(&amp;params);</div><div class="line">params.<a class="code" href="struct_a_d_c_buf___params.html#a17b3cdab5de5cfb81854b86f0cfc0ec1">returnMode</a> = <a class="code" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea5c6236b2f629b196d7874175be679399">ADCBuf_RETURN_MODE_BLOCKING</a>;</div><div class="line">params.<a class="code" href="struct_a_d_c_buf___params.html#a559d4f3324bdbee8f6b6140a6d7264fb">recurrenceMode</a> = <a class="code" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1a1916212b661aa853b7a581e3e5dc35e2">ADCBuf_RECURRENCE_MODE_ONE_SHOT</a>;</div><div class="line"></div><div class="line"><span class="comment">// Open ADCBuf driver</span></div><div class="line">adcBuf = <a class="code" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b">ADCBuf_open</a>(Board_ADCBUF0, &amp;params);</div><div class="line"></div><div class="line"><span class="comment">// Setup conversion structure</span></div><div class="line"><a class="code" href="struct_a_d_c_buf___conversion.html">ADCBuf_Conversion</a> conversion = {0};</div><div class="line">conversion.<a class="code" href="struct_a_d_c_buf___conversion.html#afd95c203d1e7dd347102eef22dc9cc93">samplesRequestedCount</a> = ADCBUFFERSIZE;</div><div class="line">conversion.<a class="code" href="struct_a_d_c_buf___conversion.html#a5415e58a69e40124f66cdcc52a097c4a">sampleBuffer</a> = buffer;</div><div class="line">conversion.<a class="code" href="struct_a_d_c_buf___conversion.html#a379de126469bdd35de64c36498fafb51">adcChannel</a> = PIEZOMETER_OUT;</div><div class="line"></div><div class="line"><span class="comment">// Start ADCBuf conversion</span></div><div class="line"><a class="code" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97">ADCBuf_convert</a>(adcBuf, &amp;conversion, 1)</div><div class="line"></div><div class="line"><span class="comment">// Adjust raw ADC values and convert them to microvolts</span></div><div class="line"><a class="code" href="_a_d_c_buf_8h.html#a636816201fdb596b748a0ce4d4bf6739">ADCBuf_adjustRawValues</a>(handle, buffer, ADCBUFFERSIZE, PIEZOMETER_OUT);</div><div class="line"><a class="code" href="_a_d_c_buf_8h.html#a815c5b8d43cb93a46298c889dff1019c">ADCBuf_convertAdjustedToMicroVolts</a>(handle, PIEZOMETER_OUT, buffer,</div><div class="line">                                   microvoltBuffer, ADCBUFFERSIZE);</div><div class="line"></div><div class="line"><span class="comment">// Close ADCBuf driver</span></div><div class="line"><a class="code" href="_a_d_c_buf_8h.html#a04ab5fae5da8f9ff77ab3ae4974d8f7d">ADCBuf_close</a>(adcbuf);</div></div><!-- fragment --><hr/>
+<p> <a class="anchor" id="ti_drivers_ADCBuf_Examples"></a></p><h1>Examples</h1>
+<ul>
+<li><a class="el" href="_a_d_c_buf_8h.html#ti_drivers_ADCBuf_Examples_open">Opening an ADCBuf instance</a> </li>
+<li><a class="el" href="_a_d_c_buf_8h.html#ti_drivers_ADCBuf_Examples_blocking">Using a blocking conversion</a> </li>
+<li><a class="el" href="_a_d_c_buf_8h.html#ti_drivers_ADCBuf_Examples_callback">Using a callback conversion</a></li>
+</ul>
+<p><a class="anchor" id="ti_drivers_ADCBuf_Examples_open"></a></p><h2>Opening an ADCBuf instance</h2>
+<div class="fragment"><div class="line"><a class="code" href="struct_a_d_c_buf___config.html">ADCBuf_Handle</a> adcBufHandle;</div><div class="line"><a class="code" href="struct_a_d_c_buf___params.html">ADCBuf_Params</a> adcBufParams;</div><div class="line"></div><div class="line"><a class="code" href="_a_d_c_buf_8h.html#a88a0ab421304465b22417a7adef6c0c2">ADCBuf_init</a>();</div><div class="line"></div><div class="line"><a class="code" href="_a_d_c_buf_8h.html#ae6ddd34c34fd06cdede98fb01033cc47">ADCBuf_Params_init</a>(&amp;adcBufParams);</div><div class="line"></div><div class="line">adcBufHandle = <a class="code" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b">ADCBuf_open</a>(0, &amp;adcBufParams);</div><div class="line"><span class="keywordflow">if</span> (adcBufHandle == NULL)</div><div class="line">{</div><div class="line">    <span class="comment">//ADCBuf_open() failed.</span></div><div class="line">    <span class="keywordflow">while</span> (1) {}</div><div class="line">}</div></div><!-- fragment --><p><a class="anchor" id="ti_drivers_ADCBuf_Examples_blocking"></a></p><h2>Using a blocking conversion</h2>
+<div class="fragment"><div class="line"><a class="code" href="struct_a_d_c_buf___config.html">ADCBuf_Handle</a> adcbuf;</div><div class="line"><a class="code" href="struct_a_d_c_buf___params.html">ADCBuf_Params</a> params;</div><div class="line"></div><div class="line"><a class="code" href="_a_d_c_buf_8h.html#a88a0ab421304465b22417a7adef6c0c2">ADCBuf_init</a>();</div><div class="line"></div><div class="line"><a class="code" href="_a_d_c_buf_8h.html#ae6ddd34c34fd06cdede98fb01033cc47">ADCBuf_Params_init</a>(&amp;params);</div><div class="line">params.<a class="code" href="struct_a_d_c_buf___params.html#a17b3cdab5de5cfb81854b86f0cfc0ec1">returnMode</a> = <a class="code" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea5c6236b2f629b196d7874175be679399">ADCBuf_RETURN_MODE_BLOCKING</a>;</div><div class="line">params.<a class="code" href="struct_a_d_c_buf___params.html#a559d4f3324bdbee8f6b6140a6d7264fb">recurrenceMode</a> = <a class="code" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1a1916212b661aa853b7a581e3e5dc35e2">ADCBuf_RECURRENCE_MODE_ONE_SHOT</a>;</div><div class="line">adcbuf = <a class="code" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b">ADCBuf_open</a>(0, &amp;params);</div><div class="line"><span class="keywordflow">if</span> (adcbuf != NULL)</div><div class="line">{</div><div class="line">    <a class="code" href="struct_a_d_c_buf___conversion.html">ADCBuf_Conversion</a> conversion = {0};</div><div class="line">    conversion.<a class="code" href="struct_a_d_c_buf___conversion.html#a379de126469bdd35de64c36498fafb51">adcChannel</a> = PIEZOMETER_OUT;</div><div class="line">    conversion.<a class="code" href="struct_a_d_c_buf___conversion.html#a5415e58a69e40124f66cdcc52a097c4a">sampleBuffer</a> = buffer;</div><div class="line">    conversion.<a class="code" href="struct_a_d_c_buf___conversion.html#afd95c203d1e7dd347102eef22dc9cc93">samplesRequestedCount</a> = ADCBUFFERSIZE;</div><div class="line"></div><div class="line">    <span class="keywordflow">if</span> (<a class="code" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97">ADCBuf_convert</a>(adcbuf, &amp;conversion, 1) != <a class="code" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#gac9c96db575dfaa6bcdfbd94cd875fbd4">ADCBuf_STATUS_SUCCESS</a>)</div><div class="line">    {</div><div class="line">        <span class="comment">// ADCBuf_conver() failed</span></div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><p><a class="anchor" id="ti_drivers_ADCBuf_Examples_callback"></a></p><h2>Using a callback conversion</h2>
+<div class="fragment"><div class="line"><span class="comment">// ADCBuf callback function</span></div><div class="line"><span class="keywordtype">void</span> adcBufCallbackFxn(<a class="code" href="struct_a_d_c_buf___config.html">ADCBuf_Handle</a> handle, <a class="code" href="struct_a_d_c_buf___conversion.html">ADCBuf_Conversion</a> *conversion,</div><div class="line">                       <span class="keywordtype">void</span> *buffer, uint32_t channel);</div><div class="line"></div><div class="line">main()</div><div class="line">{</div><div class="line">    <a class="code" href="struct_a_d_c_buf___config.html">ADCBuf_Handle</a> adcbuf;</div><div class="line">    <a class="code" href="struct_a_d_c_buf___params.html">ADCBuf_Params</a> params;</div><div class="line"></div><div class="line">    <a class="code" href="_a_d_c_buf_8h.html#a88a0ab421304465b22417a7adef6c0c2">ADCBuf_init</a>();</div><div class="line"></div><div class="line">    <a class="code" href="_a_d_c_buf_8h.html#ae6ddd34c34fd06cdede98fb01033cc47">ADCBuf_Params_init</a>(&amp;params);</div><div class="line">    params.<a class="code" href="struct_a_d_c_buf___params.html#a17b3cdab5de5cfb81854b86f0cfc0ec1">returnMode</a> = <a class="code" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>;</div><div class="line">    params.<a class="code" href="struct_a_d_c_buf___params.html#a559d4f3324bdbee8f6b6140a6d7264fb">recurrenceMode</a> = <a class="code" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1a1916212b661aa853b7a581e3e5dc35e2">ADCBuf_RECURRENCE_MODE_ONE_SHOT</a>;</div><div class="line">    params.<a class="code" href="struct_a_d_c_buf___params.html#a29f674ee9b6739607119d6b50f244e17">callbackFxn</a> = adcBufCallbackFxn;</div><div class="line">    adcbuf = <a class="code" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b">ADCBuf_open</a>(0, &amp;params);</div><div class="line"></div><div class="line">    <a class="code" href="struct_a_d_c_buf___conversion.html">ADCBuf_Conversion</a> conversion = {0};</div><div class="line">    conversion.<a class="code" href="struct_a_d_c_buf___conversion.html#a379de126469bdd35de64c36498fafb51">adcChannel</a> = PIEZOMETER_OUT;</div><div class="line">    conversion.<a class="code" href="struct_a_d_c_buf___conversion.html#a5415e58a69e40124f66cdcc52a097c4a">sampleBuffer</a> = buffer;</div><div class="line">    conversion.<a class="code" href="struct_a_d_c_buf___conversion.html#afd95c203d1e7dd347102eef22dc9cc93">samplesRequestedCount</a> = ADCBUFFERSIZE;</div><div class="line"></div><div class="line">    <span class="keywordflow">if</span> (<a class="code" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97">ADCBuf_convert</a>(adcbuf, &amp;conversion, 1) != <a class="code" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#gac9c96db575dfaa6bcdfbd94cd875fbd4">ADCBuf_STATUS_SUCCESS</a>)</div><div class="line">    {</div><div class="line">        <span class="comment">// ADCBuf_convert() failed</span></div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="comment">// Pend on a semaphore</span></div><div class="line">}</div><div class="line"></div><div class="line"><span class="keywordtype">void</span> adcBufCallbackFxn(<a class="code" href="struct_a_d_c_buf___config.html">ADCBuf_Handle</a> handle, <a class="code" href="struct_a_d_c_buf___conversion.html">ADCBuf_Conversion</a> *conversion,</div><div class="line">    <span class="keywordtype">void</span> *buffer, uint32_t channel)</div><div class="line">{</div><div class="line">    <span class="comment">// Adjust raw ADC values and convert them to microvolts</span></div><div class="line">    <a class="code" href="_a_d_c_buf_8h.html#a636816201fdb596b748a0ce4d4bf6739">ADCBuf_adjustRawValues</a>(handle, buffer, ADCBUFFERSIZE,</div><div class="line">        channel);</div><div class="line">    <a class="code" href="_a_d_c_buf_8h.html#a815c5b8d43cb93a46298c889dff1019c">ADCBuf_convertAdjustedToMicroVolts</a>(handle, channel,</div><div class="line">        buffer, microvoltBuffer, ADCBUFFERSIZE);</div><div class="line"></div><div class="line">    <span class="comment">// Post a semaphore</span></div><div class="line">}</div></div><!-- fragment --><hr/>
+<p> <a class="anchor" id="ti_drivers_ADCBuf_Configuration"></a></p><h1>Configuration</h1>
+<p>Refer to the <a class="el" href="index.html#driver_configuration">Driver's Configuration</a> section for driver configuration information. </p><hr/>
+ </div><div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ADCBuf.h:</div>
 <div class="dyncontent">
@@ -120,168 +110,111 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_d_c_buf___conversion__.html">ADCBuf_Conversion_</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An <a class="el" href="_a_d_c_buf_8h.html#a24d253ddedcfd02729f910c32fe8b7c8" title="An ADCBuf_Conversion data structure is used with ADCBuf_convert(). It indicates which channel to perf...">ADCBuf_Conversion</a> data structure is used with <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="This function starts a set of conversions on one or more channels. ">ADCBuf_convert()</a>. It indicates which channel to perform the ADC conversion on, how many conversions to make, and where to put them. The arg variable is an user-definable argument which gets passed to the <a class="el" href="_a_d_c_buf_8h.html#a477c377c65f8de04aa67ff7eefa0a4cf" title="The definition of a callback function used by the ADC driver when used in ADCBuf_RETURN_MODE_CALLBACK...">ADCBuf_Callback</a> when the ADC driver is in <a class="el" href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433a633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>.  <a href="struct_a_d_c_buf___conversion__.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_d_c_buf___conversion.html">ADCBuf_Conversion</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a conversion to be used with <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a>.  <a href="struct_a_d_c_buf___conversion.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_d_c_buf___params__.html">ADCBuf_Params_</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC Parameters.  <a href="struct_a_d_c_buf___params__.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_d_c_buf___params.html">ADCBuf_Params</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADCBuf parameters used with <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a>.  <a href="struct_a_d_c_buf___params.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_d_c_buf___fxn_table__.html">ADCBuf_FxnTable_</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The definition of an ADCBuf function table that contains the required set of functions to control a specific ADC driver implementation.  <a href="struct_a_d_c_buf___fxn_table__.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_d_c_buf___fxn_table.html">ADCBuf_FxnTable</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The definition of an ADCBuf function table that contains the required set of functions to control a specific ADC driver implementation.  <a href="struct_a_d_c_buf___fxn_table.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_d_c_buf___config__.html">ADCBuf_Config_</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADCBuf Global configuration.  <a href="struct_a_d_c_buf___config__.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_d_c_buf___config.html">ADCBuf_Config</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC driver's custom <a class="el" href="index.html#driver_configuration">configuration</a> structure.  <a href="struct_a_d_c_buf___config.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga6d889e191027535ad318be0b9c3765d1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_d_c_b_u_f___c_o_n_t_r_o_l.html#ga6d889e191027535ad318be0b9c3765d1">ADCBuf_CMD_RESERVED</a>&#160;&#160;&#160;(32)</td></tr>
+<tr class="memitem:ga6d889e191027535ad318be0b9c3765d1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga6d889e191027535ad318be0b9c3765d1">ADCBuf_CMD_RESERVED</a>&#160;&#160;&#160;(32)</td></tr>
 <tr class="separator:ga6d889e191027535ad318be0b9c3765d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga61f0abe91c78f6ab7003c53e513d4d3b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_d_c_b_u_f___c_o_n_t_r_o_l.html#ga61f0abe91c78f6ab7003c53e513d4d3b">ADCBuf_STATUS_RESERVED</a>&#160;&#160;&#160;(-32)</td></tr>
+<tr class="memitem:ga61f0abe91c78f6ab7003c53e513d4d3b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga61f0abe91c78f6ab7003c53e513d4d3b">ADCBuf_STATUS_RESERVED</a>&#160;&#160;&#160;(-32)</td></tr>
 <tr class="separator:ga61f0abe91c78f6ab7003c53e513d4d3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:gac9c96db575dfaa6bcdfbd94cd875fbd4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_d_c_b_u_f___c_o_n_t_r_o_l.html#gac9c96db575dfaa6bcdfbd94cd875fbd4">ADCBuf_STATUS_SUCCESS</a>&#160;&#160;&#160;(0)</td></tr>
-<tr class="memdesc:gac9c96db575dfaa6bcdfbd94cd875fbd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Success status code returned by: <a class="el" href="_a_d_c_buf_8h.html#a87678933c235c0bfc1a26472ef873014" title="Function performs implementation specific features on a given ADCBuf_Handle. ">ADCBuf_control()</a>  <a href="group___a_d_c_b_u_f___c_o_n_t_r_o_l.html#gac9c96db575dfaa6bcdfbd94cd875fbd4">More...</a><br /></td></tr>
+<tr class="memitem:gac9c96db575dfaa6bcdfbd94cd875fbd4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#gac9c96db575dfaa6bcdfbd94cd875fbd4">ADCBuf_STATUS_SUCCESS</a>&#160;&#160;&#160;(0)</td></tr>
+<tr class="memdesc:gac9c96db575dfaa6bcdfbd94cd875fbd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Success status code returned by: <a class="el" href="_a_d_c_buf_8h.html#a87678933c235c0bfc1a26472ef873014" title="Function performs implementation specific features on a driver instance. ">ADCBuf_control()</a>  <a href="group___a_d_c_buf___c_o_n_t_r_o_l.html#gac9c96db575dfaa6bcdfbd94cd875fbd4">More...</a><br /></td></tr>
 <tr class="separator:gac9c96db575dfaa6bcdfbd94cd875fbd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga78f1a705377b5bb15cc6c152f75846e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_d_c_b_u_f___c_o_n_t_r_o_l.html#ga78f1a705377b5bb15cc6c152f75846e2">ADCBuf_STATUS_ERROR</a>&#160;&#160;&#160;(-1)</td></tr>
-<tr class="memdesc:ga78f1a705377b5bb15cc6c152f75846e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generic error status code returned by <a class="el" href="_a_d_c_buf_8h.html#a87678933c235c0bfc1a26472ef873014" title="Function performs implementation specific features on a given ADCBuf_Handle. ">ADCBuf_control()</a>.  <a href="group___a_d_c_b_u_f___c_o_n_t_r_o_l.html#ga78f1a705377b5bb15cc6c152f75846e2">More...</a><br /></td></tr>
+<tr class="memitem:ga78f1a705377b5bb15cc6c152f75846e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga78f1a705377b5bb15cc6c152f75846e2">ADCBuf_STATUS_ERROR</a>&#160;&#160;&#160;(-1)</td></tr>
+<tr class="memdesc:ga78f1a705377b5bb15cc6c152f75846e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generic error status code returned by <a class="el" href="_a_d_c_buf_8h.html#a87678933c235c0bfc1a26472ef873014" title="Function performs implementation specific features on a driver instance. ">ADCBuf_control()</a>.  <a href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga78f1a705377b5bb15cc6c152f75846e2">More...</a><br /></td></tr>
 <tr class="separator:ga78f1a705377b5bb15cc6c152f75846e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5d552a66f63d36a8eaffd53c9deff2f2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_d_c_b_u_f___c_o_n_t_r_o_l.html#ga5d552a66f63d36a8eaffd53c9deff2f2">ADCBuf_STATUS_UNDEFINEDCMD</a>&#160;&#160;&#160;(-2)</td></tr>
-<tr class="memdesc:ga5d552a66f63d36a8eaffd53c9deff2f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">An error status code returned by <a class="el" href="_a_d_c_buf_8h.html#a87678933c235c0bfc1a26472ef873014" title="Function performs implementation specific features on a given ADCBuf_Handle. ">ADCBuf_control()</a> for undefined command codes.  <a href="group___a_d_c_b_u_f___c_o_n_t_r_o_l.html#ga5d552a66f63d36a8eaffd53c9deff2f2">More...</a><br /></td></tr>
+<tr class="memitem:ga5d552a66f63d36a8eaffd53c9deff2f2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga5d552a66f63d36a8eaffd53c9deff2f2">ADCBuf_STATUS_UNDEFINEDCMD</a>&#160;&#160;&#160;(-2)</td></tr>
+<tr class="memdesc:ga5d552a66f63d36a8eaffd53c9deff2f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">An error status code returned by <a class="el" href="_a_d_c_buf_8h.html#a87678933c235c0bfc1a26472ef873014" title="Function performs implementation specific features on a driver instance. ">ADCBuf_control()</a> for undefined command codes.  <a href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga5d552a66f63d36a8eaffd53c9deff2f2">More...</a><br /></td></tr>
 <tr class="separator:ga5d552a66f63d36a8eaffd53c9deff2f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga14c9aea90d55fbbf215ab5a17a33573d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_d_c_b_u_f___c_o_n_t_r_o_l.html#ga14c9aea90d55fbbf215ab5a17a33573d">ADCBuf_STATUS_UNSUPPORTED</a>&#160;&#160;&#160;(-3)</td></tr>
-<tr class="memdesc:ga14c9aea90d55fbbf215ab5a17a33573d"><td class="mdescLeft">&#160;</td><td class="mdescRight">An error status code returned by <a class="el" href="_a_d_c_buf_8h.html#a636816201fdb596b748a0ce4d4bf6739" title="This function adjusts a raw ADC output buffer such that the result is comparable between devices of t...">ADCBuf_adjustRawValues()</a> if the function is not supported by a particular driver implementation.  <a href="group___a_d_c_b_u_f___c_o_n_t_r_o_l.html#ga14c9aea90d55fbbf215ab5a17a33573d">More...</a><br /></td></tr>
+<tr class="memitem:ga14c9aea90d55fbbf215ab5a17a33573d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga14c9aea90d55fbbf215ab5a17a33573d">ADCBuf_STATUS_UNSUPPORTED</a>&#160;&#160;&#160;(-3)</td></tr>
+<tr class="memdesc:ga14c9aea90d55fbbf215ab5a17a33573d"><td class="mdescLeft">&#160;</td><td class="mdescRight">An error status code returned if the function is not supported by a particular driver implementation.  <a href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga14c9aea90d55fbbf215ab5a17a33573d">More...</a><br /></td></tr>
 <tr class="separator:ga14c9aea90d55fbbf215ab5a17a33573d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a12e1cd567193c54b72c1baa82e6b221b"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_a_d_c_buf___config__.html">ADCBuf_Config_</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a></td></tr>
-<tr class="memdesc:a12e1cd567193c54b72c1baa82e6b221b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A handle that is returned from an <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> call.  <a href="#a12e1cd567193c54b72c1baa82e6b221b">More...</a><br /></td></tr>
-<tr class="separator:a12e1cd567193c54b72c1baa82e6b221b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24d253ddedcfd02729f910c32fe8b7c8"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_a_d_c_buf___conversion__.html">ADCBuf_Conversion_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a24d253ddedcfd02729f910c32fe8b7c8">ADCBuf_Conversion</a></td></tr>
-<tr class="memdesc:a24d253ddedcfd02729f910c32fe8b7c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">An <a class="el" href="_a_d_c_buf_8h.html#a24d253ddedcfd02729f910c32fe8b7c8" title="An ADCBuf_Conversion data structure is used with ADCBuf_convert(). It indicates which channel to perf...">ADCBuf_Conversion</a> data structure is used with <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="This function starts a set of conversions on one or more channels. ">ADCBuf_convert()</a>. It indicates which channel to perform the ADC conversion on, how many conversions to make, and where to put them. The arg variable is an user-definable argument which gets passed to the <a class="el" href="_a_d_c_buf_8h.html#a477c377c65f8de04aa67ff7eefa0a4cf" title="The definition of a callback function used by the ADC driver when used in ADCBuf_RETURN_MODE_CALLBACK...">ADCBuf_Callback</a> when the ADC driver is in <a class="el" href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433a633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>.  <a href="#a24d253ddedcfd02729f910c32fe8b7c8">More...</a><br /></td></tr>
-<tr class="separator:a24d253ddedcfd02729f910c32fe8b7c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a477c377c65f8de04aa67ff7eefa0a4cf"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a477c377c65f8de04aa67ff7eefa0a4cf">ADCBuf_Callback</a>) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, <a class="el" href="_a_d_c_buf_8h.html#a24d253ddedcfd02729f910c32fe8b7c8">ADCBuf_Conversion</a> *conversion, void *completedADCBuffer, uint32_t completedChannel)</td></tr>
-<tr class="memdesc:a477c377c65f8de04aa67ff7eefa0a4cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The definition of a callback function used by the ADC driver when used in <a class="el" href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433a633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>. It is called in a HWI or SWI context depending on the device specific implementation.  <a href="#a477c377c65f8de04aa67ff7eefa0a4cf">More...</a><br /></td></tr>
+<tr class="memitem:a9b9646efcf7a7fd38a2935abd940cf96"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_a_d_c_buf___config.html">ADCBuf_Config</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a></td></tr>
+<tr class="memdesc:a9b9646efcf7a7fd38a2935abd940cf96"><td class="mdescLeft">&#160;</td><td class="mdescRight">A handle that is returned from an <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> call.  <a href="#a9b9646efcf7a7fd38a2935abd940cf96">More...</a><br /></td></tr>
+<tr class="separator:a9b9646efcf7a7fd38a2935abd940cf96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a477c377c65f8de04aa67ff7eefa0a4cf"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a477c377c65f8de04aa67ff7eefa0a4cf">ADCBuf_Callback</a>) (<a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a> handle, <a class="el" href="struct_a_d_c_buf___conversion.html">ADCBuf_Conversion</a> *conversion, void *completedADCBuffer, uint32_t completedChannel)</td></tr>
+<tr class="memdesc:a477c377c65f8de04aa67ff7eefa0a4cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The definition of a callback function.  <a href="#a477c377c65f8de04aa67ff7eefa0a4cf">More...</a><br /></td></tr>
 <tr class="separator:a477c377c65f8de04aa67ff7eefa0a4cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0df315657027d8c4dc1582ee6438522b"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="_a_d_c_buf_8h.html#ae5620b285f881fdecb49b75a73f1400f">ADCBuf_Recurrence_Mode_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a0df315657027d8c4dc1582ee6438522b">ADCBuf_Recurrence_Mode</a></td></tr>
-<tr class="memdesc:a0df315657027d8c4dc1582ee6438522b"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC trigger mode settings.  <a href="#a0df315657027d8c4dc1582ee6438522b">More...</a><br /></td></tr>
-<tr class="separator:a0df315657027d8c4dc1582ee6438522b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cc88be061075c8c609959d56adb30a4"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433">ADCBuf_Return_Mode_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a3cc88be061075c8c609959d56adb30a4">ADCBuf_Return_Mode</a></td></tr>
-<tr class="memdesc:a3cc88be061075c8c609959d56adb30a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC return mode settings.  <a href="#a3cc88be061075c8c609959d56adb30a4">More...</a><br /></td></tr>
-<tr class="separator:a3cc88be061075c8c609959d56adb30a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a127e649bfd0523552802c71e28a831c3"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_a_d_c_buf___params__.html">ADCBuf_Params_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a127e649bfd0523552802c71e28a831c3">ADCBuf_Params</a></td></tr>
-<tr class="memdesc:a127e649bfd0523552802c71e28a831c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC Parameters.  <a href="#a127e649bfd0523552802c71e28a831c3">More...</a><br /></td></tr>
-<tr class="separator:a127e649bfd0523552802c71e28a831c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94dfd94e96f6c7e15a9da57feddd60dc"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a94dfd94e96f6c7e15a9da57feddd60dc">ADCBuf_CloseFxn</a>) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle)</td></tr>
-<tr class="memdesc:a94dfd94e96f6c7e15a9da57feddd60dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a04ab5fae5da8f9ff77ab3ae4974d8f7d" title="Function to close an ADC peripheral specified by the ADC handle. ">ADCBuf_close()</a>.  <a href="#a94dfd94e96f6c7e15a9da57feddd60dc">More...</a><br /></td></tr>
-<tr class="separator:a94dfd94e96f6c7e15a9da57feddd60dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8084b8145ded40824a3f98e58f9917d"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#ab8084b8145ded40824a3f98e58f9917d">ADCBuf_OpenFxn</a>) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, const <a class="el" href="_a_d_c_buf_8h.html#a127e649bfd0523552802c71e28a831c3">ADCBuf_Params</a> *params)</td></tr>
-<tr class="memdesc:ab8084b8145ded40824a3f98e58f9917d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a>.  <a href="#ab8084b8145ded40824a3f98e58f9917d">More...</a><br /></td></tr>
-<tr class="separator:ab8084b8145ded40824a3f98e58f9917d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24f4127b82e138fa18c8a54b4d914e05"><td class="memItemLeft" align="right" valign="top">typedef int_fast16_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a24f4127b82e138fa18c8a54b4d914e05">ADCBuf_ControlFxn</a>) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, uint_fast8_t cmd, void *arg)</td></tr>
-<tr class="memdesc:a24f4127b82e138fa18c8a54b4d914e05"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a87678933c235c0bfc1a26472ef873014" title="Function performs implementation specific features on a given ADCBuf_Handle. ">ADCBuf_control()</a>.  <a href="#a24f4127b82e138fa18c8a54b4d914e05">More...</a><br /></td></tr>
-<tr class="separator:a24f4127b82e138fa18c8a54b4d914e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab63b9bc37ab6f5fa2521c18b38c1881e"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#ab63b9bc37ab6f5fa2521c18b38c1881e">ADCBuf_InitFxn</a>) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle)</td></tr>
-<tr class="separator:ab63b9bc37ab6f5fa2521c18b38c1881e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57f40a75d77241e2fda473f0538e404d"><td class="memItemLeft" align="right" valign="top">typedef int_fast16_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a57f40a75d77241e2fda473f0538e404d">ADCBuf_ConvertFxn</a>) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, <a class="el" href="_a_d_c_buf_8h.html#a24d253ddedcfd02729f910c32fe8b7c8">ADCBuf_Conversion</a> conversions[], uint_fast8_t channelCount)</td></tr>
-<tr class="memdesc:a57f40a75d77241e2fda473f0538e404d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="This function starts a set of conversions on one or more channels. ">ADCBuf_convert()</a>.  <a href="#a57f40a75d77241e2fda473f0538e404d">More...</a><br /></td></tr>
-<tr class="separator:a57f40a75d77241e2fda473f0538e404d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88bb1333e07a3fee27926064058d5d1b"><td class="memItemLeft" align="right" valign="top">typedef int_fast16_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a88bb1333e07a3fee27926064058d5d1b">ADCBuf_ConvertCancelFxn</a>) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle)</td></tr>
-<tr class="memdesc:a88bb1333e07a3fee27926064058d5d1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a5201c27bddf11b9f9ae902807bded40d" title="This function cancels an ADC conversion that is in progress. ">ADCBuf_convertCancel()</a>.  <a href="#a88bb1333e07a3fee27926064058d5d1b">More...</a><br /></td></tr>
-<tr class="separator:a88bb1333e07a3fee27926064058d5d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeff0bfa20eb16c3857b5123da136d320"><td class="memItemLeft" align="right" valign="top">typedef uint_fast8_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#aeff0bfa20eb16c3857b5123da136d320">ADCBuf_GetResolutionFxn</a>) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle)</td></tr>
-<tr class="memdesc:aeff0bfa20eb16c3857b5123da136d320"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of ADCBuf_GetResolution();.  <a href="#aeff0bfa20eb16c3857b5123da136d320">More...</a><br /></td></tr>
-<tr class="separator:aeff0bfa20eb16c3857b5123da136d320"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a19f2deb010ca0ba5bdcf5586a8cb28"><td class="memItemLeft" align="right" valign="top">typedef int_fast16_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a4a19f2deb010ca0ba5bdcf5586a8cb28">ADCBuf_adjustRawValuesFxn</a>) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, void *sampleBuffer, uint_fast16_t sampleCount, uint32_t adcChannel)</td></tr>
-<tr class="memdesc:a4a19f2deb010ca0ba5bdcf5586a8cb28"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a636816201fdb596b748a0ce4d4bf6739" title="This function adjusts a raw ADC output buffer such that the result is comparable between devices of t...">ADCBuf_adjustRawValues()</a>;.  <a href="#a4a19f2deb010ca0ba5bdcf5586a8cb28">More...</a><br /></td></tr>
-<tr class="separator:a4a19f2deb010ca0ba5bdcf5586a8cb28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ffaac5eaa1253f9b78bbaa6952e1162"><td class="memItemLeft" align="right" valign="top">typedef int_fast16_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a6ffaac5eaa1253f9b78bbaa6952e1162">ADCBuf_convertAdjustedToMicroVoltsFxn</a>) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, uint32_t adcChannel, void *adjustedSampleBuffer, uint32_t outputMicroVoltBuffer[], uint_fast16_t sampleCount)</td></tr>
-<tr class="memdesc:a6ffaac5eaa1253f9b78bbaa6952e1162"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a815c5b8d43cb93a46298c889dff1019c" title="This function converts a raw ADC output value to a value scaled in micro volts. ">ADCBuf_convertAdjustedToMicroVolts()</a>;.  <a href="#a6ffaac5eaa1253f9b78bbaa6952e1162">More...</a><br /></td></tr>
-<tr class="separator:a6ffaac5eaa1253f9b78bbaa6952e1162"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af15c19b29f04db7b3755c255187c1dc4"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_a_d_c_buf___fxn_table__.html">ADCBuf_FxnTable_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#af15c19b29f04db7b3755c255187c1dc4">ADCBuf_FxnTable</a></td></tr>
-<tr class="memdesc:af15c19b29f04db7b3755c255187c1dc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The definition of an ADCBuf function table that contains the required set of functions to control a specific ADC driver implementation.  <a href="#af15c19b29f04db7b3755c255187c1dc4">More...</a><br /></td></tr>
-<tr class="separator:af15c19b29f04db7b3755c255187c1dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72d585edb37e7c4c53c278305a8df7d2"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_a_d_c_buf___config__.html">ADCBuf_Config_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a72d585edb37e7c4c53c278305a8df7d2">ADCBuf_Config</a></td></tr>
-<tr class="memdesc:a72d585edb37e7c4c53c278305a8df7d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADCBuf Global configuration.  <a href="#a72d585edb37e7c4c53c278305a8df7d2">More...</a><br /></td></tr>
-<tr class="separator:a72d585edb37e7c4c53c278305a8df7d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a630c696a789e6c298dc97b960f72e3d1"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_a_d_c_buf___config.html">ADCBuf_Config</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a630c696a789e6c298dc97b960f72e3d1">ADCBuf_Config</a></td></tr>
+<tr class="memdesc:a630c696a789e6c298dc97b960f72e3d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC driver's custom <a class="el" href="index.html#driver_configuration">configuration</a> structure.  <a href="#a630c696a789e6c298dc97b960f72e3d1">More...</a><br /></td></tr>
+<tr class="separator:a630c696a789e6c298dc97b960f72e3d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ae5620b285f881fdecb49b75a73f1400f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#ae5620b285f881fdecb49b75a73f1400f">ADCBuf_Recurrence_Mode_</a> { <a class="el" href="_a_d_c_buf_8h.html#ae5620b285f881fdecb49b75a73f1400fa1916212b661aa853b7a581e3e5dc35e2">ADCBuf_RECURRENCE_MODE_ONE_SHOT</a>, 
-<a class="el" href="_a_d_c_buf_8h.html#ae5620b285f881fdecb49b75a73f1400fac10945188f88ddadd4322c4e117d5b3c">ADCBuf_RECURRENCE_MODE_CONTINUOUS</a>
- }<tr class="memdesc:ae5620b285f881fdecb49b75a73f1400f"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC trigger mode settings.  <a href="_a_d_c_buf_8h.html#ae5620b285f881fdecb49b75a73f1400f">More...</a><br /></td></tr>
+<tr class="memitem:af15cc4961b02af48216132c2b8bc88f1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1">ADCBuf_Recurrence_Mode</a> { <a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1a1916212b661aa853b7a581e3e5dc35e2">ADCBuf_RECURRENCE_MODE_ONE_SHOT</a>, 
+<a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1ac10945188f88ddadd4322c4e117d5b3c">ADCBuf_RECURRENCE_MODE_CONTINUOUS</a>
+ }<tr class="memdesc:af15cc4961b02af48216132c2b8bc88f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recurrence behavior of a <a class="el" href="struct_a_d_c_buf___conversion.html" title="Defines a conversion to be used with ADCBuf_convert(). ">ADCBuf_Conversion</a> specified in the <a class="el" href="struct_a_d_c_buf___params.html" title="ADCBuf parameters used with ADCBuf_open(). ">ADCBuf_Params</a>.  <a href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1">More...</a><br /></td></tr>
 </td></tr>
-<tr class="separator:ae5620b285f881fdecb49b75a73f1400f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9e88854960e236788f9775ff630a433"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433">ADCBuf_Return_Mode_</a> { <a class="el" href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433a5c6236b2f629b196d7874175be679399">ADCBuf_RETURN_MODE_BLOCKING</a>, 
-<a class="el" href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433a633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>
- }<tr class="memdesc:aa9e88854960e236788f9775ff630a433"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC return mode settings.  <a href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433">More...</a><br /></td></tr>
+<tr class="separator:af15cc4961b02af48216132c2b8bc88f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d643e8024503c5ef2679c83419ba6ee"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6ee">ADCBuf_Return_Mode</a> { <a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea5c6236b2f629b196d7874175be679399">ADCBuf_RETURN_MODE_BLOCKING</a>, 
+<a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>
+ }<tr class="memdesc:a3d643e8024503c5ef2679c83419ba6ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return behavior for <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a> specified in the <a class="el" href="struct_a_d_c_buf___params.html" title="ADCBuf parameters used with ADCBuf_open(). ">ADCBuf_Params</a>.  <a href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6ee">More...</a><br /></td></tr>
 </td></tr>
-<tr class="separator:aa9e88854960e236788f9775ff630a433"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a3d643e8024503c5ef2679c83419ba6ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a04ab5fae5da8f9ff77ab3ae4974d8f7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a04ab5fae5da8f9ff77ab3ae4974d8f7d">ADCBuf_close</a> (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle)</td></tr>
-<tr class="memdesc:a04ab5fae5da8f9ff77ab3ae4974d8f7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to close an ADC peripheral specified by the ADC handle.  <a href="#a04ab5fae5da8f9ff77ab3ae4974d8f7d">More...</a><br /></td></tr>
+<tr class="memitem:a04ab5fae5da8f9ff77ab3ae4974d8f7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a04ab5fae5da8f9ff77ab3ae4974d8f7d">ADCBuf_close</a> (<a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a> handle)</td></tr>
+<tr class="memdesc:a04ab5fae5da8f9ff77ab3ae4974d8f7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to close an ADCBuf driver instance.  <a href="#a04ab5fae5da8f9ff77ab3ae4974d8f7d">More...</a><br /></td></tr>
 <tr class="separator:a04ab5fae5da8f9ff77ab3ae4974d8f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87678933c235c0bfc1a26472ef873014"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a87678933c235c0bfc1a26472ef873014">ADCBuf_control</a> (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, uint_fast16_t cmd, void *cmdArg)</td></tr>
-<tr class="memdesc:a87678933c235c0bfc1a26472ef873014"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function performs implementation specific features on a given ADCBuf_Handle.  <a href="#a87678933c235c0bfc1a26472ef873014">More...</a><br /></td></tr>
+<tr class="memitem:a87678933c235c0bfc1a26472ef873014"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a87678933c235c0bfc1a26472ef873014">ADCBuf_control</a> (<a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a> handle, uint_fast16_t cmd, void *cmdArg)</td></tr>
+<tr class="memdesc:a87678933c235c0bfc1a26472ef873014"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function performs implementation specific features on a driver instance.  <a href="#a87678933c235c0bfc1a26472ef873014">More...</a><br /></td></tr>
 <tr class="separator:a87678933c235c0bfc1a26472ef873014"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88a0ab421304465b22417a7adef6c0c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a88a0ab421304465b22417a7adef6c0c2">ADCBuf_init</a> (void)</td></tr>
-<tr class="memdesc:a88a0ab421304465b22417a7adef6c0c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes the ADC module. This function must.  <a href="#a88a0ab421304465b22417a7adef6c0c2">More...</a><br /></td></tr>
+<tr class="memdesc:a88a0ab421304465b22417a7adef6c0c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to initialize the ADCBuf driver.  <a href="#a88a0ab421304465b22417a7adef6c0c2">More...</a><br /></td></tr>
 <tr class="separator:a88a0ab421304465b22417a7adef6c0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6ddd34c34fd06cdede98fb01033cc47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#ae6ddd34c34fd06cdede98fb01033cc47">ADCBuf_Params_init</a> (<a class="el" href="_a_d_c_buf_8h.html#a127e649bfd0523552802c71e28a831c3">ADCBuf_Params</a> *params)</td></tr>
-<tr class="memdesc:ae6ddd34c34fd06cdede98fb01033cc47"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function sets all fields of a specified ADCBuf_Params structure to their default values.  <a href="#ae6ddd34c34fd06cdede98fb01033cc47">More...</a><br /></td></tr>
+<tr class="memitem:ae6ddd34c34fd06cdede98fb01033cc47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#ae6ddd34c34fd06cdede98fb01033cc47">ADCBuf_Params_init</a> (<a class="el" href="struct_a_d_c_buf___params.html">ADCBuf_Params</a> *params)</td></tr>
+<tr class="memdesc:ae6ddd34c34fd06cdede98fb01033cc47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize an <a class="el" href="struct_a_d_c_buf___params.html" title="ADCBuf parameters used with ADCBuf_open(). ">ADCBuf_Params</a> structure to its default values.  <a href="#ae6ddd34c34fd06cdede98fb01033cc47">More...</a><br /></td></tr>
 <tr class="separator:ae6ddd34c34fd06cdede98fb01033cc47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a292e0e615d57d93c2f87f7e915e7027b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b">ADCBuf_open</a> (uint_least8_t index, <a class="el" href="_a_d_c_buf_8h.html#a127e649bfd0523552802c71e28a831c3">ADCBuf_Params</a> *params)</td></tr>
+<tr class="memitem:a292e0e615d57d93c2f87f7e915e7027b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b">ADCBuf_open</a> (uint_least8_t index, <a class="el" href="struct_a_d_c_buf___params.html">ADCBuf_Params</a> *params)</td></tr>
 <tr class="memdesc:a292e0e615d57d93c2f87f7e915e7027b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function opens a given ADCBuf peripheral.  <a href="#a292e0e615d57d93c2f87f7e915e7027b">More...</a><br /></td></tr>
 <tr class="separator:a292e0e615d57d93c2f87f7e915e7027b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a762253a94875258c5a71b591f03f9d97"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97">ADCBuf_convert</a> (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, <a class="el" href="_a_d_c_buf_8h.html#a24d253ddedcfd02729f910c32fe8b7c8">ADCBuf_Conversion</a> conversions[], uint_fast8_t channelCount)</td></tr>
-<tr class="memdesc:a762253a94875258c5a71b591f03f9d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function starts a set of conversions on one or more channels.  <a href="#a762253a94875258c5a71b591f03f9d97">More...</a><br /></td></tr>
+<tr class="memitem:a762253a94875258c5a71b591f03f9d97"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97">ADCBuf_convert</a> (<a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a> handle, <a class="el" href="struct_a_d_c_buf___conversion.html">ADCBuf_Conversion</a> conversions[], uint_fast8_t channelCount)</td></tr>
+<tr class="memdesc:a762253a94875258c5a71b591f03f9d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts ADCBuf conversions on one or more channels.  <a href="#a762253a94875258c5a71b591f03f9d97">More...</a><br /></td></tr>
 <tr class="separator:a762253a94875258c5a71b591f03f9d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5201c27bddf11b9f9ae902807bded40d"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a5201c27bddf11b9f9ae902807bded40d">ADCBuf_convertCancel</a> (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle)</td></tr>
-<tr class="memdesc:a5201c27bddf11b9f9ae902807bded40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function cancels an ADC conversion that is in progress.  <a href="#a5201c27bddf11b9f9ae902807bded40d">More...</a><br /></td></tr>
+<tr class="memitem:a5201c27bddf11b9f9ae902807bded40d"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a5201c27bddf11b9f9ae902807bded40d">ADCBuf_convertCancel</a> (<a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a> handle)</td></tr>
+<tr class="memdesc:a5201c27bddf11b9f9ae902807bded40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancels all ADCBuf conversions in progress.  <a href="#a5201c27bddf11b9f9ae902807bded40d">More...</a><br /></td></tr>
 <tr class="separator:a5201c27bddf11b9f9ae902807bded40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ff6d7db155bcd1367ef82a9f5cef19c"><td class="memItemLeft" align="right" valign="top">uint_fast8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a2ff6d7db155bcd1367ef82a9f5cef19c">ADCBuf_getResolution</a> (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle)</td></tr>
-<tr class="memdesc:a2ff6d7db155bcd1367ef82a9f5cef19c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns the resolution in bits of the specified ADC.  <a href="#a2ff6d7db155bcd1367ef82a9f5cef19c">More...</a><br /></td></tr>
+<tr class="memitem:a2ff6d7db155bcd1367ef82a9f5cef19c"><td class="memItemLeft" align="right" valign="top">uint_fast8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a2ff6d7db155bcd1367ef82a9f5cef19c">ADCBuf_getResolution</a> (<a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a> handle)</td></tr>
+<tr class="memdesc:a2ff6d7db155bcd1367ef82a9f5cef19c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the resolution in bits of the specified ADCBuf instance.  <a href="#a2ff6d7db155bcd1367ef82a9f5cef19c">More...</a><br /></td></tr>
 <tr class="separator:a2ff6d7db155bcd1367ef82a9f5cef19c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a636816201fdb596b748a0ce4d4bf6739"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a636816201fdb596b748a0ce4d4bf6739">ADCBuf_adjustRawValues</a> (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, void *sampleBuf, uint_fast16_t sampleCount, uint32_t adcChan)</td></tr>
-<tr class="memdesc:a636816201fdb596b748a0ce4d4bf6739"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function adjusts a raw ADC output buffer such that the result is comparable between devices of the same make. The function does the adjustment in-place.  <a href="#a636816201fdb596b748a0ce4d4bf6739">More...</a><br /></td></tr>
+<tr class="memitem:a636816201fdb596b748a0ce4d4bf6739"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a636816201fdb596b748a0ce4d4bf6739">ADCBuf_adjustRawValues</a> (<a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a> handle, void *sampleBuf, uint_fast16_t sampleCount, uint32_t adcChan)</td></tr>
+<tr class="memdesc:a636816201fdb596b748a0ce4d4bf6739"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjust a raw ADC output buffer. The function does the adjustment in-place.  <a href="#a636816201fdb596b748a0ce4d4bf6739">More...</a><br /></td></tr>
 <tr class="separator:a636816201fdb596b748a0ce4d4bf6739"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a815c5b8d43cb93a46298c889dff1019c"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a815c5b8d43cb93a46298c889dff1019c">ADCBuf_convertAdjustedToMicroVolts</a> (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, uint32_t adcChan, void *adjustedSampleBuffer, uint32_t outputMicroVoltBuffer[], uint_fast16_t sampleCount)</td></tr>
-<tr class="memdesc:a815c5b8d43cb93a46298c889dff1019c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function converts a raw ADC output value to a value scaled in micro volts.  <a href="#a815c5b8d43cb93a46298c889dff1019c">More...</a><br /></td></tr>
+<tr class="memitem:a815c5b8d43cb93a46298c889dff1019c"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_d_c_buf_8h.html#a815c5b8d43cb93a46298c889dff1019c">ADCBuf_convertAdjustedToMicroVolts</a> (<a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a> handle, uint32_t adcChan, void *adjustedSampleBuffer, uint32_t outputMicroVoltBuffer[], uint_fast16_t sampleCount)</td></tr>
+<tr class="memdesc:a815c5b8d43cb93a46298c889dff1019c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert an adjusted ADC output buffer to microvolts.  <a href="#a815c5b8d43cb93a46298c889dff1019c">More...</a><br /></td></tr>
 <tr class="separator:a815c5b8d43cb93a46298c889dff1019c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="a12e1cd567193c54b72c1baa82e6b221b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12e1cd567193c54b72c1baa82e6b221b">&sect;&nbsp;</a></span>ADCBuf_Handle</h2>
+<a id="a9b9646efcf7a7fd38a2935abd940cf96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b9646efcf7a7fd38a2935abd940cf96">&sect;&nbsp;</a></span>ADCBuf_Handle</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_a_d_c_buf___config__.html">ADCBuf_Config_</a>* <a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a></td>
+          <td class="memname">typedef struct <a class="el" href="struct_a_d_c_buf___config.html">ADCBuf_Config</a>* <a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>A handle that is returned from an <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> call. </p>
-
-</div>
-</div>
-<a id="a24d253ddedcfd02729f910c32fe8b7c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24d253ddedcfd02729f910c32fe8b7c8">&sect;&nbsp;</a></span>ADCBuf_Conversion</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_a_d_c_buf___conversion__.html">ADCBuf_Conversion_</a>  <a class="el" href="_a_d_c_buf_8h.html#a24d253ddedcfd02729f910c32fe8b7c8">ADCBuf_Conversion</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>An <a class="el" href="_a_d_c_buf_8h.html#a24d253ddedcfd02729f910c32fe8b7c8" title="An ADCBuf_Conversion data structure is used with ADCBuf_convert(). It indicates which channel to perf...">ADCBuf_Conversion</a> data structure is used with <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="This function starts a set of conversions on one or more channels. ">ADCBuf_convert()</a>. It indicates which channel to perform the ADC conversion on, how many conversions to make, and where to put them. The arg variable is an user-definable argument which gets passed to the <a class="el" href="_a_d_c_buf_8h.html#a477c377c65f8de04aa67ff7eefa0a4cf" title="The definition of a callback function used by the ADC driver when used in ADCBuf_RETURN_MODE_CALLBACK...">ADCBuf_Callback</a> when the ADC driver is in <a class="el" href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433a633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>. </p>
 
 </div>
 </div>
@@ -292,287 +225,103 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef void(* ADCBuf_Callback) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, <a class="el" href="_a_d_c_buf_8h.html#a24d253ddedcfd02729f910c32fe8b7c8">ADCBuf_Conversion</a> *conversion, void *completedADCBuffer, uint32_t completedChannel)</td>
+          <td class="memname">typedef void(* ADCBuf_Callback) (<a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a> handle, <a class="el" href="struct_a_d_c_buf___conversion.html">ADCBuf_Conversion</a> *conversion, void *completedADCBuffer, uint32_t completedChannel)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The definition of a callback function used by the ADC driver when used in <a class="el" href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433a633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>. It is called in a HWI or SWI context depending on the device specific implementation. </p>
+<p>The definition of a callback function. </p>
+<p>When operating in <a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>, the callback function is called when an <a class="el" href="struct_a_d_c_buf___conversion.html" title="Defines a conversion to be used with ADCBuf_convert(). ">ADCBuf_Conversion</a> completes. The application is responsible for declaring a <a class="el" href="_a_d_c_buf_8h.html#a477c377c65f8de04aa67ff7eefa0a4cf" title="The definition of a callback function. ">ADCBuf_Callback</a> and providing a pointer in <a class="el" href="struct_a_d_c_buf___params.html#a29f674ee9b6739607119d6b50f244e17">ADCBuf_Params.callbackFxn</a>.</p>
+<dl class="section warning"><dt>Warning</dt><dd>The callback function is called from an interrupt context.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">handle</td><td><a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96" title="A handle that is returned from an ADCBuf_open() call. ">ADCBuf_Handle</a> used with the initial call to <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a></td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">conversion</td><td>Pointer to the <a class="el" href="struct_a_d_c_buf___conversion.html" title="Defines a conversion to be used with ADCBuf_convert(). ">ADCBuf_Conversion</a> structure used with the initial call to <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a>. This structure also contains the custom argument specified by <code>conversion.arg</code>.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">completedADCBuffer</td><td>Pointer to a buffer containing <code>conversion.samplesRequestedCount</code> ADC samples.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">completedChannel</td><td>ADCBuf channel the samples were performed on.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a> </dd>
+<dd>
+<a class="el" href="struct_a_d_c_buf___conversion.html" title="Defines a conversion to be used with ADCBuf_convert(). ">ADCBuf_Conversion</a> </dd>
+<dd>
+<a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1" title="Recurrence behavior of a ADCBuf_Conversion specified in the ADCBuf_Params. ">ADCBuf_Recurrence_Mode</a> </dd>
+<dd>
+<a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a> </dd></dl>
 
 </div>
 </div>
-<a id="a0df315657027d8c4dc1582ee6438522b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0df315657027d8c4dc1582ee6438522b">&sect;&nbsp;</a></span>ADCBuf_Recurrence_Mode</h2>
+<a id="a630c696a789e6c298dc97b960f72e3d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a630c696a789e6c298dc97b960f72e3d1">&sect;&nbsp;</a></span>ADCBuf_Config</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef enum <a class="el" href="_a_d_c_buf_8h.html#ae5620b285f881fdecb49b75a73f1400f">ADCBuf_Recurrence_Mode_</a>  <a class="el" href="_a_d_c_buf_8h.html#a0df315657027d8c4dc1582ee6438522b">ADCBuf_Recurrence_Mode</a></td>
+          <td class="memname">typedef struct <a class="el" href="struct_a_d_c_buf___config.html">ADCBuf_Config</a>  <a class="el" href="struct_a_d_c_buf___config.html">ADCBuf_Config</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>ADC trigger mode settings. </p>
-<p>This enum defines if the driver should make n conversions and return or run indefinitely and run a callback function every n conversions. </p>
-
-</div>
-</div>
-<a id="a3cc88be061075c8c609959d56adb30a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3cc88be061075c8c609959d56adb30a4">&sect;&nbsp;</a></span>ADCBuf_Return_Mode</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef enum <a class="el" href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433">ADCBuf_Return_Mode_</a>  <a class="el" href="_a_d_c_buf_8h.html#a3cc88be061075c8c609959d56adb30a4">ADCBuf_Return_Mode</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>ADC return mode settings. </p>
-<p>This enum defines how the <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="This function starts a set of conversions on one or more channels. ">ADCBuf_convert()</a> function returns. It either blocks or returns immediately and calls a callback function when the provided buffer has been filled. </p>
-
-</div>
-</div>
-<a id="a127e649bfd0523552802c71e28a831c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a127e649bfd0523552802c71e28a831c3">&sect;&nbsp;</a></span>ADCBuf_Params</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_a_d_c_buf___params__.html">ADCBuf_Params_</a>  <a class="el" href="_a_d_c_buf_8h.html#a127e649bfd0523552802c71e28a831c3">ADCBuf_Params</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>ADC Parameters. </p>
-<p>ADC Parameters are used to with the <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> call. Default values for these parameters are set using <a class="el" href="_a_d_c_buf_8h.html#ae6ddd34c34fd06cdede98fb01033cc47" title="This function sets all fields of a specified ADCBuf_Params structure to their default values...">ADCBuf_Params_init()</a>.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#ae6ddd34c34fd06cdede98fb01033cc47" title="This function sets all fields of a specified ADCBuf_Params structure to their default values...">ADCBuf_Params_init()</a> </dd></dl>
-
-</div>
-</div>
-<a id="a94dfd94e96f6c7e15a9da57feddd60dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94dfd94e96f6c7e15a9da57feddd60dc">&sect;&nbsp;</a></span>ADCBuf_CloseFxn</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef void(* ADCBuf_CloseFxn) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a04ab5fae5da8f9ff77ab3ae4974d8f7d" title="Function to close an ADC peripheral specified by the ADC handle. ">ADCBuf_close()</a>. </p>
-
-</div>
-</div>
-<a id="ab8084b8145ded40824a3f98e58f9917d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8084b8145ded40824a3f98e58f9917d">&sect;&nbsp;</a></span>ADCBuf_OpenFxn</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef <a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a>(* ADCBuf_OpenFxn) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, const <a class="el" href="_a_d_c_buf_8h.html#a127e649bfd0523552802c71e28a831c3">ADCBuf_Params</a> *params)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a>. </p>
-
-</div>
-</div>
-<a id="a24f4127b82e138fa18c8a54b4d914e05"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24f4127b82e138fa18c8a54b4d914e05">&sect;&nbsp;</a></span>ADCBuf_ControlFxn</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef int_fast16_t(* ADCBuf_ControlFxn) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, uint_fast8_t cmd, void *arg)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a87678933c235c0bfc1a26472ef873014" title="Function performs implementation specific features on a given ADCBuf_Handle. ">ADCBuf_control()</a>. </p>
-
-</div>
-</div>
-<a id="ab63b9bc37ab6f5fa2521c18b38c1881e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab63b9bc37ab6f5fa2521c18b38c1881e">&sect;&nbsp;</a></span>ADCBuf_InitFxn</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef void(* ADCBuf_InitFxn) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a57f40a75d77241e2fda473f0538e404d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57f40a75d77241e2fda473f0538e404d">&sect;&nbsp;</a></span>ADCBuf_ConvertFxn</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef int_fast16_t(* ADCBuf_ConvertFxn) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, <a class="el" href="_a_d_c_buf_8h.html#a24d253ddedcfd02729f910c32fe8b7c8">ADCBuf_Conversion</a> conversions[], uint_fast8_t channelCount)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="This function starts a set of conversions on one or more channels. ">ADCBuf_convert()</a>. </p>
-
-</div>
-</div>
-<a id="a88bb1333e07a3fee27926064058d5d1b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88bb1333e07a3fee27926064058d5d1b">&sect;&nbsp;</a></span>ADCBuf_ConvertCancelFxn</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef int_fast16_t(* ADCBuf_ConvertCancelFxn) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a5201c27bddf11b9f9ae902807bded40d" title="This function cancels an ADC conversion that is in progress. ">ADCBuf_convertCancel()</a>. </p>
-
-</div>
-</div>
-<a id="aeff0bfa20eb16c3857b5123da136d320"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeff0bfa20eb16c3857b5123da136d320">&sect;&nbsp;</a></span>ADCBuf_GetResolutionFxn</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef uint_fast8_t(* ADCBuf_GetResolutionFxn) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A function pointer to a driver specific implementation of ADCBuf_GetResolution();. </p>
-
-</div>
-</div>
-<a id="a4a19f2deb010ca0ba5bdcf5586a8cb28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a19f2deb010ca0ba5bdcf5586a8cb28">&sect;&nbsp;</a></span>ADCBuf_adjustRawValuesFxn</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef int_fast16_t(* ADCBuf_adjustRawValuesFxn) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, void *sampleBuffer, uint_fast16_t sampleCount, uint32_t adcChannel)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a636816201fdb596b748a0ce4d4bf6739" title="This function adjusts a raw ADC output buffer such that the result is comparable between devices of t...">ADCBuf_adjustRawValues()</a>;. </p>
-
-</div>
-</div>
-<a id="a6ffaac5eaa1253f9b78bbaa6952e1162"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ffaac5eaa1253f9b78bbaa6952e1162">&sect;&nbsp;</a></span>ADCBuf_convertAdjustedToMicroVoltsFxn</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef int_fast16_t(* ADCBuf_convertAdjustedToMicroVoltsFxn) (<a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> handle, uint32_t adcChannel, void *adjustedSampleBuffer, uint32_t outputMicroVoltBuffer[], uint_fast16_t sampleCount)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A function pointer to a driver specific implementation of <a class="el" href="_a_d_c_buf_8h.html#a815c5b8d43cb93a46298c889dff1019c" title="This function converts a raw ADC output value to a value scaled in micro volts. ">ADCBuf_convertAdjustedToMicroVolts()</a>;. </p>
-
-</div>
-</div>
-<a id="af15c19b29f04db7b3755c255187c1dc4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af15c19b29f04db7b3755c255187c1dc4">&sect;&nbsp;</a></span>ADCBuf_FxnTable</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_a_d_c_buf___fxn_table__.html">ADCBuf_FxnTable_</a>  <a class="el" href="_a_d_c_buf_8h.html#af15c19b29f04db7b3755c255187c1dc4">ADCBuf_FxnTable</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The definition of an ADCBuf function table that contains the required set of functions to control a specific ADC driver implementation. </p>
-
-</div>
-</div>
-<a id="a72d585edb37e7c4c53c278305a8df7d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72d585edb37e7c4c53c278305a8df7d2">&sect;&nbsp;</a></span>ADCBuf_Config</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_a_d_c_buf___config__.html">ADCBuf_Config_</a>  <a class="el" href="_a_d_c_buf_8h.html#a72d585edb37e7c4c53c278305a8df7d2">ADCBuf_Config</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>ADCBuf Global configuration. </p>
-<p>The ADCBuf_Config structure contains a set of pointers used to characterise the ADC driver implementation.</p>
-<p>This structure needs to be defined before calling <a class="el" href="_a_d_c_buf_8h.html#a88a0ab421304465b22417a7adef6c0c2" title="This function initializes the ADC module. This function must. ">ADCBuf_init()</a> and it must not be changed thereafter.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a88a0ab421304465b22417a7adef6c0c2" title="This function initializes the ADC module. This function must. ">ADCBuf_init()</a> </dd></dl>
+<p>ADC driver's custom <a class="el" href="index.html#driver_configuration">configuration</a> structure. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a88a0ab421304465b22417a7adef6c0c2" title="Function to initialize the ADCBuf driver. ">ADCBuf_init()</a> </dd>
+<dd>
+<a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="ae5620b285f881fdecb49b75a73f1400f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5620b285f881fdecb49b75a73f1400f">&sect;&nbsp;</a></span>ADCBuf_Recurrence_Mode_</h2>
+<a id="af15cc4961b02af48216132c2b8bc88f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af15cc4961b02af48216132c2b8bc88f1">&sect;&nbsp;</a></span>ADCBuf_Recurrence_Mode</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="_a_d_c_buf_8h.html#ae5620b285f881fdecb49b75a73f1400f">ADCBuf_Recurrence_Mode_</a></td>
+          <td class="memname">enum <a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1">ADCBuf_Recurrence_Mode</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>ADC trigger mode settings. </p>
-<p>This enum defines if the driver should make n conversions and return or run indefinitely and run a callback function every n conversions. </p>
+<p>Recurrence behavior of a <a class="el" href="struct_a_d_c_buf___conversion.html" title="Defines a conversion to be used with ADCBuf_convert(). ">ADCBuf_Conversion</a> specified in the <a class="el" href="struct_a_d_c_buf___params.html" title="ADCBuf parameters used with ADCBuf_open(). ">ADCBuf_Params</a>. </p>
+<p>This enumeration defines the recurrence mode of a <a class="el" href="struct_a_d_c_buf___conversion.html" title="Defines a conversion to be used with ADCBuf_convert(). ">ADCBuf_Conversion</a>. After a call to <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a>, <a class="el" href="struct_a_d_c_buf___conversion.html" title="Defines a conversion to be used with ADCBuf_convert(). ">ADCBuf_Conversion</a> may either be done once or reoccur. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae5620b285f881fdecb49b75a73f1400fa1916212b661aa853b7a581e3e5dc35e2"></a>ADCBuf_RECURRENCE_MODE_ONE_SHOT&#160;</td><td class="fielddoc"><p>The driver makes n measurements and returns or runs a callback function depending on the <a class="el" href="_a_d_c_buf_8h.html#a3cc88be061075c8c609959d56adb30a4" title="ADC return mode settings. ">ADCBuf_Return_Mode</a> setting. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af15cc4961b02af48216132c2b8bc88f1a1916212b661aa853b7a581e3e5dc35e2"></a>ADCBuf_RECURRENCE_MODE_ONE_SHOT&#160;</td><td class="fielddoc"><p>When operating in <a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1a1916212b661aa853b7a581e3e5dc35e2">ADCBuf_RECURRENCE_MODE_ONE_SHOT</a>, calls to <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a> will pend on a semaphore until <a class="el" href="struct_a_d_c_buf___conversion.html#afd95c203d1e7dd347102eef22dc9cc93">ADCBuf_Conversion.samplesRequestedCount</a> samples are completed or after a duration of <a class="el" href="struct_a_d_c_buf___params.html#a3c3b5dab517e5d6bdc6dd68bda1e88d2">ADCBuf_Params.blockingTimeout</a>.</p>
+<dl class="section note"><dt>Note</dt><dd>When using <a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1a1916212b661aa853b7a581e3e5dc35e2">ADCBuf_RECURRENCE_MODE_ONE_SHOT</a>, <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a> must be called from a thread context. <a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1a1916212b661aa853b7a581e3e5dc35e2">ADCBuf_RECURRENCE_MODE_ONE_SHOT</a> can only be used in combination with <a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea5c6236b2f629b196d7874175be679399">ADCBuf_RETURN_MODE_BLOCKING</a>. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="ae5620b285f881fdecb49b75a73f1400fac10945188f88ddadd4322c4e117d5b3c"></a>ADCBuf_RECURRENCE_MODE_CONTINUOUS&#160;</td><td class="fielddoc"><p>The driver makes n measurements and then runs a callback function. This process happens until the application calls <a class="el" href="_a_d_c_buf_8h.html#a88bb1333e07a3fee27926064058d5d1b" title="A function pointer to a driver specific implementation of ADCBuf_convertCancel(). ...">ADCBuf_ConvertCancelFxn()</a>. This setting can only be used in <a class="el" href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433a633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>. </p>
+<tr><td class="fieldname"><a id="af15cc4961b02af48216132c2b8bc88f1ac10945188f88ddadd4322c4e117d5b3c"></a>ADCBuf_RECURRENCE_MODE_CONTINUOUS&#160;</td><td class="fielddoc"><p>When operating in <a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1ac10945188f88ddadd4322c4e117d5b3c">ADCBuf_RECURRENCE_MODE_CONTINUOUS</a>, calls to <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a> will return immediately. The driver will continuously perform <a class="el" href="struct_a_d_c_buf___conversion.html#afd95c203d1e7dd347102eef22dc9cc93">ADCBuf_Conversion.samplesRequestedCount</a> samples and call the <a class="el" href="_a_d_c_buf_8h.html#a477c377c65f8de04aa67ff7eefa0a4cf" title="The definition of a callback function. ">ADCBuf_Callback</a> function when completed. The driver will automatically alternate between <a class="el" href="struct_a_d_c_buf___conversion.html#a5415e58a69e40124f66cdcc52a097c4a">ADCBuf_Conversion.sampleBuffer</a> and <a class="el" href="struct_a_d_c_buf___conversion.html#a6953e200ba2e5a85b9197bdaeb101a5f">ADCBuf_Conversion.sampleBufferTwo</a>. A <a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1ac10945188f88ddadd4322c4e117d5b3c">ADCBuf_RECURRENCE_MODE_CONTINUOUS</a> conversion can only be terminated using <a class="el" href="_a_d_c_buf_8h.html#a5201c27bddf11b9f9ae902807bded40d" title="Cancels all ADCBuf conversions in progress. ">ADCBuf_convertCancel()</a>.</p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1ac10945188f88ddadd4322c4e117d5b3c">ADCBuf_RECURRENCE_MODE_CONTINUOUS</a> can only be used in combination with <a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a> </dd>
+<dd>
+<a class="el" href="_a_d_c_buf_8h.html#a5201c27bddf11b9f9ae902807bded40d" title="Cancels all ADCBuf conversions in progress. ">ADCBuf_convertCancel()</a> </dd></dl>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="aa9e88854960e236788f9775ff630a433"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9e88854960e236788f9775ff630a433">&sect;&nbsp;</a></span>ADCBuf_Return_Mode_</h2>
+<a id="a3d643e8024503c5ef2679c83419ba6ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d643e8024503c5ef2679c83419ba6ee">&sect;&nbsp;</a></span>ADCBuf_Return_Mode</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433">ADCBuf_Return_Mode_</a></td>
+          <td class="memname">enum <a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6ee">ADCBuf_Return_Mode</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>ADC return mode settings. </p>
-<p>This enum defines how the <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="This function starts a set of conversions on one or more channels. ">ADCBuf_convert()</a> function returns. It either blocks or returns immediately and calls a callback function when the provided buffer has been filled. </p>
+<p>Return behavior for <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a> specified in the <a class="el" href="struct_a_d_c_buf___params.html" title="ADCBuf parameters used with ADCBuf_open(). ">ADCBuf_Params</a>. </p>
+<p>This enumeration defines the return behavior for <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a>. A call to <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a> may either block or return immediately.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert</a> </dd></dl>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa9e88854960e236788f9775ff630a433a5c6236b2f629b196d7874175be679399"></a>ADCBuf_RETURN_MODE_BLOCKING&#160;</td><td class="fielddoc"><p>Uses a semaphore to block while ADC conversions are performed. Context of the call must be a Task.</p>
-<dl class="section note"><dt>Note</dt><dd>Blocking return mode cannot be used in combination with <a class="el" href="_a_d_c_buf_8h.html#ae5620b285f881fdecb49b75a73f1400fac10945188f88ddadd4322c4e117d5b3c">ADCBuf_RECURRENCE_MODE_CONTINUOUS</a> </dd></dl>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3d643e8024503c5ef2679c83419ba6eea5c6236b2f629b196d7874175be679399"></a>ADCBuf_RETURN_MODE_BLOCKING&#160;</td><td class="fielddoc"><p>When operating in <a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea5c6236b2f629b196d7874175be679399">ADCBuf_RETURN_MODE_BLOCKING</a>, calls to <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a> will pend on a semaphore until <a class="el" href="struct_a_d_c_buf___conversion.html#afd95c203d1e7dd347102eef22dc9cc93">ADCBuf_Conversion.samplesRequestedCount</a> samples are completed or after a duration of <a class="el" href="struct_a_d_c_buf___params.html#a3c3b5dab517e5d6bdc6dd68bda1e88d2">ADCBuf_Params.blockingTimeout</a>.</p>
+<dl class="section note"><dt>Note</dt><dd>When using <a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea5c6236b2f629b196d7874175be679399">ADCBuf_RETURN_MODE_BLOCKING</a>, <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a> must be called from a thread context. <a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea5c6236b2f629b196d7874175be679399">ADCBuf_RETURN_MODE_BLOCKING</a> can only be used in combination with <a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1a1916212b661aa853b7a581e3e5dc35e2">ADCBuf_RECURRENCE_MODE_ONE_SHOT</a>. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="aa9e88854960e236788f9775ff630a433a633b4b063b88d7c62e9e2513075a36a7"></a>ADCBuf_RETURN_MODE_CALLBACK&#160;</td><td class="fielddoc"><p>Non-blocking and will return immediately. When the conversion is finished the configured callback function is called. </p>
+<tr><td class="fieldname"><a id="a3d643e8024503c5ef2679c83419ba6eea633b4b063b88d7c62e9e2513075a36a7"></a>ADCBuf_RETURN_MODE_CALLBACK&#160;</td><td class="fielddoc"><p>When operating in <a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>, calls to <a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a> will return immediately. When <a class="el" href="struct_a_d_c_buf___conversion.html#afd95c203d1e7dd347102eef22dc9cc93">ADCBuf_Conversion.samplesRequestedCount</a> samples are completed, the <a class="el" href="struct_a_d_c_buf___params.html#a29f674ee9b6739607119d6b50f244e17">ADCBuf_Params.callbackFxn</a> function is called.</p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1ac10945188f88ddadd4322c4e117d5b3c">ADCBuf_RECURRENCE_MODE_CONTINUOUS</a> can only be used in combination with <a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea633b4b063b88d7c62e9e2513075a36a7">ADCBuf_RETURN_MODE_CALLBACK</a>.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1ac10945188f88ddadd4322c4e117d5b3c">ADCBuf_RECURRENCE_MODE_CONTINUOUS</a> </dd></dl>
 </td></tr>
 </table>
 
@@ -588,24 +337,23 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void ADCBuf_close </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a>&#160;</td>
           <td class="paramname"><em>handle</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Function to close an ADC peripheral specified by the ADC handle. </p>
+<p>Function to close an ADCBuf driver instance. </p>
 <dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> has to be called first.</dd>
 <dd>
-In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" href="_a_d_c_buf_8h.html#a5201c27bddf11b9f9ae902807bded40d" title="This function cancels an ADC conversion that is in progress. ">ADCBuf_convertCancel()</a> first.</dd></dl>
+In <a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1ac10945188f88ddadd4322c4e117d5b3c">ADCBuf_RECURRENCE_MODE_CONTINUOUS</a>, the application must call <a class="el" href="_a_d_c_buf_8h.html#a5201c27bddf11b9f9ae902807bded40d" title="Cancels all ADCBuf conversions in progress. ">ADCBuf_convertCancel()</a> first.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>An ADCBuf handle returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td>An <a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96" title="A handle that is returned from an ADCBuf_open() call. ">ADCBuf_Handle</a> returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> </dd></dl>
 
 </div>
 </div>
@@ -618,7 +366,7 @@ In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" hr
         <tr>
           <td class="memname">int_fast16_t ADCBuf_control </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a>&#160;</td>
           <td class="paramname"><em>handle</em>, </td>
         </tr>
         <tr>
@@ -641,18 +389,24 @@ In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" hr
       </table>
 </div><div class="memdoc">
 
-<p>Function performs implementation specific features on a given ADCBuf_Handle. </p>
+<p>Function performs implementation specific features on a driver instance. </p>
 <dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> has to be called first.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>An ADCBuf handle returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a></td></tr>
-    <tr><td class="paramname">cmd</td><td>A command value defined by the driver specific implementation</td></tr>
-    <tr><td class="paramname">cmdArg</td><td>A pointer to an optional R/W (read/write) argument that is accompanied with cmd</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td>An <a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96" title="A handle that is returned from an ADCBuf_open() call. ">ADCBuf_Handle</a> returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cmd</td><td>A command value defined by the device specific implementation</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cmdArg</td><td>An optional R/W (read/write) argument that is accompanied with <code>cmd</code> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An ADCBuf_Status describing an error or success state. Negative values indicates an error.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Implementation specific return codes. Negative values indicate unsuccessful operations.</dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#gac9c96db575dfaa6bcdfbd94cd875fbd4" title="Success status code returned by: ADCBuf_control() ">ADCBuf_STATUS_SUCCESS</a></td><td>The call was successful.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga5d552a66f63d36a8eaffd53c9deff2f2" title="An error status code returned by ADCBuf_control() for undefined command codes. ">ADCBuf_STATUS_UNDEFINEDCMD</a></td><td>The <code>cmd</code> value is not supported by the device specific implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -672,8 +426,8 @@ In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" hr
       </table>
 </div><div class="memdoc">
 
-<p>This function initializes the ADC module. This function must. </p>
-<dl class="section pre"><dt>Precondition</dt><dd>The ADCBuf_Config structure must exist and be persistent before this function can be called. This function call does not modify any peripheral registers. Function should only be called once. </dd></dl>
+<p>Function to initialize the ADCBuf driver. </p>
+<p>This function must also be called before any other ADCBuf driver APIs. </p>
 
 </div>
 </div>
@@ -686,22 +440,28 @@ In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" hr
         <tr>
           <td class="memname">void ADCBuf_Params_init </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a127e649bfd0523552802c71e28a831c3">ADCBuf_Params</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_a_d_c_buf___params.html">ADCBuf_Params</a> *&#160;</td>
           <td class="paramname"><em>params</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>This function sets all fields of a specified ADCBuf_Params structure to their default values. </p>
+<p>Initialize an <a class="el" href="struct_a_d_c_buf___params.html" title="ADCBuf parameters used with ADCBuf_open(). ">ADCBuf_Params</a> structure to its default values. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">params</td><td>A pointer to ADCBuf_Params structure for initialization</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">params</td><td>A pointer to <a class="el" href="struct_a_d_c_buf___params.html" title="ADCBuf parameters used with ADCBuf_open(). ">ADCBuf_Params</a> structure for initialization</td></tr>
   </table>
   </dd>
 </dl>
-<p>Default values are: returnMode = ADCBuf_RETURN_MODE_BLOCKING, blockingTimeout = 25000, callbackFxn = NULL, recurrenceMode = ADCBuf_RECURRENCE_MODE_ONE_SHOT, samplingFrequency = 10000, custom = NULL</p>
-<p><a class="el" href="struct_a_d_c_buf___params__.html#adc70dfc130fec9d3185d3a9d82d6f637">ADCBuf_Params::blockingTimeout</a> should be set large enough to allow for the desired number of samples to be collected with the specified frequency. </p>
+<p>Default values are: </p><ul>
+<li><a class="el" href="struct_a_d_c_buf___params.html#a17b3cdab5de5cfb81854b86f0cfc0ec1">ADCBuf_Params.returnMode</a> = <a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea5c6236b2f629b196d7874175be679399">ADCBuf_RETURN_MODE_BLOCKING</a>, </li>
+<li><a class="el" href="struct_a_d_c_buf___params.html#a3c3b5dab517e5d6bdc6dd68bda1e88d2">ADCBuf_Params.blockingTimeout</a> = 25000, </li>
+<li><a class="el" href="struct_a_d_c_buf___params.html#a29f674ee9b6739607119d6b50f244e17">ADCBuf_Params.callbackFxn</a> = NULL, </li>
+<li><a class="el" href="struct_a_d_c_buf___params.html#a559d4f3324bdbee8f6b6140a6d7264fb">ADCBuf_Params.recurrenceMode</a> = <a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1a1916212b661aa853b7a581e3e5dc35e2">ADCBuf_RECURRENCE_MODE_ONE_SHOT</a>, </li>
+<li><a class="el" href="struct_a_d_c_buf___params.html#ad2ca9d85a9379652a86ea9235e4bec82">ADCBuf_Params.samplingFrequency</a> = 10000, </li>
+<li><a class="el" href="struct_a_d_c_buf___params.html#a72c7ec51318ec2f8fcf5d2ff37de33e3">ADCBuf_Params.custom</a> = NULL </li>
+</ul>
 
 </div>
 </div>
@@ -712,7 +472,7 @@ In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" hr
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a> ADCBuf_open </td>
+          <td class="memname"><a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a> ADCBuf_open </td>
           <td>(</td>
           <td class="paramtype">uint_least8_t&#160;</td>
           <td class="paramname"><em>index</em>, </td>
@@ -720,7 +480,7 @@ In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" hr
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a127e649bfd0523552802c71e28a831c3">ADCBuf_Params</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_a_d_c_buf___params.html">ADCBuf_Params</a> *&#160;</td>
           <td class="paramname"><em>params</em>&#160;</td>
         </tr>
         <tr>
@@ -734,13 +494,13 @@ In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" hr
 <p>This function opens a given ADCBuf peripheral. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">index</td><td>Logical peripheral number for the ADCBuf indexed into the ADCBuf_config table</td></tr>
-    <tr><td class="paramname">params</td><td>Pointer to an parameter block, if NULL it will use default values.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Index in the <code><a class="el" href="struct_a_d_c_buf___config.html" title="ADC driver&#39;s custom configuration structure. ">ADCBuf_Config</a></code>[] array.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">params</td><td>Pointer to an initialized <a class="el" href="struct_a_d_c_buf___params.html" title="ADCBuf parameters used with ADCBuf_open(). ">ADCBuf_Params</a> structure. If NULL, the default <a class="el" href="struct_a_d_c_buf___params.html" title="ADCBuf parameters used with ADCBuf_open(). ">ADCBuf_Params</a> values are used.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An ADCBuf_Handle on success or a NULL on an error or if it has been opened already. If NULL is returned further ADC API calls will result in undefined behaviour.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a04ab5fae5da8f9ff77ab3ae4974d8f7d" title="Function to close an ADC peripheral specified by the ADC handle. ">ADCBuf_close()</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>An <a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96" title="A handle that is returned from an ADCBuf_open() call. ">ADCBuf_Handle</a> on success or NULL on error.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a04ab5fae5da8f9ff77ab3ae4974d8f7d" title="Function to close an ADCBuf driver instance. ">ADCBuf_close()</a> </dd></dl>
 
 </div>
 </div>
@@ -753,13 +513,13 @@ In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" hr
         <tr>
           <td class="memname">int_fast16_t ADCBuf_convert </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a>&#160;</td>
           <td class="paramname"><em>handle</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a24d253ddedcfd02729f910c32fe8b7c8">ADCBuf_Conversion</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_a_d_c_buf___conversion.html">ADCBuf_Conversion</a>&#160;</td>
           <td class="paramname"><em>conversions</em>[], </td>
         </tr>
         <tr>
@@ -776,18 +536,31 @@ In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" hr
       </table>
 </div><div class="memdoc">
 
-<p>This function starts a set of conversions on one or more channels. </p>
+<p>Starts ADCBuf conversions on one or more channels. </p>
+<dl class="section note"><dt>Note</dt><dd>When using <a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea5c6236b2f629b196d7874175be679399">ADCBuf_RETURN_MODE_BLOCKING</a>, this must be called from a thread context.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>An ADCBuf handle returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a></td></tr>
-    <tr><td class="paramname">conversions</td><td>A pointer to an array of ADCBuf_Conversion structs with the specific parameters for each channel. Only use one ADCBuf_Conversion struct per channel.</td></tr>
-    <tr><td class="paramname">channelCount</td><td>The number of channels to convert on in this call. Should be the length of the conversions array. Depending on the device, multiple simultaneous conversions may not be supported. See device specific implementation.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td>An ADCBuf handle returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">conversions</td><td>A pointer to an array of <a class="el" href="struct_a_d_c_buf___conversion.html" title="Defines a conversion to be used with ADCBuf_convert(). ">ADCBuf_Conversion</a> structures.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">channelCount</td><td>The number of channels to convert on in this call. Should be the length of the <code>conversions</code> array. Depending on the device, multiple simultaneous conversions may not be supported. See device specific implementation.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>ADCBuf_STATUS_SUCCESS if the operation was successful. ADCBuf_STATUS_ERROR or a device specific status is returned otherwise.</dd></dl>
-<dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> must have been called prior.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a5201c27bddf11b9f9ae902807bded40d" title="This function cancels an ADC conversion that is in progress. ">ADCBuf_convertCancel()</a> </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#gac9c96db575dfaa6bcdfbd94cd875fbd4" title="Success status code returned by: ADCBuf_control() ">ADCBuf_STATUS_SUCCESS</a></td><td>The conversion was successful. </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga78f1a705377b5bb15cc6c152f75846e2" title="Generic error status code returned by ADCBuf_control(). ">ADCBuf_STATUS_ERROR</a></td><td>The conversion failed.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> must have been called.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a5201c27bddf11b9f9ae902807bded40d" title="Cancels all ADCBuf conversions in progress. ">ADCBuf_convertCancel()</a> </dd>
+<dd>
+<a class="el" href="_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6ee" title="Return behavior for ADCBuf_convert() specified in the ADCBuf_Params. ">ADCBuf_Return_Mode</a> </dd>
+<dd>
+<a class="el" href="_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1" title="Recurrence behavior of a ADCBuf_Conversion specified in the ADCBuf_Params. ">ADCBuf_Recurrence_Mode</a> </dd>
+<dd>
+<a class="el" href="struct_a_d_c_buf___conversion.html" title="Defines a conversion to be used with ADCBuf_convert(). ">ADCBuf_Conversion</a> </dd></dl>
 
 </div>
 </div>
@@ -800,23 +573,28 @@ In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" hr
         <tr>
           <td class="memname">int_fast16_t ADCBuf_convertCancel </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a>&#160;</td>
           <td class="paramname"><em>handle</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>This function cancels an ADC conversion that is in progress. </p>
-<p>This function must be called before calling <a class="el" href="_a_d_c_buf_8h.html#a04ab5fae5da8f9ff77ab3ae4974d8f7d" title="Function to close an ADC peripheral specified by the ADC handle. ">ADCBuf_close()</a>.</p>
+<p>Cancels all ADCBuf conversions in progress. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>An ADCBuf handle returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td>An <a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96" title="A handle that is returned from an ADCBuf_open() call. ">ADCBuf_Handle</a> returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>ADCBuf_STATUS_SUCCESS if the operation was successful. ADCBuf_STATUS_ERROR or a device specific status is returned otherwise.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="This function starts a set of conversions on one or more channels. ">ADCBuf_convert()</a> </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#gac9c96db575dfaa6bcdfbd94cd875fbd4" title="Success status code returned by: ADCBuf_control() ">ADCBuf_STATUS_SUCCESS</a></td><td>The cancel was successful. </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga78f1a705377b5bb15cc6c152f75846e2" title="Generic error status code returned by ADCBuf_control(). ">ADCBuf_STATUS_ERROR</a></td><td>The cancel failed.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a> </dd></dl>
 
 </div>
 </div>
@@ -829,17 +607,17 @@ In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" hr
         <tr>
           <td class="memname">uint_fast8_t ADCBuf_getResolution </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a>&#160;</td>
           <td class="paramname"><em>handle</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>This function returns the resolution in bits of the specified ADC. </p>
+<p>Returns the resolution in bits of the specified ADCBuf instance. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>An ADCBuf handle returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a>.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td>An <a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96" title="A handle that is returned from an ADCBuf_open() call. ">ADCBuf_Handle</a> returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a>.</td></tr>
   </table>
   </dd>
 </dl>
@@ -857,7 +635,7 @@ In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" hr
         <tr>
           <td class="memname">int_fast16_t ADCBuf_adjustRawValues </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a>&#160;</td>
           <td class="paramname"><em>handle</em>, </td>
         </tr>
         <tr>
@@ -886,20 +664,25 @@ In ADCBuf_RECURRENCE_MODE_CONTINUOUS, the application must call <a class="el" hr
       </table>
 </div><div class="memdoc">
 
-<p>This function adjusts a raw ADC output buffer such that the result is comparable between devices of the same make. The function does the adjustment in-place. </p>
+<p>Adjust a raw ADC output buffer. The function does the adjustment in-place. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>An ADCBuf handle returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a>.</td></tr>
-    <tr><td class="paramname">sampleBuf</td><td>A buffer full of raw sample values.</td></tr>
-    <tr><td class="paramname">sampleCount</td><td>The number of samples to adjust.</td></tr>
-    <tr><td class="paramname">adcChan</td><td>The channel the buffer was sampled on.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td>An ADCBuf_Handle returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a>.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">sampleBuf</td><td>A buffer full of raw sample values.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sampleCount</td><td>The number of samples to adjust.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">adcChan</td><td>The channel the buffer was sampled on.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A buffer full of adjusted samples contained in sampleBuffer.</dd>
-<dd>
-ADCBuf_STATUS_SUCCESS if the operation was successful. ADCBuf_STATUS_ERROR or a device specific status is returned otherwise.</dd></dl>
-<dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> must have been called prior. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#gac9c96db575dfaa6bcdfbd94cd875fbd4" title="Success status code returned by: ADCBuf_control() ">ADCBuf_STATUS_SUCCESS</a></td><td>The operation was successful. <code>sampleBuf</code> contains valid values.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga78f1a705377b5bb15cc6c152f75846e2" title="Generic error status code returned by ADCBuf_control(). ">ADCBuf_STATUS_ERROR</a></td><td>if an error occurred.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga14c9aea90d55fbbf215ab5a17a33573d" title="An error status code returned if the function is not supported by a particular driver implementation...">ADCBuf_STATUS_UNSUPPORTED</a></td><td>The function is not supported by the device specific implementation.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a762253a94875258c5a71b591f03f9d97" title="Starts ADCBuf conversions on one or more channels. ">ADCBuf_convert()</a> must have returned a valid buffer with samples. </dd></dl>
 
 </div>
 </div>
@@ -912,7 +695,7 @@ ADCBuf_STATUS_SUCCESS if the operation was successful. ADCBuf_STATUS_ERROR or a 
         <tr>
           <td class="memname">int_fast16_t ADCBuf_convertAdjustedToMicroVolts </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b">ADCBuf_Handle</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96">ADCBuf_Handle</a>&#160;</td>
           <td class="paramname"><em>handle</em>, </td>
         </tr>
         <tr>
@@ -947,23 +730,25 @@ ADCBuf_STATUS_SUCCESS if the operation was successful. ADCBuf_STATUS_ERROR or a 
       </table>
 </div><div class="memdoc">
 
-<p>This function converts a raw ADC output value to a value scaled in micro volts. </p>
+<p>Convert an adjusted ADC output buffer to microvolts. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>An ADCBuf handle returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a></td></tr>
-    <tr><td class="paramname">adcChan</td><td>The ADC channel the samples stem from. This parameter is only necessary for certain devices. See device specific implementation for details.</td></tr>
-    <tr><td class="paramname">adjustedSampleBuffer</td><td>A buffer full of adjusted samples.</td></tr>
-    <tr><td class="paramname">outputMicroVoltBuffer</td><td>The output buffer. The conversion does not occur in place due to the differing data type sizes.</td></tr>
-    <tr><td class="paramname">sampleCount</td><td>The number of samples to convert.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td>An ADCBuf_Handle returned from <a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">adcChan</td><td>The ADC channel the samples were performed on.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">adjustedSampleBuffer</td><td>A buffer full of adjusted samples.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">outputMicroVoltBuffer</td><td>The output buffer.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sampleCount</td><td>The number of samples to convert.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A number of measurements scaled in micro volts inside outputMicroVoltBuffer.</dd>
-<dd>
-ADCBuf_STATUS_SUCCESS if the operation was successful. ADCBuf_STATUS_ERROR or a device specific status is returned otherwise.</dd></dl>
-<dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a292e0e615d57d93c2f87f7e915e7027b" title="This function opens a given ADCBuf peripheral. ">ADCBuf_open()</a> must have been called prior.</dd>
-<dd>
-<a class="el" href="_a_d_c_buf_8h.html#a636816201fdb596b748a0ce4d4bf6739" title="This function adjusts a raw ADC output buffer such that the result is comparable between devices of t...">ADCBuf_adjustRawValues()</a> must be called on adjustedSampleBuffer prior. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#gac9c96db575dfaa6bcdfbd94cd875fbd4" title="Success status code returned by: ADCBuf_control() ">ADCBuf_STATUS_SUCCESS</a></td><td>The operation was successful. <code>outputMicroVoltBuffer</code> contains valid values.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group___a_d_c_buf___c_o_n_t_r_o_l.html#ga78f1a705377b5bb15cc6c152f75846e2" title="Generic error status code returned by ADCBuf_control(). ">ADCBuf_STATUS_ERROR</a></td><td>The operation failed.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_a_d_c_buf_8h.html#a636816201fdb596b748a0ce4d4bf6739" title="Adjust a raw ADC output buffer. The function does the adjustment in-place. ">ADCBuf_adjustRawValues()</a> must be called on <code>adjustedSampleBuffer</code>. </dd></dl>
 
 </div>
 </div>
@@ -971,7 +756,7 @@ ADCBuf_STATUS_SUCCESS if the operation was successful. ADCBuf_STATUS_ERROR or a 
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->
 <hr class="footer"/><small>
-  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2018</a>, Texas Instruments Incorporated. All rights reserved. <br>
+  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
   <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
 </small>
 </body>

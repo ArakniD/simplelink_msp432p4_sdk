@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,8 @@
 
 "use strict";
 
+const MAXCHANNELS = 24; /* max number of channels per ADCBuf */
+
 let $super = {};
 
 /* get Common /ti/drivers utility functions */
@@ -59,20 +61,17 @@ let devSpecific = {
         {
             name: "channels",
             displayName: "Channels",
-            description: "Number of ADCBuf channels to configure.",
-            default: 1,
-            options: [
-                { name: 1 },  { name: 2 },  { name: 3 },  { name: 4 },
-                { name: 5 },  { name: 6 },  { name: 7 },  { name: 8 },
-                { name: 9 },  { name: 10 }, { name: 11 }, { name: 12 },
-                { name: 13 }, { name: 14 }, { name: 15 }, { name: 16 },
-                { name: 17 }, { name: 18 }, { name: 19 }, { name: 20 },
-                { name: 21 }, { name: 22 }, { name: 23 }, { name: 24 }
-            ]
+            description: "Number of ADCBuf channels to configure. Must be"
+                + " between 1 and " + MAXCHANNELS,
+            default: 1
         },
         {
             name: "clockSource",
             displayName: "Clock Source",
+            description: "Clock source used by the ADC peripheral",
+            longDescription:`The frequency of the clock sources are configured
+per __Power Performance Level__ configured in the __Power Module__.
+`,
             default: "ADC",
             options: [
                 { name: "ADC" },
@@ -121,8 +120,6 @@ let devSpecific = {
     ],
 
     moduleInstances: moduleInstances,
-
-    modules: Common.autoForceDMAModule,
 
     /* override generic requirements with  device-specific reqs (if any) */
     pinmuxRequirements: pinmuxRequirements,
@@ -212,7 +209,9 @@ function moduleInstances(inst)
 {
     let result = [];
 
-    for (let i = 0; i < inst.channels; i++) {
+    /* limit the loop because validate is not called before this method */
+    let max = Math.min(inst.channels, MAXCHANNELS);
+    for (let i = 0; i < max; i++) {
         result.push({
             name: "adcBufChannel" + i,
             displayName: "ADCBuf Channel " + i,
@@ -234,16 +233,21 @@ function moduleInstances(inst)
  */
 function validate(inst, vo)
 {
-
     if ($super.validate) {
         $super.validate(inst, vo);
     }
 
-    if (inst.timerDutyCycle > 99 || inst.timerDutyCycle < 1) {
+    if (inst.timerDutyCycle > 99 || inst.timerDutyCycle < 1
+        || !Number.isInteger(inst.timerDutyCycle)) {
         Common.logError(vo, inst, "timerDutyCycle",
-            "Duty cycle must be between 1 and 99.");
+            "Duty cycle must be an integer between 1 and 99.");
     }
 
+    if (inst.channels > MAXCHANNELS || inst.channels < 1
+        || !Number.isInteger(inst.channels)) {
+        Common.logError(vo, inst, "channels",
+            "Channels must be an integer between 1 and " + MAXCHANNELS + ".");
+    }
 }
 
 /*
@@ -258,10 +262,13 @@ function extend(base)
 
     $super = base;
 
-    devSpecific.config = base.config.concat(devSpecific.config);
-
     /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

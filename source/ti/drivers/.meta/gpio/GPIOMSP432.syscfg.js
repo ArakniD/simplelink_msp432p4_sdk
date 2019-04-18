@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,8 +37,6 @@
 
 "use strict";
 
-let Common = system.getScript("/ti/drivers/Common.js");
-
 /* $super is used to call generic module's methods */
 let $super = {};
 
@@ -54,9 +52,7 @@ let devSpecific = {
     {
         boardc : "/ti/drivers/gpio/GPIOMSP432.Board.c.xdt",
         boardh : "/ti/drivers/gpio/GPIO.Board.h.xdt"
-    },
-
-    modules : Common.autoForcePowerModule
+    }
 };
 
 /*

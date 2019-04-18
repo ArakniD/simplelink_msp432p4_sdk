@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,22 +29,16 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/** ============================================================================
+/*!****************************************************************************
  *  @file       ADCMSP432.h
- *
- *  @brief      ADC driver implementation for the ADC peripheral on MSP432
+ *  @brief      ADC driver implementation for the ADC peripheral on MSP432P4
  *
  *  This ADC driver implementation is designed to operate on a ADC14 peripheral
- *  for MSP432.  The ADC MSP432 header file should be included in an application
- *  as follows:
- *  @code
- *  #include <ti/drivers/ADC.h>
- *  #include <ti/drivers/ADCMSP432.h>
- *  @endcode
+ *  for MSP432P4.
  *
  *  Refer to @ref ADC.h for a complete description of APIs & example of use.
  *
- *  ============================================================================
+ ******************************************************************************
  */
 #ifndef ti_drivers_adc_ADCMSP432__include
 #define ti_drivers_adc_ADCMSP432__include
@@ -154,14 +148,16 @@ extern const ADC_FxnTable ADCMSP432_fxnTable;
  *          .adcPin = ADCMSP432_P5_5_A0,
  *          .refVoltage = ADCMSP432_REF_VOLTAGE_INT_2_5V,
  *          .resolution = ADC_14BIT
+ *          .refExtValue = 2500000
  *      }
  *  };
  *  @endcode
  */
 typedef struct ADCMSP432_HWAttrsV1 {
-    uint_fast16_t  adcPin;     /*!< ADC pin, port channel */
-    uint_fast16_t  refVoltage; /*!< Reference voltage for ADC channel */
-    uint_fast32_t  resolution; /*!< ADC resolution for ADC channel  */
+    uint_fast16_t  adcPin;      /*!< ADC pin, port channel */
+    uint_fast16_t  refVoltage;  /*!< Reference voltage for ADC channel */
+    uint_fast32_t  resolution;  /*!< ADC resolution for ADC channel  */
+    uint_fast32_t  refExtValue; /*!< ADC external reference voltage value (uV)*/
 } ADCMSP432_HWAttrsV1;
 
 /*!

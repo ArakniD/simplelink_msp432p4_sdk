@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@
 #include <ti/drivers/GPIO.h>
 
 /* Example/Board Header files */
-#include "Board.h"
+#include <ti/drivers/Board.h>
 
 extern void *temperatureThread(void *arg0);
 extern void *consoleThread(void *arg0);
@@ -65,7 +65,7 @@ int main(void)
     Board_init();
 
     retc = xTaskCreate((TaskFunction_t)consoleThread,     // pvTaskCode
-                                NULL,                     // pcName
+                                "console",                // pcName
                                 THREADSTACKSIZE,          // usStackDepth
                                 NULL,                     // pvParameters
                                 1,                        // uxPriority
@@ -76,7 +76,7 @@ int main(void)
     }
 
     retc = xTaskCreate((TaskFunction_t)temperatureThread, // pvTaskCode
-                       NULL,                              // pcName
+                       "temperature",                     // pcName
                        THREADSTACKSIZE,                   // usStackDepth
                        NULL,                              // pvParameters
                        2,                                 // uxPriority

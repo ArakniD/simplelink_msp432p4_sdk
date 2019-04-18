@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -371,7 +371,7 @@ function module$use()
     /* Set Program.heap accordingly */
     MemAlloc.configureProgramHeap();
 
-    if (BIOS.mpeEnabled) {
+    if (BIOS.mpeEnabled && BIOS.runtimeCreatesEnabled) {
         var HeapMem = xdc.useModule('ti.sysbios.heaps.HeapMem', true);
         HeapMem.common$.fxntab = true;
         var heapMemParams = new HeapMem.Params;

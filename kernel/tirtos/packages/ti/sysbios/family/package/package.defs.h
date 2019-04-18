@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F05
+ * @(#) xdc-G10
  */
 
 #ifndef ti_sysbios_family__

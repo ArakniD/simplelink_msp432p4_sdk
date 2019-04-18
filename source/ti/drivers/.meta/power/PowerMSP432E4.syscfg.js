@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,15 @@ let config = [
     {
         name        : "enablePolicy",
         displayName : "Enable Policy",
-        description : "Enable the power policy to run when the CPU is idle.",
+        description : "Enable the Power Policy to run when the CPU is idle.",
+        longDescription:`
+If enabled, the policy function will be invoked once for each pass of the
+idle loop.
+
+In addition to this static setting, the Power Policy can be dynamically
+enabled and disabled at runtime, via the Power_enablePolicy() and
+Power_disablePolicy() APIs, respectively.
+`,
         onChange    : onChangeEnablePolicy,
         default     : true
     },
@@ -57,14 +65,33 @@ let config = [
     {
         name        : "policyFunction",
         displayName : "Policy Function",
-        description : "Power policy function called from the idle loop.",
+        description : "Power Policy function called from the idle loop.",
+        longDescription:`
+When enabled, this function is invoked in the idle loop, to opportunistically
+select and activate sleep states.
+
+One reference policy is provided:
+
+* __PowerMSP432E4_sleepPolicy__
+
+In addition to this static selection, the Power Policy can be
+dynamically changed at runtime, via the Power_setPolicy() API.
+`,
         onChange    : onChangePolicyFxn,
         default     : "PowerMSP432E4_sleepPolicy",
         options     :
         [
-            { name: "PowerMSP432E4_sleepPolicy" },
-            { name: "PowerMSP432E4_deepSleepPolicy" },
-            { name: "Custom" }
+            {
+                name: "PowerMSP432E4_sleepPolicy",
+                description: "A simple policy that will invoke"
+                    + " CPU wait for interrupt (WFI).  The policy will only"
+                    + " invoke WFI when the CPU is running standalone; it "
+                    + " will take no action if the CPU is in debug mode."
+            },
+            {   name: "Custom",
+                description: "Custom policies can be written, and specified"
+                    + " via the Policy Custom Function configuration."
+            }
         ]
     },
 
@@ -86,7 +113,8 @@ let devSpecific = {
 
     moduleStatic : {
         config          : config,
-        validate        : validate
+        validate        : validate,
+        modules: Common.autoForceModules(["Board"])
     },
 
     templates : {

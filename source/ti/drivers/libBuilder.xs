@@ -132,3 +132,7 @@ var m4fTargets = [
     "gnu.targets.arm.M4F",
     "iar.targets.arm.M4F",
 ];
+
+var m33fTargets = [
+    "ti.targets.arm.clang.M33F",
+];

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,24 +34,13 @@
  *
  *  @brief      ADC driver implementation for a MSP432 analog-to-digital converter
  *
- * # Driver include #
- *  The ADC header file should be included in an application as follows:
- *  @code
- *  #include <ti/drivers/ADCBuf.h>
- *  #include <ti/drivers/adc/ADCBufMSP432.h>
- *  @endcode
- *
  *  Refer to @ref ADCBuf.h for a complete description of APIs & example of use
  *
- *  ============================================================================
+ ******************************************************************************
  */
 
 #ifndef ti_drivers_adc_adcbufmsp432__include
 #define ti_drivers_adc_adcbufmsp432__include
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -65,6 +54,11 @@ extern "C" {
 #include <ti/drivers/dma/UDMAMSP432.h>
 
 #include <ti/devices/msp432p4xx/driverlib/adc14.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Add ADCBufMSP432_CMD_* macros here */
 
 /*!
@@ -74,7 +68,7 @@ extern "C" {
  *  sets the ADC resolution to 8 bits and enables Ultra Low Power Mode of ADC.
  *
  *  @note ADCBuf_convertToMicrovolts should not be used with Ultra Low Power Mode because the
- *        voltage calculations are based off of a 14 bit resolution and will return incorrect values. 
+ *        voltage calculations are based off of a 14 bit resolution and will return incorrect values.
  *
  *  @note This function returns an error if a conversion is in progress
  */

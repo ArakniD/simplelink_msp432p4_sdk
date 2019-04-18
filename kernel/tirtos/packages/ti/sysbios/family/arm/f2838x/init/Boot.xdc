@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Texas Instruments Incorporated
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -73,11 +73,11 @@ module Boot
         });
 
     /*!
-     *  Watchdog disable configuration flag, default is true.
+     *  Watchdog disable configuration flag, default is false.
      *
-     *  Set to false to disable the disabling of the watchdog.
+     *  Set to true to disable the watchdog.
      */
-    metaonly config Bool disableWatchdog = true;
+    metaonly config Bool disableWatchdog = false;
 
 internal:
 

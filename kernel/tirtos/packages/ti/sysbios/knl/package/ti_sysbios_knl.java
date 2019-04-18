@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_knl
 {
-    static final String VERS = "@(#) xdc-F07\n";
+    static final String VERS = "@(#) xdc-F09\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -545,6 +545,7 @@ public class ti_sysbios_knl
         om.bind("ti.sysbios.knl.Task.getModuleStateCheckValue", new Extern("ti_sysbios_knl_Task_getModuleStateCheckValue__I", "xdc_UInt32(*)(ti_sysbios_knl_Task_Module_State*)", true, false));
         om.bind("ti.sysbios.knl.Task.objectCheck", new Extern("ti_sysbios_knl_Task_objectCheck__I", "xdc_Int(*)(ti_sysbios_knl_Task_Handle,xdc_UInt32)", true, false));
         om.bind("ti.sysbios.knl.Task.getObjectCheckValue", new Extern("ti_sysbios_knl_Task_getObjectCheckValue__I", "xdc_UInt32(*)(ti_sysbios_knl_Task_Handle)", true, false));
+        om.bind("ti.sysbios.knl.Task.enableOtherCores", new Extern("ti_sysbios_knl_Task_enableOtherCores__I", "xdc_Void(*)(xdc_Void)", true, false));
     }
 
     void Clock_TimerProxy$$CONSTS()
@@ -4190,6 +4191,7 @@ public class ti_sysbios_knl
         vo.bind("getModuleStateCheckValue", om.findStrict("ti.sysbios.knl.Task.getModuleStateCheckValue", "ti.sysbios.knl"));
         vo.bind("objectCheck", om.findStrict("ti.sysbios.knl.Task.objectCheck", "ti.sysbios.knl"));
         vo.bind("getObjectCheckValue", om.findStrict("ti.sysbios.knl.Task.getObjectCheckValue", "ti.sysbios.knl"));
+        vo.bind("enableOtherCores", om.findStrict("ti.sysbios.knl.Task.enableOtherCores", "ti.sysbios.knl"));
         vo.bind("$$fxntab", Global.newArray("ti_sysbios_knl_Task_Handle__label__E", "ti_sysbios_knl_Task_Module__startupDone__E", "ti_sysbios_knl_Task_Object__create__E", "ti_sysbios_knl_Task_Object__delete__E", "ti_sysbios_knl_Task_Object__get__E", "ti_sysbios_knl_Task_Object__first__E", "ti_sysbios_knl_Task_Object__next__E", "ti_sysbios_knl_Task_Params__init__E", "ti_sysbios_knl_Task_startup__E", "ti_sysbios_knl_Task_enabled__E", "ti_sysbios_knl_Task_unlockSched__E", "ti_sysbios_knl_Task_disable__E", "ti_sysbios_knl_Task_enable__E", "ti_sysbios_knl_Task_restore__E", "ti_sysbios_knl_Task_restoreHwi__E", "ti_sysbios_knl_Task_self__E", "ti_sysbios_knl_Task_selfMacro__E", "ti_sysbios_knl_Task_checkStacks__E", "ti_sysbios_knl_Task_exit__E", "ti_sysbios_knl_Task_sleep__E", "ti_sysbios_knl_Task_yield__E", "ti_sysbios_knl_Task_getIdleTask__E", "ti_sysbios_knl_Task_getIdleTaskHandle__E", "ti_sysbios_knl_Task_startCore__E", "ti_sysbios_knl_Task_getArg0__E", "ti_sysbios_knl_Task_getArg1__E", "ti_sysbios_knl_Task_getEnv__E", "ti_sysbios_knl_Task_getFunc__E", "ti_sysbios_knl_Task_getHookContext__E", "ti_sysbios_knl_Task_getPri__E", "ti_sysbios_knl_Task_setArg0__E", "ti_sysbios_knl_Task_setArg1__E", "ti_sysbios_knl_Task_setEnv__E", "ti_sysbios_knl_Task_setHookContext__E", "ti_sysbios_knl_Task_setPri__E", "ti_sysbios_knl_Task_stat__E", "ti_sysbios_knl_Task_getMode__E", "ti_sysbios_knl_Task_setAffinity__E", "ti_sysbios_knl_Task_getAffinity__E", "ti_sysbios_knl_Task_block__E", "ti_sysbios_knl_Task_unblock__E", "ti_sysbios_knl_Task_blockI__E", "ti_sysbios_knl_Task_unblockI__E", "ti_sysbios_knl_Task_getPrivileged__E"));
         vo.bind("$$logEvtCfgs", Global.newArray("LM_switch", "LM_sleep", "LD_ready", "LD_block", "LM_yield", "LM_setPri", "LD_exit", "LM_setAffinity", "LM_schedule", "LM_noWork"));
         vo.bind("$$errorDescCfgs", Global.newArray("E_stackOverflow", "E_spOutOfBounds", "E_deleteNotAllowed", "E_moduleStateCheckFailed", "E_objectCheckFailed", "E_objectNotInKernelSpace"));

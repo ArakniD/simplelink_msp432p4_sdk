@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -158,7 +158,7 @@ function updateConfigs(inst, ui)
     /* resourceName is _only_ empty when inst was created by an other module */
     if (inst.resourceName != "") {
         /* make all fields readOnly to prevent serialization & modification */
-        ui.$name.readOnly = true;        /* issue: PMUX-1356 */
+        //ui.$name.readOnly = true;        /* issue: PMUX-1356 */
         ui.resource.readOnly = true;     /* issue: PMUX-1356 */
         ui.resourceName.readOnly = true;
         ui.resourceType.readOnly = true;
@@ -240,7 +240,7 @@ function pinmuxRequirements(inst)
  */
 exports = {
     /* prefix of name given to new instances */
-    defaultInstanceName: "Reservation_", /* we add our names to Board.h */
+    defaultInstanceName: "Board_Reservation", /* we add our names to Board.h */
 
     /* instance validation */
     validate: validate,

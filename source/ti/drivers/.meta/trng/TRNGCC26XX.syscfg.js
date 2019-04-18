@@ -69,7 +69,7 @@ let devSpecific = {
             description : 'Clock cycles used for TRNG entropy generation. Default '
                           + 'values set to generate 64 bits of entropy in 5ms with '
                           + 'all FROs active.',
-            default     : 240000,
+            default     : 240000
         }
     ],
 
@@ -79,7 +79,7 @@ let devSpecific = {
     },
 
     /* override generic validation with ours */
-    validate              : validate,
+    validate              : validate
 };
 
 /*
@@ -112,11 +112,13 @@ function extend(base)
     /* save base properies/methods, to use in our methods */
     $super = base;
 
-    /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
-
     /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

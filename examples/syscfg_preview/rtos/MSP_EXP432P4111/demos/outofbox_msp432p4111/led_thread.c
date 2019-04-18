@@ -123,8 +123,8 @@ void *ledThread(void *arg0)
     /* Set-Up intervalTimer */
     Timer_Params_init(&timer_params);
     timer_params.period = 4000000;
-    timer_params.periodUnits = TIMER_PERIOD_US;
-    timer_params.timerMode = TIMER_CONTINUOUS_CB;
+    timer_params.periodUnits = Timer_PERIOD_US;
+    timer_params.timerMode = Timer_CONTINUOUS_CALLBACK;
     timer_params.timerCallback = intervalTimer_Callback;
     intervalTimer = Timer_open(Board_TIMER0, &timer_params);
     if (intervalTimer == NULL) {
@@ -135,8 +135,8 @@ void *ledThread(void *arg0)
     /* Set-Up blinkTimer */
     Timer_Params_init(&timer_params);
     timer_params.period = ledTogglePeriods[currentColorMode];
-    timer_params.periodUnits = TIMER_PERIOD_US;
-    timer_params.timerMode = TIMER_CONTINUOUS_CB;
+    timer_params.periodUnits = Timer_PERIOD_US;
+    timer_params.timerMode = Timer_CONTINUOUS_CALLBACK;
     timer_params.timerCallback = blinkTimer_Callback;
     blinkTimer = Timer_open(Board_TIMER1, &timer_params);
     if (blinkTimer == NULL) {
@@ -148,8 +148,8 @@ void *ledThread(void *arg0)
     /* Set-Up debounceTimer */
     Timer_Params_init(&timer_params);
     timer_params.period = 20000;
-    timer_params.periodUnits = TIMER_PERIOD_US;
-    timer_params.timerMode = TIMER_CONTINUOUS_CB;
+    timer_params.periodUnits = Timer_PERIOD_US;
+    timer_params.timerMode = Timer_CONTINUOUS_CALLBACK;
     timer_params.timerCallback = debounceTimer_Callback;
     debounceTimer = Timer_open(Board_TIMER3, &timer_params);
     if (debounceTimer == NULL) {
@@ -264,8 +264,8 @@ static void changeLedTogglePeriod(int colorMode, Timer_Params *timer_params, cha
         Timer_close(blinkTimer);
         Timer_Params_init(timer_params);
         timer_params->period = ledTogglePeriods[colorMode];
-        timer_params->periodUnits = TIMER_PERIOD_US;
-        timer_params->timerMode = TIMER_CONTINUOUS_CB;
+        timer_params->periodUnits = Timer_PERIOD_US;
+        timer_params->timerMode = Timer_CONTINUOUS_CALLBACK;
         timer_params->timerCallback = blinkTimer_Callback;
         blinkTimer = Timer_open(Board_TIMER1, timer_params);
         if (blinkTimer == NULL) {

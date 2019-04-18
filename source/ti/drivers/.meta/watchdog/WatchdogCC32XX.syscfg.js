@@ -75,7 +75,9 @@ function validate(inst, validation)
     let period    = parseInt(inst.period);
     let message;
 
-    $super.validate(inst, validation); // Defer to the base validation
+    if ($super.validate) {
+        $super.validate(inst, validation); // Defer to the base validation
+    }
 
     if (period > maxPeriod) {
         message = 'Period value: ' + period
@@ -89,10 +91,15 @@ function validate(inst, validation)
  */
 function extend(base)
 {
-    $super             = base;
+    $super = base;
 
-    devSpecific.config = base.config.concat(devSpecific.config);
-    return Object.assign({}, base, devSpecific);
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

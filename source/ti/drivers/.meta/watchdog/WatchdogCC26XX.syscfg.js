@@ -86,7 +86,9 @@ function validate(inst, validation)
     let period    = parseInt(inst.period);
     let message;
 
-    $super.validate(inst, validation); // Defer to the base validation
+    if ($super.validate) {
+        $super.validate(inst, validation); // Defer to the base validation
+    }
 
     if (period > maxPeriod) {
         message = 'Period value: ' + period +
@@ -98,7 +100,7 @@ function validate(inst, validation)
 /*
  *  ======== extend ========
  */
-function extend (base)
+function extend(base)
 {
     $super = base;
 

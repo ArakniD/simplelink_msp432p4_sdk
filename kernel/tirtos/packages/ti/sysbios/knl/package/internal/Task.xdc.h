@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 
 #ifndef ti_sysbios_knl_Task__INTERNAL__
@@ -196,6 +196,9 @@
 
 /* getObjectCheckValue */
 #define Task_getObjectCheckValue ti_sysbios_knl_Task_getObjectCheckValue__I
+
+/* enableOtherCores */
+#define Task_enableOtherCores ti_sysbios_knl_Task_enableOtherCores__I
 
 /* Module_startup */
 #undef ti_sysbios_knl_Task_Module_startup

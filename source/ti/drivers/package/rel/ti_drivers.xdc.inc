@@ -1,10 +1,10 @@
 package/package.bld.xml
 package/build.cfg
 package/package.xdc.inc
-Config.xml
 libBuilder.xs
 package.bld
 xdcArgParser.xs
+Board.h
 NVS.h
 ./nvs/NVSRAM.h
 ./nvs/NVSSPI25X.h
@@ -20,6 +20,7 @@ SDFatFS.h
 ./dpl/SystemP.h
 ./utils/List.h
 ./utils/RingBuf.h
+./utils/Random.h
 ADC.h
 ./adc/ADCMSP432.h
 ADCBuf.h
@@ -58,6 +59,7 @@ SD.c
 SDFatFS.c
 ./utils/List.c
 ./utils/RingBuf.c
+./utils/Random.c
 ADC.c
 ./adc/ADCMSP432.c
 ADCBuf.c

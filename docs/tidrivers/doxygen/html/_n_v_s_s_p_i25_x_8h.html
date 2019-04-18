@@ -60,7 +60,6 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">NVSSPI25X.h File Reference</div>  </div>
@@ -120,7 +119,7 @@ Include dependency graph for NVSSPI25X.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_n_v_s_s_p_i25_x_8h__incl.png" border="0" usemap="#_n_v_s_s_p_i25_x_8h" alt=""/></div>
 <map name="_n_v_s_s_p_i25_x_8h" id="_n_v_s_s_p_i25_x_8h">
-<area shape="rect" id="node4" href="_s_p_i_8h.html" title="SPI driver interface. " alt="" coords="75,80,185,107"/>
+<area shape="rect" id="node4" href="_s_p_i_8h.html" title="Serial Peripheral Interface (SPI) Driver Interface. " alt="" coords="75,80,185,107"/>
 </map>
 </div>
 </div>
@@ -142,14 +141,6 @@ Macros</h2></td></tr>
 <tr class="memitem:abf8ed123f5292601fe76a62275bb60f9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_n_v_s_s_p_i25_x_8h.html#abf8ed123f5292601fe76a62275bb60f9">NVSSPI25X_SPI_MANAGES_CS</a>&#160;&#160;&#160;((uint16_t)(~0))</td></tr>
 <tr class="memdesc:abf8ed123f5292601fe76a62275bb60f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable internal management of SPI chip select.  <a href="#abf8ed123f5292601fe76a62275bb60f9">More...</a><br /></td></tr>
 <tr class="separator:abf8ed123f5292601fe76a62275bb60f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:aebd6500a16f6e85681ba7e5c000d0156"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_n_v_s_s_p_i25_x___h_w_attrs.html">NVSSPI25X_HWAttrs</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_n_v_s_s_p_i25_x_8h.html#aebd6500a16f6e85681ba7e5c000d0156">NVSSPI25X_HWAttrs</a></td></tr>
-<tr class="memdesc:aebd6500a16f6e85681ba7e5c000d0156"><td class="mdescLeft">&#160;</td><td class="mdescRight">NVSSPI25X attributes.  <a href="#aebd6500a16f6e85681ba7e5c000d0156">More...</a><br /></td></tr>
-<tr class="separator:aebd6500a16f6e85681ba7e5c000d0156"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a817f992b570e02d68f89bcabbe2ae856"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_n_v_s_s_p_i25_x___object.html">NVSSPI25X_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_n_v_s_s_p_i25_x_8h.html#a817f992b570e02d68f89bcabbe2ae856">NVSSPI25X_Object</a></td></tr>
-<tr class="separator:a817f992b570e02d68f89bcabbe2ae856"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -192,41 +183,6 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="aebd6500a16f6e85681ba7e5c000d0156"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebd6500a16f6e85681ba7e5c000d0156">&sect;&nbsp;</a></span>NVSSPI25X_HWAttrs</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_n_v_s_s_p_i25_x___h_w_attrs.html">NVSSPI25X_HWAttrs</a>  <a class="el" href="struct_n_v_s_s_p_i25_x___h_w_attrs.html">NVSSPI25X_HWAttrs</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>NVSSPI25X attributes. </p>
-<p>The 'regionBaseOffset' is the offset, in bytes, from the base of the SPI flash, of the flash region to be managed.</p>
-<p>The 'regionSize' must be an integer multiple of the flash sector size.</p>
-<p>The 'sectorSize' is SPI flash device specific. This parameter should correspond to the number of bytes erased when the 'SPIFLASH_SUBSECTOR_ERASE' (0x20) command is issued to the device.</p>
-<p>The 'verifyBuf' and 'verifyBufSize' parameters are used by the <a class="el" href="_n_v_s_8h.html#aae7abe0cb889a6d0cc1858bfc69ab7e0" title="Write data to the NVS region associated with the NVS_Handle. ">NVS_write()</a> command when either 'NVS_WRITE_PRE_VERIFY' or 'NVS_WRITE_POST_VERIFY' functions are requested in the 'flags' argument. The 'verifyBuf' is used to successively read back portions of the flash to compare with the data being written to it.</p>
-<div class="fragment"><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">// Only one region write operation is performed at a time</span></div><div class="line"><span class="comment">// so a single verifyBuf can be shared by all the regions.</span></div><div class="line"><span class="comment">//</span></div><div class="line">uint8_t verifyBuf[256];</div><div class="line"></div><div class="line"><a class="code" href="struct_n_v_s_s_p_i25_x___h_w_attrs.html">NVSSPI25X_HWAttrs</a> nvsSPIHWAttrs[2] = {</div><div class="line">    <span class="comment">//</span></div><div class="line">    <span class="comment">// region 0 is 1 flash sector in length.</span></div><div class="line">    <span class="comment">//</span></div><div class="line">    {</div><div class="line">        .<a class="code" href="struct_n_v_s_s_p_i25_x___h_w_attrs.html#a0743a03845422aebdcc49c67552637cb">regionBaseOffset</a> = 0,</div><div class="line">        .regionSize = 4096,</div><div class="line">        .sectorSize = 4096,</div><div class="line">        .verifyBuf = verifyBuf;</div><div class="line">        .verifyBufSize = 256;</div><div class="line">        .spiHandle = NULL,</div><div class="line">        .spiIndex = 0,</div><div class="line">        .spiBitRate = 40000000,</div><div class="line">        .spiCsnGpioIndex = 12,</div><div class="line">    },</div><div class="line">    <span class="comment">//</span></div><div class="line">    <span class="comment">// region 1 is 3 flash sectors in length.</span></div><div class="line">    <span class="comment">//</span></div><div class="line">    {</div><div class="line">        .regionBaseOffset = 4096,</div><div class="line">        .regionSize = 4096 * 3,</div><div class="line">        .sectorSize = 4096,</div><div class="line">        .verifyBuf = verifyBuf;     <span class="comment">// use shared verifyBuf</span></div><div class="line">        .verifyBufSize = 256;</div><div class="line">        .spiHandle = NULL,</div><div class="line">        .spiIndex = 0,</div><div class="line">        .spiBitRate = 40000000,</div><div class="line">        .spiCsnGpioIndex = 12,</div><div class="line">    }</div><div class="line">};</div></div><!-- fragment --> 
-</div>
-</div>
-<a id="a817f992b570e02d68f89bcabbe2ae856"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a817f992b570e02d68f89bcabbe2ae856">&sect;&nbsp;</a></span>NVSSPI25X_Object</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_n_v_s_s_p_i25_x___object.html">NVSSPI25X_Object</a>  <a class="el" href="struct_n_v_s_s_p_i25_x___object.html">NVSSPI25X_Object</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="a105e78ab0c157b8ad847af271b05b18c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a105e78ab0c157b8ad847af271b05b18c">&sect;&nbsp;</a></span>NVSSPI25X_fxnTable</h2>
@@ -246,7 +202,7 @@ Variables</h2></td></tr>
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->
 <hr class="footer"/><small>
-  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2018</a>, Texas Instruments Incorporated. All rights reserved. <br>
+  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
   <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
 </small>
 </body>

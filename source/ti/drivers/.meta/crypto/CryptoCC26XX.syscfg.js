@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,6 +56,8 @@ let devSpecific = {
     ],
 
     maxInstances  : 1,
+
+    modules: Common.autoForceModules(["Board", "Power", "DMA"]),
 
     templates : {
         boardc: "/ti/drivers/crypto/CryptoCC26XX.Board.c.xdt",

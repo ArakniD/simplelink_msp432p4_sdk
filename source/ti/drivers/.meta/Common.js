@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,6 +43,9 @@ exports = {
     device2DevicesDir: device2DevicesDir, /* get driverlib 'devices' dir */
     device2LinkCmd: device2LinkCmd,
 
+    getCompName: getCompName,      /* get fully qualified component name */
+    getConfigs: getConfigs,        /* get all of a module's config params */
+
     getName: getName,              /* get C name for instance */
     getPort: getPort,              /* get pin port name: Px_y */
     getInstanceIndex: getInstanceIndex, /* returns mod.$instances array index of inst */
@@ -74,10 +77,11 @@ exports = {
 
     validateNames: validateNames, /* validate inst names are unique C names */
 
-    autoForcePowerModule: autoForcePowerModule,
-    autoForceDMAModule: autoForceDMAModule,
-    autoForcePowerAndDMAModules: autoForcePowerAndDMAModules,
+    addNameConfig: addNameConfig, /* add driver-specific $name config */
+
+    autoForceModules: autoForceModules,
     genBoardHeader: genBoardHeader,
+    findSignalTypes : findSignalTypes,
 
     init: init
 };
@@ -136,6 +140,13 @@ const FAMILY2LIBS = {
         "ti/drivers/rf/lib/rf_multiMode_cc26x0.aem3",
         "tirtos/packages/ti/dpl/lib/dpl_cc26x0.aem3",
         "ti/devices/cc26x0/driverlib/bin/${toolchain}/driverlib.lib"
+    ],
+    CC26X0R2: [
+        "ti/display/lib/display.aem3",
+        "ti/drivers/lib/drivers_cc26x0r2.aem3",
+        "ti/drivers/rf/lib/rf_multiMode_cc26x0r2.aem3",
+        "tirtos/packages/ti/dpl/lib/dpl_cc26x0r2.aem3",
+        "ti/devices/cc26x0r2/driverlib/bin/${toolchain}/driverlib.lib"
     ],
     CC13X0: [
         "ti/display/lib/display.aem3",
@@ -346,7 +357,7 @@ function device2DeviceFamily(deviceId)
     else if (deviceId.match(/CC26.0/)) {
         driverString = "DeviceFamily_CC26X0";
     }
-    else if (deviceId.match(/CC3220/)) {
+    else if (deviceId.match(/CC32/)) {
         driverString = "DeviceFamily_CC3220";
     }
     else if (deviceId.match(/MSP432E.*/)) {
@@ -453,7 +464,20 @@ function device2LinkCmd(deviceId, toolchain)
     return (result);
 }
 
-/*!
+/*
+ *  ======== getCompName ========
+ *  Get fully qualified name of a (sub)component
+ */
+function getCompName(component)
+{
+    var name = component.name;
+    if (component.$parents && component.$parents.length > 0) {
+        name = getCompName(component.$parents[0]) + "." + name;
+    }
+    return (name);
+}
+
+/*
  *  ======== getInstanceIndex ========
  *  returns module.$instances array index of this inst
  */
@@ -461,9 +485,160 @@ function getInstanceIndex(inst)
 {
     let instances = inst.$module.$instances;
     for (let i = 0; i < instances.length; i++) {
-        if (inst == instances[i]) return (i);
+        if (inst == instances[i]) {
+            return (i);
+        }
     }
     return (-1);
+}
+
+/*
+ *  ======== getConfigs ========
+ *  Return a description of all the configs of the specified module
+ *
+ *  The description is an object of the form:
+ *   {
+ *      modName: "",  // full name of the module
+ *      baseName: "", // only the last component of the full name
+ *      family: ""    // the TI-DRIVERS device family used
+ *      mod:  {
+ *          portable: {}, // map of all portable module configs
+ *          device: {},   // map of all device-specific module configs
+ *      },
+ *      inst: {
+ *          portable: {}, // map of all portable instance configs
+ *          device: {},   // map of all device-specific instance configs
+ *      }
+ *   }
+ *  Each config object is of the form:
+ *   {
+ *      name: "",                         // name of the confg param
+ *      default: "",                      // default value
+ *      options: [{name: "", ...}, ...],  // array of "named" options
+ *   }
+ */
+function getConfigs(modName)
+{
+    /* flatten GUI grouping within a config array */
+    function flattenGroups(cfgArray) {
+        let result = [];
+        cfgArray = (cfgArray == null) ? [] : cfgArray;
+        for (var i = 0; i < cfgArray.length; i++) {
+            var elem = cfgArray[i];
+            if (elem.name == null) {
+                result = result.concat(flattenGroups(elem.config));
+            }
+            else {
+                result.push(elem);
+            }
+        }
+        return (result);
+    }
+
+    /* deep clone needed to prevent inadvertent model corruption */
+    function clone(obj) {
+        return (JSON.parse(JSON.stringify(obj)));
+    }
+
+    /* get current device family */
+    let baseName = modName.substring(modName.lastIndexOf("/") + 1);
+    let family = device2Family(system.deviceData, baseName);
+    let result = {
+        modName: modName, baseName: baseName, family: family,
+        mod:  {portable: {}, device: {}},
+        inst: {portable: {}, device: {}}
+    };
+
+    /* get all instance configs */
+    let Mod = undefined;
+    let allConfigs = [];
+    try {
+        Mod = system.getScript(modName);
+        if (Mod.config) {
+            allConfigs = Mod.config;
+        }
+    }
+    catch (x) {
+        //console.log("can't find script: '" + modName + "': " + x);
+        return result;
+    }
+    allConfigs = flattenGroups(allConfigs);
+
+    /* determine device-specific instance configs */
+    let ModDev = undefined;
+    let deviceConfigs = {};
+    let portableConfigs = {};
+    let base = {config: []};
+    let devModName =
+        modName.substring(0, modName.lastIndexOf('/'))
+        + '/' + baseName.toLowerCase() + '/'
+        + baseName + family + ".syscfg.js";
+    try {
+        ModDev = system.getScript(devModName);
+        base = ModDev.extend(base);
+        if (base.config) {
+            base.config = flattenGroups(base.config);
+            for (let i = 0; i < base.config.length; i++) {
+                let cfg = base.config[i];
+                deviceConfigs[cfg.name] = cfg;
+            }
+        }
+    }
+    catch (x) {
+        //console.log("can't find script: '" + devModName + "': " + x);
+    }
+
+    /* determine portable instance configs */
+    for (let i = 0; i < allConfigs.length; i++) {
+        let cfg = allConfigs[i];
+        if (deviceConfigs[cfg.name] == null) {
+            portableConfigs[cfg.name] = cfg;
+        }
+    }
+    result.inst.portable = portableConfigs;
+    result.inst.device = deviceConfigs;
+
+    /* get all module configs */
+    allConfigs = [];
+    if (Mod.moduleStatic && Mod.moduleStatic.config) {
+        allConfigs = Mod.moduleStatic.config;
+    }
+    allConfigs = flattenGroups(allConfigs);
+
+    /* determine device-specific module configs */
+    deviceConfigs = {};
+    portableConfigs = {};
+    if (base.moduleStatic && base.moduleStatic.config) {
+        let modCfgs = flattenGroups(base.moduleStatic.config);
+        for (let i = 0; i < modCfgs.length; i++) {
+            let cfg = modCfgs[i];
+            deviceConfigs[cfg.name] = cfg;
+        }
+    }
+
+    /* determine portable module configs */
+    for (let i = 0; i < allConfigs.length; i++) {
+        let cfg = allConfigs[i];
+        if (deviceConfigs[cfg.name] == null) {
+            portableConfigs[cfg.name] = cfg;
+        }
+    }
+    result.mod.portable = portableConfigs;
+    result.mod.device = deviceConfigs;
+
+    /* make $name appear to be a regular config parameter */
+    var nameCfg = result.inst.portable["$name"];
+    if (nameCfg != null) {
+        /* clone nameCfg so we can add default without breaking
+         * addModule/addInstance
+         */
+        nameCfg = clone(nameCfg);
+        nameCfg.displayName = "Name";
+        nameCfg.default = Mod.defaultInstanceName + "{num}";
+        result.inst.portable["$name"] = nameCfg;
+    }
+
+    return (result);
 }
 
 /*
@@ -758,7 +933,12 @@ function print(obj, header, depth, indent)
         let fxn = null;
         if (typeof value == "function") {
             try {
-                fxn = String(value).match(/.*\n/);
+                var src = String(value);
+                var k = src.indexOf('{');
+                if (k <= 0) {
+                    k = src.indexOf('\n');
+                }
+                fxn = src.substring(0, k);
             } catch (x){/* ignore any exception */}
         }
         if (fxn != null) {
@@ -1074,9 +1254,9 @@ function setDefaults(inst, signal, type)
             inst[cfg] = settings[cfg];
         }
         catch (x) {
-            let msg = "signal '" + signal.name 
-                + "' of component " + comp.name 
-                + " specified an unknown setting (" + cfg + ") for " 
+            let msg = "signal '" + signal.name
+                + "' of component " + comp.name
+                + " specified an unknown setting (" + cfg + ") for "
                 + inst.$name;
             console.log("error: " + msg);
             throw new Error(msg);
@@ -1160,70 +1340,89 @@ function validateNames(inst, validation)
 }
 
 /*
- *  ======== autoForcePowerModule ========
- *  Return an Array with the Power module in it,
- *  hidden from the GUI.
- *
- *  Using this function as the value for a key of "modules" in the
- *  definition of module X, will automatically force the Power module to be
- *  added, when the module X is added. Like the following:
- *
- *    modules: Common.autoForcePowerModule,
+ *  ======== addNameConfig ========
+ *  Add $name config for context-sensitive and reference documentation
  */
-function autoForcePowerModule(inst)
+function addNameConfig(config, modName, prefix)
 {
-    return [
-        {
-            name : "Power",
-            moduleName: "/ti/drivers/Power",
-            hidden: true
-        }
-    ];
+    let baseName = modName.split('/').pop();                 // GPIO
+    let fullName = modName.replace(/\//g, '_').substring(1); // ti_drivers_GPIO
+    let docsDir =  modName.split('/').slice(0, -1).join(""); // tidrivers
+
+    let nameCfg = {
+        name: "$name",
+        description: "The C/C++ identifier used in applications as the index"
+                   + " parameter passed to " + baseName + " runtime APIs",
+
+        /* TODO: The name should be declared as an extern const in Board.h
+         * and defined in Board.c. Using an extern const
+         * allows libraries to define symbolic names for GPIO
+         * signals they require for their use _without_ requiring
+         * editing or rebuilding of the library source files.
+         */
+        longDescription: "This name is declared in the generated Board.h file"
+                   + " so applications can reference this instance"
+                   + " symbolically.  It can be set to any globally unique"
+                   + " name that is also a valid C/C++ identifier."
+                   + "\n[More ...](/" + docsDir
+                   + "/syscfg/html/ConfigDoc.html#"
+                   + fullName + "_$name \""
+                   + baseName + " Name reference documentation\")",
+
+        documentation: "\n\n"
+                   + "The SysConfig tooling ensures that _all_ names defined"
+                   + " in a configuration are unique.  When instances are"
+                   + " first created, SysConfig gives them a default name,"
+                   + " `" + prefix + "`, that's made unique by appending a"
+                   + " numeric id.  If you provide a name, it's checked"
+                   + " against all other instance names in the configuration"
+                   + " and, if another instance has the same name, an error is"
+                   + " triggered."
+                   + "\n\n"
+                   + "Note: since not all names are added to Board.h, it's"
+                   + " possible that some names will not be allowed even"
+                   + " though they do not actually collide in the generated"
+                   + " files."
+    };
+
+    return ([nameCfg].concat(config));
 }
 
-/*
- *  ======== autoForceDMAModule ========
- *  Return an Array with the DMA module in it,
- *  hidden from from the GUI.
- *
- *  Using this function as the value for a key of "modules" in the
- *  definition of module X, will automatically force the DMA module to be
- *  added, when the module X is added. Like the following:
- *
- *    modules: Common.autoForceDMAModule,
- */
-function autoForceDMAModule(inst)
-{
-    return [
-        {
-            name : "DMA",
-            moduleName: "/ti/drivers/DMA",
-            hidden: true
-        }
-    ];
-}
 
 /*
- *  ======== autoForcePowerAndDMAModules ========
- *  Return an Array with the Power and DMA modules in it,
- *  hidden from the GUI.
+ *  ======== autoForceModules ========
+ *  @param kwargs An array of module name strings.
  *
- *  Using this function as the value for a key of "modules" in the
- *  definition of module X, will automatically force the Power and
- *  DMA modules to be added, when the module X is added. Like
- *  the following:
+ * @return An array with module instance objects
  *
- *    modules: Common.autoForcePowerAndDMAModules,
+ * Example:
+ *    modules: Common.autoForceModules(["Board", "DMA"])
  */
-function autoForcePowerAndDMAModules(inst)
+function autoForceModules(kwargs)
 {
-    let modArray = autoForcePowerModule(inst);
-    modArray.push({
-        name : "DMA",
-        moduleName: "/ti/drivers/DMA",
-        hidden: true
+    return (function(){
+
+        let modArray = [];
+
+        if (kwargs == undefined || kwargs == null || !Array.isArray(kwargs)) {
+            console.log("Common.js:autoForceModules('kwargs'): 'kwargs' invalid!");
+            return (modArray);
+        }
+
+        for (let args = kwargs.length - 1; args >= 0; args--) {
+            let modString = kwargs[args];
+            let modPath = "/ti/drivers/" + modString;
+            let mod = {
+                name:modString,
+                moduleName:modPath,
+                hidden:true
+            };
+
+            modArray = modArray.concat(mod);
+        }
+
+        return modArray;
     });
-    return (modArray);
 }
 
 /*
@@ -1259,4 +1458,80 @@ function genBoardHeader(instances, mod)
         lines[i] += i;
     }
     return ((banner.concat(lines)).join("\n"));
+}
+
+/*
+ *  ======== findSignalTypes ========
+ *  Function to recursively parse a hardware component for a slave select.
+ *
+ *  hardware - an object resprenting a hardware component
+ *  signalTypes  - an array of signal type strings
+ *
+ * Example:
+ *    findSignalTypes(hardware, ["SPI_SS", "DOUT", "I2S_SCL"])
+ *
+ *  Returns true if any signal in 'signalTypes' is found in the hardware
+ *  component. This function returns as soon as any signal in 'signalTypes' is
+ *  found.
+ */
+function findSignalTypes(hardware, signalTypes)
+{
+
+    /* 'signalTypes' should be an array of signal names in a string */
+    if (signalTypes == undefined || signalTypes == null || !Array.isArray(signalTypes)) {
+        console.log("Common.js:findSignalTypes(hardware, signalTypes):"
+            + "'signalTypes' invalid!");
+        return (false);
+    }
+
+    /* Ensure hardware is not null or undefined */
+    if (hardware == undefined || hardware == null) {
+        console.log("Common.js:findSignalTypes(hardware, signalTypes):"
+            + "'hardware' undefined!");
+        return (false);
+    }
+
+    /* Evaluate if this hardware component has any signals */
+    if (hardware.signals) {
+        for (let sig in hardware.signals) {
+            let signal = hardware.signals[sig];
+            for (let i in signal.type) {
+                let type = signal.type[i];
+                if (signalTypes.includes(type)) {
+                    return (true);
+                }
+            }
+        }
+    }
+
+    /* Evaluate if this hardware component has any subcomponents */
+    if (hardware.subComponents || hardware.components) {
+        let result;
+
+        /* Ensure we don't pass an empty object */
+        if (hardware.subComponents != undefined && hardware.subComponents != null) {
+
+            /* Iterate over all subComponents of this hardware component */
+            for (let components in hardware.subComponents) {
+
+                /* Recursively pass each component */
+                result = findSignalTypes(hardware.subComponents[components], signalTypes);
+                if (result == true) {
+                    return (result);
+                }
+            }
+        }
+
+        /* Repeat steps above for "components" instead of "subComponents" */
+        if (hardware.components != undefined && hardware.components != null) {
+            for (let components in hardware.components) {
+                result = findSignalTypes(hardware.components[components], signalTypes);
+                if (result == true) {
+                    return (result);
+                }
+            }
+        }
+    }
+
+    return (false);
 }

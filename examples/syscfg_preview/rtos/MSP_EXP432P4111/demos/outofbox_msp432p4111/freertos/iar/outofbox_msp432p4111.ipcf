@@ -63,12 +63,11 @@
 
     <customBuildTools>
     <customBuildTool atRoot="true" name="SysConfig"> <!-- Custom build tool for entire project-->
-       <fileExtensions>.syscfg</fileExtensions>
-       <command>$SYSCONFIG_ROOT$/nw/nw.exe $SYSCONFIG_ROOT$/dist/cli.js -o "." -b "/ti/boards/.meta/MSP_EXP432P4111" -s "$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/.metadata/product.json" $FILE_PATH$
-       </command>
-       <output>
-          <path>Board.c</path>
-          <path>Board.h</path>
+        <fileExtensions>.syscfg</fileExtensions>
+        <command>$SYSCONFIG_ROOT$/nw/nw.exe $SYSCONFIG_ROOT$/dist/cli.js -o $PROJ_DIR$ -s "$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/.metadata/product.json" --compiler iar $FILE_PATH$
+        </command>
+        <output>
+            <path>SysConfig_Generated_Files.ipcf</path>
         </output>
         <hasPrio>true</hasPrio> <!-- true: run this tool before all other tools-->
     </customBuildTool>

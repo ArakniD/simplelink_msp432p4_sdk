@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['adcbuf_5frecurrence_5fmode_5fcontinuous',['ADCBuf_RECURRENCE_MODE_CONTINUOUS',['../_a_d_c_buf_8h.html#ae5620b285f881fdecb49b75a73f1400fac10945188f88ddadd4322c4e117d5b3c',1,'ADCBuf.h']]],
-  ['adcbuf_5frecurrence_5fmode_5fone_5fshot',['ADCBuf_RECURRENCE_MODE_ONE_SHOT',['../_a_d_c_buf_8h.html#ae5620b285f881fdecb49b75a73f1400fa1916212b661aa853b7a581e3e5dc35e2',1,'ADCBuf.h']]],
-  ['adcbuf_5freturn_5fmode_5fblocking',['ADCBuf_RETURN_MODE_BLOCKING',['../_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433a5c6236b2f629b196d7874175be679399',1,'ADCBuf.h']]],
-  ['adcbuf_5freturn_5fmode_5fcallback',['ADCBuf_RETURN_MODE_CALLBACK',['../_a_d_c_buf_8h.html#aa9e88854960e236788f9775ff630a433a633b4b063b88d7c62e9e2513075a36a7',1,'ADCBuf.h']]],
+  ['adcbuf_5frecurrence_5fmode_5fcontinuous',['ADCBuf_RECURRENCE_MODE_CONTINUOUS',['../_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1ac10945188f88ddadd4322c4e117d5b3c',1,'ADCBuf.h']]],
+  ['adcbuf_5frecurrence_5fmode_5fone_5fshot',['ADCBuf_RECURRENCE_MODE_ONE_SHOT',['../_a_d_c_buf_8h.html#af15cc4961b02af48216132c2b8bc88f1a1916212b661aa853b7a581e3e5dc35e2',1,'ADCBuf.h']]],
+  ['adcbuf_5freturn_5fmode_5fblocking',['ADCBuf_RETURN_MODE_BLOCKING',['../_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea5c6236b2f629b196d7874175be679399',1,'ADCBuf.h']]],
+  ['adcbuf_5freturn_5fmode_5fcallback',['ADCBuf_RETURN_MODE_CALLBACK',['../_a_d_c_buf_8h.html#a3d643e8024503c5ef2679c83419ba6eea633b4b063b88d7c62e9e2513075a36a7',1,'ADCBuf.h']]],
   ['adcbufmsp432_5faclk_5fclock',['ADCBufMSP432_ACLK_CLOCK',['../_a_d_c_buf_m_s_p432_8h.html#afe77254ddb3c2413bf84b46c99fcd274ab48c472118e68d07fb38a3be2bcb41ed',1,'ADCBufMSP432.h']]],
   ['adcbufmsp432_5fadc_5fclock',['ADCBufMSP432_ADC_CLOCK',['../_a_d_c_buf_m_s_p432_8h.html#afe77254ddb3c2413bf84b46c99fcd274a8958e526851f851bec6474db721a1e8b',1,'ADCBufMSP432.h']]],
   ['adcbufmsp432_5fbattery_5fmonitor_5fmode',['ADCBufMSP432_BATTERY_MONITOR_MODE',['../_a_d_c_buf_m_s_p432_8h.html#aa48fbbd51df11f11e78a85c806ca5854a1e8a034679bd48f1a96e556d63bd8886',1,'ADCBufMSP432.h']]],

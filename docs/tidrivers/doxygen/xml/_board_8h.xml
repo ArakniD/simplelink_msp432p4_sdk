@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="_board_8h" kind="file" language="C++">
+    <compoundname>Board.h</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_board_8h_1a6c191e6138454022bba4dbcb4278f141" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Board_init</definition>
+        <argsstring>(void)</argsstring>
+        <name>Board_init</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Performs &quot;early&quot; board-level initialization required by TI-DRIVERS. </para>        </briefdescription>
+        <detaileddescription>
+<para><ref refid="_board_8h_1a6c191e6138454022bba4dbcb4278f141" kindref="member">Board_init()</ref> must be called before any other TI-DRIVER API. This function calls all device and board specific initialization functions needed by TI-DRIVERS; e.g., to initialize clocks and power management functionality.</para><para>This function should only be called once and as early in the application&apos;s startup as possible. In most applications, a call to <ref refid="_board_8h_1a6c191e6138454022bba4dbcb4278f141" kindref="member">Board_init()</ref> is the first statement in <computeroutput>main()</computeroutput>.</para><para><simplesect kind="pre"><para><computeroutput>Board_init</computeroutput> must be called after every CPU reset and <emphasis>prior</emphasis> to enabling any interrupts. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Board.h" line="128" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Portable board-specific symbols. </para>    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+</para><para>The Board header file should be included in an application as follows: <programlisting><codeline><highlight class="normal">#include<sp/>&quot;Board.h&quot;</highlight></codeline>
+</programlisting></para><para>This header serves as device-independent interface for applications using peripherals connected to the device via standard digital interfaces; e.g, GPIO, SPI, I2C, UART, etc. Its purpose is to enable application code that references a peripheral to be portable to any device and board that supports the peripheral.</para><para><heading level="2">Usage</heading>
+</para><para><anchor id="_board_8h_1ti_drivers_Board_Synopsis"/><heading level="3">Synopsis</heading>
+</para><para><anchor id="_board_8h_1ti_drivers_Board_Synopsis_Code"/><programlisting><codeline><highlight class="normal">#include<sp/>&quot;Board.h&quot;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">void<sp/>main(void)</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Board_init();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>:</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para><para><heading level="2">Initializing the hardware</heading>
+</para><para><computeroutput><ref refid="_board_8h_1a6c191e6138454022bba4dbcb4278f141" kindref="member">Board_init()</ref></computeroutput> must be called before any other driver API. This function calls the device specific initialization code that is required to as soon as possible after a device reset; e.g., to initialize clocks and power management functionality.</para><para><heading level="2">Portable peripheral usage</heading>
+</para><para>Each driver module declares symbols in <computeroutput><ref refid="_board_8h" kindref="compound">Board.h</ref></computeroutput> that, if used, will improve code portability between both different devices and boards.</para><para><anchor id="_board_8h_1ti_drivers_I2C_Example_portable"/> For example, the I2C driver adds <computeroutput><ref refid="_board_8h" kindref="compound">Board.h</ref></computeroutput> symbol definitions of the form<itemizedlist>
+<listitem><para><emphasis>bus_name</emphasis> - the I2C bus instance ID,</para></listitem><listitem><para><emphasis>bus_name</emphasis>_MAXBITRATE - the maximum supported BITRATE for the bus <emphasis>bus_name</emphasis>, and</para></listitem><listitem><para>Board_I2C_<emphasis>comp_name</emphasis>_ADDR - the slave address for the named I2C component where <emphasis>comp_name</emphasis> is the name given to an I2C peripheral by the board manufacturer, and <emphasis>bus_name</emphasis> is the user defined name of the I2C bus instance. These symbols enable applications to portably acquire an I2C bus handle and control an I2C slave on that bus. <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/I2C.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&quot;Board.h&quot;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>portably<sp/>open<sp/>an<sp/>I2C<sp/>bus<sp/>instance</highlight></codeline>
+<codeline><highlight class="normal">I2C_Params<sp/>i2cParams;</highlight></codeline>
+<codeline><highlight class="normal">I2C_Params_init(&amp;i2cParams);</highlight></codeline>
+<codeline><highlight class="normal">i2cParams.bitRate<sp/>=<sp/>Board_I2C0_MAXBITRATE;<sp/><sp/>//<sp/>bus<sp/>name<sp/>==<sp/>Board_I2C0</highlight></codeline>
+<codeline><highlight class="normal">i2cHandle<sp/>=<sp/>I2C_open(Board_I2C0,<sp/>&amp;i2cParams);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>portably<sp/>read<sp/>from<sp/>an<sp/>I2C<sp/>slave</highlight></codeline>
+<codeline><highlight class="normal">I2C_Transaction<sp/>trans;</highlight></codeline>
+<codeline><highlight class="normal">trans.slaveAddress<sp/>=<sp/>Board_I2C_TMP006_ADDR;<sp/>//<sp/>component<sp/>name<sp/>=<sp/>TMP006</highlight></codeline>
+<codeline><highlight class="normal">trans.readBuf<sp/>=<sp/>...;</highlight></codeline>
+<codeline><highlight class="normal">trans.readCount<sp/>=<sp/>...;</highlight></codeline>
+<codeline><highlight class="normal">trans.writeCount<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">I2C_transfer(i2cHandle,<sp/>&amp;trans);</highlight></codeline>
+</programlisting> </para></listitem></itemizedlist>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2018,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>are<sp/>met:</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>Texas<sp/>Instruments<sp/>Incorporated<sp/>nor<sp/>the<sp/>names<sp/>of</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>its<sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>from<sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>THIS<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>BY<sp/>THE<sp/>COPYRIGHT<sp/>HOLDERS<sp/>AND<sp/>CONTRIBUTORS<sp/>&quot;AS<sp/>IS&quot;</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>AND<sp/>ANY<sp/>EXPRESS<sp/>OR<sp/>IMPLIED<sp/>WARRANTIES,<sp/>INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>THE<sp/>IMPLIED<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY<sp/>AND<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>PURPOSE<sp/>ARE<sp/>DISCLAIMED.<sp/>IN<sp/>NO<sp/>EVENT<sp/>SHALL<sp/>THE<sp/>COPYRIGHT<sp/>OWNER<sp/>OR</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>CONTRIBUTORS<sp/>BE<sp/>LIABLE<sp/>FOR<sp/>ANY<sp/>DIRECT,<sp/>INDIRECT,<sp/>INCIDENTAL,<sp/>SPECIAL,</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>EXEMPLARY,<sp/>OR<sp/>CONSEQUENTIAL<sp/>DAMAGES<sp/>(INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>PROCUREMENT<sp/>OF<sp/>SUBSTITUTE<sp/>GOODS<sp/>OR<sp/>SERVICES;<sp/>LOSS<sp/>OF<sp/>USE,<sp/>DATA,<sp/>OR<sp/>PROFITS;</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>OR<sp/>BUSINESS<sp/>INTERRUPTION)<sp/>HOWEVER<sp/>CAUSED<sp/>AND<sp/>ON<sp/>ANY<sp/>THEORY<sp/>OF<sp/>LIABILITY,</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>WHETHER<sp/>IN<sp/>CONTRACT,<sp/>STRICT<sp/>LIABILITY,<sp/>OR<sp/>TORT<sp/>(INCLUDING<sp/>NEGLIGENCE<sp/>OR</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>OTHERWISE)<sp/>ARISING<sp/>IN<sp/>ANY<sp/>WAY<sp/>OUT<sp/>OF<sp/>THE<sp/>USE<sp/>OF<sp/>THIS<sp/>SOFTWARE,</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>EVEN<sp/>IF<sp/>ADVISED<sp/>OF<sp/>THE<sp/>POSSIBILITY<sp/>OF<sp/>SUCH<sp/>DAMAGE.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">/*!****************************************************************************</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/><sp/>@file<sp/><sp/><sp/><sp/><sp/><sp/><sp/>Board.h</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>Portable<sp/>board-specific<sp/>symbols</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>Board<sp/>header<sp/>file<sp/>should<sp/>be<sp/>included<sp/>in<sp/>an<sp/>application<sp/>as<sp/>follows:</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&quot;Board.h&quot;</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/><sp/>This<sp/>header<sp/>serves<sp/>as<sp/>device-independent<sp/>interface<sp/>for<sp/>applications<sp/>using</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/><sp/>peripherals<sp/>connected<sp/>to<sp/>the<sp/>device<sp/>via<sp/>standard<sp/>digital<sp/>interfaces;<sp/>e.g,</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/><sp/>GPIO,<sp/>SPI,<sp/>I2C,<sp/>UART,<sp/>etc.<sp/>Its<sp/>purpose<sp/>is<sp/>to<sp/>enable<sp/>application<sp/>code<sp/>that</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/><sp/>references<sp/>a<sp/>peripheral<sp/>to<sp/>be<sp/>portable<sp/>to<sp/>any<sp/>device<sp/>and<sp/>board<sp/>that</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/><sp/>supports<sp/>the<sp/>peripheral.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/><sp/>##<sp/>Usage<sp/>##</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/><sp/>@anchor<sp/>ti_drivers_Board_Synopsis</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>Synopsis<sp/>#</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/><sp/>@anchor<sp/>ti_drivers_Board_Synopsis_Code</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&quot;Board.h&quot;</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/><sp/>void<sp/>main(void)</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/><sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Board_init();</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/>:</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/><sp/></highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/><sp/>##<sp/>Initializing<sp/>the<sp/>hardware<sp/>##</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/><sp/>\p<sp/>Board_init()<sp/>must<sp/>be<sp/>called<sp/>before<sp/>any<sp/>other<sp/>driver<sp/>API.<sp/>This<sp/>function</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*<sp/><sp/>calls<sp/>the<sp/>device<sp/>specific<sp/>initialization<sp/>code<sp/>that<sp/>is<sp/>required<sp/>to<sp/>as<sp/>soon</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/><sp/>as<sp/>possible<sp/>after<sp/>a<sp/>device<sp/>reset;<sp/>e.g.,<sp/>to<sp/>initialize<sp/>clocks<sp/>and<sp/>power</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*<sp/><sp/>management<sp/>functionality.</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*<sp/><sp/>##<sp/>Portable<sp/>peripheral<sp/>usage</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/><sp/>Each<sp/>driver<sp/>module<sp/>declares<sp/>symbols<sp/>in<sp/>\p<sp/>Board.h<sp/>that,<sp/>if<sp/>used,<sp/>will</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/><sp/>improve<sp/>code<sp/>portability<sp/>between<sp/>both<sp/>different<sp/>devices<sp/>and<sp/>boards.</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*<sp/><sp/>@anchor<sp/>ti_drivers_I2C_Example_portable</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*<sp/><sp/>For<sp/>example,<sp/>the<sp/>I2C<sp/>driver<sp/>adds<sp/>\p<sp/>Board.h<sp/>symbol<sp/>definitions<sp/>of<sp/>the<sp/>form</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*<sp/><sp/>*<sp/>&lt;I&gt;bus_name&lt;/I&gt;<sp/>-<sp/>the<sp/>I2C<sp/>bus<sp/>instance<sp/>ID,<sp/></highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*<sp/><sp/>*<sp/>&lt;I&gt;bus_name&lt;/I&gt;_MAXBITRATE<sp/>-<sp/>the<sp/>maximum<sp/>supported<sp/>BITRATE<sp/>for<sp/>the<sp/>bus</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>&lt;I&gt;bus_name&lt;/I&gt;,<sp/>and</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*<sp/><sp/>*<sp/>Board_I2C_&lt;I&gt;comp_name&lt;/I&gt;_ADDR<sp/>-<sp/>the<sp/>slave<sp/>address<sp/>for<sp/>the<sp/>named<sp/>I2C</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>component</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/>*<sp/><sp/>where<sp/>&lt;I&gt;comp_name&lt;/I&gt;<sp/>is<sp/>the<sp/>name<sp/>given<sp/>to<sp/>an<sp/>I2C<sp/>peripheral<sp/>by<sp/>the</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/>*<sp/><sp/>board<sp/>manufacturer,<sp/>and<sp/>&lt;I&gt;bus_name&lt;/I&gt;<sp/>is<sp/>the<sp/>user<sp/>defined<sp/>name<sp/>of<sp/>the</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/>*<sp/><sp/>I2C<sp/>bus<sp/>instance.<sp/><sp/>These<sp/>symbols<sp/>enable<sp/>applications<sp/>to<sp/>portably<sp/>acquire</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>*<sp/><sp/>an<sp/>I2C<sp/>bus<sp/>handle<sp/>and<sp/>control<sp/>an<sp/>I2C<sp/>slave<sp/>on<sp/>that<sp/>bus.</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&lt;ti/drivers/I2C.h&gt;</highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&quot;Board.h&quot;</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/>*<sp/><sp/>//<sp/>portably<sp/>open<sp/>an<sp/>I2C<sp/>bus<sp/>instance</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/>*<sp/><sp/>I2C_Params<sp/>i2cParams;</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/>*<sp/><sp/>I2C_Params_init(&amp;i2cParams);</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/>*<sp/><sp/>i2cParams.bitRate<sp/>=<sp/>Board_I2C0_MAXBITRATE;<sp/><sp/>//<sp/>bus<sp/>name<sp/>==<sp/>Board_I2C0</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/>*<sp/><sp/>i2cHandle<sp/>=<sp/>I2C_open(Board_I2C0,<sp/>&amp;i2cParams);</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/>*<sp/><sp/>//<sp/>portably<sp/>read<sp/>from<sp/>an<sp/>I2C<sp/>slave</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*<sp/><sp/>I2C_Transaction<sp/>trans;</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/>*<sp/><sp/>trans.slaveAddress<sp/>=<sp/>Board_I2C_TMP006_ADDR;<sp/>//<sp/>component<sp/>name<sp/>=<sp/>TMP006</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"><sp/>*<sp/><sp/>trans.readBuf<sp/>=<sp/>...;</highlight></codeline>
+<codeline lineno="100"><highlight class="comment"><sp/>*<sp/><sp/>trans.readCount<sp/>=<sp/>...;</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/>*<sp/><sp/>trans.writeCount<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/>*<sp/><sp/>I2C_transfer(i2cHandle,<sp/>&amp;trans);</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/>******************************************************************************</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ti_boards_Board__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_boards_Board__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_board_8h_1a6c191e6138454022bba4dbcb4278f141" kindref="member">Board_init</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_boards_Board_include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="exports/tidrivers_msp432/source/ti/drivers/Board.h"/>
+  </compounddef>
+</doxygen>

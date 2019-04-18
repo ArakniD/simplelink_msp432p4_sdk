@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 
 /*
@@ -55,6 +55,7 @@
 #include <xdc/runtime/Types.h>
 #include <ti/sysbios/family/c7x/package/package.defs.h>
 
+#include <xdc/runtime/Assert.h>
 #include <ti/sysbios/interfaces/ITaskSupport.h>
 
 
@@ -254,6 +255,15 @@ __extern __FAR__ const CT__ti_sysbios_family_c7x_TaskSupport_stackAlignment ti_s
 #endif
 #endif
 
+/* A_stackSizeTooSmall */
+typedef xdc_runtime_Assert_Id CT__ti_sysbios_family_c7x_TaskSupport_A_stackSizeTooSmall;
+__extern __FAR__ const CT__ti_sysbios_family_c7x_TaskSupport_A_stackSizeTooSmall ti_sysbios_family_c7x_TaskSupport_A_stackSizeTooSmall__C;
+#ifdef ti_sysbios_family_c7x_TaskSupport_A_stackSizeTooSmall__CR
+#define ti_sysbios_family_c7x_TaskSupport_A_stackSizeTooSmall (*((CT__ti_sysbios_family_c7x_TaskSupport_A_stackSizeTooSmall*)(xdcRomConstPtr + ti_sysbios_family_c7x_TaskSupport_A_stackSizeTooSmall__C_offset)))
+#else
+#define ti_sysbios_family_c7x_TaskSupport_A_stackSizeTooSmall (ti_sysbios_family_c7x_TaskSupport_A_stackSizeTooSmall__C)
+#endif
+
 
 /*
  * ======== VIRTUAL FUNCTIONS ========
@@ -419,6 +429,7 @@ static inline xdc_Void ti_sysbios_family_c7x_TaskSupport_Module_setMask(xdc_Bits
 #define TaskSupport_FuncPtr ti_sysbios_family_c7x_TaskSupport_FuncPtr
 #define TaskSupport_defaultStackSize ti_sysbios_family_c7x_TaskSupport_defaultStackSize
 #define TaskSupport_stackAlignment ti_sysbios_family_c7x_TaskSupport_stackAlignment
+#define TaskSupport_A_stackSizeTooSmall ti_sysbios_family_c7x_TaskSupport_A_stackSizeTooSmall
 #define TaskSupport_start ti_sysbios_family_c7x_TaskSupport_start
 #define TaskSupport_swap ti_sysbios_family_c7x_TaskSupport_swap
 #define TaskSupport_checkStack ti_sysbios_family_c7x_TaskSupport_checkStack

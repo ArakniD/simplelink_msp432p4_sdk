@@ -60,6 +60,18 @@ var settings = {
             clockTickPeriod : 1000,
             targets : [ "ti.targets.elf.nda.C71" ]
         },
+        "J721E": {
+            hwiDelegate : "ti.sysbios.family.c7x.Hwi",
+            timerDelegate : "ti.sysbios.timers.dmtimer.Timer",
+            clockTimerDelegate : "ti.sysbios.timers.dmtimer.Timer",
+            timerSupportDelegate : "ti.sysbios.family.c64p.tci6488.TimerSupport",
+            timestampDelegate : "ti.sysbios.family.c7x.TimestampProvider",
+            taskSupportDelegate : "ti.sysbios.family.c7x.TaskSupport",
+            intrinsicsSupportDelegate : "ti.sysbios.family.c7x.IntrinsicsSupport",
+            cacheDelegate : "ti.sysbios.family.c7x.Cache",
+            clockTickPeriod : 1000,
+            targets : [ "ti.targets.elf.nda.C71" ]
+        },
 /*
         "TMS320DA830": {
             hwiDelegate : "ti.sysbios.family.c64p.Hwi",

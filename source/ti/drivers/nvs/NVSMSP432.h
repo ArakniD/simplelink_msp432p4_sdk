@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -194,7 +194,8 @@ extern const NVS_FxnTable NVSMSP432_fxnTable;
  *  @endcode
  */
 
-typedef struct NVSMSP432_HWAttrs {
+typedef struct
+{
     void        *regionBase;        /*!< Base address of flash region */
     size_t      regionSize;         /*!< The size of the region in bytes */
 } NVSMSP432_HWAttrs;
@@ -204,7 +205,8 @@ typedef struct NVSMSP432_HWAttrs {
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct NVSMSP432_Object {
+typedef struct
+{
     bool        opened;             /* Has this region been opened */
 } NVSMSP432_Object;
 

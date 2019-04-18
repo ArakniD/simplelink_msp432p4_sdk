@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2014-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ function module$use()
     Timer = xdc.useModule('ti.sysbios.family.arm.lm4.Timer');
     Startup = xdc.useModule('xdc.runtime.Startup');
 
-    var Diags = xdc.useModule('xdc.runtime.Diags');
+    var Diags = xdc.module('xdc.runtime.Diags');
 
     for (var dl in TimestampProvider.common$) {
         if (dl.match(/^diags_/) && dl != 'diags_ASSERT') {
@@ -107,19 +107,19 @@ function module$validate()
 {
     var Clock = xdc.module('ti.sysbios.knl.Clock');
     var BIOS = xdc.module("ti.sysbios.BIOS"); 
-    
+
     if (TimestampProvider.useClockTimer) {
         /* Verify Clock is enabled. */
         if (!BIOS.clockEnabled) {
             TimestampProvider.$logError("Clock must be enabled to use Clock " +
-                                        "timer for timestamp.", 
+                                        "timer for timestamp.",
                                         TimestampProvider, "useClockTimer");
         }
         /* Verify Clock tick source is a timer. */
         if (Clock.tickSource != Clock.TickSource_TIMER) {
             TimestampProvider.$logError("Clock must use a timer as its tick " +
-                                        " source to use Clock timer for " + 
-                                        "timestamp.", 
+                                        " source to use Clock timer for " +
+                                        "timestamp.",
                                         TimestampProvider, "useClockTimer");
 
         }

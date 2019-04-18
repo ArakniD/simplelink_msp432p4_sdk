@@ -1,6 +1,6 @@
 %%{
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -129,20 +129,35 @@ const SPICC32XXDMA_HWAttrsV1 spiCC32XXDMAHWAttrs[`countDef`] = {
     %     tdmach = spi.dmaTxChannel.$solution.devicePinName.substring(7);
     %     tdmach = "UDMA_CH" + tdmach + "_" + name + "_TX";
     % }
-    % else if (inst.duplex == "Receive Only") {
+    % else if (inst.duplex == "Master RX Only") {
     %     misoPin += addLeadingZero(spi.misoPin.$solution.packagePinName);
     %     misoPin += "_MISO";
     %     rdmach = spi.dmaRxChannel.$solution.devicePinName.substring(7);
     %     rdmach = "UDMA_CH" + rdmach + "_" + name + "_RX";
     %     mosiPin += "NO_CONFIG";
     % }
-    % else if (inst.duplex == "Transmit Only") {
+    % else if (inst.duplex == "Master TX Only") {
     %     mosiPin += addLeadingZero(spi.mosiPin.$solution.packagePinName);
     %     mosiPin += "_MOSI";
     %     tdmach = spi.dmaTxChannel.$solution.devicePinName.substring(7);
     %     tdmach = "UDMA_CH" + tdmach + "_" + name + "_TX";
     %     misoPin += "NO_CONFIG";
     % }
+    % else if (inst.duplex == "Slave TX Only") {
+    %     misoPin += addLeadingZero(spi.misoPin.$solution.packagePinName);
+    %     misoPin += "_MISO";
+    %     tdmach = spi.dmaTxChannel.$solution.devicePinName.substring(7);
+    %     tdmach = "UDMA_CH" + tdmach + "_" + name + "_TX";
+    %     mosiPin += "NO_CONFIG";
+    % }
+    % else if (inst.duplex == "Slave RX Only") {
+    %     mosiPin += addLeadingZero(spi.mosiPin.$solution.packagePinName);
+    %     mosiPin += "_MOSI";
+    %     rdmach = spi.dmaRxChannel.$solution.devicePinName.substring(7);
+    %     rdmach = "UDMA_CH" + rdmach + "_" + name + "_RX";
+    %     misoPin += "NO_CONFIG";
+    % }
+    %
     % let ssPin = "SPICC32XXDMA_PIN_";
     % if (inst.mode !== "Three Pin") {
     %     ssPin += addLeadingZero(spi.ssPin.$solution.packagePinName) + "_CS";

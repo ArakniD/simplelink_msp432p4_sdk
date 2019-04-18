@@ -10,7 +10,7 @@ package/ti.sysbios.rts.gnu.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F07
+package/.xdc-F09
 package/ti_sysbios_rts_gnu.java
 package/ti_sysbios_rts_gnu.class
 package/package_ti.sysbios.rts.gnu.c

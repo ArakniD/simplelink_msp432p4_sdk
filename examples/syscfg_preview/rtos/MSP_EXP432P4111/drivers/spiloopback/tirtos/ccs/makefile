@@ -4,7 +4,6 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 
 KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/builds/MSP_EXP432P4111/release
 SYSCONFIG_PRODUCT := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json
-BOARD := /ti/boards/.meta/MSP_EXP432P4111
 
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
@@ -65,7 +64,7 @@ Board.c Board.h : syscfg
 
 syscfg: ../../spiloopback.syscfg
 	@ echo Generating configuration files...
-	@ $(NODE_JS) $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --board $(BOARD) --output $(@D) $<
+	@ $(NODE_JS) $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
 
 Board.obj: Board.c $(CONFIGPKG)/compiler.opt
 	@ echo Building $@

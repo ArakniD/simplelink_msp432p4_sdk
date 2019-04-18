@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ let config = [
         displayName  : "Sector Size",
         description  : "Size of the erase sector in bytes",
         displayFormat: "hex",
-        hidden       : true,
+        hidden       : false,
         readOnly     : true,
         default      : 0x4000
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -393,6 +393,15 @@ void GPIO_setCallback(uint_least8_t index, GPIO_CallbackFxn callback)
     PinConfig   *config = (PinConfig *) &GPIOMSP432_config.pinConfigs[index];
 
     DebugP_assert(initCalled && index < GPIOMSP432_config.numberOfCallbacks);
+
+    /*
+     * Ignore bogus callback indexes.
+     * Required to prevent out-of-range callback accesses if
+     * there are configured pins without callbacks
+     */
+    if (index >= GPIOMSP432_config.numberOfCallbacks) {
+        return;
+    }
 
     /*
      * Only ports 1-6 are interrupt capable;

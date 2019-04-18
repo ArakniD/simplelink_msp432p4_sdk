@@ -111,6 +111,7 @@ __attribute__ ((aligned (256)))
 __align(256)
 #endif
 static DMA_ControlTable MSP_EXP432P401RLP_DMAControlTable[16];
+static DMA_ControlTable scatterGatherInit;
 
  /*****************************************************************************/
  /*
@@ -165,7 +166,6 @@ void configurePower(void);
 void configureAnalog(void);
 void configureDMA(void);
 void configureRTC(void);
-void superLoop(void);
 
 
 int main(void)
@@ -182,21 +182,6 @@ int main(void)
     configureDMA();
     configureRTC();
 
-    superLoop();
-
-}  // end of main
-
-#if defined(__TI_COMPILER_VERSION__)
-__attribute__((ramfunc))
-#elif defined(__IAR_SYSTEMS_ICC__)
-__ramfunc
-#elif defined(__GNUC__)
-__attribute__((section(".TI.ramfunk")))
-#elif defined(__CC_ARM)
-__attribute__((section(".TI.ramfunk")))
-#endif
-void superLoop(void)
-{
     while(1)
     {
         /*
@@ -228,17 +213,8 @@ void superLoop(void)
             rmsFrequency = 0.0;
         }
     }  // end of while
-}
+}  // end of main
 
-#if defined(__TI_COMPILER_VERSION__)
-__attribute__((ramfunc))
-#elif defined(__IAR_SYSTEMS_ICC__)
-__ramfunc
-#elif defined(__GNUC__)
-__attribute__((section(".TI.ramfunk")))
-#elif defined(__CC_ARM)
-__attribute__((section(".TI.ramfunk")))
-#endif
 void calculateRMS(void)
 {
     volatile uint16_t ii;
@@ -560,11 +536,8 @@ void configureDMA(void)
      * Set the DMAs primary channel for peripheral scatter gather mode
      */
     MAP_DMA_setChannelScatterGather(DMA_CH7_ADC14, NUMBER_OF_TASKS, (void*)&altTaskList[0], false);
-    /* Assigning/Enabling Interrupts */
-//    MAP_DMA_assignInterrupt(DMA_INT1, 7);
-//    MAP_Interrupt_enableInterrupt(INT_DMA_INT1);
-    MAP_DMA_assignChannel(DMA_CH7_ADC14);
-//    MAP_DMA_clearInterruptFlag(7);
+    scatterGatherInit = MSP_EXP432P401RLP_DMAControlTable[7];
+
 };
 void configureRTC(void)
 {
@@ -589,7 +562,8 @@ void configureRTC(void)
 
 /*
  * Use GPIO as DMA callback for processing the RMS calculation.  This will be
- * called every 32 measures.
+ * called every 32 measures. In this case we do not want to use the driverLib
+ * APIs in FLASH or ROM but keep everything in SRAM 
  */
 #if defined(__TI_COMPILER_VERSION__)
 __attribute__((ramfunc))
@@ -602,15 +576,24 @@ __attribute__((section(".TI.ramfunk")))
 #endif
 void PORT1_IRQHandler(void)
 {
-    uint32_t status;
+    uint8_t status;
     volatile uint16_t   ii;
 
-    status = MAP_GPIO_getEnabledInterruptStatus(GPIO_PORT_P1);
-    MAP_GPIO_clearInterruptFlag(GPIO_PORT_P1, status);
-
+    //status = MAP_GPIO_getEnabledInterruptStatus(GPIO_PORT_P1);
+    status = P1-> IE;
+    status &= P1->IFG;
+    //MAP_GPIO_clearInterruptFlag(GPIO_PORT_P1, status);
+    P1->IFG &= ~status;
+    
     if(status == GPIO_PIN2)
     {
-        MAP_GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN2);
+        /*
+         * Debug
+         */
+        //MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN1);
+        P2->OUT ^= BIT1;
+        //MAP_GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN2);
+        P1->OUT &= ~BIT2;
         if(sampleIndex == 0)
         {
             if(i32Data_array[sampleIndex] > ZERO_CROSS)
@@ -669,36 +652,39 @@ void PORT1_IRQHandler(void)
         {
             //Finished
             /*
-             * TODO: Clearing ADC14ON here instead of in the DMA..
+             * TODO: Clearing ADC14ON here instead of in the DMA.
              */
-            MAP_ADC14_disableModule();
-            MAP_Interrupt_disableSleepOnIsrExit();
+            //MAP_ADC14_disableModule();
+            BITBAND_PERI(ADC14->CTL0, ADC14_CTL0_ON_OFS) = 0;
+            //MAP_Interrupt_disableSleepOnIsrExit();
+            SCB->SCR &= ~SCB_SCR_SLEEPONEXIT_Msk;
             /*
              * Reset primary and alternate DMA structures
              */
-            MAP_DMA_setChannelScatterGather(DMA_CH7_ADC14, NUMBER_OF_TASKS, (void*)&altTaskList[0], false);
-            MAP_DMA_disableModule();
+            //MAP_DMA_setChannelScatterGather(DMA_CH7_ADC14, NUMBER_OF_TASKS, (void*)&altTaskList[0], false);
+            MSP_EXP432P401RLP_DMAControlTable[7] = scatterGatherInit;
+            DMA_Control->ALTCLR = BIT7;
+    
+            //MAP_DMA_disableModule();
+            DMA_Control->CFG = 0;
+            DMA_Channel->CH_SRCCFG[7] = 0;
+            /*
+             * Debug
+             */
+            //MAP_GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN2);
+            P2->OUT &= ~BIT2;
         }
     }
 }
 
-/* RTC ISR */
-#if defined(__TI_COMPILER_VERSION__)
-__attribute__((ramfunc))
-#elif defined(__IAR_SYSTEMS_ICC__)
-__ramfunc
-#elif defined(__GNUC__)
-__attribute__((section(".TI.ramfunk")))
-#elif defined(__CC_ARM)
-__attribute__((section(".TI.ramfunk")))
-#endif
 void RTC_C_IRQHandler(void)
 {
-    #if defined(__CC_ARM)
-        volatile uint32_t ii;
-    #endif
-
     uint32_t status;
+    volatile uint32_t ii;
+    /*
+     * Debug
+     */
+    MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN0);
 
     status = MAP_RTC_C_getEnabledInterruptStatus();
     MAP_RTC_C_clearInterruptFlag(status);
@@ -732,6 +718,7 @@ void RTC_C_IRQHandler(void)
         MAP_DMA_enableModule();
         MAP_ADC14_enableModule();
         MAP_ADC14_enableConversion();
+        MAP_DMA_assignChannel(DMA_CH7_ADC14);
         MAP_DMA_enableChannel(7);
         /*
          * Move to a faster/more efficient operating point
@@ -752,16 +739,20 @@ void RTC_C_IRQHandler(void)
          * wait ~70us for reference to settle
          * 24Mhz operation,
          */
-#if defined(__CC_ARM)
-        for(ii=0;ii<SETTLE_TIME_DELAY/4;ii++)
-				{
-            __no_operation();
-				}
-#else
-				// Intrinsic for delay
+#if defined(__TI_COMPILER_VERSION__)
+        // Intrinsic for delay
         __delay_cycles(SETTLE_TIME_DELAY);
+#else
+        for(ii=0;ii<SETTLE_TIME_DELAY/4;ii++)
+        {
+            __no_operation();	
+        }
 #endif
         /* Start ADC+DMA conversions */
         MAP_Timer_A_generatePWM(TIMER_A0_BASE, &timerA_PWM);
+        /*
+         * Debug
+         */
+        MAP_GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN2);
     }
 }

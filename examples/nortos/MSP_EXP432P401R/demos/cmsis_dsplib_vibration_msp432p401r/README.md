@@ -1,6 +1,6 @@
 ## Example Summary
 
-This demo software demonstrates detecting vibration noise in sub-sonic, audio-band and ultra-sonic spectrum on the MSP-EXP432P401R LaunchPad development kit. For more details read the Application Report http://www.ti.com/lit/an/slaa735/slaa735.pdf
+This demo software demonstrates detecting vibration noise in sub-sonic, audio-band and ultra-sonic spectrum on the MSP-EXP432P401R LaunchPad development kit. For more details read  [http://www.ti.com/lit/slaa735](http://www.ti.com/lit/slaa735 "Application Report")
 
 ## Example Usage
 

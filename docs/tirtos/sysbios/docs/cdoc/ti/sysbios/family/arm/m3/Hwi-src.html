@@ -6,7 +6,7 @@
 <body>
 <pre class=src>
      1    <span class="comment">/*
-</span>     2    <span class="comment"> * Copyright (c) 2015-2017, Texas Instruments Incorporated
+</span>     2    <span class="comment"> * Copyright (c) 2015-2019, Texas Instruments Incorporated
 </span>     3    <span class="comment"> * All rights reserved.
 </span>     4    <span class="comment"> *
 </span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
@@ -1306,205 +1306,218 @@
 </span>  1299    <span class="comment">     * dispatcherTaskSupport is false.
 </span>  1300    <span class="comment">     */</span>
   1301        <span class=key>config</span> UInt (*swiDisable)();
-  1302        <span class=key>config</span> Void (*swiRestoreHwi)(UInt);
-  1303        <span class=key>config</span> UInt (*taskDisable)();
-  1304        <span class=key>config</span> Void (*taskRestoreHwi)(UInt);
-  1305    
-  1306        <span class="comment">/* initial Hwi_nvic.CCR value */</span>
-  1307        <span class=key>config</span> UInt32 ccr;
-  1308    
-  1309        <span class="xdoc">/*!
-</span>  1310    <span class="xdoc">     *  const array to hold all HookSet objects.
-</span>  1311    <span class="xdoc">     */</span>
-  1312        <span class=key>config</span> HookSet hooks[<span class=key>length</span>] = [];
-  1313    
-  1314        <span class="comment">/*
-</span>  1315    <span class="comment">     *  ======== postInit ========
-</span>  1316    <span class="comment">     *  finish initializing static and dynamic Hwis
-</span>  1317    <span class="comment">     */</span>
-  1318        Int postInit(Object *hwi, Error.Block *eb);
-  1319    
-  1320        <span class="xdoc">/*!
-</span>  1321    <span class="xdoc">     *  ======== updateNvic ========
-</span>  1322    <span class="xdoc">     *  Internal SMP function to cause the virtual NVIC to be flushed to the
-</span>  1323    <span class="xdoc">     *  actual NVIC.
-</span>  1324    <span class="xdoc">     *
-</span>  1325    <span class="xdoc">     *  This function is called by the various user APIs that manipulate
-</span>  1326    <span class="xdoc">     *  individual NVIC register bits
-</span>  1327    <span class="xdoc">     *  (ie Hwi_enable/disable/restore/clearInterrupt())
-</span>  1328    <span class="xdoc">     *
-</span>  1329    <span class="xdoc">     *  If the current core is the owner of "intNum", flushVnvic() is called
-</span>  1330    <span class="xdoc">     *  immediately.
-</span>  1331    <span class="xdoc">     *
-</span>  1332    <span class="xdoc">     *  Otherwise an intercore interrupt is generated to force the other core
-</span>  1333    <span class="xdoc">     *  to perform the flushVnvic().
-</span>  1334    <span class="xdoc">     *
-</span>  1335    <span class="xdoc">     */</span>
-  1336        Void updateNvic(UInt intNum);
-  1337    
-  1338        <span class="xdoc">/*!
-</span>  1339    <span class="xdoc">     *  ======== excHandlerAsm ========
-</span>  1340    <span class="xdoc">     *  asm code exception handler
-</span>  1341    <span class="xdoc">     */</span>
-  1342        Void excHandlerAsm();
-  1343    
-  1344        <span class="xdoc">/*!
-</span>  1345    <span class="xdoc">     *  ======== excHandler ========
-</span>  1346    <span class="xdoc">     *  exception Handler routes to
-</span>  1347    <span class="xdoc">     *  either min, max, or spin exception handler
-</span>  1348    <span class="xdoc">     */</span>
-  1349        Void excHandler(UInt *excStack, UInt lr);
-  1350    
-  1351        <span class="xdoc">/*!
-</span>  1352    <span class="xdoc">     *  ======== excHandlerMin ========
-</span>  1353    <span class="xdoc">     *  Minimal Exception Handler
-</span>  1354    <span class="xdoc">     */</span>
-  1355        Void excHandlerMin(UInt *excStack, UInt lr);
-  1356    
-  1357        <span class="xdoc">/*!
-</span>  1358    <span class="xdoc">     *  ======== excHandlerMax ========
-</span>  1359    <span class="xdoc">     *  Full Featured Exception Handler
-</span>  1360    <span class="xdoc">     */</span>
-  1361        Void excHandlerMax(UInt *excStack, UInt lr);
-  1362    
-  1363        <span class="xdoc">/*!
-</span>  1364    <span class="xdoc">     *  ======== excFillContext ========
-</span>  1365    <span class="xdoc">     */</span>
-  1366        Void excFillContext(UInt *excStack);
-  1367    
-  1368        <span class="xdoc">/*!
-</span>  1369    <span class="xdoc">     *  ======== excNmi ========
-</span>  1370    <span class="xdoc">     */</span>
-  1371        Void excNmi(UInt *excStack);
-  1372    
-  1373        <span class="xdoc">/*!
-</span>  1374    <span class="xdoc">     *  ======== excHardFault ========
-</span>  1375    <span class="xdoc">     */</span>
-  1376        Void excHardFault(UInt *excStack);
-  1377    
-  1378        <span class="xdoc">/*!
-</span>  1379    <span class="xdoc">     *  ======== excMemFault ========
-</span>  1380    <span class="xdoc">     */</span>
-  1381        Void excMemFault(UInt *excStack);
-  1382    
-  1383        <span class="xdoc">/*!
-</span>  1384    <span class="xdoc">     *  ======== excBusFault ========
-</span>  1385    <span class="xdoc">     */</span>
-  1386        Void excBusFault(UInt *excStack);
-  1387    
-  1388        <span class="xdoc">/*!
-</span>  1389    <span class="xdoc">     *  ======== excUsageFault ========
-</span>  1390    <span class="xdoc">     */</span>
-  1391        Void excUsageFault(UInt *excStack);
-  1392    
-  1393        <span class="xdoc">/*!
-</span>  1394    <span class="xdoc">     *  ======== excSvCall ========
-</span>  1395    <span class="xdoc">     */</span>
-  1396        Void excSvCall(UInt *excStack);
-  1397    
-  1398        <span class="xdoc">/*!
-</span>  1399    <span class="xdoc">     *  ======== excDebugMon ========
-</span>  1400    <span class="xdoc">     */</span>
-  1401        Void excDebugMon(UInt *excStack);
-  1402    
-  1403        <span class="xdoc">/*!
-</span>  1404    <span class="xdoc">     *  ======== excReserved ========
-</span>  1405    <span class="xdoc">     */</span>
-  1406        Void excReserved(UInt *excStack, UInt excNum);
-  1407    
-  1408        <span class="xdoc">/*!
-</span>  1409    <span class="xdoc">     *  ======== excNoIsr ========
-</span>  1410    <span class="xdoc">     */</span>
-  1411        Void excNoIsr(UInt *excStack, UInt excNum);
-  1412    
-  1413        <span class="xdoc">/*!
-</span>  1414    <span class="xdoc">     *  ======== excDumpRegs ========
-</span>  1415    <span class="xdoc">     */</span>
-  1416        Void excDumpRegs(UInt lr);
-  1417    
-  1418        <span class="xdoc">/*!
-</span>  1419    <span class="xdoc">     *  ======== pendSV ========
-</span>  1420    <span class="xdoc">     * Used by dispatcher
-</span>  1421    <span class="xdoc">     */</span>
-  1422        Void pendSV();
-  1423    
-  1424        <span class="comment">/*
-</span>  1425    <span class="comment">     *  ======== setStackLimit ========
-</span>  1426    <span class="comment">     */</span>
-  1427        Void setStackLimit(Ptr stackBase);
-  1428    
-  1429        <span class="xdoc">/*! Hwi vector function type definition. */</span>
-  1430        <span class=key>typedef</span> Void (*HandlerFuncPtr)(Handle, UInt);
-  1431    
-  1432        <span class="comment">/* Low Level Interrupt Dispatcher Wrapper */</span>
-  1433        Void dispatch();
-  1434    
-  1435        <span class="comment">/*
-</span>  1436    <span class="comment">     *  ======== romInitNVIC ========
-</span>  1437    <span class="comment">     *  Fix for SDOCM00114681: broken Hwi_initNVIC() function.
-</span>  1438    <span class="comment">     *  Installed rather than Hwi.initNVIC for ROM app build
-</span>  1439    <span class="comment">     *  when Hwi.resetVectorAddress is not 0x00000000.
-</span>  1440    <span class="comment">     */</span>
-  1441        Void romInitNVIC();
-  1442    
-  1443        <span class="comment">/*
-</span>  1444    <span class="comment">     * "Top Half" of Interrupt Dispatcher
-</span>  1445    <span class="comment">     *  Does not include Swi_restore() and Task_restore()
-</span>  1446    <span class="comment">     */</span>
-  1447        UInt dispatchC(Irp irp, UInt32 dummy1, UInt32 dummy2, Object *hwi);
-  1448    
-  1449        <span class="comment">/* "Bottom half", run swi scheduler */</span>
-  1450        Void doSwiRestore(UInt tskKey);
-  1451    
-  1452        <span class="comment">/* "Bottom half", run task scheduler */</span>
-  1453        Void doTaskRestore(UInt tskKey);
-  1454    
-  1455        <span class="xdoc">/*! Meta World Only Hwi Configuration Object. */</span>
-  1456        <span class=key>metaonly</span> <span class=key>struct</span> InterruptObj {
-  1457            String name;            <span class="comment">/* symbol used for vector table entry */</span>
-  1458            Bool used;              <span class="comment">/* Interrupt already defined? */</span>
-  1459            Bool useDispatcher;     <span class="comment">/* Should dispatcher handle this Int? */</span>
-  1460            UInt priority;          <span class="comment">/* priority */</span>
-  1461            FuncPtr fxn;            <span class="comment">/* Dispatched ISR function */</span>
-  1462            Handle  hwi;            <span class="comment">/* Hwi object address */</span>
-  1463        };
+  1302        <span class=key>config</span> Void (*swiRestore)(UInt);
+  1303        <span class=key>config</span> Void (*swiRestoreHwi)(UInt);
+  1304        <span class=key>config</span> UInt (*taskDisable)();
+  1305        <span class=key>config</span> Void (*taskRestoreHwi)(UInt);
+  1306    
+  1307        <span class="comment">/* initial Hwi_nvic.CCR value */</span>
+  1308        <span class=key>config</span> UInt32 ccr;
+  1309    
+  1310        <span class="xdoc">/*!
+</span>  1311    <span class="xdoc">     *  const array to hold all HookSet objects.
+</span>  1312    <span class="xdoc">     */</span>
+  1313        <span class=key>config</span> HookSet hooks[<span class=key>length</span>] = [];
+  1314    
+  1315        <span class="comment">/*
+</span>  1316    <span class="comment">     *  ======== postInit ========
+</span>  1317    <span class="comment">     *  finish initializing static and dynamic Hwis
+</span>  1318    <span class="comment">     */</span>
+  1319        Int postInit(Object *hwi, Error.Block *eb);
+  1320    
+  1321        <span class="xdoc">/*!
+</span>  1322    <span class="xdoc">     *  ======== updateNvic ========
+</span>  1323    <span class="xdoc">     *  Internal SMP function to cause the virtual NVIC to be flushed to the
+</span>  1324    <span class="xdoc">     *  actual NVIC.
+</span>  1325    <span class="xdoc">     *
+</span>  1326    <span class="xdoc">     *  This function is called by the various user APIs that manipulate
+</span>  1327    <span class="xdoc">     *  individual NVIC register bits
+</span>  1328    <span class="xdoc">     *  (ie Hwi_enable/disable/restore/clearInterrupt())
+</span>  1329    <span class="xdoc">     *
+</span>  1330    <span class="xdoc">     *  If the current core is the owner of "intNum", flushVnvic() is called
+</span>  1331    <span class="xdoc">     *  immediately.
+</span>  1332    <span class="xdoc">     *
+</span>  1333    <span class="xdoc">     *  Otherwise an intercore interrupt is generated to force the other core
+</span>  1334    <span class="xdoc">     *  to perform the flushVnvic().
+</span>  1335    <span class="xdoc">     *
+</span>  1336    <span class="xdoc">     */</span>
+  1337        Void updateNvic(UInt intNum);
+  1338    
+  1339        <span class="xdoc">/*!
+</span>  1340    <span class="xdoc">     *  ======== excHandlerAsm ========
+</span>  1341    <span class="xdoc">     *  asm code exception handler
+</span>  1342    <span class="xdoc">     */</span>
+  1343        Void excHandlerAsm();
+  1344    
+  1345        <span class="xdoc">/*!
+</span>  1346    <span class="xdoc">     *  ======== excHandler ========
+</span>  1347    <span class="xdoc">     *  exception Handler routes to
+</span>  1348    <span class="xdoc">     *  either min, max, or spin exception handler
+</span>  1349    <span class="xdoc">     */</span>
+  1350        Void excHandler(UInt *excStack, UInt lr);
+  1351    
+  1352        <span class="xdoc">/*!
+</span>  1353    <span class="xdoc">     *  ======== excHandlerMin ========
+</span>  1354    <span class="xdoc">     *  Minimal Exception Handler
+</span>  1355    <span class="xdoc">     */</span>
+  1356        Void excHandlerMin(UInt *excStack, UInt lr);
+  1357    
+  1358        <span class="xdoc">/*!
+</span>  1359    <span class="xdoc">     *  ======== excHandlerMax ========
+</span>  1360    <span class="xdoc">     *  Full Featured Exception Handler
+</span>  1361    <span class="xdoc">     */</span>
+  1362        Void excHandlerMax(UInt *excStack, UInt lr);
+  1363    
+  1364        <span class="xdoc">/*!
+</span>  1365    <span class="xdoc">     *  ======== excFillContext ========
+</span>  1366    <span class="xdoc">     */</span>
+  1367        Void excFillContext(UInt *excStack);
+  1368    
+  1369        <span class="xdoc">/*!
+</span>  1370    <span class="xdoc">     *  ======== excNmi ========
+</span>  1371    <span class="xdoc">     */</span>
+  1372        Void excNmi(UInt *excStack);
+  1373    
+  1374        <span class="xdoc">/*!
+</span>  1375    <span class="xdoc">     *  ======== excHardFault ========
+</span>  1376    <span class="xdoc">     */</span>
+  1377        Void excHardFault(UInt *excStack);
+  1378    
+  1379        <span class="xdoc">/*!
+</span>  1380    <span class="xdoc">     *  ======== excMemFault ========
+</span>  1381    <span class="xdoc">     */</span>
+  1382        Void excMemFault(UInt *excStack);
+  1383    
+  1384        <span class="xdoc">/*!
+</span>  1385    <span class="xdoc">     *  ======== excBusFault ========
+</span>  1386    <span class="xdoc">     */</span>
+  1387        Void excBusFault(UInt *excStack);
+  1388    
+  1389        <span class="xdoc">/*!
+</span>  1390    <span class="xdoc">     *  ======== excUsageFault ========
+</span>  1391    <span class="xdoc">     */</span>
+  1392        Void excUsageFault(UInt *excStack);
+  1393    
+  1394        <span class="xdoc">/*!
+</span>  1395    <span class="xdoc">     *  ======== excSvCall ========
+</span>  1396    <span class="xdoc">     */</span>
+  1397        Void excSvCall(UInt *excStack);
+  1398    
+  1399        <span class="xdoc">/*!
+</span>  1400    <span class="xdoc">     *  ======== excDebugMon ========
+</span>  1401    <span class="xdoc">     */</span>
+  1402        Void excDebugMon(UInt *excStack);
+  1403    
+  1404        <span class="xdoc">/*!
+</span>  1405    <span class="xdoc">     *  ======== excReserved ========
+</span>  1406    <span class="xdoc">     */</span>
+  1407        Void excReserved(UInt *excStack, UInt excNum);
+  1408    
+  1409        <span class="xdoc">/*!
+</span>  1410    <span class="xdoc">     *  ======== excNoIsr ========
+</span>  1411    <span class="xdoc">     */</span>
+  1412        Void excNoIsr(UInt *excStack, UInt excNum);
+  1413    
+  1414        <span class="xdoc">/*!
+</span>  1415    <span class="xdoc">     *  ======== excDumpRegs ========
+</span>  1416    <span class="xdoc">     */</span>
+  1417        Void excDumpRegs(UInt lr);
+  1418    
+  1419        <span class="xdoc">/*!
+</span>  1420    <span class="xdoc">     *  ======== pendSV ========
+</span>  1421    <span class="xdoc">     * Used by dispatcher
+</span>  1422    <span class="xdoc">     */</span>
+  1423        Void pendSV();
+  1424    
+  1425        <span class="comment">/*
+</span>  1426    <span class="comment">     *  ======== setStackLimit ========
+</span>  1427    <span class="comment">     */</span>
+  1428        Void setStackLimit(Ptr stackBase);
+  1429    
+  1430        <span class="comment">/*
+</span>  1431    <span class="comment">     *  ======== swiDisableNull ========
+</span>  1432    <span class="comment">     *  Empty Hwi_swiDisable()
+</span>  1433    <span class="comment">     */</span>
+  1434        UInt swiDisableNull();
+  1435    
+  1436        <span class="comment">/*
+</span>  1437    <span class="comment">     *  ======== swiRestoreNull ========
+</span>  1438    <span class="comment">     *  Empty Hwi_swiRestore()
+</span>  1439    <span class="comment">     */</span>
+  1440        Void swiRestoreNull(UInt key);
+  1441    
+  1442        <span class="xdoc">/*! Hwi vector function type definition. */</span>
+  1443        <span class=key>typedef</span> Void (*HandlerFuncPtr)(Handle, UInt);
+  1444    
+  1445        <span class="comment">/* Low Level Interrupt Dispatcher Wrapper */</span>
+  1446        Void dispatch();
+  1447    
+  1448        <span class="comment">/*
+</span>  1449    <span class="comment">     *  ======== romInitNVIC ========
+</span>  1450    <span class="comment">     *  Fix for SDOCM00114681: broken Hwi_initNVIC() function.
+</span>  1451    <span class="comment">     *  Installed rather than Hwi.initNVIC for ROM app build
+</span>  1452    <span class="comment">     *  when Hwi.resetVectorAddress is not 0x00000000.
+</span>  1453    <span class="comment">     */</span>
+  1454        Void romInitNVIC();
+  1455    
+  1456        <span class="comment">/*
+</span>  1457    <span class="comment">     * "Top Half" of Interrupt Dispatcher
+</span>  1458    <span class="comment">     *  Does not include Swi_restore() and Task_restore()
+</span>  1459    <span class="comment">     */</span>
+  1460        UInt dispatchC(Irp irp, UInt32 dummy1, UInt32 dummy2, Object *hwi);
+  1461    
+  1462        <span class="comment">/* "Bottom half", run swi scheduler */</span>
+  1463        Void doSwiRestore(UInt tskKey);
   1464    
-  1465        <span class="xdoc">/*!
-</span>  1466    <span class="xdoc">     * Meta-only array of interrupt objects.
-</span>  1467    <span class="xdoc">     * This meta-only array of Hwi config objects is initialized
-</span>  1468    <span class="xdoc">     * in Hwi.xs:module$meta$init().
-</span>  1469    <span class="xdoc">     */</span>
-  1470        <span class=key>metaonly</span> <span class=key>config</span> InterruptObj interrupt[];
-  1471    
-  1472        <span class=key>struct</span> Instance_State {
-  1473            UArg            arg;            <span class=comment>// Argument to Hwi function.</span>
-  1474            FuncPtr         fxn;            <span class=comment>// Hwi function.</span>
-  1475            Irp             irp;            <span class=comment>// current IRP/enabled flag</span>
-  1476                                            <span class=comment>// for static Hwis</span>
-  1477            UInt8           priority;       <span class=comment>// Interrupt priorty</span>
-  1478            Int16           intNum;         <span class=comment>// Interrupt number. 16 bits used to</span>
-  1479                                            <span class=comment>// encode non-dispatched interrupt</span>
-  1480                                            <span class=comment>// as negative intNum</span>
-  1481            Ptr             hookEnv[];
-  1482        };
-  1483    
-  1484        <span class=key>struct</span> Module_State {
-  1485            Char            *taskSP;            <span class=comment>// Temporary storage of interrupted</span>
-  1486                                                <span class=comment>// Task's SP during ISR execution</span>
-  1487            Bool            excActive[];        <span class=comment>// TRUE if an exception has occurred</span>
-  1488            ExcContext      *excContext[];      <span class=comment>// Exception context</span>
-  1489            Ptr             excStack[];         <span class=comment>// Exception thread stack</span>
-  1490            Ptr             isrStack;           <span class=comment>// Points to isrStack address</span>
-  1491            Ptr             isrStackBase;       <span class=comment>// = __TI_STACK_BASE</span>
-  1492            Ptr             isrStackSize;       <span class=comment>// = Program.stack</span>
-  1493            Ptr             vectorTableBase;    <span class=comment>// Points to base of vector table</span>
-  1494            UInt            swiTaskKeys;        <span class=comment>// dispatcher Swi and Task key storage</span>
-  1495            Ptr             dispatchTable;      <span class=comment>// Ptr to dispatchTable or sparseInterruptTable</span>
-  1496            volatile Bool   vnvicFlushRequired; <span class=comment>// if TRUE, Hwi_vnvicFlush will copy</span>
-  1497                                                <span class=comment>// changed vnvic regs to nvic</span>
-  1498            UInt8           intAffinity[];      <span class=comment>// smp int-to-coreId mappings</span>
-  1499            UInt32          intAffinityMasks[][]; <span class=comment>// smp per-core NVIC register masks</span>
-  1500        };
-  1501    }
+  1465        <span class="comment">/* "Bottom half", run task scheduler */</span>
+  1466        Void doTaskRestore(UInt tskKey);
+  1467    
+  1468        <span class="xdoc">/*! Meta World Only Hwi Configuration Object. */</span>
+  1469        <span class=key>metaonly</span> <span class=key>struct</span> InterruptObj {
+  1470            String name;            <span class="comment">/* symbol used for vector table entry */</span>
+  1471            Bool used;              <span class="comment">/* Interrupt already defined? */</span>
+  1472            Bool useDispatcher;     <span class="comment">/* Should dispatcher handle this Int? */</span>
+  1473            UInt priority;          <span class="comment">/* priority */</span>
+  1474            FuncPtr fxn;            <span class="comment">/* Dispatched ISR function */</span>
+  1475            Handle  hwi;            <span class="comment">/* Hwi object address */</span>
+  1476        };
+  1477    
+  1478        <span class="xdoc">/*!
+</span>  1479    <span class="xdoc">     * Meta-only array of interrupt objects.
+</span>  1480    <span class="xdoc">     * This meta-only array of Hwi config objects is initialized
+</span>  1481    <span class="xdoc">     * in Hwi.xs:module$meta$init().
+</span>  1482    <span class="xdoc">     */</span>
+  1483        <span class=key>metaonly</span> <span class=key>config</span> InterruptObj interrupt[];
+  1484    
+  1485        <span class=key>struct</span> Instance_State {
+  1486            UArg            arg;            <span class=comment>// Argument to Hwi function.</span>
+  1487            FuncPtr         fxn;            <span class=comment>// Hwi function.</span>
+  1488            Irp             irp;            <span class=comment>// current IRP/enabled flag</span>
+  1489                                            <span class=comment>// for static Hwis</span>
+  1490            UInt8           priority;       <span class=comment>// Interrupt priorty</span>
+  1491            Int16           intNum;         <span class=comment>// Interrupt number. 16 bits used to</span>
+  1492                                            <span class=comment>// encode non-dispatched interrupt</span>
+  1493                                            <span class=comment>// as negative intNum</span>
+  1494            Ptr             hookEnv[];
+  1495        };
+  1496    
+  1497        <span class=key>struct</span> Module_State {
+  1498            Char            *taskSP;            <span class=comment>// Temporary storage of interrupted</span>
+  1499                                                <span class=comment>// Task's SP during ISR execution</span>
+  1500            Bool            excActive[];        <span class=comment>// TRUE if an exception has occurred</span>
+  1501            ExcContext      *excContext[];      <span class=comment>// Exception context</span>
+  1502            Ptr             excStack[];         <span class=comment>// Exception thread stack</span>
+  1503            Ptr             isrStack;           <span class=comment>// Points to isrStack address</span>
+  1504            Ptr             isrStackBase;       <span class=comment>// = __TI_STACK_BASE</span>
+  1505            Ptr             isrStackSize;       <span class=comment>// = Program.stack</span>
+  1506            Ptr             vectorTableBase;    <span class=comment>// Points to base of vector table</span>
+  1507            UInt            swiTaskKeys;        <span class=comment>// dispatcher Swi and Task key storage</span>
+  1508            Ptr             dispatchTable;      <span class=comment>// Ptr to dispatchTable or sparseInterruptTable</span>
+  1509            volatile Bool   vnvicFlushRequired; <span class=comment>// if TRUE, Hwi_vnvicFlush will copy</span>
+  1510                                                <span class=comment>// changed vnvic regs to nvic</span>
+  1511            UInt8           intAffinity[];      <span class=comment>// smp int-to-coreId mappings</span>
+  1512            UInt32          intAffinityMasks[][]; <span class=comment>// smp per-core NVIC register masks</span>
+  1513        };
+  1514    }
 </pre>
 </body></html>

@@ -2249,6 +2249,11 @@ internal:   /* not for client use */
     UInt32 getObjectCheckValue(Task.Handle handle);
 
     /*
+     *  ======== enableOtherCores ========
+     */
+    Void enableOtherCores();
+
+    /*
      *  ======== startupHookFunc ========
      *  Called by core 0 just before switch to first task
      */

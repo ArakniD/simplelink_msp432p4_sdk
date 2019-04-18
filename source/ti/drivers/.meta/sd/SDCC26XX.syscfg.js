@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,6 +38,19 @@
 "use strict";
 
 let Common = system.getScript("/ti/drivers/Common.js");
+
+let longDescription =`
+The [__SD driver__][1] provides a simple interface to perform basic
+operations on SD cards.
+* [Usage Synopsis][2]
+* [Examples][3]
+* Configuration - There are no SD configuration parameters for this device
+[1]: /tidrivers/doxygen/html/_s_d_8h.html#details "C API reference"
+[2]:
+/tidrivers/doxygen/html/_s_d_8h.html#ti_drivers_SD_Synopsis "Synopsis"
+[3]: /tidrivers/doxygen/html/_s_d_8h.html#ti_drivers_SD_Examples
+"C usage examples"
+`;
 
 /*
  *  ======== devSpecific ========
@@ -125,6 +138,7 @@ function filterHardware(component) {
 function extend(base)
 {
     base.config = [];
+    base.longDescription = longDescription;
 
     return (Object.assign({}, base, devSpecific));
 }

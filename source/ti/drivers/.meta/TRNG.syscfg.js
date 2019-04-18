@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,12 +41,6 @@
 let Common   = system.getScript("/ti/drivers/Common.js");
 let family   = Common.device2Family(system.deviceData, "TRNG");
 
-/* Intro splash on GUI */
-let longDescription = "The True Random Number Generator (TRNG) module "
-    + "generates numbers of variable lengths from a source of entropy. The "
-    + "output is suitable for applications requiring cryptographically " +
-    + "random numbers such as keying material for private or symmetric keys.";
-
 let config = [];
 
 /*
@@ -68,10 +62,25 @@ function validate(inst, validation)
 let base = {
     displayName         : "TRNG",
     description         : "True Random Number Generator (TRNG)",
-    longDescription     : longDescription,
-    config              : config,
+    longDescription     : `
+The [__TRNG driver__][1] generates numbers of
+variable lengths from a source of entropy. The output
+is suitable for applications requiring cryptographically
+secure random numbers such as keying material for
+private or symmetric keys.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+[1]: /tidrivers/doxygen/html/_t_r_n_g_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_t_r_n_g_8h.html#ti_drivers_TRNG_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_t_r_n_g_8h.html#ti_drivers_TRNG_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#TRNG_Configuration_Options "Configuration options reference"
+`,
     validate            : validate,
-    defaultInstanceName : "Board_TRNG"
+    defaultInstanceName : "Board_TRNG",
+    config              : Common.addNameConfig(config, "/ti/drivers/TRNG", "Board_TRNG"),
+    modules: Common.autoForceModules(["Board", "Power"])
 };
 
 

@@ -2256,93 +2256,98 @@
   2249        UInt32 getObjectCheckValue(Task.Handle handle);
   2250    
   2251        <span class="comment">/*
-</span>  2252    <span class="comment">     *  ======== startupHookFunc ========
-</span>  2253    <span class="comment">     *  Called by core 0 just before switch to first task
-</span>  2254    <span class="comment">     */</span>
-  2255        <span class=key>config</span> Void (*startupHookFunc)(Void) = <span class=key>null</span>;
-  2256    
-  2257        <span class="comment">/*
-</span>  2258    <span class="comment">     *  Common object used by all blocked tasks to enable Task_delete()
-</span>  2259    <span class="comment">     *  to remove a task from any pend Q it is placed on while blocked.
-</span>  2260    <span class="comment">     */</span>
-  2261        <span class=key>struct</span> PendElem {
-  2262            Queue.Elem      qElem;
-  2263            Task.Handle     taskHandle;
-  2264            Clock.Handle    clockHandle;
-  2265        };
-  2266    
-  2267        <span class=key>struct</span> Instance_State {
-  2268            Queue.Elem      qElem;          <span class=comment>// Task's readyQ element</span>
-  2269            volatile Int    priority;       <span class=comment>// Task priority</span>
-  2270            UInt            mask;           <span class=comment>// curSet mask = 1 &lt;&lt; priority</span>
-  2271            Ptr             context;        <span class=comment>// ptr to Task's saved context</span>
-  2272                                            <span class=comment>// while not in RUNNING mode.</span>
-  2273            Mode            mode;           <span class=comment>// READY, BLOCKED, RUNNING, etc</span>
-  2274            PendElem        *pendElem;      <span class=comment>// ptr to Task, Semaphore, Event,</span>
-  2275                                            <span class=comment>// or GateMutexPri PendElem</span>
-  2276            SizeT           stackSize;      <span class=comment>// Task's stack buffer size</span>
-  2277            Char            stack[];        <span class=comment>// buffer used for Task's stack</span>
-  2278            IHeap.Handle    stackHeap;      <span class=comment>// Heap to allocate stack from</span>
-  2279            FuncPtr         fxn;            <span class=comment>// Task function</span>
-  2280            UArg            arg0;           <span class=comment>// Task function 1st arg</span>
-  2281            UArg            arg1;           <span class=comment>// Task function 2nd arg</span>
-  2282            Ptr             env;            <span class=comment>// Task environment pointer</span>
-  2283            Ptr             hookEnv[];      <span class=comment>// ptr to Task's hook env array</span>
-  2284            Bool            vitalTaskFlag;  <span class=comment>// TRUE = shutdown system if</span>
-  2285                                            <span class=comment>// last task like this exits</span>
-  2286            Queue.Handle    readyQ;         <span class=comment>// This Task's readyQ</span>
-  2287            UInt            curCoreId;      <span class=comment>// Core this task is currently running on.</span>
-  2288            UInt            affinity;       <span class=comment>// Core this task must run on</span>
-  2289                                            <span class=comment>// Task_AFFINITY_NONE = don't care</span>
-  2290            Bool            privileged;
-  2291            Ptr             domain;
-  2292            UInt32          checkValue;     <span class=comment>// 32-bit Task object checksum value</span>
-  2293            Ptr             tls;            <span class=comment>// TLS pointer</span>
-  2294        };
-  2295    
-  2296        <span class=key>struct</span> Module_State {
-  2297            volatile Bool   locked;         <span class=comment>// Task scheduler locked flag</span>
-  2298            volatile UInt   curSet;         <span class=comment>// Bitmask reflects readyQ states</span>
-  2299            volatile Bool   workFlag;       <span class=comment>// Scheduler work is pending.</span>
-  2300                                            <span class=comment>// Optimization. Must be set</span>
-  2301                                            <span class=comment>// whenever readyQs are modified.</span>
-  2302            UInt            vitalTasks;     <span class=comment>// number of tasks with</span>
-  2303                                            <span class=comment>// vitalTaskFlag = true</span>
-  2304            Handle          curTask;        <span class=comment>// current Task instance</span>
-  2305            Queue.Handle    curQ;           <span class=comment>// current Task's readyQ</span>
-  2306            Queue.Object    readyQ[];       <span class=comment>// Task ready queues</span>
-  2307    
-  2308            volatile UInt   smpCurSet[];    <span class=comment>// Bitmask reflects readyQ states</span>
-  2309                                            <span class=comment>// curSet[n] = core n</span>
-  2310                                            <span class=comment>// curSet[Core.numCores] = don't care</span>
-  2311            volatile UInt   smpCurMask[];   <span class=comment>// mask of currently running tasks</span>
-  2312            Handle          smpCurTask[];   <span class=comment>// current Task instance ([0] = core 0, etc)</span>
-  2313            Queue.Handle    smpReadyQ[];    <span class=comment>// core ready queues</span>
-  2314                                            <span class=comment>// [0] = core0 readyQs</span>
-  2315                                            <span class=comment>// [1] = core1 readyQs</span>
-  2316                                            <span class=comment>// [numCores] = don't care readyQs</span>
-  2317            Queue.Object    inactiveQ;      <span class=comment>// Task's with -1 priority</span>
-  2318            Queue.Object    terminatedQ;    <span class=comment>// terminated dynamically created Tasks</span>
-  2319    
-  2320            Handle          idleTask[];             <span class=comment>// Idle Task handles</span>
-  2321            Handle          constructedTasks[];     <span class=comment>// array of statically</span>
-  2322                                                    <span class=comment>// constructed Tasks</span>
-  2323            Bool            curTaskPrivileged;      <span class=comment>// TRUE - privielged</span>
-  2324                                                    <span class=comment>// FALSE - unprivileged</span>
-  2325        };
-  2326    
-  2327        <span class=key>struct</span> RunQEntry {
-  2328            Queue.Elem      elem;
-  2329            UInt            coreId;
-  2330            Int             priority;
-  2331        };
-  2332    
-  2333        <span class=key>struct</span> Module_StateSmp {
-  2334            Queue.Object        *sortedRunQ;         <span class=comment>// A queue of RunQEntry elems</span>
-  2335                                                     <span class=comment>// that is  sorted by priority</span>
-  2336            volatile RunQEntry  smpRunQ[];           <span class=comment>// Run queue entry handles for</span>
-  2337                                                     <span class=comment>// each core</span>
-  2338        };
-  2339    }
+</span>  2252    <span class="comment">     *  ======== enableOtherCores ========
+</span>  2253    <span class="comment">     */</span>
+  2254        Void enableOtherCores();
+  2255    
+  2256        <span class="comment">/*
+</span>  2257    <span class="comment">     *  ======== startupHookFunc ========
+</span>  2258    <span class="comment">     *  Called by core 0 just before switch to first task
+</span>  2259    <span class="comment">     */</span>
+  2260        <span class=key>config</span> Void (*startupHookFunc)(Void) = <span class=key>null</span>;
+  2261    
+  2262        <span class="comment">/*
+</span>  2263    <span class="comment">     *  Common object used by all blocked tasks to enable Task_delete()
+</span>  2264    <span class="comment">     *  to remove a task from any pend Q it is placed on while blocked.
+</span>  2265    <span class="comment">     */</span>
+  2266        <span class=key>struct</span> PendElem {
+  2267            Queue.Elem      qElem;
+  2268            Task.Handle     taskHandle;
+  2269            Clock.Handle    clockHandle;
+  2270        };
+  2271    
+  2272        <span class=key>struct</span> Instance_State {
+  2273            Queue.Elem      qElem;          <span class=comment>// Task's readyQ element</span>
+  2274            volatile Int    priority;       <span class=comment>// Task priority</span>
+  2275            UInt            mask;           <span class=comment>// curSet mask = 1 &lt;&lt; priority</span>
+  2276            Ptr             context;        <span class=comment>// ptr to Task's saved context</span>
+  2277                                            <span class=comment>// while not in RUNNING mode.</span>
+  2278            Mode            mode;           <span class=comment>// READY, BLOCKED, RUNNING, etc</span>
+  2279            PendElem        *pendElem;      <span class=comment>// ptr to Task, Semaphore, Event,</span>
+  2280                                            <span class=comment>// or GateMutexPri PendElem</span>
+  2281            SizeT           stackSize;      <span class=comment>// Task's stack buffer size</span>
+  2282            Char            stack[];        <span class=comment>// buffer used for Task's stack</span>
+  2283            IHeap.Handle    stackHeap;      <span class=comment>// Heap to allocate stack from</span>
+  2284            FuncPtr         fxn;            <span class=comment>// Task function</span>
+  2285            UArg            arg0;           <span class=comment>// Task function 1st arg</span>
+  2286            UArg            arg1;           <span class=comment>// Task function 2nd arg</span>
+  2287            Ptr             env;            <span class=comment>// Task environment pointer</span>
+  2288            Ptr             hookEnv[];      <span class=comment>// ptr to Task's hook env array</span>
+  2289            Bool            vitalTaskFlag;  <span class=comment>// TRUE = shutdown system if</span>
+  2290                                            <span class=comment>// last task like this exits</span>
+  2291            Queue.Handle    readyQ;         <span class=comment>// This Task's readyQ</span>
+  2292            UInt            curCoreId;      <span class=comment>// Core this task is currently running on.</span>
+  2293            UInt            affinity;       <span class=comment>// Core this task must run on</span>
+  2294                                            <span class=comment>// Task_AFFINITY_NONE = don't care</span>
+  2295            Bool            privileged;
+  2296            Ptr             domain;
+  2297            UInt32          checkValue;     <span class=comment>// 32-bit Task object checksum value</span>
+  2298            Ptr             tls;            <span class=comment>// TLS pointer</span>
+  2299        };
+  2300    
+  2301        <span class=key>struct</span> Module_State {
+  2302            volatile Bool   locked;         <span class=comment>// Task scheduler locked flag</span>
+  2303            volatile UInt   curSet;         <span class=comment>// Bitmask reflects readyQ states</span>
+  2304            volatile Bool   workFlag;       <span class=comment>// Scheduler work is pending.</span>
+  2305                                            <span class=comment>// Optimization. Must be set</span>
+  2306                                            <span class=comment>// whenever readyQs are modified.</span>
+  2307            UInt            vitalTasks;     <span class=comment>// number of tasks with</span>
+  2308                                            <span class=comment>// vitalTaskFlag = true</span>
+  2309            Handle          curTask;        <span class=comment>// current Task instance</span>
+  2310            Queue.Handle    curQ;           <span class=comment>// current Task's readyQ</span>
+  2311            Queue.Object    readyQ[];       <span class=comment>// Task ready queues</span>
+  2312    
+  2313            volatile UInt   smpCurSet[];    <span class=comment>// Bitmask reflects readyQ states</span>
+  2314                                            <span class=comment>// curSet[n] = core n</span>
+  2315                                            <span class=comment>// curSet[Core.numCores] = don't care</span>
+  2316            volatile UInt   smpCurMask[];   <span class=comment>// mask of currently running tasks</span>
+  2317            Handle          smpCurTask[];   <span class=comment>// current Task instance ([0] = core 0, etc)</span>
+  2318            Queue.Handle    smpReadyQ[];    <span class=comment>// core ready queues</span>
+  2319                                            <span class=comment>// [0] = core0 readyQs</span>
+  2320                                            <span class=comment>// [1] = core1 readyQs</span>
+  2321                                            <span class=comment>// [numCores] = don't care readyQs</span>
+  2322            Queue.Object    inactiveQ;      <span class=comment>// Task's with -1 priority</span>
+  2323            Queue.Object    terminatedQ;    <span class=comment>// terminated dynamically created Tasks</span>
+  2324    
+  2325            Handle          idleTask[];             <span class=comment>// Idle Task handles</span>
+  2326            Handle          constructedTasks[];     <span class=comment>// array of statically</span>
+  2327                                                    <span class=comment>// constructed Tasks</span>
+  2328            Bool            curTaskPrivileged;      <span class=comment>// TRUE - privielged</span>
+  2329                                                    <span class=comment>// FALSE - unprivileged</span>
+  2330        };
+  2331    
+  2332        <span class=key>struct</span> RunQEntry {
+  2333            Queue.Elem      elem;
+  2334            UInt            coreId;
+  2335            Int             priority;
+  2336        };
+  2337    
+  2338        <span class=key>struct</span> Module_StateSmp {
+  2339            Queue.Object        *sortedRunQ;         <span class=comment>// A queue of RunQEntry elems</span>
+  2340                                                     <span class=comment>// that is  sorted by priority</span>
+  2341            volatile RunQEntry  smpRunQ[];           <span class=comment>// Run queue entry handles for</span>
+  2342                                                     <span class=comment>// each core</span>
+  2343        };
+  2344    }
 </pre>
 </body></html>

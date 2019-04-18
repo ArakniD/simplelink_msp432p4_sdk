@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,9 +44,7 @@ let Common = system.getScript("/ti/drivers/Common.js");
 /* get /ti/drivers family name from device object */
 let family = Common.device2Family(system.deviceData, "AESCTR");
 
-let longDescription = "AESCTR encrypts messages of any practical length."
-        + " Unlike AESECB, it guarantees confidentiality of the entire message"
-        + " when the message is larger than one block.";
+let config = [];
 
 /*
  *  ======== validate ========
@@ -66,11 +64,24 @@ function validate(inst, validation)
  */
 let base = {
     displayName         : "AESCTR",
-    description         : "AES CTR mode",
-    longDescription     : longDescription,
-    documentation: "/tidrivers/doxygen/html/_a_e_s_c_t_r_8h.html",
+    description         : "AES (Advanced Encryption Standard) Counter Mode Driver",
+    longDescription     : `
+The [__AESCTR driver__][1] encrypts messages of any practical
+length. Unlike AESECB, it guarantees confidentiality of the
+entire message when the message is larger than one block.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+[1]: /tidrivers/doxygen/html/_a_e_s_c_t_r_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_a_e_s_c_t_r_8h.html#ti_drivers_CTR_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_a_e_s_c_t_r_8h.html#ti_drivers_CTR_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#AESCTR_Configuration_Options "Configuration options reference"
+`,
     validate            : validate,
-    defaultInstanceName : "Board_AESCTR"
+    defaultInstanceName : "Board_AESCTR",
+    config              : Common.addNameConfig(config, "/ti/drivers/AESCTR", "Board_AESCTR"),
+    modules: Common.autoForceModules(["Board", "Power", "DMA"])
 };
 
 /* extend the base exports to include family-specific content */

@@ -39,7 +39,7 @@ package/ti.sysbios.hal.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F07
+package/.xdc-F09
 package/ti_sysbios_hal.java
 package/ti_sysbios_hal.class
 package/package_ti.sysbios.hal.c

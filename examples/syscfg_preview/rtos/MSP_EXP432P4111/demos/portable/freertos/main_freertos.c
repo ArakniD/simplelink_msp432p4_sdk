@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,7 @@
 #include <ti/drivers/GPIO.h>
 
 /* Example/Board Header files */
-#include "Board.h"
+#include <ti/drivers/Board.h>
 
 /* Mutex to protect the reading/writing of the temperature variables */
 pthread_mutex_t temperatureMutex;

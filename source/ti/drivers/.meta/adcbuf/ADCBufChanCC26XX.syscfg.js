@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,12 +39,35 @@
 
 let config = [
     {
-        name: "channelNumber",
-        default: -1,
-        hidden: true
+        name: "channelString",
+        default: "null",
+        hidden: true,
+        onChange: onChannelStringChange
     },
-
+    {
+        name: "$name",
+        defaultPrefix: "CHANNEL_",
+        description: "C identifier used to identify this ADCBuf channel.",
+        longDescription: "This name is concatenated to the end of the name"
+            + " __Name__ specified in the ADCBuf module configuration"
+            + " above.",
+        hidden: false
+    }
 ];
+
+function onChannelStringChange(inst, ui)
+{
+    let name = inst.channelString;
+
+    if (name === "null") {
+        return;
+    }
+
+    /* Assign a default channel name */
+    if (name === "Battery" || name === "Decoupling" || name === "Ground") {
+        inst.$name = "CHANNEL_" + name.toUpperCase();
+    }
+}
 
 /*
  *  ======== pinmuxRequirements ========
@@ -56,10 +79,16 @@ let config = [
  */
 function pinmuxRequirements(inst)
 {
+    let name = inst.channelString;
     let adcChanNames = [
         "PIN0", "PIN1", "PIN2", "PIN3",
         "PIN4", "PIN5", "PIN6", "PIN7"
     ];
+
+    if (name === "null" || name === "Battery" ||
+        name === "Decoupling" || name === "Ground") {
+        return ([]);
+    }
 
     let adcbuf = {
         name: "adc",
@@ -86,10 +115,16 @@ function pinmuxRequirements(inst)
 function moduleInstances(inst)
 {
     let modInstances = new Array();
+    let name = inst.channelString;
+
+    if (name === "null" || name === "Battery" ||
+        name === "Decoupling" || name === "Ground") {
+        return (modInstances);
+    }
 
     modInstances.push(
         {
-            name: "adcPinInstance" + inst.channelNumber,
+            name: "adcPinInstance" + inst.channelString,
             displayName: "ADCBuf Input PIN Configuration While Pin is Not In Use",
             moduleName: "/ti/drivers/PIN",
             collapsed: true,
@@ -97,7 +132,7 @@ function moduleInstances(inst)
                 parentMod: "/ti/drivers/ADCBuf",
                 parentInterfaceName: "adc",
                 parentSignalName: "adcPin",
-                parentSignalDisplayName: "ADCBuf Channel " + inst.channelNumber,
+                parentSignalDisplayName: "ADCBuf Channel " + inst.channelString,
                 mode: "Input",
                 pull: "None"
             }

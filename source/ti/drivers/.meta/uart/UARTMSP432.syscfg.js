@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -74,11 +74,14 @@ let devSpecific = {
             name        : "clockSource",
             displayName : "Clock Source",
             default     : "Any",
-            description : "If 'Any' is selected, an appropriate clock source " +
-                          "will be auto selected. For maximum portability to " +
-                          "other devices, it is recommended that this option " +
-                          "be left in it's default state of 'Any'.",
+            description : "Specifies the clock source for the UART peripheral",
+            longDescription :`If 'Any' is selected, an appropriate clock source
+will be auto selected. For maximum portability to other devices, it is
+recommended that this option be left in it's default state of 'Any'.
 
+The frequency of the clock sources are configured per
+__Power Performance Level__ configured in the __Power Module__.
+`,
             /* These are ordered by preference.  If multiple sources can
              * satisfy the baud rate, then the first one in the list
              * that can satisfy the baud rate will be selected.
@@ -470,20 +473,22 @@ function extend(base)
     /* save base properies/methods, to use in our methods */
     $super = base;
 
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
+
     /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
+    result.config = base.config.concat(devSpecific.config);
 
     /* override baudRates table */
-    for (let i = 0; i < devSpecific.config.length; i++) {
-        let cfg = devSpecific.config[i];
+    for (let i = 0; i < result.config.length; i++) {
+        let cfg = result.config[i];
         if (cfg.name == "baudRates") {
             cfg.hidden = false;
             break;
         }
     }
 
-    /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    return (result);
 }
 
 /*

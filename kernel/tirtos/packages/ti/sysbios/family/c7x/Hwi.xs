@@ -235,7 +235,7 @@ function module$static$init(mod, params)
                 eventMapMeta(thisInt.intNum, thisInt.eventId);
             }
             else {
-                Hwi.$logError ("eventId (" + thisInt.eventId + ") must be less than 128", Hwi, thisInt);
+                Hwi.$logError ("eventId (" + thisInt.eventId + ") must be less than 2048", Hwi, thisInt);
             }
         }
     }
@@ -337,7 +337,12 @@ function instance$static$init(obj, intNum, fxn, params)
     obj.fxn = fxn;
     obj.irp = null;
     obj.intNum = intNum;
-    obj.priority = params.priority;
+    if (params.priority == -1) {
+        obj.priority = Hwi.DEFAULT_INT_PRIORITY;
+    }
+    else {
+        obj.priority = params.priority;
+    }
 
     if ((Hwi.dispatcherAutoNestingSupport == false) &&
         (params.maskSetting != Hwi.MaskingOption_SELF)) {
@@ -375,11 +380,11 @@ function instance$static$init(obj, intNum, fxn, params)
     }
 
     if (params.eventId != -1) {
-        if (params.eventId < 128) {
+        if (params.eventId < 2048) {
             Hwi.eventMapMeta(intNum, params.eventId);
         }
         else {
-            Hwi.$logError ("eventId (" + params.eventId + ") must be less than 128", Hwi, this);
+            Hwi.$logError ("eventId (" + params.eventId + ") must be less than 2048", Hwi, this);
         }
     }
 

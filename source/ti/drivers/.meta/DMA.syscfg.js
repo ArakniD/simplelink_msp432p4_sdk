@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,17 +66,16 @@ let config = [
  *  ======== validate ========
  *  Validate this module's configuration
  *
- *  @param inst       - DMA instance to be validated
+ *  @param mod        - DMA module object to be validated
  *  @param validation - object to hold detected validation issues
  */
-function validate(inst, validation)
+function validate(mod, validation)
 {
-    if (!Common.isCName(inst.$module.$static.dmaErrorFunction)) {
-        Common.logError(validation, inst, 'dmaErrorFunction',
+    if (!Common.isCName(mod.dmaErrorFunction)) {
+        Common.logError(validation, mod, 'dmaErrorFunction',
             'Not a valid C identifier.');
     }
 }
-
 
 /*
  *  ======== base ========
@@ -84,15 +83,21 @@ function validate(inst, validation)
  */
 let base = {
     displayName : "DMA",
-    description : "On-chip DMA resource allocation",
-    longDescription : "The DMA module provides support to other drivers that"
-        + " need to allocate exclusive access to a DMA resource to support"
-        + " CPU-less peripheral data transfers.",
+    description : "Direct Memory Access (DMA) Driver",
     defaultInstanceName : "Board_DMA",
-    validate : validate,
+    longDescription : `
+The DMA module provides support to other drivers that
+need to allocate exclusive access to a DMA resource to support
+CPU-less peripheral data transfers. There is no user API for this module.
+See [__Driver configurations reference__][1] for more information.
+
+[1]: /tidrivers/syscfg/html/ConfigDoc.html "Configuration Options"
+`,
     maxInstances : 1,
     moduleStatic : {
-        config
+        config: Common.addNameConfig(config, "/ti/drivers/DMA", "Board_DMA"),
+        modules: Common.autoForceModules(["Board"]),
+        validate : validate
     }
 };
 

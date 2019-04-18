@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -143,10 +143,10 @@ function updateConfigs(inst, ui)
  *  ======== _timerConflict ========
  *  Returns true iff the specified RTOS has a timer conflict
  *  with TI-Drivers
- *  
+ *
  *  The following table documents the current HW conflicts
  *  between the three RTOSs and TI-Drivers; (*) => conflict
- *  
+ *
  *  family   BIOS        NoRTOS     FreeRTOS  TI-Drivers
  *  ------   ----        ------     --------  ----------
  *  LPRF     RTC         RTC           -      GP Timers

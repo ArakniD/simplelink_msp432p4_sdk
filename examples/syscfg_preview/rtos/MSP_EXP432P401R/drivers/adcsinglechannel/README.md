@@ -1,3 +1,7 @@
+### SysConfig Notice
+
+All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
+
 ---
 # adcsinglechannel
 
@@ -10,8 +14,8 @@ and print them via UART.
 
 ## Peripherals Exercised
 
-* `Board_ADC0` - ADC channel 0
-* `Board_ADC1` - ADC channel 1
+* `Board_ADC0`
+* `Board_ADC1`
 
 ## Resources & Jumper Settings
 
@@ -49,15 +53,15 @@ The connection will have the following settings:
 
 Example snippet of outputs:
 ```
-        ADC channel 1 raw result (4): 230
+        ADC1 raw result (4): 230
 
-        ADC channel 1 convert result (4): 2500000 uV
+        ADC1 convert result (4): 2500000 uV
                     .                 .     .
                     .                 .     .
                     .                 .     .
-        ADC channel 1 raw result (9): 280
+        ADC1 raw result (9): 280
 
-        ADC channel 1 convert result (9): 3000000 uV
+        ADC1 convert result (9): 3000000 uV
 ```
 
 * The example outputs one sample from `Board_ADC0` and ten samples from

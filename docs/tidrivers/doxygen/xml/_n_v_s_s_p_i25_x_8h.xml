@@ -6,33 +6,33 @@
     <includes local="no">stdbool.h</includes>
     <includes refid="_s_p_i_8h" local="no">ti/drivers/SPI.h</includes>
     <incdepgraph>
-      <node id="168">
+      <node id="169">
         <label>stdbool.h</label>
       </node>
-      <node id="167">
+      <node id="168">
         <label>stdint.h</label>
       </node>
-      <node id="170">
+      <node id="171">
         <label>stddef.h</label>
       </node>
-      <node id="169">
-        <label>ti/drivers/SPI.h</label>
-        <link refid="_s_p_i_8h"/>
-        <childnode refid="168" relation="include">
-        </childnode>
-        <childnode refid="170" relation="include">
-        </childnode>
-        <childnode refid="167" relation="include">
-        </childnode>
-      </node>
-      <node id="166">
+      <node id="167">
         <label>NVSSPI25X.h</label>
         <link refid="_n_v_s_s_p_i25_x_8h"/>
-        <childnode refid="167" relation="include">
-        </childnode>
         <childnode refid="168" relation="include">
         </childnode>
         <childnode refid="169" relation="include">
+        </childnode>
+        <childnode refid="170" relation="include">
+        </childnode>
+      </node>
+      <node id="170">
+        <label>ti/drivers/SPI.h</label>
+        <link refid="_s_p_i_8h"/>
+        <childnode refid="169" relation="include">
+        </childnode>
+        <childnode refid="171" relation="include">
+        </childnode>
+        <childnode refid="168" relation="include">
         </childnode>
       </node>
     </incdepgraph>
@@ -60,70 +60,6 @@
         <inbodydescription>
         </inbodydescription>
         <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSSPI25X.h" line="224" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSSPI25X.h" bodystart="224" bodyend="-1"/>
-      </memberdef>
-      </sectiondef>
-      <sectiondef kind="typedef">
-      <memberdef kind="typedef" id="_n_v_s_s_p_i25_x_8h_1aebd6500a16f6e85681ba7e5c000d0156" prot="public" static="no">
-        <type>struct <ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs" kindref="compound">NVSSPI25X_HWAttrs</ref></type>
-        <definition>typedef struct NVSSPI25X_HWAttrs  NVSSPI25X_HWAttrs</definition>
-        <argsstring></argsstring>
-        <name>NVSSPI25X_HWAttrs</name>
-        <briefdescription>
-<para>NVSSPI25X attributes. </para>        </briefdescription>
-        <detaileddescription>
-<para>The &apos;regionBaseOffset&apos; is the offset, in bytes, from the base of the SPI flash, of the flash region to be managed.</para><para>The &apos;regionSize&apos; must be an integer multiple of the flash sector size.</para><para>The &apos;sectorSize&apos; is SPI flash device specific. This parameter should correspond to the number of bytes erased when the &apos;SPIFLASH_SUBSECTOR_ERASE&apos; (0x20) command is issued to the device.</para><para>The &apos;verifyBuf&apos; and &apos;verifyBufSize&apos; parameters are used by the <ref refid="_n_v_s_8h_1aae7abe0cb889a6d0cc1858bfc69ab7e0" kindref="member">NVS_write()</ref> command when either &apos;NVS_WRITE_PRE_VERIFY&apos; or &apos;NVS_WRITE_POST_VERIFY&apos; functions are requested in the &apos;flags&apos; argument. The &apos;verifyBuf&apos; is used to successively read back portions of the flash to compare with the data being written to it.</para><para><programlisting><codeline><highlight class="normal">//</highlight></codeline>
-<codeline><highlight class="normal">//<sp/>Only<sp/>one<sp/>region<sp/>write<sp/>operation<sp/>is<sp/>performed<sp/>at<sp/>a<sp/>time</highlight></codeline>
-<codeline><highlight class="normal">//<sp/>so<sp/>a<sp/>single<sp/>verifyBuf<sp/>can<sp/>be<sp/>shared<sp/>by<sp/>all<sp/>the<sp/>regions.</highlight></codeline>
-<codeline><highlight class="normal">//</highlight></codeline>
-<codeline><highlight class="normal">uint8_t<sp/>verifyBuf[256];</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal">NVSSPI25X_HWAttrs<sp/>nvsSPIHWAttrs[2]<sp/>=<sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>region<sp/>0<sp/>is<sp/>1<sp/>flash<sp/>sector<sp/>in<sp/>length.</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionBaseOffset<sp/>=<sp/>0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionSize<sp/>=<sp/>4096,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.sectorSize<sp/>=<sp/>4096,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.verifyBuf<sp/>=<sp/>verifyBuf;</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.verifyBufSize<sp/>=<sp/>256;</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiHandle<sp/>=<sp/>NULL,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiIndex<sp/>=<sp/>0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiBitRate<sp/>=<sp/>40000000,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiCsnGpioIndex<sp/>=<sp/>12,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>region<sp/>1<sp/>is<sp/>3<sp/>flash<sp/>sectors<sp/>in<sp/>length.</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionBaseOffset<sp/>=<sp/>4096,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.regionSize<sp/>=<sp/>4096<sp/>*<sp/>3,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.sectorSize<sp/>=<sp/>4096,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.verifyBuf<sp/>=<sp/>verifyBuf;<sp/><sp/><sp/><sp/><sp/>//<sp/>use<sp/>shared<sp/>verifyBuf</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.verifyBufSize<sp/>=<sp/>256;</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiHandle<sp/>=<sp/>NULL,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiIndex<sp/>=<sp/>0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiBitRate<sp/>=<sp/>40000000,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.spiCsnGpioIndex<sp/>=<sp/>12,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline><highlight class="normal">};</highlight></codeline>
-</programlisting> </para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSSPI25X.h" line="320" column="1"/>
-      </memberdef>
-      <memberdef kind="typedef" id="_n_v_s_s_p_i25_x_8h_1a817f992b570e02d68f89bcabbe2ae856" prot="public" static="no">
-        <type>struct <ref refid="struct_n_v_s_s_p_i25_x___object" kindref="compound">NVSSPI25X_Object</ref></type>
-        <definition>typedef struct NVSSPI25X_Object  NVSSPI25X_Object</definition>
-        <argsstring></argsstring>
-        <name>NVSSPI25X_Object</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSSPI25X.h" line="331" column="1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="var">
@@ -179,7 +115,7 @@ Micron      N25Qxx  family
 </para>    </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2017-2018,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2017-2019,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
 <codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
 <codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
@@ -386,62 +322,64 @@ Micron      N25Qxx  family
 <codeline lineno="225"><highlight class="normal"></highlight></codeline>
 <codeline lineno="236"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_n_v_s___fxn_table" kindref="compound">NVS_FxnTable</ref><sp/><ref refid="_n_v_s_s_p_i25_x_8h_1a105e78ab0c157b8ad847af271b05b18c" kindref="member">NVSSPI25X_fxnTable</ref>;</highlight></codeline>
 <codeline lineno="237"><highlight class="normal"></highlight></codeline>
-<codeline lineno="295" refid="struct_n_v_s_s_p_i25_x___h_w_attrs" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs" kindref="compound">NVSSPI25X_HWAttrs</ref><sp/>{</highlight></codeline>
-<codeline lineno="296" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a0743a03845422aebdcc49c67552637cb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a0743a03845422aebdcc49c67552637cb" kindref="member">regionBaseOffset</ref>;<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="297" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1aa33d42d0f66905a9d5d70ba77916099c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1aa33d42d0f66905a9d5d70ba77916099c" kindref="member">regionSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="298" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a4187978da42e59bb81953569577a53b0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a4187978da42e59bb81953569577a53b0" kindref="member">sectorSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="299" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ad231c8f7f6c73d29e2b715c8b1e032ba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ad231c8f7f6c73d29e2b715c8b1e032ba" kindref="member">verifyBuf</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="300" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ac0e721a58e6b25c8ab1fc0759698f796" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ac0e721a58e6b25c8ab1fc0759698f796" kindref="member">verifyBufSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="301" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___config__" kindref="compound">SPI_Handle</ref><sp/><sp/>*<ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" kindref="member">spiHandle</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="302" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ae99187ec73db72f537b87b75200fc52f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ae99187ec73db72f537b87b75200fc52f" kindref="member">spiIndex</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="303" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a738695395ff8772994c1446793636df0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a738695395ff8772994c1446793636df0" kindref="member">spiBitRate</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="311" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ade20d02364fd0f77d795295f4b85d363" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ade20d02364fd0f77d795295f4b85d363" kindref="member">spiCsnGpioIndex</ref>;</highlight></codeline>
-<codeline lineno="319" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a0babde38f1743458205b95c316363e80" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a0babde38f1743458205b95c316363e80" kindref="member">statusPollDelayUs</ref>;</highlight></codeline>
-<codeline lineno="320"><highlight class="normal">}<sp/><ref refid="_n_v_s_s_p_i25_x_8h_1aebd6500a16f6e85681ba7e5c000d0156" kindref="member">NVSSPI25X_HWAttrs</ref>;</highlight></codeline>
-<codeline lineno="321"><highlight class="normal"></highlight></codeline>
-<codeline lineno="322"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="323"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X<sp/>Object</highlight></codeline>
-<codeline lineno="324"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="325"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>application<sp/>must<sp/>not<sp/>access<sp/>any<sp/>member<sp/>variables<sp/>of<sp/>this<sp/>structure!</highlight></codeline>
-<codeline lineno="326"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="327" refid="struct_n_v_s_s_p_i25_x___object" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_n_v_s_s_p_i25_x___object" kindref="compound">NVSSPI25X_Object</ref><sp/>{</highlight></codeline>
-<codeline lineno="328" refid="struct_n_v_s_s_p_i25_x___object_1ac279aced49b5423b40cfab02b5c78d98" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___object_1ac279aced49b5423b40cfab02b5c78d98" kindref="member">opened</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Has<sp/>this<sp/>region<sp/>been<sp/>opened<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="329" refid="struct_n_v_s_s_p_i25_x___object_1a6e78dbf7192457ef032aa7f94c68c4a0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___config__" kindref="compound">SPI_Handle</ref><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___object_1a6e78dbf7192457ef032aa7f94c68c4a0" kindref="member">spiHandle</ref>;</highlight></codeline>
-<codeline lineno="330" refid="struct_n_v_s_s_p_i25_x___object_1a6cb6753a7703769a54800945a065bfba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___object_1a6cb6753a7703769a54800945a065bfba" kindref="member">sectorBaseMask</ref>;</highlight></codeline>
-<codeline lineno="331"><highlight class="normal">}<sp/><ref refid="_n_v_s_s_p_i25_x_8h_1a817f992b570e02d68f89bcabbe2ae856" kindref="member">NVSSPI25X_Object</ref>;</highlight></codeline>
-<codeline lineno="332"><highlight class="normal"></highlight></codeline>
-<codeline lineno="333"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="334"><highlight class="comment"><sp/>*<sp/><sp/>@cond<sp/>NODOC</highlight></codeline>
-<codeline lineno="335"><highlight class="comment"><sp/>*<sp/><sp/>NVSSPI25X<sp/>driver<sp/>public<sp/>APIs</highlight></codeline>
-<codeline lineno="336"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="337"><highlight class="normal"></highlight></codeline>
-<codeline lineno="338"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_close(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
-<codeline lineno="339"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_control(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint_fast16_t<sp/>cmd,</highlight></codeline>
-<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uintptr_t<sp/>arg);</highlight></codeline>
-<codeline lineno="341"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_erase(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
-<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size);</highlight></codeline>
-<codeline lineno="343"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_getAttrs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/><ref refid="struct_n_v_s___attrs" kindref="compound">NVS_Attrs</ref><sp/>*attrs);</highlight></codeline>
-<codeline lineno="344"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_init();</highlight></codeline>
-<codeline lineno="345"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_lock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint32_t<sp/>timeout);</highlight></codeline>
-<codeline lineno="346"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/><ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/><sp/><sp/>NVSSPI25X_open(uint_least8_t<sp/>index,<sp/><ref refid="struct_n_v_s___params" kindref="compound">NVS_Params</ref><sp/>*params);</highlight></codeline>
-<codeline lineno="347"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_read(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
-<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize);</highlight></codeline>
-<codeline lineno="349"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_unlock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
-<codeline lineno="350"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_write(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
-<codeline lineno="351"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize,<sp/>uint_fast16_t<sp/>flags);</highlight></codeline>
-<codeline lineno="352"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="353"><highlight class="comment"><sp/>*<sp/><sp/>Weakly<sp/>defined<sp/>APIs<sp/>that<sp/>can<sp/>be<sp/>overridden<sp/>by<sp/>the<sp/>user</highlight></codeline>
-<codeline lineno="354"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="355"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_initSpiCs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" kindref="member">spiHandle</ref>,<sp/>uint16_t<sp/>csId);</highlight></codeline>
-<codeline lineno="356"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_deinitSpiCs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" kindref="member">spiHandle</ref>,<sp/>uint16_t<sp/>csId);</highlight></codeline>
-<codeline lineno="357"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_assertSpiCs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" kindref="member">spiHandle</ref>,<sp/>uint16_t<sp/>csId);</highlight></codeline>
-<codeline lineno="358"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_deassertSpiCs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" kindref="member">spiHandle</ref>,<sp/>uint16_t<sp/>csId);</highlight></codeline>
-<codeline lineno="359"><highlight class="normal"></highlight></codeline>
-<codeline lineno="362"><highlight class="preprocessor">#if<sp/>defined<sp/>(__cplusplus)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="363"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="364"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>defined<sp/>(__cplusplus)<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="365"><highlight class="normal"></highlight></codeline>
-<codeline lineno="367"><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_nvs_NVSSPI25X__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+<codeline lineno="295" refid="struct_n_v_s_s_p_i25_x___h_w_attrs" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="296"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="297" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a0743a03845422aebdcc49c67552637cb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a0743a03845422aebdcc49c67552637cb" kindref="member">regionBaseOffset</ref>;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="298" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1aa33d42d0f66905a9d5d70ba77916099c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1aa33d42d0f66905a9d5d70ba77916099c" kindref="member">regionSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="299" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a4187978da42e59bb81953569577a53b0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a4187978da42e59bb81953569577a53b0" kindref="member">sectorSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="300" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ad231c8f7f6c73d29e2b715c8b1e032ba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ad231c8f7f6c73d29e2b715c8b1e032ba" kindref="member">verifyBuf</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="301" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ac0e721a58e6b25c8ab1fc0759698f796" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ac0e721a58e6b25c8ab1fc0759698f796" kindref="member">verifyBufSize</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="302" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___config__" kindref="compound">SPI_Handle</ref><sp/><sp/>*<ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1affd4e2d11d8b0c9dd43aeb22de7361f6" kindref="member">spiHandle</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="303" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ae99187ec73db72f537b87b75200fc52f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ae99187ec73db72f537b87b75200fc52f" kindref="member">spiIndex</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="304" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a738695395ff8772994c1446793636df0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a738695395ff8772994c1446793636df0" kindref="member">spiBitRate</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="312" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ade20d02364fd0f77d795295f4b85d363" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1ade20d02364fd0f77d795295f4b85d363" kindref="member">spiCsnGpioIndex</ref>;</highlight></codeline>
+<codeline lineno="320" refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a0babde38f1743458205b95c316363e80" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs_1a0babde38f1743458205b95c316363e80" kindref="member">statusPollDelayUs</ref>;</highlight></codeline>
+<codeline lineno="321"><highlight class="normal">}<sp/><ref refid="struct_n_v_s_s_p_i25_x___h_w_attrs" kindref="compound">NVSSPI25X_HWAttrs</ref>;</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"></highlight></codeline>
+<codeline lineno="323"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="324"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X<sp/>Object</highlight></codeline>
+<codeline lineno="325"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="326"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>application<sp/>must<sp/>not<sp/>access<sp/>any<sp/>member<sp/>variables<sp/>of<sp/>this<sp/>structure!</highlight></codeline>
+<codeline lineno="327"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="328" refid="struct_n_v_s_s_p_i25_x___object" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="329"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="330" refid="struct_n_v_s_s_p_i25_x___object_1ac279aced49b5423b40cfab02b5c78d98" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___object_1ac279aced49b5423b40cfab02b5c78d98" kindref="member">opened</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Has<sp/>this<sp/>region<sp/>been<sp/>opened<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="331" refid="struct_n_v_s_s_p_i25_x___object_1a6e78dbf7192457ef032aa7f94c68c4a0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___config__" kindref="compound">SPI_Handle</ref><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___object_1a6e78dbf7192457ef032aa7f94c68c4a0" kindref="member">spiHandle</ref>;</highlight></codeline>
+<codeline lineno="332" refid="struct_n_v_s_s_p_i25_x___object_1a6cb6753a7703769a54800945a065bfba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_n_v_s_s_p_i25_x___object_1a6cb6753a7703769a54800945a065bfba" kindref="member">sectorBaseMask</ref>;</highlight></codeline>
+<codeline lineno="333"><highlight class="normal">}<sp/><ref refid="struct_n_v_s_s_p_i25_x___object" kindref="compound">NVSSPI25X_Object</ref>;</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"></highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="336"><highlight class="comment"><sp/>*<sp/><sp/>@cond<sp/>NODOC</highlight></codeline>
+<codeline lineno="337"><highlight class="comment"><sp/>*<sp/><sp/>NVSSPI25X<sp/>driver<sp/>public<sp/>APIs</highlight></codeline>
+<codeline lineno="338"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="339"><highlight class="normal"></highlight></codeline>
+<codeline lineno="340"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_close(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_control(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint_fast16_t<sp/>cmd,</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uintptr_t<sp/>arg);</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_erase(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size);</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_getAttrs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/><ref refid="struct_n_v_s___attrs" kindref="compound">NVS_Attrs</ref><sp/>*attrs);</highlight></codeline>
+<codeline lineno="346"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_init();</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_lock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/>uint32_t<sp/>timeout);</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/><ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/><sp/><sp/>NVSSPI25X_open(uint_least8_t<sp/>index,<sp/><ref refid="struct_n_v_s___params" kindref="compound">NVS_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="349"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_read(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize);</highlight></codeline>
+<codeline lineno="351"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_unlock(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle);</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>int_fast16_t<sp/>NVSSPI25X_write(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>handle,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset,</highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*buffer,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>bufferSize,<sp/>uint_fast16_t<sp/>flags);</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="355"><highlight class="comment"><sp/>*<sp/><sp/>Weakly<sp/>defined<sp/>APIs<sp/>that<sp/>can<sp/>be<sp/>overridden<sp/>by<sp/>the<sp/>user</highlight></codeline>
+<codeline lineno="356"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="357"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_initSpiCs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>spiHandle,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_deinitSpiCs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>spiHandle,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_assertSpiCs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>spiHandle,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+<codeline lineno="360"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NVSSPI25X_deassertSpiCs(<ref refid="struct_n_v_s___config__" kindref="compound">NVS_Handle</ref><sp/>spiHandle,<sp/>uint16_t<sp/>csId);</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"></highlight></codeline>
+<codeline lineno="364"><highlight class="preprocessor">#if<sp/>defined<sp/>(__cplusplus)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="365"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="366"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>defined<sp/>(__cplusplus)<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="367"><highlight class="normal"></highlight></codeline>
+<codeline lineno="369"><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_nvs_NVSSPI25X__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
     <location file="exports/tidrivers_msp432/source/ti/drivers/nvs/NVSSPI25X.h"/>
   </compounddef>

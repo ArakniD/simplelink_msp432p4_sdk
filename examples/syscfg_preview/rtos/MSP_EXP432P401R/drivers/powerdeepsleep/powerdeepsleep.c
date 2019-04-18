@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,17 +36,14 @@
 /* Board Header file */
 #include "Board.h"
 
-/* 
- * When including a device specific header, such as PowerMSP432.h, 
- * DeviceFamily must be defined. 
- */
-#ifdef __MSP_EXP432P401R_H
-#ifndef DeviceFamily_MSP432P401x
-#define DeviceFamily_MSP432P401x
+/* Required when including driverlib header files */
+#ifdef Board_MSP_EXP432P401R
+#ifndef __MSP432P401R__
+#define __MSP432P401R__
 #endif
-#elif defined(__MSP_EXP432P4111_H)
-#ifndef DeviceFamily_MSP432P4x1xI
-#define DeviceFamily_MSP432P4x1xI
+#elif defined(Board_MSP_EXP432P4111)
+#ifndef __MSP432P4111__
+#define __MSP432P4111__
 #endif
 #endif
 
@@ -83,7 +80,7 @@ void gpioButtonFxn0(uint_least8_t x)
     MAP_GPIO_setAsOutputPin(GPIO_PORT_PE, PIN_ALL16);
     MAP_GPIO_setAsOutputPin(GPIO_PORT_PJ, PIN_ALL16);
 
-#ifdef __MSP_EXP432P4111_H
+#ifdef Board_MSP_EXP432P4111
     /*
      * Set P5.3 as analog input (connected to Temp Sensor on
      * MSP_EXP432P4111 LaunchPad)

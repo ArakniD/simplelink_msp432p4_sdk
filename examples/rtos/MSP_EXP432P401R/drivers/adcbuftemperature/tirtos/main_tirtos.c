@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@
 #include <ti/sysbios/BIOS.h>
 
 /* Example/Board Header files */
-#include "Board.h"
+#include <ti/drivers/Board.h>
 
 extern void *mainThread(void *arg0);
 

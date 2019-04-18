@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,127 +60,174 @@ let divChoices = [
 /* Array of Performance Level configurations for MSP432 */
 let config =  [
     {
+        name        : "dcoFrequency",
+        displayName : "DCO Frequency",
+        description : "Specify the center frequency to use in Hertz for the"
+            + " Digitally Controller Oscillator (DCO).",
+        longDescription:`
+Specifies a list of nominal center frequencies to use for the DCO. If
+a __Custom__ frequency is required, configure the desired frequency using the
+__Custom DCO Frequency__ configurable.
+`,
+        default     : 3000000,
+        onChange    : calcOutClockFreq,
+        options     :
+        [
+            {
+                name: 0, displayName : "Custom",
+                description: "Specify a custom frequency for the DCO.",
+                longDescription: "You can specify the custom frequency using"
+                    + " the __Custom Center Frequency__ configurable."
+            },
+            {
+                name: 1500000, description: "1 MHz to 2 MHz"
+            },
+            {
+                name: 3000000, description: "2 MHz to 4 MHz"
+            },
+            {
+                name: 6000000, description: "4 MHz to 8 MHz"
+            },
+            {
+                name: 12000000, description: "8 MHz to 16 MHz"
+            },
+            {
+                name: 24000000, description: "16 MHz to 32 MHz"
+            },
+            {
+                name: 48000000, description: "32 MHz to 64 MHz"
+            }
+        ]
+    },
+    {
+        name        : "customDcoFrequency",
+        displayName : "Custom DCO Frequency",
+        description : "Custom center frequency to tune Digital Controlled"
+            + " Oscillator (DCO)",
+        default     : 3500000,
+        onChange    : calcOutClockFreq,
+        hidden      : true
+    },
+    {
         name        : "mclk",
         displayName : "MCLK",
-        description : "MCLK frequency for this Performance Level",
+        description : "Master Clock (MCLK) frequency for this performance level",
+        longDescription:`
+Master Clock (MCLK) is used by the CPU and peripheral module interfaces. The
+clock source can be configured using the __MCLK Source__ configurable.
+`,
         default     : 3000000,
         readOnly    : true
+    },
+    {
+        name        : "mclkSource",
+        displayName : "MCLK Source",
+        description : "Master Clock (MCLK) source for this performance level.",
+        default     : "DCO",
+        onChange    : calcOutClockFreq,
+        options     :
+        [
+            { name: "DCO"    },
+            { name: "HFXT"   },
+            { name: "LFXT"   },
+            { name: "VLO"    },
+            { name: "REFO"   },
+            { name: "MODOSC" }
+        ]
+    },
+    {
+        name        : "mclkDivider",
+        displayName : "MCLK Divider",
+        description : "Master Clock (MCLK) divider",
+        default     : 1,
+        onChange    : calcOutClockFreq,
+        options     : divChoices
     },
     {
         name        : "hsmclk",
         displayName : "HSMCLK",
-        description : "HSMCLK frequency for this Performance Level",
+        description : "Subsystem Master Clock (HSMCLK) frequency for"
+        +   " this performance level",
+        longDescription:`
+The Subsystem Master Clock (HSMCLK) is software selectable by individual
+peripheral modules.
+`,
         default     : 3000000,
         readOnly    : true
+    },
+    {
+        name        : "hsmclkSource",
+        displayName : "HSMCLK Source",
+        description : "Subsystem Master Clock (HSMCLK) source.",
+        longDescription:`
+Specifies the HSMCLK source. The Low-Speed Subsytem Master Clock (SMCLK) uses
+the same clock source as HSMCLK.
+`,
+        default     : "DCO",
+        onChange    : calcOutClockFreq,
+        options     :
+        [
+            { name: "DCO"    },
+            { name: "HFXT"   },
+            { name: "LFXT"   },
+            { name: "VLO"    },
+            { name: "REFO"   },
+            { name: "MODOSC" }
+        ]
+    },
+    {
+        name        : "hsmclkDivider",
+        displayName : "HSMCLK Divider",
+        description : "Subsystem Master Clock (HSMCLK) divider.",
+        default     : 1,
+        onChange    : calcOutClockFreq,
+        options     : divChoices
     },
     {
         name        : "smclk",
         displayName : "SMCLK",
-        description : "SMCLK frequency for this Performance Level",
+        description : "Low-Speed Subsystem Master Clock (SMCLK) frequency for"
+            + " this performance level",
+        longDescription:`
+SMCLK can be divided independently from HSMCLK. SMCLK is limited in frequency
+to half the rated maximum frequency of HSMCLK. SMCLK is software
+selectable by individual peripheral modules.
+`,
         default     : 3000000,
         readOnly    : true
     },
     {
-        name        : "bclk",
-        displayName : "BCLK",
-        description : "BCLK frequency for this Performance Level",
-        default     : 32768,
-        readOnly    : true
+        name        : "smclkDivider",
+        displayName : "SMCLK Divider",
+        description : "The Low-Speed Subsystem Master Clock (SMCLK) uses"
+            + " the same clock source as HSMCLK.",
+        longDescription:`
+SMCLK can be divided independently from HSMCLK. SMCLK is limited in frequency
+to half the rated maximum frequency of HSMCLK. SMCLK is software
+selectable by individual peripheral modules.
+`,
+        default     : 1,
+        onChange    : calcOutClockFreq,
+        options     : divChoices
     },
     {
         name        : "aclk",
         displayName : "ACLK",
-        description : "ACLK frequency for this Performance Level",
+        description : "Auxiliary Clock (ACLK) frequency for this"
+            + " performance level",
+        longDescription: "ACLK is software selectable by individual peripheral"
+            + " modules. ACLK is restricted to maximum frequency of"
+            + " operation of 128 kHz.",
         default     : 32768,
         readOnly    : true
     },
-
-
-    {
-        name        : "activeState",
-        displayName : "Active State",
-        description : "Active State for the Device",
-        default     : "LDO",
-        options     :
-        [
-            { name: "LDO"  /* Low Dropout */},
-            { name: "DCDC" /* DC-DC */ },
-            { name: "LF"   /* Low Frequency */}
-        ]
-    },
-    {
-        name        : "coreVoltageLevel",
-        displayName : "Core Voltage Level",
-        default     : "VCORE0",
-        options     :
-        [
-            { name : "VCORE0" },
-            { name : "VCORE1" }
-        ]
-    },
-    {
-        name        : "dcoFrequencyRangeSelection",
-        displayName : "DCO Frequency Range Selection",
-        default     : 3000000,
-        onChange    : calcOutClockFreq,
-        options     :
-        [
-            { name: 1500000,   description: "1  MHz to 2  MHz" },
-            { name: 3000000,   description: "2  MHz to 4  MHz" },
-            { name: 6000000,   description: "4  MHz to 8  MHz" },
-            { name: 12000000,  description: "8  MHz to 16 MHz" },
-            { name: 24000000,  description: "16 MHz to 32 MHz" },
-            { name: 48000000,  description: "32 MHz to 64 MHz" }
-        ]
-    },
-
-    /* Source Configuration */
-    {
-        name        : "mclkSource",
-        displayName : "MCLK Source",
-        default     : "DCO",
-        onChange    : calcOutClockFreq,
-        options     :
-        [
-            { name: "DCO"    },
-            { name: "HFXT"   },
-            { name: "LFXT"   },
-            { name: "VLO"    },
-            { name: "REFO"   },
-            { name: "MODOSC" }
-        ]
-    },
-    {
-        name        : "smclkSharedSource",
-        displayName : "SMCLK Shared Source",
-        description : "HSMCLK / SMCLK Shared Source",
-        default     : "DCO",
-        onChange    : calcOutClockFreq,
-        options     :
-        [
-            { name: "DCO"    },
-            { name: "HFXT"   },
-            { name: "LFXT"   },
-            { name: "VLO"    },
-            { name: "REFO"   },
-            { name: "MODOSC" }
-        ]
-    },
-    {
-        name        : "bclkSource",
-        displayName : "BCLK Source",
-        default     : "REFO",
-        onChange    : calcOutClockFreq,
-        options     :
-        [
-            { name: "LFXT" },
-            { name: "REFO" }
-        ]
-    },
-
     {
         name        : "aclkSource",
         displayName : "ACLK Source",
+        description : "Auxiliary Clock (ACLK) source.",
+        longDescription: "ACLK is software selectable by individual peripheral"
+            + " modules. ACLK is restricted to maximum frequency of"
+            + " operation of 128 kHz.",
         default     : "REFO",
         onChange    : calcOutClockFreq,
         options     :
@@ -190,51 +237,130 @@ let config =  [
             { name: "REFO" }
         ]
     },
-
-    {
-        name        : "mclkDivider",
-        displayName : "MCLK Divider",
-        default     : 1,
-        onChange    : calcOutClockFreq,
-        options     : divChoices
-    },
-
-    /* Divider Configuration */
-    {
-        name        : "hsmclkDivider",
-        displayName : "HSMCLK Divider",
-        default     : 1,
-        onChange    : calcOutClockFreq,
-        options     : divChoices
-    },
-    {
-        name        : "smclkDivider",
-        displayName : "SMCLK Divider",
-        default     : 1,
-        onChange    : calcOutClockFreq,
-        options     : divChoices
-    },
-
     {
         name        : "aclkDivider",
         displayName : "ACLK Divider",
+        description : "Auxiliary Clock (ACLK) divider",
+        longDescription: "ACLK is software selectable by individual peripheral"
+            + " modules. ACLK is restricted to maximum frequency of"
+            + " operation of 128 kHz.",
         default     : 1,
         onChange    : calcOutClockFreq,
         options     : divChoices
     },
+    {
+        name        : "bclk",
+        displayName : "BCLK",
+        description : "Low-Speed Backup Domain Clock (BCLK} frequency for"
+            + " this performance level",
+        longDescription: "BCLK is used primarily in the backup domain and is"
+            + " restricted to a maximum frequency of 32.768 kHz",
+        default     : 32768,
+        readOnly    : true
+    },
+    {
+        name        : "bclkSource",
+        displayName : "BCLK Source",
+        description : "Low-Speed Backup Domain Clock (BCLK} source.",
+        longDescription: "BCLK is used primarily in the backup domain and is"
+            + " restricted to a maximum frequency of 32.768 kHz",
+        default     : "REFO",
+        onChange    : calcOutClockFreq,
+        options     :
+        [
+            { name: "LFXT" },
+            { name: "REFO" }
+        ]
+    },
+    {
+        name        : "activeState",
+        displayName : "Active State",
+        description : "Active State for the Device",
+        longDescription:`
+Active states refer to any power state in which CPU execution is possible.
+Two core voltage level settings are supported: __VCORE0__ and __VCORE1__. See
+the __Core Voltage Level__ configurable for more on core voltage levels. Three
+active modes are associated with each core voltage level. The various active
+modes allow for optimal power and performance across a broad range of
+application requirements. The core voltage can be supplied by either
+a low dropout (__LDO__) regulator or a DC/DC (__DCDC__) regulator.
 
-    /* FLASH configuration */
+Low Frequency (LF) active states are useful for low-frequency operation. The
+low-frequency active states limit the maximum frequency of operation to 128
+kHz. The application must not perform flash program or erase operations or
+any change to SRAM bank enable or retention enable configurations while in
+low-frequency active states. This allows the power management system to be
+optimized to support the lower power demands in these operating states.
+Low-frequency active states are based on LDO operation only.
+`,
+        default     : "LDO",
+        options     :
+        [
+            { name: "LDO", description: "Low Dropout" },
+            { name: "DCDC", description: "DC/DC Regulator" },
+            { name: "LF", description: "Low Frequency" }
+        ]
+    },
+    {
+        name        : "coreVoltageLevel",
+        displayName : "Core Voltage Level",
+        description : "Selects generation voltage for the device core",
+        longDescription:`
+The Power Supply System (PSS) uses an integrated voltage regulator to produce
+a secondary core voltage (VCORE) from the primary voltage that is applied to
+the device (VCC). In general, VCORE supplies the CPU, memories, and the
+digital modules, while VCC supplies the I/Os and analog modules.
+The VCORE output is maintained using a dedicated voltage reference.
+VCORE voltage level is programmable to allow power savings if the maximum
+device speed is not required. Modifying this configurable will impact
+the max frequencies available for the __MCLK__, __HSMCLK__, and __SMCLK__.
+`,
+        default     : "VCORE0",
+        options     :
+        [
+            { name : "VCORE0" },
+            { name : "VCORE1" }
+        ]
+    },
     {
         name        : "flashWaitStates",
         displayName : "Flash Wait-States",
         description : "Number of Flash Wait-States",
+        longDescription:`
+The flash controller is configurable in terms of the number of memory
+bus cycles it takes to service any read command. This allows the CPU
+execution frequency to be higher than the maximum read frequency
+supported by the flash memory. If the bus clock speed is higher than
+the native frequency of the flash, the access is stalled for the
+configured number of wait states, allowing data from the flash to
+be accessed reliably.
+
+> See the device data sheet for CPU execution frequency and
+wait-state requirements.
+`,
         default     : 0
     },
-
     {
         name        : "enableFlashBuffer",
         displayName : "Enable Flash Buffer",
         description : "Enable Flash Read Buffering",
+        longDescription:`
+When read buffering is enabled, the flash memory always reads an
+entire 128-bit line irrespective of the access size of 8, 16, or 32
+bits. The 128-bit data and its associated address is internally
+buffered by the flash controller, so subsequent accesses (expected to
+be contiguous in nature) within the same 128-bit address boundary are
+serviced by the buffer. Hence, the flash accesses see wait-states only
+when the 128-bit boundary is crossed, while read accesses within the
+buffer's range are serviced without any bus stalls. If read buffering
+is disabled, accesses to the flash bypasses the buffer, and the data
+read from the flash is limited to the width of the access (8, 16, or
+32 bits). Each bank has independent settings for the read buffering.
+In addition, within each bank, the application has independent
+flexibility to enable read buffering for instruction and data fetches.
+Read buffers are bypassed during any program or erase operation by
+the controller to ensure data coherency.
+`,
         default     : false
     }
 ];
@@ -242,17 +368,24 @@ let config =  [
 /*
  *  ======== getClockSourceFreq ========
  */
-function getClockSourceFreq(clk, perfInst)
+function getClockSourceFreq(clk, inst)
 {
     let pow = system.getScript("/ti/drivers/Power").$static;
 
     switch (clk) {
-        case 'VLO'   : { return VLOCLK;                                  }
-        case 'REFO'  : { return REFOCLK;                                 }
-        case 'MODOSC': { return MODOSC;                                  }
-        case 'DCO'   : { return perfInst.dcoFrequencyRangeSelection;     }
-        case 'HFXT'  : { return pow.configurePinHFXT ? pow.HFXTFREQ : 0; }
-        case 'LFXT'  : { return pow.configurePinLFXT ? LFXTCLK      : 0; }
+        case 'VLO'   : { return VLOCLK; }
+        case 'REFO'  : { return REFOCLK; }
+        case 'MODOSC': { return MODOSC; }
+        case 'DCO'   : {
+            if(inst.dcoFrequency == 0) {
+                return inst.customDcoFrequency;
+            }
+            else {
+                return inst.dcoFrequency;
+            }
+        }
+        case 'HFXT'  : { return pow.enableHFXTClock ? pow.HFXTFREQ : 0; }
+        case 'LFXT'  : { return pow.enableLFXTClock ? LFXTCLK      : 0; }
     }
     return 0;
 }
@@ -267,11 +400,30 @@ function calcOutClockFreq(inst, ui)
     let divs  = inst.smclkDivider;
     let diva  = inst.aclkDivider;
 
-    inst.mclk    = getClockSourceFreq(inst.mclkSource, inst) / divm;
-    inst.hsmclk  = getClockSourceFreq(inst.smclkSharedSource, inst) / divhs;
-    inst.smclk   = getClockSourceFreq(inst.smclkSharedSource, inst) / divs;
+    if (inst.dcoFrequency === 0) {
+        ui.customDcoFrequency.hidden = false;
+    }
+    else {
+        ui.customDcoFrequency.hidden = true;
+    }
+
+    ui.mclk.readOnly = false;
+    ui.hsmclk.readOnly = false;
+    ui.smclk.readOnly = false;
+    ui.bclk.readOnly = false;
+    ui.aclk.readOnly = false;
+
+    inst.mclk = getClockSourceFreq(inst.mclkSource, inst) / divm;
+    inst.hsmclk  = getClockSourceFreq(inst.hsmclkSource, inst) / divhs;
+    inst.smclk   = getClockSourceFreq(inst.hsmclkSource, inst) / divs;
     inst.bclk    = getClockSourceFreq(inst.bclkSource, inst);
     inst.aclk    = getClockSourceFreq(inst.aclkSource, inst) / diva;
+
+    ui.mclk.readOnly = true;
+    ui.hsmclk.readOnly = true;
+    ui.smclk.readOnly = true;
+    ui.bclk.readOnly = true;
+    ui.aclk.readOnly = true;
 }
 
 /*
@@ -283,7 +435,7 @@ function calcOutClockFreq(inst, ui)
  */
 function validate(inst, vo)
 {
-    /* activeState, coreVoltageLevel, dcoFrequencyRangeSelection,
+    /* activeState, coreVoltageLevel, dcoFrequency,
      * flashWaitStates, enableFlashBuffer
      * DIV:  M, HS, S, A
      * SEL:  M, S, B, A
@@ -291,7 +443,8 @@ function validate(inst, vo)
      */
 
     if (inst.ALCK > 128000) {
-        logError(vo, inst, "aclkSource", 'ACLK frequency must be 128kHz or lower.');
+        logError(vo, inst, ["aclkSource", "aclkDivider"],
+            'ACLK frequency must be 128kHz or lower.');
     }
 
     if (inst.BLCK > 32768) {
@@ -299,7 +452,7 @@ function validate(inst, vo)
     }
 
     if (inst.smclk > 24000000) {
-        logError(vo, inst, ["smclkSharedSource", "smclkDivider"],
+        logError(vo, inst, ["hsmclkSource", "smclkDivider"],
                  'SMCLK frequency must be 24000000 or lower.');
     }
 
@@ -334,8 +487,8 @@ function validate(inst, vo)
             'Selected clock source has not been configured.');
     }
 
-    if (getClockSourceFreq(inst.smclkSharedSource, inst) === 0) {
-        logError(vo, inst, ["smclkSharedSource"],
+    if (getClockSourceFreq(inst.hsmclkSource, inst) === 0) {
+        logError(vo, inst, ["hsmclkSource"],
             'Selected clock source has not been configured.');
     }
 
@@ -356,8 +509,15 @@ function validate(inst, vo)
  */
 exports = {
     name        : "perfLevel",
-    displayName : "Performance Levels",
-    description : "MSP432 performance levels used by Power",
+    displayName : "MSP432P4 Performance Levels",
+    description : "MSP432P4 performance levels used by the Power manager.",
+    longDescription:`
+MSP432 performance levels used by the Power manager.
+
+* [Configuration Options][1]
+
+[1]:/tidrivers/syscfg/html/ConfigDoc.html#PowerMSP432PerfLevels_Configuration_Options
+`,
     validate    : validate,
     maxInstances: 8,
     config      : config

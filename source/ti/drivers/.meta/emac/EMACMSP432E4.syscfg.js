@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,12 +54,11 @@ let devSpecific = {
         {
             name: "macAddress",
             displayName: "MAC Address",
-            description: "By default, when the MAC address is"
-                + " ff:ff:ff:ff:ff:ff, the EMAC driver reads the MAC address"
-                + " that is stored in flash. To override this behavior,"
-                + " manually set the MAC address you wish to use. The format"
-                + " should be in the form xx:xx:xx:xx:xx:xx, for"
-                + " example, 01:1a:b6:02:c4:e5",
+            description: "MAC Address used by the EMAC driver.",
+            longDescription: "When the MAC address is the default,"
+                + " `ff:ff:ff:ff:ff:ff`, the EMAC driver reads a MAC address"
+                + " value stored in flash. To override this behavior,"
+                + " manually set the MAC address.",
             placeholder: "00:00:00:00:00:00",
             textType: "mac_address",
             default: "ff:ff:ff:ff:ff:ff"
@@ -113,12 +112,6 @@ function pinmuxRequirements(inst)
 
 /*
  *  ======== filterHardware ========
- *  Control LED Pin usage.
- *
- *  @param component - a hardware componenet
- *
- *  @returns a mapping of component names to pin names
- *  @returns null if the component does not match this module
  */
 function filterHardware(component) {
     return (Common.typeMatches(component.type, ["EthernetLED"]));

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Texas Instruments Incorporated
+ * Copyright (c) 2016-2019 Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -253,8 +253,20 @@ uint32_t ADCMSP432_convertToMicroVolts(ADC_Handle handle,
             break;
 
         case REF_A_VREF2_5V:
+            refMicroVolts = 2500000;
+            break;
+
+        case ADCMSP432_REF_VOLTAGE_EXT:
+            refMicroVolts = hwAttrs->refExtValue;
+            break;
+
+        case ADCMSP432_REF_VOLTAGE_EXT_BUF:
+            refMicroVolts = hwAttrs->refExtValue;
+            break;
+
         default:
             refMicroVolts = 2500000;
+
     }
 
     if (adcValue == 0x3FFF) {

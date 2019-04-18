@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,9 @@
 
 "use strict";
 
+/* get Common /ti/drivers utility functions */
+let Common = system.getScript("/ti/drivers/Common.js");
+
 /*
  *  ======== devSpecific ========
  *  Device-specific extensions to be added to base ADC configuration
@@ -50,7 +53,7 @@ let devSpecific = {
             name: "referenceSource",
             displayName: "Reference Source",
             default: "Internal",
-            description: "Specifies the ADC reference voltage source.",
+            description: "Specifies the ADC's reference voltage source.",
             options: [
                 { name: "Internal" },
                 { name: "External" }
@@ -59,6 +62,7 @@ let devSpecific = {
         {
             name: "resolution",
             displayName: "Resolution",
+            description: "Specifies the ADC's resolution",
             hidden: true,
             default: "12 Bits",
             options: [
@@ -68,7 +72,10 @@ let devSpecific = {
         {
             name: "sequencer",
             displayName: "Sequencer",
-            description: "Specifies the ADC sequencer.",
+            description: "Specifies the ADC hardware sequencer(s) to use.",
+            longDescription: "Each ADC module contains four programmable"
+                + " sequencers allowing the sampling of multiple analog input"
+                + " sources without controller intervention.",
             default: 0,
             options: [
                 { name: 0 },
@@ -81,6 +88,8 @@ let devSpecific = {
 
     /* override generic requirements with device-specific reqs (if any) */
     pinmuxRequirements: pinmuxRequirements,
+
+    modules: Common.autoForceModules(["Board", "Power"]),
 
     templates: {
         boardc: "/ti/drivers/adc/ADCMSP432E4.Board.c.xdt",
@@ -134,11 +143,13 @@ function pinmuxRequirements(inst)
  */
 function extend(base)
 {
-
-    devSpecific.config = base.config.concat(devSpecific.config);
-
     /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

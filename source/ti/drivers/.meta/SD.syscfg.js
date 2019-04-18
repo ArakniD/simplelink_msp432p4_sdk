@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,16 +42,18 @@ let Common = system.getScript("/ti/drivers/Common.js");
 
 let family = Common.device2Family(system.deviceData, "SD");
 
-/* Intro splash on GUI */
-let longDescription = "The SD driver provides a simplified "
-    + "application interface to access peripherals on an SD bus.";
-
 /* generic configuration parameters for SD instances */
 let config = [
     {
         name: "useFatFS",
         displayName: "Use FatFS",
-        default: false,
+        description: "Enables the driver to use the SDFatFS driver interface",
+        longDescription:`When enabled, the [__SDFatFS__][1] driver interface
+will be accessible by the application.
+
+[1]: /tidrivers/doxygen/html/_s_d_fat_f_s_8h.html#details "C API reference"
+`,
+        default: false
     }
 ];
 
@@ -73,12 +75,25 @@ function validate(inst, validation)
  */
 let base = {
     displayName: "SD",
-    description: "SD Driver",
-    longDescription: longDescription,
+    description: "Secure Digital (SD) Driver",
+    longDescription: `
+The [__SD driver__][1] provides a simple interface to perform basic
+operations on SD cards.
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration][4]
+[1]: /tidrivers/doxygen/html/_s_d_8h.html#details "C API reference"
+[2]:
+/tidrivers/doxygen/html/_s_d_8h.html#ti_drivers_SD_Synopsis "Synopsis"
+[3]: /tidrivers/doxygen/html/_s_d_8h.html#ti_drivers_SD_Examples
+"C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#SD_Configuration_Options "Configuration options reference"
+`,
     documentation: "/tidrivers/doxygen/html/_s_d_8h.html",
     defaultInstanceName: "Board_SD",
-    config: config,
-    validate: validate
+    config: Common.addNameConfig(config, "/ti/drivers/SD", "Board_SD"),
+    validate: validate,
+    modules: Common.autoForceModules(["Board", "Power"])
 };
 
 /* extend the base exports to include family-specific content */

@@ -258,8 +258,8 @@ void debounceGPIO(uint_least8_t index)
      */
     Timer_close(debounceTimer);
     timer_params.period = 20000;
-    timer_params.periodUnits = TIMER_PERIOD_US;
-    timer_params.timerMode = TIMER_CONTINUOUS_CB;
+    timer_params.periodUnits = Timer_PERIOD_US;
+    timer_params.timerMode = Timer_CONTINUOUS_CALLBACK;
     timer_params.timerCallback = debounceTimer_Callback;
     debounceTimer = Timer_open(Board_TIMER3, &timer_params);
     if (debounceTimer == NULL) {
@@ -316,8 +316,8 @@ void gpioButton0_Callback(uint_least8_t index)
             /* Restart the 4-Second timeout.  Also restarts for interval capture. */
             Timer_close(intervalTimer);
             timer_params.period = 4000000;
-            timer_params.periodUnits = TIMER_PERIOD_US;
-            timer_params.timerMode = TIMER_CONTINUOUS_CB;
+            timer_params.periodUnits = Timer_PERIOD_US;
+            timer_params.timerMode = Timer_CONTINUOUS_CALLBACK;
             timer_params.timerCallback = intervalTimer_Callback;
             intervalTimer = Timer_open(Board_TIMER0, &timer_params);
             if (intervalTimer == NULL) {

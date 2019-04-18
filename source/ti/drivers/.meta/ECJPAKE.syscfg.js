@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,11 +44,7 @@ let Common = system.getScript("/ti/drivers/Common.js");
 /* get /ti/drivers family name from device object */
 let family = Common.device2Family(system.deviceData, "ECDH");
 
-let longDescription = "Elliptic Curve Password Authenticated Key Exchange by"
-        + " Juggling (EC-JPAKE) is a key agreement scheme that establishes a"
-        + " secure channel over an insecure network. It only requires sharing"
-        + " a password offline and does not require public key infrastructure"
-        + " or trusted third parties such as certificate authorities.";
+let config = [];
 
 /*
  *  ======== validate ========
@@ -68,11 +64,27 @@ function validate(inst, validation)
  */
 let base = {
     displayName : "ECJPAKE",
-    description : "Elliptic Curve Password Authenticated Key Exchange Module",
-    longDescription : longDescription,
-    documentation: "/tidrivers/doxygen/html/_e_c_j_p_a_k_e_8h.html",
-    validate : validate,
-    defaultInstanceName : "Board_ECJPAKE"
+    description : "Elliptic Curve Password Authenticated Key Exchange by"
+        + " Juggling Driver",
+    longDescription : `
+The [__ECJPAKE driver__][1] provides is a key agreement
+scheme that establishes a secure channel over an insecure network.
+It only requires sharing a password offline and does not require
+public key infrastructure or trusted third parties such as
+certificate authorities.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+[1]: /tidrivers/doxygen/html/_e_c_j_p_a_k_e_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_e_c_j_p_a_k_e_8h.html#ti_drivers_ECJPAKE_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_e_c_j_p_a_k_e_8h.html#ti_drivers_ECJPAKE_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#ECJPAKE_Configuration_Options "Configuration options reference"
+`,
+    validate            : validate,
+    defaultInstanceName : "Board_ECJPAKE",
+    config              : Common.addNameConfig(config, "/ti/drivers/ECJPAKE", "Board_ECJPAKE"),
+    modules             : Common.autoForceModules(["Board", "Power"])
 };
 
 /* extend the base exports to include family-specific content */

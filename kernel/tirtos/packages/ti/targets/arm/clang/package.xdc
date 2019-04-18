@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018 by Texas Instruments Incorporated.
+ *  Copyright 2019 by Texas Instruments Incorporated.
  *
  */
 
@@ -55,7 +55,7 @@ package ti.targets.arm.clang [1,0,0] {
     module M3;
 }
 /*
- *  @(#) ti.targets.arm.clang; 1, 0, 0,2; 10-26-2018 10:20:32; /db/ztree/library/trees/xdctargets/xdctargets-s01/src/ xlibrary
+ *  @(#) ti.targets.arm.clang; 1, 0, 0,1; 2-9-2019 16:22:58; /db/ztree/library/trees/xdctargets/xdctargets-t01/src/ xlibrary
 
  */
 

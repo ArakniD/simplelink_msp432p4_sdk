@@ -31,7 +31,7 @@
         <location file="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" line="229" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" bodystart="229" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_timer_m_s_p432___object___1a47d6a131be95f91b27d096e67a36eaa4" prot="public" static="no" mutable="no">
-        <type><ref refid="_power_8h_1a380d08b754e6f3f096349ab5fc464209" kindref="member">Power_NotifyObj</ref></type>
+        <type><ref refid="struct_power___notify_obj" kindref="compound">Power_NotifyObj</ref></type>
         <definition>Power_NotifyObj TimerMSP432_Object_::perfChangeNotify</definition>
         <argsstring></argsstring>
         <name>perfChangeNotify</name>
@@ -70,7 +70,7 @@
         <location file="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" line="232" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" bodystart="232" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_timer_m_s_p432___object___1a61a6690b329fc51b01f5e34e474a73d2" prot="public" static="no" mutable="no">
-        <type><ref refid="_timer_8h_1a9bdf0bac4961e11704f2bf087eefed4e" kindref="member">Timer_Mode</ref></type>
+        <type><ref refid="_timer_8h_1ab0e86a066b5c68c55183cd680090a9b7" kindref="member">Timer_Mode</ref></type>
         <definition>Timer_Mode TimerMSP432_Object_::mode</definition>
         <argsstring></argsstring>
         <name>mode</name>
@@ -83,7 +83,7 @@
         <location file="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" line="233" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" bodystart="233" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_timer_m_s_p432___object___1a4cad75b8c909fa23b79722b25e9af2d6" prot="public" static="no" mutable="no">
-        <type><ref refid="_timer_8h_1a446e5578acbc8ed7bcbc1bee3e2a2c61" kindref="member">Timer_PeriodUnits</ref></type>
+        <type><ref refid="_timer_8h_1ae5b37c2cc77a2a426ba45d2c8544d439" kindref="member">Timer_PeriodUnits</ref></type>
         <definition>Timer_PeriodUnits TimerMSP432_Object_::units</definition>
         <argsstring></argsstring>
         <name>units</name>
@@ -140,25 +140,42 @@
     <detaileddescription>
 <para>The application must not access any member variables of this structure! </para>    </detaileddescription>
     <collaborationgraph>
-      <node id="259">
+      <node id="261">
         <label>List_Elem</label>
         <link refid="struct_list___elem"/>
-        <childnode refid="259" relation="usage">
+        <childnode refid="261" relation="usage">
           <edgelabel>prev</edgelabel>
           <edgelabel>next</edgelabel>
         </childnode>
       </node>
-      <node id="258">
-        <label>Power_NotifyObj_</label>
-        <link refid="struct_power___notify_obj__"/>
-        <childnode refid="259" relation="usage">
+      <node id="260">
+        <label>Power_NotifyObj</label>
+        <link refid="struct_power___notify_obj"/>
+        <childnode refid="261" relation="usage">
           <edgelabel>link</edgelabel>
         </childnode>
       </node>
-      <node id="261">
-        <label>Timer_FxnTable_</label>
-        <link refid="struct_timer___fxn_table__"/>
+      <node id="262">
+        <label>Timer_Config_</label>
+        <link refid="struct_timer___config__"/>
+        <childnode refid="263" relation="usage">
+          <edgelabel>fxnTablePtr</edgelabel>
+        </childnode>
+      </node>
+      <node id="259">
+        <label>TimerMSP432_Object_</label>
+        <link refid="struct_timer_m_s_p432___object__"/>
         <childnode refid="260" relation="usage">
+          <edgelabel>perfChangeNotify</edgelabel>
+        </childnode>
+        <childnode refid="262" relation="usage">
+          <edgelabel>callBack</edgelabel>
+        </childnode>
+      </node>
+      <node id="263">
+        <label>Timer_FxnTable</label>
+        <link refid="struct_timer___fxn_table"/>
+        <childnode refid="262" relation="usage">
           <edgelabel>closeFxn</edgelabel>
           <edgelabel>stopFxn</edgelabel>
           <edgelabel>initFxn</edgelabel>
@@ -166,23 +183,6 @@
           <edgelabel>controlFxn</edgelabel>
           <edgelabel>openFxn</edgelabel>
           <edgelabel>getCountFxn</edgelabel>
-        </childnode>
-      </node>
-      <node id="260">
-        <label>Timer_Config_</label>
-        <link refid="struct_timer___config__"/>
-        <childnode refid="261" relation="usage">
-          <edgelabel>fxnTablePtr</edgelabel>
-        </childnode>
-      </node>
-      <node id="257">
-        <label>TimerMSP432_Object_</label>
-        <link refid="struct_timer_m_s_p432___object__"/>
-        <childnode refid="258" relation="usage">
-          <edgelabel>perfChangeNotify</edgelabel>
-        </childnode>
-        <childnode refid="260" relation="usage">
-          <edgelabel>callBack</edgelabel>
         </childnode>
       </node>
     </collaborationgraph>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,16 +44,13 @@ let Common = system.getScript("/ti/drivers/Common.js");
 /* get /ti/drivers family name from device object */
 let family = Common.device2Family(system.deviceData, "SHA2");
 
-/* Intro splash on GUI */
-let longDescription = "Secure Hash Algorithm 2 (SHA2).  This is a cryptographic"
-    + " hashing algorithm that maps an input of arbitrary length to a"
-    + " fixed-length output with negligible probability of a collision.";
-
 let intPriority = Common.newIntPri()[0];
 intPriority.displayName = "Crypto peripheral interrupt priority";
 
 let swiPriority = Common.newSwiPri();
 swiPriority.displayName = "Crypto interrupt Swi handler priority";
+
+let config = [];
 
 /*
  *  ======== validate ========
@@ -73,11 +70,25 @@ function validate(inst, validation)
  */
 let base = {
     displayName         : "SHA2",
-    description         : "Secure Hash Algorithm (SHA2)",
-    longDescription     : longDescription,
-    documentation       : "/tidrivers/doxygen/html/_s_h_a2_8h.html",
+    description         : "Secure Hash Algorithm (SHA2) Driver",
+    longDescription     : `
+The [__SHA2 driver__][1] provides access to the
+SHA2 family of cryptographic hashes that map an
+input of arbitrary length to a fixed-length output
+with negligible probability of collision.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+[1]: /tidrivers/doxygen/html/_s_h_a2_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_s_h_a2_8h.html#ti_drivers_SHA2_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_s_h_a2_8h.html#ti_drivers_SHA2_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#SHA2_Configuration_Options "Configuration options reference"
+`,
     validate            : validate,
     defaultInstanceName : "Board_SHA2",
+    config              : Common.addNameConfig(config, "/ti/drivers/SHA2", "Board_SHA2"),
+    modules: Common.autoForceModules(["Board", "Power"])
 };
 
 /* get family-specific SHA2 module */

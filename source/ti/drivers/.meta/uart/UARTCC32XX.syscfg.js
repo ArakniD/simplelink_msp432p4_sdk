@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -101,10 +101,10 @@ let devSpecific = {
 function modules(inst)
 {
     if (inst.useDMA) {
-        return (Common.autoForcePowerAndDMAModules());
+        return (Common.autoForceModules(["Board", "Power", "DMA"])());
     }
     else {
-        return (Common.autoForcePowerModule());
+        return (Common.autoForceModules(["Board", "Power"])());
     }
 }
 
@@ -265,14 +265,16 @@ function validate(inst, validation)
  */
 function extend(base)
 {
-    /* save base properties/methods, to use in our methods */
+    /* save base properies/methods, to use in our methods */
     $super = base;
 
-    /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
-
     /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,18 +30,13 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/** ============================================================================
+/*!****************************************************************************
  *  @file       Display.h
- *
  *  @brief      Generic interface for text output
  *
- *  # Driver include #
- *  The display header file should be included in an application as follows:
- *  @code
- *  #include <ti/display/Display.h>
- *  @endcode
+ *  @anchor ti_drivers_Display_Overview
+ *  # Overview
  *
- *  # Operation #
  *  The Display middleware-driver in TI-RTOS is designed to abstract operations
  *  and considerations specific to given output method.
  *
@@ -58,7 +53,114 @@
  *        take place if the symbol *Display_DISABLE_ALL* is defined globally,
  *        or before *Display.h* is included.
  *
- *  ## Opening the driver #
+ *  <hr>
+ *  @anchor ti_drivers_Display_Usage
+ *  # Usage
+ *
+ *  This documentation provides a basic @ref ti_drivers_Display_Synopsis
+ *  "usage summary" and a set of @ref ti_drivers_Display_Examples "examples"
+ *  in the form of commented code fragments. Detailed descriptions of the
+ *  APIs are provided in subsequent sections.
+ *
+ *  @anchor ti_drivers_Display_Synopsis
+ *  ## Synopsis
+ *  @anchor ti_drivers_Display_Synopsis_Code
+ *  @code
+ *  // Import Display Driver definitions
+ *  #include <ti/display/Display.h>
+ *  
+ *  // Initialize optional Display parameters
+ *  Display_Handle    handle;
+ *  Display_Params    params;
+ *  Display_Params_init(&params);
+ *  
+ *  // Open Display implementation
+ *  handle = Display_open(Display_Type_HOST, &params);
+
+ *  
+ *  // Output to Display
+ *  Display_printf(handle, 0, 0, "Hello World");
+ *  
+ *  Display_close(handle);
+ *  @endcode
+ *  
+ *  <hr>
+ *  @anchor ti_drivers_Display_Examples
+ *  # Examples
+ *  
+ *  @li @ref ti_drivers_Display_Examples_open "Opening a Display instance"
+ *  @li @ref ti_drivers_Display_Examples_float "Floating point support"
+ *  @li @ref ti_drivers_Display_Examples_host "Configuring Host Display"
+ *  @li @ref ti_drivers_Display_Examples_lcd "Configuring a graphical Display"
+ * 
+ *  @anchor ti_drivers_Display_Examples_open
+ *  ## Opening a Display instance
+ *  
+ *  @code
+ *  Display_Handle    handle;
+ *  Display_Params    params;
+ *  
+ *  Display_Params_init(&params);
+ *  display = Display_open(Display_Type_HOST, &params);
+ *  if (display == NULL) {
+ *      // Display_open() failed
+ *      while(1);
+ *  }
+ *  @endcode
+ *  
+ *  @anchor ti_drivers_Display_Examples_float
+ *  ## Adding floating point
+ *  
+ *  @code
+ *  // Note that for floating point support, the .cfg file must have a line like
+ *  // System.extendedFormats = "%$L%$S%$F%f"; // Add '%f' support
+ *  Display_printf(handle, 3, 0, "Pi is %f", 3.1415);
+ *  Display_close(handle);
+ *  @endcode
+ *  
+ *  @anchor ti_drivers_Display_Examples_host
+ *  ## Configuring the HOST Display
+ *  
+ *  @code
+ *  #include <ti/display/Display.h>
+ *  #include <ti/display/DisplayHost.h>
+ *
+ *  #define MAXPRINTLEN 1024
+ *
+ *  DisplayHost_Object displayHostObject;
+ *  static char displayBuf[MAXPRINTLEN];
+ *
+ *  const DisplayHost_HWAttrs displayHostHWAttrs = {
+ *      .strBuf = displayBuf,
+ *      .strBufLen = MAXPRINTLEN
+ *  };
+ *
+ *  const Display_Config Display_config[] = {
+ *      {
+ *          .fxnTablePtr = &DisplayHost_fxnTable,
+ *          .object = &displayHostObject,
+ *          .hwAttrs = &displayHostHWAttrs
+ *      }
+ *  };
+ *
+ *  const uint8_t Display_count = sizeof(Display_config) / sizeof(Display_Config);
+ *  @endcode
+ *  
+ *  @anchor ti_drivers_Display_Examples_lcd
+ *  ## Configuring graphical display
+ *  
+ *  @code
+ *  Display_Handle    handle;
+ *  Display_Params    params;
+ *
+ *  Display_Params_init(&params);
+ *  handle = Display_open(Display_Type_LCD, &params);
+ *  if (NULL == handle)
+ *     handle = Display_open(Display_Type_UART, &params);
+ *  @endcode
+ *  
+ *  
+ *## Opening the driver #
  *
  *  Because the Display driver serves as an abstraction, it is possible to
  *  specify the *type* of Display implementations that should be opened, as
@@ -94,74 +196,15 @@
  *  Display_close(handle);
  *  @endcode
  *
- *  It is also possible to prefer a graphical display if available. Perhaps
- *  most interesting for portable applications.
- *
- *  @code
- *  Display_Handle    handle;
- *  Display_Params    params;
- *
- *  Display_Params_init(&params);
- *  handle = Display_open(Display_Type_LCD, &params);
- *  if (NULL == handle)
- *     handle = Display_open(Display_Type_UART, &params);
- *  @endcode
-
- *
  *  @note Display_printX can only be called from Task context, unless
  *        the only opened interfaces specifically allow calls from any context.
  *
- *  # Implementation #
- *
- *  This module serves as the main interface for TI-RTOS applications. Its
- *  purpose is to redirect the module's APIs to specific implementations
- *  which are specified using a pointer to a Display_FxnTable.
- *
- *  The Display interface module is joined (at link time) to a NULL-terminated
- *  array of Display_Config data structures named *Display_config*.
- *  *Display_config* is implemented in the application with each entry being an
- *  instance of a Display implementation. Each entry in *Display_config*
- *  contains a:
- *  - (Display_FxnTable *) to a set of functions implementing an output channel
- *  - (void *) data object that is associated with the Display_FxnTable
- *  - (void *) hardware attributes that are associated to the Display_FxnTable
- *
- *  In practical terms that means the Display_Config struct for each specific
- *  implementation equates to an instance of an abstract Display 'class', where
- *  the functions are always provided the a Display_Config struct pointer in the
- *  parameter list, in lieu of what in some languages is called *this* or *self*.
  *
  *  For example, Display_open is called, and Display.c iterates over the
  *  available Display_Config's in the external Display_config array.
  *  For each *config*, config->fxns->open is called, and &config is provided for
  *  context.
  *
- *  Below is an example configuration to use the HOST display.
- *
- *  @code
- *  #include <ti/display/Display.h>
- *  #include <ti/display/DisplayHost.h>
- *
- *  #define MAXPRINTLEN 1024
- *
- *  DisplayHost_Object displayHostObject;
- *  static char displayBuf[MAXPRINTLEN];
- *
- *  const DisplayHost_HWAttrs displayHostHWAttrs = {
- *      .strBuf = displayBuf,
- *      .strBufLen = MAXPRINTLEN
- *  };
- *
- *  const Display_Config Display_config[] = {
- *      {
- *          .fxnTablePtr = &DisplayHost_fxnTable,
- *          .object = &displayHostObject,
- *          .hwAttrs = &displayHostHWAttrs
- *      }
- *  };
- *
- *  const uint8_t Display_count = sizeof(Display_config) / sizeof(Display_Config);
- *  @endcode
  *
  *  # Instrumentation #
  *
@@ -183,17 +226,24 @@
  *  Unless you know that the implementation is safe to use in Hwi/Swi, do not
  *  use this interface in other contexts than Main and Task.
  *
- *  ============================================================================
+  *  <hr>
+ *  @anchor ti_drivers_Display_Configuration
+ *  # Configuration
+ *
+ *  Refer to the @ref driver_configuration "Driver's Configuration" section
+ *  for driver configuration information.
+ *  <hr>
+ *******************************************************************************
  */
 #ifndef ti_display_Display__include
 #define ti_display_Display__include
 
+#include <stdint.h>
+#include <stdarg.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <stdint.h>
-#include <stdarg.h>
 
 /* -----------------------------------------------------------------------------
  *                                          Constants
@@ -560,11 +610,11 @@ typedef struct Display_Config
  *
  * @pre        Display_init() has been called
  *
- * @param       id - Index of Display in Display_config array, or
- *                   alternatively the type(s) of displays to open
- * @param       params - display parameters
+ * @param[in]       id - Index of Display in Display_config array, or
+ *                  alternatively the type(s) of displays to open
+ * @param[in]       params - display parameters
  *
- * @return      Display_Handle of opened Display or NULL.
+ * @return      #Display_Handle of opened Display or NULL.
  *
  * @sa          Display_doInit()
  * @sa          Display_doClose()
@@ -574,7 +624,7 @@ Display_Handle  Display_doOpen(uint32_t id, Display_Params *params);
 /*!
  * @brief       Initializes parameter structure with default parameters.
  *
- * @param       params
+ * @param[in]       params
  *
  * @return      void
  */
@@ -583,7 +633,7 @@ void Display_doParamsInit(Display_Params *params);
 /*!
  * @brief       Calls the clear fxn of all opened Display implementations
  *
- * @param       handle - handle of display
+ * @param[in]       handle - handle of display
  *
  * @return      void
  */
@@ -592,9 +642,9 @@ void  Display_doClear(Display_Handle handle);
 /*!
  * @brief       Calls the clearLines fxn of all opened Display implementations
  *
- * @param       handle - handle of display
- * @param       fromLine - line index (0 .. )
- * @param       toLine - line index (0 .. )
+ * @param[in]       handle - handle of display
+ * @param[in]       fromLine - line index (0 .. )
+ * @param[in]       toLine - line index (0 .. )
  *
  * @return      void
  */
@@ -603,11 +653,11 @@ void  Display_doClearLines(Display_Handle handle, uint8_t fromLine, uint8_t toLi
 /*!
  * @brief       Calls the output function of all opened Display implementations
  *
- * @param       handle - handle of display
- * @param       line - line index (0..)
- * @param       column - column index (0..)
- * @param       fmt - format string
- * @param       ... - optional arguments
+ * @param[in]       handle - handle of display
+ * @param[in]       line - line index (0..)
+ * @param[in]       column - column index (0..)
+ * @param[in]       fmt - format string
+ * @param[in]       ... - optional arguments
  *
  * @return      void
  */
@@ -654,11 +704,11 @@ uint32_t  Display_doGetType(Display_Handle handle);
  *
  *  @pre    Display_open() has to be called first.
  *
- *  @param  handle      A Display handle returned from Display()
+ *  @param[in]  handle      A Display handle returned from Display()
  *
- *  @param  cmd         Display.h or Display*.h commands.
+ *  @param[in]  cmd         Display.h or Display*.h commands.
  *
- *  @param  arg         An optional R/W (read/write) command argument
+ *  @param[in]  arg         An optional R/W (read/write) command argument
  *                      accompanied with cmd
  *
  *  @return Implementation specific return codes. Negative values indicate

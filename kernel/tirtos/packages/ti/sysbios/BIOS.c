@@ -63,7 +63,7 @@ Void BIOS_linkedWithIncorrectBootLibrary(Void)
 BIOS_ThreadType BIOS_getThreadType(Void)
 {
     UInt key;
-    volatile BIOS_ThreadType threadType;
+    BIOS_ThreadType threadType;
 
     if (BIOS_smpEnabled == TRUE) {
         /*

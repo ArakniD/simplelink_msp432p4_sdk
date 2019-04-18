@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017, Texas Instruments Incorporated
+ * Copyright (c) 2012-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,8 +43,11 @@ function module$use()
 {
     Semaphore = xdc.useModule("ti.sysbios.knl.Semaphore");
     xdc.useModule("ti.sysbios.knl.Task");
-    xdc.useModule("ti.sysbios.BIOS");
-    xdc.useModule("xdc.runtime.Assert");
+    var BIOS = xdc.useModule("ti.sysbios.BIOS");
+    if (!(BIOS.libType == BIOS.LibType_Custom
+        && BIOS.assertsEnabled == false)) {
+        xdc.useModule('xdc.runtime.Assert');
+    }
 }
 
 /*
@@ -67,14 +70,14 @@ function queryMeta(qual)
     switch (qual) {
         case IGateProvider.Q_BLOCKING:
         case IGateProvider.Q_PREEMPTING:
-            rc = true; 
+            rc = true;
             break;
-           
+
         default:
            GateMutex.$logWarning("Invalid quality. Returning false", this, qual);
            break;  
     }
-   
+
     return (rc);
 }
 
@@ -123,7 +126,7 @@ function viewInitBasic(view, obj)
         view.owner  = "N/A";
         view.status = "Not entered"
     }
-    else {        
+    else {
         try {
             var taskView = Program.scanHandleView('ti.sysbios.knl.Task', obj.owner, 'Basic');
         }

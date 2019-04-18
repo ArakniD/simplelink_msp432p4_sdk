@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -887,25 +887,6 @@ static int_fast16_t extFlashSpiRead(uint8_t *buf, size_t len)
     SPI_Transaction masterTransaction;
 
     masterTransaction.txBuf = NULL;
-
-    /*
-     * Work around SPI transfer to address 0x0
-     * transfer first byte into local buffer
-     */
-    if (buf == NULL) {
-        uint8_t byte0;
-        masterTransaction.count  = 1;
-        masterTransaction.rxBuf  = (void*)&byte0;
-        if (!SPI_transfer(spiHandle, &masterTransaction)) {
-            return (NVS_STATUS_ERROR);
-        }
-        *buf++ = byte0;
-        len = len - 1;
-        if (len == 0) {
-            return (NVS_STATUS_SUCCESS);
-        }
-    }
-
     masterTransaction.count = len;
     masterTransaction.rxBuf = buf;
 

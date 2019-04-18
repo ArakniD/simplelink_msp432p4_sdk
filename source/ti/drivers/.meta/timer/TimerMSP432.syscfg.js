@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@ let config = [
         onChange    : onChangeTimerType,
         default     : "16 Bits",
         options     : [
-                         { name : "32 Bits", displayName: 'Timer32' },
+                         { name: "32 Bits", displayName: 'Timer32' },
                          { name: "16 Bits", displayName: 'Timer_A' }
                       ]
     },
@@ -55,6 +55,10 @@ let config = [
     {
         name        : "clockSource",
         displayName : "Clock Source",
+        description : "Specifies the clock source of the timer peripheral",
+        longDescription:`The frequency of the clock sources are configured
+per __Power Performance Level__ configured in the __Power Module__.
+`,
         default     : "ACLK",
         hidden      : true,
         options     : [
@@ -92,7 +96,8 @@ function onChangeTimerType(inst, ui)
 {
     if (inst.timerType === "32 Bits") {
         ui.clockSource.hidden = true;
-    } else {
+    } 
+    else {
         ui.clockSource.hidden = false;
     }
 }
@@ -129,15 +134,22 @@ function pinmuxRequirements(inst)
  */
 function extend(base)
 {
-    /* Determine the timerType config Index */
-    let index = base.config.findIndex(x => x.name === "timerType");
+    /* make a shallow copy of base.config */
+    let clone = base.config.slice();
 
-    /* Delete the top level timerType config */
-    base.config.splice(index, 1);
+    /* determine the timerType config Index */
+    let index = clone.findIndex(x => x.name === "timerType");
 
-    devSpecific.config = devSpecific.config.concat(base.config);
+    /* delete the top level timerType config */
+    clone.splice(index, 1);
 
-    return (Object.assign({}, base, devSpecific));
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = clone.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

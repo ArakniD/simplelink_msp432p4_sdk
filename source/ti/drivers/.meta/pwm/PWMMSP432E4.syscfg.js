@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,38 +40,6 @@
 /* get Common /ti/drivers utility functions */
 let Common = system.getScript("/ti/drivers/Common.js");
 
-let genModeDescription = "A PWM generator can count in two different modes: "
-    + "count down mode or count up/down mode.  In count down mode, it "
-    + "counts from a value down to zero, and then resets to the preset "
-    + "value, producing left-aligned PWM signals (that is, the rising "
-    + "edge of the two PWM signals produced by the generator occur at "
-    + "the same time).  In count up/down mode, it counts up from zero "
-    + "to the preset value, counts back down to zero, and then repeats "
-    + "the process, producing center-aligned PWM signals (that is, the "
-    + "middle of the high/low period of the PWM signals produced by the "
-    + "generator occurs at the same time).";
-
-let syncModeDescription = "When the PWM generator parameters (period and "
-    + " pulse width) are modified, their effect on the output PWM signals "
-    + "can be delayed.  In synchronous mode, the parameter updates are "
-    + "not applied until a synchronization event occurs. This mode "
-    + "allows multiple parameters to be modified and take effect "
-    + "simultaneously, instead of one at a time. Additionally, "
-    + "parameters to multiple PWM generators in synchronous mode can "
-    + "be updated simultaneously, allowing them to be treated as if "
-    + "they were a unified generator. In non-synchronous mode, the "
-    + "parameter updates are not delayed until a synchronization event. "
-    + "In either mode, the parameter updates only occur when the counter"
-    + " is at zero to help prevent oddly formed PWM signals during the "
-    + "update (that is, a PWM pulse that is too short or too long).";
-
-let debugModeDescription = "The PWM generator can either pause or continue "
-    + "running when the processor is stopped via the debugger. If "
-    + "configured to pause, it continues to count until it reaches "
-    + "zero, at which point it pauses until the processor is "
-    + "restarted. If configured to continue running, it keeps "
-    + "counting as if nothing had happened.";
-
 /*
  *  ======== devSpecific ========
  *  Device-specific extensions to be added to base PWM configuration
@@ -83,7 +51,17 @@ let devSpecific = {
         {
             name: "pwmGenerationMode",
             displayName: "PWM Generation Mode",
-            description: genModeDescription,
+            description: "Specifies PWM count mode.",
+            longDescription:`
+A PWM generator can count in two different modes: count down mode or count 
+up/down mode.  In count down mode, it counts from a value down to zero, 
+and then resets to the preset value, producing left-aligned PWM signals 
+(that is, the rising edge of the two PWM signals produced by the generator 
+occur at the same time).  In count up/down mode, it counts up from zero 
+to the preset value, counts back down to zero, and then repeats the process, 
+producing center-aligned PWM signals (that is, the middle of the high/low 
+period of the PWM signals produced by the generator occurs at the same time).
+`,
             default: "Down",
             options: [
                 { name: "Down" },
@@ -93,7 +71,20 @@ let devSpecific = {
         {
             name: "synchronizationMode",
             displayName: "Synchronization Mode",
-            description: syncModeDescription,
+            description: "Specifies PWM synchronization mode.",
+            longDescription: `
+When the PWM generator parameters (period and pulse width) are modified, their 
+effect on the output PWM signals can be delayed.  In synchronous mode, the 
+parameter updates are not applied until a synchronization event occurs. This 
+mode allows multiple parameters to be modified and take effect simultaneously, 
+instead of one at a time. Additionally, parameters to multiple PWM generators 
+in synchronous mode can be updated simultaneously, allowing them to be treated 
+as if they were a unified generator. In non-synchronous mode, the parameter 
+updates are not delayed until a synchronization event. In either mode, the 
+parameter updates only occur when the counter is at zero to help prevent oddly 
+formed PWM signals during the update (that is, a PWM pulse that is too short 
+or too long).
+`,
             default: "Immediate Updates",
             options: [
                 { name: "Immediate Updates" },
@@ -104,7 +95,13 @@ let devSpecific = {
         {
             name: "debugMode",
             displayName: "Debug Mode",
-            description: debugModeDescription,
+            description: "Specifies PWM debug mode.",
+            longDescription:`
+The PWM generator can either pause or continue running when the processor is 
+stopped via the debugger. If configured to pause, it continues to count until 
+it reaches zero, at which point it pauses until the processor is restarted. If 
+configured to continue running, it keeps counting as if nothing had happened.
+`,
             default: "Debug Run",
             options: [
                 { name: "Debug Run" },
@@ -122,9 +119,7 @@ let devSpecific = {
     templates: {
         boardc: "/ti/drivers/pwm/PWMMSP432E4.Board.c.xdt",
         boardh: "/ti/drivers/pwm/PWMTimer.Board.h.xdt"
-    },
-
-    modules: Common.autoForcePowerModule
+    }
 };
 
 /*
@@ -208,11 +203,13 @@ function isValidPwmPin(muxSettings)
  */
 function extend(base)
 {
-    /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
-
     /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

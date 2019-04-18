@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,10 +66,7 @@ let devSpecific = {
     },
 
     /* PIN instances */
-    moduleInstances: moduleInstances,
-
-    /* bring in Power module */
-    modules: Common.autoForcePowerModule
+    moduleInstances: moduleInstances
 };
 
 /*
@@ -127,10 +124,13 @@ function moduleInstances(inst)
  */
 function extend(base)
 {
-    /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
 
-    return (Object.assign({}, base, devSpecific));
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

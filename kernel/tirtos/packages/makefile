@@ -44,18 +44,16 @@ j = 1
 # the arguments specified by XDCARGS
 #
 XDC = $(XDC_INSTALL_DIR)/xdc -j $(j) XDCBUILDCFG=$(CORESDK_INSTALL_DIR)/kernel/tirtos/packages/coresdk.bld
-
-TARGETS = */targets ti/targets/elf */targets/arm ti/targets/*/elf
+XDCPKG = $(XDC_INSTALL_DIR)/bin/xdcpkg
 
 all:
 	@ echo building packages ...
-	@ $(XDC) XDCARGS="" .interfaces -P $(TARGETS)
+	@ $(XDC) XDCARGS="" .interfaces -PD $(shell $(XDCPKG) $(wildcard */targets))
 	@ $(XDC) XDCARGS="$(XDCARGS)" XDCPATH="$(XDCPATH)" .interfaces -Pr .
 	@ $(XDC) XDCARGS="$(XDCARGS)" XDCPATH="$(XDCPATH)" all -PR \
 	    ./gnu ./iar ./ti/catalog ./ti/dpl ./ti/platforms \
-	    ./ti/targets ./ti/tirtos ./ti/uia
+	    ./ti/targets ./ti/uia
 
 clean:
 	@ echo cleaning packages ...
 	@ $(XDC) XDCARGS="" XDCPATH="$(XDCPATH)" clean -PR .
-

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,10 +44,7 @@ let Common = system.getScript("/ti/drivers/Common.js");
 /* get /ti/drivers family name from device object */
 let family = Common.device2Family(system.deviceData, "AESCCM");
 
-let longDescription = "AESCCM combines CBC-MAC with an AES block cipher"
-        + " in CTR mode of operation. This combination of block cipher modes"
-        + " enables CCM to encrypt messages of any length and not only"
-        + " multiples of the block cipher block size.";
+let config = [];
 
 /*
  *  ======== validate ========
@@ -67,11 +64,26 @@ function validate(inst, validation)
  */
 let base = {
     displayName         : "AESCCM",
-    description         : "AES CCM mode",
-    longDescription     : longDescription,
-    documentation       : "/tidrivers/doxygen/html/_a_e_s_c_c_m_8h.html",
+    description         : "AES (Advanced Encryption Standard) Counter with"
+        + " Cipher Block Chaining Message Authentication Code (CBC-MAC) Driver",
+    longDescription     : `
+The [__AESCCM driver__][1] combines CBC-MAC with an AES block cipher
+in CTR mode of operation. This combination of block cipher modes
+enables CCM to encrypt messages of any length and not only
+multiples of the block cipher block size.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+[1]: /tidrivers/doxygen/html/_a_e_s_c_c_m_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_a_e_s_c_c_m_8h.html#ti_drivers_CCM_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_a_e_s_c_c_m_8h.html#ti_drivers_CCM_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#AESCCM_Configuration_Options "Configuration options reference"
+`,
     validate            : validate,
-    defaultInstanceName : "Board_AESCCM"
+    defaultInstanceName : "Board_AESCCM",
+    config              : Common.addNameConfig(config, "/ti/drivers/AESCCM", "Board_AESCCM"),
+    modules: Common.autoForceModules(["Board", "Power", "DMA"])
 };
 
 /* extend the base exports to include family-specific content */

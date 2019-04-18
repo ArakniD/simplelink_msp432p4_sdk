@@ -4,7 +4,6 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 
 KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/builds/MSP_EXP432P401R/release
 SYSCONFIG_PRODUCT := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json
-BOARD := /ti/boards/.meta/MSP_EXP432P401R
 
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
@@ -55,7 +54,7 @@ Board.c Board.h : syscfg
 
 syscfg: ../../capturepwmdisplay.syscfg
 	@ echo Generating configuration files...
-	@ $(NODE_JS) $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --board $(BOARD) --output $(@D) $<
+	@ $(NODE_JS) $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
 
 Board.obj: Board.c $(CONFIGPKG)/compiler.opt
 	@ echo Building $@

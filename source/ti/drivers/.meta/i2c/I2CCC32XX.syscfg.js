@@ -43,6 +43,7 @@ let Common = system.getScript("/ti/drivers/Common.js");
 let intPriority = Common.newIntPri()[0];
 intPriority.displayName = "Interrupt Priority";
 intPriority.name = "interruptPriority";
+
 /*
  *  ======== devSpecific ========
  *  Device-specific extensions to be added to base I2C configuration
@@ -69,10 +70,13 @@ let devSpecific = {
  */
 function extend(base)
 {
-    /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
 
-    return (Object.assign({}, base, devSpecific));
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

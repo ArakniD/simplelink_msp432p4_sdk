@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -203,7 +203,7 @@ if (xdc.om.$name == "cfg") {
             resetVectorAddress : 0x10000000,
             vectorTableAddress : 0x30000000,
         },
-        "SIMMAXWELL": {
+        "AM65.*": {
             numInterrupts : 16 + 64,            /* supports 80 interrupts */
             numPriorities : 8,
             resetVectorAddress : 0x00040000,
@@ -237,8 +237,7 @@ if (xdc.om.$name == "cfg") {
     deviceTable["CC13.*"]        = deviceTable["CC26.*"];
     deviceTable["CC32.*S"]       = deviceTable["CC3200"];
     deviceTable["CC32.*SF"]      = deviceTable["CC3220SF"];
-    deviceTable["AM65X"]         = deviceTable["SIMMAXWELL"];
-    deviceTable["J7.*"]          = deviceTable["SIMMAXWELL"];
+    deviceTable["J7.*"]          = deviceTable["AM65.*"];
 }
 
 /*
@@ -416,17 +415,19 @@ function module$use()
 {
     Startup = xdc.useModule('xdc.runtime.Startup');
 
-    xdc.useModule('xdc.runtime.Log');
-
     BIOS = xdc.useModule("ti.sysbios.BIOS");
     Build = xdc.module("ti.sysbios.Build");
+
+    if (!(BIOS.libType == BIOS.LibType_Custom && BIOS.logsEnabled == false)) {
+        xdc.useModule('xdc.runtime.Log');
+    }
 
     if (BIOS.smpEnabled == true) {
         Core = xdc.module("ti.sysbios.hal.Core");
     }
 
     /* only useModule(Memory) if needed */
-    var Defaults = xdc.useModule('xdc.runtime.Defaults');
+    var Defaults = xdc.module('xdc.runtime.Defaults');
     if (Defaults.common$.memoryPolicy ==
         xdc.module("xdc.runtime.Types").STATIC_POLICY) {
         Memory = xdc.module('xdc.runtime.Memory');
@@ -445,6 +446,7 @@ function module$use()
         if (BIOS.swiEnabled) {
             xdc.useModule("ti.sysbios.knl.Swi");
             Hwi.swiDisable = '&ti_sysbios_knl_Swi_disable__E';
+            Hwi.swiRestore = '&ti_sysbios_knl_Swi_restore__E';
             Hwi.swiRestoreHwi = '&ti_sysbios_knl_Swi_restoreHwi__E';
         }
         else {
@@ -452,7 +454,8 @@ function module$use()
         }
     }
     else {
-        Hwi.swiDisable = null;
+        Hwi.swiDisable = '&ti_sysbios_family_arm_m3_Hwi_swiDisableNull';
+        Hwi.swiRestore = '&ti_sysbios_family_arm_m3_Hwi_swiRestoreNull';
         Hwi.swiRestoreHwi = null;
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,8 +78,13 @@ function module$use()
     Queue = xdc.useModule("ti.sysbios.knl.Queue");
     BIOS = xdc.useModule("ti.sysbios.BIOS");
 
-    xdc.useModule('xdc.runtime.Log');
-    xdc.useModule('xdc.runtime.Assert');
+    if (!(BIOS.libType == BIOS.LibType_Custom && BIOS.logsEnabled == false)) {
+        xdc.useModule('xdc.runtime.Log');
+    }
+    if (!(BIOS.libType == BIOS.LibType_Custom
+        && BIOS.assertsEnabled == false)) {
+        xdc.useModule('xdc.runtime.Assert');
+    }
     xdc.useModule("ti.sysbios.hal.Hwi");
     xdc.useModule("ti.sysbios.knl.Intrinsics");
 
@@ -92,8 +97,8 @@ function module$use()
         Swi.taskDisable = null;
         Swi.taskRestore = null;
     }
-    
-    /* 
+
+    /*
      * Minimize footprint by only building 1 readyQ if Swi is disabled.
      * 1 is used rather than 0 to prevent various .xs file references to
      * "Swi.numPriorities - 1" from generating warnings/errors.
@@ -153,7 +158,7 @@ function instance$static$init(obj, fxn, params)
     obj.readyQ = mod.readyQ[obj.priority];
     obj.initTrigger = obj.trigger = params.trigger;
 
-    /* 
+    /*
      * the following assignment sets the number of entries in the
      * hookEnv pointer array pointed to by the obj.hookEnv ptr.
      */
@@ -280,7 +285,7 @@ function viewInitBasic(view, obj)
         view.label = "Uninitialized Swi object";
         return;
     }
-    
+
     view.label = Program.getShortName(obj.$label);
     view.priority = obj.priority;
 
@@ -313,7 +318,7 @@ function viewInitBasic(view, obj)
         }
     }
 
-    /* 
+    /*
      * There may be more than one symbol at this address, so the function
      * name has to be an array.
      */

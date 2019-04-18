@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,10 +42,6 @@ let Common   = system.getScript("/ti/drivers/Common.js");
 let logError = Common.logError;
 let isCName  = Common.isCName;
 
-//let VLOCLK  = 9400;     // 9.4 kHz
-//let REFOCLK = 32768;    // selectable to alternative 128000
-//let MODCLK  = 25000000; // 25 MHz;
-
 let priIntCS             = Common.newIntPri()[0];
     priIntCS.name        = "clockSystemInterruptPriority";
     priIntCS.displayName = "Clock System Interrupt Priority";
@@ -53,39 +49,67 @@ let priIntCS             = Common.newIntPri()[0];
 
 /* Array of power configurables for this device family */
 let config = [
-
-    /* The top level Enablers */
-    {
-        name        : "enablePerfLevels",
-        displayName : "Enable Perf Levels",
-        description : "Enable performance level control. Strongly recommended.",
-        onChange    : onChangeEnablePerf,
-        default     : true
-    },
-
     {
         name        : "enablePolicy",
         displayName : "Enable Policy",
         description : "Enable the power policy to run when the CPU is idle.",
+        longDescription:`
+If enabled, the policy function will be invoked once for each pass of the
+idle loop.
+
+In addition to this static setting, the Power Policy can be dynamically
+enabled and disabled at runtime, via the [Power_enablePolicy()][1] and
+[Power_disablePolicy()][2] functions, respectively.
+
+[1]: /tidrivers/doxygen/html/_power_8h.html#ti_drivers_Power_Examples_enable
+"Enabling power policy"
+[2]: /tidrivers/doxygen/html/_power_8h.html#ti_drivers_Power_Examples_disable
+"Disabling power policy"
+`,
         onChange    : onChangeEnablePolicy,
         default     : true
     },
-
-    /* Policy function handling */
     {
         name        : "policyFunction",
         displayName : "Policy Function",
         description : "Power policy function called from the idle loop.",
+        longDescription:`
+When enabled, this function is invoked in the idle loop, to opportunistically
+select and activate sleep states.
+
+Two reference policies are provided:
+
+* __PowerMSP432_sleepPolicy__
+* __PowerMSP432_deepSleepPolicy__
+
+In addition to this static selection, the Power Policy can be
+dynamically changed at runtime, via the Power_setPolicy() API.
+`,
         onChange    : onChangePolicyFxn,
         default     : "PowerMSP432_sleepPolicy",
         options     :
         [
-            { name: "PowerMSP432_sleepPolicy" },
-            { name: "PowerMSP432_deepSleepPolicy" },
-            { name: "Custom" }
+            {
+                name: "PowerMSP432_sleepPolicy",
+                description: "A simple policy that will put the device in"
+                    + " either the PowerMSP432_SLEEP state (unless there is a"
+                    + " constraint prohibiting this), or CPU wait for"
+                    + " interrupt (WFI)."
+            },
+            {
+                name: "PowerMSP432_deepSleepPolicy",
+              description: "An agressive policy that checks constraints and"
+                + " optionally chooses PowerMSP432_DEEPSLEEP_1,"
+                + " PowerMSP432_DEEPSLEEP_0, PowerMSP432_SLEEP, or WFI, in"
+                + " that order of preference."
+            },
+            {
+                name: "Custom",
+                description: "Custom policies can be written, and specified"
+                    + " via the Policy Custom Function configuration."
+            }
         ]
     },
-
     {
         name        : "policyCustomFunction",
         displayName : "Policy Custom Function",
@@ -93,20 +117,27 @@ let config = [
         default     : "customPolicyFxn",
         hidden      : true
     },
-
     {
         name        : "policyInitFunction",
         displayName : "Policy Init Function",
         description : "The initialization function for the Power policy.",
+        longDescription:`
+This is an optional policy initialization function that will be called during
+application startup, during Power Manager initialization.
+`,
         onChange    : onChangePolicyInitFxn,
         default     : "PowerMSP432_initPolicy",
         options     :
         [
             { name: "PowerMSP432_initPolicy" },
-            { name: "Custom" }
+            {
+                name: "Custom",
+                description: "Custom initialization policies can be written"
+                    + "and specified via the Policy Init Custom Function"
+                    + " configuration."
+            }
         ]
     },
-
     {
         name        : "policyInitCustomFunction",
         displayName : "Policy Init Custom Function",
@@ -115,46 +146,40 @@ let config = [
         default     : "customPolicyInitFxn",
         hidden      : true
     },
-
     {
         name        : "enablePinParking",
         displayName : "Enable Pin Parking",
         description : "Enable automatic pin parking during LPM3 and LPM4.",
+        longDescription:`
+Specifies if internal pull resistors should be automatically applied to input
+pins during PowerMSP432_DEEPSLEEP_0 and PowerMSP432_DEEPSLEEP_1.
+`,
         default     : false
     },
-
     {
         name        : "resumeShutdownHookFunction",
         displayName : "Resume Shutdown Hook Function",
         description : "Optional hook function to be called on resume from "
                        + "shutdown",
+        longDescription:`
+This function is called when the device wakes and resumes from a
+previous entry into either the SHUTDOWN_0 or SHUTDOWN_1 states.
+If this function is defined (i.e., not an empty string), it will
+be called during Power_init(), right before the Power driver clears
+the LOCKLPM5 and LOCKBKUP bits in the PMCTL1 register, to unlock I/Os
+and the backup domain.
+`,
         placeholder : "Enter a function name to enable",
         default     : ""
     },
-
     {
-        name        : "customPerfLevels",
-        displayName : "Custom Perf Levels",
-        description : "Advanced option. Enable Custom Performance Levels",
-        default     : 0,
-        onChange    : onChangeCustomLevels,
-        options     :
-        [
-            { name: 0 },
-            { name: 1 },
-            { name: 2 },
-            { name: 3 },
-            { name: 4 }
-        ]
-    },
-
-    /* Initial Perf Level */
-    {
-        name        : "initialPerfLevel",
-        displayName : "Initial Perf Level",
-        description : "The performance level at system start up. " +
-                      "Levels 0-3 are always available. " +
-                      "Levels 4-7 are available if custom levels are defined.",
+        name        : "initialPerformanceLevel",
+        displayName : "Initial Performance Level",
+        description : "The performance level at system start up.",
+        longDescription:`
+Levels 0-3 are always available. Levels 4-7 are available if
+__Custom Performance Levels__ are defined.
+`,
         default     : 2,
         options     :
         [
@@ -168,7 +193,39 @@ let config = [
             { name: 7 }
         ]
     },
+    {
+        name        : "enablePerformanceLevels",
+        displayName : "Enable Performance Levels",
+        description : "Enable performance level control. Strongly recommended.",
+        longDescription:
+`
+If enabled, the performance scaling feature will be enabled for the
+application. The __Initial Performance Level__ will be established
+during Power Manager initialization.
 
+See the __Performance Level Configuration__ for more information.
+`,
+        onChange    : onChangeEnablePerf,
+        default     : true
+    },
+    {
+        name        : "customPerformanceLevels",
+        displayName : "Custom Performance Levels",
+        description : "Advanced option. Select the number of Custom"
+            + " Performance Levels to configure.",
+        longDescription:"See the _Performance Level Configuration__ for more"
+            + " information.",
+        default     : 0,
+        onChange    : onChangeCustomLevels,
+        options     :
+        [
+            { name: 0 },
+            { name: 1 },
+            { name: 2 },
+            { name: 3 },
+            { name: 4 }
+        ]
+    },
     {
         name        : "advancedConfiguration",
         displayName : "Advanced Configuration",
@@ -176,85 +233,121 @@ let config = [
         onChange    : onChangeUseExtendedPerf,
         default     : false
     },
-
     {
-        name        : "isrClockSystem",
-        displayName : "ISR Clock System",
-        description : "Optional function to enable the clock system fault "
-                       + "interrupt handler",
+        name        : "clockSystemCallback",
+        displayName : "Clock System Callback",
+        description : "Clock System (CS) callback function to serve as the"
+            + " interrupt service routine.",
+        longDescription:`
+The function specified will be configured for catching Clock System (CS)
+interrupts. If left empty, interrupts from the CS will not be enabled.
+`,
         onChange    : onChangeIsrCS,
         hidden      : true,
         placeholder : "Enter a function name to enable",
         default     : ""
     },
-
     priIntCS,
-
     {
         name        : "enableHFXTClock",
         displayName : "Enable HFXT Clock",
+        description : "Enable high frequency crystal (HFXT) clock.",
+        longDescription:`
+If enabled, the high frequency crystal (HFXT) clock pin will be configured
+for HFXT function.
+`,
         onChange    : onChangeConfigurePinHFXT,
         hidden      : true,
         default     : false
     },
-
     {
         name        : "bypassHFXT",
         displayName : "Bypass HFXT",
-        description : "Configure HFXT Pin for HFXT Bypass",
+        description : "Configure high frequency crystal (HFXT) pin for bypass",
+        longDescription:`
+If enabled, the high frequency crystal (HFXT) pin will be configured for
+HFXT bypass.
+`,
         hidden      : true,
         default     : false
     },
-
     {
         name        : "hfxtFrequency",
         displayName : "HFXT Frequency",
-        description : "HFXT External Crystal Frequency",
+        description : "High frequency crystal (HFXT) frequency",
+        longDescription:`
+The source is specified via an enumerated value from cs.h, for
+example __CS_48MHZ__, __CS_24MHZ__, etc..
+`,
         hidden      : true,
         default     : 48000000,
         options     :
         [
-            { name:  1000000, displayName : " 1   MHz" },
-            { name:  1500000, displayName : " 1.5 MHz" },
-            { name:  3000000, displayName : " 3   MHz" },
-            { name:  4000000, displayName : " 4   MHz" },
-            { name:  6000000, displayName : " 6   MHz" },
-            { name: 12000000, displayName : "12   MHz" },
-            { name: 16000000, displayName : "16   MHz" },
-            { name: 24000000, displayName : "24   MHz" },
-            { name: 32000000, displayName : "32   MHz" },
-            { name: 40000000, displayName : "40   MHz" },
-            { name: 48000000, displayName : "48   MHz" }
+            { name:  1000000, displayName : "1 MHz" },
+            { name:  1500000, displayName : "1.5 MHz" },
+            { name:  3000000, displayName : "3 MHz" },
+            { name:  4000000, displayName : "4 MHz" },
+            { name:  6000000, displayName : "6 MHz" },
+            { name:  8000000, displayName : "8 MHz" },
+            { name: 12000000, displayName : "12 MHz" },
+            { name: 16000000, displayName : "16 MHz" },
+            { name: 24000000, displayName : "24 MHz" },
+            { name: 32000000, displayName : "32 MHz" },
+            { name: 40000000, displayName : "40 MHz" },
+            { name: 48000000, displayName : "48 MHz" }
         ]
     },
-
     {
         name        : "enableLFXTClock",
         displayName : "Enable LFXT Clock",
+        description : "Enable low frequency crystal (LFXT) clock",
+        longDescription:`
+If enabled, the low frequency crystal (LFXT) clock pin will be configured
+for LFXT function.
+`,
         onChange    : onChangeConfigurePinLFXT,
         hidden      : true,
         default     : false
     },
-
     {
         name        : "bypassLFXT",
         displayName : "Bypass LFXT",
-        description : "Configure LFXT Pin for LFXT Bypass",
+        description : "Configure low frequency crystal (LFXT) pin for bypass",
+        longDescription:`
+If enabled, the low frequency crystal (LFXT) pin will be configured for
+LFXT bypass.
+`,
         hidden      : true,
         default     : false
     },
-
     {
         name        : "lfxtDriveLevel",
         displayName : "LFXT Drive Level",
+        description : "The low frequency crystal (LFXT) drive level",
+        longDescription:
+`The source is specified via an enumerated value from __cs.h__, for example:
+__CS_LFXT_DRIVE3__, __CS_LFXT_DRIVE2__, etc.
+`,
         default     : 0,
         hidden      : true,
         options     :
         [
-            { name: 0 },
-            { name: 1 },
-            { name: 2 },
-            { name: 3 }
+            {
+                name: 0,
+                description: "CS_LFXT_DRIVE0"
+            },
+            {
+                name: 1,
+                description: "CS_LFXT_DRIVE1"
+            },
+            {
+                name: 2,
+                description: "CS_LFXT_DRIVE2"
+            },
+            {
+                name: 3,
+                description: "CS_LFXT_DRIVE3"
+            }
         ]
     }
 ];
@@ -270,7 +363,8 @@ let devSpecific = {
     moduleStatic : {
         config          : config,
         validate        : validate,
-        moduleInstances : moduleInstances
+        moduleInstances : moduleInstances,
+        modules: Common.autoForceModules(["Board"])
     },
 
     templates : {
@@ -282,7 +376,7 @@ let devSpecific = {
 /*
  *  ======== moduleInstances ========
  *  Return array of other module instances required by the PowerMSP432 module
- *  The first four instances corresopond to the pre-defined performance levels
+ *  The first four instances correspond to the pre-defined performance levels
  *  defined in the driver source.  Additional instances are for any custom
  *  levels defined by the user.
  */
@@ -290,50 +384,40 @@ function moduleInstances(inst)
 {
 
     let moduleName = "/ti/drivers/power/PowerMSP432PerfLevels";
-    let levelDefs  = [
+    let moduleDescription = "Read Only. Nominal for MSP432P4.";
+    let levelDefs = [];
+
+    for (let i = 1; i <= inst.customPerformanceLevels; ++i) {
+        let customNumber = i + 3;
+        levelDefs.push({
+            moduleName  : moduleName,
+            name        : "performanceLevel" + customNumber,
+            displayName : "Performance Level " + customNumber,
+            description : "Custom Performance Level"
+        });
+    }
+
+    levelDefs.push(
         {
             moduleName : moduleName,
-            name       : "perfLevel0",
             readOnly   : true,
+            name       : "performanceLevel3",
+            displayName: "Performance Level 3",
+            description: moduleDescription,
             args       : {
-                mclk              : 12000000,
-                hsmclk            : 3000000,
-                smclk             : 3000000,
+                mclk              : 48000000,
+                hsmclk            : 48000000,
+                smclk             : 24000000,
                 bclk              : 32768,
                 aclk              : 32768,
                 activeState       : 'DCDC',
-                coreVoltageLevel  : "VCORE0",
-                dcoFrequencyRangeSelection : 12000000,
+                coreVoltageLevel  : "VCORE1",
+                dcoFrequency      : 48000000,
                 mclkSource        : 'DCO',
                 mclkDivider       : 1,
-                smclkSharedSource : 'DCO',
-                hsmclkDivider     : 4,
-                smclkDivider      : 4,
-                bclkSource        : 'REFO',
-                aclkSource        : 'REFO',
-                aclkDivider       : 1,
-                flashWaitStates   : 0,
-                enableFlashBuffer : false
-            }
-        },
-        {
-            moduleName : moduleName,
-            name       : "perfLevel1",
-            readOnly   : true,
-            args       : {
-                mclk              : 24000000,
-                hsmclk            : 6000000,
-                smclk             : 6000000,
-                bclk              : 32768,
-                aclk              : 32768,
-                activeState       : 'DCDC',
-                coreVoltageLevel  : "VCORE0",
-                dcoFrequencyRangeSelection : 24000000,
-                mclkSource        : 'DCO',
-                mclkDivider       : 1,
-                smclkSharedSource : 'DCO',
-                hsmclkDivider     : 4,
-                smclkDivider      : 4,
+                hsmclkSource      : 'DCO',
+                hsmclkDivider     : 1,
+                smclkDivider      : 2,
                 bclkSource        : 'REFO',
                 aclkSource        : 'REFO',
                 aclkDivider       : 1,
@@ -343,7 +427,9 @@ function moduleInstances(inst)
         },
         {
             moduleName : moduleName,
-            name       : "perfLevel2",
+            name       : "performanceLevel2",
+            displayName: "Performance Level 2",
+            description: moduleDescription,
             readOnly   : true,
             args       : {
                 mclk              : 48000000,
@@ -353,10 +439,10 @@ function moduleInstances(inst)
                 aclk              : 32768,
                 activeState       : 'DCDC',
                 coreVoltageLevel  : "VCORE1",
-                dcoFrequencyRangeSelection : 48000000,
+                dcoFrequency      : 48000000,
                 mclkSource        : 'DCO',
                 mclkDivider       : 1,
-                smclkSharedSource : 'DCO',
+                hsmclkSource      : 'DCO',
                 hsmclkDivider     : 2,
                 smclkDivider      : 4,
                 bclkSource        : 'REFO',
@@ -368,38 +454,59 @@ function moduleInstances(inst)
         },
         {
             moduleName : moduleName,
+            name       : "performanceLevel1",
+            displayName: "Performance Level 1",
+            description: moduleDescription,
             readOnly   : true,
-            name       : "perfLevel3",
             args       : {
-                mclk              : 48000000,
-                hsmclk            : 48000000,
-                smclk             : 24000000,
+                mclk              : 24000000,
+                hsmclk            : 6000000,
+                smclk             : 6000000,
                 bclk              : 32768,
                 aclk              : 32768,
                 activeState       : 'DCDC',
-                coreVoltageLevel  : "VCORE1",
-                dcoFrequencyRangeSelection : 48000000,
+                coreVoltageLevel  : "VCORE0",
+                dcoFrequency      : 24000000,
                 mclkSource        : 'DCO',
                 mclkDivider       : 1,
-                smclkSharedSource : 'DCO',
-                hsmclkDivider     : 1,
-                smclkDivider      : 2,
+                hsmclkSource      : 'DCO',
+                hsmclkDivider     : 4,
+                smclkDivider      : 4,
                 bclkSource        : 'REFO',
                 aclkSource        : 'REFO',
                 aclkDivider       : 1,
                 flashWaitStates   : 1,
                 enableFlashBuffer : true
             }
-        }
-    ];
-
-    for (let i = 1; i <= inst.customPerfLevels; ++i) {
-        let customNumber = i + 3;
-        levelDefs.push({
+        },
+        {
             moduleName : moduleName,
-            name       : "perfLevel" + customNumber
-        });
-    }
+            name       : "performanceLevel0",
+            displayName: "Performance Level 0",
+            description: moduleDescription,
+            readOnly   : true,
+            args       : {
+                mclk              : 12000000,
+                hsmclk            : 3000000,
+                smclk             : 3000000,
+                bclk              : 32768,
+                aclk              : 32768,
+                activeState       : 'DCDC',
+                coreVoltageLevel  : "VCORE0",
+                dcoFrequency      : 12000000,
+                mclkSource        : 'DCO',
+                mclkDivider       : 1,
+                hsmclkSource      : 'DCO',
+                hsmclkDivider     : 4,
+                smclkDivider      : 4,
+                bclkSource        : 'REFO',
+                aclkSource        : 'REFO',
+                aclkDivider       : 1,
+                flashWaitStates   : 0,
+                enableFlashBuffer : false
+            }
+        }
+    );
 
     return levelDefs;
 }
@@ -412,31 +519,31 @@ function onChangeEnablePolicy(inst, ui)
 {
     let subState = !inst.enablePolicy;
 
-    ui.enablePinParking.hidden      = subState;
+    ui.enablePinParking.hidden = subState;
     ui.policyInitFunction.hidden = subState;
-    ui.policyFunction.hidden     = subState;
+    ui.policyFunction.hidden = subState;
 
     onChangePolicyInitFxn(inst,ui);
-    onChangePolicyFxn    (inst,ui);
+    onChangePolicyFxn(inst,ui);
 }
 
 /*
  *  ======== onChangeEnablePerf ========
- *  onChange callback function for the enablePerfLevels config
+ *  onChange callback function for the enablePerformanceLevels config
  */
 function onChangeEnablePerf(inst, ui)
 {
-    let subState = !inst.enablePerfLevels;
+    let subState = !inst.enablePerformanceLevels;
 
-    ui.initialPerfLevel.hidden      = subState;
-    ui.customPerfLevels.hidden      = subState;
+    ui.initialPerformanceLevel.hidden = subState;
+    ui.customPerformanceLevels.hidden = subState;
     ui.advancedConfiguration.hidden = subState;
 
-    onChangeCustomLevels    (inst, ui);
-    onChangeUseExtendedPerf (inst, ui);
+    onChangeCustomLevels(inst, ui);
+    onChangeUseExtendedPerf(inst, ui);
 
-    for (let i = 0; i < (4 + Number(inst.customPerfLevels)); i++) {
-        ui["perfLevel" + i].hidden = subState;
+    for (let i = 0; i < (4 + Number(inst.customPerformanceLevels)); i++) {
+        ui["performanceLevel" + i].hidden = subState;
     }
 }
 
@@ -448,13 +555,13 @@ function onChangeUseExtendedPerf(inst,ui)
 {
     let subState = !inst.advancedConfiguration;
 
-    ui.isrClockSystem.hidden    = subState;
+    ui.clockSystemCallback.hidden    = subState;
     ui.enableHFXTClock.hidden   = subState;
     ui.enableLFXTClock.hidden   = subState;
 
-    onChangeConfigurePinHFXT   (inst, ui);
-    onChangeConfigurePinLFXT   (inst, ui);
-    onChangeIsrCS              (inst, ui);
+    onChangeConfigurePinHFXT(inst, ui);
+    onChangeConfigurePinLFXT(inst, ui);
+    onChangeIsrCS(inst, ui);
 }
 
 /*
@@ -487,13 +594,13 @@ function onChangeConfigurePinLFXT (inst, ui)
  */
 function onChangeIsrCS (inst, ui)
 {
-    let subState = (inst.isrClockSystem == '');
+    let subState = (inst.clockSystemCallback == '');
     ui.clockSystemInterruptPriority.hidden = subState;
 }
 
 /*
  *  ======== onChangeCustomLevels ========
- *  onChange callback function for the customPerfLevles config
+ *  onChange callback function for the customPerformanceLevels config
  */
 function onChangeCustomLevels(inst, ui)
 {
@@ -555,11 +662,11 @@ function getClockFrequencies(clockSource)
     let clock = clockSource.toLowerCase();
 
     if ("/ti/drivers/Power" in system.modules) {
-        enablePerf = system.modules["/ti/drivers/Power"].$static.enablePerfLevels;
+        enablePerf = system.modules["/ti/drivers/Power"].$static.enablePerformanceLevels;
     }
     if (inst && enablePerf) {
         for (let level = 0; level < 8; ++level) {
-            let levelName = "perfLevel" + level;
+            let levelName = "performanceLevel" + level;
 
             if (levelName in inst) {
                 freqArray.push(getClock(inst, level, clock));
@@ -568,7 +675,8 @@ function getClockFrequencies(clockSource)
                 break;
             }
         }
-    } else {
+    }
+    else {
         freqArray.push(rawBootClock(clock));
     }
 
@@ -609,7 +717,7 @@ function getClock(inst, level, clock)
         return (rawBootClock(clock));
     }
 
-    let perfLevelName = 'perfLevel' + level;
+    let perfLevelName = 'performanceLevel' + level;
     return (inst[perfLevelName][clock]);
 }
 
@@ -660,10 +768,10 @@ function validate(inst, vo)
         }
     }
 
-    if ((inst.initialPerfLevel - inst.customPerfLevels) > 3) {
-        logError(vo, inst, ['initialPerfLevel', 'customPerfLevels'],
+    if ((inst.initialPerformanceLevel - inst.customPerformanceLevels) > 3) {
+        logError(vo, inst, ['initialPerformanceLevel', 'customPerformanceLevels'],
                 'The initial performance level refers to an undefined custom ' +
-                'performace level.');
+                'performance level.');
     }
 
     if (!isCName(inst.resumeShutdownHookFunction)) {
@@ -671,8 +779,8 @@ function validate(inst, vo)
     }
 
     if (inst.advancedConfiguration) {
-        if (!isCName(inst.isrClockSystem)) {
-            logError(vo, inst, "isrClockSystem", 'Not a valid C identifier');
+        if (!isCName(inst.clockSystemCallback)) {
+            logError(vo, inst, "clockSystemCallback", 'Not a valid C identifier');
         }
     }
 }

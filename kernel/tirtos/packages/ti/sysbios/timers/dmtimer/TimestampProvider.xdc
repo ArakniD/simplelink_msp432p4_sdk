@@ -77,7 +77,7 @@ module TimestampProvider inherits ti.sysbios.interfaces.ITimestamp
      *
      *  This parameter overrides the {@link #timerId timeId} setting.
      */
-    config Bool useClockTimer;
+    config Bool useClockTimer = false;
 
     /*!
      *  ======== startTimer ========

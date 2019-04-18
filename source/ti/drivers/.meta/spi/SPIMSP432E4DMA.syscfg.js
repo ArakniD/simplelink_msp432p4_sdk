@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,6 +50,16 @@ intPriority.displayName = "DMA Interrupt Priority";
  */
 let devSpecific = {
     config: [
+        {
+            name: "spiMode",
+            displayName: "SPI Mode",
+            description: "Whether this SPI will be used as a master or slave.",
+            default: "Master",
+            options: [
+            { name: "Master" },
+            { name: "Slave" }
+            ]
+        },
         intPriority
     ],
 
@@ -59,10 +69,7 @@ let devSpecific = {
     templates: {
         boardc: "/ti/drivers/spi/SPIMSP432E4DMA.Board.c.xdt",
         boardh: "/ti/drivers/spi/SPI.Board.h.xdt"
-    },
-
-    /* pull in Power and DMA modules */
-    modules: Common.autoForcePowerAndDMAModules
+    }
 };
 
 /*
@@ -73,19 +80,38 @@ function pinmuxRequirements(inst)
 {
     let misoRequired = false;
     let mosiRequired = false;
+    let txRequired   = true;
+    let rxRequired   = true;
+    let isMaster     = true;
+
+    if (inst.spiMode == "Slave"){
+        isMaster = false;
+    }
 
     switch (inst.duplex) {
         case "Full":
             misoRequired = true;
             mosiRequired = true;
             break;
-        case "Transmit Only":
+        case "Master TX Only":
             misoRequired = false;
             mosiRequired = true;
+            rxRequired   = false;
             break;
-        case "Receive Only":
+        case "Slave RX Only":
+            misoRequired = false;
+            mosiRequired = true;
+            txRequired   = false;
+            break;
+        case "Master RX Only":
             misoRequired = true;
             mosiRequired = false;
+            txRequired   = false;
+            break;
+        case "Slave TX Only":
+            misoRequired = true;
+            mosiRequired = false;
+            rxRequired   = false;
             break;
     }
 
@@ -98,23 +124,49 @@ function pinmuxRequirements(inst)
             {
                 name: "sclkPin",
                 displayName: "SCLK Pin",
+                description: "Serial SPI Pin",
                 interfaceNames: ["CLK"]
             }
         ]
     };
 
-    if (misoRequired) {
-        spi.resources.push({
-            name: "misoPin",
-            displayName: "MISO Pin",
-            interfaceNames: ["XDAT1"]});
-    }
+    /*
+     * XDAT0 is always TX and XDAT1 is always RX, therefore MOSI and MISO
+     * depend on if the SPI is a master or slave
+     */
+    if (isMaster) {
+        if (misoRequired) {
+            spi.resources.push({
+                name: "misoPin",
+                displayName: "MISO Pin",
+                description: "Master Input Slave Output pin",
+                interfaceNames: ["XDAT1"]});
+        }
 
-    if (mosiRequired) {
-        spi.resources.push({
-            name: "mosiPin",
-            displayName: "MOSI Pin",
-            interfaceNames: ["XDAT0"]});
+        if (mosiRequired) {
+            spi.resources.push({
+                name: "mosiPin",
+                displayName: "MOSI Pin",
+                description: "Master Output Slave Input pin",
+                interfaceNames: ["XDAT0"]});
+        }
+    }
+    else {
+        if (misoRequired) {
+            spi.resources.push({
+                name: "misoPin",
+                displayName: "MISO Pin",
+                description: "Master Input Slave Output pin",
+                interfaceNames: ["XDAT1"]});
+        }
+
+        if (mosiRequired) {
+            spi.resources.push({
+                name: "mosiPin",
+                displayName: "MOSI Pin",
+                description: "Master Output Slave Input pin",
+                interfaceNames: ["XDAT0"]});
+        }
     }
 
     /* add SS pin if one of the four pin modes is selected */
@@ -126,19 +178,19 @@ function pinmuxRequirements(inst)
                 });
     }
 
-    if (misoRequired) {
+    if (rxRequired) {
         spi.resources.push({
             name: "dmaRxChannel",
             displayName: "DMA RX Channel",
-            description: "DMA channel used for the MISO signal.",
+            description: "DMA channel used to receive data.",
             interfaceNames: ["DMA_RX"]});
     }
 
-    if (mosiRequired) {
+    if (txRequired) {
         spi.resources.push({
             name: "dmaTxChannel",
             displayName: "DMA TX Channel",
-            description: "DMA channel used for the MOSI signal.",
+            description: "DMA channel used to receive data.",
             interfaceNames: ["DMA_TX"]});
     }
 
@@ -161,11 +213,13 @@ function pinmuxRequirements(inst)
  */
 function extend(base)
 {
-    /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
-
     /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

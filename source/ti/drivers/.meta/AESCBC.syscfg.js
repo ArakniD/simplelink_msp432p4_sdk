@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,10 +44,7 @@ let Common = system.getScript("/ti/drivers/Common.js");
 /* get /ti/drivers family name from device object */
 let family = Common.device2Family(system.deviceData, "AESCBC");
 
-let longDescription = "AESCBC CBC mode encrypts messages of any practical"
-        + " length that have a length evenly divisibly by the block size."
-        + " Unlike ECB, it guarantees confidentiality of the entire message"
-        + " when the message is larger than one block.";
+let config = [];
 
 /*
  *  ======== validate ========
@@ -67,11 +64,26 @@ function validate(inst, validation)
  */
 let base = {
     displayName         : "AESCBC",
-    description         : "AES CBC mode",
-    longDescription     : longDescription,
-    documentation: "/tidrivers/doxygen/html/_a_e_s_c_b_c_8h.html",
+    description         : "AES (Advanced Encryption Standard) Cipher"
+        + " Block Chaining Driver",
+    longDescription     : `
+The [__AESCBC driver__][1] encrypts messages of any practical
+length that have a length evenly divisibly by the block size.
+Unlike ECB, it guarantees confidentiality of the entire message.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+
+[1]: /tidrivers/doxygen/html/_a_e_s_c_b_c_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_a_e_s_c_b_c_8h.html#ti_drivers_AESCBC_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_a_e_s_c_b_c_8h.html#ti_drivers_AESCBC_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#AESCBC_Configuration_Options "Configuration options reference"
+`,
     validate            : validate,
-    defaultInstanceName : "Board_AESCBC"
+    defaultInstanceName : "Board_AESCBC",
+    config              : Common.addNameConfig(config, "/ti/drivers/AESCBC", "Board_AESCBC"),
+    modules             : Common.autoForceModules(["Board", "DMA", "Power"])
 };
 
 /* extend the base exports to include family-specific content */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2015-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -282,7 +282,7 @@ int pthread_create(pthread_t *newthread, const pthread_attr_t *attr,
     Task_Params       taskParams;
     pthread_Obj      *thread = NULL;
     Error_Block       eb;
-    pthread_attr_t   *pAttr;
+    const pthread_attr_t    *pAttr;
 
     Error_init(&eb);
     Task_Params_init(&taskParams);
@@ -297,11 +297,12 @@ int pthread_create(pthread_t *newthread, const pthread_attr_t *attr,
     }
 
     defaultPthreadAttrs.stacksize = Task_defaultStackSize;
-    pAttr = (attr == NULL) ? &defaultPthreadAttrs : (pthread_attr_t *)attr;
+    pAttr = (attr == NULL) ? &defaultPthreadAttrs : attr;
 
     taskParams.priority = pAttr->priority;
     taskParams.stack = pAttr->stack;
-    taskParams.stackSize = pAttr->stacksize + pAttr->guardsize;
+    taskParams.stackSize = pAttr->stacksize +
+            (pAttr->stack == NULL ? pAttr->guardsize : 0);
 
     /* Save the function in arg0 for ROV */
     taskParams.arg0 = (UArg)startroutine;

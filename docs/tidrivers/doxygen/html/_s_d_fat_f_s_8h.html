@@ -66,18 +66,14 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>FATFS driver interface. </p>
-<p>============================================================================</p>
-<p>The SDFatFS header file should be included in an application as follows: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_s_d_fat_f_s_8h.html">ti/drivers/SDFatFS.h</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_s_d_8h.html">ti/drivers/SD.h</a>&gt;</span></div></div><!-- fragment --><h1>Operation</h1>
+<div class="textblock"><p>File Allocation Table File System (FATFS) Driver. </p>
+<hr/>
+<p>The SDFatFS header file should be included in an application as follows: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_s_d_fat_f_s_8h.html">ti/drivers/SDFatFS.h</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_s_d_8h.html">ti/drivers/SD.h</a>&gt;</span></div></div><!-- fragment --><p><a class="anchor" id="ti_drivers_SDFatFS_Overview"></a></p><h1>Overview</h1>
 <p>The SDFatFS driver is designed to hook into FatFs by implementing a set of functions that FatFs needs to call to perform basic block data transfers. This driver makes use of the SD driver for lower level disk IO operations.</p>
 <p>The only functions that should be called by the application are the standard driver framework functions (_open, _close, etc...).</p>
 <p>The application may use the FatFs APIs or the standard C runtime file I/O calls (fopen, fclose, etc...) given that SDFatFS_open has has been successfully called. After the SDFatFS_close API is called, ensure the application does NOT make any file I/O calls.</p>
 <h2>Opening the driver</h2>
-<div class="fragment"><div class="line"><a class="code" href="struct_s_d_fat_f_s___config__.html">SDFatFS_Handle</a> handle;</div><div class="line"></div><div class="line">handle = <a class="code" href="_s_d_fat_f_s_8h.html#af4f49c19ea2e426dc7fd4b0c534b9db8">SDFatFS_open</a>(Board_SDFatFS0, driveNum, NULL);</div><div class="line"><span class="keywordflow">if</span> (handle == NULL) {</div><div class="line">    <span class="comment">//Error opening SDFatFS driver</span></div><div class="line">    <span class="keywordflow">while</span> (1);</div><div class="line">}</div></div><!-- fragment --><h1>Implementation</h1>
-<p>The SDFatFS driver interface module is joined (at link time) to a NULL terminated array of SDFatFS_Config data structures named <em>SDFatFS_config</em>. <em>SDFatFS_config</em> is implemented in the application with each entry being an instance of the driver. Each entry in <em>SDFatFS_config</em> contains a:</p><ul>
-<li>(void *) data object that contains internal driver data structures</li>
-</ul>
-<h1>Instrumentation</h1>
+<div class="fragment"><div class="line"><a class="code" href="struct_s_d_fat_f_s___config__.html">SDFatFS_Handle</a> handle;</div><div class="line"></div><div class="line">handle = <a class="code" href="_s_d_fat_f_s_8h.html#af4f49c19ea2e426dc7fd4b0c534b9db8">SDFatFS_open</a>(Board_SDFatFS0, driveNum, NULL);</div><div class="line"><span class="keywordflow">if</span> (handle == NULL) {</div><div class="line">    <span class="comment">//Error opening SDFatFS driver</span></div><div class="line">    <span class="keywordflow">while</span> (1);</div><div class="line">}</div></div><!-- fragment --><h1>Instrumentation</h1>
 <p>The SDFatFS driver interface produces log statements if instrumentation is enabled.</p>
 <table class="doxtable">
 <tr>
@@ -97,7 +93,7 @@ Include dependency graph for SDFatFS.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_s_d_fat_f_s_8h__incl.png" border="0" usemap="#_s_d_fat_f_s_8h" alt=""/></div>
 <map name="_s_d_fat_f_s_8h" id="_s_d_fat_f_s_8h">
-<area shape="rect" id="node3" href="_s_d_8h.html" title="SD driver interface. " alt="" coords="30,80,137,107"/>
+<area shape="rect" id="node3" href="_s_d_8h.html" title="Secure Digital (SD) Driver. " alt="" coords="30,80,137,107"/>
 </map>
 </div>
 </div>
@@ -181,7 +177,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>SDFatFS Global configuration. </p>
-<p>The SDFatFS_Config structure contains a single pointer used to characterize the SDFatFS driver implementation.</p>
+<p>The <a class="el" href="_s_d_fat_f_s_8h.html#ae8733fb11f1ab3333232e95d6cc29d58" title="SDFatFS Global configuration. ">SDFatFS_Config</a> structure contains a single pointer used to characterize the SDFatFS driver implementation.</p>
 <p>This structure needs to be defined before calling <a class="el" href="_s_d_fat_f_s_8h.html#ae3e438eb1f25f9b9f08d557bd480532c">SDFatFS_init()</a> and it must not be changed thereafter.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="_s_d_fat_f_s_8h.html#ae3e438eb1f25f9b9f08d557bd480532c">SDFatFS_init()</a> </dd></dl>
 
@@ -243,11 +239,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Function to close a SDFatFS instance specified by the SDFatFS handle. </p>
-<p>This function unmounts the file system mounted by SDFatFS_open and unregisters the SDFatFS driver from the FatFs module.</p>
+<p>This function unmounts the file system mounted by <a class="el" href="_s_d_fat_f_s_8h.html#af4f49c19ea2e426dc7fd4b0c534b9db8" title="Function to open a SDFatFS instance on the specified drive. ">SDFatFS_open()</a> and unregisters the SDFatFS driver from the FatFs module.</p>
 <dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_s_d_fat_f_s_8h.html#af4f49c19ea2e426dc7fd4b0c534b9db8" title="Function to open a SDFatFS instance on the specified drive. ">SDFatFS_open()</a> had to be called first.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>A SDFatFS handle returned from SDFatFS_open</td></tr>
+    <tr><td class="paramname">handle</td><td>A <a class="el" href="_s_d_fat_f_s_8h.html#a068ec63155c86d7c156af6f440628d19" title="A handle that is returned from a SDFatFS_open() call. ">SDFatFS_Handle</a> returned from <a class="el" href="_s_d_fat_f_s_8h.html#af4f49c19ea2e426dc7fd4b0c534b9db8" title="Function to open a SDFatFS instance on the specified drive. ">SDFatFS_open()</a></td></tr>
   </table>
   </dd>
 </dl>
@@ -278,7 +274,7 @@ Functions</h2></td></tr>
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->
 <hr class="footer"/><small>
-  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2018</a>, Texas Instruments Incorporated. All rights reserved. <br>
+  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
   <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
 </small>
 </body>

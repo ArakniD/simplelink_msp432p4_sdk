@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 
 /*
@@ -1122,6 +1122,11 @@ __extern xdc_Int ti_sysbios_knl_Task_objectCheck__I( ti_sysbios_knl_Task_Handle 
 #define ti_sysbios_knl_Task_getObjectCheckValue ti_sysbios_knl_Task_getObjectCheckValue__I
 xdc__CODESECT(ti_sysbios_knl_Task_getObjectCheckValue__I, "ti_sysbios_knl_Task_getObjectCheckValue")
 __extern xdc_UInt32 ti_sysbios_knl_Task_getObjectCheckValue__I( ti_sysbios_knl_Task_Handle handle );
+
+/* enableOtherCores__I */
+#define ti_sysbios_knl_Task_enableOtherCores ti_sysbios_knl_Task_enableOtherCores__I
+xdc__CODESECT(ti_sysbios_knl_Task_enableOtherCores__I, "ti_sysbios_knl_Task_enableOtherCores")
+__extern xdc_Void ti_sysbios_knl_Task_enableOtherCores__I( void );
 
 
 /*

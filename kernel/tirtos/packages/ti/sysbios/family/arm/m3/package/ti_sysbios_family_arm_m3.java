@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_family_arm_m3
 {
-    static final String VERS = "@(#) xdc-F07\n";
+    static final String VERS = "@(#) xdc-F09\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -279,6 +279,8 @@ public class ti_sysbios_family_arm_m3
         om.bind("ti.sysbios.family.arm.m3.Hwi.excDumpRegs", new Extern("ti_sysbios_family_arm_m3_Hwi_excDumpRegs__I", "xdc_Void(*)(xdc_UInt)", true, false));
         om.bind("ti.sysbios.family.arm.m3.Hwi.pendSV", new Extern("ti_sysbios_family_arm_m3_Hwi_pendSV__I", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.family.arm.m3.Hwi.setStackLimit", new Extern("ti_sysbios_family_arm_m3_Hwi_setStackLimit__I", "xdc_Void(*)(xdc_Ptr)", true, false));
+        om.bind("ti.sysbios.family.arm.m3.Hwi.swiDisableNull", new Extern("ti_sysbios_family_arm_m3_Hwi_swiDisableNull__I", "xdc_UInt(*)(xdc_Void)", true, false));
+        om.bind("ti.sysbios.family.arm.m3.Hwi.swiRestoreNull", new Extern("ti_sysbios_family_arm_m3_Hwi_swiRestoreNull__I", "xdc_Void(*)(xdc_UInt)", true, false));
         om.bind("ti.sysbios.family.arm.m3.Hwi.dispatch", new Extern("ti_sysbios_family_arm_m3_Hwi_dispatch__I", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.family.arm.m3.Hwi.romInitNVIC", new Extern("ti_sysbios_family_arm_m3_Hwi_romInitNVIC__I", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.family.arm.m3.Hwi.dispatchC", new Extern("ti_sysbios_family_arm_m3_Hwi_dispatchC__I", "xdc_UInt(*)(xdc_UArg,xdc_UInt32,xdc_UInt32,ti_sysbios_family_arm_m3_Hwi_Object*)", true, false));
@@ -969,6 +971,7 @@ public class ti_sysbios_family_arm_m3
             po.addFld("isTiva", $$T_Bool, false, "wh");
             po.addFld("enableWA1_1", $$T_Bool, false, "wh");
             po.addFld("swiDisable", new Proto.Adr("xdc_UInt(*)(xdc_Void)", "PFn"), $$UNDEF, "w");
+            po.addFld("swiRestore", new Proto.Adr("xdc_Void(*)(xdc_UInt)", "PFv"), $$UNDEF, "w");
             po.addFld("swiRestoreHwi", new Proto.Adr("xdc_Void(*)(xdc_UInt)", "PFv"), $$UNDEF, "w");
             po.addFld("taskDisable", new Proto.Adr("xdc_UInt(*)(xdc_Void)", "PFn"), $$UNDEF, "w");
             po.addFld("taskRestoreHwi", new Proto.Adr("xdc_Void(*)(xdc_UInt)", "PFv"), $$UNDEF, "w");
@@ -1918,6 +1921,8 @@ public class ti_sysbios_family_arm_m3
         icfgs.add("enableWA1_1");
         mcfgs.add("swiDisable");
         icfgs.add("swiDisable");
+        mcfgs.add("swiRestore");
+        icfgs.add("swiRestore");
         mcfgs.add("swiRestoreHwi");
         icfgs.add("swiRestoreHwi");
         mcfgs.add("taskDisable");
@@ -2003,6 +2008,8 @@ public class ti_sysbios_family_arm_m3
         vo.bind("excDumpRegs", om.findStrict("ti.sysbios.family.arm.m3.Hwi.excDumpRegs", "ti.sysbios.family.arm.m3"));
         vo.bind("pendSV", om.findStrict("ti.sysbios.family.arm.m3.Hwi.pendSV", "ti.sysbios.family.arm.m3"));
         vo.bind("setStackLimit", om.findStrict("ti.sysbios.family.arm.m3.Hwi.setStackLimit", "ti.sysbios.family.arm.m3"));
+        vo.bind("swiDisableNull", om.findStrict("ti.sysbios.family.arm.m3.Hwi.swiDisableNull", "ti.sysbios.family.arm.m3"));
+        vo.bind("swiRestoreNull", om.findStrict("ti.sysbios.family.arm.m3.Hwi.swiRestoreNull", "ti.sysbios.family.arm.m3"));
         vo.bind("dispatch", om.findStrict("ti.sysbios.family.arm.m3.Hwi.dispatch", "ti.sysbios.family.arm.m3"));
         vo.bind("romInitNVIC", om.findStrict("ti.sysbios.family.arm.m3.Hwi.romInitNVIC", "ti.sysbios.family.arm.m3"));
         vo.bind("dispatchC", om.findStrict("ti.sysbios.family.arm.m3.Hwi.dispatchC", "ti.sysbios.family.arm.m3"));

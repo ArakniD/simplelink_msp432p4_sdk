@@ -1,3 +1,7 @@
+### SysConfig Notice
+
+All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
+
 ---
 # watchdog
 
@@ -24,9 +28,8 @@ Otherwise, you can find Board.html in the directory
 ## Example Usage
 
 1. After loading the example application to the board, disconnect the device
-from the debug session. Do not power cycle the board as this may cause the
-example application to fail for some devices. After disconnecting the debug
-session, the example application will begin to run automatically.
+from the debug session. Then physically disconnect the device from power for 5
+seconds. Reconnect the device and the application should run automatically.
 
 2. The application turns on `Board_GPIO_LED0` to indicate watchdog driver
 initialization is complete.

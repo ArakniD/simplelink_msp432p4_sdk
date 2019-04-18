@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class gnu_targets_arm
 {
-    static final String VERS = "@(#) xdc-F07\n";
+    static final String VERS = "@(#) xdc-F09\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -1484,7 +1484,7 @@ public class gnu_targets_arm
         po.addFld("name", $$T_Str, "A53F", "rh");
         po.addFld("suffix", $$T_Str, "a53fg", "rh");
         po.addFld("isa", $$T_Str, "v8A", "rh");
-        po.addFld("model", (Proto)om.findStrict("xdc.bld.ITarget.Model", "gnu.targets.arm"), Global.newObject("endian", "little", "shortEnums", true), "rh");
+        po.addFld("model", (Proto)om.findStrict("xdc.bld.ITarget.Model", "gnu.targets.arm"), Global.newObject("endian", "little", "shortEnums", false), "rh");
         po.addFld("alignDirectiveSupported", $$T_Bool, true, "rh");
         po.addFld("rts", $$T_Str, "gnu.targets.arm.rtsv8A", "rh");
         po.addFld("platform", $$T_Str, "ti.platforms.cortexA:SIMMAXWELL", "wh");

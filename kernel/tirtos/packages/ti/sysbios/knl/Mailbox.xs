@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017, Texas Instruments Incorporated
+ * Copyright (c) 2012-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ function module$use()
     Semaphore = xdc.useModule("ti.sysbios.knl.Semaphore");
 
     /* only useModule(Memory) if needed */
-    var Defaults = xdc.useModule('xdc.runtime.Defaults');
+    var Defaults = xdc.module('xdc.runtime.Defaults');
     if (Defaults.common$.memoryPolicy ==
         xdc.module("xdc.runtime.Types").STATIC_POLICY) {
         Memory = xdc.module('xdc.runtime.Memory');
@@ -59,7 +59,7 @@ function module$use()
     else {
         Memory = xdc.useModule('xdc.runtime.Memory');
     }
-    
+
     /* save local copy of maxTypeAlign to avoid runtime call */
     Mailbox.maxTypeAlign = Memory.getMaxDefaultTypeAlignMeta();
 
@@ -68,7 +68,11 @@ function module$use()
      * but this causes linker issues.
      */
     Event = xdc.useModule("ti.sysbios.knl.Event");
-    xdc.useModule("xdc.runtime.Assert");
+    var BIOS = xdc.module("ti.sysbios.BIOS");
+    if (!(BIOS.libType == BIOS.LibType_Custom
+        && BIOS.assertsEnabled == false)) {
+        xdc.useModule('xdc.runtime.Assert');
+    }
 }
 
 /*

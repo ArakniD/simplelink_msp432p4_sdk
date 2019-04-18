@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,8 +70,13 @@ function module$use()
     /* last parameter is true to disable expected cycle warnings  */
     Queue = xdc.useModule('ti.sysbios.knl.Queue');
     xdc.useModule('ti.sysbios.hal.Hwi');
-    xdc.useModule('xdc.runtime.Log');
-    xdc.useModule('xdc.runtime.Assert');
+    if (!(BIOS.libType == BIOS.LibType_Custom && BIOS.logsEnabled == false)) {
+        xdc.useModule('xdc.runtime.Log');
+    }
+    if (!(BIOS.libType == BIOS.LibType_Custom
+        && BIOS.assertsEnabled == false)) {
+        xdc.useModule('xdc.runtime.Assert');
+    }
 
     if (BIOS.swiEnabled) {
         Swi = xdc.useModule('ti.sysbios.knl.Swi');
@@ -124,7 +129,7 @@ function module$static$init(mod, params)
 {
     /* for some reason BIOS from module$use doesn't exist anymore */
     BIOS = xdc.module('ti.sysbios.BIOS');
-    
+
     Queue.construct(mod.clockQ);
 
     mod.ticks = 0;
@@ -426,8 +431,8 @@ function viewInitModule(view, mod)
 		 */
 	        view.timerId = Number(timerRawView.instStates[i].id) >>> 1;
 	    }
-	    else {
-	        view.timerId = Number(timerRawView.instStates[i].id);
+            else {
+                view.timerId = Number(timerRawView.instStates[i].id);
             }
         }
     }

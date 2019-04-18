@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 
 /*
@@ -834,6 +834,15 @@ __extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_swiDisable ti_sysbios_fa
 #define ti_sysbios_family_arm_m3_Hwi_swiDisable (ti_sysbios_family_arm_m3_Hwi_swiDisable__C)
 #endif
 
+/* swiRestore */
+typedef xdc_Void (*CT__ti_sysbios_family_arm_m3_Hwi_swiRestore)(xdc_UInt arg1);
+__extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_swiRestore ti_sysbios_family_arm_m3_Hwi_swiRestore__C;
+#ifdef ti_sysbios_family_arm_m3_Hwi_swiRestore__CR
+#define ti_sysbios_family_arm_m3_Hwi_swiRestore (*((CT__ti_sysbios_family_arm_m3_Hwi_swiRestore*)(xdcRomConstPtr + ti_sysbios_family_arm_m3_Hwi_swiRestore__C_offset)))
+#else
+#define ti_sysbios_family_arm_m3_Hwi_swiRestore (ti_sysbios_family_arm_m3_Hwi_swiRestore__C)
+#endif
+
 /* swiRestoreHwi */
 typedef xdc_Void (*CT__ti_sysbios_family_arm_m3_Hwi_swiRestoreHwi)(xdc_UInt arg1);
 __extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_swiRestoreHwi ti_sysbios_family_arm_m3_Hwi_swiRestoreHwi__C;
@@ -1254,6 +1263,16 @@ __extern xdc_Void ti_sysbios_family_arm_m3_Hwi_pendSV__I( void );
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_setStackLimit__I, "ti_sysbios_family_arm_m3_Hwi_setStackLimit")
 __extern xdc_Void ti_sysbios_family_arm_m3_Hwi_setStackLimit__I( xdc_Ptr stackBase );
 
+/* swiDisableNull__I */
+#define ti_sysbios_family_arm_m3_Hwi_swiDisableNull ti_sysbios_family_arm_m3_Hwi_swiDisableNull__I
+xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_swiDisableNull__I, "ti_sysbios_family_arm_m3_Hwi_swiDisableNull")
+__extern xdc_UInt ti_sysbios_family_arm_m3_Hwi_swiDisableNull__I( void );
+
+/* swiRestoreNull__I */
+#define ti_sysbios_family_arm_m3_Hwi_swiRestoreNull ti_sysbios_family_arm_m3_Hwi_swiRestoreNull__I
+xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_swiRestoreNull__I, "ti_sysbios_family_arm_m3_Hwi_swiRestoreNull")
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_swiRestoreNull__I( xdc_UInt key );
+
 /* dispatch__I */
 #define ti_sysbios_family_arm_m3_Hwi_dispatch ti_sysbios_family_arm_m3_Hwi_dispatch__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_dispatch__I, "ti_sysbios_family_arm_m3_Hwi_dispatch")
@@ -1563,6 +1582,7 @@ struct ti_sysbios_family_arm_m3_Hwi_Object {
 #define Hwi_priGroup ti_sysbios_family_arm_m3_Hwi_priGroup
 #define Hwi_numSparseInterrupts ti_sysbios_family_arm_m3_Hwi_numSparseInterrupts
 #define Hwi_swiDisable ti_sysbios_family_arm_m3_Hwi_swiDisable
+#define Hwi_swiRestore ti_sysbios_family_arm_m3_Hwi_swiRestore
 #define Hwi_swiRestoreHwi ti_sysbios_family_arm_m3_Hwi_swiRestoreHwi
 #define Hwi_taskDisable ti_sysbios_family_arm_m3_Hwi_taskDisable
 #define Hwi_taskRestoreHwi ti_sysbios_family_arm_m3_Hwi_taskRestoreHwi

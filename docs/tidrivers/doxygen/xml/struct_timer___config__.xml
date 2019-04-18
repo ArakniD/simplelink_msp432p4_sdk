@@ -5,7 +5,7 @@
     <includes refid="_timer_8h" local="no">Timer.h</includes>
       <sectiondef kind="public-attrib">
       <memberdef kind="variable" id="struct_timer___config___1ad729580a94414d8dddf43fa91e2a570a" prot="public" static="no" mutable="no">
-        <type><ref refid="_timer_8h_1a97afbdd9735ae145134ecdb530a08cf4" kindref="member">Timer_FxnTable</ref> const  *</type>
+        <type><ref refid="struct_timer___fxn_table" kindref="compound">Timer_FxnTable</ref> const  *</type>
         <definition>Timer_FxnTable const* Timer_Config_::fxnTablePtr</definition>
         <argsstring></argsstring>
         <name>fxnTablePtr</name>
@@ -15,7 +15,7 @@
 <para>Pointer to a table of driver-specific implementations of timer APIs. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="389" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="389" bodyend="-1"/>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="411" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="411" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_timer___config___1adbf31e859dbb61b99d9ca845ab9923da" prot="public" static="no" mutable="no">
         <type>void *</type>
@@ -28,7 +28,7 @@
 <para>Pointer to a driver specific data object. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="392" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="392" bodyend="-1"/>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="414" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="414" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_timer___config___1aec53bedfd4e8ccfc12b337ea13a2914e" prot="public" static="no" mutable="no">
         <type>void const  *</type>
@@ -41,7 +41,7 @@
 <para>Pointer to a driver specific hardware attributes structure. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="395" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="395" bodyend="-1"/>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="417" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="417" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -50,10 +50,17 @@
 <para>The Timer_Config structure contains a set of pointers used to characterize the timer driver implementation.</para><para>This structure needs to be defined before calling <ref refid="_timer_8h_1ace12508d33b354c0194b6f72cfc3bf12" kindref="member">Timer_init()</ref> and it must not be changed thereafter.</para><para><simplesect kind="see"><para><ref refid="_timer_8h_1ace12508d33b354c0194b6f72cfc3bf12" kindref="member">Timer_init()</ref> </para></simplesect>
 </para>    </detaileddescription>
     <collaborationgraph>
-      <node id="246">
-        <label>Timer_FxnTable_</label>
-        <link refid="struct_timer___fxn_table__"/>
-        <childnode refid="245" relation="usage">
+      <node id="247">
+        <label>Timer_Config_</label>
+        <link refid="struct_timer___config__"/>
+        <childnode refid="248" relation="usage">
+          <edgelabel>fxnTablePtr</edgelabel>
+        </childnode>
+      </node>
+      <node id="248">
+        <label>Timer_FxnTable</label>
+        <link refid="struct_timer___fxn_table"/>
+        <childnode refid="247" relation="usage">
           <edgelabel>closeFxn</edgelabel>
           <edgelabel>stopFxn</edgelabel>
           <edgelabel>initFxn</edgelabel>
@@ -63,15 +70,8 @@
           <edgelabel>getCountFxn</edgelabel>
         </childnode>
       </node>
-      <node id="245">
-        <label>Timer_Config_</label>
-        <link refid="struct_timer___config__"/>
-        <childnode refid="246" relation="usage">
-          <edgelabel>fxnTablePtr</edgelabel>
-        </childnode>
-      </node>
     </collaborationgraph>
-    <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="387" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="387" bodyend="396"/>
+    <location file="exports/tidrivers_msp432/source/ti/drivers/Timer.h" line="409" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/Timer.h" bodystart="409" bodyend="418"/>
     <listofallmembers>
       <member refid="struct_timer___config___1ad729580a94414d8dddf43fa91e2a570a" prot="public" virt="non-virtual"><scope>Timer_Config_</scope><name>fxnTablePtr</name></member>
       <member refid="struct_timer___config___1aec53bedfd4e8ccfc12b337ea13a2914e" prot="public" virt="non-virtual"><scope>Timer_Config_</scope><name>hwAttrs</name></member>

@@ -69,31 +69,36 @@ $(function() {
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Generic interface for text output. </p>
-<p>============================================================================</p>
-<h1>Driver include</h1>
-<p>The display header file should be included in an application as follows: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_display_8h.html">ti/display/Display.h</a>&gt;</span></div></div><!-- fragment --><h1>Operation</h1>
+<hr/>
+<p><a class="anchor" id="ti_drivers_Display_Overview"></a></p><h1>Overview</h1>
 <p>The Display middleware-driver in TI-RTOS is designed to abstract operations and considerations specific to given output method.</p>
 <p>The APIs in this driver serve as an interface to a typical TI-RTOS application. The specific peripheral implementations are responsible to create all the SYS/BIOS specific primitives to allow for thread-safe operation. The application initializes the Display driver by calling <a class="el" href="_display_8h.html#a587814881d96c49960b4ae2b73199fe3">Display_init()</a> and is then ready to open a Display by calling <a class="el" href="_display_8h.html#a3aa87973a354d4fd6a2969f764e8afe6">Display_open()</a> and passing in a Display parameters data structure.</p>
 <dl class="section note"><dt>Note</dt><dd>Display APIs can only be called from task context.</dd>
 <dd>
 All Display statements will be removed and no display operations will take place if the symbol <em>Display_DISABLE_ALL</em> is defined globally, or before <em><a class="el" href="_display_8h.html" title="Generic interface for text output. ">Display.h</a></em> is included.</dd></dl>
-<h2>Opening the driver</h2>
+<hr/>
+<p> <a class="anchor" id="ti_drivers_Display_Usage"></a></p><h1>Usage</h1>
+<p>This documentation provides a basic <a class="el" href="_display_8h.html#ti_drivers_Display_Synopsis">usage summary</a> and a set of <a class="el" href="_display_8h.html#ti_drivers_Display_Examples">examples</a> in the form of commented code fragments. Detailed descriptions of the APIs are provided in subsequent sections.</p>
+<p><a class="anchor" id="ti_drivers_Display_Synopsis"></a></p><h2>Synopsis</h2>
+<p><a class="anchor" id="ti_drivers_Display_Synopsis_Code"></a></p><div class="fragment"><div class="line"><span class="comment">// Import Display Driver definitions</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_display_8h.html">ti/display/Display.h</a>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">// Initialize optional Display parameters</span></div><div class="line"><a class="code" href="struct_display___config.html">Display_Handle</a>    handle;</div><div class="line"><a class="code" href="struct_display___params.html">Display_Params</a>    params;</div><div class="line"><a class="code" href="_display_8h.html#a4fb2982f52995a80194fbb107883a183">Display_Params_init</a>(&amp;params);</div><div class="line"></div><div class="line"><span class="comment">// Open Display implementation</span></div><div class="line">handle = <a class="code" href="_display_8h.html#a3aa87973a354d4fd6a2969f764e8afe6">Display_open</a>(<a class="code" href="group___d_i_s_p_l_a_y___t_y_p_e_s.html#ga159af3b59e8fa662fc153a0307fd1817">Display_Type_HOST</a>, &amp;params);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// Output to Display</span></div><div class="line"><a class="code" href="_display_8h.html#a371873a0f96f2e895bf92af7e586b244">Display_printf</a>(handle, 0, 0, <span class="stringliteral">&quot;Hello World&quot;</span>);</div><div class="line"></div><div class="line"><a class="code" href="_display_8h.html#aea13e4e023f2b8020bed2e888cf98599">Display_close</a>(handle);</div></div><!-- fragment --><hr/>
+<p> <a class="anchor" id="ti_drivers_Display_Examples"></a></p><h1>Examples</h1>
+<ul>
+<li><a class="el" href="_display_8h.html#ti_drivers_Display_Examples_open">Opening a Display instance</a> </li>
+<li><a class="el" href="_display_8h.html#ti_drivers_Display_Examples_float">Floating point support</a> </li>
+<li><a class="el" href="_display_8h.html#ti_drivers_Display_Examples_host">Configuring Host Display</a> </li>
+<li><a class="el" href="_display_8h.html#ti_drivers_Display_Examples_lcd">Configuring a graphical Display</a></li>
+</ul>
+<p><a class="anchor" id="ti_drivers_Display_Examples_open"></a></p><h2>Opening a Display instance</h2>
+<div class="fragment"><div class="line"><a class="code" href="struct_display___config.html">Display_Handle</a>    handle;</div><div class="line"><a class="code" href="struct_display___params.html">Display_Params</a>    params;</div><div class="line"></div><div class="line"><a class="code" href="_display_8h.html#a4fb2982f52995a80194fbb107883a183">Display_Params_init</a>(&amp;params);</div><div class="line">display = <a class="code" href="_display_8h.html#a3aa87973a354d4fd6a2969f764e8afe6">Display_open</a>(<a class="code" href="group___d_i_s_p_l_a_y___t_y_p_e_s.html#ga159af3b59e8fa662fc153a0307fd1817">Display_Type_HOST</a>, &amp;params);</div><div class="line"><span class="keywordflow">if</span> (display == NULL) {</div><div class="line">    <span class="comment">// Display_open() failed</span></div><div class="line">    <span class="keywordflow">while</span>(1);</div><div class="line">}</div></div><!-- fragment --><p><a class="anchor" id="ti_drivers_Display_Examples_float"></a></p><h2>Adding floating point</h2>
+<div class="fragment"><div class="line"><span class="comment">// Note that for floating point support, the .cfg file must have a line like</span></div><div class="line"><span class="comment">// System.extendedFormats = &quot;%$L%$S%$F%f&quot;; // Add &#39;%f&#39; support</span></div><div class="line"><a class="code" href="_display_8h.html#a371873a0f96f2e895bf92af7e586b244">Display_printf</a>(handle, 3, 0, <span class="stringliteral">&quot;Pi is %f&quot;</span>, 3.1415);</div><div class="line"><a class="code" href="_display_8h.html#aea13e4e023f2b8020bed2e888cf98599">Display_close</a>(handle);</div></div><!-- fragment --><p><a class="anchor" id="ti_drivers_Display_Examples_host"></a></p><h2>Configuring the HOST Display</h2>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_display_8h.html">ti/display/Display.h</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_display_host_8h.html">ti/display/DisplayHost.h</a>&gt;</span></div><div class="line"></div><div class="line"><span class="preprocessor">#define MAXPRINTLEN 1024</span></div><div class="line"></div><div class="line"><a class="code" href="struct_display_host___object.html">DisplayHost_Object</a> displayHostObject;</div><div class="line"><span class="keyword">static</span> <span class="keywordtype">char</span> displayBuf[MAXPRINTLEN];</div><div class="line"></div><div class="line"><span class="keyword">const</span> <a class="code" href="struct_display_host___h_w_attrs.html">DisplayHost_HWAttrs</a> displayHostHWAttrs = {</div><div class="line">    .<a class="code" href="struct_display_host___h_w_attrs.html#ac3696cae4d018951b95be22f560d8f6f">strBuf</a> = displayBuf,</div><div class="line">    .strBufLen = MAXPRINTLEN</div><div class="line">};</div><div class="line"></div><div class="line"><span class="keyword">const</span> <a class="code" href="struct_display___config.html">Display_Config</a> Display_config[] = {</div><div class="line">    {</div><div class="line">        .<a class="code" href="struct_display___config.html#adce10e2738107a8b017ac8df3dbe1d73">fxnTablePtr</a> = &amp;<a class="code" href="_display_host_8h.html#ad22670f7762565fe9060de8d9b335d9b">DisplayHost_fxnTable</a>,</div><div class="line">        .object = &amp;displayHostObject,</div><div class="line">        .hwAttrs = &amp;displayHostHWAttrs</div><div class="line">    }</div><div class="line">};</div><div class="line"></div><div class="line"><span class="keyword">const</span> uint8_t Display_count = <span class="keyword">sizeof</span>(Display_config) / <span class="keyword">sizeof</span>(<a class="code" href="struct_display___config.html">Display_Config</a>);</div></div><!-- fragment --><p><a class="anchor" id="ti_drivers_Display_Examples_lcd"></a></p><h2>Configuring graphical display</h2>
+<div class="fragment"><div class="line"><a class="code" href="struct_display___config.html">Display_Handle</a>    handle;</div><div class="line"><a class="code" href="struct_display___params.html">Display_Params</a>    params;</div><div class="line"></div><div class="line"><a class="code" href="_display_8h.html#a4fb2982f52995a80194fbb107883a183">Display_Params_init</a>(&amp;params);</div><div class="line">handle = <a class="code" href="_display_8h.html#a3aa87973a354d4fd6a2969f764e8afe6">Display_open</a>(<a class="code" href="group___d_i_s_p_l_a_y___t_y_p_e_s.html#ga9b8f62fe443d3a584f598392d233f38c">Display_Type_LCD</a>, &amp;params);</div><div class="line"><span class="keywordflow">if</span> (NULL == handle)</div><div class="line">   handle = <a class="code" href="_display_8h.html#a3aa87973a354d4fd6a2969f764e8afe6">Display_open</a>(<a class="code" href="group___d_i_s_p_l_a_y___t_y_p_e_s.html#ga0257ac5b377a67eb525400e4c2a4f0d0">Display_Type_UART</a>, &amp;params);</div></div><!-- fragment --><h2>Opening the driver</h2>
 <p>Because the Display driver serves as an abstraction, it is possible to specify the <em>type</em> of Display implementations that should be opened, as well as alternatively the config-array index value like with other TI-RTOS drivers.</p>
 <p>Optionally, if no particular parameters are desired, the pointer to params can be replaced with NULL.</p>
 <div class="fragment"><div class="line"><a class="code" href="struct_display___config.html">Display_Handle</a>    handle;</div><div class="line"><a class="code" href="struct_display___params.html">Display_Params</a>    params;</div><div class="line"></div><div class="line"><a class="code" href="_display_8h.html#a4fb2982f52995a80194fbb107883a183">Display_Params_init</a>(&amp;params);</div><div class="line">handle = <a class="code" href="_display_8h.html#a3aa87973a354d4fd6a2969f764e8afe6">Display_open</a>(someConfigIndexValue, &amp;params);</div><div class="line"><span class="comment">//Display_open(Display_Type_HOST, &amp;params);</span></div><div class="line"><span class="comment">//Display_open(Display_Type_ANY, &amp;params);</span></div><div class="line"><span class="comment">//Display_open(Display_Type_UART, NULL);</span></div><div class="line"><span class="comment">//Display_open(Display_Type_UART | Display_Type_LCD, &amp;params);</span></div></div><!-- fragment --><h2>Outputting data</h2>
-<p>After the Display interface is opened, the user can call any of the APIs </p><div class="fragment"><div class="line"><a class="code" href="_display_8h.html#ab5a031704e2a1a9525d2c1a92346f842">Display_clear</a>(handle);</div><div class="line"><a class="code" href="_display_8h.html#abae2ae910c2c533dbf11d24c656609d1">Display_clearLines</a>(handle, 0, 4);</div><div class="line"><a class="code" href="_display_8h.html#a371873a0f96f2e895bf92af7e586b244">Display_printf</a>(handle, 1, 0, <span class="stringliteral">&quot;How are you %s?&quot;</span>, yourName);</div><div class="line"></div><div class="line"><span class="comment">// Note that for floating point support, the .cfg file must have a line like</span></div><div class="line"><span class="comment">// System.extendedFormats = &quot;%$L%$S%$F%f&quot;; // Add &#39;%f&#39; support</span></div><div class="line"><a class="code" href="_display_8h.html#a371873a0f96f2e895bf92af7e586b244">Display_printf</a>(handle, 3, 0, <span class="stringliteral">&quot;Pi is %f&quot;</span>, 3.1415);</div><div class="line"><a class="code" href="_display_8h.html#aea13e4e023f2b8020bed2e888cf98599">Display_close</a>(handle);</div></div><!-- fragment --><p>It is also possible to prefer a graphical display if available. Perhaps most interesting for portable applications.</p>
-<div class="fragment"><div class="line"><a class="code" href="struct_display___config.html">Display_Handle</a>    handle;</div><div class="line"><a class="code" href="struct_display___params.html">Display_Params</a>    params;</div><div class="line"></div><div class="line"><a class="code" href="_display_8h.html#a4fb2982f52995a80194fbb107883a183">Display_Params_init</a>(&amp;params);</div><div class="line">handle = <a class="code" href="_display_8h.html#a3aa87973a354d4fd6a2969f764e8afe6">Display_open</a>(<a class="code" href="group___d_i_s_p_l_a_y___t_y_p_e_s.html#ga9b8f62fe443d3a584f598392d233f38c">Display_Type_LCD</a>, &amp;params);</div><div class="line"><span class="keywordflow">if</span> (NULL == handle)</div><div class="line">   handle = <a class="code" href="_display_8h.html#a3aa87973a354d4fd6a2969f764e8afe6">Display_open</a>(<a class="code" href="group___d_i_s_p_l_a_y___t_y_p_e_s.html#ga0257ac5b377a67eb525400e4c2a4f0d0">Display_Type_UART</a>, &amp;params);</div></div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>Display_printX can only be called from Task context, unless the only opened interfaces specifically allow calls from any context.</dd></dl>
-<h1>Implementation</h1>
-<p>This module serves as the main interface for TI-RTOS applications. Its purpose is to redirect the module's APIs to specific implementations which are specified using a pointer to a <a class="el" href="struct_display___fxn_table.html" title="The definition of a Display function table that contains the required set of functions to control a s...">Display_FxnTable</a>.</p>
-<p>The Display interface module is joined (at link time) to a NULL-terminated array of <a class="el" href="struct_display___config.html" title="Display Global configuration. ">Display_Config</a> data structures named <em>Display_config</em>. <em>Display_config</em> is implemented in the application with each entry being an instance of a Display implementation. Each entry in <em>Display_config</em> contains a:</p><ul>
-<li>(<a class="el" href="struct_display___fxn_table.html" title="The definition of a Display function table that contains the required set of functions to control a s...">Display_FxnTable</a> *) to a set of functions implementing an output channel</li>
-<li>(void *) data object that is associated with the <a class="el" href="struct_display___fxn_table.html" title="The definition of a Display function table that contains the required set of functions to control a s...">Display_FxnTable</a></li>
-<li>(void *) hardware attributes that are associated to the <a class="el" href="struct_display___fxn_table.html" title="The definition of a Display function table that contains the required set of functions to control a s...">Display_FxnTable</a></li>
-</ul>
-<p>In practical terms that means the <a class="el" href="struct_display___config.html" title="Display Global configuration. ">Display_Config</a> struct for each specific implementation equates to an instance of an abstract Display 'class', where the functions are always provided the a <a class="el" href="struct_display___config.html" title="Display Global configuration. ">Display_Config</a> struct pointer in the parameter list, in lieu of what in some languages is called <em>this</em> or <em>self</em>.</p>
+<p>After the Display interface is opened, the user can call any of the APIs </p><div class="fragment"><div class="line"><a class="code" href="_display_8h.html#ab5a031704e2a1a9525d2c1a92346f842">Display_clear</a>(handle);</div><div class="line"><a class="code" href="_display_8h.html#abae2ae910c2c533dbf11d24c656609d1">Display_clearLines</a>(handle, 0, 4);</div><div class="line"><a class="code" href="_display_8h.html#a371873a0f96f2e895bf92af7e586b244">Display_printf</a>(handle, 1, 0, <span class="stringliteral">&quot;How are you %s?&quot;</span>, yourName);</div><div class="line"></div><div class="line"><span class="comment">// Note that for floating point support, the .cfg file must have a line like</span></div><div class="line"><span class="comment">// System.extendedFormats = &quot;%$L%$S%$F%f&quot;; // Add &#39;%f&#39; support</span></div><div class="line"><a class="code" href="_display_8h.html#a371873a0f96f2e895bf92af7e586b244">Display_printf</a>(handle, 3, 0, <span class="stringliteral">&quot;Pi is %f&quot;</span>, 3.1415);</div><div class="line"><a class="code" href="_display_8h.html#aea13e4e023f2b8020bed2e888cf98599">Display_close</a>(handle);</div></div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>Display_printX can only be called from Task context, unless the only opened interfaces specifically allow calls from any context.</dd></dl>
 <p>For example, Display_open is called, and Display.c iterates over the available <a class="el" href="struct_display___config.html" title="Display Global configuration. ">Display_Config</a>'s in the external Display_config array. For each <em>config</em>, config-&gt;fxns-&gt;open is called, and &amp;config is provided for context.</p>
-<p>Below is an example configuration to use the HOST display.</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_display_8h.html">ti/display/Display.h</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_display_host_8h.html">ti/display/DisplayHost.h</a>&gt;</span></div><div class="line"></div><div class="line"><span class="preprocessor">#define MAXPRINTLEN 1024</span></div><div class="line"></div><div class="line"><a class="code" href="struct_display_host___object.html">DisplayHost_Object</a> displayHostObject;</div><div class="line"><span class="keyword">static</span> <span class="keywordtype">char</span> displayBuf[MAXPRINTLEN];</div><div class="line"></div><div class="line"><span class="keyword">const</span> <a class="code" href="struct_display_host___h_w_attrs.html">DisplayHost_HWAttrs</a> displayHostHWAttrs = {</div><div class="line">    .<a class="code" href="struct_display_host___h_w_attrs.html#ac3696cae4d018951b95be22f560d8f6f">strBuf</a> = displayBuf,</div><div class="line">    .strBufLen = MAXPRINTLEN</div><div class="line">};</div><div class="line"></div><div class="line"><span class="keyword">const</span> <a class="code" href="struct_display___config.html">Display_Config</a> Display_config[] = {</div><div class="line">    {</div><div class="line">        .<a class="code" href="struct_display___config.html#adce10e2738107a8b017ac8df3dbe1d73">fxnTablePtr</a> = &amp;<a class="code" href="_display_host_8h.html#ad22670f7762565fe9060de8d9b335d9b">DisplayHost_fxnTable</a>,</div><div class="line">        .object = &amp;displayHostObject,</div><div class="line">        .hwAttrs = &amp;displayHostHWAttrs</div><div class="line">    }</div><div class="line">};</div><div class="line"></div><div class="line"><span class="keyword">const</span> uint8_t Display_count = <span class="keyword">sizeof</span>(Display_config) / <span class="keyword">sizeof</span>(<a class="code" href="struct_display___config.html">Display_Config</a>);</div></div><!-- fragment --><h1>Instrumentation</h1>
+<h1>Instrumentation</h1>
 <p>The Display interface produces log statements if instrumentation is enabled.</p>
 <table class="doxtable">
 <tr>
@@ -105,8 +110,11 @@ All Display statements will be removed and no display operations will take place
 </table>
 <h1>Calling Context</h1>
 <p>For most implementations of this interface it is only possible to call the APIs from Task or Main context because the implementations may rely on Semaphores or other RTOS services that do not work correctly or do not work at all in Hwi / Swi context.</p>
-<p>Unless you know that the implementation is safe to use in Hwi/Swi, do not use this interface in other contexts than Main and Task. </p><hr/>
-</div><div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
+<p>Unless you know that the implementation is safe to use in Hwi/Swi, do not use this interface in other contexts than Main and Task.</p>
+<hr/>
+<p> <a class="anchor" id="ti_drivers_Display_Configuration"></a></p><h1>Configuration</h1>
+<p>Refer to the <a class="el" href="index.html#driver_configuration">Driver's Configuration</a> section for driver configuration information. </p><hr/>
+ </div><div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
 <code>#include &lt;stdarg.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Display.h:</div>
@@ -1208,12 +1216,12 @@ Functions</h2></td></tr>
 <dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_display_8h.html#a587814881d96c49960b4ae2b73199fe3">Display_init()</a> has been called</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>- Index of Display in Display_config array, or alternatively the type(s) of displays to open </td></tr>
-    <tr><td class="paramname">params</td><td>- display parameters</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>- Index of Display in Display_config array, or alternatively the type(s) of displays to open </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">params</td><td>- display parameters</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Display_Handle of opened Display or NULL.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="_display_8h.html#a045a26811755aabf1886d982c49e54ab" title="A handle for specific Display implementations. ">Display_Handle</a> of opened Display or NULL.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="_display_8h.html#a1b97c9b7855ceba5ddd5a5aaaa15c907" title="Function to initializes the Display driver. ">Display_doInit()</a> </dd>
 <dd>
 <a class="el" href="_display_8h.html#add67d9c5e921786ec12d8029fe6096d1" title="Closes selected Display implementations. ">Display_doClose()</a> </dd></dl>
@@ -1239,7 +1247,7 @@ Functions</h2></td></tr>
 <p>Initializes parameter structure with default parameters. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">params</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">params</td><td></td></tr>
   </table>
   </dd>
 </dl>
@@ -1266,7 +1274,7 @@ Functions</h2></td></tr>
 <p>Calls the clear fxn of all opened Display implementations. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>- handle of display</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td>- handle of display</td></tr>
   </table>
   </dd>
 </dl>
@@ -1309,9 +1317,9 @@ Functions</h2></td></tr>
 <p>Calls the clearLines fxn of all opened Display implementations. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>- handle of display </td></tr>
-    <tr><td class="paramname">fromLine</td><td>- line index (0 .. ) </td></tr>
-    <tr><td class="paramname">toLine</td><td>- line index (0 .. )</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td>- handle of display </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fromLine</td><td>- line index (0 .. ) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">toLine</td><td>- line index (0 .. )</td></tr>
   </table>
   </dd>
 </dl>
@@ -1366,11 +1374,11 @@ Functions</h2></td></tr>
 <p>Calls the output function of all opened Display implementations. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>- handle of display </td></tr>
-    <tr><td class="paramname">line</td><td>- line index (0..) </td></tr>
-    <tr><td class="paramname">column</td><td>- column index (0..) </td></tr>
-    <tr><td class="paramname">fmt</td><td>- format string </td></tr>
-    <tr><td class="paramname">...</td><td>- optional arguments</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td>- handle of display </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">line</td><td>- line index (0..) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">column</td><td>- column index (0..) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fmt</td><td>- format string </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">...</td><td>- optional arguments</td></tr>
   </table>
   </dd>
 </dl>
@@ -1463,9 +1471,9 @@ Functions</h2></td></tr>
 <dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_display_8h.html#a3aa87973a354d4fd6a2969f764e8afe6">Display_open()</a> has to be called first.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>A Display handle returned from Display()</td></tr>
-    <tr><td class="paramname">cmd</td><td><a class="el" href="_display_8h.html" title="Generic interface for text output. ">Display.h</a> or Display*.h commands.</td></tr>
-    <tr><td class="paramname">arg</td><td>An optional R/W (read/write) command argument accompanied with cmd</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td>A Display handle returned from Display()</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cmd</td><td><a class="el" href="_display_8h.html" title="Generic interface for text output. ">Display.h</a> or Display*.h commands.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>An optional R/W (read/write) command argument accompanied with cmd</td></tr>
   </table>
   </dd>
 </dl>
@@ -1498,7 +1506,7 @@ Functions</h2></td></tr>
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->
 <hr class="footer"/><small>
-  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2018</a>, Texas Instruments Incorporated. All rights reserved. <br>
+  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
   <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
 </small>
 </body>

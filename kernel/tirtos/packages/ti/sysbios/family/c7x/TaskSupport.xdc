@@ -36,15 +36,40 @@
 
 package ti.sysbios.family.c7x;
 
+import xdc.runtime.Assert;
+
 /*!
  *  ======== TaskSupport ========
  *  C71 Task Support Module.
  */
 module TaskSupport inherits ti.sysbios.interfaces.ITaskSupport
 {
-    /*! default Task stack size. */
+    /*!
+     *  Default Task stack size.
+     *
+     *  The C7x CPU uses 2 stacks during interrupt processing.  The CPU
+     *  automatically saves some context to the memory block to which the
+     *  TCSP register points, and SW will save some context to the Task's
+     *  SW stack during interrupt processing.  In order to keep specification
+     *  and processing compatible across different CPU targets, SYS/BIOS
+     *  uses a single stack memory block for both of these stacks (although
+     *  there isn't really any stacking with TCSP since there is a distinct
+     *  block for each Task which is used only once).  Due to HW alignment
+     *  and size requirements for the TCSP block, there is a strict minimum
+     *  of 16KB for the Task stack.
+     */
     override readonly config SizeT defaultStackSize = 0x4000;
 
-    /*! required stack alignment (in MAUs). */
+    /*!
+     *  Required stack alignment (in MAUs).
+     *
+     *  The C7x CPU TCSP register requires this alignment (see
+     *  {@link #defaultStackSize} for further information).
+     */
     override readonly config UInt stackAlignment = 0x2000;
+
+    /*! Asserted in TaskSupport_start */
+    config Assert.Id A_stackSizeTooSmall = {
+        msg: "A_stackSizeTooSmall: Task stack size must be >= 16KB."
+    };
 }

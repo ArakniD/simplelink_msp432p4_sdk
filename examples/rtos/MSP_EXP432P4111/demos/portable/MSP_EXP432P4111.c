@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -328,6 +328,14 @@ void MSP_EXP432P4111_initGeneral(void)
 }
 
 /*
+ *  ======== Board_init ========
+ */
+void Board_init(void)
+{
+    MSP_EXP432P4111_initGeneral();
+}
+
+/*
  *  =============================== GPIO ===============================
  */
 #include <ti/drivers/GPIO.h>
@@ -558,13 +566,43 @@ const uint_least8_t NVS_count = MSP_EXP432P4111_NVSCOUNT;
 /*
  *  =============================== Power ===============================
  */
+#include <ti/devices/msp432p4xx/driverlib/cs.h>
+#include <ti/devices/msp432p4xx/driverlib/pcm.h>
+
+/* Custom performance level for SPI Master Example */
+PowerMSP432_PerfLevel myPerfLevels[] = {{
+      .activeState = PCM_AM_DCDC_VCORE0,
+      .VCORE = 0,
+      .clockSource = CS_DCOCLK_SELECT,
+      .DCORESEL = CS_DCO_TUNE_FREQ,
+      .tuneFreqDCO = 10000000,
+      .SELM = CS_DCOCLK_SELECT,
+      .DIVM = CS_CLOCK_DIVIDER_1,
+      .SELS = CS_DCOCLK_SELECT,
+      .DIVHS = CS_CLOCK_DIVIDER_1,
+      .DIVS = CS_CLOCK_DIVIDER_1,
+      .SELB = CS_REFOCLK_SELECT,
+      .SELA = CS_REFOCLK_SELECT,
+      .DIVA = CS_CLOCK_DIVIDER_1,
+      .flashWaitStates = 0,
+      .enableFlashBuffer = true,
+      .MCLK = 10000000,
+      .HSMCLK = 10000000,
+      .SMCLK = 10000000,
+      .BCLK = 32768,
+      .ACLK = 32768,
+
+}};
+
 const PowerMSP432_ConfigV1 PowerMSP432_config = {
     .policyInitFxn = &PowerMSP432_initPolicy,
     .policyFxn = &PowerMSP432_sleepPolicy,
     .initialPerfLevel = 2,
     .enablePolicy = true,
     .enablePerf = true,
-    .enableParking = true
+    .enableParking = true,
+    .customPerfLevels = myPerfLevels,
+    .numCustom = sizeof(myPerfLevels) / sizeof(PowerMSP432_PerfLevel)
 };
 
 /*
@@ -857,10 +895,12 @@ const UARTMSP432_BaudrateConfig uartMSP432Baudrates[] = {
         .oversampling = 1
     },
     {115200, 12000000,  6,  8,  32, 1},
+    {115200, 10000000,  5,  7,   0, 1},
     {115200, 6000000,   3,  4,   2, 1},
     {115200, 3000000,   1, 10,   0, 1},
     {9600,   24000000, 156,  4,   0, 1},
     {9600,   12000000, 78,  2,   0, 1},
+    {9600,   10000000, 65,  2,   0, 1},
     {9600,   6000000,  39,  1,   0, 1},
     {9600,   3000000,  19,  8,  85, 1},
     {9600,   32768,     3,  0, 146, 0}

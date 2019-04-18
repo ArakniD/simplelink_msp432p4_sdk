@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,9 +37,6 @@
 
 "use strict";
 
-/* $super is used to call generic module's methods */
-let $super = {};
-
 /*
  *  ======== devSpecific ========
  *  Device-specific extensions to be added to base GPIO configuration
@@ -63,23 +60,8 @@ let devSpecific = {
     {
         boardc : "/ti/drivers/gpio/GPIOCC32XX.Board.c.xdt",
         boardh : "/ti/drivers/gpio/GPIO.Board.h.xdt"
-    },
-
-    modules: modules
+    }
 };
-
-/*
- *  ======== modules ========
- */
-function modules(inst)
-{
-    let result = $super.modules ? $super.modules() : [];
-
-    return result.concat([
-        /* name = name of property injected int each instance (Blech!!) */
-        {name : "Power", moduleName: "/ti/drivers/Power"}
-    ]);
-}
 
 /*
  *  ======== extend ========
@@ -90,14 +72,13 @@ function modules(inst)
  */
 function extend(base)
 {
-    /* save base properies/methods, to use in our methods */
-    $super = base;
+    /* overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
 
     /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
+    result.config = base.config.concat(devSpecific.config);
 
-    /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    return (result);
 }
 
 /*

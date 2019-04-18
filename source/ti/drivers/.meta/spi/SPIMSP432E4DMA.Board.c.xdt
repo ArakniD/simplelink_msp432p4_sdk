@@ -1,6 +1,6 @@
 %%{
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -91,18 +91,31 @@ const SPIMSP432E4DMA_HWAttrs spiMSP432E4DMAHWAttrs[`countDef`] = {
     %     txDmaCh = spi.dmaTxChannel.$solution.devicePinName.substring(7);
     %     txDmaCh = "UDMA_CH" + txDmaCh + "_" + name + "TX";
     % }
-    % else if (inst.duplex == "Receive Only") {
+    % else if (inst.duplex == "Master RX Only") {
     %     xdat1Pin += spi.misoPin.$solution.devicePinName + "_" + name + "XDAT1";
     %     xdat0Pin += "PIN_NO_CONFIG";
     %     rxDmaCh = spi.dmaRxChannel.$solution.devicePinName.substring(7);
     %     rxDmaCh = "UDMA_CH" + rxDmaCh + "_" + name + "RX";
     % }
-    % else if (inst.duplex == "Transmit Only") {
+    % else if (inst.duplex == "Master TX Only") {
     %     xdat0Pin += spi.mosiPin.$solution.devicePinName + "_" + name + "XDAT0";
     %     xdat1Pin += "PIN_NO_CONFIG";
     %     txDmaCh = spi.dmaTxChannel.$solution.devicePinName.substring(7);
     %     txDmaCh = "UDMA_CH" + txDmaCh + "_" + name + "TX";
     % }
+    % else if (inst.duplex == "Slave TX Only") {
+    %     xdat1Pin += spi.misoPin.$solution.devicePinName + "_" + name + "XDAT1";
+    %     xdat0Pin += "PIN_NO_CONFIG";
+    %     txDmaCh = spi.dmaTxChannel.$solution.devicePinName.substring(7);
+    %     txDmaCh = "UDMA_CH" + txDmaCh + "_" + name + "TX";
+    % }
+    % else if (inst.duplex == "Slave RX Only") {
+    %     xdat0Pin += spi.mosiPin.$solution.devicePinName + "_" + name + "XDAT0";
+    %     xdat1Pin += "PIN_NO_CONFIG";
+    %     rxDmaCh = spi.dmaRxChannel.$solution.devicePinName.substring(7);
+    %     rxDmaCh = "UDMA_CH" + rxDmaCh + "_" + name + "RX";
+    % }
+    %
     % let fssPin = "SPIMSP432E4_";
     % if (inst.mode !== "Three Pin") {
     %     fssPin += spi.ssPin.$solution.devicePinName + "_" + name + "FSS";

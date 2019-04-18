@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,16 +53,16 @@
  *  stop the Watchdog timer. To restart it again, Watchdog_open() must be
  *  called.
  *
- *  Opening the Watchdog driver with resets turned off (using the resetMode
- *  parameter) allows the Watchdog Timer to be used like another timer
- *  interrupt.  The callback fxn provided in the params will be executed when
- *  the timer expires.
+ *  Opening the Watchdog driver with resets turned off (Using the
+ *  #Watchdog_Params.resetMode parameter) allows the Watchdog Timer to be used
+ *  like another timer interrupt.  The callback fxn provided in the params will
+ *  be executed when the timer expires.
  *
  *  ## Unsupported Functionality #
- *  1.  Watchdog_Params debugStallMode is not supported by this implementation.
- *  2.  Watchdog_Params callbackFxn is not supported when using
- *  Watchdog_RESET_ON mode.
- *  3.  Watchdog_setReload() and WatchdogMSP432_convertMsToTicks() APIs are not
+ *  1.  #Watchdog_Params.debugStallMode is not supported by this implementation.
+ *  2.  #Watchdog_Params.callbackFxn is not supported when using
+ *  #Watchdog_RESET_ON mode.
+ *  3.  Watchdog_setReload() and Watchdog_convertMsToTicks() APIs are not
  *  supported by this implementation.
  ******************************************************************************
  */

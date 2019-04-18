@@ -60,7 +60,7 @@ $(function() {
 <div class="textblock"><h1><a class="anchor" id="drivers"></a>
 Drivers</h1>
 <p>Shown below is a matrix of available links to driver documentation.</p>
-<p>NOTE: Please view the <b>Device Specific</b> driver implementations as they may contain or exclude certain features that are defined in the top level interfaces.</p>
+<dl class="section note"><dt>Note</dt><dd>Please view the <b>Device Specific</b> driver implementations as they may contain or exclude certain features that are defined in the top level interfaces.</dd></dl>
 <table class="doxtable">
 <tr>
 <th>Driver Interfaces </th><th>MSP432<br />
@@ -105,36 +105,60 @@ Drivers</h1>
 <tr>
 <td><a class="el" href="_watchdog_8h.html">Watchdog.h</a> </td><td><a class="el" href="_watchdog_m_s_p432_8h.html">WatchdogMSP432.h</a>  </td></tr>
 </table>
+<hr/>
 <h1><a class="anchor" id="display"></a>
 Display Driver</h1>
-<p>The Display driver is designed to abstract operations &amp; considerations specific to a given output method.</p>
-<table class="doxtable">
-<tr>
-<th align="center">Display Driver Interface </th><th align="center">Implementations  </th></tr>
-<tr>
-<td align="center"><a class="el" href="_display_8h.html">Display.h</a> </td><td align="center"><a class="el" href="_display_host_8h.html">DisplayHost.h</a> <br />
+<p>The Display driver is designed to abstract operations &amp; considerations specific to a given output method.  <table class="doxtable">
+<tr align="center">
+<th>Display Driver Interface </th><th>Implementations </th></tr>
+<tr align="center">
+<td><a class="el" href="_display_8h.html">Display.h</a> </td><td><a class="el" href="_display_host_8h.html">DisplayHost.h</a> <br />
  <a class="el" href="_display_uart_8h.html">DisplayUart.h</a> </td></tr>
 </table>
+</p><hr/>
 <h1><a class="anchor" id="utilities"></a>
 Driver Utilities</h1>
-<p>Shown below is a list of utility modules available to drivers:</p><ul>
-<li><a class="el" href="_list_8h.html">List.h</a></li>
-<li><a class="el" href="_ring_buf_8h.html">RingBuf.h</a></li>
-<li><a class="el" href="_s_d_fat_f_s_8h.html">SDFatFS.h</a></li>
-<li><a class="el" href="_s_p_i_f_f_s_n_v_s_8h.html">SPIFFSNVS.h</a></li>
-</ul>
-<p>Note: The SDFatFS interface is a wrapper to enable the use of the FatFS filesystem via the SD driver.</p>
-<p>Note: The SPIFFSNVS is a wrapper to enable NVS as the physical layer to read/write memory for the SPIFFS file system. See <a class="el" href="spiffs_8h.html">spiffs.h</a>.</p>
+<p>These utilities are helper modules available to drivers.<table class="doxtable">
+<tr>
+<th>Module </th><th>Description </th></tr>
+<tr>
+<td><a class="el" href="_list_8h.html">List.h</a> </td><td>Double linked list </td></tr>
+<tr>
+<td><a class="el" href="_random_8h.html">Random.h</a> </td><td>Fast and light-weight pseudo random number generator  </td></tr>
+<tr>
+<td><a class="el" href="_ring_buf_8h.html">RingBuf.h</a> </td><td>Array-based ring buffer for bytes </td></tr>
+<tr>
+<td><a class="el" href="_s_d_fat_f_s_8h.html">SDFatFS.h</a> </td><td>Wrapper to enable the use of file systems for the SD driver. </td></tr>
+<tr>
+<td><a class="el" href="_s_p_i_f_f_s_n_v_s_8h.html">SPIFFSNVS.h</a> </td><td>Enables NVS as the physical layer to read/write memory for the SPIFFS file system </td></tr>
+</table>
+</p><hr/>
+<h1><a class="anchor" id="driver_configuration"></a>
+Driver Configuration</h1>
+<p>The generic driver interface defines a configuration structure using the <code>typedef</code> keyword. The name of this declared type follows the naming pattern <code>&lt;driver&gt;_Config</code>. A driver is configured by declaring an array of this configuration data structure. Each <code>config</code> array index contains pointers to other data objects necessary for the driver to function at runtime. These data objects may include a <a class="el" href="index.html#driver_hardware_attributes">hardware attributes</a>, a <a class="el" href="index.html#driver_function_table">function table</a>, and <a class="el" href="index.html#driver_objects">object memory</a>. Multiple indexes of the <code>config</code> array should not share these data objects--with the exception of the <a class="el" href="index.html#driver_function_table">function table</a>. Each index of the <code>config</code> array supports an independent instance of the driver.<dl class="section warning"><dt>Warning</dt><dd>The declared array, <code>&lt;driver&gt;_Config</code>, must have a specific C identifier. This identifies follows the case-sensitive pattern <code>&lt;driver&gt;_config</code>.</dd>
+<dd>
+The configuration must also contain a count of indexes in the <code>&lt;driver&gt;_config</code>. This must also have a specific C identifier following the case-sensitive pattern <code>&lt;driver&gt;_count</code>. The data type must be a <code>uint_least8_t</code>.</dd></dl>
+<p>The driver interface is joined together during the link process at build time. The <code>&lt;driver&gt;_config</code> and <code>&lt;driver&gt;_count</code> symbols are resolved. </p><hr/>
+<h2><a class="anchor" id="driver_objects"></a>
+Driver Objects</h2>
+<p>The driver objects are device specific structures that hold data for an instance of a driver. The driver objects are used exclusively by the driver and should never be accessed by the application. Device specific drivers define an object structure as a new type using the <code>typedef</code> keyword. Each index in a driver's <a class="el" href="index.html#driver_configuration">configuration</a> will contain a pointer to a driver object. </p><hr/>
+<h2><a class="anchor" id="driver_hardware_attributes"></a>
+Driver Hardware Attributes</h2>
+<p>The hardware attributes, also commonly referred to as <code>HWAttrs</code>, are device specific settings that typically do not change during runtime operation of a driver. The hardware attributes aid in abstracting the generic driver interface from the hardware. Device specific drivers define a hardware attribute structure as a new type using the <code>typedef</code> keyword. Each index in a driver's <a class="el" href="index.html#driver_configuration">configuration</a> will contain a pointer to a hardware attribute structure. </p><hr/>
+<h2><a class="anchor" id="driver_function_table"></a>
+Driver Function Table</h2>
+<p>The function pointer table is a structure simply containing pointers to functions. Each index in a driver's <a class="el" href="index.html#driver_configuration">configuration</a> will contain a pointer to a function pointer table. The TI-Driver's interface uses function pointers to abstract a generic driver from a device specific driver. Each device specific driver declares a default function pointer table which may be referenced by default in the driver's <a class="el" href="index.html#driver_configuration">configuration</a>. </p><hr/>
 <h1><a class="anchor" id="nortos"></a>
 NoRTOS Framework Module</h1>
 <p>The NoRTOS framework module is provided to enable use of drivers without an underlying operating system. The module provides interfaces used by drivers to perform delays, block execution, register interrupts and more. NoRTOS module documentation and usage can be found:</p><ul>
 <li><a class="el" href="_no_r_t_o_s_8h.html">NoRTOS.h</a> </li>
 </ul>
+</p>
 </div></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->
 <hr class="footer"/><small>
-  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2018</a>, Texas Instruments Incorporated. All rights reserved. <br>
+  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
   <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
 </small>
 </body>

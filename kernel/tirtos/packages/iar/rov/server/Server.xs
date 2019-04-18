@@ -757,7 +757,7 @@ function startModel(executable)
         /* Load the recap */
         var rInst = new Packages.xdc.rta.Recap();
         var recapFile = rInst.locateRecap(executable, ".rov.xs");
-        recap = xdc.loadCapsule(recapFile);
+        var recap = xdc.loadCapsule(recapFile);
 
         /* Get the IMemoryImage instance. */
         var iMemInst = new Packages.iar.rov.server.MemoryImage();

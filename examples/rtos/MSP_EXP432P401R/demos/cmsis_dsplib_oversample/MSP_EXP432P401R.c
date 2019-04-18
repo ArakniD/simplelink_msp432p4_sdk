@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -357,6 +357,14 @@ const uint_least8_t Display_count = sizeof(Display_config) / sizeof(Display_Conf
 void MSP_EXP432P401R_initGeneral(void)
 {
     Power_init();
+}
+
+/*
+ *  ======== Board_init ========
+ */
+void Board_init(void)
+{
+    MSP_EXP432P401R_initGeneral();
 }
 
 /*

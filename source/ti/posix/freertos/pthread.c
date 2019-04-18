@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2016-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -352,11 +352,11 @@ int pthread_create(pthread_t *newthread, const pthread_attr_t *attr,
 {
     BaseType_t        status;
     pthread_Obj      *thread = NULL;
-    pthread_attr_t   *pAttr;
+    const pthread_attr_t   *pAttr;
     int               retVal = 0;
     bool              schedulerStarted;
 
-    pAttr = (attr == NULL) ? &defaultPthreadAttrs : (pthread_attr_t *)attr;
+    pAttr = (attr == NULL) ? &defaultPthreadAttrs : attr;
 
     thread = pvPortMalloc(sizeof(pthread_Obj));
     if (thread == NULL) {

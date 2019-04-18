@@ -55,9 +55,9 @@ extern "C" {
 #define Board_ADC1                  MSP_EXP432P4111_ADC1
 
 #define Board_ADCBUF0               MSP_EXP432P4111_ADCBUF0
-#define Board_ADCBUF0CHANNEL0       MSP_EXP432P4111_ADCBUF0CHANNEL0
-#define Board_ADCBUF0CHANNEL1       MSP_EXP432P4111_ADCBUF0CHANNEL1
-#define Board_ADCBUF0CHANNEL2       MSP_EXP432P4111_ADCBUF0CHANNEL2
+#define Board_ADCBUF0CHANNEL_0      MSP_EXP432P4111_ADCBUF0CHANNEL0
+#define Board_ADCBUF0CHANNEL_1      MSP_EXP432P4111_ADCBUF0CHANNEL1
+#define Board_ADCBUF0CHANNEL_2      MSP_EXP432P4111_ADCBUF0CHANNEL2
 
 #define Board_CAPTURE0              MSP_EXP432P4111_CAPTURE_TA1
 #define Board_CAPTURE1              MSP_EXP432P4111_CAPTURE_TA2
@@ -143,8 +143,8 @@ extern "C" {
  * Please use the corresponding 'Board_GPIO_xxx' macros as the macros
  * below are deprecated.
  */
-#define Board_ADCBUFCHANNEL0        Board_ADCBUF0CHANNEL0
-#define Board_ADCBUFCHANNEL1        Board_ADCBUF0CHANNEL1
+#define Board_ADCBUFCHANNEL0        Board_ADCBUF0CHANNEL_0
+#define Board_ADCBUFCHANNEL1        Board_ADCBUF0CHANNEL_1
 #define Board_BUTTON0               Board_GPIO_BUTTON0
 #define Board_BUTTON1               Board_GPIO_BUTTON1
 #define Board_Capture0              Board_CAPTURE0

@@ -126,13 +126,13 @@ void *mainThread(void *arg0)
 
     /* Configure the conversion struct for two channels on same sequencer */
     continuousConversion[0].arg = NULL;
-    continuousConversion[0].adcChannel = Board_ADCBUF0CHANNEL0;
+    continuousConversion[0].adcChannel = Board_ADCBUF0CHANNEL_0;
     continuousConversion[0].sampleBuffer = sampleBufferOne;
     continuousConversion[0].sampleBufferTwo = sampleBufferTwo;
     continuousConversion[0].samplesRequestedCount = ADCBUFFERSIZE;
 
     continuousConversion[1].arg = NULL;
-    continuousConversion[1].adcChannel = Board_ADCBUF0CHANNEL1;
+    continuousConversion[1].adcChannel = Board_ADCBUF0CHANNEL_1;
     continuousConversion[1].sampleBuffer = sampleBufferThree;
     continuousConversion[1].sampleBufferTwo = sampleBufferFour;
     continuousConversion[1].samplesRequestedCount = ADCBUFFERSIZE;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, Texas Instruments Incorporated
+ * Copyright (c) 2012-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -83,7 +83,7 @@ function module$use()
     Startup = xdc.useModule('xdc.runtime.Startup');
     BIOS = xdc.useModule('ti.sysbios.BIOS');
 
-    var Diags = xdc.useModule('xdc.runtime.Diags');
+    var Diags = xdc.module('xdc.runtime.Diags');
 
     for (var dl in TimestampProvider.common$) {
         if (dl.match(/^diags_/) && dl != 'diags_ASSERT') {
@@ -114,7 +114,7 @@ function module$static$init(mod, params)
 	}
     }
     else {
-	configTimer = TimestampProvider.configTimer;
+        configTimer = TimestampProvider.configTimer;
     }
 
     if (configTimer == true) {

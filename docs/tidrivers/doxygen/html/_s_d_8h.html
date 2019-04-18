@@ -68,30 +68,24 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>SD driver interface. </p>
-<p>============================================================================</p>
-<p>The SD header file should be included in an application as follows: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_s_d_8h.html">ti/drivers/SD.h</a>&gt;</span></div></div><!-- fragment --><h1>Operation</h1>
-<p>The SD driver is designed to serve as an interface to perform basic transfers directly to the SD card.</p>
-<h2>Opening the driver</h2>
-<div class="fragment"><div class="line"><a class="code" href="struct_s_d___config__.html">SD_Handle</a> handle;</div><div class="line"></div><div class="line">handle = <a class="code" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d">SD_open</a>(Board_SD0, NULL);</div><div class="line"><span class="keywordflow">if</span> (handle == NULL) {</div><div class="line">    <span class="comment">//Error opening SD driver</span></div><div class="line">    <span class="keywordflow">while</span> (1);</div><div class="line">}</div></div><!-- fragment --><h1>Implementation</h1>
-<p>This module serves as the main interface for TI-RTOS applications. Its purpose is to redirect the module's APIs to specific peripheral implementations which are specified using a pointer to a SD_FxnTable.</p>
-<p>The SD driver interface module is joined (at link time) to a NULL-terminated array of SD_Config data structures named <em>SD_config</em>. <em>SD_config</em> is implemented in the application with each entry being an instance of a SD peripheral. Each entry in <em>SD_config</em> contains a:</p><ul>
-<li>(SD_FxnTable *) to a set of functions that implement a SD peripheral</li>
-<li>(uintptr_t) data object that is associated with the SD_FxnTable</li>
-<li>(uintptr_t) hardware attributes that are associated to the SD_FxnTable</li>
-</ul>
-<h1>Instrumentation</h1>
-<p>The SD driver interface produces log statements if instrumentation is enabled.</p>
-<table class="doxtable">
-<tr>
-<th>Diagnostics Mask </th><th>Log details  </th></tr>
-<tr>
-<td>Diags_USER1 </td><td>basic operations performed </td></tr>
-<tr>
-<td>Diags_USER2 </td><td>detailed operations performed </td></tr>
-</table>
+<div class="textblock"><p>Secure Digital (SD) Driver. </p>
 <hr/>
-</div><div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
+<p><a class="anchor" id="ti_drivers_SD_Overview"></a></p><h1>Overview</h1>
+<p>The SD driver is designed to serve as an interface to perform basic transfers directly to the SD card.</p>
+<hr/>
+<p> <a class="anchor" id="ti_drivers_SD_Usage"></a></p><h1>Usage</h1>
+<p>This section will cover driver usage.</p>
+<p><a class="anchor" id="ti_drivers_SD_Synopsis"></a></p><h2>Synopsis</h2>
+<p><a class="anchor" id="ti_drivers_SD_Synopsis_Code"></a></p><div class="fragment"><div class="line"><a class="code" href="struct_s_d___config__.html">SD_Handle</a> handle;</div><div class="line">uint16_t status;</div><div class="line"></div><div class="line"><a class="code" href="_s_d_8h.html#a0cfa8bf08501f1c19d2357856d4236ae">SD_init</a>();</div><div class="line"></div><div class="line"><span class="comment">// Open SD and initialize card</span></div><div class="line">handle = <a class="code" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d">SD_open</a>(Board_SD0, NULL);</div><div class="line">status = <a class="code" href="_s_d_8h.html#a6532267348f0afa007adec0e3ff2c3e0">SD_initialize</a>(handle);</div><div class="line"><span class="keywordflow">if</span> (handle == NULL || status != <a class="code" href="group___s_d___s_t_a_t_u_s.html#ga691cc2fe1fe0fa94560519b53f18c647">SD_STATUS_SUCCESS</a>) {</div><div class="line">    <span class="comment">//Error opening SD driver</span></div><div class="line">    <span class="keywordflow">while</span> (1);</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Write and read back the first sector</span></div><div class="line">status = <a class="code" href="_s_d_8h.html#afb413a941fd83b75abdbb3dead5401d8">SD_write</a>(handle, sendBuffer, 0, 1);</div><div class="line"><span class="keywordflow">if</span> (status == <a class="code" href="group___s_d___s_t_a_t_u_s.html#ga691cc2fe1fe0fa94560519b53f18c647">SD_STATUS_SUCCESS</a>) {</div><div class="line">    status = <a class="code" href="_s_d_8h.html#ad28e80ec85e28612af735a6a20d831c0">SD_read</a>(handle, readBuffer, 0 , 1);</div><div class="line">}</div><div class="line"></div><div class="line"><a class="code" href="_s_d_8h.html#ae7f98db7753385361e0f7927b1771c41">SD_close</a>(handle);</div></div><!-- fragment --><p><a class="anchor" id="ti_drivers_SD_Examples"></a></p><h1>Examples</h1>
+<ul>
+<li><a class="el" href="_s_d_8h.html#ti_drivers_SD_Synopsis">Overview</a></li>
+<li><a class="el" href="_s_d_8h.html#ti_drivers_SD_Example_getCardSpace">Get SD card size</a></li>
+</ul>
+<p>Get total capacity of an SD card: <a class="anchor" id="ti_drivers_SD_Example_getCardSpace"></a></p><div class="fragment"><div class="line"><a class="code" href="struct_s_d___config__.html">SD_Handle</a> handle;</div><div class="line"><a class="code" href="struct_display___config.html">Display_Handle</a> display;</div><div class="line">uint_fast32_t sectorSize, sectorCount;</div><div class="line"></div><div class="line"><span class="comment">// Init, open, etc</span></div><div class="line">...</div><div class="line"></div><div class="line">sectorSize = <a class="code" href="_s_d_8h.html#aa88b4d26d76ad3cdfcf652c0284e8f3d">SD_getSectorSize</a>(handle);</div><div class="line">sectorCount = <a class="code" href="_s_d_8h.html#aecff5a5f73ac1cfbe27c2a0593dd7558">SD_getNumSectors</a>(handle);</div><div class="line"></div><div class="line"><a class="code" href="_display_8h.html#a371873a0f96f2e895bf92af7e586b244">Display_printf</a>(display, 0, 0,<span class="stringliteral">&quot;SD card total capacity is %lu bytes.&quot;</span>,</div><div class="line">               sectorSize * sectorCount);</div></div><!-- fragment --><hr/>
+<p> <a class="anchor" id="ti_drivers_SD_Configuration"></a></p><h1>Configuration</h1>
+<p>Refer to the <a class="el" href="index.html#driver_configuration">Driver's Configuration</a> section for driver configuration information.</p>
+<hr/>
+ </div><div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for SD.h:</div>
 <div class="dyncontent">
@@ -105,7 +99,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="center"><img src="_s_d_8h__dep__incl.png" border="0" usemap="#_s_d_8hdep" alt=""/></div>
 <map name="_s_d_8hdep" id="_s_d_8hdep">
 <area shape="rect" id="node2" href="_s_d_s_p_i_8h.html" title="SD driver implementation built on the TI SPI driver. " alt="" coords="5,80,80,107"/>
-<area shape="rect" id="node3" href="_s_d_fat_f_s_8h.html" title="FATFS driver interface. " alt="" coords="104,80,192,107"/>
+<area shape="rect" id="node3" href="_s_d_fat_f_s_8h.html" title="File Allocation Table File System (FATFS) Driver. " alt="" coords="104,80,192,107"/>
 </map>
 </div>
 </div>
@@ -200,7 +194,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ae7f98db7753385361e0f7927b1771c41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to close a SD peripheral specified by the SD handle.  <a href="#ae7f98db7753385361e0f7927b1771c41">More...</a><br /></td></tr>
 <tr class="separator:ae7f98db7753385361e0f7927b1771c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adeeaa4d71a639131abb9377322b3b226"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_d_8h.html#adeeaa4d71a639131abb9377322b3b226">SD_control</a> (<a class="el" href="_s_d_8h.html#ac00382e8276a2b571ef3bc511455812d">SD_Handle</a> handle, uint_fast16_t cmd, void *arg)</td></tr>
-<tr class="memdesc:adeeaa4d71a639131abb9377322b3b226"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function performs implementation specific features on a given SD_Handle.  <a href="#adeeaa4d71a639131abb9377322b3b226">More...</a><br /></td></tr>
+<tr class="memdesc:adeeaa4d71a639131abb9377322b3b226"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function performs implementation specific features on a given <a class="el" href="_s_d_8h.html#ac00382e8276a2b571ef3bc511455812d" title="A handle that is returned from a SD_open() call. ">SD_Handle</a>.  <a href="#adeeaa4d71a639131abb9377322b3b226">More...</a><br /></td></tr>
 <tr class="separator:adeeaa4d71a639131abb9377322b3b226"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecff5a5f73ac1cfbe27c2a0593dd7558"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_d_8h.html#aecff5a5f73ac1cfbe27c2a0593dd7558">SD_getNumSectors</a> (<a class="el" href="_s_d_8h.html#ac00382e8276a2b571ef3bc511455812d">SD_Handle</a> handle)</td></tr>
 <tr class="memdesc:aecff5a5f73ac1cfbe27c2a0593dd7558"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of <a class="el" href="_s_d_8h.html#aecff5a5f73ac1cfbe27c2a0593dd7558" title="A function pointer to a driver specific implementation of SD_getNumSectors(). Note: Total Card capaci...">SD_getNumSectors()</a>. Note: Total Card capacity is the (NumberOfSectors * SectorSize).  <a href="#aecff5a5f73ac1cfbe27c2a0593dd7558">More...</a><br /></td></tr>
@@ -212,7 +206,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a0cfa8bf08501f1c19d2357856d4236ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes the SD driver.  <a href="#a0cfa8bf08501f1c19d2357856d4236ae">More...</a><br /></td></tr>
 <tr class="separator:a0cfa8bf08501f1c19d2357856d4236ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd09eeb2f5a0dc0a05a238a1e455e260"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_d_8h.html#afd09eeb2f5a0dc0a05a238a1e455e260">SD_Params_init</a> (<a class="el" href="_s_d_8h.html#a4a629e7dbc0b31ff155b5db46330adec">SD_Params</a> *params)</td></tr>
-<tr class="memdesc:afd09eeb2f5a0dc0a05a238a1e455e260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to initialize the SD_Params struct to its defaults.  <a href="#afd09eeb2f5a0dc0a05a238a1e455e260">More...</a><br /></td></tr>
+<tr class="memdesc:afd09eeb2f5a0dc0a05a238a1e455e260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to initialize the <a class="el" href="_s_d_8h.html#a4a629e7dbc0b31ff155b5db46330adec" title="SD Parameters. ">SD_Params</a> struct to its defaults.  <a href="#afd09eeb2f5a0dc0a05a238a1e455e260">More...</a><br /></td></tr>
 <tr class="separator:afd09eeb2f5a0dc0a05a238a1e455e260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6532267348f0afa007adec0e3ff2c3e0"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_d_8h.html#a6532267348f0afa007adec0e3ff2c3e0">SD_initialize</a> (<a class="el" href="_s_d_8h.html#ac00382e8276a2b571ef3bc511455812d">SD_Handle</a> handle)</td></tr>
 <tr class="memdesc:a6532267348f0afa007adec0e3ff2c3e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of <a class="el" href="_s_d_8h.html#a6532267348f0afa007adec0e3ff2c3e0" title="A function pointer to a driver specific implementation of SD_initialize(). ">SD_initialize()</a>.  <a href="#a6532267348f0afa007adec0e3ff2c3e0">More...</a><br /></td></tr>
@@ -505,7 +499,7 @@ Functions</h2></td></tr>
 <dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a> had to be called first.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>A SD handle returned from SD_open</td></tr>
+    <tr><td class="paramname">handle</td><td>A <a class="el" href="_s_d_8h.html#ac00382e8276a2b571ef3bc511455812d" title="A handle that is returned from a SD_open() call. ">SD_Handle</a> returned from <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a></td></tr>
   </table>
   </dd>
 </dl>
@@ -545,17 +539,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Function performs implementation specific features on a given SD_Handle. </p>
-<p>Commands for SD_control can originate from <a class="el" href="_s_d_8h.html" title="SD driver interface. ">SD.h</a> or from implementation specific SD*.h (SDHostCC32XX.h etc.. ) files. While commands from <a class="el" href="_s_d_8h.html" title="SD driver interface. ">SD.h</a> are API portable across driver implementations, not all implementations may support all these commands. Conversely, commands from driver implementation specific SD*.h files add unique driver capabilities but are not API portable across all SD driver implementations.</p>
-<p>Commands supported by <a class="el" href="_s_d_8h.html" title="SD driver interface. ">SD.h</a> follow a SD*_CMD naming convention.</p>
+<p>Function performs implementation specific features on a given <a class="el" href="_s_d_8h.html#ac00382e8276a2b571ef3bc511455812d" title="A handle that is returned from a SD_open() call. ">SD_Handle</a>. </p>
+<p>Commands for SD_control can originate from <a class="el" href="_s_d_8h.html" title="Secure Digital (SD) Driver. ">SD.h</a> or from implementation specific SD*.h files. While commands from <a class="el" href="_s_d_8h.html" title="Secure Digital (SD) Driver. ">SD.h</a> are API portable across driver implementations, not all implementations may support all these commands. Conversely, commands from driver implementation specific SD*.h files add unique driver capabilities but are not API portable across all SD driver implementations.</p>
+<p>Commands supported by <a class="el" href="_s_d_8h.html" title="Secure Digital (SD) Driver. ">SD.h</a> follow a SD*_CMD naming convention.</p>
 <p>Commands supported by SD*.h follow a SD*_CMD naming convention. Each control command defines arg differently. The types of arg are documented with each command.</p>
 <p>See <a class="el" href="group___s_d___c_m_d.html">SD_control command codes</a> for command codes.</p>
 <p>See <a class="el" href="group___s_d___s_t_a_t_u_s.html">SD_control return status codes</a> for status codes.</p>
 <dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a> has to be called first.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>A SD handle returned from <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a>.</td></tr>
-    <tr><td class="paramname">cmd</td><td><a class="el" href="_s_d_8h.html" title="SD driver interface. ">SD.h</a> or SD*.h commands.</td></tr>
+    <tr><td class="paramname">handle</td><td>A <a class="el" href="_s_d_8h.html#ac00382e8276a2b571ef3bc511455812d" title="A handle that is returned from a SD_open() call. ">SD_Handle</a> returned from <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a>.</td></tr>
+    <tr><td class="paramname">cmd</td><td><a class="el" href="_s_d_8h.html" title="Secure Digital (SD) Driver. ">SD.h</a> or SD*.h commands.</td></tr>
     <tr><td class="paramname">arg</td><td>An optional R/W (read/write) command argument accompanied with cmd.</td></tr>
   </table>
   </dd>
@@ -585,7 +579,7 @@ Functions</h2></td></tr>
 <dl class="section pre"><dt>Precondition</dt><dd>SD Card has been initialized using <a class="el" href="_s_d_8h.html#a6532267348f0afa007adec0e3ff2c3e0" title="A function pointer to a driver specific implementation of SD_initialize(). ">SD_initialize()</a>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>A SD handle returned from <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a>.</td></tr>
+    <tr><td class="paramname">handle</td><td>A <a class="el" href="_s_d_8h.html#ac00382e8276a2b571ef3bc511455812d" title="A handle that is returned from a SD_open() call. ">SD_Handle</a> returned from <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a>.</td></tr>
   </table>
   </dd>
 </dl>
@@ -614,7 +608,7 @@ Functions</h2></td></tr>
 <dl class="section pre"><dt>Precondition</dt><dd>SD Card has been initialized using <a class="el" href="_s_d_8h.html#a6532267348f0afa007adec0e3ff2c3e0" title="A function pointer to a driver specific implementation of SD_initialize(). ">SD_initialize()</a>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>A SD handle returned from <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a>.</td></tr>
+    <tr><td class="paramname">handle</td><td>A <a class="el" href="_s_d_8h.html#ac00382e8276a2b571ef3bc511455812d" title="A handle that is returned from a SD_open() call. ">SD_Handle</a> returned from <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a>.</td></tr>
   </table>
   </dd>
 </dl>
@@ -640,7 +634,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>This function initializes the SD driver. </p>
-<dl class="section pre"><dt>Precondition</dt><dd>The SD_config structure must exist and be persistent before this function can be called. This function must also be called before any other SD driver APIs. This function call does not modify any peripheral registers. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>The SD_config[] array must exist and be persistent before this function can be called. This function must also be called before any other SD driver APIs. This function call does not modify any peripheral registers. </dd></dl>
 
 </div>
 </div>
@@ -660,10 +654,10 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Function to initialize the SD_Params struct to its defaults. </p>
+<p>Function to initialize the <a class="el" href="_s_d_8h.html#a4a629e7dbc0b31ff155b5db46330adec" title="SD Parameters. ">SD_Params</a> struct to its defaults. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">params</td><td>A pointer to SD_Params structure for initialization. </td></tr>
+    <tr><td class="paramname">params</td><td>A pointer to <a class="el" href="_s_d_8h.html#a4a629e7dbc0b31ff155b5db46330adec" title="SD Parameters. ">SD_Params</a> structure for initialization. </td></tr>
   </table>
   </dd>
 </dl>
@@ -690,11 +684,11 @@ Functions</h2></td></tr>
 <dl class="section pre"><dt>Precondition</dt><dd>SD controller has been opened by calling <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>A SD handle returned from <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a>.</td></tr>
+    <tr><td class="paramname">handle</td><td>A <a class="el" href="_s_d_8h.html#ac00382e8276a2b571ef3bc511455812d" title="A handle that is returned from a SD_open() call. ">SD_Handle</a> returned from <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a>.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>SD_STATUS_SUCCESS if no errors occurred during the initialization, SD_STATUS_ERROR otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___s_d___s_t_a_t_u_s.html#ga691cc2fe1fe0fa94560519b53f18c647" title="Successful status code returned by SD_control(). ">SD_STATUS_SUCCESS</a> if no errors occurred during the initialization, <a class="el" href="group___s_d___s_t_a_t_u_s.html#ga2ed21a29e85502f5a205d5273df01713" title="Generic error status code returned by SD_control(). ">SD_STATUS_ERROR</a> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -728,12 +722,12 @@ Functions</h2></td></tr>
 <dl class="section pre"><dt>Precondition</dt><dd>SD controller has been initialized using <a class="el" href="_s_d_8h.html#a0cfa8bf08501f1c19d2357856d4236ae" title="This function initializes the SD driver. ">SD_init()</a>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">index</td><td>Logical peripheral number for the SD indexed into the SD_config table.</td></tr>
+    <tr><td class="paramname">index</td><td>Logical peripheral number for the SD indexed into the SD_config[] table.</td></tr>
     <tr><td class="paramname">params</td><td>Pointer to a parameter block, if NULL it will use default values. All the fields in this structure are RO (read-only).</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A SD_Handle on success or a NULL on an error or if it has been opened already.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="_s_d_8h.html#ac00382e8276a2b571ef3bc511455812d" title="A handle that is returned from a SD_open() call. ">SD_Handle</a> on success or a NULL on an error or if it has been opened already.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="_s_d_8h.html#a0cfa8bf08501f1c19d2357856d4236ae" title="This function initializes the SD driver. ">SD_init()</a> </dd>
 <dd>
 <a class="el" href="_s_d_8h.html#ae7f98db7753385361e0f7927b1771c41" title="Function to close a SD peripheral specified by the SD handle. ">SD_close()</a> </dd></dl>
@@ -782,14 +776,14 @@ Functions</h2></td></tr>
 <dl class="section pre"><dt>Precondition</dt><dd>SD controller has been opened and initialized by calling <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a> followed by <a class="el" href="_s_d_8h.html#a6532267348f0afa007adec0e3ff2c3e0" title="A function pointer to a driver specific implementation of SD_initialize(). ">SD_initialize()</a>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>A SD handle returned from <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a>.</td></tr>
+    <tr><td class="paramname">handle</td><td>A <a class="el" href="_s_d_8h.html#ac00382e8276a2b571ef3bc511455812d" title="A handle that is returned from a SD_open() call. ">SD_Handle</a> returned from <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a>.</td></tr>
     <tr><td class="paramname">buf</td><td>Pointer to a buffer to read data into.</td></tr>
     <tr><td class="paramname">sector</td><td>Starting sector on the disk to read from.</td></tr>
     <tr><td class="paramname">secCount</td><td>Number of sectors to be read.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>SD_STATUS_SUCCESS if no errors occurred during the write, SD_STATUS_ERROR otherwise.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___s_d___s_t_a_t_u_s.html#ga691cc2fe1fe0fa94560519b53f18c647" title="Successful status code returned by SD_control(). ">SD_STATUS_SUCCESS</a> if no errors occurred during the write, <a class="el" href="group___s_d___s_t_a_t_u_s.html#ga2ed21a29e85502f5a205d5273df01713" title="Generic error status code returned by SD_control(). ">SD_STATUS_ERROR</a> otherwise.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="_s_d_8h.html#a6532267348f0afa007adec0e3ff2c3e0" title="A function pointer to a driver specific implementation of SD_initialize(). ">SD_initialize()</a> </dd></dl>
 
 </div>
@@ -836,14 +830,14 @@ Functions</h2></td></tr>
 <dl class="section pre"><dt>Precondition</dt><dd>SD controller has been opened and initialized by calling <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a> followed by <a class="el" href="_s_d_8h.html#a6532267348f0afa007adec0e3ff2c3e0" title="A function pointer to a driver specific implementation of SD_initialize(). ">SD_initialize()</a>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>A SD handle returned from <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a>.</td></tr>
+    <tr><td class="paramname">handle</td><td>A <a class="el" href="_s_d_8h.html#ac00382e8276a2b571ef3bc511455812d" title="A handle that is returned from a SD_open() call. ">SD_Handle</a> returned from <a class="el" href="_s_d_8h.html#a0c897f68603b2f1341be1378ec976a2d" title="A function pointer to a driver specific implementation of SD_open(). ">SD_open()</a>.</td></tr>
     <tr><td class="paramname">buf</td><td>Pointer to a buffer containing data to write to disk.</td></tr>
     <tr><td class="paramname">sector</td><td>Starting sector on the disk to write to.</td></tr>
     <tr><td class="paramname">secCount</td><td>Number of sectors to be written.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>SD_STATUS_SUCCESS if no errors occurred during the write, SD_STATUS_ERROR otherwise.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___s_d___s_t_a_t_u_s.html#ga691cc2fe1fe0fa94560519b53f18c647" title="Successful status code returned by SD_control(). ">SD_STATUS_SUCCESS</a> if no errors occurred during the write, <a class="el" href="group___s_d___s_t_a_t_u_s.html#ga2ed21a29e85502f5a205d5273df01713" title="Generic error status code returned by SD_control(). ">SD_STATUS_ERROR</a> otherwise.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="_s_d_8h.html#a6532267348f0afa007adec0e3ff2c3e0" title="A function pointer to a driver specific implementation of SD_initialize(). ">SD_initialize()</a> </dd></dl>
 
 </div>
@@ -852,7 +846,7 @@ Functions</h2></td></tr>
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->
 <hr class="footer"/><small>
-  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2018</a>, Texas Instruments Incorporated. All rights reserved. <br>
+  <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
   <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
 </small>
 </body>

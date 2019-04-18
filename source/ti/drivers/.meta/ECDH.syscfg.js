@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,10 +44,7 @@ let Common = system.getScript("/ti/drivers/Common.js");
 /* get /ti/drivers family name from device object */
 let family = Common.device2Family(system.deviceData, "ECDH");
 
-let longDescription = "The Elliptic Curve Diffie-Hellman (ECDH) module"
-        + " provides APIs for shared secret and symmetric key generation"
-        + " between two parties, based on the Diffie-Hellman key exchange"
-        + "protocol.";
+let config = [];
 
 /*
  *  ======== validate ========
@@ -66,12 +63,25 @@ function validate(inst, validation)
  *  Define the base ECDH properties and methods
  */
 let base = {
-    displayName : "ECDH",
-    description : "Elliptic Curve Diffie-Hellman Key Generation Module",
-    longDescription : longDescription,
-    documentation: "/tidrivers/doxygen/html/_e_c_d_h_8h.html",
-    validate : validate,
-    defaultInstanceName : "Board_ECDH"
+    displayName         : "ECDH",
+    description         : "Elliptic Curve Diffie-Hellman (ECDH) Key Generation Driver",
+    longDescription     : `
+The [__ECDH driver__][1] provides APIs for shared secret
+and symmetric key generation between two parties, based on
+the Diffie-Hellman key exchange protocol.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+[1]: /tidrivers/doxygen/html/_e_c_d_h_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_e_c_d_h_8h.html#ti_drivers_ECDH_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_e_c_d_h_8h.html#ti_drivers_ECDH_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#ECDH_Configuration_Options "Configuration options reference"
+`,
+    validate            : validate,
+    defaultInstanceName : "Board_ECDH",
+    config              : Common.addNameConfig(config, "/ti/drivers/ECDH", "config_ECDH"),
+    modules             : Common.autoForceModules(["Board", "Power"])
 };
 
 /* extend the base exports to include family-specific content */

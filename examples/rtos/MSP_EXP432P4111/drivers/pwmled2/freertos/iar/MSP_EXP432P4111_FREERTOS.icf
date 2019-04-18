@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,8 @@ define symbol __ICFEDIT_region_RAM_start__   = 0x20000000;
 define symbol __ICFEDIT_region_RAM_end__     = 0x2003FFFF;
 /*-Sizes-*/
 define symbol __ICFEDIT_size_cstack__   = 0x1000;
-define symbol __ICFEDIT_size_heap__     = 0x2000;
+/* Heap is minimized since FreeRTOS is configured to use its own heap */
+define symbol __ICFEDIT_size_heap__     = 0x8;
 /**** End of ICF editor section. ###ICF###*/
 
 define memory mem with size = 4G;
@@ -61,6 +62,15 @@ do not initialize  { section .noinit };
 
 place at address mem:__ICFEDIT_intvec_start__ { readonly section .intvec };
 place in ROM_region   { readonly };
-place in RAM_region   { readwrite,
-                        block HEAP };
+
 place at end of RAM_region { block CSTACK };
+place at end of RAM_region { block HEAP };
+
+/* define buffer start and end symbols for Heap */
+define exported symbol __heap_end__ = end(RAM_region) - __ICFEDIT_size_cstack__;
+define exported symbol __heap_start__ = __heap_end__ - __ICFEDIT_size_heap__;
+
+/* Ensure RW data is not placed in stack or heap blocks */
+define region RWRAM_region   = mem:[from __ICFEDIT_region_RAM_start__ to __heap_start__];
+place in RWRAM_region   { readwrite };
+initialize by copy { readwrite };

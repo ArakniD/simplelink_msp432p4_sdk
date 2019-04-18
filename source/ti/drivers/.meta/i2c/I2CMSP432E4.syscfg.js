@@ -53,15 +53,19 @@ let devSpecific = {
         {
             name: "masterCode",
             displayName: "Master Code",
-            displayFormat: "hex",
+            //displayFormat: "hex",
             default: 0x08,
             description: "Specifies the master code for this I2C master. This"
                 + " is only used when operating at I2C_3300kHz (3.33Mbps).",
             options: [
-                { name: 0x08 }, { name: 0x09 },
-                { name: 0x0A }, { name: 0x0B },
-                { name: 0x0C }, { name: 0x0D },
-                { name: 0x0E }, { name: 0x0F }
+                { name: 0x08, displayName: "0x08" },
+                { name: 0x09, displayName: "0x09" },
+                { name: 0x0A, displayName: "0x0A" },
+                { name: 0x0B, displayName: "0x0B" },
+                { name: 0x0C, displayName: "0x0C" },
+                { name: 0x0D, displayName: "0x0D" },
+                { name: 0x0E, displayName: "0x0E" },
+                { name: 0x0F, displayName: "0x0F" }
             ]
         },
 
@@ -83,10 +87,13 @@ let devSpecific = {
  */
 function extend(base)
 {
-    /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
 
-    return (Object.assign({}, base, devSpecific));
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

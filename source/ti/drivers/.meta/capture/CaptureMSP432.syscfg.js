@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,6 +54,10 @@ let devSpecific = {
             name        : "clockSource",
             displayName : "Clock Source",
             default     : "SMCLK",
+            description : "Specifies the timer peripheral clock source.",
+            longDescription:`The frequency of the clock sources are configured
+per __Power Performance Level__ configured in the __Power Module__.
+`,
             options     : [
                 { name: "ACLK" },
                 { name: "SMCLK" },
@@ -64,6 +68,9 @@ let devSpecific = {
         {
             name        : "clockDivider",
             displayName : "Clock Divider",
+            description : "Specifies the clock source divider.",
+            longDescription: "The __Clock Source__ will be divided by this"
+                + " value before being used by the timer peripheral",
             default     : 2,
             options     : [
                 { name: 1 },  { name: 2 },  { name: 3 },  { name: 4 },
@@ -118,11 +125,13 @@ function pinmuxRequirements(inst)
  */
 function extend(base)
 {
-
-    devSpecific.config = base.config.concat(devSpecific.config);
-
     /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    let result = Object.assign({}, base, devSpecific);
+
+    /* concatenate device-specific configs */
+    result.config = base.config.concat(devSpecific.config);
+
+    return (result);
 }
 
 /*

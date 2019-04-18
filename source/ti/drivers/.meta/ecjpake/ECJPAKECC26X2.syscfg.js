@@ -51,7 +51,7 @@ intPriority.description = "Public key acceleration module interrupt priority.";
  */
 let devSpecific = {
     config: [
-        intPriority,
+        intPriority
     ],
 
     templates : {

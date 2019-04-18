@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 
 #ifndef ti_sysbios_family_arm_m3_Hwi__INTERNAL__
@@ -185,6 +185,12 @@
 
 /* setStackLimit */
 #define Hwi_setStackLimit ti_sysbios_family_arm_m3_Hwi_setStackLimit__I
+
+/* swiDisableNull */
+#define Hwi_swiDisableNull ti_sysbios_family_arm_m3_Hwi_swiDisableNull__I
+
+/* swiRestoreNull */
+#define Hwi_swiRestoreNull ti_sysbios_family_arm_m3_Hwi_swiRestoreNull__I
 
 /* dispatch */
 #define Hwi_dispatch ti_sysbios_family_arm_m3_Hwi_dispatch__I

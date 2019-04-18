@@ -1,14 +1,17 @@
 var searchData=
 [
-  ['list_5fclearlist',['List_clearList',['../_list_8h.html#a32d4e53da70142cec310cfa0006f146a',1,'List.h']]],
-  ['list_5fempty',['List_empty',['../_list_8h.html#ae60fe07328af331a850bd6bb25ecafee',1,'List.h']]],
-  ['list_5fget',['List_get',['../_list_8h.html#ac8c9babb4481314e3f0cce444f7fbade',1,'List.h']]],
-  ['list_5fhead',['List_head',['../_list_8h.html#a7eeb8ffe91673aa56fdd1c552c6435b6',1,'List.h']]],
-  ['list_5finsert',['List_insert',['../_list_8h.html#a0725acc51893e377f5ee9225dd6fcd26',1,'List.h']]],
-  ['list_5fnext',['List_next',['../_list_8h.html#a1683e4f9d2462f12dd60d0f810075ab5',1,'List.h']]],
-  ['list_5fprev',['List_prev',['../_list_8h.html#af0834d0f68b1adcf8c1d4f2fb10276fc',1,'List.h']]],
-  ['list_5fput',['List_put',['../_list_8h.html#a1608b5d7dc712fcf01dc5d837e22078a',1,'List.h']]],
-  ['list_5fputhead',['List_putHead',['../_list_8h.html#a1194d8eead79730c5da10e36b60f7044',1,'List.h']]],
-  ['list_5fremove',['List_remove',['../_list_8h.html#a480146af207e00199372c66edb4d9960',1,'List.h']]],
-  ['list_5ftail',['List_tail',['../_list_8h.html#a04432014c20d52c680076e3613aa68da',1,'List.h']]]
+  ['i2c_5fcancel',['I2C_cancel',['../_i2_c_8h.html#a8cad0c04a9eca0fffc0ffe5586a5179b',1,'I2C.h']]],
+  ['i2c_5fclose',['I2C_close',['../_i2_c_8h.html#a12c86d89a687f2ee1eb980d99c32326d',1,'I2C.h']]],
+  ['i2c_5fcontrol',['I2C_control',['../_i2_c_8h.html#a4c74b1b9f8e76ac22bec7608491cb223',1,'I2C.h']]],
+  ['i2c_5finit',['I2C_init',['../_i2_c_8h.html#a9ff51ddf1d325776fef90cce0223772b',1,'I2C.h']]],
+  ['i2c_5fopen',['I2C_open',['../_i2_c_8h.html#a2db3461e1e956d9b86af414da2fb05f6',1,'I2C.h']]],
+  ['i2c_5fparams_5finit',['I2C_Params_init',['../_i2_c_8h.html#ab11636302074d67180207ab81ceb323c',1,'I2C.h']]],
+  ['i2c_5ftransfer',['I2C_transfer',['../_i2_c_8h.html#ac5d827b67fe77d7d179026941cc069d7',1,'I2C.h']]],
+  ['i2cslave_5fclose',['I2CSlave_close',['../_i2_c_slave_8h.html#a323cbb394c10ab1018820c9a76eccc18',1,'I2CSlave.h']]],
+  ['i2cslave_5fcontrol',['I2CSlave_control',['../_i2_c_slave_8h.html#a42d235433a86656597ae52d44a005513',1,'I2CSlave.h']]],
+  ['i2cslave_5finit',['I2CSlave_init',['../_i2_c_slave_8h.html#ad7518283a3f3fb80cefe6cb7ca7a4a36',1,'I2CSlave.h']]],
+  ['i2cslave_5fopen',['I2CSlave_open',['../_i2_c_slave_8h.html#a18e508a752270fa45b08642d908a8bc7',1,'I2CSlave.h']]],
+  ['i2cslave_5fparams_5finit',['I2CSlave_Params_init',['../_i2_c_slave_8h.html#a3c29bf7436be17348ea73fabb6ede3ae',1,'I2CSlave.h']]],
+  ['i2cslave_5fread',['I2CSlave_read',['../_i2_c_slave_8h.html#ad5409f453e769676593a1a14d0ba6d7b',1,'I2CSlave.h']]],
+  ['i2cslave_5fwrite',['I2CSlave_write',['../_i2_c_slave_8h.html#a66c5d4103e022318c746c592ab2295f8',1,'I2CSlave.h']]]
 ];

@@ -1,6 +1,6 @@
 %%{
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,34 +45,22 @@
 
     /* Board_XXXCOUNT string, derived from defaultInstanceName */
     let countDef = TRNG.defaultInstanceName + "COUNT";
-
-    /* localize the object names with this device ID */
-    let devId = system.deviceData.deviceId;
-
-    let dev = "";  /* String to attach to "TRNG" for driver name */
-    if (devId.match(/CC13.2/) || devId.match(/CC26.2/)) {
-        dev = 'CC26X2';
-    }
-    else {
-        dev = 'CC26X0';
-    }
-
 %%}
 /*
  *  =============================== TRNG ===============================
  */
 
 #include <ti/drivers/TRNG.h>
-#include <ti/drivers/trng/TRNG`dev`.h>
+#include <ti/drivers/trng/TRNGCC26XX.h>
 
 #define `countDef` `instances.length`
 
-TRNG`dev`_Object trng`dev`Objects[`countDef`];
+TRNGCC26XX_Object trngCC26XXObjects[`countDef`];
 
 /*
- *  ======== trng`dev`HWAttrs ========
+ *  ======== trngCC26XXHWAttrs ========
  */
-static const TRNG`dev`_HWAttrs trng`dev`HWAttrs[`countDef`] = {
+static const TRNGCC26XX_HWAttrs trngCC26XXHWAttrs[`countDef`] = {
 % for (let i = 0; i < instances.length; i++) {
 %     let inst        = instances[i];
     {
@@ -87,8 +75,8 @@ const TRNG_Config TRNG_config[`countDef`] = {
 % for (let i = 0; i < instances.length; i++) {
 %     let inst    = instances[i];
     {   /* `inst.$name` */
-        .object         = &trng`dev`Objects[`inst.$name`],
-        .hwAttrs        = &trng`dev`HWAttrs[`inst.$name`]
+        .object         = &trngCC26XXObjects[`inst.$name`],
+        .hwAttrs        = &trngCC26XXHWAttrs[`inst.$name`]
     },
 % }
 };

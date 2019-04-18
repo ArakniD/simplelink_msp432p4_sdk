@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,20 +59,43 @@ let devSpecific = {
             name: "sequencers",
             displayName: "Sequencers",
             description: "Selects the ADC sequencers for which channels will"
-                + " be configured. Each sequencer can support 8, 4, 4, and 1"
-                + " channels respectively",
+                + " be configured.",
+            longDescription:"Each sequencer can support 8, 4, 4, and 1"
+                + " channel(s) respectively.",
             default: [0],
             options: [
-                { name: 0 },
-                { name: 1 },
-                { name: 2 },
-                { name: 3 }
+                {
+                    name: 0,
+                    description: "Sequencer 0 can support up to 8 channels."
+                 },
+                {
+                    name: 1,
+                    description: "Sequencer 1 can support up to 4 channels."
+                },
+                {
+                    name: 2,
+                    description: "Sequencer 2 can support up to 4 channels."
+                },
+                {
+                    name: 3,
+                    description: "Sequencer 3 can support 1 channel."
+                }
             ]
         },
         {
             name: "modulePhase",
             displayName: "Module Phase",
             description: "Specifies the module phase in degrees.",
+            longDescription:`
+Specifies the phase delay between a trigger and the start of a sequence for
+the ADC module. By selecting a different phase delay for a pair of ADC
+modules (such as __0__ and __180__) and having each ADC module sample the
+same analog input, it is possible to increase the sampling rate of the analog
+input (with samples N, N+2, N+4, and so on, coming from the first ADC and
+samples N+1, N+3, N+5, and so on, coming from the second ADC). The ADC module
+has a single phase delay that is applied to all sample sequences within that
+module.
+`,
             default: 0,
             options : [
                 {name: 0},   {name: 22.5},  {name: 45},  {name: 67.5},
@@ -87,8 +110,15 @@ let devSpecific = {
             default: "Internal",
             description: "Specifies the ADC reference voltage source.",
             options: [
-                { name: "Internal" },
-                { name: "External" }
+                {
+                    name: "Internal",
+                    description: "Internal reference voltage source of 3V."
+                },
+                {
+                    name: "External",
+                    description: "External reference voltage of 3V supplied to"
+                        + " the AVREF pin"
+                }
             ]
         },
         {
@@ -102,6 +132,11 @@ let devSpecific = {
             displayName: "Enable Timer",
             description: "Enabling the timer allows sequencers to use a"
                 + " timer peripheral as a trigger source",
+            longDescription:`
+When __true__, trigger ADC samples using a general purpose timer. When using
+both ADC peripherals, both must be initialized to use the same general purpose
+timer. In which case the __Module Phase__ is effective.
+`,
             default: true
         },
 
@@ -110,8 +145,6 @@ let devSpecific = {
     ],
 
     moduleInstances: moduleInstances,
-
-    modules: Common.autoForcePowerAndDMAModules,
 
     /* override generic requirements with  device-specific reqs (if any) */
     pinmuxRequirements: pinmuxRequirements,
@@ -140,7 +173,6 @@ function pinmuxRequirements(inst)
         name: "adc",
         displayName: "ADC",
         interfaceName: "ADC",
-        canShareWith: inst.$name,
         resources: []
     };
 
@@ -189,12 +221,13 @@ function moduleInstances(inst)
  */
 function extend(base)
 {
+    /* merge and overwrite base module attributes */
+    let result = Object.assign({}, base, devSpecific);
 
     /* concatenate device-specific configs */
-    devSpecific.config = base.config.concat(devSpecific.config);
+    result.config = base.config.concat(devSpecific.config);
 
-    /* merge and overwrite base module attributes */
-    return (Object.assign({}, base, devSpecific));
+    return (result);
 }
 
 /*

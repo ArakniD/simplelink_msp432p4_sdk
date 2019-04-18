@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,14 +40,6 @@
 let Common   = system.getScript("/ti/drivers/Common.js");
 let family   = Common.device2Family(system.deviceData, "UART");
 let logError = Common.logError;
-
-/* Intro splash on GUI */
-let longDescription = "A UART is used to translate data between " +
-    "the chip and a serial port. The UART driver simplifies reading " +
-    "and writing to any of the UART peripherals on the board, with " +
-    "multiple modes of operation and performance. These include " +
-    "blocking, non-blocking, and polling, as well as text/binary " +
-    "mode, echo and return characters.";
 
 /* Array of UART configurables that are common across device families */
 let config = [
@@ -123,12 +115,25 @@ function validate(inst, validation)
 let base = {
     displayName   : "UART",
     description   : "Universal Asynchronous Receiver Transmitter (UART) Driver",
-    modules       : Common.autoForcePowerModule,
-    config        : config,
-    validate      : validate,
-    longDescription: longDescription,
-    documentation: "/tidrivers/doxygen/html/_u_a_r_t_8h.html",
-    defaultInstanceName: "Board_UART"
+
+    longDescription: `
+The [__UART driver__][1] provides device independent APIs for reading
+and writing to the UART peripherals.
+
+* [Usage Synopsis][2]
+* [Examples][3]
+* [Configuration Options][4]
+
+[1]: /tidrivers/doxygen/html/_u_a_r_t_8h.html#details "C API reference"
+[2]: /tidrivers/doxygen/html/_u_a_r_t_8h.html#ti_drivers_UART_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_u_a_r_t_8h.html#ti_drivers_UART_Examples "C usage examples"
+[4]: /tidrivers/syscfg/html/ConfigDoc.html#UART_Configuration_Options "Configuration options reference"
+`,
+    /* instance properties and methods */
+    defaultInstanceName: "Board_UART",
+    config        : Common.addNameConfig(config, "/ti/drivers/UART", "Board_UART"),
+    modules       : Common.autoForceModules(["Board", "Power"]),
+    validate      : validate
 };
 
 /* get family-specific UART module */

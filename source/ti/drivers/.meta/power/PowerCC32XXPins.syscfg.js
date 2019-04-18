@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,14 +42,15 @@ let pinTable = [1,2,3,4,5,6,7,8,13,15,16,17,18,19,20,21,29,30,
                 45,50,52,53,55,57,58,59,60,61,62,63,64];
 let pinOptions  = [
     {
-        name: 'Default',
+        displayName: 'Default',
+        name: "default",
         description: 'All pins configured with pull-down resistors with the '
            +  'exception of Pin 55 and Pin 57 configured with pull-up '
            +  'resistors.'
     },
     {
         name: 'NO_PULL_HIZ',
-        description: 'No pull resistor, leave pin in a HIZ state'
+        description: 'No pull resistor, leave pin in a high impedance state.'
     },
     {
         name: 'WEAK_PULL_UP_STD',
@@ -93,10 +94,12 @@ function resources()
 {
     let resources = [
         {
-            name          : 'default',
-            displayName   : 'Change ALL Pins to:',
-            onChange      : onChangeDefault,
-            default       : 'Default',
+            name          : 'changeAllPins',
+            displayName   : 'Change All Pins',
+            description   : "Use this configurable to update all pin"
+                + " park states concurrently",
+            onChange      : onchangeAllPins,
+            default       : "default",
             options       : pinOptions
         }
     ];
@@ -104,12 +107,20 @@ function resources()
     for (let idx = 0; idx < pinTable.length; idx++) {
         let pinNum = padStart(pinTable[idx].toString());
         let defOpt = 'WEAK_PULL_DOWN_STD';
+
         if (pinNum == '55' || pinNum == '57') {
             defOpt = 'WEAK_PULL_UP_STD';
         }
+
+        let description = "PIN " + pinNum;
+        if (system.deviceData.devicePins[pinTable[idx]]) {
+            description = system.deviceData.devicePins[pinTable[idx]].designSignalName;
+        }
         resources.push({
-            name          : 'PIN'+pinNum,
-            displayName   : 'PIN'+pinNum,
+            name          : 'PIN' + pinNum,
+            displayName   : 'PIN' + pinNum,
+            description   : description,
+            longDescription : description,
             default       : defOpt,
             options       : pinOptions
         });
@@ -118,23 +129,24 @@ function resources()
 }
 
 let config = resources();
-function onChangeDefault(inst, ui)
-{
-    let initVal = inst.default;
 
-    if (initVal === "Default") {
+function onchangeAllPins(inst, ui)
+{
+    let initVal = inst.changeAllPins;
+
+    if (initVal === "default") {
         initVal = "WEAK_PULL_DOWN_STD";
     }
 
     for (let idx = 0; idx < pinTable.length; idx++) {
         let pinName = 'PIN' + padStart(pinTable[idx].toString());
-
-        if (inst.default === "Default") {
+        if (inst.changeAllPins === "default") {
             if (pinName == "PIN55" || pinName == "PIN57") {
                 inst[pinName] = "WEAK_PULL_UP_STD";
                 continue;
             }
         }
+
         inst[pinName] = initVal;
     }
 }
@@ -142,10 +154,11 @@ function onChangeDefault(inst, ui)
 /* The device specific exports for the power module */
 exports = {
     name         : 'parkPins',
-    displayName  : 'parkPins',
+    displayName  : 'Park Pins',
+    description  : "Pin Park States",
     maxInstances : 1,
     config       : config,
     templates    : {
-        boardc      : "/ti/drivers/power/PowerCC32XXPins.Board.c.xdt",
+        boardc      : "/ti/drivers/power/PowerCC32XXPins.Board.c.xdt"
     }
 };

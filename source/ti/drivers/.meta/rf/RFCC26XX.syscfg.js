@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,20 +43,12 @@ let Common = system.getScript("/ti/drivers/Common.js");
 let intPriority = Common.newIntPri()[0];
 intPriority.name = "interruptPriority";
 intPriority.displayName = "Interrupt Priority";
-intPriority.description = "RF module hardware interrupt priority";
+intPriority.description = "RF peripheral hardware interrupt priority";
 
 let swiPriority = Common.newSwiPri();
 swiPriority.name = "softwareInterruptPriority";
 swiPriority.displayName = "Software Interrupt Priority";
-swiPriority.description = "RF module software interrupt priority";
-
-let globalCallbackLongDesc = "The RF driver provides an interface "
-    + "to register a global, client independent callback.  This callback "
-    + "is typically used to control board related configurations, such "
-    + "as antenna switches.  If the board has antenna switches, a "
-    + "default callback (rfDriverCallback) is provided.  By setting "
-    + "globalCallbackFunction to NULL, the default callback, if it exists, "
-    + "will be registered.";
+swiPriority.description = "RF driver software interrupt priority";
 
 /*
  *  ======== devSpecific ========
@@ -72,23 +64,50 @@ let devSpecific = {
             {
                 name: "xoscNeeded",
                 displayName: "XOSC Needed",
-                description: "Keep XOSC Dependency While in Standby",
+                description: "Specify if the High Frequency Crystal Oscillator"
+                    + " (XOSC-HF) shall always be started by the Power driver.",
+                longDescription:`
+When __true__, the power driver always starts the XOSC-HF. When __false__, the RF
+driver will request the XOSC-HF if needed.
+`,
                 default: true
             },
             {
                 name: "globalCallbackFunction",
                 displayName: "Global Callback Function",
-                longDescription: globalCallbackLongDesc,
+                longDescription:`
+The RF driver serves additional global, client independent events by invoking
+the __Global Callback Function__. If the board has antenna switches, a
+default callback (rfDriverCallback) is provided. By setting the
+__Global Callback Function__ to __NULL__, the default callback, if it exists,
+will be registered.
+
+Global events triggering this callback can be configured through the
+__Global Event Mask__ configuration.
+`,
                 default: "NULL"
             },
             {
                 name: "globalEventMask",
                 displayName: "Global Event Mask",
+                description: "Sets global RF driver events",
+                longDescription:`
+This specifies a mask of global events which the __Global Callback Function__
+is invoked upon.
+`,
                 minSelections: 0,
                 default: [],
                 options: [
-                    { name: "RF_GlobalEventRadioSetup" },
-                    { name: "RF_GlobalEventRadioPowerDown" }
+                    {
+                        name: "RF_GlobalEventRadioSetup",
+                        description: "Global event triggered when the RF core"
+                            + " is being reconfigured through a setup."
+                    },
+                    {
+                        name: "RF_GlobalEventRadioPowerDown",
+                        description:"Global event triggered when the RF core"
+                            + " is being powered down."
+                    }
                 ]
             }
         ],
@@ -98,10 +117,8 @@ let devSpecific = {
         pinmuxRequirements: pinmuxRequirements,
         validate: validate,
 
-        /* bring in Power module */
-        modules: Common.autoForcePowerModule,
-
         moduleInstances: moduleInstances,
+        modules: Common.autoForceModules(["Board", "Power"]),
 
         /* Array to hold RF antenna pins, if any */
         devicePins : []
@@ -206,7 +223,7 @@ function onHardwareChanged(mod, ui)
 
 /*
  *  ======== filterHardware ========
- *  component - a hardware componenet
+ *  component - a hardware component
  *
  *  Use this function to get the pins used by the RF antenna.
  */

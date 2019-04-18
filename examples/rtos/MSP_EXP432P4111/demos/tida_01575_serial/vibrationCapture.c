@@ -578,19 +578,19 @@ void *vibrationThread(void *arg0)
 
     /* Configure the conversion struct */
     oneshotVibChannels[0].arg = NULL;
-    oneshotVibChannels[0].adcChannel = Board_ADCBUF0CHANNEL0;
+    oneshotVibChannels[0].adcChannel = Board_ADCBUF0CHANNEL_0;
     oneshotVibChannels[0].sampleBuffer = sampleBufferX;
     oneshotVibChannels[0].sampleBufferTwo = NULL;
     oneshotVibChannels[0].samplesRequestedCount = ADCBUFFERSIZE;
 
     oneshotVibChannels[1].arg = NULL;
-    oneshotVibChannels[1].adcChannel = Board_ADCBUF0CHANNEL1;
+    oneshotVibChannels[1].adcChannel = Board_ADCBUF0CHANNEL_1;
     oneshotVibChannels[1].sampleBuffer = sampleBufferY;
     oneshotVibChannels[1].sampleBufferTwo = NULL;
     oneshotVibChannels[1].samplesRequestedCount = ADCBUFFERSIZE;
 
     oneshotVibChannels[2].arg = NULL;
-    oneshotVibChannels[2].adcChannel = Board_ADCBUF0CHANNEL2;
+    oneshotVibChannels[2].adcChannel = Board_ADCBUF0CHANNEL_2;
     oneshotVibChannels[2].sampleBuffer = sampleBufferZ;
     oneshotVibChannels[2].sampleBufferTwo = NULL;
     oneshotVibChannels[2].samplesRequestedCount = ADCBUFFERSIZE;

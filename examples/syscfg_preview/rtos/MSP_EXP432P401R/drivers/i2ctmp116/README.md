@@ -1,3 +1,7 @@
+### SysConfig Notice
+
+All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
+
 ---
 # i2ctmp116
 
@@ -45,21 +49,20 @@ initialization is complete.
 via the UART. A total of 20 temperature samples are read and printed before
 the example exits. Terminal output should resemble:
 ```
-        I2C Initialized!
-        Sample 0: 24 (C)
-        Sample 1: 24 (C)
-               .
-               .
-               .
-        Sample 18: 24 (C)
-        Sample 19: 24 (C)
-        I2C closed!
+    I2C Initialized!
+    Sample 0: 24 (C)
+    Sample 1: 24 (C)
+           .
+           .
+           .
+    Sample 18: 24 (C)
+    Sample 19: 24 (C)
+    I2C closed!
 ```
 
 *  If the I2C communication fails, the following error message is displayed:
 ```
-        I2C Bus fault.
-
+    I2C Bus fault.
 ```
 
 ## Application Design Details

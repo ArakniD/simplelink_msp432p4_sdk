@@ -5,7 +5,7 @@ var searchData=
   ['lfxtdrive',['LFXTDRIVE',['../struct_power_m_s_p432___config_v1.html#ab15f74c7e5824a2dae49038a0358d76d',1,'PowerMSP432_ConfigV1']]],
   ['lineclearmode',['lineClearMode',['../struct_display___params.html#af442a90969018ed8073eef6451425f40',1,'Display_Params::lineClearMode()'],['../struct_display_sharp___object.html#a1b911a160ce7d497a13c517038710d17',1,'DisplaySharp_Object::lineClearMode()']]],
   ['lineclearseq',['lineClearSeq',['../struct_display_uart___object.html#a238a4fefc6643ebc4cd56825f1945fc2',1,'DisplayUart_Object']]],
-  ['link',['link',['../struct_power___notify_obj__.html#acd9100da1229a77a96e16fe88b18198f',1,'Power_NotifyObj_']]],
+  ['link',['link',['../struct_power___notify_obj.html#a0715ba7a7af18cd16286eeefa20252c0',1,'Power_NotifyObj']]],
   ['list_2eh',['List.h',['../_list_8h.html',1,'']]],
   ['list_5fclearlist',['List_clearList',['../_list_8h.html#a32d4e53da70142cec310cfa0006f146a',1,'List.h']]],
   ['list_5felem',['List_Elem',['../struct_list___elem.html',1,'List_Elem'],['../_list_8h.html#a952d8bdbb969ea99ef3cae1808fa851b',1,'List_Elem():&#160;List.h']]],

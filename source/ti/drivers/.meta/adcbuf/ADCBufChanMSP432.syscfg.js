@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,6 +47,15 @@ let adcChanNames = [
 ];
 
 let config = [
+    {
+        name: "$name",
+        defaultPrefix: "CHANNEL_",
+        description: "C identifier used to identify this ADCBuf channel.",
+        longDescription: "This name is concatenated to the end of the name"
+            + " __Name__ specified in the ADCBuf module configuration"
+            + " above.",
+        hidden: false
+    },
     {
         name: "referenceSource",
         displayName: "Reference Source",
@@ -160,7 +169,7 @@ function filterHardware(component)
 function onReferenceSourceChange(inst, ui)
 {
 
-    ui.referenceVoltage.readOnly = false;
+    ui.referenceVoltage.readOnly = true;
 
     switch (inst.referenceSource) {
         case "VDD":
@@ -177,13 +186,11 @@ function onReferenceSourceChange(inst, ui)
             break;
         case "External":
             ui.referenceVoltage.readOnly = false;
-            return;
+            break;
         case "External Buffered":
             ui.referenceVoltage.readOnly = false;
-            return;
+            break;
     }
-
-    ui.referenceVoltage.readOnly = true;
 }
 
 /*
@@ -195,14 +202,14 @@ function onInputSourceChange(inst, ui)
         ui.mode.hidden = true;
         inst.mode = "Non Differential";
         if (ui.$hardware) {
-            ui.$hardware.hidden = true;
+            //ui.$hardware.hidden = true;
             inst.$hardware = null;
         }
     }
     else {
         ui.mode.hidden = false;
         if (ui.$hardware) {
-            ui.$hardware.hidden = false;
+            //ui.$hardware.hidden = false;
         }
     }
 }

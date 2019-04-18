@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F07
+ * @(#) xdc-F09
  */
 
 /*
@@ -95,13 +95,6 @@ enum ti_sysbios_family_c7x_Cache_L2Size {
 };
 typedef enum ti_sysbios_family_c7x_Cache_L2Size ti_sysbios_family_c7x_Cache_L2Size;
 
-/* Mar */
-enum ti_sysbios_family_c7x_Cache_Mar {
-    ti_sysbios_family_c7x_Cache_Mar_DISABLE = 0,
-    ti_sysbios_family_c7x_Cache_Mar_ENABLE = 1
-};
-typedef enum ti_sysbios_family_c7x_Cache_Mar ti_sysbios_family_c7x_Cache_Mar;
-
 /* PC */
 #define ti_sysbios_family_c7x_Cache_PC (1)
 
@@ -152,24 +145,6 @@ struct ti_sysbios_family_c7x_Cache_Size {
 /*
  * ======== INTERNAL DEFINITIONS ========
  */
-
-/* L2CFG */
-#define ti_sysbios_family_c7x_Cache_L2CFG (0x01840000)
-
-/* L1PCFG */
-#define ti_sysbios_family_c7x_Cache_L1PCFG (0x01840020)
-
-/* L1PCC */
-#define ti_sysbios_family_c7x_Cache_L1PCC (0x01840024)
-
-/* L1DCFG */
-#define ti_sysbios_family_c7x_Cache_L1DCFG (0x01840040)
-
-/* L1DCC */
-#define ti_sysbios_family_c7x_Cache_L1DCC (0x01840044)
-
-/* MAR */
-#define ti_sysbios_family_c7x_Cache_MAR (0x01848000)
 
 
 /*
@@ -351,19 +326,6 @@ __extern __FAR__ const CT__ti_sysbios_family_c7x_Cache_atomicBlockSize ti_sysbio
 #endif
 #endif
 
-/* marvalues */
-typedef xdc_UInt32 __T1_ti_sysbios_family_c7x_Cache_marvalues;
-typedef xdc_UInt32 ARRAY1_ti_sysbios_family_c7x_Cache_marvalues[256];
-typedef xdc_UInt32 CARRAY1_ti_sysbios_family_c7x_Cache_marvalues[256];
-typedef CARRAY1_ti_sysbios_family_c7x_Cache_marvalues __TA_ti_sysbios_family_c7x_Cache_marvalues;
-typedef CARRAY1_ti_sysbios_family_c7x_Cache_marvalues CT__ti_sysbios_family_c7x_Cache_marvalues;
-__extern __FAR__ const CT__ti_sysbios_family_c7x_Cache_marvalues ti_sysbios_family_c7x_Cache_marvalues__C;
-#ifdef ti_sysbios_family_c7x_Cache_marvalues__CR
-#define ti_sysbios_family_c7x_Cache_marvalues (*((CT__ti_sysbios_family_c7x_Cache_marvalues*)(xdcRomConstPtr + ti_sysbios_family_c7x_Cache_marvalues__C_offset)))
-#else
-#define ti_sysbios_family_c7x_Cache_marvalues (ti_sysbios_family_c7x_Cache_marvalues__C)
-#endif
-
 
 /*
  * ======== VIRTUAL FUNCTIONS ========
@@ -433,16 +395,6 @@ __extern xdc_Void ti_sysbios_family_c7x_Cache_wait__E( void );
 xdc__CODESECT(ti_sysbios_family_c7x_Cache_disable__E, "ti_sysbios_family_c7x_Cache_disable")
 __extern xdc_Void ti_sysbios_family_c7x_Cache_disable__E( xdc_Bits16 type );
 
-/* getMode__E */
-#define ti_sysbios_family_c7x_Cache_getMode ti_sysbios_family_c7x_Cache_getMode__E
-xdc__CODESECT(ti_sysbios_family_c7x_Cache_getMode__E, "ti_sysbios_family_c7x_Cache_getMode")
-__extern ti_sysbios_family_c7x_Cache_Mode ti_sysbios_family_c7x_Cache_getMode__E( xdc_Bits16 type );
-
-/* setMode__E */
-#define ti_sysbios_family_c7x_Cache_setMode ti_sysbios_family_c7x_Cache_setMode__E
-xdc__CODESECT(ti_sysbios_family_c7x_Cache_setMode__E, "ti_sysbios_family_c7x_Cache_setMode")
-__extern ti_sysbios_family_c7x_Cache_Mode ti_sysbios_family_c7x_Cache_setMode__E( xdc_Bits16 type, ti_sysbios_family_c7x_Cache_Mode mode );
-
 /* getSize__E */
 #define ti_sysbios_family_c7x_Cache_getSize ti_sysbios_family_c7x_Cache_getSize__E
 xdc__CODESECT(ti_sysbios_family_c7x_Cache_getSize__E, "ti_sysbios_family_c7x_Cache_getSize")
@@ -452,21 +404,6 @@ __extern xdc_Void ti_sysbios_family_c7x_Cache_getSize__E( ti_sysbios_family_c7x_
 #define ti_sysbios_family_c7x_Cache_setSize ti_sysbios_family_c7x_Cache_setSize__E
 xdc__CODESECT(ti_sysbios_family_c7x_Cache_setSize__E, "ti_sysbios_family_c7x_Cache_setSize")
 __extern xdc_Void ti_sysbios_family_c7x_Cache_setSize__E( ti_sysbios_family_c7x_Cache_Size *size );
-
-/* getMar__E */
-#define ti_sysbios_family_c7x_Cache_getMar ti_sysbios_family_c7x_Cache_getMar__E
-xdc__CODESECT(ti_sysbios_family_c7x_Cache_getMar__E, "ti_sysbios_family_c7x_Cache_getMar")
-__extern xdc_UInt32 ti_sysbios_family_c7x_Cache_getMar__E( xdc_Ptr baseAddr );
-
-/* setMar__E */
-#define ti_sysbios_family_c7x_Cache_setMar ti_sysbios_family_c7x_Cache_setMar__E
-xdc__CODESECT(ti_sysbios_family_c7x_Cache_setMar__E, "ti_sysbios_family_c7x_Cache_setMar")
-__extern xdc_Void ti_sysbios_family_c7x_Cache_setMar__E( xdc_Ptr baseAddr, xdc_SizeT byteSize, xdc_UInt32 value );
-
-/* invL1pAll__E */
-#define ti_sysbios_family_c7x_Cache_invL1pAll ti_sysbios_family_c7x_Cache_invL1pAll__E
-xdc__CODESECT(ti_sysbios_family_c7x_Cache_invL1pAll__E, "ti_sysbios_family_c7x_Cache_invL1pAll")
-__extern xdc_Void ti_sysbios_family_c7x_Cache_invL1pAll__E( void );
 
 /* wbAll__E */
 #define ti_sysbios_family_c7x_Cache_wbAll ti_sysbios_family_c7x_Cache_wbAll__E
@@ -488,20 +425,45 @@ __extern xdc_Void ti_sysbios_family_c7x_Cache_wbInvAll__E( void );
 xdc__CODESECT(ti_sysbios_family_c7x_Cache_wbInvL1dAll__E, "ti_sysbios_family_c7x_Cache_wbInvL1dAll")
 __extern xdc_Void ti_sysbios_family_c7x_Cache_wbInvL1dAll__E( void );
 
-/* invPrefetchBuffer__I */
-#define ti_sysbios_family_c7x_Cache_invPrefetchBuffer ti_sysbios_family_c7x_Cache_invPrefetchBuffer__I
-xdc__CODESECT(ti_sysbios_family_c7x_Cache_invPrefetchBuffer__I, "ti_sysbios_family_c7x_Cache_invPrefetchBuffer")
-__extern xdc_Void ti_sysbios_family_c7x_Cache_invPrefetchBuffer__I( void );
+/* setL2CFG__E */
+#define ti_sysbios_family_c7x_Cache_setL2CFG ti_sysbios_family_c7x_Cache_setL2CFG__E
+xdc__CODESECT(ti_sysbios_family_c7x_Cache_setL2CFG__E, "ti_sysbios_family_c7x_Cache_setL2CFG")
+__extern xdc_Void ti_sysbios_family_c7x_Cache_setL2CFG__E( xdc_UInt size );
 
-/* all__I */
-#define ti_sysbios_family_c7x_Cache_all ti_sysbios_family_c7x_Cache_all__I
-xdc__CODESECT(ti_sysbios_family_c7x_Cache_all__I, "ti_sysbios_family_c7x_Cache_all")
-__extern xdc_Void ti_sysbios_family_c7x_Cache_all__I( volatile xdc_UInt32 *cacheReg );
+/* getL2CFG__E */
+#define ti_sysbios_family_c7x_Cache_getL2CFG ti_sysbios_family_c7x_Cache_getL2CFG__E
+xdc__CODESECT(ti_sysbios_family_c7x_Cache_getL2CFG__E, "ti_sysbios_family_c7x_Cache_getL2CFG")
+__extern xdc_ULong ti_sysbios_family_c7x_Cache_getL2CFG__E( void );
 
-/* block__I */
-#define ti_sysbios_family_c7x_Cache_block ti_sysbios_family_c7x_Cache_block__I
-xdc__CODESECT(ti_sysbios_family_c7x_Cache_block__I, "ti_sysbios_family_c7x_Cache_block")
-__extern xdc_Void ti_sysbios_family_c7x_Cache_block__I( xdc_Ptr blockPtr, xdc_SizeT byteCnt, xdc_Bool wait, volatile xdc_UInt32 *barReg );
+/* setL1DCFG__E */
+#define ti_sysbios_family_c7x_Cache_setL1DCFG ti_sysbios_family_c7x_Cache_setL1DCFG__E
+xdc__CODESECT(ti_sysbios_family_c7x_Cache_setL1DCFG__E, "ti_sysbios_family_c7x_Cache_setL1DCFG")
+__extern xdc_Void ti_sysbios_family_c7x_Cache_setL1DCFG__E( xdc_UInt size );
+
+/* getL1DCFG__E */
+#define ti_sysbios_family_c7x_Cache_getL1DCFG ti_sysbios_family_c7x_Cache_getL1DCFG__E
+xdc__CODESECT(ti_sysbios_family_c7x_Cache_getL1DCFG__E, "ti_sysbios_family_c7x_Cache_getL1DCFG")
+__extern xdc_ULong ti_sysbios_family_c7x_Cache_getL1DCFG__E( void );
+
+/* setL2WB__E */
+#define ti_sysbios_family_c7x_Cache_setL2WB ti_sysbios_family_c7x_Cache_setL2WB__E
+xdc__CODESECT(ti_sysbios_family_c7x_Cache_setL2WB__E, "ti_sysbios_family_c7x_Cache_setL2WB")
+__extern xdc_Void ti_sysbios_family_c7x_Cache_setL2WB__E( xdc_UInt flag );
+
+/* setL2WBINV__E */
+#define ti_sysbios_family_c7x_Cache_setL2WBINV ti_sysbios_family_c7x_Cache_setL2WBINV__E
+xdc__CODESECT(ti_sysbios_family_c7x_Cache_setL2WBINV__E, "ti_sysbios_family_c7x_Cache_setL2WBINV")
+__extern xdc_Void ti_sysbios_family_c7x_Cache_setL2WBINV__E( xdc_UInt flag );
+
+/* setL1DWB__E */
+#define ti_sysbios_family_c7x_Cache_setL1DWB ti_sysbios_family_c7x_Cache_setL1DWB__E
+xdc__CODESECT(ti_sysbios_family_c7x_Cache_setL1DWB__E, "ti_sysbios_family_c7x_Cache_setL1DWB")
+__extern xdc_Void ti_sysbios_family_c7x_Cache_setL1DWB__E( xdc_UInt flag );
+
+/* setL1DWBINV__E */
+#define ti_sysbios_family_c7x_Cache_setL1DWBINV ti_sysbios_family_c7x_Cache_setL1DWBINV__E
+xdc__CODESECT(ti_sysbios_family_c7x_Cache_setL1DWBINV__E, "ti_sysbios_family_c7x_Cache_setL1DWBINV")
+__extern xdc_Void ti_sysbios_family_c7x_Cache_setL1DWBINV__E( xdc_UInt flag );
 
 /* startup__I */
 #define ti_sysbios_family_c7x_Cache_startup ti_sysbios_family_c7x_Cache_startup__I
@@ -607,18 +569,11 @@ static inline xdc_Void ti_sysbios_family_c7x_Cache_Module_setMask(xdc_Bits16 mas
 #define Cache_Mode ti_sysbios_family_c7x_Cache_Mode
 #define Cache_L1Size ti_sysbios_family_c7x_Cache_L1Size
 #define Cache_L2Size ti_sysbios_family_c7x_Cache_L2Size
-#define Cache_Mar ti_sysbios_family_c7x_Cache_Mar
 #define Cache_PC ti_sysbios_family_c7x_Cache_PC
 #define Cache_WTE ti_sysbios_family_c7x_Cache_WTE
 #define Cache_PCX ti_sysbios_family_c7x_Cache_PCX
 #define Cache_PFX ti_sysbios_family_c7x_Cache_PFX
 #define Cache_Size ti_sysbios_family_c7x_Cache_Size
-#define Cache_L2CFG ti_sysbios_family_c7x_Cache_L2CFG
-#define Cache_L1PCFG ti_sysbios_family_c7x_Cache_L1PCFG
-#define Cache_L1PCC ti_sysbios_family_c7x_Cache_L1PCC
-#define Cache_L1DCFG ti_sysbios_family_c7x_Cache_L1DCFG
-#define Cache_L1DCC ti_sysbios_family_c7x_Cache_L1DCC
-#define Cache_MAR ti_sysbios_family_c7x_Cache_MAR
 #define Cache_Type_L1P ti_sysbios_family_c7x_Cache_Type_L1P
 #define Cache_Type_L1D ti_sysbios_family_c7x_Cache_Type_L1D
 #define Cache_Type_L1 ti_sysbios_family_c7x_Cache_Type_L1
@@ -643,28 +598,28 @@ static inline xdc_Void ti_sysbios_family_c7x_Cache_Module_setMask(xdc_Bits16 mas
 #define Cache_L2Size_256K ti_sysbios_family_c7x_Cache_L2Size_256K
 #define Cache_L2Size_512K ti_sysbios_family_c7x_Cache_L2Size_512K
 #define Cache_L2Size_1024K ti_sysbios_family_c7x_Cache_L2Size_1024K
-#define Cache_Mar_DISABLE ti_sysbios_family_c7x_Cache_Mar_DISABLE
-#define Cache_Mar_ENABLE ti_sysbios_family_c7x_Cache_Mar_ENABLE
 #define Cache_initSize ti_sysbios_family_c7x_Cache_initSize
 #define Cache_atomicBlockSize ti_sysbios_family_c7x_Cache_atomicBlockSize
-#define Cache_marvalues ti_sysbios_family_c7x_Cache_marvalues
 #define Cache_enable ti_sysbios_family_c7x_Cache_enable
 #define Cache_inv ti_sysbios_family_c7x_Cache_inv
 #define Cache_wb ti_sysbios_family_c7x_Cache_wb
 #define Cache_wbInv ti_sysbios_family_c7x_Cache_wbInv
 #define Cache_wait ti_sysbios_family_c7x_Cache_wait
 #define Cache_disable ti_sysbios_family_c7x_Cache_disable
-#define Cache_getMode ti_sysbios_family_c7x_Cache_getMode
-#define Cache_setMode ti_sysbios_family_c7x_Cache_setMode
 #define Cache_getSize ti_sysbios_family_c7x_Cache_getSize
 #define Cache_setSize ti_sysbios_family_c7x_Cache_setSize
-#define Cache_getMar ti_sysbios_family_c7x_Cache_getMar
-#define Cache_setMar ti_sysbios_family_c7x_Cache_setMar
-#define Cache_invL1pAll ti_sysbios_family_c7x_Cache_invL1pAll
 #define Cache_wbAll ti_sysbios_family_c7x_Cache_wbAll
 #define Cache_wbL1dAll ti_sysbios_family_c7x_Cache_wbL1dAll
 #define Cache_wbInvAll ti_sysbios_family_c7x_Cache_wbInvAll
 #define Cache_wbInvL1dAll ti_sysbios_family_c7x_Cache_wbInvL1dAll
+#define Cache_setL2CFG ti_sysbios_family_c7x_Cache_setL2CFG
+#define Cache_getL2CFG ti_sysbios_family_c7x_Cache_getL2CFG
+#define Cache_setL1DCFG ti_sysbios_family_c7x_Cache_setL1DCFG
+#define Cache_getL1DCFG ti_sysbios_family_c7x_Cache_getL1DCFG
+#define Cache_setL2WB ti_sysbios_family_c7x_Cache_setL2WB
+#define Cache_setL2WBINV ti_sysbios_family_c7x_Cache_setL2WBINV
+#define Cache_setL1DWB ti_sysbios_family_c7x_Cache_setL1DWB
+#define Cache_setL1DWBINV ti_sysbios_family_c7x_Cache_setL1DWBINV
 #define Cache_Module_name ti_sysbios_family_c7x_Cache_Module_name
 #define Cache_Module_id ti_sysbios_family_c7x_Cache_Module_id
 #define Cache_Module_startup ti_sysbios_family_c7x_Cache_Module_startup
