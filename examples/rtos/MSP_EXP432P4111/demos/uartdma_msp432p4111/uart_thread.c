@@ -38,7 +38,10 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
+
+#include <FreeRTOS.h>
 
 /* POSIX Header Files */
 #include <semaphore.h>
@@ -55,10 +58,12 @@
 #include "led_thread.h"
 #include "lcd_thread.h"
 #include "uart_thread.h"
+#include "dma_thread.h"
 #include <cJSON/cJSON.h>
 
 // cJSON Variables
 char rxString[MAX_STR_LENGTH];    // Received JSON strings
+char response[MAX_STR_LENGTH];
 cJSON * rxJSONObject;
 
 pthread_t uartthread_handler;
@@ -71,10 +76,21 @@ pthread_t uartthread_handler;
 void *uartThread(void *arg0)
 {
     LedMsg msg;
+    DmaMsg dma;
     int rc;
+    int ok = 0;
+    int skip = 0;
     UART_Handle uart_handle;
     UART_Params uartParams;
-
+    int32_t receiveArray[4] = {-1, -1, -1, -1};
+    uint8_t bytes[32];
+#if 0
+    const cJSON_Hooks rtos_hooks =
+    {
+     .free_fn =
+    };
+    cJSON_InitHooks();
+#endif
     /* Call driver init functions */
     UART_init();
 
@@ -93,26 +109,36 @@ void *uartThread(void *arg0)
         while (1);
     }
 
+    UART_write(uart_handle, "Startup\n", 8);
+    memset(rxString, 0 , MAX_STR_LENGTH);
+
     while (1) {
         UART_read(uart_handle, &rxString, MAX_STR_LENGTH);  //input = RXD byte
 
-        int32_t receiveArray[4] = {-1, -1, -1, -1};
+
         rxJSONObject = cJSON_Parse(rxString);
         cJSON *red = cJSON_GetObjectItemCaseSensitive(rxJSONObject, "red");
         if (red)
-            receiveArray[0] = (int32_t)(pwmPeriod*(red->valueint/255.0f));
+            receiveArray[0] = (int32_t) (pwmPeriod * (red->valueint / 255.0f));
+        else
+            receiveArray[0] = -1;
 
         cJSON *green = cJSON_GetObjectItemCaseSensitive(rxJSONObject, "green");
         if (green)
-            receiveArray[1] = (int32_t)(pwmPeriod*(green->valueint/255.0f));
-
+            receiveArray[1] =
+                    (int32_t) (pwmPeriod * (green->valueint / 255.0f));
+        else
+            receiveArray[1] = -1;
         cJSON *blue = cJSON_GetObjectItemCaseSensitive(rxJSONObject, "blue");
         if (blue)
-            receiveArray[2] = (int32_t)(pwmPeriod*(blue->valueint/255.0f));
-
+            receiveArray[2] = (int32_t) (pwmPeriod * (blue->valueint / 255.0f));
+        else
+            receiveArray[2] = -1;
         cJSON *bpm = cJSON_GetObjectItemCaseSensitive(rxJSONObject, "bpm");
         if (bpm)
-            receiveArray[3] = (int32_t)((60.0f / bpm->valueint) * 1000000 / 2);
+            receiveArray[3] = (int32_t) ((60.0f / bpm->valueint) * 1000000 / 2);
+        else
+            receiveArray[3] = -1;
 
         if (red || green || blue || bpm)
         {
@@ -127,14 +153,163 @@ void *uartThread(void *arg0)
             if (rc == -1) {
                 while (1);
             }
+            ok = 1;
+        }
+
+        /* Accept a DMA send test command and send over to the message queue that we need to
+         * send up to X bytes, and that we DO or DO not expect any RTS/CTS events
+         */
+        cJSON *dmaBaud = cJSON_GetObjectItemCaseSensitive(rxJSONObject, "dmaChangePortSettings");
+        if (cJSON_IsArray(dmaBaud) && cJSON_GetArraySize(dmaBaud) == 2)
+        {
+            static int buffer[2];
+            buffer[0] = cJSON_GetArrayItem(dmaBaud, 0)->valueint; // Baud Rate
+            buffer[1] = cJSON_GetArrayItem(dmaBaud, 1)->valueint; // Read timeout
+            /* Send message to scroll string on LCD */
+            dma.cmd = dmaCmd_ChangePortSettings;
+            dma.buffer = (void *)(buffer);
+            dma.terminalHandle = uart_handle;
+
+            /* Send the message to the main thread first */
+            rc = mq_send(mqDMAMaster, (char *)&dma, sizeof(dma), 0);
+            if (rc == -1) {
+                // Failed to send to message queue
+            }
+            rc = sem_post(&semDMAMaster);
+            if (rc == -1) {
+                while (1);
+            }
+            ok = 1;
+        }
+
+        /* Pause the receive handling of Loop or Master
+         */
+        cJSON *dmaPauseRx = cJSON_GetObjectItemCaseSensitive(
+                rxJSONObject, "dmaPauseReceiving");
+        if (dmaPauseRx && dmaPauseRx->type == cJSON_Number)
+        {
+            /* Send message to scroll string on LCD */
+            dma.cmd = dmaCmd_PauseReceiving;
+            dma.buffer = NULL;
+            dma.terminalHandle = uart_handle;
+
+            if (dmaPauseRx->valueint == 1)
+            {
+                /* Value 1 is the loopback */
+                rc = mq_send(mqDMALoopback, (char *) &dma, sizeof(dma), 0);
+                if (rc == -1)
+                {
+                    // Failed to send to message queue
+                }
+                rc = sem_post(&semDMALoopback);
+                if (rc == -1)
+                {
+                    while (1)
+                        ;
+                }
+
+            }
+            else
+            {
+                /*Value 0 is the master */
+                rc = mq_send(mqDMAMaster, (char *) &dma, sizeof(dma), 0);
+                if (rc == -1)
+                {
+                    // Failed to send to message queue
+                }
+                rc = sem_post(&semDMAMaster);
+                if (rc == -1)
+                {
+                    while (1)
+                        ;
+                }
+            }
+            ok = 1;
+        }
+
+        /* Resume the RX handling
+         */
+        cJSON *dmaResumeRx = cJSON_GetObjectItemCaseSensitive(
+                rxJSONObject, "dmaResumeReceiving");
+        if (dmaResumeRx && dmaResumeRx->type == cJSON_Number)
+        {
+            /* Send message to scroll string on LCD */
+            dma.cmd = dmaCmd_ResumeReceiving;
+            dma.buffer = NULL;
+            dma.terminalHandle = uart_handle;
+
+            if (dmaResumeRx->valueint == 1)
+            {
+                /* Value 1 is the loopback */
+                rc = mq_send(mqDMALoopback, (char *) &dma, sizeof(dma), 0);
+                if (rc == -1)
+                {
+                    // Failed to send to message queue
+                }
+                rc = sem_post(&semDMALoopback);
+                if (rc == -1)
+                {
+                    while (1)
+                        ;
+                }
+
+            }
+            else
+            {
+                /*Value 0 is the master */
+                rc = mq_send(mqDMAMaster, (char *) &dma, sizeof(dma), 0);
+                if (rc == -1)
+                {
+                    // Failed to send to message queue
+                }
+                rc = sem_post(&semDMAMaster);
+                if (rc == -1)
+                {
+                    while (1)
+                        ;
+                }
+            }
+            ok = 1;
+        }
+
+        /* Send a number of bytes down the pipe. This is always master and the number of
+         * bytes is specified by the valueInt
+         */
+        cJSON *dmaSendStream = cJSON_GetObjectItemCaseSensitive(
+                rxJSONObject, "dmaSendStream");
+        if (dmaSendStream && dmaSendStream->type == cJSON_Number)
+        {
+            static int length;
+            length = dmaSendStream->valueint;
+            skip = 1;
+
+            /* Send message to scroll string on LCD */
+            dma.cmd = dmaCmd_SendStream;
+            dma.buffer = (void *)&length;
+            dma.terminalHandle = uart_handle;
+
+            /*Value 0 is the master */
+            rc = mq_send(mqDMAMaster, (char *) &dma, sizeof(dma), 0);
+            if (rc == -1)
+            {
+                // Failed to send to message queue
+            }
+            rc = sem_post(&semDMAMaster);
+            if (rc == -1)
+            {
+                while (1)
+                    ;
+            }
+            ok = 1;
         }
 
         cJSON *lcdScrollString = cJSON_GetObjectItemCaseSensitive(rxJSONObject, "lcdScrollString");
         if (lcdScrollString)
         {
+            strcpy(bytes, lcdScrollString->valuestring);
             /* Send message to scroll string on LCD */
             msg.cmd = LcdCmd_SCROLL_STRING;
-            msg.buffer = (void *)(lcdScrollString->valuestring);
+            msg.buffer = (void *)(bytes);
             rc = mq_send(mqLCD, (char *)&msg, sizeof(msg), 0);
             if (rc == -1) {
                 // Failed to send to message queue
@@ -143,14 +318,16 @@ void *uartThread(void *arg0)
             if (rc == -1) {
                 while (1);
             }
+            ok = 1;
         }
 
         cJSON *lcdShowString = cJSON_GetObjectItemCaseSensitive(rxJSONObject, "lcdShowString");
         if (lcdShowString)
         {
+            strcpy(bytes, lcdShowString->valuestring);
             /* Send message to display static string on LCD */
             msg.cmd = LcdCmd_SHOW_STRING;
-            msg.buffer = (void *)(lcdShowString->valuestring);
+            msg.buffer = (void *)(bytes);
             rc = mq_send(mqLCD, (char *)&msg, sizeof(msg), 0);
             if (rc == -1) {
                 // Failed to send to message queue
@@ -159,12 +336,13 @@ void *uartThread(void *arg0)
             if (rc == -1) {
                 while (1);
             }
+            ok = 1;
         }
 
         cJSON *lcdUpdateMemory = cJSON_GetObjectItemCaseSensitive(rxJSONObject, "lcdUpdateMemory");
         if (cJSON_IsArray(lcdUpdateMemory) && cJSON_GetArraySize(lcdUpdateMemory) == 3)
         {
-            int buffer[3];
+            static int buffer[3];
             buffer[0] = cJSON_GetArrayItem(lcdUpdateMemory, 0)->valueint;
             buffer[1] = cJSON_GetArrayItem(lcdUpdateMemory, 1)->valueint;
             buffer[2] = cJSON_GetArrayItem(lcdUpdateMemory, 2)->valueint;
@@ -180,12 +358,13 @@ void *uartThread(void *arg0)
             if (rc == -1) {
                 while (1);
             }
+            ok = 1;
         }
 
         cJSON *lcdUpdateAnimationMemory = cJSON_GetObjectItemCaseSensitive(rxJSONObject, "lcdUpdateAnimationMemory");
         if (cJSON_IsArray(lcdUpdateAnimationMemory) && cJSON_GetArraySize(lcdUpdateAnimationMemory) == 3)
         {
-            int buffer[3];
+            static int buffer[3];
             buffer[0] = cJSON_GetArrayItem(lcdUpdateAnimationMemory, 0)->valueint;
             buffer[1] = cJSON_GetArrayItem(lcdUpdateAnimationMemory, 1)->valueint;
             buffer[2] = cJSON_GetArrayItem(lcdUpdateAnimationMemory, 2)->valueint;
@@ -201,12 +380,13 @@ void *uartThread(void *arg0)
             if (rc == -1) {
                 while (1);
             }
+            ok = 1;
         }
 
         cJSON *lcdStartAnimation = cJSON_GetObjectItemCaseSensitive(rxJSONObject, "lcdStartAnimation");
         if (lcdStartAnimation)
         {
-            int startAnimation;
+            static int startAnimation;
             if (lcdStartAnimation->type == cJSON_True)
                 startAnimation = true;
             else
@@ -223,9 +403,26 @@ void *uartThread(void *arg0)
             if (rc == -1) {
                 while (1);
             }
+            ok = 1;
         }
 
         /* Delete JSON object to free up allocated memory */
         cJSON_Delete(rxJSONObject);
+
+        if (!skip) {
+            if (ok)
+            {
+                sprintf(response, "{\"Return\":\"success\"}\n");
+                UART_write(uart_handle, response, strlen(response));
+            } else {
+                sprintf(response, "{\"Return\":\"fail\",\n \"input\":\"%s\"}\n", rxString);
+                UART_write(uart_handle, response, strlen(response));
+            }
+
+            ok = 0;
+            memset(rxString, 0 , MAX_STR_LENGTH);
+        } else {
+            skip = 0;
+        }
     }
 }

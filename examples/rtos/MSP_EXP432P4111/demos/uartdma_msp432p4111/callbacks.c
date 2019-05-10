@@ -37,6 +37,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include <FreeRTOS.h>
+
 /* POSIX Header files */
 #include <semaphore.h>
 
@@ -80,18 +82,18 @@ Timer_Params timer_params;
  * This is the 4-Second Timeout.
  * This is also used to record interval times between presses of S1.
  */
-void intervalTimer_Callback(Timer_Handle myHandle)
+long intervalTimer_Callback(Timer_Handle myHandle, uintptr_t arg)
 {
     counting = false;               // Stop counting intervals.
     numIntervals = 0;               // Reset button S1 tap counts
-    Timer_stop(intervalTimer);      // Stops itself after 4 seconds of inactivity on S1.
+    return Timer_stop(intervalTimer);      // Stops itself after 4 seconds of inactivity on S1.
 }
 
 /*  ======== blinkTimer_Callback ========
  * blinkTimer Callback Function
  * This posts a semaphore to ledThread telling the LEDs to toggle ON/OFF.
  */
-void blinkTimer_Callback(Timer_Handle myHandle)
+long blinkTimer_Callback(Timer_Handle myHandle, uintptr_t arg)
 {
     int retc;
     LedMsg msg;
@@ -114,6 +116,8 @@ void blinkTimer_Callback(Timer_Handle myHandle)
             while (1);
         }
     }
+
+    return 0;
 }
 
 /*
@@ -121,7 +125,7 @@ void blinkTimer_Callback(Timer_Handle myHandle)
  * debounceTimer Callback Function
  * This checks the push button states and resets the button debounces when appropriate.
  */
-void debounceTimer_Callback(Timer_Handle myHandle)
+long debounceTimer_Callback(Timer_Handle myHandle, uintptr_t arg)
 {
     if(GPIO_read(Board_GPIO_BUTTON0))
     {
@@ -242,13 +246,15 @@ void debounceTimer_Callback(Timer_Handle myHandle)
             }
         }
     }
+
+    return 0;
 }
 
 /*
  *  ======== debounceGPIO ========
  *  Called by GPIO callback functions to begin Debounce procedure.
  */
-void debounceGPIO(uint_least8_t index)
+long debounceGPIO(uint_least8_t index)
 {
     GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
 
@@ -261,12 +267,14 @@ void debounceGPIO(uint_least8_t index)
     timer_params.periodUnits = TIMER_PERIOD_US;
     timer_params.timerMode = TIMER_CONTINUOUS_CB;
     timer_params.timerCallback = debounceTimer_Callback;
-    debounceTimer = Timer_open(Board_TIMER3, &timer_params);
+    debounceTimer = Timer_open(Board_TIMER1, &timer_params);
     if (debounceTimer == NULL) {
         /* Failed to initialized Timer */
         while(1);
     }
     Timer_start(debounceTimer);
+
+    return 0;
 }
 
 /*
@@ -275,7 +283,7 @@ void debounceGPIO(uint_least8_t index)
  *  When S1 is pressed, this function updates the blinkRate controlled by
  *  the period of the timer32.
  */
-void gpioButton0_Callback(uint_least8_t index)
+long gpioButton0_Callback(uint_least8_t index)
 {
     if(S1buttonDebounce == 0)
     {
@@ -330,6 +338,8 @@ void gpioButton0_Callback(uint_least8_t index)
         /* Debounce Function */
         debounceGPIO(Board_GPIO_BUTTON0);
     }
+
+    return 0;
 }
 
 /*
@@ -338,7 +348,7 @@ void gpioButton0_Callback(uint_least8_t index)
  *  When S2 is pressed, change current color selection
  *  Post to semaphore that PWM should be updated.
  */
-void gpioButton1_Callback(uint_least8_t index)
+long gpioButton1_Callback(uint_least8_t index)
 {
     if(S2buttonDebounce == 0)
     {
@@ -370,4 +380,6 @@ void gpioButton1_Callback(uint_least8_t index)
         /* Debounce Function */
         debounceGPIO(Board_GPIO_BUTTON1);
     }
+
+    return 0;
 }

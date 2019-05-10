@@ -45,6 +45,8 @@
 #include <math.h>
 #include <ti/devices/msp432p4xx/inc/msp.h>
 
+#include <FreeRTOS.h>
+
 /* POSIX Header files */
 #include <pthread.h>
 #include <mqueue.h>
@@ -138,7 +140,7 @@ void *ledThread(void *arg0)
     timer_params.periodUnits = TIMER_PERIOD_US;
     timer_params.timerMode = TIMER_CONTINUOUS_CB;
     timer_params.timerCallback = blinkTimer_Callback;
-    blinkTimer = Timer_open(Board_TIMER1, &timer_params);
+    blinkTimer = Timer_open(Board_TIMER2, &timer_params);
     if (blinkTimer == NULL) {
        /* Failed to initialized Timer */
        while(1);
@@ -151,7 +153,7 @@ void *ledThread(void *arg0)
     timer_params.periodUnits = TIMER_PERIOD_US;
     timer_params.timerMode = TIMER_CONTINUOUS_CB;
     timer_params.timerCallback = debounceTimer_Callback;
-    debounceTimer = Timer_open(Board_TIMER3, &timer_params);
+    debounceTimer = Timer_open(Board_TIMER1, &timer_params);
     if (debounceTimer == NULL) {
        /* Failed to initialized Timer */
        while(1);
@@ -267,7 +269,7 @@ static void changeLedTogglePeriod(int colorMode, Timer_Params *timer_params, cha
         timer_params->periodUnits = TIMER_PERIOD_US;
         timer_params->timerMode = TIMER_CONTINUOUS_CB;
         timer_params->timerCallback = blinkTimer_Callback;
-        blinkTimer = Timer_open(Board_TIMER1, timer_params);
+        blinkTimer = Timer_open(Board_TIMER2, timer_params);
         if (blinkTimer == NULL) {
             /* Failed to initialized Timer */
             while(1);

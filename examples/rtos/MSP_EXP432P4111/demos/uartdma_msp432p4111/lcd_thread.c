@@ -44,6 +44,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <FreeRTOS.h>
+
 /* POSIX Header files */
 #include <pthread.h>
 #include <mqueue.h>

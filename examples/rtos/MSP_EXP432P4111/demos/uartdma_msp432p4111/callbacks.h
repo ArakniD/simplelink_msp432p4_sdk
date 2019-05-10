@@ -46,12 +46,12 @@
 extern "C" {
 #endif
 
-extern void debounceGPIO(uint_least8_t index);
-extern void gpioButton0_Callback(uint_least8_t index);
-extern void gpioButton1_Callback(uint_least8_t index);
-extern void intervalTimer_Callback(Timer_Handle myHandle);
-extern void blinkTimer_Callback(Timer_Handle myHandle);
-extern void debounceTimer_Callback(Timer_Handle myHandle);
+extern long debounceGPIO(uint_least8_t index);
+extern long gpioButton0_Callback(uint_least8_t index);
+extern long gpioButton1_Callback(uint_least8_t index);
+extern long intervalTimer_Callback(Timer_Handle myHandle, uintptr_t arg);
+extern long blinkTimer_Callback(Timer_Handle myHandle, uintptr_t arg);
+extern long debounceTimer_Callback(Timer_Handle myHandle, uintptr_t arg);
 extern Timer_Handle intervalTimer, blinkTimer, debounceTimer, lcdScrollTimer;
 extern uint16_t S1buttonDebounce, S2buttonDebounce;
 extern bool counting;

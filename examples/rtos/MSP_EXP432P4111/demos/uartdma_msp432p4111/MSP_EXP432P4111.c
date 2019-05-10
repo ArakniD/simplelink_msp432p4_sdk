@@ -66,6 +66,33 @@
 #include <ti/devices/msp432p4xx/driverlib/wdt_a.h>
 
 #include "MSP_EXP432P4111.h"
+#include <FreeRTOSConfig.h>
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!! CAUTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Assign a priority to EVERY ISR explicitly by calling NVIC_SetPriority().
+// DO NOT LEAVE THE ISR PRIORITIES AT THE DEFAULT VALUE!
+//
+enum KernelUnawareISRs { /* see NOTE0 */
+    RT_PRIO,                      /* Only interrupts which do not touch any thread aware sections of code */
+    /* ... */
+    MAX_KERNEL_UNAWARE_CMSIS_PRI  /* keep always last */
+};
+
+enum KernelAwareISRs
+{
+    SYSTICK_PRIO = configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY,
+    UART_PRIO,
+    DMA_PRIO,
+    DMAUART_PRIO,
+    CAPTURE_PRIO,
+    ADC_PRIO,
+    DISPLAY_PRIO = ADC_PRIO,
+    LOWEST_PRIO, // This should equal configLIBRARY_LOWEST_INTERRUPT_PRIORITY otherwise we have an issue here
+    /* ... */
+    MAX_KERNEL_AWARE_CMSIS_PRI // keep always last
+};
+
+#define NVIC_PRIO(priority) ( (uint8_t)((priority << (8U - __NVIC_PRIO_BITS)) & (uint32_t)0xFFUL) )
 
 /*
  *  =============================== ADC ===============================
@@ -136,7 +163,7 @@ ADCBufMSP432_Channels adcBuf0MSP432Channels[MSP_EXP432P4111_ADCBUF0CHANNELCOUNT]
 /* ADC configuration structure */
 const ADCBufMSP432_HWAttrs adcbufMSP432HWAttrs[MSP_EXP432P4111_ADCBUFCOUNT] = {
     {
-        .intPriority =  ~0,
+        .intPriority =  NVIC_PRIO(ADC_PRIO),
         .channelSetting = adcBuf0MSP432Channels,
         .adcTimerTriggerSource = ADCBufMSP432_TIMERA1_CAPTURECOMPARE2,
         .useDMA = 1,
@@ -171,24 +198,24 @@ const CaptureMSP432_HWAttrs captureMSP432HWAttrs[MSP_EXP432P4111_CAPTURECOUNT] =
         .timerBaseAddress = TIMER_A1_BASE,
         .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
         .clockDivider = TIMER_A_CLOCKSOURCE_DIVIDER_64,
-        .capturePort = CaptureMSP432_P7_7_TA1,
-        .intPriority = ~0
+        .capturePort = CaptureMSP432_P7_7_TA1_1,
+        .intPriority = NVIC_PRIO(CAPTURE_PRIO)
     },
     /* Timer_A2 */
     {
         .timerBaseAddress = TIMER_A2_BASE,
         .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
         .clockDivider = TIMER_A_CLOCKSOURCE_DIVIDER_64,
-        .capturePort = CaptureMSP432_P6_7_TA2,
-        .intPriority = ~0
+        .capturePort = CaptureMSP432_P6_7_TA2_4,
+        .intPriority = NVIC_PRIO(CAPTURE_PRIO)
     },
     /* Timer_A3 */
     {
         .timerBaseAddress = TIMER_A3_BASE,
         .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
         .clockDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1,
-        .capturePort = CaptureMSP432_P8_2_TA3,
-        .intPriority = ~0
+        .capturePort = CaptureMSP432_P8_2_TA3_2,
+        .intPriority = NVIC_PRIO(CAPTURE_PRIO)
     }
 };
 
@@ -247,7 +274,7 @@ const UDMAMSP432_HWAttrs udmaMSP432HWAttrs = {
     .controlBaseAddr = (void *)dmaControlTable,
     .dmaErrorFxn = (UDMAMSP432_ErrorFxn)dmaErrorHwi,
     .intNum = INT_DMA_ERR,
-    .intPriority = (~0)
+    .intPriority = NVIC_PRIO(DMA_PRIO)
 };
 
 const UDMAMSP432_Config UDMAMSP432_config = {
@@ -300,10 +327,10 @@ const DisplaySharp_HWAttrsV1 displaySharpHWattrs = {
 #define BOARD_DISPLAY_USE_UART 1
 #endif
 #ifndef BOARD_DISPLAY_USE_UART_ANSI
-#define BOARD_DISPLAY_USE_UART_ANSI 0
+#define BOARD_DISPLAY_USE_UART_ANSI 1
 #endif
 #ifndef BOARD_DISPLAY_USE_LCD
-#define BOARD_DISPLAY_USE_LCD 0
+#define BOARD_DISPLAY_USE_LCD 1
 #endif
 
 const Display_Config Display_config[] = {
@@ -333,6 +360,7 @@ const uint_least8_t Display_count = sizeof(Display_config) / sizeof(Display_Conf
 void MSP_EXP432P4111_initGeneral(void)
 {
     Power_init();
+
 }
 
 /*
@@ -366,6 +394,11 @@ GPIO_PinConfig gpioPinConfigs[] = {
     /* MSP_EXP432P4111_SPI_SLAVE_READY */
     GPIOMSP432_P6_0 | GPIO_DO_NOT_CONFIG,
 
+    /* DMA0 CTS */
+    GPIOMSP432_P4_2 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING, // Wire to P4_6 as RTS of DMA1
+    /* DMA1 CTS */
+    GPIOMSP432_P4_7 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING, // Wired to P4_1 as RTS of DMA0
+
     /* Output pins */
     /* MSP_EXP432P4111_GPIO_LED1 */
     GPIOMSP432_P1_0 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_LOW | GPIO_CFG_OUT_LOW,
@@ -386,8 +419,8 @@ GPIO_PinConfig gpioPinConfigs[] = {
     /* MSP_EXP432P4111_SPI_CS2 */
     GPIOMSP432_P5_5 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_LOW | GPIO_CFG_OUT_HIGH,
 
-    /* MSP_EXP432P4111_SDSPI_CS */
-    GPIOMSP432_P4_6 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_LOW | GPIO_CFG_OUT_HIGH,
+    /* MSP_EXP432P4111_SDSPI_CS - This pin is used by the DMA uart channel*/
+    GPIOMSP432_P4_6 | GPIO_DO_NOT_CONFIG,
 
     /* Sharp Display - GPIO configurations will be done in the Display files */
     GPIOMSP432_P4_3 | GPIO_DO_NOT_CONFIG, /* SPI chip select */
@@ -410,7 +443,11 @@ GPIO_CallbackFxn gpioCallbackFunctions[] = {
     /* MSP_EXP432P4111_SPI_MASTER_READY */
     NULL,
     /* MSP_EXP432P4111_SPI_SLAVE_READY */
-    NULL
+    NULL,
+    /* MSP_EXP432P4111_DMA_UART0_CTS */
+    NULL,
+    /* MSP_EXP432P4111_DMA_UART1_CTS */
+    NULL,
 };
 
 const GPIOMSP432_Config GPIOMSP432_config = {
@@ -418,9 +455,10 @@ const GPIOMSP432_Config GPIOMSP432_config = {
     .callbacks = (GPIO_CallbackFxn *)gpioCallbackFunctions,
     .numberOfPinConfigs = sizeof(gpioPinConfigs)/sizeof(GPIO_PinConfig),
     .numberOfCallbacks = sizeof(gpioCallbackFunctions)/sizeof(GPIO_CallbackFxn),
-    .intPriority = (~0)
+    .intPriority = NVIC_PRIO(LOWEST_PRIO)
 };
 
+#if 0
 /*
  *  =============================== I2C ===============================
  */
@@ -433,7 +471,7 @@ const I2CMSP432_HWAttrsV1 i2cMSP432HWAttrs[MSP_EXP432P4111_I2CCOUNT] = {
     {
         .baseAddr = EUSCI_B0_BASE,
         .intNum = INT_EUSCIB0,
-        .intPriority = (~0),
+        .intPriority = NVIC_PRIO(LOWEST_PRIO),
         .clockSource = EUSCI_B_I2C_CLOCKSOURCE_SMCLK,
         .dataPin = I2CMSP432_P1_6_UCB0SDA,
         .clkPin = I2CMSP432_P1_7_UCB0SCL
@@ -441,7 +479,7 @@ const I2CMSP432_HWAttrsV1 i2cMSP432HWAttrs[MSP_EXP432P4111_I2CCOUNT] = {
     {
         .baseAddr = EUSCI_B1_BASE,
         .intNum = INT_EUSCIB1,
-        .intPriority = (~0),
+        .intPriority = NVIC_PRIO(LOWEST_PRIO),
         .clockSource = EUSCI_B_I2C_CLOCKSOURCE_SMCLK,
         .dataPin = I2CMSP432_P6_4_UCB1SDA,
         .clkPin = I2CMSP432_P6_5_UCB1SCL
@@ -462,7 +500,9 @@ const I2C_Config I2C_config[MSP_EXP432P4111_I2CCOUNT] = {
 };
 
 const uint_least8_t I2C_count = MSP_EXP432P4111_I2CCOUNT;
+#endif
 
+#if 0
 /*
  *  =============================== I2CSlave ===============================
  */
@@ -475,7 +515,7 @@ const I2CSlaveMSP432_HWAttrs i2cSlaveMSP432HWAttrs[MSP_EXP432P4111_I2CSLAVECOUNT
     {
         .baseAddr = EUSCI_B0_BASE,
         .intNum = INT_EUSCIB0,
-        .intPriority = ~0,
+        .intPriority = NVIC_PRIO(UART_PRIO),
         .slaveAddress = 0x48,
         .dataPin = I2CSLAVEMSP432_P1_6_UCB0SDA,
         .clkPin = I2CSLAVEMSP432_P1_7_UCB0SCL
@@ -491,7 +531,7 @@ const I2CSlave_Config I2CSlave_config[MSP_EXP432P4111_I2CSLAVECOUNT] = {
 };
 
 const uint_least8_t I2CSlave_count = MSP_EXP432P4111_I2CSLAVECOUNT;
-
+#endif
 /*
  *  =============================== NVS ===============================
  */
@@ -559,16 +599,70 @@ const NVS_Config NVS_config[MSP_EXP432P4111_NVSCOUNT] = {
 
 const uint_least8_t NVS_count = MSP_EXP432P4111_NVSCOUNT;
 
+typedef enum PowerMSP432_PowerLevel_Custom {
+    ePowerStateCustomAraknid = ePowerStateSDKMax,
+    ePowerStateCustomAraknidOCT,
+    ePowerStateCustomMax
+} PowerMSP432_PowerLevel_Custom;
+
+static PowerMSP432_PerfLevel PowerMSP432_BoardLevels[] =
+{
+   /* ePowerStateCustomAraknid */
+   { .activeState = PCM_AM_DCDC_VCORE0,
+     .VCORE = 0,
+     .DCOCLK = CS_24MHZ | PowerMSP432_DCORESFORCE,
+     .SELM = CS_DCOCLK_SELECT,
+     .DIVM = CS_CLOCK_DIVIDER_1,
+     .SELS = CS_DCOCLK_SELECT,
+     .DIVHS = CS_CLOCK_DIVIDER_2,
+     .DIVS = CS_CLOCK_DIVIDER_4,
+     .SELB = CS_REFOCLK_SELECT,
+     .SELA = CS_REFOCLK_SELECT,
+     .DIVA = CS_CLOCK_DIVIDER_1,
+     .flashWaitStates = 2,
+     .enableFlashBuffer = true,
+     .MCLK   = 24000000,
+     .HSMCLK = 24000000,
+     .SMCLK  = 6000000,
+     .SWOCLK = 3000000,
+     .BCLK = 32768,
+     .ACLK = 32768
+   },
+   /* ePowerStateCustomAraknidOCT */
+   { .activeState = PCM_AM_DCDC_VCORE1,
+     .VCORE = 1,
+     .DCOCLK = CS_32MHZ | PowerMSP432_DCORESFORCE,
+     .SELM = CS_DCOCLK_SELECT,
+     .DIVM = CS_CLOCK_DIVIDER_1,
+     .SELS = CS_DCOCLK_SELECT,
+     .DIVHS = CS_CLOCK_DIVIDER_2,
+     .DIVS = CS_CLOCK_DIVIDER_4,
+     .SELB = CS_REFOCLK_SELECT,
+     .SELA = CS_REFOCLK_SELECT,
+     .DIVA = CS_CLOCK_DIVIDER_1,
+     .flashWaitStates = 3,
+     .enableFlashBuffer = true,
+     .MCLK   = 32000000,
+     .HSMCLK = 32000000,
+     .SMCLK  = 8000000,
+     .SWOCLK = 4000000,
+     .BCLK = 32768,
+     .ACLK = 32768
+   }
+} ;
+
 /*
  *  =============================== Power ===============================
  */
 const PowerMSP432_ConfigV1 PowerMSP432_config = {
-    .policyInitFxn = &PowerMSP432_initPolicy,
-    .policyFxn = &PowerMSP432_sleepPolicy,
-    .initialPerfLevel = 2,
-    .enablePolicy = true,
-    .enablePerf = true,
-    .enableParking = true
+   .policyInitFxn = &PowerMSP432_initPolicy,
+   .policyFxn = &PowerMSP432_sleepPolicy,
+   .initialPerfLevel = ePowerStateP4x1xI_Limit,
+   .enablePolicy = true,
+   .enablePerf = true,
+   .enableParking = true,
+   .numCustom = (ePowerStateCustomMax - ePowerStateSDKMax),
+   .customPerfLevels = PowerMSP432_BoardLevels
 };
 
 /*
@@ -614,6 +708,7 @@ const PWM_Config PWM_config[MSP_EXP432P4111_PWMCOUNT] = {
 
 const uint_least8_t PWM_count = MSP_EXP432P4111_PWMCOUNT;
 
+#if 0
 /*
  *  =============================== SDFatFS ===============================
  */
@@ -639,7 +734,8 @@ const SDFatFS_Config SDFatFS_config[MSP_EXP432P4111_SDFatFSCOUNT] = {
 };
 
 const uint_least8_t SDFatFS_count = MSP_EXP432P4111_SDFatFSCOUNT;
-
+#endif
+#if 0
 /*
  *  =============================== SD ===============================
  */
@@ -664,6 +760,7 @@ const SD_Config SD_config[MSP_EXP432P4111_SDCOUNT] = {
 };
 
 const uint_least8_t SD_count = MSP_EXP432P4111_SDCOUNT;
+#endif
 
 /*
  *  =============================== SPI ===============================
@@ -685,7 +782,7 @@ const SPIMSP432DMA_HWAttrsV1 spiMSP432DMAHWAttrs[MSP_EXP432P4111_SPICOUNT] = {
         .clockSource = EUSCI_B_SPI_CLOCKSOURCE_SMCLK,
         .defaultTxBufValue = 0xFF,
         .dmaIntNum = INT_DMA_INT1,
-        .intPriority = (~0),
+        .intPriority = NVIC_PRIO(DISPLAY_PRIO),
         .rxDMAChannelIndex = DMA_CH1_EUSCIB0RX0,
         .txDMAChannelIndex = DMA_CH0_EUSCIB0TX0,
         .clkPin  = SPIMSP432DMA_P1_5_UCB0CLK,
@@ -695,13 +792,14 @@ const SPIMSP432DMA_HWAttrsV1 spiMSP432DMAHWAttrs[MSP_EXP432P4111_SPICOUNT] = {
         .pinMode  = EUSCI_SPI_3PIN,
         .minDmaTransferSize = 10
     },
+#if 0
     {
         .baseAddr = EUSCI_B2_BASE,
         .bitOrder = EUSCI_B_SPI_MSB_FIRST,
         .clockSource = EUSCI_B_SPI_CLOCKSOURCE_SMCLK,
         .defaultTxBufValue = 0xFF,
         .dmaIntNum = INT_DMA_INT2,
-        .intPriority = (~0),
+        .intPriority = NVIC_PRIO(LOWEST_PRIO),
         .rxDMAChannelIndex = DMA_CH5_EUSCIB2RX0,
         .txDMAChannelIndex = DMA_CH4_EUSCIB2TX0,
         .clkPin  = SPIMSP432DMA_P3_5_UCB2CLK,
@@ -717,7 +815,7 @@ const SPIMSP432DMA_HWAttrsV1 spiMSP432DMAHWAttrs[MSP_EXP432P4111_SPICOUNT] = {
         .clockSource = EUSCI_A_SPI_CLOCKSOURCE_SMCLK,
         .defaultTxBufValue = 0xFF,
         .dmaIntNum = INT_DMA_INT2,
-        .intPriority = (~0),
+        .intPriority = NVIC_PRIO(LOWEST_PRIO),
         .rxDMAChannelIndex = DMA_CH3_EUSCIA1RX,
         .txDMAChannelIndex = DMA_CH2_EUSCIA1TX,
         .clkPin  = SPIMSP432DMA_P2_5_UCA1CLK,
@@ -733,7 +831,7 @@ const SPIMSP432DMA_HWAttrsV1 spiMSP432DMAHWAttrs[MSP_EXP432P4111_SPICOUNT] = {
         .clockSource = EUSCI_B_SPI_CLOCKSOURCE_SMCLK,
         .defaultTxBufValue = 0xFF,
         .dmaIntNum = INT_DMA_INT3,
-        .intPriority = (~0),
+        .intPriority = NVIC_PRIO(LOWEST_PRIO),
         .rxDMAChannelIndex = DMA_CH5_EUSCIB2RX0,
         .txDMAChannelIndex = DMA_CH4_EUSCIB2TX0,
         .clkPin  = SPIMSP432DMA_P3_5_UCB2CLK,
@@ -743,6 +841,7 @@ const SPIMSP432DMA_HWAttrsV1 spiMSP432DMAHWAttrs[MSP_EXP432P4111_SPICOUNT] = {
         .pinMode  = EUSCI_SPI_4PIN_UCxSTE_ACTIVE_LOW,
         .minDmaTransferSize = 10
     }
+#endif
 };
 
 const SPI_Config SPI_config[MSP_EXP432P4111_SPICOUNT] = {
@@ -751,6 +850,7 @@ const SPI_Config SPI_config[MSP_EXP432P4111_SPICOUNT] = {
         .object = &spiMSP432DMAObjects[MSP_EXP432P4111_SPIB0],
         .hwAttrs = &spiMSP432DMAHWAttrs[MSP_EXP432P4111_SPIB0]
     },
+#if 0
     {
         .fxnTablePtr = &SPIMSP432DMA_fxnTable,
         .object = &spiMSP432DMAObjects[MSP_EXP432P4111_SPIB2],
@@ -766,6 +866,7 @@ const SPI_Config SPI_config[MSP_EXP432P4111_SPICOUNT] = {
         .object = &spiMSP432DMAObjects[MSP_EXP432P4111_SPIB4],
         .hwAttrs = &spiMSP432DMAHWAttrs[MSP_EXP432P4111_SPIB4]
     }
+#endif
 };
 
 const uint_least8_t SPI_count = MSP_EXP432P4111_SPICOUNT;
@@ -784,34 +885,34 @@ const TimerMSP432_HWAttrs timerMSP432HWAttrs[MSP_EXP432P4111_TIMERCOUNT] = {
         .timerBaseAddress = TIMER32_0_BASE,
         .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,
         .intNum = INT_T32_INT1,
-        .intPriority = ~0
+        .intPriority = NVIC_PRIO(CAPTURE_PRIO)
     },
     {
         .timerBaseAddress = TIMER32_1_BASE,
         .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,
         .intNum = INT_T32_INT2,
-        .intPriority = ~0
+        .intPriority = NVIC_PRIO(CAPTURE_PRIO)
     },
-    /* Timer_A1 */
-//    {
-//        .timerBaseAddress = TIMER_A1_BASE,
-//        .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
-//        .intNum = INT_TA1_0,
-//        .intPriority = ~0
-//    },
+    /* Timer_A0 */
+    {
+        .timerBaseAddress = TIMER_A0_BASE,
+        .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
+        .intNum = INT_TA0_0,
+        .intPriority = NVIC_PRIO(CAPTURE_PRIO)
+    },
     /* Timer_A2 */
     {
         .timerBaseAddress = TIMER_A2_BASE,
         .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
         .intNum = INT_TA2_0,
-        .intPriority = ~0
+        .intPriority = NVIC_PRIO(CAPTURE_PRIO)
     },
     /* Timer_A3 */
     {
         .timerBaseAddress = TIMER_A3_BASE,
         .clockSource = TIMER_A_CLOCKSOURCE_ACLK,
         .intNum = INT_TA3_0,
-        .intPriority = ~0
+        .intPriority = NVIC_PRIO(CAPTURE_PRIO)
     }
 };
 
@@ -826,11 +927,11 @@ const Timer_Config Timer_config[MSP_EXP432P4111_TIMERCOUNT] = {
         .object = &timerMSP432Objects[MSP_EXP432P4111_TIMER_T32_1],
         .hwAttrs = &timerMSP432HWAttrs[MSP_EXP432P4111_TIMER_T32_1]
     },
-//    {
-//        .fxnTablePtr = &TimerMSP432_Timer_A_fxnTable,
-//        .object = &timerMSP432Objects[MSP_EXP432P4111_TIMER_TA_1],
-//        .hwAttrs = &timerMSP432HWAttrs[MSP_EXP432P4111_TIMER_TA_1]
-//    },
+    {
+        .fxnTablePtr = &TimerMSP432_Timer_A_fxnTable,
+        .object = &timerMSP432Objects[MSP_EXP432P4111_TIMER_TA_0],
+        .hwAttrs = &timerMSP432HWAttrs[MSP_EXP432P4111_TIMER_TA_0]
+    },
     {
         .fxnTablePtr = &TimerMSP432_Timer_A_fxnTable,
         .object = &timerMSP432Objects[MSP_EXP432P4111_TIMER_TA_2],
@@ -850,9 +951,14 @@ const uint_least8_t Timer_count = MSP_EXP432P4111_TIMERCOUNT;
  */
 #include <ti/drivers/UART.h>
 #include <ti/drivers/uart/UARTMSP432.h>
+#include <ti/drivers/uart/UARTMSP432DMA.h>
 
-UARTMSP432_Object uartMSP432Objects[MSP_EXP432P4111_UARTCOUNT];
-unsigned char uartMSP432RingBuffer[MSP_EXP432P4111_UARTCOUNT][32];
+static UARTMSP432DMA_Object uartMSP432DMAObjects[2];
+static unsigned char uartMSP432DMARingBuffer[2][1024];
+static unsigned char uartMSP432DMAWriteBuffer[2][1024];
+
+static UARTMSP432_Object uartMSP432Objects[2];
+static unsigned char uartMSP432RingBuffer[2][32];
 
 /*
  * The baudrate dividers were determined by using the MSP432 baudrate
@@ -869,26 +975,149 @@ const UARTMSP432_BaudrateConfig uartMSP432Baudrates[] = {
         .hwRegUCBRSx = 111,
         .oversampling = 1
     },
-    {115200, 24000000, 13,  0,  37, 1},
-    {115200, 12000000,  6,  8,  32, 1},
-    {115200, 6000000,   3,  4,   2, 1},
-    {115200, 3000000,   1, 10,   0, 1},
-    {9600,   24000000, 156,  4,   0, 1},
-    {9600,   12000000, 78,  2,   0, 1},
+    {115200,24000000, 13,   0,  37, 1},
+    {115200,12000000,  6,   8,  32, 1},
+    {115200, 8000000,  4,   5,  81, 1},
+    {115200, 6000000,  3,   4,   2, 1},
+    {115200, 3000000,  1,  10,   0, 1},
+    {9600,  24000000, 156,  4,   0, 1},
+    {9600,  12000000,  78,  2,   0, 1},
+    {9600,   8000000,  52,  1,  73, 1},
     {9600,   6000000,  39,  1,   0, 1},
     {9600,   3000000,  19,  8,  85, 1},
     {9600,   32768,     3,  0, 146, 0}
 };
 
-const UARTMSP432_HWAttrsV1 uartMSP432HWAttrs[MSP_EXP432P4111_UARTCOUNT] = {
+/*
+ * The baudrate dividers were determined by using the MSP432 baudrate
+ * calculator
+ * http://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSP430BaudRateConverter/index.html
+ */
+const UARTMSP432DMA_BaudrateConfig uartMSP432DMABaudrates[] =
+{
+    /* {baudrate, input clock, prescalar, UCBRFx, UCBRSx, oversampling} */
+    /* Baud rates above 1MBit require DMA or else */
+    {6000000, 24e6,  4,  0,   0, 0},
+    {4800000, 24e6,  5,  0,   0, 0},
+    {4000000, 24e6,  6,  0,   0, 0},
+    {3000000, 48e6, 16,  0,   0, 0},
+    {3000000, 24e6,  8,  0,   0, 0},
+    {3000000, 12e6,  4,  0,   0, 0},
+    {2666667, 24e6,  9,  0,   0, 0},
+    {2400000, 24e6, 10,  0,   0, 0},
+    {2181818, 24e6, 11,  0,   0, 0},
+    {2000000, 48e6, 24,  0,   0, 0},
+    {2000000, 24e6, 12,  0,   0, 0},
+    {2000000, 12e6,  6,  0,   0, 0},
+    {2000000, 8e6,   4,  0,   0, 0},
+    {1600000, 8e6,   5,  0,   0, 0},
+    {1500000, 48e6, 32,  0,   0, 0},
+    {1500000, 24e6, 16,  0,   0, 0},
+    {1500000, 12e6,  8,  0,   0, 0},
+    {1500000,  8e6,  5,  0,  73, 0},
+    {1500000,  6e6,  4,  0,   0, 0},
+    {1333333,  8e6,  6,  0,   0, 0},
+    {1200000, 48e6, 40,  0,   0, 0},
+    {1200000, 24e6, 20,  0,   0, 0},
+    {1200000, 12e6, 10,  0,   0, 0},
+    {1200000,  8e6,  6,  0, 119, 0},
+    {1000000, 48e6, 48,  0,   0, 0},
+    {1000000, 24e6, 24,  0,   0, 0},
+    {1000000, 12e6, 12,  0,   0, 0},
+    {1000000,  8e6,  8,  0,   0, 0},
+    {1000000,  6e6,  6,  0,   0, 0},
+    { 888889,  8e6,  9,  0,   0, 0},
+    { 800000,  8e6, 10,  0,   0, 0},
+    { 750000, 48e6, 64,  0,   0, 0},
+    { 750000, 24e6, 32,  0,   0, 0},
+    { 750000, 12e6, 16,  0,   0, 0},
+    { 750000,  8e6, 10,  0, 182, 0},
+    { 750000,  6e6,  8,  0,   0, 0},
+    { 727273,  8e6, 11,  0,   0, 0},
+    { 666667,  8e6, 12,  0,   0, 0},
+    { 600000,  6e6, 10,  0,   0, 0},
+    { 533333,  8e6, 15,  0,   0, 0},
+    { 500000,  8e6, 16,  0,   0, 0},
+    { 444444,  8e6, 18,  0,   0, 0},
+    { 400000,  8e6, 20,  0,   0, 0},
+    { 115200, 48e6, 26,  0, 111, 1},
+    { 115200, 24e6, 13,  0,  37, 1},
+    { 115200, 12e6,  6,  8,  32, 1},
+    { 115200, 08e6,  4,  5,  81, 1},
+    { 115200, 06e6,  3,  4,   2, 1},
+    { 115200, 03e6,  1, 10,   0, 1},
+    {   9600, 24e6,156,  4,   0, 1},
+    {   9600, 12e6, 78,  2,   0, 1},
+    {   9600, 08e6, 52,  1,  73, 1},
+    {   9600, 06e6, 39,  1,   0, 1},
+    {   9600, 03e6, 19,  8,  85, 1},
+    {   9600,32768,  3,  0, 146, 0}
+};
+
+extern long dma_uart_error(UART_Handle handle,  uint32_t error);
+
+const UARTMSP432DMA_HWAttrsV1 uartMSP432DMAHWAttrs[2] = {
+    {
+        .baseAddr = EUSCI_A2_BASE,
+        .intNum = INT_EUSCIA2,
+        .clockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK,
+        .bitOrder = EUSCI_A_UART_LSB_FIRST,
+        .numBaudrateEntries = sizeof(uartMSP432DMABaudrates) /
+            sizeof(UARTMSP432DMA_BaudrateConfig),
+        .baudrateLUT = uartMSP432DMABaudrates,
+        .ringBufBlockSizeMin = 16,
+        .ringBufBlockCnt = 4,
+        .ringBufPtr  = uartMSP432DMARingBuffer[MSP_EXP432P4111_DMA0-2],
+        .writeBufPtr = uartMSP432DMAWriteBuffer[MSP_EXP432P4111_DMA0-2],
+        .ringBufSize = sizeof(uartMSP432DMARingBuffer[MSP_EXP432P4111_DMA0-2]),
+        .writeBufSize = sizeof(uartMSP432DMAWriteBuffer[MSP_EXP432P4111_DMA0-2]),
+        .rxPin = UARTMSP432DMA_P2_6_UCA2RXD,
+        .txPin = UARTMSP432DMA_P2_7_UCA2TXD,
+        .rtsPinBitBand = (volatile uint16_t *)BITBAND_PERI_ADR(P4->OUT, 1),
+        .errorFxn = dma_uart_error,
+        .timeoutTmrIdx = MSP_EXP432P4111_TIMER_T32_0,
+        .dmaIntNum = DMA_INT0,
+        .bfrDMAChannelIndex = DMA_CH6_RESERVED0,
+        .rxDMAChannelIndex = DMA_CH5_EUSCIA2RX,
+        .txDMAChannelIndex = DMA_CH4_EUSCIA2TX,
+        .intPriority = NVIC_PRIO(DMAUART_PRIO),
+    },
+    {
+       .baseAddr = EUSCI_A1_BASE,
+       .intNum = INT_EUSCIA1,
+       .clockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK,
+       .bitOrder = EUSCI_A_UART_LSB_FIRST,
+       .numBaudrateEntries = sizeof(uartMSP432DMABaudrates) /
+           sizeof(UARTMSP432DMA_BaudrateConfig),
+       .baudrateLUT = uartMSP432DMABaudrates,
+       .ringBufBlockSizeMin = 16,
+       .ringBufBlockCnt = 4,
+       .ringBufPtr  = uartMSP432DMARingBuffer[MSP_EXP432P4111_DMA1-2],
+       .writeBufPtr = uartMSP432DMAWriteBuffer[MSP_EXP432P4111_DMA1-2],
+       .ringBufSize = sizeof(uartMSP432DMARingBuffer[MSP_EXP432P4111_DMA1-2]),
+       .writeBufSize = sizeof(uartMSP432DMAWriteBuffer[MSP_EXP432P4111_DMA1-2]),
+       .rxPin = UARTMSP432DMA_P2_5_UCA1RXD,
+       .txPin = UARTMSP432DMA_P2_4_UCA1TXD,
+       .rtsPinBitBand = (volatile uint16_t *)BITBAND_PERI_ADR(P4->OUT, 2),
+       .errorFxn = dma_uart_error,
+       .timeoutTmrIdx = MSP_EXP432P4111_TIMER_T32_1,
+       .dmaIntNum = DMA_INT0,
+       .bfrDMAChannelIndex = DMA_CH7_RESERVED0,
+       .rxDMAChannelIndex = DMA_CH3_EUSCIA1RX,
+       .txDMAChannelIndex = DMA_CH2_EUSCIA1TX,
+       .intPriority = NVIC_PRIO(DMAUART_PRIO),
+   }
+};
+
+const UARTMSP432_HWAttrsV1 uartMSP432HWAttrs[2] = {
     {
         .baseAddr = EUSCI_A0_BASE,
         .intNum = INT_EUSCIA0,
-        .intPriority = (~0),
+        .intPriority = NVIC_PRIO(UART_PRIO),
         .clockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK,
         .bitOrder = EUSCI_A_UART_LSB_FIRST,
         .numBaudrateEntries = sizeof(uartMSP432Baudrates) /
-            sizeof(UARTMSP432_BaudrateConfig),
+          sizeof(UARTMSP432_BaudrateConfig),
         .baudrateLUT = uartMSP432Baudrates,
         .ringBufPtr  = uartMSP432RingBuffer[MSP_EXP432P4111_UARTA0],
         .ringBufSize = sizeof(uartMSP432RingBuffer[MSP_EXP432P4111_UARTA0]),
@@ -897,9 +1126,9 @@ const UARTMSP432_HWAttrsV1 uartMSP432HWAttrs[MSP_EXP432P4111_UARTCOUNT] = {
         .errorFxn = NULL
     },
     {
-        .baseAddr = EUSCI_A2_BASE,
-        .intNum = INT_EUSCIA2,
-        .intPriority = (~0),
+        .baseAddr = EUSCI_A3_BASE,
+        .intNum = INT_EUSCIA3,
+        .intPriority = NVIC_PRIO(UART_PRIO),
         .clockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK,
         .bitOrder = EUSCI_A_UART_LSB_FIRST,
         .numBaudrateEntries = sizeof(uartMSP432Baudrates) /
@@ -907,22 +1136,32 @@ const UARTMSP432_HWAttrsV1 uartMSP432HWAttrs[MSP_EXP432P4111_UARTCOUNT] = {
         .baudrateLUT = uartMSP432Baudrates,
         .ringBufPtr  = uartMSP432RingBuffer[MSP_EXP432P4111_UARTA2],
         .ringBufSize = sizeof(uartMSP432RingBuffer[MSP_EXP432P4111_UARTA2]),
-        .rxPin = UARTMSP432_P3_2_UCA2RXD,
-        .txPin = UARTMSP432_P3_3_UCA2TXD,
+        .rxPin = UARTMSP432_P9_6_UCA3RXD,
+        .txPin = UARTMSP432_P9_7_UCA3TXD,
         .errorFxn = NULL
     }
 };
 
 const UART_Config UART_config[MSP_EXP432P4111_UARTCOUNT] = {
     {
-        .fxnTablePtr = &UARTMSP432_fxnTable,
-        .object = &uartMSP432Objects[MSP_EXP432P4111_UARTA0],
-        .hwAttrs = &uartMSP432HWAttrs[MSP_EXP432P4111_UARTA0]
+       .fxnTablePtr = &UARTMSP432_fxnTable,
+       .object = &uartMSP432Objects[MSP_EXP432P4111_UARTA0],
+       .hwAttrs = &uartMSP432HWAttrs[MSP_EXP432P4111_UARTA0]
     },
     {
-        .fxnTablePtr = &UARTMSP432_fxnTable,
-        .object = &uartMSP432Objects[MSP_EXP432P4111_UARTA2],
-        .hwAttrs = &uartMSP432HWAttrs[MSP_EXP432P4111_UARTA2]
+       .fxnTablePtr = &UARTMSP432_fxnTable,
+       .object = &uartMSP432Objects[MSP_EXP432P4111_UARTA2],
+       .hwAttrs = &uartMSP432HWAttrs[MSP_EXP432P4111_UARTA2]
+    },
+    {
+        .fxnTablePtr = &UARTMSP432DMA_fxnTable,
+        .object = &uartMSP432DMAObjects[MSP_EXP432P4111_DMA0-2],
+        .hwAttrs = &uartMSP432DMAHWAttrs[MSP_EXP432P4111_DMA0-2]
+    },
+    {
+        .fxnTablePtr = &UARTMSP432DMA_fxnTable,
+        .object = &uartMSP432DMAObjects[MSP_EXP432P4111_DMA1-2],
+        .hwAttrs = &uartMSP432DMAHWAttrs[MSP_EXP432P4111_DMA1-2]
     }
 };
 
@@ -941,7 +1180,7 @@ const WatchdogMSP432_HWAttrs
     {
         .baseAddr = WDT_A_BASE,
         .intNum = INT_WDT_A,
-        .intPriority = (~0),
+        .intPriority = NVIC_PRIO(RT_PRIO),
         .clockSource = WDT_A_CLOCKSOURCE_SMCLK,
         .clockDivider = WDT_A_CLOCKDIVIDER_8192K
     }

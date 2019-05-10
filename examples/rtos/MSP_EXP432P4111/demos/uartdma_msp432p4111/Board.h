@@ -96,14 +96,16 @@ extern "C" {
 #define Board_SPI_MASTER_READY      MSP_EXP432P4111_SPI_MASTER_READY
 #define Board_SPI_SLAVE_READY       MSP_EXP432P4111_SPI_SLAVE_READY
 
-#define Board_TIMER0                MSP_EXP432P4111_TIMER_T32_0
-#define Board_TIMER1                MSP_EXP432P4111_TIMER_T32_1
-//#define Board_TIMER2                MSP_EXP432P4111_TIMER_TA_1
-#define Board_TIMER3                MSP_EXP432P4111_TIMER_TA_2
-#define Board_TIMER4                MSP_EXP432P4111_TIMER_TA_3
+#define Board_TIMER0                MSP_EXP432P4111_TIMER_TA_0
+#define Board_TIMER1                MSP_EXP432P4111_TIMER_TA_2
+#define Board_TIMER2                MSP_EXP432P4111_TIMER_TA_3
+#define Board_TIMER_uDMA0           MSP_EXP432P4111_TIMER_T32_0
+#define Board_TIMER_uDMA1           MSP_EXP432P4111_TIMER_T32_1
 
 #define Board_UART0                 MSP_EXP432P4111_UARTA0
 #define Board_UART1                 MSP_EXP432P4111_UARTA2
+#define Board_UART2                 MSP_EXP432P4111_DMA0
+#define Board_UART3                 MSP_EXP432P4111_DMA1
 
 #define Board_WATCHDOG0             MSP_EXP432P4111_WATCHDOG
 

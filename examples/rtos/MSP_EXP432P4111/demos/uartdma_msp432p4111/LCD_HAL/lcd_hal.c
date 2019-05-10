@@ -44,6 +44,8 @@
 /* DriverLib Header Includes */
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 
+#include <FreeRTOS.h>
+
 /* POSIX Header files */
 #include <pthread.h>
 #include <semaphore.h>
