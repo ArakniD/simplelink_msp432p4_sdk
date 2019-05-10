@@ -37,7 +37,7 @@
 void resetISR(void);
 
 static void nmiISR(void);
-static void faultISR(void);
+static void faultISR(void) __attribute__((naked));
 static void defaultISR(void);
 
 
@@ -184,7 +184,7 @@ static void nmiISR(void)
 /* This is the code that gets called when the processor receives a fault        */
 /* interrupt.  This simply enters an infinite loop, preserving the system state */
 /* for examination by a debugger.                                               */
-static void faultISR(void)
+static void __attribute__((naked)) faultISR(void)
 {
     /* Enter an infinite loop. */
     while(1)

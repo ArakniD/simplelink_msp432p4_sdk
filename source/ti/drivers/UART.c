@@ -117,7 +117,7 @@ UART_Handle UART_open(uint_least8_t index, UART_Params *params)
         }
 
         /* Get handle for this driver instance */
-        handle = (UART_Handle)&(UART_config[index]);
+        handle = (UART_Handle) &(UART_config[index]);
         handle = handle->fxnTablePtr->openFxn(handle, params);
     }
 
@@ -141,6 +141,14 @@ int_fast32_t UART_read(UART_Handle handle, void *buffer, size_t size)
 }
 
 /*
+ *  ======== UART_readAsync ========
+ */
+int_fast32_t UART_readAsync(UART_Handle handle, size_t request, int release, volatile uint8_t **buffer, size_t *size)
+{
+    return (handle->fxnTablePtr->readAsyncFxn(handle, request, release, buffer, size));
+}
+
+/*
  *  ======== UART_readPolling ========
  */
 int_fast32_t UART_readPolling(UART_Handle handle, void *buffer, size_t size)
@@ -151,9 +159,9 @@ int_fast32_t UART_readPolling(UART_Handle handle, void *buffer, size_t size)
 /*
  *  ======== UART_readCancel ========
  */
-void UART_readCancel(UART_Handle handle)
+long UART_readCancel(UART_Handle handle)
 {
-    handle->fxnTablePtr->readCancelFxn(handle);
+    return handle->fxnTablePtr->readCancelFxn(handle);
 }
 
 /*
@@ -168,7 +176,7 @@ int_fast32_t UART_write(UART_Handle handle, const void *buffer, size_t size)
  *  ======== UART_writePolling ========
  */
 int_fast32_t UART_writePolling(UART_Handle handle, const void *buffer,
-    size_t size)
+                               size_t size)
 {
     return (handle->fxnTablePtr->writePollingFxn(handle, buffer, size));
 }

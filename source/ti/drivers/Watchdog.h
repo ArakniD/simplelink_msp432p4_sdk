@@ -271,7 +271,7 @@ typedef enum Watchdog_ResetMode_ {
  *  will take a Watchdog_Handle of the Watchdog causing the interrupt (cast as
  *  a uintptr_t) as an argument.
  */
-typedef void (*Watchdog_Callback)(uintptr_t handle);
+typedef long (*Watchdog_Callback)(uintptr_t handle);
 
 /*!
  *  @brief      Watchdog Parameters
@@ -527,7 +527,7 @@ extern int_fast16_t Watchdog_setReload(Watchdog_Handle handle, uint32_t ticks);
  *  @return Converted value in number of Watchdog clock ticks
  *          A value of zero (0) means the converted value exceeds 32 bits
  *          or that the operation is not supported for the specific device.
- *
+     *
  *  @sa     Watchdog_setReload()
  */
 extern uint32_t Watchdog_convertMsToTicks(Watchdog_Handle handle,

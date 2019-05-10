@@ -246,7 +246,7 @@ extern SemaphoreP_Status SemaphoreP_pend(SemaphoreP_Handle handle,
  *
  *  @param  handle  A SemaphoreP_Handle returned from ::SemaphoreP_create
  */
-extern void SemaphoreP_post(SemaphoreP_Handle handle);
+extern long SemaphoreP_post(SemaphoreP_Handle handle);
 
 #ifdef __cplusplus
 }

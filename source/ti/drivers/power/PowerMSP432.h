@@ -63,6 +63,9 @@
 extern "C" {
 #endif
 
+/*! Force the DCO resistor to be enabled when setting DCO frequency */
+#define PowerMSP432_DCORESFORCE               CS_FRSEL
+
 /* latency times in microseconds (derived from device datasheet) */
 
 /*! The latency to reserve for resume from SLEEP (usec) */
@@ -216,6 +219,20 @@ extern "C" {
 #define PowerMSP432_SHUTDOWN_0              0x0   /*!< Device state of LPM3.5 */
 #define PowerMSP432_SHUTDOWN_1              0x1   /*!< Device state of LPM4.5 */
 
+/*! @brief  Enumeration holding default power states from the SDK */
+typedef enum PowerMSP432_PowerState {
+    ePowerState1 = 0,
+    ePowerState2,
+    ePowerState3,
+    ePowerStateP4x1xT_Limit = ePowerState3,
+    /* Only the full family and non '-T' versions have a 4th level */
+#if ((DeviceFamily_ID == DeviceFamily_ID_MSP432P401x) || (DeviceFamily_ID == DeviceFamily_ID_MSP432P4x1xI))
+    ePowerState4,
+    ePowerStateP4x1xI_Limit = ePowerState4,
+#endif
+    ePowerStateSDKMax // All custom levels start at SDKMax and go upwards
+} PowerMSP432_PowerState;
+
 /*!
  *  @brief Structure defining a performance level.
  *
@@ -224,12 +241,12 @@ extern "C" {
  *
  *  The Power driver currently supports four pre-defined performance levels:
  *  @code
- *    Level    MCLK (MHz)    HSMCLK (MHz)    SMCLK (MHz)    ACLK (Hz)
- *    -----    ----------    ------------    -----------    ---------
- *      0         12              3              3           32768
- *      1         24              6              6           32768
- *      2         48             24             12           32768
- *      3         48             48             24           32768
+ *    Level    MCLK (MHz)    HSMCLK (MHz)    SMCLK (MHz)    ACLK (Hz)     SWO (MHz)
+ *    -----    ----------    ------------    -----------    ---------    ---------
+ *      0         12              3              3           32768           6
+ *      1         24              6              6           32768          12
+ *      2         48             24             12           32768          24
+ *      3         48             48             24           32768          48
  *  @endcode
  *
  *  Up to four optional 'custom' performance levels can be defined by the user.
@@ -377,12 +394,12 @@ typedef struct PowerMSP432_PerfLevel {
      */
     unsigned int clockSource;
     /*!
-     *  @brief The DCO frequency range selection.
+     *  @brief The DCO frequency value
      *
-     *  The nominal DCO frequency is specified via an enumerated value defined
-     *  in cs.h, for example: CS_DCO_FREQUENCY_12, CS_DCO_FREQUENCY_24, etc.
+     *  The target DCO frequency is set in MHz and can include the Force
+     *  DCO Resistor Selection by ORing 0xE0000000
      */
-    unsigned int DCORESEL;
+    unsigned int DCOCLK;
     /*!
      *  @brief The MCLK source.
      *
@@ -485,6 +502,10 @@ typedef struct PowerMSP432_PerfLevel {
      *  32768 Hz is supported.
      */
     unsigned int ACLK;
+    /*!
+     *  @brief The SWOCLK frequency for this ITM interface.
+     */
+    unsigned int SWOCLK;
 } PowerMSP432_PerfLevel;
 
 /*! @brief  Structure holding device frequencies (in Hz) */
@@ -494,6 +515,7 @@ typedef struct PowerMSP432_Freqs {
     unsigned int SMCLK;                /*!< SMCLK frequency (in Hz) */
     unsigned int BCLK;                 /*!< BCLK frequency (in Hz) */
     unsigned int ACLK;                 /*!< ACLK frequency (in Hz) */
+    unsigned int SWOCLK;               /*!< SWOCLK frequency (in Hz) */
 } PowerMSP432_Freqs;
 
 /*! @brief  Power global configuration (MSP432-specific) */

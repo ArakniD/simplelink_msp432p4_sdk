@@ -179,7 +179,7 @@
  *
  *  status = I2C_transfer(i2cHandle, &i2cTransaction);
  *
- *  if (status == false) {
+ *  if (status == False) {
  *      // Unsuccessful I2C transfer
  *  }
  *  @endcode
@@ -198,7 +198,7 @@
  *
  *  status = I2C_transfer(i2cHandle, &i2cTransaction);
  *
- *  if (status == false) {
+ *  if (status == False) {
  *      // Unsuccessful I2C transfer
  *  }
  *  @endcode
@@ -221,7 +221,7 @@
  *
  *  status = I2C_transfer(i2cHandle, &i2cTransaction);
  *
- *  if (status == false) {
+ *  if (status == False) {
  *      // Unsuccessful I2C transfer
  *  }
  *  @endcode
@@ -443,6 +443,7 @@ typedef struct I2C_Transaction_ {
     size_t        readCount;
     /*! I2C slave address of the slave device */
     uint_least8_t slaveAddress;
+    uint_least8_t readSlaveAddress;
     /*! Optional application argument. This argument will be passed to the
      *  callback function specified by #I2C_Params.transferCallbackFxn when
      *  using #I2C_MODE_CALLBACK. */
@@ -499,7 +500,7 @@ typedef enum I2C_TransferMode_ {
  *                              successful. False indicates the transaction did
  *                              not complete.
  */
-typedef void (*I2C_CallbackFxn)(I2C_Handle handle, I2C_Transaction *transaction,
+typedef long (*I2C_CallbackFxn)(I2C_Handle handle, I2C_Transaction *transaction,
     bool transferStatus);
 
 /*!

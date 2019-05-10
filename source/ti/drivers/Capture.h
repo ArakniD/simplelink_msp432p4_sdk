@@ -237,6 +237,7 @@ typedef enum Capture_Mode_ {
                                   falling edges. */
 } Capture_Mode;
 
+
 /*!
  *  @brief Capture period unit enum
  *
@@ -263,8 +264,10 @@ typedef enum Capture_PeriodUnits_ {
  *
  *  @param  interval       Interval of two triggering edges in
  *                         #Capture_PeriodUnits
+ *
+ *  @param state            The state of the input transition
  */
-typedef void (*Capture_CallBackFxn)(Capture_Handle handle, uint32_t interval);
+typedef long (*Capture_CallBackFxn)(Capture_Handle handle, uint32_t interval, uint_fast8_t state);
 
 /*!
  *  @brief Capture Parameters

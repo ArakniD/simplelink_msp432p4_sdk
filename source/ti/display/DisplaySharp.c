@@ -154,7 +154,7 @@ Display_Handle DisplaySharp_open(Display_Handle hDisplay,
     object->g_sDisplay.size          = sizeof(struct Graphics_Display);
     object->g_sDisplay.pFxns         = &g_sharpFxns;
     object->g_sDisplay.displayData   = object->displayBuffer;
-    object->g_sDisplay.heigth        = hwAttrs->pixelHeight;
+    object->g_sDisplay.height        = hwAttrs->pixelHeight;
     object->g_sDisplay.width         = hwAttrs->pixelWidth;
 
     // Graphics library init
@@ -250,7 +250,7 @@ void DisplaySharp_clearLines(Display_Handle hDisplay,
  * @return      void
  */
 void DisplaySharp_vprintf(Display_Handle hDisplay, uint8_t line,
-                          uint8_t column, char *fmt, va_list va)
+                          uint8_t column, const char *fmt, va_list va)
 {
     DisplaySharp_Object *object = (DisplaySharp_Object  *)hDisplay->object;
 

@@ -151,7 +151,7 @@ extern void _pthread_cleanup_push(struct _pthread_cleanup_context *context,
     } while (0)
 
 extern int pthread_create(pthread_t *newthread, const pthread_attr_t *attr,
-            void *(*startroutine)(void *), void *arg);
+            void *(*startroutine)(void *), void *arg, const char *threadName);
 extern int pthread_detach(pthread_t pthread);
 extern int pthread_equal(pthread_t pt1, pthread_t pt2);
 extern void pthread_exit(void *ptr);

@@ -586,10 +586,12 @@
 #define ROM_CS_getInterruptStatus                                             \
         ((uint32_t (*)(void))ROM_CSTABLE[11])
 #endif
+#if defined(TARGET_IGNORE_ARAKNID)
 #if defined(TARGET_IS_MSP432P4XX) ||                                          \
     defined(TARGET_IS_MSP432P4XX_NEXT)
 #define ROM_CS_setDCOFrequency                                                \
         ((void (*)(uint32_t dcoFrequency))ROM_CSTABLE[12])
+#endif
 #endif
 #if defined(TARGET_IS_MSP432P4XX) ||                                          \
     defined(TARGET_IS_MSP432P4XX_NEXT)
@@ -2409,8 +2411,8 @@
 #endif
 #if defined(TARGET_IS_MSP432P4XX) ||                                          \
     defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_UART_getEnabledInterruptStatus                                    \
-        ((uint_fast8_t (*)(uint32_t moduleInstance))ROM_UARTTABLE[17])
+//#define ROM_UART_getEnabledInterruptStatus                                    \
+//        ((uint_fast8_t (*)(uint32_t moduleInstance))ROM_UARTTABLE[17])
 #endif
 
 //*****************************************************************************

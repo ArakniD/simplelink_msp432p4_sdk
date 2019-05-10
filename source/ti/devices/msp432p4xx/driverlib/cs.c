@@ -698,9 +698,20 @@ void CS_setDCOFrequency(uint32_t dcoFrequency)
     int16_t dcoTune;
     float dcoConst;
     bool rsel5 = false;
+    bool rselForceEn = (dcoFrequency & CS_FRSEL == CS_FRSEL) ? true : false;
     dcoSigned = (int32_t) dcoFrequency;
     uint_fast8_t tlvLength;
     
+    /* Only accept under 52MHz or Under 52MHz with DCO resistor enabled */
+    ASSERT(dcoFrequency <= 52000000 ||
+         (  (dcoFrequency & CS_FRSEL) == 0xE0000000
+         && (dcoFrequency & ~CS_FRSEL) <= 52000000) );
+
+    /* Remove any leading 1's
+     * as these are used to FORCE the DCO resistor
+     * on, otherwise go with the normal rules */
+    dcoFrequency &= ~CS_FRSEL;
+
 #ifdef __MCU_HAS_SYSCTL_A__
     SysCtl_A_CSCalTLV_Info *csInfo;
     
@@ -714,27 +725,33 @@ void CS_setDCOFrequency(uint32_t dcoFrequency)
 #endif
 
 
-    if (dcoFrequency < 2000000)
+    /* Updated ranges to better cross over between steps given
+     * the spread of min and max frequencies over -40 to 85 degC
+     * and 1.62 to 3.7v
+     *
+     * Table 5-12. DCO of "SLASEA0A.pdf; Feb 2018" msp432p4x1x Specification
+     */
+    if (dcoFrequency <= 2100000)
     {
-        nomFreq = CS_15MHZ;
+        nomFreq = CS_1M5HZ;
         CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_1_5);
-    } else if (dcoFrequency < 4000000)
+    } else if (dcoFrequency <= 4250000)
     {
         nomFreq = CS_3MHZ;
         CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_3);
-    } else if (dcoFrequency < 8000000)
+    } else if (dcoFrequency <= 8500000)
     {
         nomFreq = CS_6MHZ;
         CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_6);
-    } else if (dcoFrequency < 16000000)
+    } else if (dcoFrequency <= 17000000)
     {
         nomFreq = CS_12MHZ;
         CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_12);
-    } else if (dcoFrequency < 32000000)
+    } else if (dcoFrequency <= 34000000)
     {
         nomFreq = CS_24MHZ;
         CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_24);
-    } else if (dcoFrequency < 640000001)
+    } else if (dcoFrequency <= 640000000)
     {
         nomFreq = CS_48MHZ;
         CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_48);
@@ -745,12 +762,16 @@ void CS_setDCOFrequency(uint32_t dcoFrequency)
         return;
     }
 
-    if (dcoFrequency == nomFreq || tlvLength == 0)
+    if ( (dcoFrequency == nomFreq && rselForceEn == false) || tlvLength == 0 )
     {
         CS_tuneDCOFrequency(0);
         return;
     }
 
+    /* Check if we're a MSP432P4x1xT type, and don't have the RSEL5 value(s)
+     * in which case limit the maximum speed to under 34MHz, which is technically
+     * still an over-clock from standard, but within calibration
+     */
     if (rsel5)
     {
         /* External Resistor*/

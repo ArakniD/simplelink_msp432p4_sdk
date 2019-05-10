@@ -528,10 +528,10 @@ typedef struct SPI_Config_    *SPI_Handle;
  *  @brief      Status codes that are set by the SPI driver.
  */
 typedef enum SPI_Status_ {
-    SPI_TRANSFER_COMPLETED = 0,      /*!< SPI transfer completed */
-    SPI_TRANSFER_STARTED,            /*!< SPI transfer started and in progress */
-    SPI_TRANSFER_CANCELED,           /*!< SPI transfer was canceled */
-    SPI_TRANSFER_FAILED,             /*!< SPI transfer failed */
+    SPI_TRANSFER_COMPLETED = 0, /*!< SPI transfer completed */
+    SPI_TRANSFER_STARTED,       /*!< SPI transfer started and in progress */
+    SPI_TRANSFER_CANCELED,      /*!< SPI transfer was canceled */
+    SPI_TRANSFER_FAILED,        /*!< SPI transfer failed */
     SPI_TRANSFER_CSN_DEASSERT,       /*!< SPI chip select was de-asserted */
     SPI_TRANSFER_PEND_CSN_ASSERT,    /*!< SPI transfer is pending until the chip select is asserted */
     SPI_TRANSFER_QUEUED              /*!< SPI transfer added to transaction queue */
@@ -566,7 +566,7 @@ typedef struct SPI_Transaction_ {
  *  @param      SPI_Handle          SPI_Handle
  *  @param      SPI_Transaction*    SPI_Transaction*
  */
-typedef void (*SPI_CallbackFxn) (SPI_Handle handle,
+typedef long (*SPI_CallbackFxn) (SPI_Handle handle,
     SPI_Transaction *transaction);
 /*!
  *  @brief
@@ -673,7 +673,7 @@ typedef bool (*SPI_TransferFxn) (SPI_Handle handle,
  *  @brief      A function pointer to a driver specific implementation of
  *              SPI_transferCancel().
  */
-typedef void (*SPI_TransferCancelFxn) (SPI_Handle handle);
+typedef long (*SPI_TransferCancelFxn) (SPI_Handle handle);
 
 /*!
  *  @brief      The definition of a SPI function table that contains the

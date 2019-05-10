@@ -113,7 +113,9 @@ static const uint32_t pwmTimerBaseAddr[] = {
     TIMER_A0_BASE,
     TIMER_A1_BASE,
     TIMER_A2_BASE,
+#ifdef TIMER_A3_BASE
     TIMER_A3_BASE
+#endif
 };
 
 /*
@@ -802,7 +804,6 @@ int_fast16_t PWMTimerMSP432_setDutyAndPeriod(PWM_Handle handle, uint32_t dutyVal
 {
     return (PWM_STATUS_ERROR);
 }
-
 /*
  *  ======== PWMTimerMSP432_start ========
  *  @pre    Function assumes that handle is not NULL
@@ -850,6 +851,7 @@ void PWMTimerMSP432_start(PWM_Handle handle)
     }
 
     HwiP_restore(key);
+
 }
 
 /*

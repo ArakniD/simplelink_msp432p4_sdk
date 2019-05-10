@@ -65,7 +65,7 @@ extern "C" {
 /*!
  *  @brief      UDMA error function pointer
  */
-typedef void (*UDMAMSP432_ErrorFxn)(uintptr_t arg);
+typedef long (*UDMAMSP432_ErrorFxn)(uintptr_t arg);
 
 /*!
  *  @brief      UDMAMSP432 Hardware attributes
@@ -144,6 +144,22 @@ typedef struct UDMAMSP432_Object {
 } UDMAMSP432_Object;
 
 /*!
+ *  @brief  UDMAMSP432 Ping Pong Transfer specification configuration
+ *
+ *  The UDMAMSP432_Transfer specification structure contains the address
+ *  of both source and destination, and the size of the transfer. All variables
+ *  can vary between alternate and primary and must be configurable by their own
+ *
+ *  This struct is used in UDMAMSP432_setupPingPongTransfer() and
+ *  UDMAMSP432_PingPongToggleBuffer().
+ */
+typedef struct UDMAMSP32_TransferSpec {
+    void             *src;                      /*!< Source of DMA transfer */
+    void             *dst;                      /*!< Destination of DMA transfer */
+    uint32_t          size;                     /*!< Size of DMA transfer */
+} UDMAMSP32_TransferSpec;
+
+/*!
  *  @brief  UDMAMSP432 Transfer configuration
  *
  *  The UDMAMSP432_Transfer structure contains parameters for initializing a
@@ -152,32 +168,39 @@ typedef struct UDMAMSP432_Object {
  *  This struct is used in UDMAMSP432_setupTransfer().
  */
 typedef struct UDMAMSP432_Transfer {
-    uint32_t         dmaChannel;                 /*!< DMA channel */
-    uint32_t         structSelect;               /*!< */
-    uint32_t         ctlOptions;                 /*!< DMA control options */
-    uint32_t         transferMode;               /*!< DMA transfer mode. Basic or PingPong */
-    void             *dmaTransferSource;         /*!< Source of DMA transfer */
-    void             *dmaTransferDestination;    /*!< Destination of DMA transfer */
-    uint32_t         transferSize;               /*!< Size of DMA transfer */
+    uint32_t                dmaChannel;          /*!< DMA channel */
+    uint32_t                structSelect;        /*!< */
+    uint32_t                ctlOptions;          /*!< DMA control options */
+    uint32_t                transferMode;        /*!< DMA transfer mode. Basic or PingPong */
+    UDMAMSP32_TransferSpec spec;                 /*!< Source of DMA transfer */
 } UDMAMSP432_Transfer;
+
+/*!
+ *  @brief  UDMAMSP432 Ping Pong enumeration for specs array
+ *
+ *  A simple enum for the primary/alternate switch. An array index allows using the *altSelect
+ *  bit as an index into the structure, saving code space and improving readability.
+ */
+typedef enum eUDMAPingPong {
+    eUDMAPingPongPrimary = 0,
+    eUDMAPingPongAlternate,
+    eUDMAPingPongMAX
+} eUDMAPingPong;
 
 /*!
  *  @brief  UDMAMSP432 Ping Pong Transfer configuration
  *
  *  The UDMAMSP432_Transfer structure contains parameters for initializing a
- *  DMA ping pong transfer using a given DMA channel number.
+ *  DMA ping-pong transfer using a given DMA channel number.
  *
  *  This struct is used in UDMAMSP432_setupPingPongTransfer() and
  *  UDMAMSP432_PingPongToggleBuffer().
  */
 typedef struct UDMAMSP432_PingPongTransfer {
-    uint32_t         dmaChannel;                  /*!< DMA channel */
-    uint32_t         ctlOptions;                  /*!< DMA control options */
-    uint32_t         transferMode;                /*!< DMA transfer mode. Basic or PingPong */
-    void             *dmaTransferSource;          /*!< Source of DMA transfer */
-    void             *dmaPrimaryDestination;      /*!< Primary Destination of DMA transfer */
-    void             *dmaAlternateDestination;    /*!< Alternate Destination of DMA transfer */
-    uint32_t         transferSize;                /*!< Size of DMA transfer */
+    uint32_t         dmaChannel;                    /*!< DMA channel */
+    uint32_t         ctlOptions;                    /*!< DMA control options */
+    uint32_t         transferMode;                  /*!< DMA transfer mode. Basic or PingPong */
+    UDMAMSP32_TransferSpec specs[eUDMAPingPongMAX]; /*!< DMA Primary/Alt Address & Size */
 } UDMAMSP432_PingPongTransfer;
 
 /*!
@@ -228,7 +251,7 @@ extern void UDMAMSP432_init();
  *  @sa     UDMAMSP432_close()
  */
 extern UDMAMSP432_Handle UDMAMSP432_open(uint32_t channelNum, uint8_t intNum, uint32_t priority,
-            void (*hwiFxn)(uintptr_t), uintptr_t arg);
+                                         HwiP_Fxn hwiFxn, uintptr_t arg);
 
 /*!
  *  @brief  Function to set up a DMA channel for data transfer

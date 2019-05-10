@@ -246,9 +246,26 @@ void HwiP_dispatch(void)
     /* Determine which interrupt has fired */
     intNum = HwiP_nvic->ICSR & 0x000000ff;
     hwi = HwiP_dispatchTable[intNum];
+
+    traceISR_ENTER();
+
+    static bool xStarted = false;
+
     if (hwi.entry) {
-        (hwi.entry)(hwi.arg);
-        taskYIELD();
+        if (!xStarted) {
+            xStarted = xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED;
+        }
+
+        if (xStarted){
+            portYIELD_FROM_ISR ((hwi.entry)(hwi.arg));
+            traceISR_EXIT_TO_SCHEDULER();
+        }
+        else {
+            (hwi.entry)(hwi.arg);
+            traceISR_EXIT();
+        }
+    } else {
+        traceISR_EXIT();
     }
 }
 

@@ -133,7 +133,7 @@ SemaphoreP_Status SemaphoreP_pend(SemaphoreP_Handle handle, uint32_t timeout)
         status = xSemaphoreTakeFromISR((SemaphoreHandle_t)handle, NULL);
     }
     else {
-        status = xSemaphoreTake((SemaphoreHandle_t)handle, timeout);
+    	status = xSemaphoreTake((SemaphoreHandle_t)handle, timeout);
     }
 
     if (status == pdTRUE) {
@@ -146,9 +146,9 @@ SemaphoreP_Status SemaphoreP_pend(SemaphoreP_Handle handle, uint32_t timeout)
 /*
  *  ======== SemaphoreP_post ========
  */
-void SemaphoreP_post(SemaphoreP_Handle handle)
+long SemaphoreP_post(SemaphoreP_Handle handle)
 {
-    BaseType_t xHigherPriorityTaskWoken;
+    BaseType_t xHigherPriorityTaskWoken = 0;
 
     if (!HwiP_inISR()) {
         /* Not in ISR */
@@ -158,6 +158,8 @@ void SemaphoreP_post(SemaphoreP_Handle handle)
         xSemaphoreGiveFromISR((SemaphoreHandle_t)handle,
                 &xHigherPriorityTaskWoken);
     }
+
+    return xHigherPriorityTaskWoken;
 }
 
 #if (configSUPPORT_STATIC_ALLOCATION == 1)

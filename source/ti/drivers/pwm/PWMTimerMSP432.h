@@ -88,7 +88,7 @@
  *  1.  An array of PWMTimerMSP432_Object elements, which will be used by
  *  by the driver to maintain instance state.
  *  Below is an example PWMTimerMSP432_Object array appropriate for the MSP432
- *  LaunchPad board:
+ *  Launchpad board:
  *  @code
  *    #include <ti/drivers/PWM.h>
  *    #include <ti/drivers/pwm/PWMTimerMSP432.h>
@@ -100,7 +100,7 @@
  *  pin will be used by the corresponding PWM instance
  *  (see @ref pwmPinIdentifiersMSP432).
  *  Below is an example PWMTimerMSP432_HWAttrsV2 array appropriate for the
- *  MSP432 LaunchPad board:
+ *  MSP432 Launchpad board:
  *  @code
  *  const PWMTimerMSP432_HWAttrsV2 pwmTimerMSP432HWAttrs[2] = {
  *      {
@@ -119,7 +119,7 @@
  *  the device specific PWM object instance, and the device specific Hardware
  *  Attributes to be used for each PWM channel.
  *  Below is an example @ref PWM_Config array appropriate for the MSP432
- *  LaunchPad board:
+ *  Launchpad board:
  *  @code
  *    const PWM_Config PWM_config[2] = {
  *      {
@@ -253,6 +253,7 @@ extern "C" {
  *
  */
 
+#define PWMTimerMSP432_CCR0 (TIMER_A_CAPTURECOMPARE_REGISTER_0 << 20)
 #define PWMTimerMSP432_CCR1 (TIMER_A_CAPTURECOMPARE_REGISTER_1 << 20)
 #define PWMTimerMSP432_CCR2 (TIMER_A_CAPTURECOMPARE_REGISTER_2 << 20)
 #define PWMTimerMSP432_CCR3 (TIMER_A_CAPTURECOMPARE_REGISTER_3 << 20)
@@ -263,16 +264,19 @@ extern "C" {
 #define PWMTimerMSP432_TA2  (2 << 16)
 #define PWMTimerMSP432_TA3  (3 << 16)
 
+#define PWMTimerMSP432_TA0CCR0 (PWMTimerMSP432_TA0 | PWMTimerMSP432_CCR0 | (PMAP_TA0CCR0A << 10))
 #define PWMTimerMSP432_TA0CCR1 (PWMTimerMSP432_TA0 | PWMTimerMSP432_CCR1 | (PMAP_TA0CCR1A << 10))
 #define PWMTimerMSP432_TA0CCR2 (PWMTimerMSP432_TA0 | PWMTimerMSP432_CCR2 | (PMAP_TA0CCR2A << 10))
 #define PWMTimerMSP432_TA0CCR3 (PWMTimerMSP432_TA0 | PWMTimerMSP432_CCR3 | (PMAP_TA0CCR3A << 10))
 #define PWMTimerMSP432_TA0CCR4 (PWMTimerMSP432_TA0 | PWMTimerMSP432_CCR4 | (PMAP_TA0CCR4A << 10))
 
+#define PWMTimerMSP432_TA1CCR0 (PWMTimerMSP432_TA1 | PWMTimerMSP432_CCR0)
 #define PWMTimerMSP432_TA1CCR1 (PWMTimerMSP432_TA1 | PWMTimerMSP432_CCR1 | (PMAP_TA1CCR1A << 10))
 #define PWMTimerMSP432_TA1CCR2 (PWMTimerMSP432_TA1 | PWMTimerMSP432_CCR2 | (PMAP_TA1CCR2A << 10))
 #define PWMTimerMSP432_TA1CCR3 (PWMTimerMSP432_TA1 | PWMTimerMSP432_CCR3 | (PMAP_TA1CCR3A << 10))
 #define PWMTimerMSP432_TA1CCR4 (PWMTimerMSP432_TA1 | PWMTimerMSP432_CCR4 | (PMAP_TA1CCR4A << 10))
 
+#define PWMTimerMSP432_TA2CCR0 (PWMTimerMSP432_TA2 | PWMTimerMSP432_CCR0)
 #define PWMTimerMSP432_TA2CCR1 (PWMTimerMSP432_TA2 | PWMTimerMSP432_CCR1)
 #define PWMTimerMSP432_TA2CCR2 (PWMTimerMSP432_TA2 | PWMTimerMSP432_CCR2)
 #define PWMTimerMSP432_TA2CCR3 (PWMTimerMSP432_TA2 | PWMTimerMSP432_CCR3)
@@ -293,6 +297,7 @@ extern "C" {
  *  @name Port 2, Pin 0 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P2_0_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x20) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_0_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x20) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_0_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x20) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_0_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x20) /*!< @hideinitializer */
@@ -307,6 +312,7 @@ extern "C" {
  *  @name Port 2, Pin 1 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P2_1_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x21) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_1_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x21) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_1_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x21) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_1_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x21) /*!< @hideinitializer */
@@ -321,6 +327,7 @@ extern "C" {
  *  @name Port 2, Pin 2 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P2_2_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x22) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_2_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x22) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_2_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x22) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_2_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x22) /*!< @hideinitializer */
@@ -335,6 +342,7 @@ extern "C" {
  *  @name Port 2, Pin 3 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P2_3_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x23) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_3_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x23) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_3_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x23) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_3_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x23) /*!< @hideinitializer */
@@ -349,6 +357,7 @@ extern "C" {
  *  @name Port 2, Pin 4 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P2_4_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x24) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_4_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x24) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_4_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x24) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_4_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x24) /*!< @hideinitializer */
@@ -363,6 +372,7 @@ extern "C" {
  *  @name Port 2, Pin 5 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P2_5_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x25) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_5_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x25) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_5_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x25) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_5_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x25) /*!< @hideinitializer */
@@ -377,6 +387,7 @@ extern "C" {
  *  @name Port 2, Pin 6 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P2_6_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x26) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_6_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x26) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_6_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x26) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_6_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x26) /*!< @hideinitializer */
@@ -391,6 +402,7 @@ extern "C" {
  *  @name Port 2, Pin 7 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P2_7_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x27) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_7_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x27) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_7_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x27) /*!< @hideinitializer */
 #define PWMTimerMSP432_P2_7_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x27) /*!< @hideinitializer */
@@ -405,6 +417,7 @@ extern "C" {
  *  @name Port 3, Pin 0 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P3_0_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x30) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_0_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x30) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_0_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x30) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_0_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x30) /*!< @hideinitializer */
@@ -419,6 +432,7 @@ extern "C" {
  *  @name Port 3, Pin 1 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P3_1_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x31) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_1_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x31) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_1_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x31) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_1_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x31) /*!< @hideinitializer */
@@ -433,6 +447,7 @@ extern "C" {
  *  @name Port 3, Pin 2 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P3_2_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x32) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_2_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x32) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_2_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x32) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_2_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x32) /*!< @hideinitializer */
@@ -447,6 +462,7 @@ extern "C" {
  *  @name Port 3, Pin 3 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P3_3_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x33) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_3_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x33) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_3_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x33) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_3_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x33) /*!< @hideinitializer */
@@ -461,6 +477,7 @@ extern "C" {
  *  @name Port 3, Pin 4 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P3_4_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x34) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_4_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x34) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_4_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x34) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_4_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x34) /*!< @hideinitializer */
@@ -475,6 +492,7 @@ extern "C" {
  *  @name Port 3, Pin 5 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P3_5_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x35) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_5_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x35) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_5_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x35) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_5_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x35) /*!< @hideinitializer */
@@ -489,6 +507,7 @@ extern "C" {
  *  @name Port 3, Pin 6 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P3_6_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x36) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_6_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x36) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_6_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x36) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_6_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x36) /*!< @hideinitializer */
@@ -503,6 +522,7 @@ extern "C" {
  *  @name Port 3, Pin 7 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P3_7_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x37) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_7_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x37) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_7_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x37) /*!< @hideinitializer */
 #define PWMTimerMSP432_P3_7_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x37) /*!< @hideinitializer */
@@ -533,6 +553,7 @@ extern "C" {
  *  @name Port 7, Pin 0 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P7_0_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x70) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_0_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x70) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_0_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x70) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_0_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x70) /*!< @hideinitializer */
@@ -547,6 +568,7 @@ extern "C" {
  *  @name Port 7, Pin 1 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P7_1_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x71) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_1_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x71) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_1_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x71) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_1_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x71) /*!< @hideinitializer */
@@ -561,6 +583,7 @@ extern "C" {
  *  @name Port 7, Pin 2 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P7_2_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x72) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_2_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x72) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_2_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x72) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_2_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x72) /*!< @hideinitializer */
@@ -575,6 +598,7 @@ extern "C" {
  *  @name Port 7, Pin 3 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P7_3_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x73) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_3_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x73) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_3_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x73) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_3_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x73) /*!< @hideinitializer */
@@ -589,6 +613,7 @@ extern "C" {
  *  @name Port 7, Pin 4 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P7_4_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x74) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_4_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x74) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_4_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x74) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_4_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x74) /*!< @hideinitializer */
@@ -603,6 +628,7 @@ extern "C" {
  *  @name Port 7, Pin 5 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P7_5_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x75) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_5_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x75) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_5_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x75) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_5_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x75) /*!< @hideinitializer */
@@ -617,6 +643,7 @@ extern "C" {
  *  @name Port 7, Pin 6 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P7_6_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x76) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_6_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x76) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_6_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x76) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_6_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x76) /*!< @hideinitializer */
@@ -631,6 +658,7 @@ extern "C" {
  *  @name Port 7, Pin 7 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P7_7_TA0CCR0A   (PWMTimerMSP432_TA0CCR0 | 0x77) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_7_TA0CCR1A   (PWMTimerMSP432_TA0CCR1 | 0x77) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_7_TA0CCR2A   (PWMTimerMSP432_TA0CCR2 | 0x77) /*!< @hideinitializer */
 #define PWMTimerMSP432_P7_7_TA0CCR3A   (PWMTimerMSP432_TA0CCR3 | 0x77) /*!< @hideinitializer */
@@ -645,6 +673,8 @@ extern "C" {
  *  @name Port 8, 'pwmPin' setting variations
  *  @{
  */
+#define PWMTimerMSP432_P8_0_TA1CCR0A   (PWMTimerMSP432_TA1CCR0 | 0x182) /*!< @hideinitializer */
+#define PWMTimerMSP432_P8_1_TA2CCR0A   (PWMTimerMSP432_TA2CCR0 | 0x182) /*!< @hideinitializer */
 #define PWMTimerMSP432_P8_2_TA3CCR2A   (PWMTimerMSP432_TA3CCR2 | 0x182) /*!< @hideinitializer */
 /*! @} */
 

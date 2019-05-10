@@ -75,7 +75,7 @@ int_fast16_t UARTMSP432_control(UART_Handle handle, uint_fast16_t cmd,
 void UARTMSP432_init(UART_Handle handle);
 UART_Handle UARTMSP432_open(UART_Handle handle, UART_Params *params);
 int_fast32_t UARTMSP432_read(UART_Handle handle, void *buffer, size_t size);
-void UARTMSP432_readCancel(UART_Handle handle);
+long UARTMSP432_readCancel(UART_Handle handle);
 int_fast32_t UARTMSP432_readPolling(UART_Handle handle, void *buffer,
         size_t size);
 int_fast32_t UARTMSP432_write(UART_Handle handle, const void *buffer,
@@ -94,11 +94,11 @@ static bool readIsrBinaryBlocking(UART_Handle handle);
 static bool readIsrBinaryCallback(UART_Handle handle);
 static bool readIsrTextBlocking(UART_Handle handle);
 static bool readIsrTextCallback(UART_Handle handle);
-static void readSemCallback(UART_Handle handle, void *buffer, size_t count);
+static long readSemCallback(UART_Handle handle, void *buffer, size_t count);
 static int readTaskBlocking(UART_Handle handle);
 static int readTaskCallback(UART_Handle handle);
 static void writeData(UART_Handle handle);
-static void writeSemCallback(UART_Handle handle, void *buffer, size_t count);
+static long writeSemCallback(UART_Handle handle, void *buffer, size_t count);
 
 static void mapPin(uint8_t port, uint8_t pin, uint8_t value);
 
@@ -109,6 +109,7 @@ const UART_FxnTable UARTMSP432_fxnTable = {
     UARTMSP432_init,
     UARTMSP432_open,
     UARTMSP432_read,
+    NULL,
     UARTMSP432_readPolling,
     UARTMSP432_readCancel,
     UARTMSP432_write,
@@ -471,11 +472,11 @@ static bool readIsrTextCallback(UART_Handle handle)
  *  ======== readSemCallback ========
  *  Simple callback to post a semaphore for the blocking mode.
  */
-static void readSemCallback(UART_Handle handle, void *buffer, size_t count)
+static long readSemCallback(UART_Handle handle, void *buffer, size_t count)
 {
     UARTMSP432_Object *object = handle->object;
 
-    SemaphoreP_post(object->readSem);
+    return SemaphoreP_post(object->readSem);
 }
 
 /*
@@ -659,11 +660,11 @@ static void writeData(UART_Handle handle)
  *  ======== writeSemCallback ========
  *  Simple callback to post a semaphore for the blocking mode.
  */
-static void writeSemCallback(UART_Handle handle, void *buffer, size_t count)
+static long writeSemCallback(UART_Handle handle, void *buffer, size_t count)
 {
     UARTMSP432_Object *object = handle->object;
 
-    SemaphoreP_post(object->writeSem);
+    return SemaphoreP_post(object->writeSem);
 }
 
 /*
@@ -814,7 +815,7 @@ int_fast16_t UARTMSP432_control(UART_Handle handle, uint_fast16_t cmd,
  *
  *  @param(arg)         The UART_Handle for this Hwi.
  */
-void UARTMSP432_hwiIntFxn(uintptr_t arg)
+long UARTMSP432_hwiIntFxn(uintptr_t arg)
 {
     uint8_t                     status;
     uint8_t                     txcptEnabled;
@@ -838,7 +839,7 @@ void UARTMSP432_hwiIntFxn(uintptr_t arg)
         }
         /* Reading the rxData regs clear the error flags */
         MAP_UART_receiveData(hwAttrs->baseAddr);
-        return;
+        return 0;
     }
 
     if (status & EUSCI_A_UART_RECEIVE_INTERRUPT_FLAG) {
@@ -857,6 +858,8 @@ void UARTMSP432_hwiIntFxn(uintptr_t arg)
                 (status & EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG)) ||
                 (!txcptEnabled && (status & EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG))) {
             writeData((UART_Handle)arg);
+
+            return 0;
         }
     }
     else {
@@ -874,10 +877,12 @@ void UARTMSP432_hwiIntFxn(uintptr_t arg)
 #endif
             Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
 
-            object->writeCallback((UART_Handle)arg, (void *) object->writeBuf,
+            return object->writeCallback((UART_Handle)arg, (void *) object->writeBuf,
                     object->writeSize);
         }
     }
+
+    return 0;
 }
 
 /*
@@ -1161,14 +1166,14 @@ int_fast32_t UARTMSP432_read(UART_Handle handle, void *buffer, size_t size)
 /*
  *  ======== UARTMSP432_readCancel ========
  */
-void UARTMSP432_readCancel(UART_Handle handle)
+long UARTMSP432_readCancel(UART_Handle handle)
 {
     uintptr_t          key;
     UARTMSP432_Object *object = handle->object;
 
     if ((object->state.readMode != UART_MODE_CALLBACK) ||
         (object->readSize == 0)) {
-        return;
+        return 0;
     }
 
     key = HwiP_disable();
@@ -1184,6 +1189,8 @@ void UARTMSP432_readCancel(UART_Handle handle)
     HwiP_restore(key);
 
     object->readFxns.readTaskFxn(handle);
+
+    return 0;
 }
 
 /*

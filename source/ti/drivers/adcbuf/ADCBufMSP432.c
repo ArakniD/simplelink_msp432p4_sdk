@@ -92,17 +92,17 @@ int_fast16_t ADCBufMSP432_adjustRawValues(ADCBuf_Handle handle, void *sampleBuff
         uint_fast16_t sampleCount, uint32_t adcChannel);
 int_fast16_t ADCBufMSP432_convertAdjustedToMicroVolts(ADCBuf_Handle handle, uint32_t adcChannel,
         void *adjustedSampleBuffer, uint32_t outputMicroVoltBuffer[], uint_fast16_t sampleCount);
-static void blockingConvertCallback(ADCBuf_Handle handle, ADCBuf_Conversion *conversion,
+static long blockingConvertCallback(ADCBuf_Handle handle, ADCBuf_Conversion *conversion,
         void *activeADCBuffer, uint32_t completedChannel);
 static bool initHw(ADCBufMSP432_Object *object, ADCBufMSP432_HWAttrs const *hwAttrs);
 static int_fast16_t configDMA(ADCBuf_Handle handle,
         ADCBufMSP432_HWAttrs const *hwAttrs, ADCBuf_Conversion *conversions);
-static void completeConversion(ADCBuf_Handle handle);
+static long completeConversion(ADCBuf_Handle handle);
 static int_fast16_t primeConvert(ADCBuf_Handle handle,
         ADCBufMSP432_HWAttrs const *hwAttrs, ADCBuf_Conversion *conversions,
         uint_fast8_t channelCount);
-void ADCBufMSP432DMA_hwiIntFxn(uintptr_t arg);
-void ADCBufMSP432_hwiIntFxn(uintptr_t arg);
+long ADCBufMSP432DMA_hwiIntFxn(uintptr_t arg);
+long ADCBufMSP432_hwiIntFxn(uintptr_t arg);
 
 /* Semaphore to synchronize ADC access */
 static SemaphoreP_Handle globalMutex;
@@ -115,7 +115,9 @@ static uint32_t adcTriggerTable[MAX_ADC_TRIGGER_SOURCE] = {
     TIMER_A1_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_2,
     TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1,
     TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_2,
+#ifdef TIMER_A3_BASE
     TIMER_A3_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1
+#endif
 };
 
 /* ADC trigger source table */
@@ -148,7 +150,7 @@ extern const ADCBuf_Params ADCBuf_defaultParams;
 /*
  *  ======== blockingConvertCallback ========
  */
-static void blockingConvertCallback(ADCBuf_Handle handle,
+static long blockingConvertCallback(ADCBuf_Handle handle,
         ADCBuf_Conversion *conversion, void *activeADCBuffer,
    uint32_t completedChannel)
 {
@@ -157,16 +159,17 @@ static void blockingConvertCallback(ADCBuf_Handle handle,
     DebugP_log0("ADCBuf: posting transferComplete semaphore");
 
     /* Indicate transfer complete */
-    SemaphoreP_post(object->convertComplete);
+    return SemaphoreP_post(object->convertComplete);
 }
 
 /*
  *  ======== completeConversion ========
  */
-static void completeConversion(ADCBuf_Handle handle)
+static long completeConversion(ADCBuf_Handle handle)
 {
     ADCBufMSP432_Object        *object = handle->object;
     uint_fast8_t               i;
+    long    xSwitch = 0;
 
     /* If it is multiple channels sampling, the callback function is invoked
      * until all the channels sampling is finished and callback is called for
@@ -175,7 +178,7 @@ static void completeConversion(ADCBuf_Handle handle)
     /* Perform callback in a HWI context. The callback ideally is invoked in
      * SWI instead of HWI */
     for (i = 0; i < object->channelCount; i++) {
-        object->callBackFxn(handle, &object->conversions[i],
+        xSwitch |= object->callBackFxn(handle, &object->conversions[i],
             (!object->pingpongFlag) ? object->conversions[i].sampleBuffer :
                 object->conversions[i].sampleBufferTwo,
             object->conversions[i].adcChannel);
@@ -200,16 +203,18 @@ static void completeConversion(ADCBuf_Handle handle)
             object->conversionSampleBuf = object->conversions->sampleBufferTwo;
         }
     }
+
+    return xSwitch;
 }
 
 /*
  *  ======== completeDMAConversion ========
  */
-static void completeDMAConversion(ADCBuf_Handle handle)
+static long completeDMAConversion(ADCBuf_Handle handle)
 {
     ADCBufMSP432_Object        *object = handle->object;
     uint_fast8_t               i;
-
+    long    xSwitch = 0;
     /* If it is multiple channels sampling, the callback function is invoked
      * until all the channels sampling is finished and callback is called for
      * each channel.
@@ -217,7 +222,7 @@ static void completeDMAConversion(ADCBuf_Handle handle)
     /* Perform callback in a HWI context. The callback ideally is invoked in
      * SWI instead of HWI */
     for (i = 0; i < object->channelCount; i++) {
-        object->callBackFxn(handle, &object->conversions[i],
+        xSwitch |= object->callBackFxn(handle, &object->conversions[i],
             (!object->pingpongFlag) ? object->conversions[i].sampleBuffer :
                 object->conversions[i].sampleBufferTwo,
             object->conversions[i].adcChannel);
@@ -243,6 +248,7 @@ static void completeDMAConversion(ADCBuf_Handle handle)
         object->conversions = NULL;
         Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
     }
+    return xSwitch;
 }
 
 /*
@@ -286,11 +292,11 @@ static int_fast16_t configDMA(ADCBuf_Handle handle,
         pingpongTransfer->dmaChannel = DMA_CH7_ADC14;
         pingpongTransfer->ctlOptions = UDMA_SIZE_16 | UDMA_SRC_INC_NONE |
             UDMA_DST_INC_16 | UDMA_ARB_1;
-        pingpongTransfer->dmaTransferSource = (void *) &ADC14->MEM[0];
-        pingpongTransfer->dmaPrimaryDestination = conversion->sampleBuffer;
-        pingpongTransfer->dmaAlternateDestination =
-            conversion->sampleBufferTwo;
-        pingpongTransfer->transferSize = conversion->samplesRequestedCount;
+        pingpongTransfer->specs[1].src = pingpongTransfer->specs[0].src = (void *) &ADC14->MEM[0];
+        pingpongTransfer->specs[0].dst = conversion->sampleBuffer;
+        pingpongTransfer->specs[1].dst = conversion->sampleBufferTwo;
+        pingpongTransfer->specs[0].size =
+                pingpongTransfer->specs[1].size = conversion->samplesRequestedCount;
         pingpongTransfer->transferMode = UDMA_MODE_PINGPONG;
         /* Initialize PingPong Transfer and return error if unsuccessful */
         if (!UDMAMSP432_setupPingPongTransfer(pingpongTransfer)) {
@@ -304,9 +310,9 @@ static int_fast16_t configDMA(ADCBuf_Handle handle,
         transfer->dmaChannel = DMA_CH7_ADC14;
         transfer->ctlOptions = UDMA_SIZE_16 | UDMA_SRC_INC_NONE |
             UDMA_DST_INC_16 | UDMA_ARB_1;
-        transfer->dmaTransferSource = (void *) &ADC14->MEM[0];
-        transfer->dmaTransferDestination = conversion->sampleBuffer;
-        transfer->transferSize = conversion->samplesRequestedCount;
+        transfer->spec.src = (void *) &ADC14->MEM[0];
+        transfer->spec.dst = conversion->sampleBuffer;
+        transfer->spec.size = conversion->samplesRequestedCount;
         transfer->structSelect = UDMA_PRI_SELECT;
         transfer->transferMode = UDMA_MODE_BASIC;
         if (!UDMAMSP432_setupTransfer((UDMAMSP432_Transfer *) transfer)) {
@@ -450,7 +456,6 @@ static int_fast16_t primeConvert(ADCBuf_Handle handle,
 #else
     sysRef = SYSCTL_A_2_5V_REF;
 #endif
-
     if (refSource == ADCBufMSP432_VREFPOS_INTBUF_VREFNEG_VSS) {
 
         switch(refVolts) {
@@ -740,7 +745,7 @@ void ADCBufMSP432_close(ADCBuf_Handle handle)
     }
     /* Freeing up the resource with the Timer driver */
     if (hwAttrs->adcTriggerSource == ADCBufMSP432_TIMER_TRIGGER) {
-        TimerMSP432_freeTimerResource(timerAddr);
+    TimerMSP432_freeTimerResource(timerAddr);
     }
 
     object->isOpen = false;
@@ -912,7 +917,7 @@ uint_fast8_t ADCBufMSP432_getResolution(ADCBuf_Handle handle)
 /*
  *  ======== ADCBufMSP432_hwiIntFxn ========
  */
-void ADCBufMSP432_hwiIntFxn(uintptr_t arg)
+long ADCBufMSP432_hwiIntFxn(uintptr_t arg)
 {
     uint64_t                  intStatus;
     uint_fast8_t              i;
@@ -966,18 +971,19 @@ void ADCBufMSP432_hwiIntFxn(uintptr_t arg)
                 MAP_Timer_A_stopTimer(object->timerAddr);
             }
         }
-        completeConversion((ADCBuf_Handle) arg);
+        return completeConversion((ADCBuf_Handle) arg);
     }
+
+    return 0;
 }
 /*
  *  ======== ADCBufMSP432DMA_hwiIntFxn ========
  */
-void ADCBufMSP432DMA_hwiIntFxn(uintptr_t arg)
+long ADCBufMSP432DMA_hwiIntFxn(uintptr_t arg)
 {
     ADCBufMSP432_Object       *object = ((ADCBuf_Handle) arg)->object;
     ADCBufMSP432_HWAttrs const *hwAttrs = ((ADCBuf_Handle) arg)->hwAttrs;
-
-    completeDMAConversion((ADCBuf_Handle) arg);
+    long xSwitch = completeDMAConversion((ADCBuf_Handle) arg);
     if (object->recurrenceMode == ADCBuf_RECURRENCE_MODE_CONTINUOUS) {
 
         /* Switch between primary and alternate buffers with DMA's PingPong
@@ -996,6 +1002,7 @@ void ADCBufMSP432DMA_hwiIntFxn(uintptr_t arg)
             MAP_Timer_A_stopTimer(object->timerAddr);
         }
     }
+    return xSwitch;
 }
 
 /*

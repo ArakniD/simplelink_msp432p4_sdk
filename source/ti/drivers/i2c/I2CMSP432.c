@@ -72,9 +72,9 @@ int_fast16_t I2CMSP432_control(I2C_Handle handle, uint_fast16_t cmd, void *arg);
 void I2CMSP432_init(I2C_Handle handle);
 I2C_Handle I2CMSP432_open(I2C_Handle handle, I2C_Params *params);
 bool I2CMSP432_transfer(I2C_Handle handle, I2C_Transaction *transaction);
-static void blockingTransferCallback(I2C_Handle handle, I2C_Transaction *msg,
+static long blockingTransferCallback(I2C_Handle handle, I2C_Transaction *msg,
     bool transferStatus);
-static void completeTransfer(I2C_Handle handle);
+static long completeTransfer(I2C_Handle handle);
 static void initHw(I2CMSP432_Object *object,
         I2CMSP432_HWAttrsV1 const *hwAttrs, uint32_t inputClkFreq);
 static int perfChangeNotifyFxn(unsigned int eventType, uintptr_t eventArg,
@@ -109,7 +109,7 @@ static const uint32_t bitRates[] = {
 /*
  *  ======== blockingTransferCallback ========
  */
-static void blockingTransferCallback(I2C_Handle handle, I2C_Transaction *msg,
+static long blockingTransferCallback(I2C_Handle handle, I2C_Transaction *msg,
     bool transferStatus)
 {
     I2CMSP432_Object *object = handle->object;
@@ -118,27 +118,26 @@ static void blockingTransferCallback(I2C_Handle handle, I2C_Transaction *msg,
         ((I2CMSP432_HWAttrsV1 const *)(handle->hwAttrs))->baseAddr);
 
     /* Indicate transfer complete */
-    SemaphoreP_post(object->transferComplete);
+    return SemaphoreP_post(object->transferComplete);
 }
 
 /*
  *  ======== completeTransfer =======
  */
-static void completeTransfer(I2C_Handle handle)
+static long completeTransfer(I2C_Handle handle)
 {
     I2CMSP432_Object          *object = ((I2C_Handle) handle)->object;
     I2CMSP432_HWAttrsV1 const *hwAttrs = ((I2C_Handle) handle)->hwAttrs;
-
+    long    xSwitch = 0;
     DebugP_log1("I2C:(%p) ISR Transfer Complete", hwAttrs->baseAddr);
 
     /* If this pointer is NULL, the transfer was canceled */
     if (object->currentTransaction == NULL) {
-        return;
+        return xSwitch;
     }
 
     /* See if we need to process any other transactions */
     if (object->headPtr == object->tailPtr) {
-
         /* No other transactions need to occur */
         object->headPtr = NULL;
         object->tailPtr = NULL;
@@ -148,7 +147,7 @@ static void completeTransfer(I2C_Handle handle)
          * may initiate a transfer in the callback which will call
          * primeTransfer().
          */
-        object->transferCallbackFxn(handle, object->currentTransaction,
+        xSwitch = object->transferCallbackFxn(handle, object->currentTransaction,
             (object->mode == I2CMSP432_IDLE_MODE));
 
         /* Remove constraints set during transfer */
@@ -173,7 +172,7 @@ static void completeTransfer(I2C_Handle handle)
          * initiate a transfer in the callback which will add an
          * additional transfer to the queue.
          */
-        object->transferCallbackFxn(handle, object->currentTransaction,
+        xSwitch = object->transferCallbackFxn(handle, object->currentTransaction,
             (object->mode == I2CMSP432_IDLE_MODE));
 
         DebugP_log2("I2C:(%p) ISR Priming next I2C transaction (%p) from queue",
@@ -182,6 +181,7 @@ static void completeTransfer(I2C_Handle handle)
         primeTransfer(object, hwAttrs, object->headPtr);
     }
 
+    return xSwitch;
 }
 
 /*
@@ -410,7 +410,7 @@ int_fast16_t I2CMSP432_control(I2C_Handle handle, uint_fast16_t cmd, void *arg)
  *
  *  The handler is a generic handler for a I2C object.
  */
-void I2CMSP432_hwiIntFxn(uintptr_t arg)
+long I2CMSP432_hwiIntFxn(uintptr_t arg)
 {
     uint8_t                    intStatus;
     unsigned int               key;
@@ -425,7 +425,7 @@ void I2CMSP432_hwiIntFxn(uintptr_t arg)
 
     /* Filter any spurious interrupts */
     if (!(intStatus & ALL_INTERRUPTS)) {
-        return;
+        return 0;
     }
 
 
@@ -452,8 +452,7 @@ void I2CMSP432_hwiIntFxn(uintptr_t arg)
          */
         case I2CMSP432_ERROR:
         case I2CMSP432_IDLE_MODE:
-            completeTransfer((I2C_Handle) arg);
-            break;
+            return completeTransfer((I2C_Handle) arg);
 
         case I2CMSP432_WRITE_MODE:
             if (object->writeCountIdx) {
@@ -481,7 +480,7 @@ void I2CMSP432_hwiIntFxn(uintptr_t arg)
                         "Data to write: 0x%x; Writing w/ STOP bit",
                         hwAttrs->baseAddr, *(object->writeBufIdx));
 
-                    completeTransfer((I2C_Handle) arg);
+                    return completeTransfer((I2C_Handle) arg);
                 }
                 else {
                     /* Write data contents into data register */
@@ -496,13 +495,21 @@ void I2CMSP432_hwiIntFxn(uintptr_t arg)
                     object->writeBufIdx++;
                     object->writeCountIdx--;
                 }
-            }
-            /*
-             * Done writing data to the I2C slave. If no data need be read,
-             * the ISR would not get here as it would have finished the I2C
-             * transfer in the logical check above.
-             */
-            else {
+            } else if (object->currentTransaction->readSlaveAddress != 0) {
+                /* Read slave address different to write slave address */
+                MAP_I2C_setSlaveAddress(
+                      hwAttrs->baseAddr,
+                      object->currentTransaction->readSlaveAddress);
+               /* Start the I2C transfer by sending the start bit */
+               MAP_I2C_masterSendStart(hwAttrs->baseAddr);
+               /* Null out this read slave so we continue with the rest */
+               object->currentTransaction->readSlaveAddress = 0;
+           /*
+            * Done writing data to the I2C slave. If no data need be read,
+            * the ISR would not get here as it would have finished the I2C
+            * transfer in the logical check above.
+            */
+            } else {
                 /* Next state: Receive mode */
                 object->mode = I2CMSP432_READ_MODE;
                 MAP_I2C_setMode(hwAttrs->baseAddr, EUSCI_B_I2C_RECEIVE_MODE);
@@ -564,7 +571,7 @@ void I2CMSP432_hwiIntFxn(uintptr_t arg)
                 else {
                     /* Next state: Idle mode */
                     object->mode = I2CMSP432_IDLE_MODE;
-                    completeTransfer((I2C_Handle) arg);
+                    return completeTransfer((I2C_Handle) arg);
                 }
             }
             break; /* I2CMSP432_READ_MODE */
@@ -573,6 +580,8 @@ void I2CMSP432_hwiIntFxn(uintptr_t arg)
             object->mode = I2CMSP432_ERROR;
             break;
     }
+
+    return 0;
 }
 
 /*
@@ -807,7 +816,6 @@ bool I2CMSP432_transfer(I2C_Handle handle, I2C_Transaction *transaction)
     }
 
     key = HwiP_disable();
-
     if (object->transferMode == I2C_MODE_CALLBACK) {
         /* Check if a transfer is in progress */
         if (object->headPtr) {
@@ -824,6 +832,7 @@ bool I2CMSP432_transfer(I2C_Handle handle, I2C_Transaction *transaction)
             return (true);
         }
     }
+
 
     /* Store the headPtr indicating I2C is in use */
     object->headPtr = transaction;

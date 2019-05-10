@@ -248,7 +248,7 @@ typedef enum I2CSlave_TransferMode_ {
 
  *  @param  bool                     Results of the I2CSlave transaction
  */
-typedef void (*I2CSlave_CallbackFxn)(I2CSlave_Handle handle, bool status);
+typedef long (*I2CSlave_CallbackFxn)(I2CSlave_Handle handle, bool status);
 
 /*!
  *  @brief  I2CSlave Parameters

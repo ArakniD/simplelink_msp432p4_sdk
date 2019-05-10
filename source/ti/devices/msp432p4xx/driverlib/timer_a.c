@@ -715,10 +715,12 @@ void Timer_A_registerInterrupt(uint32_t timer, uint_fast8_t interruptSelect,
             Interrupt_registerInterrupt(INT_TA2_0, intHandler);
             Interrupt_enableInterrupt(INT_TA2_0);
             break;
+#ifdef TIMER_A3_BASE
         case TIMER_A3_BASE:
             Interrupt_registerInterrupt(INT_TA3_0, intHandler);
             Interrupt_enableInterrupt(INT_TA3_0);
             break;
+#endif
         default:
             ASSERT(false);
         }
@@ -738,10 +740,12 @@ void Timer_A_registerInterrupt(uint32_t timer, uint_fast8_t interruptSelect,
             Interrupt_registerInterrupt(INT_TA2_N, intHandler);
             Interrupt_enableInterrupt(INT_TA2_N);
             break;
+#ifdef TIMER_A3_BASE
         case TIMER_A3_BASE:
             Interrupt_registerInterrupt(INT_TA3_N, intHandler);
             Interrupt_enableInterrupt(INT_TA3_N);
             break;
+#endif
         default:
             ASSERT(false);
         }
@@ -769,10 +773,12 @@ void Timer_A_unregisterInterrupt(uint32_t timer, uint_fast8_t interruptSelect)
             Interrupt_disableInterrupt(INT_TA2_0);
             Interrupt_unregisterInterrupt(INT_TA2_0);
             break;
+#ifdef TIMER_A3_BASE
         case TIMER_A3_BASE:
             Interrupt_disableInterrupt(INT_TA3_0);
             Interrupt_unregisterInterrupt(INT_TA3_0);
             break;
+#endif
         default:
             ASSERT(false);
         }
@@ -792,10 +798,12 @@ void Timer_A_unregisterInterrupt(uint32_t timer, uint_fast8_t interruptSelect)
             Interrupt_disableInterrupt(INT_TA2_N);
             Interrupt_unregisterInterrupt(INT_TA2_N);
             break;
+#ifdef TIMER_A3_BASE
         case TIMER_A3_BASE:
             Interrupt_disableInterrupt(INT_TA3_N);
             Interrupt_unregisterInterrupt(INT_TA3_N);
             break;
+#endif
         default:
             ASSERT(false);
         }

@@ -136,7 +136,7 @@ int32_t Timer_start(Timer_Handle handle)
 /*
  *  ======== Timer_stop ========
  */
-void Timer_stop(Timer_Handle handle)
+long Timer_stop(Timer_Handle handle)
 {
-    handle->fxnTablePtr->stopFxn(handle);
+    return handle->fxnTablePtr->stopFxn(handle);
 }

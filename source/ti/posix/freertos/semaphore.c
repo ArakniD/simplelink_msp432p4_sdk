@@ -210,6 +210,13 @@ int sem_wait(sem_t *semaphore)
     return (0);
 }
 
+int sem_pend(sem_t *semaphore, TickType_t ticks)
+{
+    sem_obj *obj = (sem_obj*)(&semaphore->freertos);
+
+    return semaphorePend(obj->sem, ticks);
+}
+
 /*
  *************************************************************************
  *                      Internal functions

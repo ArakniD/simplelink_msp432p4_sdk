@@ -361,7 +361,7 @@ void DisplayUartAnsi_clearLines(Display_Handle hDisplay,
  * @return      void
  */
 void DisplayUartMin_vprintf(Display_Handle hDisplay, uint8_t line,
-                            uint8_t column, char *fmt, va_list va)
+                            uint8_t column, const char *fmt, va_list va)
 {
     DisplayUart_Object  *object  = (DisplayUart_Object  *)hDisplay->object;
     DisplayUart_HWAttrs *hwAttrs = (DisplayUart_HWAttrs *)hDisplay->hwAttrs;
@@ -395,7 +395,7 @@ void DisplayUartMin_vprintf(Display_Handle hDisplay, uint8_t line,
  * @return      void
  */
 void DisplayUartAnsi_vprintf(Display_Handle hDisplay, uint8_t line,
-                             uint8_t column, char *fmt, va_list va)
+                             uint8_t column, const char *fmt, va_list va)
 {
     DisplayUart_Object  *object  = (DisplayUart_Object  *)hDisplay->object;
     DisplayUart_HWAttrs *hwAttrs = (DisplayUart_HWAttrs *)hDisplay->hwAttrs;

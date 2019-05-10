@@ -74,10 +74,11 @@ static bool setClockObjTimeout(ClockP_Handle pObj);
  */
 void ClockP_callbackFxn(uintptr_t arg)
 {
-    TimerHandle_t       handle = (TimerHandle_t)arg;
+    TimerHandle_t    handle = (TimerHandle_t)arg;
     ClockP_FreeRTOSObj *obj;
 
     obj = (ClockP_FreeRTOSObj *)pvTimerGetTimerID(handle);
+    traceTIMER_ENTER((unsigned long)obj);
 
     /*
      *  If the period is non-zero and different from the initial timeout
@@ -92,6 +93,8 @@ void ClockP_callbackFxn(uintptr_t arg)
     }
 
     (obj->fxn)(obj->arg);
+
+    traceTIMER_EXIT();
 }
 
 /*
@@ -100,10 +103,10 @@ void ClockP_callbackFxn(uintptr_t arg)
 ClockP_Handle ClockP_create(ClockP_Fxn clockFxn, uint32_t timeout,
         ClockP_Params *params)
 {
-    ClockP_Params       defaultParams;
+    ClockP_Params defaultParams;
     ClockP_FreeRTOSObj *pObj;
     UBaseType_t         autoReload;
-    TimerHandle_t       handle = NULL;
+    TimerHandle_t    handle = NULL;
     TickType_t          initialTimeout = timeout;
 
     if (params == NULL) {
@@ -291,7 +294,7 @@ void ClockP_start(ClockP_Handle handle)
      */
     pObj->curTimeout = pObj->timeout;
     setClockObjTimeout(handle);
-}
+    }
 
 #if (configSUPPORT_STATIC_ALLOCATION == 1)
 /*

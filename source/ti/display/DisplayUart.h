@@ -198,9 +198,9 @@ void DisplayUartAnsi_clearLines(Display_Handle handle,
                                 uint8_t toLine);
 
 void DisplayUartMin_vprintf(Display_Handle handle, uint8_t line,
-                            uint8_t column, char *fmt, va_list va);
+                            uint8_t column, const char *fmt, va_list va);
 void DisplayUartAnsi_vprintf(Display_Handle handle, uint8_t line,
-                             uint8_t column, char *fmt, va_list va);
+                             uint8_t column, const char *fmt, va_list va);
 
 void DisplayUartMin_close(Display_Handle);
 void DisplayUartAnsi_close(Display_Handle);

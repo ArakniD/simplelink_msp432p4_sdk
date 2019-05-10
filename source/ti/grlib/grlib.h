@@ -177,7 +177,7 @@ struct Graphics_Display
     int32_t size;                 //!< The size of this structure.
     void *displayData;            //!< A pointer to display driver-specific data.
     uint16_t width;                //!< The width of this display.
-    uint16_t heigth;            //!< The height of this display.
+    uint16_t height;            //!< The height of this display.
     const Graphics_Display_Functions *pFxns;  //!< Implementation of this display
 };
 
@@ -1064,6 +1064,9 @@ extern int32_t Graphics_getRectangleIntersection(Graphics_Rectangle *psRect1,
                                                  Graphics_Rectangle *psRect2,
                                                  Graphics_Rectangle *
                                                  psIntersect);
+extern int32_t Graphics_getRectangleUnion(Graphics_Rectangle *rect1,
+                                          Graphics_Rectangle *rect2,
+                                          Graphics_Rectangle *intersect);
 extern void Graphics_setBackgroundColor(Graphics_Context *context,
                                         int32_t value);
 extern uint16_t Graphics_getDisplayWidth(Graphics_Context *context);

@@ -77,9 +77,9 @@ bool I2CSlaveMSP432_write(I2CSlave_Handle handle, const void *buffer,
                           size_t size);
 bool I2CSlaveMSP432_read(I2CSlave_Handle handle,void *buffer,
                          size_t size);
-static void blockingTransferCallback(I2CSlave_Handle handle,
+static long blockingTransferCallback(I2CSlave_Handle handle,
                                      bool transferStatus);
-static void completeTransfer(I2CSlave_Handle handle);
+static long completeTransfer(I2CSlave_Handle handle);
 static void initHw(I2CSlaveMSP432_Object *object,
                    I2CSlaveMSP432_HWAttrs const *hwAttrs);
 static bool primeTransfer(I2CSlave_Handle handle, const void *writeBuffer,
@@ -115,7 +115,7 @@ const I2CSlave_FxnTable I2CSlaveMSP432_fxnTable = {
 /*
  *  ======== blockingTransferCallback ========
  */
-static void blockingTransferCallback(I2CSlave_Handle handle,
+static long blockingTransferCallback(I2CSlave_Handle handle,
     bool transferStatus)
 {
     I2CSlaveMSP432_Object *object = handle->object;
@@ -124,15 +124,16 @@ static void blockingTransferCallback(I2CSlave_Handle handle,
         ((I2CSlaveMSP432_HWAttrs const *)(handle->hwAttrs))->baseAddr);
 
     /* Indicate transfer complete */
-    SemaphoreP_post(object->transferComplete);
+    return SemaphoreP_post(object->transferComplete);
 }
 
 /*
  *  ======== completeTransfer =======
  */
-static void completeTransfer(I2CSlave_Handle handle)
+static long completeTransfer(I2CSlave_Handle handle)
 {
     I2CSlaveMSP432_Object *object = ((I2CSlave_Handle) handle)->object;
+    long xSwitch = 0;
     DebugP_log1("I2CSlave:(%p) ISR Transfer Complete",
         ((I2CSlaveMSP432_HWAttrs const *)(handle->hwAttrs))->baseAddr);
 
@@ -142,12 +143,14 @@ static void completeTransfer(I2CSlave_Handle handle)
      * made ready to run won't start until the interrupt has
      * finished
      */
-    object->transferCallbackFxn(handle, (object->mode == I2CSLAVE_IDLE_MODE));
+    xSwitch = object->transferCallbackFxn(handle, (object->mode == I2CSLAVE_IDLE_MODE));
 
     /* Remove constraints set during transfer */
 #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
     Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
 #endif
+
+    return xSwitch;
 }
 /*
  *  ======== initHW ========
@@ -221,19 +224,19 @@ int_fast16_t I2CSlaveMSP432_control(I2CSlave_Handle handle, uint_fast16_t cmd,
  *
  *  The handler is a generic handler for a I2CSLAVE object.
  */
-void I2CSlaveMSP432_hwiIntFxn(uintptr_t arg)
+long I2CSlaveMSP432_hwiIntFxn(uintptr_t arg)
 {
     uint16_t                     intStatus;
     I2CSlaveMSP432_Object        *object = ((I2CSlave_Handle) arg)->object;
     I2CSlaveMSP432_HWAttrs const *hwAttrs = ((I2CSlave_Handle) arg)->hwAttrs;
-
+    long xSwitch = 0;
     /* Get the interrupt status of the I2CSlave controller */
     intStatus = MAP_I2C_getEnabledInterruptStatus(hwAttrs->baseAddr);
     MAP_I2C_clearInterruptFlag(hwAttrs->baseAddr, intStatus);
 
     /* Filter any spurious interrupts */
     if (!(intStatus & ALL_INTERRUPTS)) {
-        return;
+        return 0;
     }
 
     /* Check for I2CSlave Errors */
@@ -259,12 +262,12 @@ void I2CSlaveMSP432_hwiIntFxn(uintptr_t arg)
     switch (object->mode) {
         case I2CSLAVE_ERROR:
         case I2CSLAVE_IDLE_MODE:
-            completeTransfer((I2CSlave_Handle) arg);
+            xSwitch = completeTransfer((I2CSlave_Handle) arg);
             break;
         case I2CSLAVE_START_MODE:
             if(object->transferInProgress)
             {
-                completeTransfer((I2CSlave_Handle) arg);
+                xSwitch = completeTransfer((I2CSlave_Handle) arg);
                 object->mode = I2CSLAVE_IDLE_MODE;
             }
                 break;
@@ -321,7 +324,7 @@ void I2CSlaveMSP432_hwiIntFxn(uintptr_t arg)
                 object->mode = I2CSLAVE_ERROR;
                 MAP_I2C_slaveSendNAK(hwAttrs->baseAddr);
                 MAP_I2C_slaveGetData(hwAttrs->baseAddr);
-                completeTransfer((I2CSlave_Handle) arg);
+                xSwitch = completeTransfer((I2CSlave_Handle) arg);
             }
             break; /* I2CSLAVE_READ_MODE */
 
@@ -330,6 +333,8 @@ void I2CSlaveMSP432_hwiIntFxn(uintptr_t arg)
             object->mode = I2CSLAVE_ERROR;
             break;
     }
+
+    return xSwitch;
 }
 
 /*

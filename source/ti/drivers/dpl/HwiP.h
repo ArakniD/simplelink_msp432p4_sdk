@@ -95,8 +95,11 @@ typedef enum HwiP_Status {
 
 /*!
  *  @brief  Prototype for the entry function for a hardware interrupt
+ *
+ *  Return TRUE if a yeild is required, this makes calling context switching
+ *  freeRTOS calls easy
  */
-typedef void (*HwiP_Fxn)(uintptr_t arg);
+typedef long (*HwiP_Fxn)(uintptr_t arg);
 
 /*!
  *  @brief    Basic HwiP Parameters

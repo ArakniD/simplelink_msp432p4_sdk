@@ -472,7 +472,7 @@ typedef void (*Display_clearLinesFxn)(Display_Handle handle,
 typedef void (*Display_vprintfFxn)(Display_Handle handle,
                                    uint8_t line,
                                    uint8_t column,
-                                   char *fmt,
+                                   const char *fmt,
                                    va_list va);
 
 /*!
@@ -612,7 +612,7 @@ void  Display_doClearLines(Display_Handle handle, uint8_t fromLine, uint8_t toLi
  * @return      void
  */
 void  Display_doPrintf(Display_Handle handle, uint8_t line, uint8_t column,
-                       char *fmt, ...);
+                       const char *fmt, ...);
 
 /*!
  * @brief       Closes selected Display implementations

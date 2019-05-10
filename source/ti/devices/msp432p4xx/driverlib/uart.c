@@ -291,7 +291,8 @@ uint_fast8_t UART_getInterruptStatus(uint32_t moduleInstance, uint8_t mask)
 uint_fast8_t UART_getEnabledInterruptStatus(uint32_t moduleInstance)
 {
     uint_fast8_t intStatus = UART_getInterruptStatus(moduleInstance,
-    EUSCI_A_UART_RECEIVE_INTERRUPT_FLAG | EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG);
+    EUSCI_A_UART_RECEIVE_INTERRUPT_FLAG | EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG
+    | EUSCI_A_UART_STARTBIT_INTERRUPT_FLAG | EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG);
     uint_fast8_t intEnabled = EUSCI_A_CMSIS(moduleInstance)->IE;
 
     if (!(intEnabled & EUSCI_A_UART_RECEIVE_INTERRUPT))
@@ -302,6 +303,14 @@ uint_fast8_t UART_getEnabledInterruptStatus(uint32_t moduleInstance)
     if (!(intEnabled & EUSCI_A_UART_TRANSMIT_INTERRUPT))
     {
         intStatus &= ~EUSCI_A_UART_TRANSMIT_INTERRUPT;
+    }
+    if (!(intEnabled & EUSCI_A_UART_STARTBIT_INTERRUPT_FLAG))
+    {
+        intStatus &= ~EUSCI_A_UART_STARTBIT_INTERRUPT_FLAG;
+    }
+    if (!(intEnabled & EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG))
+    {
+        intStatus &= ~EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG;
     }
 
     intEnabled = EUSCI_A_CMSIS(moduleInstance)->CTLW0;

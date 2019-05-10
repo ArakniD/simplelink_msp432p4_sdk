@@ -126,7 +126,7 @@ void           DisplayHost_clear(Display_Handle handle);
 void           DisplayHost_clearLines(Display_Handle handle, uint8_t fromLine,
                                      uint8_t toLine);
 void           DisplayHost_vprintf(Display_Handle handle, uint8_t line,
-                                   uint8_t column, char *fmt, va_list va);
+                                   uint8_t column, const char *fmt, va_list va);
 void DisplayHost_close(Display_Handle);
 int DisplayHost_control(Display_Handle handle, unsigned int cmd, void *arg);
 unsigned int   DisplayHost_getType(void);

@@ -271,13 +271,15 @@ void GPIO_getConfig(uint_least8_t index, GPIO_PinConfig *pinConfig)
  *  ======== GPIO_hwiIntFxn ========
  *  Hwi function that processes GPIO interrupts.
  */
-void GPIO_hwiIntFxn(uintptr_t portIndex)
+long GPIO_hwiIntFxn(uintptr_t portIndex)
 {
     unsigned int      bitNum;
     unsigned int      pinIndex;
     uint32_t          port;
     uint32_t          pins;
+    long              xSwitch = 0;
     PortCallbackInfo *portCallbackInfo;
+    PinConfig *config; // = (PinConfig *) &GPIOMSP432_config.pinConfigs[index];
 
     portCallbackInfo = &gpioCallbackInfo[portIndex];
     port = portIndex + 1;
@@ -295,10 +297,31 @@ void GPIO_hwiIntFxn(uintptr_t portIndex)
         pinIndex = portCallbackInfo->pinIndex[bitNum];
         /* only call plugged callbacks */
         if (pinIndex != CALLBACK_INDEX_NOT_CONFIGURED) {
-            GPIOMSP432_config.callbacks[pinIndex](pinIndex);
+            config = (PinConfig *) &GPIOMSP432_config.pinConfigs[pinIndex];
+
+            /* Change the pin interrupt polarity before the callback to ensure fastest possible
+             * change before being usurped by the callback
+             */
+            if ((GPIOMSP432_config.pinConfigs[pinIndex] & GPIO_CFG_INT_MASK) == GPIO_CFG_IN_INT_BOTH_EDGES)
+            {
+                if (MAP_GPIO_getInputPinValue(config->port, config->pin))
+                {
+                    // Invert the trigger level now we're on both edges ...
+                    MAP_GPIO_interruptEdgeSelect(config->port, config->pin, GPIO_HIGH_TO_LOW_TRANSITION );
+                }
+                else
+                {
+                    MAP_GPIO_interruptEdgeSelect(config->port, config->pin, GPIO_LOW_TO_HIGH_TRANSITION );
+                }
+            }
+
+            xSwitch |= GPIOMSP432_config.callbacks[pinIndex](pinIndex);
         }
+
         pins &= ~(1 << bitNum);
     }
+
+    return xSwitch;
 }
 
 /*
@@ -473,6 +496,9 @@ int_fast16_t GPIO_setConfig(uint_least8_t index, GPIO_PinConfig pinConfig)
             }
         }
         else {
+            /* configure output */
+            MAP_GPIO_setAsOutputPin(port, pin);
+
             /*
              * High output drive strength is only available on pins 2.0 - 2.3;
              * Ignore this setting on anything but those pins.
@@ -492,9 +518,6 @@ int_fast16_t GPIO_setConfig(uint_least8_t index, GPIO_PinConfig pinConfig)
             else {
                 MAP_GPIO_setOutputLowOnPin(port, pin);
             }
-
-            /* configure output */
-            MAP_GPIO_setAsOutputPin(port, pin);
         }
 
         /* Update the table entry with the latest values */
@@ -542,8 +565,16 @@ int_fast16_t GPIO_setConfig(uint_least8_t index, GPIO_PinConfig pinConfig)
             key = HwiP_disable();
         }
 
-        MAP_GPIO_interruptEdgeSelect(port, pin,
-            interruptType[getIntTypeNumber(pinConfig)]);
+        if ((pinConfig & GPIO_CFG_INT_MASK) == GPIO_CFG_IN_INT_BOTH_EDGES)
+        {
+           if (MAP_GPIO_getInputPinValue(port, pin))
+               MAP_GPIO_interruptEdgeSelect(port, pin, GPIO_HIGH_TO_LOW_TRANSITION );
+           else
+               MAP_GPIO_interruptEdgeSelect(port, pin, GPIO_LOW_TO_HIGH_TRANSITION );
+        }
+        else
+            MAP_GPIO_interruptEdgeSelect(port, pin,
+                interruptType[getIntTypeNumber(pinConfig)]);
         MAP_GPIO_clearInterruptFlag(port, pin);
 
         /* Update the table entry */
@@ -599,7 +630,6 @@ void GPIO_write(uint_least8_t index, unsigned int value)
 
     /* Clear output from pinConfig */
     GPIOMSP432_config.pinConfigs[index] &= ~GPIO_CFG_OUT_HIGH;
-
     if (value) {
         MAP_GPIO_setOutputHighOnPin(config->port, config->pin);
 

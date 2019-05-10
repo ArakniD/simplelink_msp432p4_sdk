@@ -116,7 +116,7 @@ void           DisplaySharp_clearLines(Display_Handle handle,
                                        uint8_t fromLine,
                                        uint8_t toLine);
 void           DisplaySharp_vprintf(Display_Handle handle, uint8_t line,
-                                    uint8_t column, char *fmt, va_list va);
+                                    uint8_t column, const char *fmt, va_list va);
 void DisplaySharp_close(Display_Handle);
 int DisplaySharp_control(Display_Handle handle, unsigned int cmd, void *arg);
 unsigned int   DisplaySharp_getType(void);

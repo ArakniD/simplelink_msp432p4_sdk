@@ -61,7 +61,7 @@ int32_t CaptureMSP432_start(Capture_Handle handle);
 void CaptureMSP432_stop(Capture_Handle handle);
 
 /* Internal static functions */
-static void CaptureMSP432_hwiIntFunction(uintptr_t arg);
+static long CaptureMSP432_hwiIntFunction(uintptr_t arg);
 static void mapPin(uint8_t port, uint8_t pin, uint8_t value);
 
 /* Function table for CaptureMSP432 implementation */
@@ -138,17 +138,22 @@ int_fast16_t CaptureMSP432_control(Capture_Handle handle, uint_fast16_t cmd,
 /*
  *  ======== Capture_hwiIntFunction ========
  */
-void CaptureMSP432_hwiIntFunction(uintptr_t arg)
+long CaptureMSP432_hwiIntFunction(uintptr_t arg)
 {
     Capture_Handle handle = (Capture_Handle) arg;
     CaptureMSP432_HWAttrs const *hwAttrs = handle->hwAttrs;
     CaptureMSP432_Object *object = handle->object;
     PowerMSP432_Freqs curFrequencies;
     uint32_t currentCount, interval, clockFreq;
+    uint_fast8_t state;
 
     /* Read the capture count */
     currentCount = MAP_Timer_A_getCaptureCompareCount(hwAttrs->timerBaseAddress,
         object->ccrRegister);
+
+    /* Read the capture input state */
+    state = MAP_Timer_A_getSynchronizedCaptureCompareInput(hwAttrs->timerBaseAddress,
+            object->ccrRegister, TIMER_A_READ_SYNCHRONIZED_CAPTURECOMPAREINPUT);
 
     /* Clear interrupt */
     MAP_Timer_A_clearCaptureCompareInterrupt(hwAttrs->timerBaseAddress,
@@ -204,7 +209,7 @@ void CaptureMSP432_hwiIntFunction(uintptr_t arg)
     }
 
     /* Invoke the callback */
-    object->callBack(handle, (uint32_t) interval);
+    return object->callBack(handle, (uint32_t) interval, state);
 }
 
 /*
@@ -276,8 +281,8 @@ Capture_Handle CaptureMSP432_open(Capture_Handle handle, Capture_Params *params)
     if (getPortMap(hwAttrs->capturePort)) {
         mapPin(port, pin, getPortMap(hwAttrs->capturePort));
     }
-    else if (hwAttrs->capturePort == CaptureMSP432_P8_0_TA1 ||
-        hwAttrs->capturePort == CaptureMSP432_P8_1_TA2) {
+    else if (hwAttrs->capturePort == CaptureMSP432_P8_0_TA1_0 ||
+        hwAttrs->capturePort == CaptureMSP432_P8_1_TA2_0 ) {
         periphValue = GPIO_SECONDARY_MODULE_FUNCTION;
     }
 

@@ -88,7 +88,7 @@ void Graphics_initContext(Graphics_Context *context,
     context->clipRegion.xMin = 0;
     context->clipRegion.yMin = 0;
     context->clipRegion.xMax = display->width - 1;
-    context->clipRegion.yMax = display->heigth - 1;
+    context->clipRegion.yMax = display->height - 1;
 
     //
     // Provide a default color and font.
@@ -343,7 +343,7 @@ uint16_t Graphics_getDisplayWidth(Graphics_Context *context)
 //*****************************************************************************
 uint16_t Graphics_getDisplayHeight(Graphics_Context *context)
 {
-    return(context->display->heigth);
+    return(context->display->height);
 }
 
 //*****************************************************************************
@@ -360,7 +360,7 @@ uint16_t Graphics_getDisplayHeight(Graphics_Context *context)
 //*****************************************************************************
 uint16_t Graphics_getHeightOfDisplay(const Graphics_Display *display)
 {
-    return(display->heigth);
+    return(display->height);
 }
 
 //*****************************************************************************

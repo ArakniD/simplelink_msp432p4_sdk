@@ -50,7 +50,7 @@
  *  1.  An array of TimerMSP432_Object elements, which will be used by
  *  by the driver to maintain instance state.
  *  Below is an example TimerMSP432_Object array appropriate for the MSP432
- *  LaunchPad board:
+ *  Launchpad board:
  *  @code
  *    #include <ti/drivers/Timer.h>
  *    #include <ti/drivers/timer/TimerMSP432.h>
@@ -61,7 +61,7 @@
  *  2.  An array of TimerMSP432_HWAttrs elements that defines which
  *
  *  Below is an example TimerMSP432_HWAttrs array appropriate for the MSP432
- *  LaunchPad board:
+ *  Launchpad board:
  *  @code
  *  const TimerMSP432_HWAttrs timerMSP432HWAttrs[3] =
  *  {
@@ -91,7 +91,7 @@
  *  table, the device specific timer object instance, and the device specific
  *  Hardware Attributes to be used for each timer instance.
  *  Below is an example @ref Timer_Config array appropriate for the MSP432
- *  LaunchPad board:
+ *  Launchpad board:
  *  @code
  *    const Timer_Config Timer_config[3] = {
  *      {
@@ -230,6 +230,7 @@ typedef struct TimerMSP432_Object_ {
     Power_NotifyObj     perfChangeNotify;
     uint32_t            perfConstraintMask;
     Timer_CallBackFxn   callBack;
+    uintptr_t           callBackArgs;
     Timer_Mode          mode;
     Timer_PeriodUnits   units;
     uint32_t            rawPeriod;

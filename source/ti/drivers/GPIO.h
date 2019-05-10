@@ -358,7 +358,7 @@ typedef uint32_t GPIO_PinConfig;
  *                          GPIO interrupts, by using the index to identify
  *                          the GPIO that caused the interrupt.
  */
-typedef void (*GPIO_CallbackFxn)(uint_least8_t index);
+typedef long (*GPIO_CallbackFxn)(uint_least8_t index);
 
 /*!
  *  @brief      Clear a GPIO pin interrupt flag

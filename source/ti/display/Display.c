@@ -165,7 +165,7 @@ void Display_doClearLines(Display_Handle handle, uint8_t fromLine, uint8_t toLin
  *  ======== Display_doPrintf ========
  */
 void Display_doPrintf(Display_Handle handle, uint8_t line, uint8_t column,
-                      char *fmt, ...)
+                      const char *fmt, ...)
 {
     if (NULL == handle)
     {

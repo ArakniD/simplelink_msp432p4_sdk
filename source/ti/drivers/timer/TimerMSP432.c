@@ -55,7 +55,7 @@ uint32_t TimerMSP432_getCount(Timer_Handle handle);
 void TimerMSP432_init(Timer_Handle handle);
 Timer_Handle TimerMSP432_open(Timer_Handle handle, Timer_Params *params);
 int32_t TimerMSP432_start(Timer_Handle handle);
-void TimerMSP432_stop(Timer_Handle handle);
+long TimerMSP432_stop(Timer_Handle handle);
 
 /* Internal static Functions */
 static bool initTimerHardware(Timer_Handle handle, PowerMSP432_Freqs powerFreqs);
@@ -66,7 +66,7 @@ static int_fast16_t perfChangeNotifyFxn(uint_fast16_t eventType,
     uintptr_t eventArg, uintptr_t clientArg);
 static bool setT32TickCount(Timer_Handle handle, uint32_t clockFreq);
 static bool setTATickCount(Timer_Handle handle, uint32_t clockFreq);
-static void TimerMSP432_hwiIntFunction(uintptr_t arg);
+static long TimerMSP432_hwiIntFunction(uintptr_t arg);
 
 /* Function table of function to handle Timer_A */
 const Timer_FxnTable TimerMSP432_Timer_A_fxnTable = {
@@ -238,11 +238,11 @@ static inline uint32_t getTimerResourceMask(uint32_t baseAddress)
         case TIMER_A2_BASE:
 
             return (0x10);
-
+#ifdef TIMER_A3_BASE
         case TIMER_A3_BASE:
 
             return (0x20);
-
+#endif
         default:
 
             return (0x00);
@@ -507,11 +507,12 @@ void TimerMSP432_init(Timer_Handle handle)
 /*
  *  ======== TimerMSP432_hwiIntFunction ========
  */
-void TimerMSP432_hwiIntFunction(uintptr_t arg)
+long TimerMSP432_hwiIntFunction(uintptr_t arg)
 {
     Timer_Handle handle = (Timer_Handle) arg;
     TimerMSP432_HWAttrs const *hwAttrs = handle->hwAttrs;
     TimerMSP432_Object  const *object  = handle->object;
+    long xSwitch = 0;
 
     if (isTimer32Bit(hwAttrs->timerBaseAddress)) {
         MAP_Timer32_clearInterruptFlag(hwAttrs->timerBaseAddress);
@@ -522,12 +523,14 @@ void TimerMSP432_hwiIntFunction(uintptr_t arg)
     }
 
     if (object->mode != Timer_CONTINUOUS_CALLBACK) {
-        TimerMSP432_stop(handle);
+        xSwitch |= TimerMSP432_stop(handle);
     }
 
    if (object->mode != Timer_ONESHOT_BLOCKING) {
-        object->callBack(handle);
+       xSwitch |= object->callBack(handle, object->callBackArgs);
     }
+
+   return xSwitch;
 }
 
 /*
@@ -560,6 +563,7 @@ Timer_Handle TimerMSP432_open(Timer_Handle handle, Timer_Params *params)
     object->period = params->period;
     object->rawPeriod = params->period;
     object->callBack = params->timerCallback;
+    object->callBackArgs = params->timerCallbackArg;
     object->mode = params->timerMode;
     object->units = params->periodUnits;
 
@@ -699,10 +703,11 @@ int32_t TimerMSP432_start(Timer_Handle handle)
 /*
  *  ======== TimerMSP432_stop ========
  */
-void TimerMSP432_stop(Timer_Handle handle)
+long TimerMSP432_stop(Timer_Handle handle)
 {
     TimerMSP432_Object *object = handle->object;
     TimerMSP432_HWAttrs const *hwAttrs = handle->hwAttrs;
+    long xSwitch = 0;
     const uint32_t baseAddress = hwAttrs->timerBaseAddress;
     uintptr_t key;
     bool flag = false;
@@ -736,6 +741,8 @@ void TimerMSP432_stop(Timer_Handle handle)
     HwiP_restore(key);
 
     if (flag) {
-        SemaphoreP_post(object->timerSem);
+        xSwitch = SemaphoreP_post(object->timerSem);
     }
+
+    return xSwitch;
 }

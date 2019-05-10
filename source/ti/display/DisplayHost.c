@@ -155,7 +155,7 @@ void DisplayHost_clearLines(Display_Handle handle, uint8_t fromLine,
  * @return      void
  */
 void DisplayHost_vprintf(Display_Handle handle, uint8_t line,
-                         uint8_t column, char *fmt, va_list va)
+                         uint8_t column, const char *fmt, va_list va)
 {
     DisplayHost_HWAttrs *hwAttrs = (DisplayHost_HWAttrs *)handle->hwAttrs;
     int     strSize;

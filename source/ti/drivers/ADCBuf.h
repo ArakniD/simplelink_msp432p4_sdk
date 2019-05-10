@@ -248,7 +248,7 @@ typedef struct ADCBuf_Conversion_ {
  *  @brief      The definition of a callback function used by the ADC driver
  *              when used in ::ADCBuf_RETURN_MODE_CALLBACK. It is called in a HWI or SWI context depending on the device specific implementation.
  */
-typedef void (*ADCBuf_Callback)            (ADCBuf_Handle handle,
+typedef long (*ADCBuf_Callback)            (ADCBuf_Handle handle,
                                             ADCBuf_Conversion *conversion,
                                             void *completedADCBuffer,
                                             uint32_t completedChannel);

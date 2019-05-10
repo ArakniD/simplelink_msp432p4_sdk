@@ -761,10 +761,12 @@ void I2C_registerInterrupt(uint32_t moduleInstance, void (*intHandler)(void))
         Interrupt_registerInterrupt(INT_EUSCIB0, intHandler);
         Interrupt_enableInterrupt(INT_EUSCIB0);
         break;
+#ifdef EUSCI_B1_BASE
     case EUSCI_B1_BASE:
         Interrupt_registerInterrupt(INT_EUSCIB1, intHandler);
         Interrupt_enableInterrupt(INT_EUSCIB1);
         break;
+#endif
 #ifdef EUSCI_B2_BASE
         case EUSCI_B2_BASE:
         Interrupt_registerInterrupt(INT_EUSCIB2, intHandler);
@@ -790,10 +792,12 @@ void I2C_unregisterInterrupt(uint32_t moduleInstance)
         Interrupt_disableInterrupt(INT_EUSCIB0);
         Interrupt_unregisterInterrupt(INT_EUSCIB0);
         break;
+#ifdef EUSCI_B1_BASE
     case EUSCI_B1_BASE:
         Interrupt_disableInterrupt(INT_EUSCIB1);
         Interrupt_unregisterInterrupt(INT_EUSCIB1);
         break;
+#endif
 #ifdef EUSCI_B2_BASE
         case EUSCI_B2_BASE:
         Interrupt_disableInterrupt(INT_EUSCIB2);

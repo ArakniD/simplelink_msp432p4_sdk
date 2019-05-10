@@ -184,11 +184,10 @@ PowerMSP432_ModuleState PowerMSP432_module = {
 #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
 
 /* MSP432P401xx devices */
-#define NUMPERFLEVELS    4
-PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
+PowerMSP432_PerfLevel PowerMSP432_perfLevels[ePowerStateSDKMax] = {
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .DCORESEL = CS_DCO_FREQUENCY_12,
+      .DCOCLK = CS_12MHZ,
       .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
       .SELS = CS_DCOCLK_SELECT,
@@ -199,15 +198,16 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
       .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 0,
       .enableFlashBuffer = false,
-      .MCLK = 12000000,
+      .MCLK   = 12000000,
       .HSMCLK = 3000000,
-      .SMCLK = 3000000,
+      .SMCLK  = 3000000,
+      .SWOCLK = 1500000,
       .BCLK = 32768,
       .ACLK = 32768
      },
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .DCORESEL = CS_DCO_FREQUENCY_24,
+      .DCOCLK = CS_24MHZ,
       .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
       .SELS = CS_DCOCLK_SELECT,
@@ -218,15 +218,16 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
       .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 1,
       .enableFlashBuffer = true,
-      .MCLK = 24000000,
+      .MCLK   = 24000000,
       .HSMCLK = 6000000,
-      .SMCLK = 6000000,
+      .SMCLK  = 6000000,
+      .SWOCLK = 3000000,
       .BCLK = 32768,
       .ACLK = 32768
      },
     { .activeState = AM_DCDC_VCORE1,
       .VCORE = 1,
-      .DCORESEL = CS_DCO_FREQUENCY_48,
+      .DCOCLK = CS_48MHZ,
       .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
       .SELS = CS_DCOCLK_SELECT,
@@ -237,15 +238,16 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
       .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 1,
       .enableFlashBuffer = true,
-      .MCLK = 48000000,
+      .MCLK   = 48000000,
       .HSMCLK = 24000000,
-      .SMCLK = 12000000,
+      .SMCLK  = 12000000,
+      .SWOCLK = 6000000,
       .BCLK = 32768,
       .ACLK = 32768
      },
     { .activeState = AM_DCDC_VCORE1,
       .VCORE = 1,
-      .DCORESEL = CS_DCO_FREQUENCY_48,
+      .DCOCLK = CS_48MHZ,
       .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
       .SELS = CS_DCOCLK_SELECT,
@@ -256,22 +258,23 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
       .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 1,
       .enableFlashBuffer = true,
-      .MCLK = 48000000,
+      .MCLK   = 48000000,
       .HSMCLK = 48000000,
-      .SMCLK = 24000000,
+      .SMCLK  = 24000000,
+      .SWOCLK = 12000000,
       .BCLK = 32768,
       .ACLK = 32768
-     },
+     }
 };
 
 #elif DeviceFamily_ID == DeviceFamily_ID_MSP432P4x1xT
 
 /* MSP432Px1xT devices */
-#define NUMPERFLEVELS    3
-PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
+#define ePowerStateSDKMax    3
+PowerMSP432_PerfLevel PowerMSP432_perfLevels[ePowerStateSDKMax] = {
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .DCORESEL = CS_DCO_FREQUENCY_6,
+      .DCOCLK = CS_6MHZ,
       .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
       .SELS = CS_DCOCLK_SELECT,
@@ -282,15 +285,16 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
       .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 0,
       .enableFlashBuffer = false,
-      .MCLK = 6000000,
+      .MCLK   = 6000000,
       .HSMCLK = 3000000,
-      .SMCLK = 3000000,
+      .SMCLK  = 3000000,
+      .SWOCLK = 1500000,
       .BCLK = 32768,
       .ACLK = 32768
      },
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .DCORESEL = CS_DCO_FREQUENCY_12,
+      .DCOCLK = CS_12MHZ,
       .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
       .SELS = CS_DCOCLK_SELECT,
@@ -301,15 +305,16 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
       .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 1,
       .enableFlashBuffer = true,
-      .MCLK = 12000000,
+      .MCLK   = 12000000,
       .HSMCLK = 12000000,
-      .SMCLK = 6000000,
+      .SMCLK  = 6000000,
+      .SWOCLK = 3000000,
       .BCLK = 32768,
       .ACLK = 32768
      },
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .DCORESEL = CS_DCO_FREQUENCY_24,
+      .DCOCLK = CS_24MHZ,
       .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
       .SELS = CS_DCOCLK_SELECT,
@@ -320,9 +325,10 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
       .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 2,
       .enableFlashBuffer = true,
-      .MCLK = 24000000,
+      .MCLK   = 24000000,
       .HSMCLK = 24000000,
-      .SMCLK = 12000000,
+      .SMCLK  = 12000000,
+      .SWOCLK = 6000000,
       .BCLK = 32768,
       .ACLK = 32768
      },
@@ -331,11 +337,12 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
 #else
 
 /* MSP432P4x1xl devices */
-#define NUMPERFLEVELS    4
-PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
+PowerMSP432_PerfLevel PowerMSP432_perfLevels[ePowerStateSDKMax] =
+{
+    /* ePowerState1 */
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .DCORESEL = CS_DCO_FREQUENCY_12,
+      .DCOCLK = CS_12MHZ,
       .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
       .SELS = CS_DCOCLK_SELECT,
@@ -346,15 +353,17 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
       .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 1,
       .enableFlashBuffer = false,
-      .MCLK = 12000000,
+      .MCLK   = 12000000,
       .HSMCLK = 3000000,
-      .SMCLK = 3000000,
+      .SMCLK  = 3000000,
+      .SWOCLK = 1500000,
       .BCLK = 32768,
       .ACLK = 32768
-     },
+    },
+    /* ePowerState2 */
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .DCORESEL = CS_DCO_FREQUENCY_24,
+      .DCOCLK = CS_24MHZ,
       .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
       .SELS = CS_DCOCLK_SELECT,
@@ -365,15 +374,17 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
       .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 2,
       .enableFlashBuffer = true,
-      .MCLK = 24000000,
+      .MCLK   = 24000000,
       .HSMCLK = 6000000,
-      .SMCLK = 6000000,
+      .SMCLK  = 6000000,
+      .SWOCLK = 3000000,
       .BCLK = 32768,
       .ACLK = 32768
-     },
+    },
+    /* ePowerState3 */
     { .activeState = AM_DCDC_VCORE1,
       .VCORE = 1,
-      .DCORESEL = CS_DCO_FREQUENCY_48,
+      .DCOCLK = CS_48MHZ,
       .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
       .SELS = CS_DCOCLK_SELECT,
@@ -384,15 +395,17 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
       .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 3,
       .enableFlashBuffer = true,
-      .MCLK = 48000000,
+      .MCLK   = 48000000,
       .HSMCLK = 24000000,
-      .SMCLK = 12000000,
+      .SMCLK  = 12000000,
+      .SWOCLK = 6000000,
       .BCLK = 32768,
       .ACLK = 32768
-     },
+    },
+    /* ePowerStateP4x1xI_Limit */
     { .activeState = AM_DCDC_VCORE1,
       .VCORE = 1,
-      .DCORESEL = CS_DCO_FREQUENCY_48,
+      .DCOCLK = CS_48MHZ,
       .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
       .SELS = CS_DCOCLK_SELECT,
@@ -403,12 +416,13 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
       .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 3,
       .enableFlashBuffer = true,
-      .MCLK = 48000000,
+      .MCLK   = 48000000,
       .HSMCLK = 48000000,
-      .SMCLK = 24000000,
+      .SMCLK  = 24000000,
+      .SWOCLK = 12000000,
       .BCLK = 32768,
       .ACLK = 32768
-     },
+     }
 };
 #endif
 
@@ -739,7 +753,7 @@ int_fast16_t Power_setPerformanceLevel(uint_fast16_t level)
     }
 
     /* validate the performance level */
-    else if (level >= (NUMPERFLEVELS + PowerMSP432_config.numCustom)) {
+    else if (level >= (ePowerStateSDKMax + PowerMSP432_config.numCustom)) {
         status = Power_EINVALIDINPUT;
     }
 
@@ -797,21 +811,21 @@ int_fast16_t Power_setPerformanceLevel(uint_fast16_t level)
         if (status == Power_SOK) {
 
             /* get perf level structs from either predefined or custom array */
-            if (PowerMSP432_module.currentPerfLevel < NUMPERFLEVELS) {
+            if (PowerMSP432_module.currentPerfLevel < ePowerStateSDKMax) {
                 perfNow =
                     PowerMSP432_perfLevels[PowerMSP432_module.currentPerfLevel];
             }
             else {
                 perfNow =
                     PowerMSP432_config.customPerfLevels[
-                        PowerMSP432_module.currentPerfLevel - NUMPERFLEVELS];
+                        PowerMSP432_module.currentPerfLevel - ePowerStateSDKMax];
             }
-            if (level < NUMPERFLEVELS) {
+            if (level < ePowerStateSDKMax) {
                 perfNew = PowerMSP432_perfLevels[level];
             }
             else {
                 perfNew = PowerMSP432_config.customPerfLevels[level -
-                    NUMPERFLEVELS];
+                    ePowerStateSDKMax];
             }
 
             /* if new voltage is higher, change active state now */
@@ -889,9 +903,9 @@ int_fast16_t Power_setPerformanceLevel(uint_fast16_t level)
 
                 /* now, set new clock sources and dividers */
                 if (status == Power_SOK) {
-
                     /* now change clocks and dividers */
-                    MAP_CS_setDCOCenteredFrequency(perfNew.DCORESEL);
+                    if (perfNew.DCOCLK)
+                        MAP_CS_setDCOFrequency(perfNew.DCOCLK);
                     MAP_CS_initClockSignal(CS_MCLK, perfNew.SELM, perfNew.DIVM);
                     MAP_CS_initClockSignal(CS_HSMCLK, perfNew.SELS,
                         perfNew.DIVHS);
@@ -957,6 +971,7 @@ int_fast16_t Power_setPerformanceLevel(uint_fast16_t level)
                         freqs.SMCLK = perfNew.SMCLK;
                         freqs.BCLK = perfNew.BCLK;
                         freqs.ACLK = perfNew.ACLK;
+                        freqs.SWOCLK = perfNew.SWOCLK;
                         PowerMSP432_updateFreqs(&freqs);
 
                         /* notify any done-change notification clients */
@@ -1369,7 +1384,7 @@ int_fast16_t PowerMSP432_getFreqs(uint_fast16_t level,
     PowerMSP432_PerfLevel perfLevel;
 
     /* check that perf level is valid */
-    if (level >= (NUMPERFLEVELS + PowerMSP432_config.numCustom)) {
+    if (level >= (ePowerStateSDKMax + PowerMSP432_config.numCustom)) {
         status = Power_EINVALIDINPUT;
     }
 
@@ -1381,18 +1396,19 @@ int_fast16_t PowerMSP432_getFreqs(uint_fast16_t level,
     /* else, copy perf level frequency info to structure */
     else {
 
-        if (level < NUMPERFLEVELS) {
+        if (level < ePowerStateSDKMax) {
             perfLevel = PowerMSP432_perfLevels[level];
         }
         else {
             perfLevel = PowerMSP432_config.customPerfLevels[level -
-                NUMPERFLEVELS];
+                ePowerStateSDKMax];
         }
         freqs->MCLK = perfLevel.MCLK;
         freqs->HSMCLK = perfLevel.HSMCLK;
         freqs->SMCLK = perfLevel.SMCLK;
         freqs->BCLK = perfLevel.BCLK;
         freqs->ACLK = perfLevel.ACLK;
+        freqs->SWOCLK = perfLevel.SWOCLK;
     }
 
     return (status);
@@ -1404,7 +1420,7 @@ int_fast16_t PowerMSP432_getFreqs(uint_fast16_t level,
  */
 uint_fast16_t PowerMSP432_getNumPerfLevels(void)
 {
-    return (NUMPERFLEVELS + PowerMSP432_config.numCustom);
+    return (ePowerStateSDKMax + PowerMSP432_config.numCustom);
 }
 
 /*********************** internal functions **************************/
@@ -1552,7 +1568,7 @@ static bool initPerfControl(unsigned int initLevel)
     bool changedStateOK;
 
     /* first validate the specified initial performance level */
-    if (initLevel < (NUMPERFLEVELS + PowerMSP432_config.numCustom)) {
+    if (initLevel < (ePowerStateSDKMax + PowerMSP432_config.numCustom)) {
 
         /*
          * since not sure of initial conditions, to be safe, first set a
@@ -1560,7 +1576,7 @@ static bool initPerfControl(unsigned int initLevel)
          * states (e.g. 6 MHz), and select this as the source for MCLK,
          * HSMCLK and SMCLK
          */
-        MAP_CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_6);
+        MAP_CS_setDCOFrequency(CS_6MHZ);
         MAP_CS_initClockSignal(CS_MCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_1);
         MAP_CS_initClockSignal(CS_HSMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_2);
         MAP_CS_initClockSignal(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_2);
@@ -1569,12 +1585,12 @@ static bool initPerfControl(unsigned int initLevel)
         MAP_CS_setReferenceOscillatorFrequency(CS_REFO_32KHZ);
 
         /* get perf level struct from either predefined or custom array */
-        if (initLevel < NUMPERFLEVELS) {
+        if (initLevel < ePowerStateSDKMax) {
             perfNew = PowerMSP432_perfLevels[initLevel];
         }
         else {
             perfNew = PowerMSP432_config.customPerfLevels[initLevel -
-                NUMPERFLEVELS];
+                ePowerStateSDKMax];
         }
 
         /* start crystals if they are needed for the initial perf level  */
@@ -1654,7 +1670,8 @@ static bool initPerfControl(unsigned int initLevel)
             }
 
             /* now setup clocks */
-            MAP_CS_setDCOCenteredFrequency(perfNew.DCORESEL);
+            if (perfNew.DCOCLK)
+                MAP_CS_setDCOFrequency(perfNew.DCOCLK);
             MAP_CS_initClockSignal(CS_MCLK, perfNew.SELM, perfNew.DIVM);
             MAP_CS_initClockSignal(CS_HSMCLK, perfNew.SELS, perfNew.DIVHS);
             MAP_CS_initClockSignal(CS_SMCLK, perfNew.SELS, perfNew.DIVS);
@@ -1667,6 +1684,7 @@ static bool initPerfControl(unsigned int initLevel)
             freqs.SMCLK = perfNew.SMCLK;
             freqs.BCLK = perfNew.BCLK;
             freqs.ACLK = perfNew.ACLK;
+            freqs.SWOCLK = perfNew.SWOCLK;
             PowerMSP432_updateFreqs(&freqs);
 
             /* set perf level in Power module state */

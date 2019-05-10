@@ -48,12 +48,12 @@
 #include <ti/drivers/SPI.h>
 #include <ti/drivers/spi/SPIMSP432DMA.h>
 
-#define MAX_DMA_TRANSFER_AMOUNT         (1024)
+#define MAX_DMA_TRANSFER_AMOUNT (1024)
 
-#define PinConfigValue(config)          (((config) >> 10) & 0x1F)
+#define PinConfigValue(config) (((config) >> 10) & 0x1F)
 #define PinConfigModuleFunction(config) (((config) >> 8) & 0x3)
-#define PinConfigPort(config)           (((config) >> 4) & 0xF)
-#define PinConfigPin(config)            (1 << ((config) & 0x7))
+#define PinConfigPort(config) (((config) >> 4) & 0xF)
+#define PinConfigPin(config) (1 << ((config) & 0x7))
 
 #define PARAMS_DATASIZE                 (8)
 
@@ -63,7 +63,7 @@ int_fast16_t SPIMSP432DMA_control(SPI_Handle handle, uint_fast16_t cmd, void *ar
 void SPIMSP432DMA_init(SPI_Handle handle);
 SPI_Handle SPIMSP432DMA_open(SPI_Handle handle, SPI_Params *params);
 bool SPIMSP432DMA_transfer(SPI_Handle handle, SPI_Transaction *transaction);
-void SPIMSP432DMA_transferCancel(SPI_Handle handle);
+long SPIMSP432DMA_transferCancel(SPI_Handle handle);
 
 /* SPI function table for SPIMSP432DMA implementation */
 const SPI_FxnTable SPIMSP432DMA_fxnTable = {
@@ -96,12 +96,12 @@ static const uint16_t frameFormat[] = {
 /*
  *  ======== blockingTransferCallback ========
  */
-static void blockingTransferCallback(SPI_Handle handle,
+static long blockingTransferCallback(SPI_Handle handle,
     SPI_Transaction *transaction)
 {
     SPIMSP432DMA_Object *object = handle->object;
 
-    SemaphoreP_post(object->transferComplete);
+    return SemaphoreP_post(object->transferComplete);
 }
 
 /*
@@ -128,58 +128,72 @@ static void configDMA(SPIMSP432DMA_Object *object,
         object->currentXferAmt = (transaction->count - object->amtDataXferred);
     }
 
-    if (transaction->txBuf) {
-        channelControlOptions = UDMA_SIZE_8 | UDMA_SRC_INC_8 |
-            UDMA_DST_INC_NONE | UDMA_ARB_1;
-        buf = (void *) ((uint32_t) transaction->txBuf + object->amtDataXferred);
-    }
-    else {
-        channelControlOptions = UDMA_SIZE_8 | UDMA_SRC_INC_NONE |
-            UDMA_DST_INC_NONE | UDMA_ARB_1;
-        object->scratchBuffer = hwAttrs->defaultTxBufValue;
-        buf = &(object->scratchBuffer);
-    }
-
     /* Setup the TX transfer characteristics & buffers */
-    MAP_DMA_setChannelControl(hwAttrs->txDMAChannelIndex | UDMA_PRI_SELECT,
-        channelControlOptions);
-    MAP_DMA_setChannelTransfer(hwAttrs->txDMAChannelIndex | UDMA_PRI_SELECT,
-        UDMA_MODE_BASIC, buf,
-        (void *) MAP_SPI_getTransmitBufferAddressForDMA(hwAttrs->baseAddr),
-        object->currentXferAmt);
+    if (hwAttrs->txDMAChannelIndex != 0) {
+        if (transaction->txBuf) {
+            channelControlOptions = UDMA_SIZE_8 | UDMA_SRC_INC_8 |
+                UDMA_DST_INC_NONE | UDMA_ARB_1;
+            buf = (void *) ((uint32_t) transaction->txBuf + object->amtDataXferred);
+        }
+        else {
+            channelControlOptions = UDMA_SIZE_8 | UDMA_SRC_INC_NONE |
+                UDMA_DST_INC_NONE | UDMA_ARB_1;
+            object->scratchBuffer = hwAttrs->defaultTxBufValue;
+            buf = &(object->scratchBuffer);
+        }
 
-    if (transaction->rxBuf) {
-        channelControlOptions = UDMA_SIZE_8 | UDMA_SRC_INC_NONE |
-            UDMA_DST_INC_8 | UDMA_ARB_1;
-        buf = (void *) ((uint32_t) transaction->rxBuf + object->amtDataXferred);
-    }
-    else {
-        channelControlOptions = UDMA_SIZE_8 | UDMA_SRC_INC_NONE |
-            UDMA_DST_INC_NONE | UDMA_ARB_1;
-        buf = &(object->scratchBuffer);
+        MAP_DMA_setChannelControl(hwAttrs->txDMAChannelIndex | UDMA_PRI_SELECT,
+            channelControlOptions);
+        MAP_DMA_setChannelTransfer(hwAttrs->txDMAChannelIndex | UDMA_PRI_SELECT,
+            UDMA_MODE_BASIC, buf,
+            (void *) MAP_SPI_getTransmitBufferAddressForDMA(hwAttrs->baseAddr),
+            object->currentXferAmt);
     }
 
     /* Setup the RX transfer characteristics & buffers */
-    MAP_DMA_setChannelControl(hwAttrs->rxDMAChannelIndex | UDMA_PRI_SELECT,
-        channelControlOptions);
-    MAP_DMA_setChannelTransfer(hwAttrs->rxDMAChannelIndex | UDMA_PRI_SELECT,
-        UDMA_MODE_BASIC,
-        (void *) MAP_SPI_getReceiveBufferAddressForDMA(hwAttrs->baseAddr),
-        buf, object->currentXferAmt);
+    if (hwAttrs->rxDMAChannelIndex != 0) {
+        if (transaction->rxBuf) {
+            channelControlOptions = UDMA_SIZE_8 | UDMA_SRC_INC_NONE |
+                UDMA_DST_INC_8 | UDMA_ARB_1;
+            buf = (void *) ((uint32_t) transaction->rxBuf + object->amtDataXferred);
+        }
+        else {
+            channelControlOptions = UDMA_SIZE_8 | UDMA_SRC_INC_NONE |
+                UDMA_DST_INC_NONE | UDMA_ARB_1;
+            buf = &(object->scratchBuffer);
+        }
 
+        MAP_DMA_setChannelControl(hwAttrs->rxDMAChannelIndex | UDMA_PRI_SELECT,
+            channelControlOptions);
+        MAP_DMA_setChannelTransfer(hwAttrs->rxDMAChannelIndex | UDMA_PRI_SELECT,
+            UDMA_MODE_BASIC,
+            (void *) MAP_SPI_getReceiveBufferAddressForDMA(hwAttrs->baseAddr),
+            buf, object->currentXferAmt);
+    }
     /* A lock is needed because we are accessing shared DMA memory */
     key = HwiP_disable();
 
-    MAP_DMA_assignChannel(hwAttrs->rxDMAChannelIndex);
-    MAP_DMA_assignChannel(hwAttrs->txDMAChannelIndex);
+    if (hwAttrs->rxDMAChannelIndex != 0)
+        MAP_DMA_assignChannel(hwAttrs->rxDMAChannelIndex);
+    if (hwAttrs->txDMAChannelIndex != 0)
+        MAP_DMA_assignChannel(hwAttrs->txDMAChannelIndex);
 
-    /* Enable DMA interrupt */
-    MAP_DMA_assignInterrupt(hwAttrs->dmaIntNum, hwAttrs->rxDMAChannelIndex & 0x0F);
-    MAP_DMA_clearInterruptFlag(hwAttrs->rxDMAChannelIndex & 0x0F);
+    if (object->spiMode == SPI_SLAVE) {
+        /* Enable DMA interrupt */
+        MAP_DMA_assignInterrupt(hwAttrs->dmaIntNum, hwAttrs->rxDMAChannelIndex & 0x0F);
+        MAP_DMA_clearInterruptFlag(hwAttrs->rxDMAChannelIndex & 0x0F);
+    } else {
+        /* Enable DMA interrupt */
+        MAP_DMA_assignInterrupt(hwAttrs->dmaIntNum, hwAttrs->txDMAChannelIndex & 0x0F);
+        MAP_DMA_clearInterruptFlag(hwAttrs->txDMAChannelIndex & 0x0F);
+    }
+
     MAP_DMA_enableInterrupt(hwAttrs->dmaIntNum);
 
-    MAP_DMA_enableChannel(hwAttrs->rxDMAChannelIndex & 0x0F);
-    MAP_DMA_enableChannel(hwAttrs->txDMAChannelIndex & 0x0F);
+    if (hwAttrs->rxDMAChannelIndex != 0)
+        MAP_DMA_enableChannel(hwAttrs->rxDMAChannelIndex & 0x0F);
+    if (hwAttrs->txDMAChannelIndex != 0)
+        MAP_DMA_enableChannel(hwAttrs->txDMAChannelIndex & 0x0F);
 
     HwiP_restore(key);
 }
@@ -287,7 +301,7 @@ static int perfChangeNotifyFxn(unsigned int eventType, uintptr_t eventArg,
 /*
  *  ======== spiHwiFxn ========
  */
-static void spiHwiFxn(uintptr_t arg)
+static long spiHwiFxn(uintptr_t arg)
 {
     SPI_Transaction              *msg;
     SPIMSP432DMA_Object          *object = ((SPI_Handle) arg)->object;
@@ -302,6 +316,8 @@ static void spiHwiFxn(uintptr_t arg)
         object->amtDataXferred += object->currentXferAmt;
 
         configDMA(object, hwAttrs, object->transaction);
+
+        return 0;
     }
     else {
         /* All data sent; set status & perform callback */
@@ -323,7 +339,7 @@ static void spiHwiFxn(uintptr_t arg)
         Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
 
         /* Perform callback */
-        object->transferCallbackFxn((SPI_Handle) arg, msg);
+        return object->transferCallbackFxn((SPI_Handle) arg, msg);
     }
 }
 
@@ -399,9 +415,8 @@ void SPIMSP432DMA_close(SPI_Handle handle)
     }
 
     if (object->dmaHandle) {
-        UDMAMSP432_close(object->dmaHandle, hwAttrs->rxDMAChannelIndex,
+        UDMAMSP432_close(object->dmaHandle, object->spiMode == SPI_SLAVE ? hwAttrs->rxDMAChannelIndex : hwAttrs->txDMAChannelIndex,
             hwAttrs->dmaIntNum);
-        UDMAMSP432_close(object->dmaHandle, hwAttrs->txDMAChannelIndex, 0);
         object->dmaHandle = NULL;
     }
 
@@ -540,18 +555,18 @@ SPI_Handle SPIMSP432DMA_open(SPI_Handle handle, SPI_Params *params)
 
     /* SOMI */
     if (hwAttrs->somiPin != SPIMSP432DMA_PIN_NO_CONFIG) {
-        port = PinConfigPort(hwAttrs->somiPin);
-        value = PinConfigValue(hwAttrs->somiPin);
-        if (value != 0) {
-            moduleFunction = GPIO_PRIMARY_MODULE_FUNCTION;
-            pin = (hwAttrs->somiPin) & 0x7;
-            mapPin(port, pin, value);
-        }
-        else {
-            moduleFunction = PinConfigModuleFunction(hwAttrs->somiPin);
-        }
-        pin = PinConfigPin(hwAttrs->somiPin);
-        MAP_GPIO_setAsPeripheralModuleFunctionInputPin(port, pin, moduleFunction);
+	    port = PinConfigPort(hwAttrs->somiPin);
+	    value = PinConfigValue(hwAttrs->somiPin);
+	    if (value != 0) {
+	        moduleFunction = GPIO_PRIMARY_MODULE_FUNCTION;
+	        pin = (hwAttrs->somiPin) & 0x7;
+	        mapPin(port, pin, value);
+	    }
+	    else {
+	        moduleFunction = PinConfigModuleFunction(hwAttrs->somiPin);
+	    }
+	    pin = PinConfigPin(hwAttrs->somiPin);
+	    MAP_GPIO_setAsPeripheralModuleFunctionInputPin(port, pin, moduleFunction);
     }
 
     /*
@@ -610,17 +625,9 @@ SPI_Handle SPIMSP432DMA_open(SPI_Handle handle, SPI_Params *params)
         (uintptr_t) handle);
 
     /* Claim RX & TX DMA resources */
-    object->dmaHandle = UDMAMSP432_open(hwAttrs->rxDMAChannelIndex,
-        hwAttrs->dmaIntNum, hwAttrs->intPriority, &spiHwiFxn, (uintptr_t) handle);
-    if (object->dmaHandle == NULL) {
-        Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
-        SPIMSP432DMA_close(handle);
-
-        return (NULL);
-    }
-
-    object->dmaHandle = UDMAMSP432_open(hwAttrs->txDMAChannelIndex, 0, (~0),
-        NULL, 0);
+    object->dmaHandle = UDMAMSP432_open(
+            params->mode == SPI_SLAVE ? hwAttrs->rxDMAChannelIndex : hwAttrs->txDMAChannelIndex,
+            hwAttrs->dmaIntNum, hwAttrs->intPriority, spiHwiFxn, (uintptr_t) handle);
     if (object->dmaHandle == NULL) {
         Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
         SPIMSP432DMA_close(handle);
@@ -716,9 +723,15 @@ bool SPIMSP432DMA_transfer(SPI_Handle handle, SPI_Transaction *transaction)
     /*
      * Polling transfer if BLOCKING mode & transaction->count < threshold
      * Slaves not allowed to use polling unless timeout is disabled
+     * Also use the Polling method if we do not have a DMA channel configured
+     * for the TX or RX channels
      */
     if (object->transferMode == SPI_MODE_BLOCKING &&
-        transaction->count < hwAttrs->minDmaTransferSize &&
+        (
+             transaction->count < hwAttrs->minDmaTransferSize
+          || (transaction->rxBuf != NULL && hwAttrs->rxDMAChannelIndex == 0)
+          || (transaction->txBuf != NULL && hwAttrs->txDMAChannelIndex == 0)
+        ) &&
         (object->spiMode == SPI_MASTER ||
         object->transferTimeout == SPI_WAIT_FOREVER)) {
 
@@ -761,7 +774,7 @@ bool SPIMSP432DMA_transfer(SPI_Handle handle, SPI_Transaction *transaction)
 /*
  *  ======== SPIMSP432DMA_transferCancel ========
  */
-void SPIMSP432DMA_transferCancel(SPI_Handle handle)
+long SPIMSP432DMA_transferCancel(SPI_Handle handle)
 {
     uintptr_t                     key;
     SPI_Transaction              *msg;
@@ -783,7 +796,7 @@ void SPIMSP432DMA_transferCancel(SPI_Handle handle)
         if (object->transaction == NULL || object->cancelInProgress) {
             HwiP_restore(key);
 
-            return;
+            return 0;
         }
         object->cancelInProgress = true;
 
@@ -793,9 +806,13 @@ void SPIMSP432DMA_transferCancel(SPI_Handle handle)
 
         /* Clear DMA configuration */
         MAP_DMA_disableInterrupt(hwAttrs->dmaIntNum);
-        MAP_DMA_disableChannel(hwAttrs->rxDMAChannelIndex & 0x0F);
-        MAP_DMA_disableChannel(hwAttrs->txDMAChannelIndex & 0x0F);
-        MAP_DMA_clearInterruptFlag(hwAttrs->rxDMAChannelIndex & 0x0F);
+        if (object->spiMode == SPI_SLAVE) {
+            MAP_DMA_disableChannel(hwAttrs->rxDMAChannelIndex & 0x0F);
+            MAP_DMA_clearInterruptFlag(hwAttrs->rxDMAChannelIndex & 0x0F);
+        } else {
+            MAP_DMA_disableChannel(hwAttrs->txDMAChannelIndex & 0x0F);
+            MAP_DMA_clearInterruptFlag(hwAttrs->txDMAChannelIndex & 0x0F);
+        }
 
         HwiP_restore(key);
 
@@ -835,7 +852,9 @@ void SPIMSP432DMA_transferCancel(SPI_Handle handle)
         /* Indicate we are done with this transfer */
         object->transaction = NULL;
         object->cancelInProgress = false;
-        object->transferCallbackFxn(handle, msg);
 
+        return object->transferCallbackFxn(handle, msg);
     }
+
+    return 0;
 }

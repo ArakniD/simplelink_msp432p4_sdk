@@ -393,6 +393,49 @@ extern "C" {
  * @warning A call to UART_read() does @b NOT re-enable receive.
  */
 #define UART_CMD_RXDISABLE          (4)
+/*!
+* @brief   Command code used by UART_control() to determine if the read buffer
+*          is empty.
+*
+* This command is used to determine if there are any unsigned chars being
+* actively written from the write circular buffer or DMA transfer
+* code, @b arg is a pointer to a @c bool. @b *arg contains @c true if data is
+* being written or ready to write, else @c false.
+*/
+#define UART_CMD_ISACTIVE        (5)
+
+/*!
+* @brief   Command code used by UART_control() to determine how many unsigned
+*          chars are in the write buffer.
+*
+* This command is used to determine how many @c unsigned @c chars are available
+* to write to the UART from the circular buffer used by UART_write(). With this command
+* code, @b arg is a pointer to an @a integer. @b *arg contains the number of
+* @c unsigned @c chars waiting to be written.
+*/
+#define UART_CMD_GETTXCOUNT         (6)
+
+/*!
+* @brief   Command code used by UART_control() to enable data transmission by the
+*          UART.
+*
+* This command is used to enable the UART in such a way that it stores received
+* unsigned chars into the circular buffer. UART_open() will always have this option
+* enabled. With this command code, @b arg is @a don't @a care.
+*/
+#define UART_CMD_TXENABLE           (7)
+
+/*!
+* @brief   Command code used by UART_control() to disable data transmission by the
+*          UART.
+*
+* This command is used to disable the UART from transmisting more data. This does
+* not affect the drivers power management constraints as that is a reception conern,
+* not a transmission concern. With this command code, @b arg is @a don't @a care.
+*
+* @warning A call to UART_write() does @b NOT re-enable transmission.
+*/
+#define UART_CMD_TXDISABLE          (8)
 /** @}*/
 
 /** @}*/
@@ -420,7 +463,7 @@ typedef struct UART_Config_    *UART_Handle;
  *
  *  @param      count                   Number of elements read/written
  */
-typedef void (*UART_Callback) (UART_Handle handle, void *buf, size_t count);
+typedef long (*UART_Callback) (UART_Handle handle, void *buf, size_t count);
 
 /*!
  *  @brief      UART mode settings
@@ -439,7 +482,8 @@ typedef enum UART_Mode_ {
       *  UART_read() has finished, the callback function is called from either
       *  the caller's context or from an interrupt context.
       */
-    UART_MODE_CALLBACK
+    UART_MODE_CALLBACK,
+
 } UART_Mode;
 
 /*!
@@ -595,7 +639,12 @@ typedef UART_Handle (*UART_OpenFxn) (UART_Handle handle, UART_Params *params);
  */
 typedef int_fast32_t (*UART_ReadFxn) (UART_Handle handle, void *buffer,
     size_t size);
-
+/*!
+ *  @brief      A function pointer to a driver specific implementation of
+ *              UART_ReadAsyncFxn().
+ */
+typedef int_fast32_t (*UART_ReadAsyncFxn)(UART_Handle handle, size_t request,
+    int release, volatile uint8_t **buffer, size_t *size);
 /*!
  *  @brief      A function pointer to a driver specific implementation of
  *              UART_ReadPollingFxn().
@@ -607,7 +656,7 @@ typedef int_fast32_t (*UART_ReadPollingFxn) (UART_Handle handle, void *buffer,
  *  @brief      A function pointer to a driver specific implementation of
  *              UART_ReadCancelFxn().
  */
-typedef void (*UART_ReadCancelFxn) (UART_Handle handle);
+typedef long (*UART_ReadCancelFxn) (UART_Handle handle);
 
 /*!
  *  @brief      A function pointer to a driver specific implementation of
@@ -649,6 +698,9 @@ typedef struct UART_FxnTable_ {
 
     /*! Function to read from the specified peripheral */
     UART_ReadFxn         readFxn;
+
+    /*! Function to read async from the specified peripheral */
+    UART_ReadAsyncFxn    readAsyncFxn;
 
     /*! Function to read via polling from the specified peripheral */
     UART_ReadPollingFxn  readPollingFxn;
@@ -917,6 +969,57 @@ extern void UART_writeCancel(UART_Handle handle);
 extern int_fast32_t UART_read(UART_Handle handle, void *buffer, size_t size);
 
 /*!
+ *  @brief  Function that reads data from a UART with interrupt enabled.
+ *
+ *  %UART_readAsync() reads data from a UART DMA receive ring buffer and
+ *  passes a reference and size back to the caller for inspection without
+ *  any memcpy actions. The ring buffer is not released until the next call
+ *  to read, where the last receive block is released back to the DMA
+ *  sequence.
+ *
+ *  UART_Blocking is assumed in this method and only returns if the read is
+ *  cancelled, times out or data is returned.
+ *
+ *  %UART_readSync() and %UART_read() is mutually exclusive to UART_readPolling().
+ *  For an opened UART peripheral, either %UART_read() and %UART_readAsync or
+ *  UART_readPolling() can be used, but not both.
+ *
+ *  @warning The returned memory pointer references the RX ring-buffer directly
+ *      and is not released until the next call to %UART_read() or
+ *      %UART_readAsync(..,<release size>,..). The size must be passed to the
+ *      next %UART_readAsync call to release the buffer back into the receive
+ *      sequence.
+ *
+ *  @warning The returned buffer is a continuous memory segment of the receive
+ *      ring buffer, where the function return value is the total number of
+ *      bytes in the receive queue, including the value returned by @size
+ *
+ *  @sa UART_readPolling()
+ *
+ *  @param  handle      A #UART_Handle returned by UART_open()
+ *
+ *  @param  requested   A specific number of bytes to read before returning,
+ *                      unless a read_timeout occurs.
+ *
+ *  @param  release     The number of bytes to be release back into the
+ *                      receive buffer.
+ *
+ *  @param  buffer      Returned pointer to the first byte of the receive
+ *                      ring buffer of given size. Will be NULL if no data
+ *                      is available.
+ *
+ *  @param  size        The valid length of the buffer returned. This may be
+ *                      less than the total bytes in the receive buffer due to
+ *                      non contiguous memory buffers. Inspect the function
+ *                      return value equality to this value to determine if
+ *                      more data is available
+ *
+ *  @return Returns the number of bytes in the receive ring buffer or
+ *          #UART_STATUS_ERROR on an error.
+ */
+extern int_fast32_t UART_readAsync(UART_Handle handle, size_t request, int release, volatile uint8_t **buffer, size_t *size);
+
+/*!
  *  @brief  Function that reads data from a UART without interrupts. This API
  *          must be used mutually exclusive with UART_read().
  *
@@ -949,7 +1052,7 @@ extern int_fast32_t UART_readPolling(UART_Handle handle, void *buffer, size_t si
  *
  *  @param  handle      A #UART_Handle returned by UART_open()
  */
-extern void UART_readCancel(UART_Handle handle);
+extern long UART_readCancel(UART_Handle handle);
 
 #ifdef __cplusplus
 }

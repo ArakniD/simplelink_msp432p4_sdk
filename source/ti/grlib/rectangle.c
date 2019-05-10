@@ -289,6 +289,49 @@ int32_t Graphics_getRectangleIntersection(Graphics_Rectangle *rect1,
 
 //*****************************************************************************
 //
+//! Determines the intersection of two rectangles.
+//!
+//! \param rect1 is a pointer to the first rectangle.
+//! \param rect2 is a pointer to the second rectangle.
+//! \param intersect is a pointer to a rectangle which will be written with
+//! the intersection of \e rect1 and \e rect2.
+//!
+//! This function determines if two rectangles overlap and, if they do,
+//! calculates the rectangle representing their intersection.  If the rectangles
+//! do not overlap, 0 is returned and \e intersect is not written.
+//!
+//! \return Returns 1 if there is an overlap or 0 if not.
+//
+//*****************************************************************************
+int32_t Graphics_getRectangleUnion(Graphics_Rectangle *rect1,
+                                   Graphics_Rectangle *rect2,
+                                   Graphics_Rectangle *intersect)
+{
+    //
+    // Make sure we were passed valid rectangles.
+    //
+    if((rect1->xMax <= rect1->xMin) ||
+       (rect1->yMax <= rect1->yMin) ||
+       (rect2->xMax <= rect2->xMin) ||
+       (rect2->yMax <= rect2->yMin))
+    {
+        return(0);
+    }
+
+    //
+    // The rectangles do intersect so determine the rectangle of the
+    // intersection.
+    //
+    intersect->xMin = min(rect1->xMin, rect2->xMin);
+    intersect->xMax = max(rect1->xMax, rect2->xMax);
+    intersect->yMin = min(rect1->yMin, rect2->yMin);
+    intersect->yMax = max(rect1->yMax, rect2->yMax);
+
+    return(1);
+}
+
+//*****************************************************************************
+//
 //! Determines if a point lies within a given rectangle.
 //!
 //! \param rect is a pointer to the rectangle which the point is to be checked

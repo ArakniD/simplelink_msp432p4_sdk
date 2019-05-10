@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectSpec>
+    <applicability>
+        <when>
+            <context
+                deviceFamily="MSP432"
+                deviceId="MSP432P4111"
+            />
+        </when>
+    </applicability>
+
+    <import spec="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/freertos/builds/MSP_EXP432P4111/release/ccs/freertos_builds_MSP_EXP432P4111_release_ccs.projectspec"/>
+
+    <project
+        title="uartDma_msp432p4111"
+        name="uartdma_msp432p4111_MSP_EXP432P4111_freertos_ccs"
+        toolChain="TI"
+        connection="TIXDS110_Connection.xml"
+        device="MSP432P4111"
+        ignoreDefaultDeviceSettings="true"
+        ignoreDefaultCCSSettings="true"
+        references="freertos_builds_MSP_EXP432P4111_release_ccs"
+        requiredVariables="FREERTOS_INSTALL_DIR"
+        compilerBuildOptions=" -I${PROJECT_ROOT} -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include -D__MSP432P4111__ -DDeviceFamily_MSP432P4x1xI --advice:power=none -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/posix/ccs -I${FREERTOS_INSTALL_DIR}/FreeRTOS/Source/include -I${FREERTOS_INSTALL_DIR}/FreeRTOS/Source/portable/CCS/ARM_CM4F -I${WORKSPACE_LOC}/freertos_builds_MSP_EXP432P4111_release_ccs -I${workspace_loc}/SEGGER -I${workspace_loc:/${ProjName}/RTT} --silicon_version=7M4 --code_state=16 --little_endian --display_error_number --diag_warning=255 --diag_wrap=off --gen_func_subsections=on --float_support=FPv4SPD16 --symdebug:dwarf -I${CG_TOOL_ROOT}/include"
+        linkerBuildOptions=" -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source -lti/display/lib/display.aem4f -lti/grlib/lib/ccs/m4f/grlib.a -lthird_party/spiffs/lib/ccs/m4f/spiffs.a -lti/drivers/lib/drivers_msp432p4x1xi.aem4f -lthird_party/fatfs/lib/ccs/m4f/fatfs.a --diag_suppress=10063 -i${WORKSPACE_LOC}/freertos_builds_MSP_EXP432P4111_release_ccs/Debug -lfreertos_builds_MSP_EXP432P4111_release_ccs.lib -lti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib --warn_sections --display_error_number --diag_wrap=off --rom_model -i${CG_TOOL_ROOT}/lib -llibc.a"
+        description="Uart DMA throughput Demo">
+        
+        <property name="buildProfile" value="release"/>
+        <property name="isHybrid" value="true"/>
+        <group id="uartdma_msp432p4111.SIMPLELINK_MSP432_SDK.MSP_EXP432P4111.demos.TI"/>
+        <file path="../../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../Board.html" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../overview.rov.json" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../cJSON/cJSON.c" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="cJSON">
+        </file>
+        <file path="../../cJSON/cJSON.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="cJSON">
+        </file>
+        <file path="../../LCD_HAL/lcd_hal.c" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="LCD_HAL">
+        </file>
+        <file path="../../LCD_HAL/lcd_hal.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="LCD_HAL">
+        </file>
+        <file path="../../freertos/main_freertos.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../freertos/ccs/MSP_EXP432P4111_FREERTOS.cmd" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../lcd_thread.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../MSP_EXP432P4111.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../uart_thread.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../temperature_thread.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../Board.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../callbacks.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../uart_thread.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../MSP_EXP432P4111.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../callbacks.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../led_thread.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../led_thread.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../lcd_thread.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../temperature_thread.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../dma_thread.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../dma_thread.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../UART Test Output.txt" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+		<file path="../../uart_750k_200byte_(10000).txt" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+		<file path="../../uart_750k_large_(16500).txt" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+		<file path="../../uart_750k_rand_(19000).txt" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+		<file path="../../uart_750k_repeat.txt" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+		<file path="../../uart_750k_small_(2400).txt" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>	
+		<file path="../../RTT/README.txt" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="RTT">
+        </file>
+		<file path="../../RTT/SEGGER_RTT.c" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="RTT">
+        </file>
+		<file path="../../RTT/SEGGER_RTT.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="RTT">
+        </file>
+		<file path="../../RTT/SEGGER_RTT_ASM_ARMv7M.S" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="RTT">
+        </file>
+		<file path="../../RTT/SEGGER_RTT_Conf.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="RTT">
+        </file>
+		<file path="../../RTT/SEGGER_RTT_printf.c" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="RTT">
+        </file>
+		<file path="../../RTT/SEGGER_SYSVIEW.c" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="RTT">
+        </file>
+		<file path="../../RTT/SEGGER_SYSVIEW_Conf.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="RTT">
+        </file>
+		<file path="../../RTT/SEGGER_SYSVIEW_ConfDefaults.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="RTT">
+        </file>
+		<file path="../../RTT/SEGGER_SYSVIEW_Config_FreeRTOS.c" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="RTT">
+        </file>
+		<file path="../../RTT/SEGGER_SYSVIEW_FreeRTOS.c" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="RTT">
+        </file>
+		<file path="../../RTT/SEGGER_SYSVIEW_Int.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="RTT">
+        </file>
+		<file path="../../RTT/SYSVIEW_FreeRTOS.txt" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="RTT">
+        </file>
+		<file path="../../startup/SEGGER_RTT_Syscalls_SES.c openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="startup">
+        </file>
+		<file path="../../SEGGER/Global.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="../SEGGER">
+        </file>
+		<file path="../../SEGGER/SEGGER.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="../SEGGER">
+        </file>
+		<file path="../../SEGGER/SEGGER_SYSVIEW.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="../SEGGER">
+        </file>
+		<file path="../../SEGGER/SEGGER_SYSVIEW_FreeRTOS.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="../SEGGER">
+        </file>
+		<file path="../../SEGGER/SEGGER_SYSVIEW_uartdma.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="../SEGGER">
+        </file>
+    </project>
+</projectSpec>
+

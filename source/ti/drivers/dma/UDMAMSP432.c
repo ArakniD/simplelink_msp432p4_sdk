@@ -70,14 +70,14 @@ static uint32_t dmaInt0RefCount = 0;
 static HwiP_Handle hwiHandles[NUM_DMA_INTERRUPTS];
 
 /* Array of ISR pointers called when a channel causes an interrupt on DMA_INT0 */
-static void (*hwiFxnHandlers[NUM_DMA_CHANNELS])(uintptr_t);
+static HwiP_Fxn hwiFxnHandlers[NUM_DMA_CHANNELS];
 
 /* Array of ISR arguments */
 static uintptr_t hwiFxnArgs[NUM_DMA_CHANNELS];
 
-static void UDMAMSP432_hwiFxn(uintptr_t arg);
+static long UDMAMSP432_hwiFxn(uintptr_t arg);
 static bool setupInterrupt(uint32_t channel, uint8_t intNum,
-    uint8_t priority, void (*hwiFxn)(uintptr_t), uintptr_t arg);
+    uint8_t priority, HwiP_Fxn hwiFxn, uintptr_t arg);
 
 /*
  *  ======== UDMAMSP432_close ========
@@ -197,7 +197,7 @@ void UDMAMSP432_init()
  *  ======== UDMAMSP432_open ========
  */
 UDMAMSP432_Handle UDMAMSP432_open(uint32_t channel, uint8_t intNum, uint32_t priority,
-    void (*hwiFxn)(uintptr_t), uintptr_t arg)
+                                  HwiP_Fxn hwiFxn, uintptr_t arg)
 {
     uintptr_t key;
     uint8_t   channelNum;
@@ -279,9 +279,7 @@ bool UDMAMSP432_setupTransfer(UDMAMSP432_Transfer *transfer)
     MAP_DMA_setChannelControl(transfer->dmaChannel | transfer->structSelect,
         transfer->ctlOptions);
     MAP_DMA_setChannelTransfer(transfer->dmaChannel | transfer->structSelect,
-        transfer->transferMode, transfer->dmaTransferSource, transfer->dmaTransferDestination,
-        transfer->transferSize);
-
+        transfer->transferMode, transfer->spec.src, transfer->spec.dst, transfer->spec.size);
 
     MAP_DMA_clearInterruptFlag(dmaChannelIndex);
 
@@ -326,15 +324,23 @@ bool UDMAMSP432_setupPingPongTransfer(UDMAMSP432_PingPongTransfer *transfer)
     MAP_DMA_setChannelControl(transfer->dmaChannel | UDMA_PRI_SELECT,
         transfer->ctlOptions);
     MAP_DMA_setChannelTransfer(transfer->dmaChannel | UDMA_PRI_SELECT,
-        UDMA_MODE_PINGPONG, transfer->dmaTransferSource, transfer->dmaPrimaryDestination,
-        transfer->transferSize);
+        transfer->specs[eUDMAPingPongAlternate].size ? UDMA_MODE_PINGPONG : UDMA_MODE_BASIC,
+        transfer->specs[eUDMAPingPongPrimary].src,
+        transfer->specs[eUDMAPingPongPrimary].dst,
+        transfer->specs[eUDMAPingPongPrimary].size);
 
-    /* Set alternate DMA data structure */
-    MAP_DMA_setChannelControl(transfer->dmaChannel | UDMA_ALT_SELECT,
-        transfer->ctlOptions);
-    MAP_DMA_setChannelTransfer(transfer->dmaChannel | UDMA_ALT_SELECT,
-        transfer->transferMode, transfer->dmaTransferSource, transfer->dmaAlternateDestination,
-        transfer->transferSize);
+    if (transfer->specs[eUDMAPingPongAlternate].size) {
+        /* Set alternate DMA data structure */
+        MAP_DMA_setChannelControl(transfer->dmaChannel | UDMA_ALT_SELECT,
+            transfer->ctlOptions);
+        MAP_DMA_setChannelTransfer(transfer->dmaChannel | UDMA_ALT_SELECT,
+            transfer->transferMode,
+            transfer->specs[eUDMAPingPongAlternate].src,
+            transfer->specs[eUDMAPingPongAlternate].dst,
+            transfer->specs[eUDMAPingPongAlternate].size);
+    } else {
+        MAP_DMA_setChannelControl(transfer->dmaChannel | UDMA_ALT_SELECT, NULL);
+    }
 
     MAP_DMA_clearInterruptFlag(dmaChannelIndex);
 
@@ -357,15 +363,15 @@ void UDMAMSP432_PingPongToggleBuffer(UDMAMSP432_PingPongTransfer *transfer)
         MAP_DMA_setChannelControl(transfer->dmaChannel | UDMA_PRI_SELECT,
             transfer->ctlOptions);
         MAP_DMA_setChannelTransfer(transfer->dmaChannel | UDMA_PRI_SELECT,
-            UDMA_MODE_PINGPONG, transfer->dmaTransferSource,
-            transfer->dmaPrimaryDestination, transfer->transferSize);
+            UDMA_MODE_PINGPONG, transfer->specs[eUDMAPingPongPrimary].src,
+            transfer->specs[eUDMAPingPongPrimary].dst, transfer->specs[eUDMAPingPongPrimary].size);
     }
     else {
         MAP_DMA_setChannelControl(transfer->dmaChannel | UDMA_ALT_SELECT,
             transfer->ctlOptions);
         MAP_DMA_setChannelTransfer(transfer->dmaChannel | UDMA_ALT_SELECT,
-            UDMA_MODE_PINGPONG, transfer->dmaTransferSource,
-            transfer->dmaAlternateDestination, transfer->transferSize);
+           UDMA_MODE_PINGPONG, transfer->specs[eUDMAPingPongAlternate].src,
+           transfer->specs[eUDMAPingPongAlternate].dst, transfer->specs[eUDMAPingPongAlternate].size);
     }
 }
 
@@ -373,7 +379,7 @@ void UDMAMSP432_PingPongToggleBuffer(UDMAMSP432_PingPongTransfer *transfer)
  *  ======== setupInterrupt ========
  */
 static bool setupInterrupt(uint32_t channel, uint8_t intNum,
-    uint8_t priority, void (*hwiFxn)(uintptr_t), uintptr_t arg)
+    uint8_t priority, HwiP_Fxn hwiFxn, uintptr_t arg)
 {
     uint8_t                   channelNum;
     uint8_t                   hwiMask;
@@ -410,6 +416,7 @@ static bool setupInterrupt(uint32_t channel, uint8_t intNum,
          */
         hwiFxnHandlers[channelNum] = hwiFxn;
         hwiFxnArgs[channelNum] = (uintptr_t) arg;
+        dmaInt0RefCount++;
     }
     else {
         /* HwiP has not been created yet */
@@ -458,10 +465,11 @@ static bool setupInterrupt(uint32_t channel, uint8_t intNum,
 /*
  *  ======== UDMAMSP432_hwiFxn ========
  */
-static void UDMAMSP432_hwiFxn(uintptr_t arg)
+static long UDMAMSP432_hwiFxn(uintptr_t arg)
 {
     uint8_t  channelIndex;
     uint32_t dmaInterruptStatus;
+    long xSwitch = 0;
 
     dmaInterruptStatus = MAP_DMA_getInterruptStatus();
 
@@ -470,8 +478,10 @@ static void UDMAMSP432_hwiFxn(uintptr_t arg)
         if ((dmaInterruptStatus >> channelIndex) & 1) {
             MAP_DMA_clearInterruptFlag(channelIndex);
             if (hwiFxnHandlers[channelIndex]) {
-                (*hwiFxnHandlers[channelIndex])(hwiFxnArgs[channelIndex]);
+                xSwitch |= (*hwiFxnHandlers[channelIndex])(hwiFxnArgs[channelIndex]);
             }
         }
     }
+
+    return xSwitch;
 }

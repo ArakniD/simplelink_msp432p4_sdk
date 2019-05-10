@@ -277,7 +277,7 @@ typedef enum Timer_PeriodUnits_ {
  *
  *  @param  handle         Timer_Handle
  */
-typedef void (*Timer_CallBackFxn)(Timer_Handle handle);
+typedef long (*Timer_CallBackFxn)(Timer_Handle handle, uintptr_t arg);
 
 /*!
  *  @brief Timer Parameters
@@ -296,6 +296,8 @@ typedef struct Timer_Params_ {
     /*! Callback function called when timerMode is Timer_ONESHOT_CALLBACK or
          Timer_CONTINUOUS_CALLBACK. */
     Timer_CallBackFxn    timerCallback;
+
+    uintptr_t            timerCallbackArg;
 
     /*! Period in units of periodUnits. */
     uint32_t             period;
@@ -343,7 +345,7 @@ typedef int32_t (*Timer_StartFxn)(Timer_Handle handle);
  *  @brief      A function pointer to a driver specific implementation of
  *              Timer_stop().
  */
-typedef void (*Timer_StopFxn)(Timer_Handle handle);
+typedef long (*Timer_StopFxn)(Timer_Handle handle);
 
 /*!
  *  @brief      The definition of a timer function table that contains the
@@ -523,7 +525,7 @@ extern int32_t Timer_start(Timer_Handle handle);
  *
  *  @sa     Timer_start()
  */
-extern void Timer_stop(Timer_Handle handle);
+extern long Timer_stop(Timer_Handle handle);
 
 /* The following are included for backwards compatibility. These should not be
  * used by the application.
