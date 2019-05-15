@@ -362,19 +362,7 @@ long gpioButton1_Callback(uint_least8_t index)
         }
         else
         {
-            int retc;
-            LedMsg msg;
-
-            /* Send message to change color */
-            msg.cmd = LedCmd_COLOR_MODE;
-            retc = mq_send(mqLED, (char *)&msg, sizeof(msg), 0);
-            if (retc == -1) {
-                while (1);
-            }
-            retc = sem_post(&semLED);
-            if (retc == -1) {
-                while (1);
-            }
+            setLoopbackBaud(++baudRateIndex);
         }
 
         /* Debounce Function */

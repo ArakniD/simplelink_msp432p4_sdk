@@ -320,6 +320,7 @@ bool UDMAMSP432_setupPingPongTransfer(UDMAMSP432_PingPongTransfer *transfer)
         UDMA_ATTR_HIGH_PRIORITY |
         UDMA_ATTR_REQMASK);
 
+    if (transfer->specs[eUDMAPingPongPrimary].size) {
     /* Set primary DMA data structure */
     MAP_DMA_setChannelControl(transfer->dmaChannel | UDMA_PRI_SELECT,
         transfer->ctlOptions);
@@ -328,6 +329,9 @@ bool UDMAMSP432_setupPingPongTransfer(UDMAMSP432_PingPongTransfer *transfer)
         transfer->specs[eUDMAPingPongPrimary].src,
         transfer->specs[eUDMAPingPongPrimary].dst,
         transfer->specs[eUDMAPingPongPrimary].size);
+    } else {
+        MAP_DMA_setChannelControl(transfer->dmaChannel, NULL);
+    }
 
     if (transfer->specs[eUDMAPingPongAlternate].size) {
         /* Set alternate DMA data structure */

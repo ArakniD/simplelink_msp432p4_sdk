@@ -553,9 +553,8 @@ typedef struct UARTMSP432DMA_Object {
     volatile uint32_t    rx_dmaIdleTimeout;
     volatile uint32_t    rx_dmaIdleControl;
     volatile uint32_t    rx_dmaTaskControl;
-    volatile uint32_t   *rx_dmaCtrlPri;
+    volatile uint32_t   *rx_dmaCtrl[eUDMAPingPongMAX];
     volatile uint32_t   *rx_dmaTaskCtrl;
-    volatile uint32_t   *rx_dmaCtrlAlt;
     volatile uint32_t   *rx_timer32LoadAdr;
     volatile uint32_t   *rx_timer32ControlAdr;
     volatile uint16_t   *rtsPinBitBand;    /* RTS pin used to signal that buffers are full */
@@ -563,6 +562,8 @@ typedef struct UARTMSP432DMA_Object {
 
     /* UART write variables */
     RingBuf_Object       writeBuffer;      /* local circular buffer object */
+    uint8_t              tx_toggle;        /* ping-pong toggle */
+    uint8_t              tx_depth;         /* ping-pong outstanding */
     /* UART write variables */
     size_t               written;          /* Number of bytes last written */
     SemaphoreP_Handle    writeSem;         /* UART write semaphore*/
@@ -573,8 +574,8 @@ typedef struct UARTMSP432DMA_Object {
     bool                 tx_cancelInProgress;
     volatile uint32_t   *tx_dmaAltSetBitBand;
     volatile uint32_t   *tx_dmaAltClrBitBand;
-    volatile uint32_t   *tx_dmaCtrlPri;
-    volatile uint32_t   *tx_dmaCtrlAlt;
+    volatile uint32_t   *tx_dmaCtrl[eUDMAPingPongMAX];
+    volatile uint32_t   *tx_dmaPPbit[eUDMAPingPongMAX];
 } UARTMSP432DMA_Object, *UARTMSP432DMA_Handle;
 
 int_fast32_t UARTMSP432DMA_readAsync(UART_Handle handle, size_t request, int release, volatile uint8_t **buffer, size_t *size);

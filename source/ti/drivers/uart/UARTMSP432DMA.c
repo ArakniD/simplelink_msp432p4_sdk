@@ -117,12 +117,12 @@ inline uint32_t getDmaRemainingTXfers(UARTMSP432DMA_Object *object);
 inline uint32_t getDmaRemainingRXfers(UARTMSP432DMA_Object *object);
 inline void UARTMSP432DMA_ReadPingPongPeek(UART_Handle handle);
 static long UARTMSP432DMA_hwiIntFxn(uintptr_t arg);
-// Inline (mock) interrupt routine, called from ISR
 static long UARTMSP432DMA_hwiIntRx(uintptr_t arg);
 static long UARTMSP432DMA_hwiIntRxDMA_done(uintptr_t arg);
 static long UARTMSP432DMA_hwiIntTxDMA_done(uintptr_t arg);
+static long UARTMSP432DMA_txDMA_done(uintptr_t arg);
 static void mapPin(uint8_t port, uint8_t pin, uint8_t value);
-static int configTransmitDMA(UARTMSP432DMA_Object *object, UARTMSP432DMA_HWAttrsV1 const *hwAttrs);
+static void UARTMSP432DMA_transmitDmaFill(UARTMSP432DMA_HWAttrsV1 const *hwAttrs, UARTMSP432DMA_Object *object);
 static void InitDmaRxScatterGatherer(UARTMSP432DMA_Object *object, UARTMSP432DMA_HWAttrsV1 const *hwAttrs);
 
 /* UART function table for UARTMP432 implementation */
@@ -337,10 +337,10 @@ inline void UARTMSP432DMA_ReadPingPongPeek(UART_Handle handle)
      * And yes this makes a difference... 750k baud confirms this occurs
      */
     if (*object->rx_dmaAltSetBitBand) {
-        ctrlBufr = *object->rx_dmaCtrlAlt;
+        ctrlBufr = *object->rx_dmaCtrl[eUDMAPingPongAlternate];
         eBuffer = eUDMAPingPongAlternate;
     } else {
-        ctrlBufr = *object->rx_dmaCtrlPri;
+        ctrlBufr = *object->rx_dmaCtrl[eUDMAPingPongPrimary];
         eBuffer = eUDMAPingPongPrimary;
     }
     transfered = object->rx_transfer.specs[eBuffer].size - (ctrlBufr & 0x07 ? ((ctrlBufr & UDMA_CHCTL_XFERSIZE_M) >> 4) + 1 : 0);
@@ -867,258 +867,164 @@ long UARTMSP432DMA_readCancel(UART_Handle handle)
 }
 
 /*
- *  ======== configTransmitDMA ========
- *  This functions configures the transmit DMA channels for a given
- *  buffer and length
+ *  ======== UARTMSP432DMA_transmitDmaFill ========
+ *  This function configures the DMA transactions in straight transfer mode. An attempt at using ping-pong mode
+ *  has been made and it needs further debugging and development to make work correctly. The flags tx_toggle and tx_depth
+ *  have been left for futher development. For whatever reason I could not get the transactions to continue beyond the
+ *  first one, ever. Even if I setup a new transaction after the first one, it would just hang and never complete. I would
+ *  also fail to get completion interrupts or fail to keep sending when the alt and primary were different sizes
+ *
+ *  High baud rate writes are choppy without ping-pong as there are many gaps during re-initialising the output buffer(s)
  */
-static int configTransmitDMA(UARTMSP432DMA_Object *object, UARTMSP432DMA_HWAttrsV1 const *hwAttrs)
+static void UARTMSP432DMA_transmitDmaFill(UARTMSP432DMA_HWAttrsV1 const *hwAttrs, UARTMSP432DMA_Object *object)
 {
-    /* Cannot call into this multiple times, let current transfer finish */
-    if (object->writeBuffer.reserved < object->writeBuffer.count && (( ( *object->tx_dmaCtrlAlt | *object->tx_dmaCtrlPri ) & 0x07 ) == 0))
+   uint8_t enableNeeded = 0;
+#if defined(UART_TX_PINGPONG)
+#define MAX_UART_TX_DEPTH 2
+#else
+#define MAX_UART_TX_DEPTH 1
+#endif
+
+   if (object->tx_depth == 0)
     {
-        uint32_t writeFree[2] = { object->tx_transfer.specs[eUDMAPingPongPrimary].size,
-                                  object->tx_transfer.specs[eUDMAPingPongAlternate].size };
-        uint32_t writeAloc[2] = { 0, 0};
-        uint8_t writeUnblockRequired = 0;
+      //MAP_DMA_disableChannel(object->tx_transfer.dmaChannel & 0x0F);
+       /* Clear the register before setting attributes */
+      MAP_DMA_disableChannelAttribute(object->tx_transfer.dmaChannel,
+          UDMA_ATTR_ALTSELECT | UDMA_ATTR_USEBURST |
+          UDMA_ATTR_HIGH_PRIORITY | UDMA_ATTR_REQMASK);
+      enableNeeded = 1;
+      object->tx_toggle = 0;
+   }
 
-        /* Catch any iterations that hanv't yet received the DMA Completion interrupt, but are
-         * about to make modifications to the currentXferAmt, this shouldn't get executed often.
-         * Its more of a race condition defensive piece.. perhaps its never executed. but still.
+#if !defined(UART_TX_PINGPONG)
+   if (object->tx_depth == 0)
+#endif
+   {
+       /* Fill the DMA Buffer, this is either skip, one or two passes */
+       while ( object->tx_depth < (MAX_UART_TX_DEPTH) && object->writeBuffer.reserved < object->writeBuffer.count) {
+           /* Depth moves forward when more transactions are used while
+            * toggle stays put until a free operation occurs
          */
-        if (object->tx_transfer.specs[eUDMAPingPongPrimary].size) {
-           RingBuf_free_get_contiguous(&object->writeBuffer, object->tx_transfer.specs[eUDMAPingPongPrimary].size );
-           writeUnblockRequired = true;
-        }
-        if (object->tx_transfer.specs[eUDMAPingPongAlternate].size) {
-           RingBuf_free_get_contiguous(&object->writeBuffer, object->tx_transfer.specs[eUDMAPingPongAlternate].size );
-           writeUnblockRequired = true;
-        }
+           eUDMAPingPong tx_index = (eUDMAPingPong)((object->tx_toggle + object->tx_depth++ ) % (uint8_t)eUDMAPingPongMAX) ;
 
-        /* Allocate the new buffer(s) and setup the ping-pong transfer accordingly */
-        if (object->tx_transfer.specs[eUDMAPingPongPrimary].size =
+           object->tx_transfer.specs[tx_index].size =
                RingBuf_alloc_get_contiguous(&object->writeBuffer, object->ringBlkSize,
-                                            (uint8_t **)&object->tx_transfer.specs[eUDMAPingPongPrimary].src))
-            writeAloc[0] = object->tx_transfer.specs[eUDMAPingPongPrimary].size;
+                                           (uint8_t **)&object->tx_transfer.specs[tx_index].src);
 
-        if(object->tx_transfer.specs[eUDMAPingPongAlternate].size =
-               RingBuf_alloc_get_contiguous(&object->writeBuffer, object->ringBlkSize,
-                                            (uint8_t **)&object->tx_transfer.specs[eUDMAPingPongAlternate].src))
-            writeAloc[1] = object->tx_transfer.specs[eUDMAPingPongAlternate].size;
+           /* Sanity check here, should always pass */
+           if (object->tx_transfer.specs[tx_index].size != 0) {
+               /* Calculate the Primary or Alternate channel */
+               uint32_t dmaChannel = object->tx_transfer.dmaChannel | (tx_index << 3);
+               MAP_DMA_setChannelControl(dmaChannel, object->tx_transfer.ctlOptions);
 
-        if (object->tx_transfer.specs[eUDMAPingPongPrimary].size != 0) {
-            //DMA_Control->ALTCLR = 1 << (hwAttrs->txDMAChannelIndex & 0x0F);
-
-            //MAP_DMA_clearInterruptFlag(hwAttrs->txDMAChannelIndex & 0x0F);
-            //MAP_UART_clearInterruptFlag(hwAttrs->baseAddr, EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG);
-
-            if (object->tx_transfer.specs[eUDMAPingPongAlternate].size && object->writeBuffer.reserved < object->writeBuffer.count) {
-                object->tx_transfer.transferMode = UDMA_MODE_PINGPONG;
+               /* If there is the potential for more buffers to be filled after this transaction then
+                * enable ping-pong, otherwise we're a basic transaction type
+                */
+#if defined(UART_TX_PINGPONG)
+               if (object->writeBuffer.reserved < object->writeBuffer.count ) {
+                   MAP_DMA_setChannelTransfer(dmaChannel, UDMA_MODE_PINGPONG,
+                      object->tx_transfer.specs[tx_index].src, object->tx_transfer.specs[tx_index].dst,
+                      object->tx_transfer.specs[tx_index].size);
             } else {
-                object->tx_transfer.transferMode = UDMA_MODE_BASIC;
+                   MAP_DMA_setChannelTransfer(dmaChannel, UDMA_MODE_BASIC,
+                      object->tx_transfer.specs[tx_index].src, object->tx_transfer.specs[tx_index].dst,
+                      object->tx_transfer.specs[tx_index].size);
             }
-            /* Ensure the alt select is cleared before we trigger this transfer */
-            DMA_Control->ALTCLR = 1 << (hwAttrs->txDMAChannelIndex & 0x0F);
 
-            UDMAMSP432_setupPingPongTransfer(&object->tx_transfer);
-
-            /* Check if the COMPLETE_INTERRUPT_FLAG is set, meaning we need to kick this channel into submission
-             * Note; I found that the first pass to setupPingPong would immediately action the DMA transfer
-             *       for the send, however every other setup would not action the DMA at all.. not unless a manual
-             *       transmission or done first, or a kick like this occurred. Doing a manual transmission seemed
-             *       to also have its flaws, where the first transmission would kick off the DMA to overwrite its
-             *       first byte and then sync is lost right away. I found that this interrupt flag is only set
-             *       after the first pass, so its a good indicator if we're in that hole and need to kick it every
-             *       time we want to get going again. Maybe there is a better way around this problem? Means to an
-             *       end.... */
-            if (MAP_UART_getInterruptStatus(hwAttrs->baseAddr, EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)
-            || !MAP_UART_queryStatusFlags(hwAttrs->baseAddr, EUSCI_A_UART_BUSY)) {
-                /* If this is set, then the buffer has not been written to... */
-                MAP_DMA_requestSoftwareTransfer(hwAttrs->txDMAChannelIndex & 0x0F);
+               /* Check if the active buffer is set to UDMA_MODE_BASIC, and if so set a bit to make it PING PONG */
+               if (object->tx_depth == 2 && !enableNeeded
+               && (eUDMAPingPong)*object->tx_dmaAltSetBitBand == object->tx_toggle
+               && (*object->tx_dmaCtrl[object->tx_toggle] & 0x07 ) != 0 ) {
+                  *object->tx_dmaPPbit[object->tx_toggle] = 1;
+               }
+#else
+               MAP_DMA_setChannelTransfer(dmaChannel, UDMA_MODE_BASIC,
+                object->tx_transfer.specs[tx_index].src, object->tx_transfer.specs[tx_index].dst,
+                object->tx_transfer.specs[tx_index].size);
+#endif
             }
-        } else {
-            SEGGER_SYSVIEW_Error("DMA Transfer size incorrect, this would cause a DMA error");
         }
 
-        return writeUnblockRequired;
+       if (enableNeeded) {
+           MAP_DMA_clearInterruptFlag(object->tx_transfer.dmaChannel & 0x0F);
 
-        /* Keep all SEGGER logging here otherwise the debugger may cause a halt and prevent this from operating correctly */
-        /*SEGGER_SYSVIEW_RecordU32x3(SYSVIEW_EID_uartWriteFree, (uintptr_t)object, eUDMAPingPongPrimary, writeFree[0]);
-        SEGGER_SYSVIEW_RecordU32x3(SYSVIEW_EID_uartWriteFree, (uintptr_t)object, eUDMAPingPongAlternate, writeFree[1]);
+           /* Assign and enable DMA channel */
+           MAP_DMA_assignChannel(object->tx_transfer.dmaChannel);
+           MAP_DMA_enableChannel(object->tx_transfer.dmaChannel & 0x0F);
+       }
+   }
+}
 
-        SEGGER_SYSVIEW_RecordU32x3(SYSVIEW_EID_uartWriteAlloc, (uintptr_t)object, eUDMAPingPongPrimary, writeAloc[0]);
-        SEGGER_SYSVIEW_RecordU32x3(SYSVIEW_EID_uartWriteAlloc, (uintptr_t)object, eUDMAPingPongAlternate, writeAloc[1]); */
+static long UARTMSP432DMA_hwiIntTxDMA_done(uintptr_t arg)
+{
+    UARTMSP432DMA_HWAttrsV1 const *hwAttrs = ((UART_Handle) arg)->hwAttrs;
 
-    } else if ( (object->writeBuffer.count > object->writeBuffer.reserved) && (
-             MAP_UART_getInterruptStatus(hwAttrs->baseAddr, EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)
-         || !MAP_UART_queryStatusFlags(hwAttrs->baseAddr, EUSCI_A_UART_BUSY)) ) {
-       /* This is a 'catch-all' check to see if there are additional bytes to be sent and the
-        * transmit queue is NOT marching forward, and is setup to do so.. Not sure why but
-        * when the ring-buffer wraps around , the firs transfer just stalls. Harray. Perhaps
-        * its that the first transfer is smaller than the second, and thus it stalls. As if the
-        * DMA controller gets hung up on the transfer size mis-match when Primary < Secondary.
-        */
+    MAP_DMA_clearInterruptFlag(hwAttrs->txDMAChannelIndex & 0x0F);
 
-       MAP_DMA_requestSoftwareTransfer(hwAttrs->txDMAChannelIndex & 0x0F);
-    }
-
-    return false;
+    return UARTMSP432DMA_txDMA_done(arg);
 }
 
 /*
  *  ======== UARTMSP432DMA_hwiIntTxDMA_done ========
+ *  write = (toggle + depth++) % 2
+ *  free = toggle++; depth--;
  */
-
-static long UARTMSP432DMA_hwiIntTxDMA_done(uintptr_t arg)
+static long UARTMSP432DMA_txDMA_done(uintptr_t arg)
 {
     UARTMSP432DMA_Object *object = ((UART_Handle) arg)->object;
     UARTMSP432DMA_HWAttrsV1 const *hwAttrs = ((UART_Handle) arg)->hwAttrs;
     uintptr_t   key;
     uint8_t     writeUnblock = 0;
-    MAP_DMA_clearInterruptFlag(hwAttrs->txDMAChannelIndex & 0x0F);
 
-    /*
-     * Notes: 1) Adding SEGGER SysView logging here made he problem of missing Tx worse. The altered
-     * timing
-     */
-
-    /* Check if we have more bytes to send and the DMA is stopped, in which case
-     * start it back up, otherwise if we're running then setup the next buffer.
-     * The next buffer is either alternate or primary depending on the bit state
-     * within DMA_Control. Guard against setting any DMA register to zero or something
-     * that will cause a DMA Fault condition.
-     */
-    if ( ( ( *object->tx_dmaCtrlAlt | *object->tx_dmaCtrlPri ) & 0x07 ) == 0 ) {
-
-        if (object->writeBuffer.count == 0) {
-            /* We're all stopped, so clean up any and all resources associated with the previous transfers */
-            if (object->tx_transfer.specs[eUDMAPingPongPrimary].size) {
-                RingBuf_free_get_contiguous(&object->writeBuffer, object->tx_transfer.specs[eUDMAPingPongPrimary].size );
-                object->written += object->tx_transfer.specs[eUDMAPingPongPrimary].size;
-                //SEGGER_SYSVIEW_RecordU32x3(SYSVIEW_EID_uartWriteFree, (uintptr_t)arg, eUDMAPingPongPrimary, object->tx_transfer.specs[eUDMAPingPongPrimary].size);
-                object->tx_transfer.specs[eUDMAPingPongPrimary].size = 0;
-                writeUnblock = 1;
-            }
-            if (object->tx_transfer.specs[eUDMAPingPongAlternate].size) {
-                RingBuf_free_get_contiguous(&object->writeBuffer, object->tx_transfer.specs[eUDMAPingPongAlternate].size );
-                object->written += object->tx_transfer.specs[eUDMAPingPongAlternate].size;
-                //SEGGER_SYSVIEW_RecordU32x3(SYSVIEW_EID_uartWriteFree, (uintptr_t)arg, eUDMAPingPongAlternate, object->tx_transfer.specs[eUDMAPingPongAlternate].size);
-                object->tx_transfer.specs[eUDMAPingPongAlternate].size = 0;
-                writeUnblock = 1;
-            }
-            /* Remove constraints set during transfer */
-            Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
-        } else {
-            /* Re-configure the tx transfer as we're currently stopped
-             * but have more bytes to send on out */
-            writeUnblock = configTransmitDMA(object, hwAttrs);
-        }
-    } else if (object->writeBuffer.reserved < object->writeBuffer.count) {
         key = HwiP_disable();
-        uint32_t dmaChannel = object->tx_transfer.dmaChannel;
-        eUDMAPingPong eBuffer = eUDMAPingPongPrimary;
 
-        /* Are we on the primary buffer AND we still have bytes to send? then populate the alternate buffer */
-        /* Are we on the alternate buffer AND we have nothing more to send? then populate the alternate buffer */
-        /* In all other cases, we are processing the primary buffer */
-        if ( ( (*object->tx_dmaAltSetBitBand == 0) && (*object->tx_dmaCtrlPri & 0x07 != 0) )
-          || ( (*object->tx_dmaAltSetBitBand == 1) && (*object->tx_dmaCtrlAlt & 0x07 == 0) ) ){
-            dmaChannel |= UDMA_ALT_SELECT;
-            eBuffer = eUDMAPingPongAlternate;
+    /* Sanity check we have stuff to free */
+    if ( object->tx_depth && object->tx_transfer.specs[object->tx_toggle].size && (*object->tx_dmaCtrl[object->tx_toggle] & (uint32_t)0x00000007) == 0 ) {
+        /* Release the reservation from the RingBuf as the data can now be marked as sent */
+        RingBuf_free_get_contiguous(&object->writeBuffer, object->tx_transfer.specs[object->tx_toggle].size );
+
+        /* A little EXPENSIVE logging */
+        SEGGER_SYSVIEW_RecordU32x3(SYSVIEW_EID_uartWriteFree, (uintptr_t)arg, object->tx_toggle, object->tx_transfer.specs[object->tx_toggle].size);
+        if (((*object->tx_dmaCtrl[object->tx_toggle] & UDMA_CHCTL_XFERSIZE_M) >> 4) != 0) {
+            SEGGER_SYSVIEW_Error("Write DMA control register contained valid transfer size");
         }
 
-        /* We're about to overwrite this buffer, so free any and all resources associated with it */
-        if (object->tx_transfer.specs[eBuffer].size)
-        {
-            RingBuf_free_get_contiguous(&object->writeBuffer, object->tx_transfer.specs[eBuffer].size );
-            object->written += object->tx_transfer.specs[eBuffer].size;
+        /* Zero the DMA registers */
+        //*object->tx_dmaCtrl[object->tx_toggle] = 0;
+        object->tx_transfer.specs[object->tx_toggle].size = 0;
+
+        /* Advance the toggle */
+        object->tx_toggle = ++object->tx_toggle % eUDMAPingPongMAX;
+        object->tx_depth--;
+
+        /* Now we have freed space in the send buffer, we can unblock any clients waiting to feed
+         * more data to the buffer
+         */
             writeUnblock = 1;
-            // SEGGER_SYSVIEW_RecordU32x3(SYSVIEW_EID_uartWriteFree, (uintptr_t)arg, eBuffer, object->tx_transfer.specs[eBuffer].size);
-        }
-
-        /* The next write buffer is an alternate buffer size beyond the alternate buffer pointer, wrapped by the length
-         * of the ring buffer
+    } else {
+        /* Ah Ohhhh, we dont have anything to free and we're
+         * in a DMA Complete interrupt, thats interesting
          */
-        object->tx_transfer.specs[eBuffer].size = RingBuf_alloc_get_contiguous(
-           &object->writeBuffer, object->ringBlkSize, (uint8_t **)&object->tx_transfer.specs[eBuffer].src );
-
-        //SEGGER_SYSVIEW_RecordU32x3(SYSVIEW_EID_uartWriteAlloc, (uintptr_t)arg, eBuffer, object->tx_transfer.specs[eBuffer].size);
-
-        if (object->tx_transfer.specs[eBuffer].size > object->ringBlkSize) {
-            //SEGGER_SYSVIEW_Error("object->tx_transfer.specs[eBuffer].size > object->ringBlkSize");
-        } else {
-            MAP_DMA_setChannelControl(dmaChannel, object->tx_transfer.ctlOptions);
-            if (object->writeBuffer.reserved < object->writeBuffer.count ) {
-                MAP_DMA_setChannelTransfer(dmaChannel, UDMA_MODE_PINGPONG,
-                   object->tx_transfer.specs[eBuffer].src, object->tx_transfer.specs[eBuffer].dst,
-                   object->tx_transfer.specs[eBuffer].size);
-            } else {
-                MAP_DMA_setChannelTransfer(dmaChannel, UDMA_MODE_BASIC,
-                   object->tx_transfer.specs[eBuffer].src, object->tx_transfer.specs[eBuffer].dst,
-                   object->tx_transfer.specs[eBuffer].size);
-            }
-
-            /* This will set the transfer mode to PING PONG and auto-transfer the next DMA transaction */
-            if (eBuffer == eUDMAPingPongPrimary && *object->tx_dmaCtrlAlt & 0x07 != 0) {
-                BITBAND_PERI((((DMA_ControlTable*)DMA_Control->CTLBASE)[(hwAttrs->txDMAChannelIndex & 0x0F) | UDMA_ALT_SELECT].control), 1) = 1;
-            } else if ( eBuffer == eUDMAPingPongAlternate && *object->tx_dmaCtrlPri & 0x07 != 0) {
-                BITBAND_PERI((((DMA_ControlTable*)DMA_Control->CTLBASE)[(hwAttrs->txDMAChannelIndex & 0x0F)].control), 1) = 1;
-            }
-
+        SEGGER_SYSVIEW_Error("UARTMSP432DMA_hwiIntTxDMA_done Called without any active DMA sequences");
         }
-        HwiP_restore(key);
-    }
 
-#if 0
-    /* If there is more data to transfer in the next switch then we should setup the next transfer now
-     */
-    if (object->tx_currentXferAmt) {
-        /* Check if we're currently stopped, in which case we need to restart the Ping-Pong process instead
-         * of just priming the next conversion to take place
-         */
-        if ( (*object->tx_dmaAltSetBitBand ? *object->tx_dmaCtrlAlt & 0x07 : *object->tx_dmaCtrlPri & 0x07 ) == 0 ) {
-            /* Use the alloc_get ring buffer functions to reserve blocks from the buffer
-             * to be put into transfer
-             */
-            configTransmitDMA(object, hwAttrs);
-
-        } else if (*object->tx_dmaAltSetBitBand) {
-            key = HwiP_disable();
-            /* The next write buffer is an alternate buffer size beyond the alternate buffer pointer, wrapped by the length
-             * of the ring buffer
-             */
-            object->tx_transfer.specs[eUDMAPingPongPrimary].size = RingBuf_alloc_get_contiguous(
-                &object->writeBuffer, object->ringBlkSize, (uint8_t **)&object->tx_transfer.specs[eUDMAPingPongPrimary].src );
-            if ()
-            MAP_DMA_setChannelControl(object->tx_transfer.dmaChannel | UDMA_PRI_SELECT, object->tx_transfer.ctlOptions);
-            MAP_DMA_setChannelTransfer(object->tx_transfer.dmaChannel | UDMA_PRI_SELECT, UDMA_MODE_PINGPONG,
-                object->tx_transfer.specs[eUDMAPingPongPrimary].src, object->tx_transfer.specs[eUDMAPingPongPrimary].dst,
-                object->tx_transfer.specs[eUDMAPingPongPrimary].size);
-            HwiP_restore(key);
+    if (object->writeBuffer.count) {
+        /* Fill all transmit buffers with valid transactions */
+        UARTMSP432DMA_transmitDmaFill(hwAttrs, object);
         } else {
-            key = HwiP_disable();
-            /* The next write buffer is a primary buffer size beyond the primary buffer pointer, wrapped by the length
-             * of the ring buffer
-             */
-            object->tx_transfer.specs[eUDMAPingPongAlternate].size = RingBuf_alloc_get_contiguous(
-                &object->writeBuffer, object->ringBlkSize, (uint8_t **)&object->tx_transfer.specs[eUDMAPingPongAlternate].src );
-            MAP_DMA_setChannelControl(object->tx_transfer.dmaChannel | UDMA_ALT_SELECT, object->tx_transfer.ctlOptions);
-            MAP_DMA_setChannelTransfer(object->tx_transfer.dmaChannel | UDMA_ALT_SELECT, UDMA_MODE_PINGPONG,
-                object->tx_transfer.specs[eUDMAPingPongAlternate].src, object->tx_transfer.specs[eUDMAPingPongAlternate].dst,
-                object->tx_transfer.specs[eUDMAPingPongAlternate].size);
-            HwiP_restore(key);
-        }
-    } else if ((*object->tx_dmaAltSetBitBand ? *object->tx_dmaCtrlAlt & 0x07 : *object->tx_dmaCtrlPri & 0x07 ) == 0 ) {
-        /* Disable the channel on the final pass through */
-        //MAP_DMA_disableChannel(object->tx_transfer.dmaChannel & 0x0F);
-
         /* Remove constraints set during transfer */
         Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
-    }
-#endif
+            }
 
-    /* Only unblock the write semaphore if we actually made room in the send buffer, otherwise
-     * no more data can be written. therefor why unblock it? only if there is space
-     */
+    if (object->tx_depth == 0)
+    {
+        /* Disable the channel and reset the toggle field */
+        MAP_DMA_disableChannel(object->tx_transfer.dmaChannel & 0x0F);
+        object->tx_toggle = 0;
+            }
+
+        HwiP_restore(key);
+
     return ( writeUnblock && SemaphoreP_post(object->writeSem) );
 }
 
@@ -1132,9 +1038,9 @@ inline uint32_t getDmaRemainingTXfers(UARTMSP432DMA_Object *object)
     * of regular transfer
     */
    if (*object->tx_dmaAltSetBitBand)
-       return *object->tx_dmaCtrlAlt & 0x07 ? ((*object->tx_dmaCtrlAlt & UDMA_CHCTL_XFERSIZE_M) >> 4) + 1 : 0;
+       return *object->tx_dmaCtrl[eUDMAPingPongAlternate] & 0x07 ? ((*object->tx_dmaCtrl[eUDMAPingPongAlternate] & UDMA_CHCTL_XFERSIZE_M) >> 4) + 1 : 0;
    else
-       return *object->tx_dmaCtrlPri & 0x07 ? ((*object->tx_dmaCtrlPri & UDMA_CHCTL_XFERSIZE_M) >> 4) + 1 : 0;
+       return *object->tx_dmaCtrl[eUDMAPingPongPrimary] & 0x07 ? ((*object->tx_dmaCtrl[eUDMAPingPongPrimary] & UDMA_CHCTL_XFERSIZE_M) >> 4) + 1 : 0;
 }
 
 /* ======== InitDmaRxScatterGatherer =========
@@ -1232,20 +1138,21 @@ static void initHw(UARTMSP432DMA_Object *object, UARTMSP432DMA_HWAttrsV1 const *
                                 EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG);
     MAP_UART_enableInterrupt(hwAttrs->baseAddr,
                                  EUSCI_A_UART_BREAKCHAR_INTERRUPT |
-                                 EUSCI_A_UART_RECEIVE_ERRONEOUSCHAR_INTERRUPT |
-                                 EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT);
+                                 EUSCI_A_UART_RECEIVE_ERRONEOUSCHAR_INTERRUPT );
     MAP_UART_enableModule(hwAttrs->baseAddr);
     MAP_UART_enableInterrupt(hwAttrs->baseAddr,
                                      EUSCI_A_UART_BREAKCHAR_INTERRUPT |
-                                     EUSCI_A_UART_RECEIVE_ERRONEOUSCHAR_INTERRUPT |
-                                     EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT);
-//#warning "Testing not firing this interrupt, seeing if DMA captures every completion OK"
+                                     EUSCI_A_UART_RECEIVE_ERRONEOUSCHAR_INTERRUPT); // |
+                                     //EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT);
     MAP_Interrupt_enableInterrupt(hwAttrs->intNum);
 
     /* Setup the RX DMA */
     UDMAMSP432_setupPingPongTransfer(&object->rx_transfer);
+    /* Setup the TX DMA here, blank and in-active but plummed */
+    //UDMAMSP432_setupPingPongTransfer(&object->tx_transfer);
     /* Specify the buffer channel as having high priority */
     DMA_Control->PRIOSET = (1 << (hwAttrs->bfrDMAChannelIndex & 0x0F));
+    DMA_Control->PRIOSET = (1 << (hwAttrs->rxDMAChannelIndex & 0x0F));
     baudrateIndex = EUSCI_A_CMSIS(hwAttrs->baseAddr)->RXBUF;
 
     /* Call setup route for DMA scatter gatherer */
@@ -1549,7 +1456,7 @@ int_fast16_t UARTMSP432DMA_control(UART_Handle handle, uint_fast16_t cmd, void *
             if (object->writeBuffer.count)
             {
                 /* Configure the Tx DMA again from scratch */
-                configTransmitDMA(object, hwAttrs);
+                UARTMSP432DMA_transmitDmaFill(hwAttrs, object);
 
                 DebugP_log1("UART:(%p) UART_CMD_TXENABLE: Continue",
                         hwAttrs->baseAddr);
@@ -1632,11 +1539,11 @@ static long UARTMSP432DMA_hwiIntFxn(uintptr_t arg)
         MAP_UART_clearInterruptFlag(hwAttrs->baseAddr, EUSCI_A_UART_STARTBIT_INTERRUPT);
     }
 
-    if (status & EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG)
+    /* Catch-all for completion and transmit interrupts being thrown */
+    if (status & (EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG  ) )
     {
-        /* Clear this flag so the transmit function doesn't pick this up as a Non-Completer */
         MAP_UART_clearInterruptFlag(hwAttrs->baseAddr, EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG);
-        return ( configTransmitDMA(object, hwAttrs) && SemaphoreP_post(object->writeSem) ) || xSwitch;
+        UARTMSP432DMA_txDMA_done(arg);
     }
 
     if (errorFlags)
@@ -1958,6 +1865,8 @@ UART_Handle UARTMSP432DMA_open(UART_Handle handle, UART_Params *params)
     object->rx_readMin = 0;
     object->readAsyncPrev = 0;
     object->tx_cancelInProgress = false;
+    object->tx_toggle = 0;
+    object->tx_depth = 0;
 
     /* RTS Pin used for flow control of the RX buffer. Set once the highwater mark is met, meaning less than or equal
      * to one rx block size of buffer free. This allows for run-out during flow control transition and prevents
@@ -1973,15 +1882,17 @@ UART_Handle UARTMSP432DMA_open(UART_Handle handle, UART_Params *params)
     /* the ALT control bit is in peripheral address space */
     object->rx_dmaAltSetBitBand = (volatile uint32_t*)BITBAND_PERI_ADR(DMA_Control->ALTSET, (hwAttrs->bfrDMAChannelIndex & 0x0F));
     object->rx_dmaAltClrBitBand = (volatile uint32_t*)BITBAND_PERI_ADR(DMA_Control->ALTCLR, (hwAttrs->bfrDMAChannelIndex & 0x0F));
-    object->rx_dmaCtrlPri  = &((DMA_ControlTable*)DMA_Control->CTLBASE)[(hwAttrs->bfrDMAChannelIndex & 0x0F)].control;
-    object->rx_dmaCtrlAlt  = &((DMA_ControlTable*)DMA_Control->CTLBASE)[(hwAttrs->bfrDMAChannelIndex & 0x0F) | UDMA_ALT_SELECT].control;
+    object->rx_dmaCtrl[eUDMAPingPongPrimary]   = &((DMA_ControlTable*)DMA_Control->CTLBASE)[(hwAttrs->bfrDMAChannelIndex & 0x0F)].control;
+    object->rx_dmaCtrl[eUDMAPingPongAlternate] = &((DMA_ControlTable*)DMA_Control->CTLBASE)[(hwAttrs->bfrDMAChannelIndex & 0x0F) | UDMA_ALT_SELECT].control;
     object->rx_dmaTaskCtrl = &((DMA_ControlTable*)DMA_Control->CTLBASE)[(hwAttrs->rxDMAChannelIndex & 0x0F)].control;
 
     /* tx DMA peripheral address access */
     object->tx_dmaAltSetBitBand = (volatile uint32_t*)BITBAND_PERI_ADR(DMA_Control->ALTSET, (hwAttrs->txDMAChannelIndex & 0x0F));
     object->tx_dmaAltClrBitBand = (volatile uint32_t*)BITBAND_PERI_ADR(DMA_Control->ALTCLR, (hwAttrs->txDMAChannelIndex & 0x0F));
-    object->tx_dmaCtrlPri = &((DMA_ControlTable*)DMA_Control->CTLBASE)[(hwAttrs->txDMAChannelIndex & 0x0F)].control;
-    object->tx_dmaCtrlAlt = &((DMA_ControlTable*)DMA_Control->CTLBASE)[(hwAttrs->txDMAChannelIndex & 0x0F) | UDMA_ALT_SELECT].control;
+    object->tx_dmaCtrl[eUDMAPingPongPrimary]   = &((DMA_ControlTable*)DMA_Control->CTLBASE)[(hwAttrs->txDMAChannelIndex & 0x0F)].control;
+    object->tx_dmaCtrl[eUDMAPingPongAlternate] = &((DMA_ControlTable*)DMA_Control->CTLBASE)[(hwAttrs->txDMAChannelIndex & 0x0F) | UDMA_ALT_SELECT].control;
+    object->tx_dmaPPbit[eUDMAPingPongPrimary]   = (volatile uint32_t*)BITBAND_SRAM_ADR(((DMA_ControlTable*)DMA_Control->CTLBASE)[(hwAttrs->txDMAChannelIndex & 0x0F)].control, 1);
+    object->tx_dmaPPbit[eUDMAPingPongAlternate] = (volatile uint32_t*)BITBAND_SRAM_ADR(((DMA_ControlTable*)DMA_Control->CTLBASE)[(hwAttrs->txDMAChannelIndex & 0x0F) | UDMA_ALT_SELECT].control, 1);
 
     /* Setup these constants so that interrupts call into them constantly... */
     object->tx_transfer.dmaChannel = hwAttrs->txDMAChannelIndex;
@@ -2046,8 +1957,8 @@ void UARTMSP432DMA_transmitCancel(UART_Handle handle)
     MAP_DMA_disableChannel(hwAttrs->txDMAChannelIndex & 0x0F);
     object->tx_transfer.specs[eUDMAPingPongPrimary].size = 0;
     object->tx_transfer.specs[eUDMAPingPongAlternate].size = 0;
-    object->tx_dmaCtrlPri = 0;
-    object->tx_dmaCtrlAlt = 0;
+    object->tx_dmaCtrl[eUDMAPingPongPrimary] = 0;
+    object->tx_dmaCtrl[eUDMAPingPongAlternate] = 0;
 
     /* Clear the entire send queue */
     RingBuf_free_get_contiguous(&object->writeBuffer, hwAttrs->writeBufSize);
@@ -2101,7 +2012,7 @@ int_fast32_t UARTMSP432DMA_write(UART_Handle handle, const void *buffer, size_t 
     /* Attempt to add the buffer to the send queue where possible */
     count = RingBuf_put_buffer(&object->writeBuffer, writePtr, size);
 
-    configTransmitDMA(object, hwAttrs);
+    UARTMSP432DMA_transmitDmaFill(hwAttrs, object);
     size -= count;
     writePtr += count;
     lwriteCount = count;
@@ -2127,7 +2038,7 @@ int_fast32_t UARTMSP432DMA_write(UART_Handle handle, const void *buffer, size_t 
         count = RingBuf_put_buffer(&object->writeBuffer, writePtr, size);
 
         /* Configure the Xmit DMA to ping-pong away */
-        configTransmitDMA(object, hwAttrs);
+        UARTMSP432DMA_transmitDmaFill(hwAttrs, object);
 
         /* Commentary: Technically if your Tx ping-pong buffers are small, you can return
          * quicker to the transmitter with available buffer space, instead of waiting giant

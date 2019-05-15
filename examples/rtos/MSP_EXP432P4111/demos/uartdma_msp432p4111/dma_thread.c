@@ -195,6 +195,7 @@ void *dmaMasterThread(void *arg0)
     long   SendStreamCountDown = 0;
     size_t SendStreamIndexUp = 0;
     long   ReceiveStreamCountDown = 0;
+    long skipCount = 0;
     int previous = 0;
     DmaMsg msg;
     int rc;
@@ -261,6 +262,7 @@ void *dmaMasterThread(void *arg0)
                 SendStreamCountDown = 0;
                 ReceiveStreamCountDown = 0;
                 SendStreamIndexUp = 0;
+                skipCount = 0;
                 /* Inspect writeCommited here as the error code and/or writeCount response was wrong */
                 led_send_rgb_hz(255, 0, 64, 10);
                 SEGGER_SYSVIEW_Error( "Log an error here to the LCD/Console" );
@@ -314,6 +316,7 @@ void *dmaMasterThread(void *arg0)
                             SEGGER_SYSVIEW_Error( "Log an error here to the LCD/Console as we got an unexpected result from the uart read call");
                             /* Clear down the variables controlling the reading operation */
                             ReceiveStreamCountDown = 0;
+                            skipCount = 0;
                             memset(&readHeader, 0, sizeof(readHeader));
                         }
                         /* Untrack the previous size as it should now be zero anyway */
@@ -340,6 +343,7 @@ void *dmaMasterThread(void *arg0)
                 } else if (readRingSize == 0) {
                     /* We've done a read and come back blank so bail out to the command semaphore */
                     ReceiveStreamCountDown = 0;
+                    skipCount = 0;
                 } else {
                     /* We need more data from the port */
                     previous = -1;
@@ -359,25 +363,35 @@ void *dmaMasterThread(void *arg0)
                 /* Check the return code/size for errors before processing the buffer */
                 if (readRingSize > 0 && readRingSize >= readSize && readSize > 0) {
                     int checkCountDown = readSize;
-                    uint32_t byteIndex;
+                    uint32_t byteIndex = SendStreamIndexUp;
 
-                    for (byteIndex = SendStreamIndexUp; checkCountDown > 0; checkCountDown--)
+                    while (checkCountDown--)
                     {
-                        if (*buffer++ != (byteIndex++ % 0xFF))
+                        if (*buffer != (byteIndex % 0xFF))
                         {
+                            if (*buffer == ((byteIndex + 1) % 0xFF) ) {
+                                skipCount += 1;
+                                terminal_respond( terminalHandle, "{\"State\":\"Sync\", \"TestNumber\": %d, \"SkipCount\": %d}\n", testNumber, skipCount );
+                            } else if (*buffer == ((byteIndex + 2 )% 0xFF)) {
+                                skipCount += 2;
+                                terminal_respond( terminalHandle, "{\"State\":\"Sync\", \"TestNumber\": %d, \"SkipCount\": %d}\n", testNumber, skipCount );
+                            } else {
                             led_send_rgb_hz(255, 64, 0, 4);
                             /* Flush the read buffer please */
                             readSize += UART_read(uartMasterHandle, NULL, 0);
-                            terminal_respond( terminalHandle, "{\"Result\":\"Payload sync lost\", \"TestNumber\": %d, \"Received\": %d}\n", testNumber, readSize );
+                                terminal_respond( terminalHandle, "{\"Result\":\"SyncFail\", \"TestNumber\": %d, \"Received\": %d, \"SkipCount\": %d}\n", testNumber, readSize , skipCount);
                             SEGGER_SYSVIEW_Error( "Log an error here because the byte value does not match what should be in the stream" );
                             readSize = 0;
                             ReceiveStreamCountDown = 0;
+                                skipCount = 0;
                             previous = 0;
                             SendStreamIndexUp = 0;
                             memset(&readHeader, 0, sizeof(readHeader));
-
+                            }
                             break;
                         }
+                        buffer++;
+                        byteIndex++;
                     }
 
                     /* Wrap the index for the comparator */
@@ -390,9 +404,12 @@ void *dmaMasterThread(void *arg0)
                      */
                     previous = readSize;
 
-                    if (ReceiveStreamCountDown == 0) {
-                        terminal_respond( terminalHandle, "{\"Result\":\"All received\", \"TestNumber\": %d, \"bytes\": %d}\n", testNumber, readHeader.sendSize + sizeof(readHeader) );
+                    if (ReceiveStreamCountDown == 0 && readSize != 0) {
+                        terminal_respond( terminalHandle, "{\"Result\":\"Complete\", \"TestNumber\": %d, \"bytes\": %d, \"SkipCount\": %d}\n", testNumber, readHeader.sendSize + sizeof(readHeader), skipCount );
                         SEGGER_SYSVIEW_Print( "Byte stream received all OK" );
+                        previous = -1;
+                        /* Release the buffer so we dont run out of space the very next time around */
+                        UART_read(uartMasterHandle, NULL, 0);
                     }
                 } else {
                     /* Perform a read size of zero. This will flush the read buffers. A somewhat equivelent of cat > /dev/null
@@ -414,6 +431,7 @@ void *dmaMasterThread(void *arg0)
                         SEGGER_SYSVIEW_Error( "Log and error here to the LCD/Console as either we got an error code from the library call" );
                     }
 
+                    skipCount = 0;
                     ReceiveStreamCountDown = 0;
                     previous = -1;
                     SendStreamIndexUp = 0;
@@ -430,6 +448,8 @@ void *dmaMasterThread(void *arg0)
                                   NULL);
                 if (retc != -1)
                 {
+                    // Set it if we have it
+                    if (msg.terminalHandle)
                     terminalHandle = msg.terminalHandle;
                     switch (msg.cmd)
                     {
@@ -451,6 +471,8 @@ void *dmaMasterThread(void *arg0)
                         uartLoopbackHandle = dmaUartOpen(MSP_EXP432P4111_DMA1, MSP_EXP432P4111_DMA_UART1_CTS,
                                                              gpioCtsLoopback, uartLoopbackHandle );
 
+
+                        msg.terminalHandle = terminalHandle;
                         /* Send the same message to the loop-back thread.. Its mainly information at this point
                          * as the port speed has already changed */
                         rc = mq_send(mqDMALoopback, (char *) &msg, sizeof(msg), 0);
@@ -566,18 +588,18 @@ void *dmaLoopbackThread(void *arg0)
         && (rxRingSize = UART_readAsync(uartLoopbackHandle, 0, previous, &buffer, &readSize) ) > 0)
         {
             readCount += readSize;
-            ITM_put_32((ITM_port_t)11, readCount | (testNumber << 16));
+            //ITM_put_32((ITM_port_t)11, readCount | (testNumber << 16));
             if (uartLoopbackHandle != NULL) {
                 if ( ( writeSize = UART_write(uartLoopbackHandle, (const void *)buffer, readSize)) != readSize)
                 {
                     if (writeSize < 0 ) {
-                        led_send_rgb_hz(255, -1, 64, 10);
+                        //led_send_rgb_hz(255, -1, 64, 10);
                         /* Write stream gave an error code. Not good */
                         previous = 0;
                         SEGGER_SYSVIEW_Error("Write size returned less than zero" );
                     } else {
                         /* Partial write success, only chop off how much we have written back */
-                        led_send_rgb_hz(-1, -1, 64, 4);
+                        //led_send_rgb_hz(-1, -1, 64, 4);
                         previous = writeSize;
                         SEGGER_SYSVIEW_Warn("Partial write success, another loop should complete this" );
                     }
@@ -586,10 +608,10 @@ void *dmaLoopbackThread(void *arg0)
                      * Read-Write stream flowing OK
                      * */
                     previous = readSize;
-                    led_send_rgb_hz(-1, 255, 255, 1);
+                    //led_send_rgb_hz(-1, 255, 255, 1);
                 }
                 writeCount += writeSize;
-                ITM_put_32((ITM_port_t)10, writeCount | (testNumber << 16));
+                //ITM_put_32((ITM_port_t)10, writeCount | (testNumber << 16));
             } else {
                 /* Serial port closing... out we go */
                 previous = 0;
