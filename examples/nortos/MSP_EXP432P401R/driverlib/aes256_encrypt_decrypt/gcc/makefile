@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = system_msp432p401r.obj startup_msp432p401r_gcc.obj aes256_encrypt_decrypt.obj
+OBJECTS = aes256_encrypt_decrypt.obj system_msp432p401r.obj gcc_startup_msp432p401r_gcc.obj
 
 NAME = aes256_encrypt_decrypt
 
@@ -53,21 +53,21 @@ LFLAGS = -Wl,-T,../gcc/msp432p401r.lds \
 
 all: $(NAME).out
 
+aes256_encrypt_decrypt.obj: ../aes256_encrypt_decrypt.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
 system_msp432p401r.obj: ../system_msp432p401r.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-startup_msp432p401r_gcc.obj: ../gcc/startup_msp432p401r_gcc.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-aes256_encrypt_decrypt.obj: ../aes256_encrypt_decrypt.c
+gcc_startup_msp432p401r_gcc.obj: ../gcc/startup_msp432p401r_gcc.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

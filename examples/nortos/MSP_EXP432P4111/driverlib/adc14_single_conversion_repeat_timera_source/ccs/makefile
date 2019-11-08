@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = system_msp432p4111.obj startup_msp432p4111_ccs.obj adc14_single_conversion_repeat_timera_source.obj
+OBJECTS = adc14_single_conversion_repeat_timera_source.obj system_msp432p4111.obj ccs_startup_msp432p4111_ccs.obj
 
 NAME = adc14_single_conversion_repeat_timera_source
 
@@ -45,21 +45,21 @@ LFLAGS = --stack_size=512 \
 
 all: $(NAME).out
 
+adc14_single_conversion_repeat_timera_source.obj: ../adc14_single_conversion_repeat_timera_source.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
 system_msp432p4111.obj: ../system_msp432p4111.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-startup_msp432p4111_ccs.obj: ../ccs/startup_msp432p4111_ccs.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-adc14_single_conversion_repeat_timera_source.obj: ../adc14_single_conversion_repeat_timera_source.c
+ccs_startup_msp432p4111_ccs.obj: ../ccs/startup_msp432p4111_ccs.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = system_msp432p401r.obj startup_msp432p401r_ccs.obj opt3001.obj tmp007.obj uart_driver.obj main.obj bmi160.obj bmi160_support.obj demo_sysctl.obj i2c_driver.obj bme280_support.obj bme280.obj
+OBJECTS = bme280.obj bme280_support.obj bmi160.obj bmi160_support.obj demo_sysctl.obj i2c_driver.obj main.obj opt3001.obj tmp007.obj uart_driver.obj system_msp432p401r.obj ccs_startup_msp432p401r_ccs.obj
 
 NAME = boostxl_sensors_sensorgui_msp432p401r
 
@@ -45,27 +45,11 @@ LFLAGS = --stack_size=512 \
 
 all: $(NAME).out
 
-system_msp432p401r.obj: ../system_msp432p401r.c
+bme280.obj: ../bme280.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-startup_msp432p401r_ccs.obj: ../ccs/startup_msp432p401r_ccs.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-opt3001.obj: ../opt3001.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-tmp007.obj: ../tmp007.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-uart_driver.obj: ../uart_driver.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-main.obj: ../main.c
+bme280_support.obj: ../bme280_support.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
@@ -85,17 +69,33 @@ i2c_driver.obj: ../i2c_driver.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-bme280_support.obj: ../bme280_support.c
+main.obj: ../main.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-bme280.obj: ../bme280.c
+opt3001.obj: ../opt3001.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
+tmp007.obj: ../tmp007.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
+uart_driver.obj: ../uart_driver.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
+system_msp432p401r.obj: ../system_msp432p401r.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
+ccs_startup_msp432p401r_ccs.obj: ../ccs/startup_msp432p401r_ccs.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

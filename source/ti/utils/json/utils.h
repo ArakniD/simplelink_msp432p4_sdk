@@ -139,8 +139,8 @@ typedef struct  in_data_stream_cb_TAG
                 #include <strings.h>
 
                 #define StrNiCmp     strncasecmp
-                #define LToA         ltoa
-
+void LToA(_I_ int32_t val,
+          __O char *   buf);
 void UlToA(_I_ uint32_t val,
            __O char *   buf);                                               /* No native _ultoa in __TI_COMPILER_VERSION__ */
     #elif defined __IAR_SYSTEMS_ICC__

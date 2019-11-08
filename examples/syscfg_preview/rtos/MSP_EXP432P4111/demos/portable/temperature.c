@@ -59,38 +59,23 @@
 /*
  *  ======== TMP Registers ========
  */
-#define TMP006_DIE_TEMP     0x0001  /* Die Temp Result Register for TMP006 */
-#define TMP116_DIE_TEMP     0x0000  /* Die Temp Result Register for TMP116 */
+#define TMP006_REG          0x0001  /* Die Temp Result Register for TMP006 */
+#define TMP116_REG          0x0000  /* Die Temp Result Register for TMP116 */
 
 /*
- *  The CC322X LaunchPads contain an on-board TMP006.
- *  The CC323X LaunchPads contain an on-board TMP116.
+ *  The CC32XX LaunchPads come with an on-board TMP006 or TMP116 temperature
+ *  sensor depending on the revision. Newer revisions come with the TMP116.
  *  The Build Automation Sensors (BOOSTXL-BASSENSORS) BoosterPack
  *  contains a TMP116.
  *
  *  We are using the DIE temperature because it's cool!
  *
- *  If you are on a CC32XX LaunchPad and want to use the Build Automation
- *  Sensors BoosterPack, remove the ONBOARD_TEMP_SENSOR define from the compiler
- *  options.
- *
- *  If you are on a CC3235 LaunchPad and want to use the Build Automation
- *  Sensors BoosterPack, you only need to remove the J21 (SCL) and J22 (SDA)
- *  jumpers from the LaunchPad.
- *
  *  Additionally: no calibration is being done on the TMPxxx device to simplify
  *  the example code.
  */
-#if defined(Board_I2C_TMP006_ADDR) && defined(ONBOARD_TEMP_SENSOR)
-#define TMP_REGISTER TMP006_DIE_TEMP
-#define TMP_ADDR     Board_I2C_TMP006_ADDR
-#elif defined(Board_I2C_TMP116_ADDR) && defined(ONBOARD_TEMP_SENSOR)
-#define TMP_REGISTER TMP116_DIE_TEMP
-#define TMP_ADDR     Board_I2C_TMP116_ADDR
-#else
-#define TMP_REGISTER TMP116_DIE_TEMP
-#define TMP_ADDR     0x48
-#endif
+#define TMP006_ADDR         0x41;
+#define TMP116_BP_ADDR      0x48;
+#define TMP116_LP_ADDR      0x49;
 
 /* Temperature written by the temperature thread and read by console thread */
 volatile float temperatureC;
@@ -208,12 +193,34 @@ void *temperatureThread(void *arg0)
         while (1);
     }
 
-    txBuffer[0] = TMP_REGISTER;
-    i2cTransaction.slaveAddress = TMP_ADDR;
+    /* Common I2C transaction setup */
     i2cTransaction.writeBuf   = txBuffer;
     i2cTransaction.writeCount = 1;
     i2cTransaction.readBuf    = rxBuffer;
     i2cTransaction.readCount  = 2;
+
+    /*
+     * Determine which I2C sensor is present.
+     * We will prefer sensors in this order: TMP116 (on BoosterPacks),
+     * TMP116 (on-board CC32XX LaunchPads), and last TMP006
+     * (on older CC32XX LaunchPads).
+     */
+    /* Try TMP116 values */
+    txBuffer[0] = TMP116_REG;
+    i2cTransaction.slaveAddress = TMP116_BP_ADDR;
+    if (!I2C_transfer(i2c, &i2cTransaction)) {
+        /* Not BP TMP116, try LP TMP116 */
+        i2cTransaction.slaveAddress = TMP116_LP_ADDR;
+        if (!I2C_transfer(i2c, &i2cTransaction)) {
+            /* Not a TMP116 try TMP006*/
+            txBuffer[0] = TMP006_REG;
+            i2cTransaction.slaveAddress = TMP006_ADDR;
+            if (!I2C_transfer(i2c, &i2cTransaction)) {
+                /* Could not resolve a sensor, error */
+                while(1);
+            }
+        }
+    }
 
     /*
      *  The temperature thread blocks on the semTimer semaphore, which the

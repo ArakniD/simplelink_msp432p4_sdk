@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = adcBufMultiChannel.obj MSP_EXP432P401R.obj main_freertos.obj
+OBJECTS = adcBufMultiChannel.obj MSP_EXP432P401R.obj freertos_main_freertos.obj
 
 NAME = adcbufmultichannel
 
@@ -67,6 +67,7 @@ $(KERNEL_BUILD)/gcc/freertos.lib:
 	@ echo $@ is not built.
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
+
 adcBufMultiChannel.obj: ../../adcBufMultiChannel.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
@@ -75,13 +76,13 @@ MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-main_freertos.obj: ../../freertos/main_freertos.c
+freertos_main_freertos.obj: ../../freertos/main_freertos.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/gcc/freertos.lib
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

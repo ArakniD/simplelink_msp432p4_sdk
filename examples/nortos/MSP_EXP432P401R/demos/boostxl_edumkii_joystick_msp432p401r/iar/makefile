@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
 
-OBJECTS = system_msp432p401r.obj Crystalfontz128x128_ST7735.obj HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj startup_msp432p401r_ewarm.obj main.obj
+OBJECTS = main.obj system_msp432p401r.obj LcdDriver_Crystalfontz128x128_ST7735.obj LcdDriver_HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj iar_startup_msp432p401r_ewarm.obj
 
 NAME = boostxl_edumkii_joystick_msp432p401r
 
@@ -36,29 +36,29 @@ LFLAGS = "$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/grlib/lib/iar/m4f/grlib
 
 all: $(NAME).out
 
+main.obj: ../main.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -o $@
+
 system_msp432p401r.obj: ../system_msp432p401r.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
-Crystalfontz128x128_ST7735.obj: ../LcdDriver/Crystalfontz128x128_ST7735.c
+LcdDriver_Crystalfontz128x128_ST7735.obj: ../LcdDriver/Crystalfontz128x128_ST7735.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
-HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj: ../LcdDriver/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.c
+LcdDriver_HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj: ../LcdDriver/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
-startup_msp432p401r_ewarm.obj: ../iar/startup_msp432p401r_ewarm.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -o $@
-
-main.obj: ../main.c
+iar_startup_msp432p401r_ewarm.obj: ../iar/startup_msp432p401r_ewarm.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = adc14.obj aes256.obj comp_e.obj cpu.obj crc32.obj cs.obj dma.obj flash_a.obj fpu.obj gpio.obj i2c.obj interrupt.obj lcd_f.obj mpu.obj pcm.obj pmap.obj pss.obj ref_a.obj reset.obj rtc_c.obj spi.obj sysctl_a.obj systick.obj timer32.obj timer_a.obj uart.obj wdt_a.obj system_msp432p4111.obj startup_msp432p4111_gcc.obj main.obj
+OBJECTS = main.obj adc14.obj aes256.obj comp_e.obj cpu.obj crc32.obj cs.obj dma.obj flash_a.obj fpu.obj gpio.obj i2c.obj interrupt.obj lcd_f.obj mpu.obj pcm.obj pmap.obj pss.obj ref_a.obj reset.obj rtc_c.obj spi.obj sysctl_a.obj systick.obj timer32.obj timer_a.obj uart.obj wdt_a.obj system_msp432p4111.obj gcc_startup_msp432p4111_gcc.obj
 
 NAME = driverlib_empty_project_from_source
 
@@ -52,6 +52,10 @@ LFLAGS = -Wl,-T,../gcc/msp432p4111.lds \
     --specs=nano.specs
 
 all: $(NAME).out
+
+main.obj: ../main.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
 
 adc14.obj: ../adc14.c
 	@ echo Building $@
@@ -165,17 +169,13 @@ system_msp432p4111.obj: ../system_msp432p4111.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-startup_msp432p4111_gcc.obj: ../gcc/startup_msp432p4111_gcc.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-main.obj: ../main.c
+gcc_startup_msp432p4111_gcc.obj: ../gcc/startup_msp432p4111_gcc.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

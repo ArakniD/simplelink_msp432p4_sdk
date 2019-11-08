@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = system_msp432p401r.obj startup_msp432p401r_ccs.obj timer_a_continuous_vlo_period_capture.obj
+OBJECTS = timer_a_continuous_vlo_period_capture.obj system_msp432p401r.obj ccs_startup_msp432p401r_ccs.obj
 
 NAME = timer_a_continuous_vlo_period_capture
 
@@ -45,21 +45,21 @@ LFLAGS = --stack_size=512 \
 
 all: $(NAME).out
 
+timer_a_continuous_vlo_period_capture.obj: ../timer_a_continuous_vlo_period_capture.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
 system_msp432p401r.obj: ../system_msp432p401r.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-startup_msp432p401r_ccs.obj: ../ccs/startup_msp432p401r_ccs.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-timer_a_continuous_vlo_period_capture.obj: ../timer_a_continuous_vlo_period_capture.c
+ccs_startup_msp432p401r_ccs.obj: ../ccs/startup_msp432p401r_ccs.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

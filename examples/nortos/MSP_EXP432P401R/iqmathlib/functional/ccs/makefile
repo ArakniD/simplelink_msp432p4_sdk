@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = system_msp432p401r.obj startup_msp432p401r_ccs.obj functional.obj
+OBJECTS = functional.obj system_msp432p401r.obj ccs_startup_msp432p401r_ccs.obj
 
 NAME = functional
 
@@ -47,21 +47,21 @@ LFLAGS = "-l$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/iqmathlib/ccs/IQmathL
 
 all: $(NAME).out
 
+functional.obj: ../functional.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
 system_msp432p401r.obj: ../system_msp432p401r.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-startup_msp432p401r_ccs.obj: ../ccs/startup_msp432p401r_ccs.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-functional.obj: ../functional.c
+ccs_startup_msp432p401r_ccs.obj: ../ccs/startup_msp432p401r_ccs.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

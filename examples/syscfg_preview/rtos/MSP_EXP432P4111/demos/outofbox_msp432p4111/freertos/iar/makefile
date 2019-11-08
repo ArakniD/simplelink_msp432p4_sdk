@@ -8,7 +8,7 @@ SYSCONFIG_PRODUCT := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
 
-OBJECTS = Board.obj cJSON.obj lcd_hal.obj main_freertos.obj lcd_thread.obj callbacks.obj uart_thread.obj led_thread.obj temperature_thread.obj
+OBJECTS = callbacks.obj lcd_thread.obj led_thread.obj temperature_thread.obj uart_thread.obj Board.obj cJSON_cJSON.obj LCD_HAL_lcd_hal.obj freertos_main_freertos.obj
 
 NAME = outofbox_msp432p4111
 
@@ -51,39 +51,20 @@ $(KERNEL_BUILD)/iar/freertos.lib:
 	@ echo $@ is not built.
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
+
 .INTERMEDIATE: syscfg
-Board.c Board.h : syscfg
+Board.c Board.h: syscfg
 	@ echo generation complete
 
 syscfg: ../../outOfBox_msp432p4111.syscfg
 	@ echo Generating configuration files...
-	@ $(NODE_JS) $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
-
-Board.obj: Board.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -o $@
-
-cJSON.obj: ../../cJSON/cJSON.c Board.h
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -o $@
-
-lcd_hal.obj: ../../LCD_HAL/lcd_hal.c Board.h
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -o $@
-
-main_freertos.obj: ../../freertos/main_freertos.c Board.h
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -o $@
-
-lcd_thread.obj: ../../lcd_thread.c Board.h
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -o $@
+	@ $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
 
 callbacks.obj: ../../callbacks.c Board.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
-uart_thread.obj: ../../uart_thread.c Board.h
+lcd_thread.obj: ../../lcd_thread.c Board.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
@@ -95,13 +76,33 @@ temperature_thread.obj: ../../temperature_thread.c Board.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
+uart_thread.obj: ../../uart_thread.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -o $@
+
+cJSON_cJSON.obj: ../../cJSON/cJSON.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -o $@
+
+LCD_HAL_lcd_hal.obj: ../../LCD_HAL/lcd_hal.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -o $@
+
+freertos_main_freertos.obj: ../../freertos/main_freertos.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -o $@
+
+Board.obj: Board.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -o $@
+
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/iar/freertos.lib
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
-	@ $(RM) Board.c Board.h  > $(DEVNULL) 2>&1
+	@ $(RM) Board.c Board.h > $(DEVNULL) 2>&1

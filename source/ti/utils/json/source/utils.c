@@ -162,7 +162,8 @@ size_t StrLen(_I_ char *   string)
 
 #endif
 
-#if (!defined(USE__STANDARD_LIBS)) || defined(__IAR_SYSTEMS_ICC__) || defined(__GNUC__)
+#if (!defined(USE__STANDARD_LIBS)) || defined(__TI_COMPILER_VERSION__) || \
+    defined(__IAR_SYSTEMS_ICC__) || defined(__GNUC__)
 /*****************************************************************************/
 /*                  ltoa function                                            */
 /*****************************************************************************/

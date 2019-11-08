@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- IAR Project Connection File -->
 
-<iarProjectConnection version="1.2" name="I2C Master Example1" oneShot="true"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:noNamespaceSchemaLocation="IarProjectConnection_1.2.xsd">
+<iarProjectConnection version="1.8" name="i2cmasterexample1" oneShot="true"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+  xsi:noNamespaceSchemaLocation="IarProjectConnection_1.8.xsd">
 
   <device>
     <name>MSP432P4111</name>
   </device>
 
+  <includePath>
+    <path>$PROJ_DIR$</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/CMSIS/Include</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/posix/iar</path>
+    <path>$FREERTOS_INSTALL_DIR$/FreeRTOS/Source/include</path>
+    <path>$FREERTOS_INSTALL_DIR$/FreeRTOS/Source/portable/IAR/ARM_CM4F</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/freertos/builds/MSP_EXP432P4111/release</path>
+  </includePath>
+
+  <defines>
+  </defines>
+
   <extraOptions>
-    <args>
-      <arg>-I$PROJ_DIR$</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/CMSIS/Include</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/posix/iar</arg>
-      <arg>-I$FREERTOS_INSTALL_DIR$/FreeRTOS/Source/include</arg>
-      <arg>-I$FREERTOS_INSTALL_DIR$/FreeRTOS/Source/portable/IAR/ARM_CM4F</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/freertos/builds/MSP_EXP432P4111/release</arg>
+      <arg></arg>
       <arg>--debug</arg>
       <arg>--silent</arg>
       <arg>-e</arg>
       <arg>--aeabi</arg>
       <arg>--thumb</arg>
       <arg>--diag_suppress=Pa050</arg>
-    </args>
   </extraOptions>
 
   <asmIncludePath>
@@ -37,7 +42,7 @@
 
   <linkerFile>
     <override>true</override>
-    <path>$PROJ_DIR$/$PROJ_FNAME$_MSP_EXP432P4111_FREERTOS.icf</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/syscfg_preview/rtos/MSP_EXP432P4111/drivers/i2cmasterexample1/freertos/iar/MSP_EXP432P4111_FREERTOS.icf</path>
   </linkerFile>
 
   <linkerExtraOptions>
@@ -55,17 +60,17 @@
     </args>
   </linkerExtraOptions>
 
-    <customBuildTools>
+  <customBuildTools>
     <customBuildTool atRoot="true" name="SysConfig"> <!-- Custom build tool for entire project-->
         <fileExtensions>.syscfg</fileExtensions>
-        <command>$SYSCONFIG_ROOT$/nw/nw.exe $SYSCONFIG_ROOT$/dist/cli.js -o $PROJ_DIR$ -s "$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/.metadata/product.json" --compiler iar $FILE_PATH$
+        <command>$SYSCONFIG_ROOT$/sysconfig_cli.bat -o $PROJ_DIR$ -s "$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/.metadata/product.json" --compiler iar $FILE_PATH$
         </command>
         <output>
             <path>SysConfig_Generated_Files.ipcf</path>
         </output>
         <hasPrio>true</hasPrio> <!-- true: run this tool before all other tools-->
     </customBuildTool>
-    </customBuildTools>
+  </customBuildTools>
 
   <heaps>
     <heap> <!-- If omitted, id="0" -->
@@ -90,7 +95,7 @@
       <path copyTo="$PROJ_DIR$/i2cmasterexample1.syscfg">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/syscfg_preview/rtos/MSP_EXP432P4111/drivers/i2cmasterexample1/i2cmasterexample1.syscfg</path>
       <path copyTo="$PROJ_DIR$/main_freertos.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/syscfg_preview/rtos/MSP_EXP432P4111/drivers/i2cmasterexample1/freertos/main_freertos.c</path>
       <path copyTo="$PROJ_DIR$/i2cmasterexample1.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/syscfg_preview/rtos/MSP_EXP432P4111/drivers/i2cmasterexample1/i2cmasterexample1.c</path>
-      <path copyTo="$PROJ_DIR$/$PROJ_FNAME$_MSP_EXP432P4111_FREERTOS.icf">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/syscfg_preview/rtos/MSP_EXP432P4111/drivers/i2cmasterexample1/freertos/iar/MSP_EXP432P4111_FREERTOS.icf</path>
+      <path copyTo="$PROJ_DIR$/MSP_EXP432P4111_FREERTOS.icf">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/syscfg_preview/rtos/MSP_EXP432P4111/drivers/i2cmasterexample1/freertos/iar/MSP_EXP432P4111_FREERTOS.icf</path>
     </group>
 
     <group name="Header files">

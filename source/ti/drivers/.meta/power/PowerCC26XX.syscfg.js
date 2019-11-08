@@ -197,6 +197,19 @@ While in STANDBY the VDDR rail will be adaptively recharged to maintain the
  margin is used.
 `,
         default     : 0
+    },
+
+    {
+        name        : "enableTCXOFunction",
+        displayName : "Enable TCXO Function",
+        description : "User-provided function for enable/disable of TCXO.",
+        longDescription:`
+When a connected TCXO xtal is supported on the board and CCFG is configured
+ to use TCXO as the high frequency oscillator this function must be able to
+ both power up and down the TCXO. CCFG configures the startup time of the
+ TCXO and also the TCXO type.
+`,
+        default     : "NULL"
     }
 ];
 

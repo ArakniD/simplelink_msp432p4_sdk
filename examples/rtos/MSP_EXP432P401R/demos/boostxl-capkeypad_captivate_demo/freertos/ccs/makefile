@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = main_freertos.obj MSP_EXP432P401R.obj sleep_task.obj np_master.obj npi_task.obj captivate_task.obj npi_message.obj
+OBJECTS = captivate_task.obj np_master.obj npi_message.obj npi_task.obj sleep_task.obj MSP_EXP432P401R.obj freertos_main_freertos.obj
 
 NAME = boostxl-capkeypad_captivate_demo
 
@@ -57,15 +57,8 @@ $(KERNEL_BUILD)/ccs/freertos.lib:
 	@ echo $@ is not built.
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
-main_freertos.obj: ../../freertos/main_freertos.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-sleep_task.obj: ../../sleep_task.c
+captivate_task.obj: ../../captivate_task.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
@@ -73,21 +66,29 @@ np_master.obj: ../../np_master.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
+npi_message.obj: ../../npi_message.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
 npi_task.obj: ../../npi_task.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-captivate_task.obj: ../../captivate_task.c
+sleep_task.obj: ../../sleep_task.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-npi_message.obj: ../../npi_message.c
+MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
+freertos_main_freertos.obj: ../../freertos/main_freertos.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/ccs/freertos.lib
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

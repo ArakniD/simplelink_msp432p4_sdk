@@ -8,7 +8,7 @@ SYSCONFIG_PRODUCT := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = Board.obj cJSON.obj lcd_hal.obj main_tirtos.obj lcd_thread.obj callbacks.obj uart_thread.obj led_thread.obj temperature_thread.obj
+OBJECTS = callbacks.obj lcd_thread.obj led_thread.obj temperature_thread.obj uart_thread.obj Board.obj cJSON_cJSON.obj LCD_HAL_lcd_hal.obj tirtos_main_tirtos.obj
 
 CONFIGPKG = $(KERNEL_BUILD)/gcc
 
@@ -72,38 +72,18 @@ $(CONFIGPKG)/linker.cmd $(CONFIGPKG)/compiler.opt:
 	@ $(ECHOBLANKLINE)
 
 .INTERMEDIATE: syscfg
-Board.c Board.h : syscfg
+Board.c Board.h: syscfg
 	@ echo generation complete
 
 syscfg: ../../outOfBox_msp432p4111.syscfg
 	@ echo Generating configuration files...
-	@ $(NODE_JS) $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
-
-Board.obj: Board.c $(CONFIGPKG)/compiler.opt
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
-
-cJSON.obj: ../../cJSON/cJSON.c Board.h $(CONFIGPKG)/compiler.opt
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
-
-lcd_hal.obj: ../../LCD_HAL/lcd_hal.c Board.h $(CONFIGPKG)/compiler.opt
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
-
-main_tirtos.obj: ../../tirtos/main_tirtos.c Board.h $(CONFIGPKG)/compiler.opt
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
-
-lcd_thread.obj: ../../lcd_thread.c Board.h $(CONFIGPKG)/compiler.opt
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
+	@ $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
 
 callbacks.obj: ../../callbacks.c Board.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
-uart_thread.obj: ../../uart_thread.c Board.h $(CONFIGPKG)/compiler.opt
+lcd_thread.obj: ../../lcd_thread.c Board.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
@@ -115,13 +95,33 @@ temperature_thread.obj: ../../temperature_thread.c Board.h $(CONFIGPKG)/compiler
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
+uart_thread.obj: ../../uart_thread.c Board.h $(CONFIGPKG)/compiler.opt
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
+
+cJSON_cJSON.obj: ../../cJSON/cJSON.c Board.h $(CONFIGPKG)/compiler.opt
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
+
+LCD_HAL_lcd_hal.obj: ../../LCD_HAL/lcd_hal.c Board.h $(CONFIGPKG)/compiler.opt
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
+
+tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c Board.h $(CONFIGPKG)/compiler.opt
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
+
+Board.obj: Board.c Board.h $(CONFIGPKG)/compiler.opt
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
+
 $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
-	@ $(RM) Board.c Board.h  > $(DEVNULL) 2>&1
+	@ $(RM) Board.c Board.h > $(DEVNULL) 2>&1

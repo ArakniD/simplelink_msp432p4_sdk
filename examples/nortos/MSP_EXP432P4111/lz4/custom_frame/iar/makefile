@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
 
-OBJECTS = system_msp432p4111.obj startup_msp432p4111_ewarm.obj main.obj
+OBJECTS = main.obj system_msp432p4111.obj iar_startup_msp432p4111_ewarm.obj
 
 NAME = custom_frame
 
@@ -37,21 +37,21 @@ LFLAGS = "$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/compression/lz4/lib/iar
 
 all: $(NAME).out
 
+main.obj: ../main.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -o $@
+
 system_msp432p4111.obj: ../system_msp432p4111.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
-startup_msp432p4111_ewarm.obj: ../iar/startup_msp432p4111_ewarm.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -o $@
-
-main.obj: ../main.c
+iar_startup_msp432p4111_ewarm.obj: ../iar/startup_msp432p4111_ewarm.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = system_msp432p401r.obj startup_msp432p401r_ccs.obj main.obj HAL_BQ27441.obj HAL_UART.obj HAL_I2C.obj
+OBJECTS = main.obj HAL_BQ27441.obj HAL_I2C.obj HAL_UART.obj system_msp432p401r.obj ccs_startup_msp432p401r_ccs.obj
 
 NAME = boostxl_batpakmkii_fuelgauge
 
@@ -45,14 +45,6 @@ LFLAGS = --stack_size=512 \
 
 all: $(NAME).out
 
-system_msp432p401r.obj: ../system_msp432p401r.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-startup_msp432p401r_ccs.obj: ../ccs/startup_msp432p401r_ccs.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
 main.obj: ../main.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
@@ -61,17 +53,25 @@ HAL_BQ27441.obj: ../HAL_BQ27441.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
+HAL_I2C.obj: ../HAL_I2C.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
 HAL_UART.obj: ../HAL_UART.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-HAL_I2C.obj: ../HAL_I2C.c
+system_msp432p401r.obj: ../system_msp432p401r.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
+ccs_startup_msp432p401r_ccs.obj: ../ccs/startup_msp432p401r_ccs.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F09
+ * @(#) xdc-F14
  */
 
 #ifndef ti_sysbios_syncs_SyncSem__INTERNAL__

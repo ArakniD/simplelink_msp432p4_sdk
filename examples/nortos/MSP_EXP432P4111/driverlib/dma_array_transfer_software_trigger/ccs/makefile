@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = system_msp432p4111.obj startup_msp432p4111_ccs.obj dataarray.obj dma_array_transfer_software_trigger.obj
+OBJECTS = dma_array_transfer_software_trigger.obj dataarray.obj system_msp432p4111.obj ccs_startup_msp432p4111_ccs.obj
 
 NAME = dma_array_transfer_software_trigger
 
@@ -45,11 +45,7 @@ LFLAGS = --stack_size=512 \
 
 all: $(NAME).out
 
-system_msp432p4111.obj: ../system_msp432p4111.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-startup_msp432p4111_ccs.obj: ../ccs/startup_msp432p4111_ccs.c
+dma_array_transfer_software_trigger.obj: ../dma_array_transfer_software_trigger.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
@@ -57,13 +53,17 @@ dataarray.obj: ../dataarray.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-dma_array_transfer_software_trigger.obj: ../dma_array_transfer_software_trigger.c
+system_msp432p4111.obj: ../system_msp432p4111.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
+ccs_startup_msp432p4111_ccs.obj: ../ccs/startup_msp432p4111_ccs.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

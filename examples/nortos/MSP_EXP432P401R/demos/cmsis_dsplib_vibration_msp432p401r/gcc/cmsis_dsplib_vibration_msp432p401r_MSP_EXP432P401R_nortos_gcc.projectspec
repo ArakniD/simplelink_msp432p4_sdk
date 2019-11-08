@@ -9,7 +9,6 @@
         </when>
     </applicability>
 
-
     <project
         title="cmsis_dsplib_vibration_msp432p401r"
         name="cmsis_dsplib_vibration_msp432p401r_MSP_EXP432P401R_nortos_gcc"
@@ -19,16 +18,63 @@
         ignoreDefaultDeviceSettings="true"
         ignoreDefaultCCSSettings="true"
         products="com.ti.SIMPLELINK_MSP432_SDK"
-        compilerBuildOptions=" -I${PROJECT_ROOT} -DARM_MATH_CM4 -D__FPU_PRESENT=1 -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source -D__MSP432P401R__ -DDeviceFamily_MSP432P401x -mcpu=cortex-m4 -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffunction-sections -fdata-sections -g -gstrict-dwarf -Wall -I${CG_TOOL_ROOT}/arm-none-eabi/include/newlib-nano -I${CG_TOOL_ROOT}/arm-none-eabi/include"
-        compilerBuildOptions_c="-std=c99"
-        compilerBuildOptions_cpp="-std=c++11"
-        linkerBuildOptions=" -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/DSP_Lib/lib/gcc/m4f -l:arm_cortexM4lf_math.a -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source -l:ti/display/lib/display.am4fg -l:ti/grlib/lib/gcc/m4f/grlib.a -l:third_party/spiffs/lib/gcc/m4f/spiffs.a -l:ti/drivers/lib/drivers_msp432p401x.am4fg -l:third_party/fatfs/lib/gcc/m4f/fatfs.a -l:ti/devices/msp432p4xx/driverlib/gcc/msp432p4xx_driverlib.a -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -static -Wl,--gc-sections -L${CG_TOOL_ROOT}/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard -L${CG_TOOL_ROOT}/arm-none-eabi/lib -lgcc -lc -lm -lnosys --specs=nano.specs"
+        compilerBuildOptions="
+            -I${PROJECT_ROOT}
+            -DARM_MATH_CM4
+            -D__FPU_PRESENT=1
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
+            -D__MSP432P401R__
+            -DDeviceFamily_MSP432P401x
+            -mcpu=cortex-m4
+            -march=armv7e-m
+            -mthumb
+            -std=c99
+            -std=c++11
+            -mfloat-abi=hard
+            -mfpu=fpv4-sp-d16
+            -ffunction-sections
+            -fdata-sections
+            -g
+            -gstrict-dwarf
+            -Wall
+            -I${CG_TOOL_ROOT}/arm-none-eabi/include/newlib-nano
+            -I${CG_TOOL_ROOT}/arm-none-eabi/include
+        "
+        linkerBuildOptions="
+            -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/DSP_Lib/lib/gcc/m4f
+            -l:arm_cortexM4lf_math.a
+            -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
+            -l:ti/display/lib/display.am4fg
+            -l:ti/grlib/lib/gcc/m4f/grlib.a
+            -l:third_party/spiffs/lib/gcc/m4f/spiffs.a
+            -l:ti/drivers/lib/drivers_msp432p401x.am4fg
+            -l:third_party/fatfs/lib/gcc/m4f/fatfs.a
+            -l:ti/devices/msp432p4xx/driverlib/gcc/msp432p4xx_driverlib.a
+            -march=armv7e-m
+            -mthumb
+            -mfloat-abi=hard
+            -mfpu=fpv4-sp-d16
+            -static
+            -Wl,--gc-sections
+            -L${CG_TOOL_ROOT}/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard
+            -L${CG_TOOL_ROOT}/arm-none-eabi/lib
+            -lgcc
+            -lc
+            -lm
+            -lnosys
+            --specs=nano.specs
+        "
         description="TODO: Write description">
 
         <property name="buildProfile" value="release"/>
         <property name="isHybrid" value="true"/>
         <group id="cmsis_dsplib_vibration_msp432p401r.SIMPLELINK_MSP432_SDK.MSP_EXP432P401R.demos.GCC"/>
+        <file path="../main.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
         <file path="../system_msp432p401r.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
@@ -36,10 +82,5 @@
         </file>
         <file path="../gcc/msp432p401r.lds" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
-        <file path="../main.c" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
     </project>
 </projectSpec>
-

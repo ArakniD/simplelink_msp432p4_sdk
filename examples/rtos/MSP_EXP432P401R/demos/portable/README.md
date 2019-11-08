@@ -33,6 +33,8 @@ sensor is used.
 * For boards without an on-board TMP sensor, the [Building Automation Sensors
 BoosterPack](http://www.ti.com/tool/BOOSTXL-BASSENSORS "BOOSTXL-BASSENSORS")
 is needed. It has the TMP116 sensor along with several other nifty sensors.
+Note that CC32XX LaunchPads will default to the BoosterPack TMP sensor if
+present.
 
 > If you're using an IDE (such as CCS or IAR), please refer to Board.html in
 your project directory for resources used and board-specific jumper settings.

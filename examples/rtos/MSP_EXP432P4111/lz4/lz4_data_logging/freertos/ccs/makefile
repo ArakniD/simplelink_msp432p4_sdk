@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = compress_thread.obj sensor_thread.obj main_freertos.obj MSP_EXP432P4111.obj
+OBJECTS = freertos_main_freertos.obj compress_thread.obj sensor_thread.obj MSP_EXP432P4111.obj
 
 NAME = lz4_data_logging
 
@@ -58,15 +58,16 @@ $(KERNEL_BUILD)/ccs/freertos.lib:
 	@ echo $@ is not built.
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
+
+freertos_main_freertos.obj: ../../freertos/main_freertos.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
 compress_thread.obj: ../../compress_thread.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 sensor_thread.obj: ../../sensor_thread.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-main_freertos.obj: ../../freertos/main_freertos.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
@@ -76,7 +77,7 @@ MSP_EXP432P4111.obj: ../../MSP_EXP432P4111.c
 
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/ccs/freertos.lib
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

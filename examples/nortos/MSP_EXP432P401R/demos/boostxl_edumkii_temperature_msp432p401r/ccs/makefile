@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = system_msp432p401r.obj Crystalfontz128x128_ST7735.obj HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj startup_msp432p401r_ccs.obj main.obj HAL_TMP006.obj HAL_I2C.obj
+OBJECTS = main.obj HAL_I2C.obj HAL_TMP006.obj system_msp432p401r.obj LcdDriver_Crystalfontz128x128_ST7735.obj LcdDriver_HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj ccs_startup_msp432p401r_ccs.obj
 
 NAME = boostxl_edumkii_temperature_msp432p401r
 
@@ -46,27 +46,7 @@ LFLAGS = "-l$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/grlib/lib/ccs/m4f/grl
 
 all: $(NAME).out
 
-system_msp432p401r.obj: ../system_msp432p401r.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-Crystalfontz128x128_ST7735.obj: ../LcdDriver/Crystalfontz128x128_ST7735.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj: ../LcdDriver/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-startup_msp432p401r_ccs.obj: ../ccs/startup_msp432p401r_ccs.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
 main.obj: ../main.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-HAL_TMP006.obj: ../HAL_TMP006.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
@@ -74,9 +54,29 @@ HAL_I2C.obj: ../HAL_I2C.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
+HAL_TMP006.obj: ../HAL_TMP006.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
+system_msp432p401r.obj: ../system_msp432p401r.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
+LcdDriver_Crystalfontz128x128_ST7735.obj: ../LcdDriver/Crystalfontz128x128_ST7735.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
+LcdDriver_HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj: ../LcdDriver/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
+ccs_startup_msp432p401r_ccs.obj: ../ccs/startup_msp432p401r_ccs.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

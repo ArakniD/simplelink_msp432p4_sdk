@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = main_freertos.obj MSP_EXP432P401R.obj callbacks.obj uart_thread.obj led_thread.obj
+OBJECTS = freertos_main_freertos.obj callbacks.obj led_thread.obj uart_thread.obj MSP_EXP432P401R.obj
 
 NAME = outofbox_msp432p401r
 
@@ -67,11 +67,8 @@ $(KERNEL_BUILD)/gcc/freertos.lib:
 	@ echo $@ is not built.
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
-main_freertos.obj: ../../freertos/main_freertos.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
 
-MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c
+freertos_main_freertos.obj: ../../freertos/main_freertos.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
@@ -79,17 +76,21 @@ callbacks.obj: ../../callbacks.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
+led_thread.obj: ../../led_thread.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
 uart_thread.obj: ../../uart_thread.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-led_thread.obj: ../../led_thread.c
+MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/gcc/freertos.lib
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

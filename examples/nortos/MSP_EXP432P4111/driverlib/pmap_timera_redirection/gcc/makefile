@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = system_msp432p4111.obj startup_msp432p4111_gcc.obj pmap_timera_redirection.obj
+OBJECTS = pmap_timera_redirection.obj system_msp432p4111.obj gcc_startup_msp432p4111_gcc.obj
 
 NAME = pmap_timera_redirection
 
@@ -53,21 +53,21 @@ LFLAGS = -Wl,-T,../gcc/msp432p4111.lds \
 
 all: $(NAME).out
 
+pmap_timera_redirection.obj: ../pmap_timera_redirection.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
 system_msp432p4111.obj: ../system_msp432p4111.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-startup_msp432p4111_gcc.obj: ../gcc/startup_msp432p4111_gcc.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-pmap_timera_redirection.obj: ../pmap_timera_redirection.c
+gcc_startup_msp432p4111_gcc.obj: ../gcc/startup_msp432p4111_gcc.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

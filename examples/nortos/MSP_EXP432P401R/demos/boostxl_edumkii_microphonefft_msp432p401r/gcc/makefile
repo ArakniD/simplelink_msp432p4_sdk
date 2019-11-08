@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = system_msp432p401r.obj Crystalfontz128x128_ST7735.obj HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj startup_msp432p401r_gcc.obj main.obj
+OBJECTS = main.obj system_msp432p401r.obj LcdDriver_Crystalfontz128x128_ST7735.obj LcdDriver_HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj gcc_startup_msp432p401r_gcc.obj
 
 NAME = boostxl_edumkii_microphonefft_msp432p401r
 
@@ -30,12 +30,12 @@ CFLAGS = -I.. \
     "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include/newlib-nano" \
     "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include"
 
-LFLAGS = "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/grlib/lib/gcc/m4f" \
+LFLAGS = -Wl,-T,../gcc/msp432p401r.lds \
+    "-Wl,-Map,$(NAME).map" \
+    "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/grlib/lib/gcc/m4f" \
     -l:grlib.a \
     "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/DSP_Lib/lib/gcc/m4f" \
     -l:arm_cortexM4lf_math.a \
-    -Wl,-T,../gcc/msp432p401r.lds \
-    "-Wl,-Map,$(NAME).map" \
     "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     -l:ti/display/lib/display.am4fg \
     -l:ti/grlib/lib/gcc/m4f/grlib.a \
@@ -59,29 +59,29 @@ LFLAGS = "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/grlib/lib/gcc/m4f" \
 
 all: $(NAME).out
 
+main.obj: ../main.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
 system_msp432p401r.obj: ../system_msp432p401r.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-Crystalfontz128x128_ST7735.obj: ../LcdDriver/Crystalfontz128x128_ST7735.c
+LcdDriver_Crystalfontz128x128_ST7735.obj: ../LcdDriver/Crystalfontz128x128_ST7735.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj: ../LcdDriver/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.c
+LcdDriver_HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj: ../LcdDriver/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-startup_msp432p401r_gcc.obj: ../gcc/startup_msp432p401r_gcc.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-main.obj: ../main.c
+gcc_startup_msp432p401r_gcc.obj: ../gcc/startup_msp432p401r_gcc.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

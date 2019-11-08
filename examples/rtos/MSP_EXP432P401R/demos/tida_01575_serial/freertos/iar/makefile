@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
 
-OBJECTS = MSP_EXP432P401R.obj main_freertos.obj commonComms.obj vibrationCapture.obj
+OBJECTS = commonComms.obj vibrationCapture.obj MSP_EXP432P401R.obj freertos_main_freertos.obj
 
 NAME = tida_01575_serial
 
@@ -54,13 +54,6 @@ $(KERNEL_BUILD)/iar/freertos.lib:
 	@ echo $@ is not built.
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
-MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -o $@
-
-main_freertos.obj: ../../freertos/main_freertos.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -o $@
 
 commonComms.obj: ../../commonComms.c
 	@ echo Building $@
@@ -70,9 +63,17 @@ vibrationCapture.obj: ../../vibrationCapture.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
+MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -o $@
+
+freertos_main_freertos.obj: ../../freertos/main_freertos.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -o $@
+
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/iar/freertos.lib
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

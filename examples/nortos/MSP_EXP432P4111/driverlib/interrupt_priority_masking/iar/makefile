@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
 
-OBJECTS = system_msp432p4111.obj startup_msp432p4111_ewarm.obj interrupt_priority_masking.obj
+OBJECTS = interrupt_priority_masking.obj system_msp432p4111.obj iar_startup_msp432p4111_ewarm.obj
 
 NAME = interrupt_priority_masking
 
@@ -36,21 +36,21 @@ LFLAGS = "$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/display/lib/display.arm
 
 all: $(NAME).out
 
+interrupt_priority_masking.obj: ../interrupt_priority_masking.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -o $@
+
 system_msp432p4111.obj: ../system_msp432p4111.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
-startup_msp432p4111_ewarm.obj: ../iar/startup_msp432p4111_ewarm.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -o $@
-
-interrupt_priority_masking.obj: ../interrupt_priority_masking.c
+iar_startup_msp432p4111_ewarm.obj: ../iar/startup_msp432p4111_ewarm.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

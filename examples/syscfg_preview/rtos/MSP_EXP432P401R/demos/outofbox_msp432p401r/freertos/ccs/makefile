@@ -8,7 +8,7 @@ SYSCONFIG_PRODUCT := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = Board.obj main_freertos.obj callbacks.obj uart_thread.obj led_thread.obj
+OBJECTS = freertos_main_freertos.obj callbacks.obj led_thread.obj uart_thread.obj Board.obj
 
 NAME = outofbox_msp432p401r
 
@@ -59,19 +59,16 @@ $(KERNEL_BUILD)/ccs/freertos.lib:
 	@ echo $@ is not built.
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
+
 .INTERMEDIATE: syscfg
-Board.c Board.h : syscfg
+Board.c Board.h: syscfg
 	@ echo generation complete
 
 syscfg: ../../outofbox_msp432p401r.syscfg
 	@ echo Generating configuration files...
-	@ $(NODE_JS) $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
+	@ $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
 
-Board.obj: Board.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-main_freertos.obj: ../../freertos/main_freertos.c Board.h
+freertos_main_freertos.obj: ../../freertos/main_freertos.c Board.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
@@ -79,21 +76,25 @@ callbacks.obj: ../../callbacks.c Board.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
+led_thread.obj: ../../led_thread.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
 uart_thread.obj: ../../uart_thread.c Board.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-led_thread.obj: ../../led_thread.c Board.h
+Board.obj: Board.c Board.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/ccs/freertos.lib
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
-	@ $(RM) Board.c Board.h  > $(DEVNULL) 2>&1
+	@ $(RM) Board.c Board.h > $(DEVNULL) 2>&1

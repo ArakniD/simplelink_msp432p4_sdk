@@ -19,14 +19,59 @@
         ignoreDefaultDeviceSettings="true"
         ignoreDefaultCCSSettings="true"
         products="com.ti.SIMPLELINK_MSP432_SDK"
-        compilerBuildOptions=" -I${PROJECT_ROOT} -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/posix/gcc -mcpu=cortex-m4 -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffunction-sections -fdata-sections -g -gstrict-dwarf -Wall -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/include/newlib-nano -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/include -I${CG_TOOL_ROOT}/arm-none-eabi/include"
+        compilerBuildOptions="
+            -I${PROJECT_ROOT}
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/posix/gcc
+            -mcpu=cortex-m4
+            -march=armv7e-m
+            -mthumb
+            -mfloat-abi=hard
+            -mfpu=fpv4-sp-d16
+            -ffunction-sections
+            -fdata-sections
+            -g
+            -gstrict-dwarf
+            -Wall
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/include/newlib-nano
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/include
+            -I${CG_TOOL_ROOT}/arm-none-eabi/include
+        "
         compilerBuildOptions_c="-std=c99"
         compilerBuildOptions_cpp="-std=c++11"
-        linkerBuildOptions=" -nostartfiles -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source -l:ti/display/lib/display.am4fg -l:ti/grlib/lib/gcc/m4f/grlib.a -l:third_party/spiffs/lib/gcc/m4f/spiffs.a -l:ti/drivers/lib/drivers_msp432p4x1xi.am4fg -l:third_party/fatfs/lib/gcc/m4f/fatfs.a -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages -l:ti/dpl/lib/dpl_msp432p4x1xi.am4fg -l:ti/devices/msp432p4xx/driverlib/gcc/msp432p4xx_driverlib.a -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -static -Wl,--gc-sections -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard -L${CG_TOOL_ROOT}/arm-none-eabi/lib -lgcc -lc -lm -lnosys --specs=nano.specs"
+        linkerBuildOptions="
+             -nostartfiles
+             -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
+             -l:ti/display/lib/display.am4fg
+             -l:ti/grlib/lib/gcc/m4f/grlib.a
+             -l:third_party/spiffs/lib/gcc/m4f/spiffs.a
+             -l:ti/drivers/lib/drivers_msp432p4x1xi.am4fg
+             -l:third_party/fatfs/lib/gcc/m4f/fatfs.a
+             -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages
+             -l:ti/dpl/lib/dpl_msp432p4x1xi.am4fg
+             -l:ti/devices/msp432p4xx/driverlib/gcc/msp432p4xx_driverlib.a
+             -march=armv7e-m
+             -mthumb
+             -mfloat-abi=hard
+             -mfpu=fpv4-sp-d16
+             -static
+             -Wl,--gc-sections
+             -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard
+             -L${CG_TOOL_ROOT}/arm-none-eabi/lib
+             -lgcc
+             -lc
+             -lm
+             -lnosys
+             --specs=nano.specs
+        "
+        preBuildStep="
+        "
+        postBuildStep="
+        "
         description="This example shows how to use Error_Blocks to catch runtime errors. An Error_Block is passed to Task_create() and then checked for create failure. When no Error_Block is passed, the application will terminate when an error occurs. The error.cfg file shows how to plug an error hook.">
 
         <property name="type" value="rtsc"/>
-        <property name="xdcToolsVersion" value="3_51_02_21_core"/>
+        <property name="xdcToolsVersion" value="3_51_03_28_core"/>
         <property name="target" value="gnu.targets.arm.M4F"/>
         <property name="platform" value="ti.platforms.msp432:MSP432P4111"/>
         <property name="buildProfile" value="release"/>

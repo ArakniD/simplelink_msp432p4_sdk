@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = system_msp432p401r.obj startup_msp432p401r_gcc.obj main.obj dmaTasks.obj
+OBJECTS = dmaTasks.obj main.obj system_msp432p401r.obj gcc_startup_msp432p401r_gcc.obj
 
 NAME = cmsis_dsplib_ulp
 
@@ -30,10 +30,10 @@ CFLAGS = -I.. \
     "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include/newlib-nano" \
     "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include"
 
-LFLAGS = "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/DSP_Lib/lib/gcc/m4f" \
-    -l:arm_cortexM4lf_math.a \
-    -Wl,-T,../gcc/msp432p401r_LPMRAM.lds \
+LFLAGS = -Wl,-T,../gcc/msp432p401r_LPMRAM.lds \
     "-Wl,-Map,$(NAME).map" \
+    "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/DSP_Lib/lib/gcc/m4f" \
+    -l:arm_cortexM4lf_math.a \
     "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     -l:ti/display/lib/display.am4fg \
     -l:ti/grlib/lib/gcc/m4f/grlib.a \
@@ -57,11 +57,7 @@ LFLAGS = "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/DSP_Li
 
 all: $(NAME).out
 
-system_msp432p401r.obj: ../system_msp432p401r.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-startup_msp432p401r_gcc.obj: ../gcc/startup_msp432p401r_gcc.c
+dmaTasks.obj: ../dmaTasks.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
@@ -69,13 +65,17 @@ main.obj: ../main.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-dmaTasks.obj: ../dmaTasks.c
+system_msp432p401r.obj: ../system_msp432p401r.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+gcc_startup_msp432p401r_gcc.obj: ../gcc/startup_msp432p401r_gcc.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

@@ -75,7 +75,7 @@ Board.c Board.h : syscfg
 
 syscfg: ../../adcsinglechannel.syscfg
 	@ echo Generating configuration files...
-	@ $(NODE_JS) $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
+	@ $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
 
 Board.obj: Board.c $(CONFIGPKG)/compiler.opt
 	@ echo Building $@

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -372,12 +372,15 @@ void I2CMSP432_close(I2C_Handle handle)
     /* Destruct driver resources */
     if (object->hwiHandle) {
         HwiP_delete(object->hwiHandle);
+        object->hwiHandle = NULL;
     }
     if (object->mutex) {
         SemaphoreP_delete(object->mutex);
+        object->mutex = NULL;
     }
     if (object->transferComplete) {
         SemaphoreP_delete(object->transferComplete);
+        object->transferComplete = NULL;
     }
 
     /* Remove power constraints */

@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = cJSON.obj lcd_hal.obj main_freertos.obj lcd_thread.obj MSP_EXP432P4111.obj callbacks.obj uart_thread.obj led_thread.obj temperature_thread.obj
+OBJECTS = callbacks.obj lcd_thread.obj led_thread.obj temperature_thread.obj uart_thread.obj MSP_EXP432P4111.obj cJSON_cJSON.obj LCD_HAL_lcd_hal.obj freertos_main_freertos.obj
 
 NAME = outofbox_msp432p4111
 
@@ -67,31 +67,12 @@ $(KERNEL_BUILD)/gcc/freertos.lib:
 	@ echo $@ is not built.
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
-cJSON.obj: ../../cJSON/cJSON.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-lcd_hal.obj: ../../LCD_HAL/lcd_hal.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-main_freertos.obj: ../../freertos/main_freertos.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-lcd_thread.obj: ../../lcd_thread.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-MSP_EXP432P4111.obj: ../../MSP_EXP432P4111.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
 
 callbacks.obj: ../../callbacks.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-uart_thread.obj: ../../uart_thread.c
+lcd_thread.obj: ../../lcd_thread.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
@@ -103,9 +84,29 @@ temperature_thread.obj: ../../temperature_thread.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
+uart_thread.obj: ../../uart_thread.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+MSP_EXP432P4111.obj: ../../MSP_EXP432P4111.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+cJSON_cJSON.obj: ../../cJSON/cJSON.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+LCD_HAL_lcd_hal.obj: ../../LCD_HAL/lcd_hal.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+freertos_main_freertos.obj: ../../freertos/main_freertos.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/gcc/freertos.lib
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = system_msp432p401r.obj startup_msp432p401r_gcc.obj opt3001.obj tmp007.obj uart_driver.obj main.obj bmi160.obj bmi160_support.obj demo_sysctl.obj i2c_driver.obj bme280_support.obj bme280.obj
+OBJECTS = bme280.obj bme280_support.obj bmi160.obj bmi160_support.obj demo_sysctl.obj i2c_driver.obj main.obj opt3001.obj tmp007.obj uart_driver.obj system_msp432p401r.obj gcc_startup_msp432p401r_gcc.obj
 
 NAME = boostxl_sensors_sensorgui_msp432p401r
 
@@ -53,27 +53,11 @@ LFLAGS = -Wl,-T,../gcc/msp432p401r.lds \
 
 all: $(NAME).out
 
-system_msp432p401r.obj: ../system_msp432p401r.c
+bme280.obj: ../bme280.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-startup_msp432p401r_gcc.obj: ../gcc/startup_msp432p401r_gcc.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-opt3001.obj: ../opt3001.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-tmp007.obj: ../tmp007.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-uart_driver.obj: ../uart_driver.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-main.obj: ../main.c
+bme280_support.obj: ../bme280_support.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
@@ -93,17 +77,33 @@ i2c_driver.obj: ../i2c_driver.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-bme280_support.obj: ../bme280_support.c
+main.obj: ../main.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-bme280.obj: ../bme280.c
+opt3001.obj: ../opt3001.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+tmp007.obj: ../tmp007.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+uart_driver.obj: ../uart_driver.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+system_msp432p401r.obj: ../system_msp432p401r.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+gcc_startup_msp432p401r_gcc.obj: ../gcc/startup_msp432p401r_gcc.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

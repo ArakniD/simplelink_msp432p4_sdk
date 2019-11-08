@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- IAR Project Connection File -->
 
-<iarProjectConnection version="1.2" name="Display" oneShot="true"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:noNamespaceSchemaLocation="IarProjectConnection_1.2.xsd">
+<iarProjectConnection version="1.8" name="display" oneShot="true"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+  xsi:noNamespaceSchemaLocation="IarProjectConnection_1.8.xsd">
 
   <device>
     <name>MSP432P401R</name>
   </device>
 
+  <includePath>
+    <path>$PROJ_DIR$</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/CMSIS/Include</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/posix/iar</path>
+    <path>$FREERTOS_INSTALL_DIR$/FreeRTOS/Source/include</path>
+    <path>$FREERTOS_INSTALL_DIR$/FreeRTOS/Source/portable/IAR/ARM_CM4F</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/freertos/builds/MSP_EXP432P401R/release</path>
+  </includePath>
+
+  <defines>
+    <define>BOARD_DISPLAY_USE_UART_ANSI=1</define>
+    <define>BOARD_DISPLAY_USE_LCD=1</define>
+  </defines>
+
   <extraOptions>
-    <args>
-      <arg>-I$PROJ_DIR$</arg>
-      <arg>-DBOARD_DISPLAY_USE_UART_ANSI=1</arg>
-      <arg>-DBOARD_DISPLAY_USE_LCD=1</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/CMSIS/Include</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/posix/iar</arg>
-      <arg>-I$FREERTOS_INSTALL_DIR$/FreeRTOS/Source/include</arg>
-      <arg>-I$FREERTOS_INSTALL_DIR$/FreeRTOS/Source/portable/IAR/ARM_CM4F</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/freertos/builds/MSP_EXP432P401R/release</arg>
+      <arg></arg>
       <arg>--debug</arg>
       <arg>--silent</arg>
       <arg>-e</arg>
       <arg>--aeabi</arg>
       <arg>--thumb</arg>
       <arg>--diag_suppress=Pa050</arg>
-    </args>
   </extraOptions>
 
   <asmIncludePath>
@@ -39,7 +44,7 @@
 
   <linkerFile>
     <override>true</override>
-    <path>$PROJ_DIR$/$PROJ_FNAME$_MSP_EXP432P401R_FREERTOS.icf</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/drivers/display/freertos/iar/MSP_EXP432P401R_FREERTOS.icf</path>
   </linkerFile>
 
   <linkerExtraOptions>
@@ -57,8 +62,8 @@
     </args>
   </linkerExtraOptions>
 
-    <customBuildTools>
-    </customBuildTools>
+  <customBuildTools>
+  </customBuildTools>
 
   <heaps>
     <heap> <!-- If omitted, id="0" -->
@@ -84,7 +89,7 @@
       <path copyTo="$PROJ_DIR$/display.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/drivers/display/display.c</path>
       <path copyTo="$PROJ_DIR$/splash_image.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/drivers/display/splash_image.c</path>
       <path copyTo="$PROJ_DIR$/MSP_EXP432P401R.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/drivers/display/MSP_EXP432P401R.c</path>
-      <path copyTo="$PROJ_DIR$/$PROJ_FNAME$_MSP_EXP432P401R_FREERTOS.icf">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/drivers/display/freertos/iar/MSP_EXP432P401R_FREERTOS.icf</path>
+      <path copyTo="$PROJ_DIR$/MSP_EXP432P401R_FREERTOS.icf">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/drivers/display/freertos/iar/MSP_EXP432P401R_FREERTOS.icf</path>
     </group>
 
     <group name="Header files">

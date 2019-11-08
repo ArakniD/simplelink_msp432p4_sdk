@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2017-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -69,7 +69,11 @@ extern "C" {
 #endif /* TI ARM version < 18.1.0.LTS */
 
 /* include toolchain's header file */
+#if __TI_COMPILER_VERSION__ >= 18001000
+#include_next <errno.h>
+#else
 #include <../include/errno.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {

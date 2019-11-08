@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = system_msp432p4111.obj startup_msp432p4111_ccs.obj i2c_master_rw_repeated_start-master_code.obj
+OBJECTS = i2c_master_rw_repeated_start-master_code.obj system_msp432p4111.obj ccs_startup_msp432p4111_ccs.obj
 
 NAME = i2c_master_rw_repeated_start-master_code
 
@@ -45,21 +45,21 @@ LFLAGS = --stack_size=512 \
 
 all: $(NAME).out
 
+i2c_master_rw_repeated_start-master_code.obj: ../i2c_master_rw_repeated_start-master_code.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
 system_msp432p4111.obj: ../system_msp432p4111.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-startup_msp432p4111_ccs.obj: ../ccs/startup_msp432p4111_ccs.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-i2c_master_rw_repeated_start-master_code.obj: ../i2c_master_rw_repeated_start-master_code.c
+ccs_startup_msp432p4111_ccs.obj: ../ccs/startup_msp432p4111_ccs.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

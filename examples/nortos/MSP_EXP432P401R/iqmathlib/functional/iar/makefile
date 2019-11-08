@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
 
-OBJECTS = system_msp432p401r.obj startup_msp432p401r_ewarm.obj functional.obj
+OBJECTS = functional.obj system_msp432p401r.obj iar_startup_msp432p401r_ewarm.obj
 
 NAME = functional
 
@@ -38,21 +38,21 @@ LFLAGS = "$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/iqmathlib/iar/IQmathLib
 
 all: $(NAME).out
 
+functional.obj: ../functional.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -o $@
+
 system_msp432p401r.obj: ../system_msp432p401r.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
-startup_msp432p401r_ewarm.obj: ../iar/startup_msp432p401r_ewarm.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -o $@
-
-functional.obj: ../functional.c
+iar_startup_msp432p401r_ewarm.obj: ../iar/startup_msp432p401r_ewarm.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

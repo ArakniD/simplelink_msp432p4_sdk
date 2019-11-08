@@ -8,7 +8,7 @@ SYSCONFIG_PRODUCT := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = Board.obj adcBufTemperature.obj main_tirtos.obj
+OBJECTS = tirtos_main_tirtos.obj adcBufTemperature.obj Board.obj
 
 CONFIGPKG = $(KERNEL_BUILD)/gcc
 
@@ -72,14 +72,14 @@ $(CONFIGPKG)/linker.cmd $(CONFIGPKG)/compiler.opt:
 	@ $(ECHOBLANKLINE)
 
 .INTERMEDIATE: syscfg
-Board.c Board.h : syscfg
+Board.c Board.h: syscfg
 	@ echo generation complete
 
 syscfg: ../../adcBufTemperature.syscfg
 	@ echo Generating configuration files...
-	@ $(NODE_JS) $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
+	@ $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
 
-Board.obj: Board.c $(CONFIGPKG)/compiler.opt
+tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c Board.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
@@ -87,17 +87,17 @@ adcBufTemperature.obj: ../../adcBufTemperature.c Board.h $(CONFIGPKG)/compiler.o
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
-main_tirtos.obj: ../../tirtos/main_tirtos.c Board.h $(CONFIGPKG)/compiler.opt
+Board.obj: Board.c Board.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
 $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
-	@ $(RM) Board.c Board.h  > $(DEVNULL) 2>&1
+	@ $(RM) Board.c Board.h > $(DEVNULL) 2>&1

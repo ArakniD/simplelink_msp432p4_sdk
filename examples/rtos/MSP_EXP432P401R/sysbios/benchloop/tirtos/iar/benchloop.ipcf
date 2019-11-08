@@ -1,29 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- IAR Project Connection File -->
 
-<iarProjectConnection version="1.2" name="Benchmark Example" oneShot="true"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:noNamespaceSchemaLocation="IarProjectConnection_1.2.xsd">
+<iarProjectConnection version="1.8" name="benchloop" oneShot="true"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+  xsi:noNamespaceSchemaLocation="IarProjectConnection_1.8.xsd">
 
   <device>
     <name>MSP432P401R</name>
   </device>
 
+  <includePath>
+    <path>$PROJ_DIR$</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/CMSIS/Include</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/posix/iar</path>
+  </includePath>
+
+  <defines>
+  </defines>
+
   <extraOptions>
-    <args>
       <arg>-f</arg>
       <arg>$PROJ_DIR$/configPkg/compiler.opt.defs</arg>
-      <arg>-I$PROJ_DIR$</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/CMSIS/Include</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/posix/iar</arg>
+      <arg></arg>
       <arg>--debug</arg>
       <arg>--silent</arg>
       <arg>-e</arg>
       <arg>--aeabi</arg>
       <arg>--thumb</arg>
       <arg>--diag_suppress=Pa050</arg>
-    </args>
   </extraOptions>
 
   <asmIncludePath>
@@ -35,7 +40,7 @@
 
   <linkerFile>
     <override>true</override>
-    <path>$PROJ_DIR$/$PROJ_FNAME$_MSP_EXP432P401R_TIRTOS.icf</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/sysbios/benchloop/tirtos/iar/MSP_EXP432P401R_TIRTOS.icf</path>
   </linkerFile>
 
   <linkerExtraOptions>
@@ -54,7 +59,7 @@
     </args>
   </linkerExtraOptions>
 
-    <customBuildTools>
+  <customBuildTools>
     <customBuildTool name="configuro">   <!-- Custom build tool that will be assigned to a file group -->
       <fileExtensions>.cfg</fileExtensions>
       <command>"$XDCROOT$/bin/stderr"</command>
@@ -62,7 +67,7 @@
         <path>$PROJ_DIR$/configPkg/package.mak</path>
       </output>
     </customBuildTool>
-    </customBuildTools>
+  </customBuildTools>
 
   <heaps>
     <heap> <!-- If omitted, id="0" -->
@@ -86,7 +91,7 @@
     <group name="Source files">
       <path copyTo="$PROJ_DIR$/benchloop.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/sysbios/benchloop/benchloop.c</path>
       <path copyTo="$PROJ_DIR$/MSP_EXP432P401R.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/sysbios/benchloop/MSP_EXP432P401R.c</path>
-      <path copyTo="$PROJ_DIR$/$PROJ_FNAME$_MSP_EXP432P401R_TIRTOS.icf">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/sysbios/benchloop/tirtos/iar/MSP_EXP432P401R_TIRTOS.icf</path>
+      <path copyTo="$PROJ_DIR$/MSP_EXP432P401R_TIRTOS.icf">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/sysbios/benchloop/tirtos/iar/MSP_EXP432P401R_TIRTOS.icf</path>
     </group>
 
     <group name="Header files">

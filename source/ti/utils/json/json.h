@@ -37,17 +37,239 @@
  *  @brief      The JSON library provides APIs to parse and build
  *              JSON objects.
  *
- *  ## Library Usage ##
- *
- *  To use the JSON APIs, the application should include its header file
+ *  To access the JSON APIs, the application should include its header file
  *  as follows:
  *  @code
  *  #include <ti/utils/json/json.h>
  *  @endcode
  *
- *  And, add the following JSON library to the link line:
+ *  And add the following JSON library to the link line:
  *  @code
  *  .../source/ti/utils/json/{toolchain}/{isa}/json_{profile}.a
+ *  @endcode
+ *
+ *  # Usage #
+ *  This section provides a basic @ref ti_utils_JSON_Synopsis "usage summary"
+ *  and a set of @ref ti_utils_JSON_Examples "examples" in the form of commented
+ *  code fragments. Detailed descriptions of the JSON APIs are provided in
+ *  subsequent sections.
+ *
+ *  @anchor ti_utils_JSON_Synopsis
+ *  ### Synopsis ###
+ *
+ *  @code
+ *  // Import the json library
+ *  #include <ti/utils/json/json.h>
+ *
+ *  #define EXAMPLE_JSONBUF     \
+ *  "{"                         \
+ *      "\"name\": \"John\","   \
+ *      "\"age\": 32,"          \
+ *      "\"job\": \"Plumber\""  \
+ *  "}"
+ *
+ *  // Define a template that captures the structure of the JSON to be created or parsed
+ *  #define JSON_TEMPLATE   \
+ *  "{"                     \
+ *      "\"name\": string," \
+ *      "\"age\": int32,"   \
+ *      "\"job\": string"   \
+ *  "}"
+ *
+ *  // Parse the template into memory
+ *  Json_createTemplate(&templateHandle, JSON_TEMPLATE, strlen(JSON_TEMPLATE));
+ *
+ *  // Allocate memory needed for an object matching the generated template
+ *  Json_createObject(&objectHandle, templateHandle, 0);
+ *
+ *  // Parse JSON data into memory
+ *  Json_parse(objectHandle, EXAMPLE_JSONBUF, strlen(EXAMPLE_JSONBUF));
+ *
+ *  // Set values within the JSON object
+ *  Json_setValue(objectHandle, "\"name\"", "Bart", strlen("Bart"));
+ *
+ *  // Get values from within the JSON object
+ *  Json_getValue(objectHandle, "\"age\"", outputBuffer, &bufsize);
+ *
+ *  // Transform the JSON object into a string
+ *  Json_build(objectHandle, outputBuffer, &bufsize);
+ *
+ *  // Destroy the template and free its memory
+ *  Json_destroyTemplate(templateHandle);
+ *
+ *  // Destroy the JSON object and free its memory
+ *  Json_destroyObject(objectHandle);
+ *  @endcode
+ *
+ *  @anchor ti_utils_JSON_Examples
+ *  ### Examples ###
+ *  * @ref ti_utils_JSON_Example_create "Creating JSON Objects"
+ *  * @ref ti_utils_JSON_Example_parse "Parsing JSON Objects"
+ *  * @ref ti_utils_JSON_Example_edit "Editing JSON Objects"
+ *
+ *  The steps of creating a template and allocating memory for a JSON object
+ *  through Json_createTemplate() and Json_createObject() are required for
+ *  interacting with JSON objects. The template is what the library uses to know
+ *  how to parse the JSON it encounters and to format the JSON string it
+ *  ultimately builds through Json_build().
+ *
+ *  @anchor ti_utils_JSON_Example_create
+ *  **Creating JSON Objects**: The following example demonstrates how to create
+ *  a JSON object and output it as a string.
+ *  @code
+ *  #include <ti/utils/json/json.h>
+ *
+ *  // The template is needed to specify the structure of the json object - its
+ *  // field names and types
+ *  #define EXAMPLE_TEMPLATE    \
+ *  "{"                         \
+ *      "\"name\": string,"     \
+ *      "\"age\": int32,"       \
+ *      "\"job\": string,"      \
+ *      "\"citizen\": boolean"  \
+ *  "}"
+ *
+ *  void mainThread() {
+ *      Json_Handle templateHandle;
+ *      Json_Handle objectHandle;
+ *      bufsize     = 256;
+ *      char        outputBuffer[bufsize];
+ *
+ *      // The name must be quoted to access the corresponding JSON field
+ *      char        *fieldName  = "\"age\"";
+ *      int32_t     ageVal      = 42;
+ *      bool        citizenship = true;
+ *
+ *      // Create an internal representation of the template for the library's use
+ *      Json_createTemplate(&templateHandle, EXAMPLE_TEMPLATE,
+ *                          strlen(EXAMPLE_TEMPLATE));
+ *
+ *      // Allocate memory needed for an object matching the generated template
+ *      Json_createObject(&objectHandle, templateHandle, 0);
+ *
+ *      // To fill in the object with actual data, call Json_setValue
+ *      Json_setValue(objectHandle, fieldName, &ageVal, sizeof(ageVal));
+ *
+ *      fieldName = "\"citizen\"";
+ *      Json_setValue(objectHandle, fieldName, &citizenship, sizeof(uint16_t));
+ *
+ *      // Output data from the JSON objectHandle into the outputBuffer
+ *      Json_build(objectHandle, outputBuffer, &bufsize);
+ *      // Any fields not set will not be part of the output
+ *  }
+ *  @endcode
+ *
+ *  @anchor ti_utils_JSON_Example_parse
+ *  **Parsing JSON Objects**: The following example demonstrates how to parse
+ *  a JSON string into memory as a JSON object.
+ *  @code
+ *  #include <ti/utils/json/json.h>
+ *
+ *  #define EXAMPLE_JSONBUF     \
+ *  "{"                         \
+ *      "\"name\": \"John\","   \
+ *      "\"age\": 32,"          \
+ *      "\"job\": \"Plumber\"," \
+ *      "\"citizen\": true"     \
+ *  "}"
+ *
+ *  // The template is needed to specify the structure of the json object
+ *  #define EXAMPLE_TEMPLATE    \
+ *  "{"                         \
+ *      "\"name\": string,"     \
+ *      "\"age\": int32,"       \
+ *      "\"job\": string,"      \
+ *      "\"citizen\": boolean"  \
+ *  "}"
+ *
+ *  void mainThread() {
+ *      Json_Handle templateHandle;
+ *      Json_Handle objectHandle;
+ *      uint16_t    bufsize = 32;
+ *      char        outputBuffer[bufsize];
+ *      char        *fieldName = "\"job\"";
+ *      bool        boolBuffer;
+ *      uint16_t    boolBufSize = sizeof(uint16_t);
+ *
+ *      // Create an internal representation of the template for the library's use
+ *      Json_createTemplate(&templateHandle, EXAMPLE_TEMPLATE,
+ *                          strlen(EXAMPLE_TEMPLATE));
+ *
+ *      // Allocate memory needed for an object matching the generated template
+ *      Json_createObject(&objectHandle, templateHandle, 0);
+ *
+ *      // Parse the JSON and fill in the object
+ *      Json_parse(objectHandle, EXAMPLE_JSONBUF, strlen(EXAMPLE_JSONBUF));
+ *
+ *      // Retrieve a value from the parsed json
+ *      Json_getValue(objectHandle, fieldName, outputBuffer, &bufsize);
+ *
+ *      fieldName = "\"citizen\"";
+ *      Json_getValue(objectHandle, fieldName, &boolBuffer, &boolBufSize);
+ *  }
+ *  @endcode
+ *
+ *  @anchor ti_utils_JSON_Example_edit
+ *  **Editing JSON Objects**: The following example demonstrates parsing a
+ *  string containing JSON, editing its values, and outputting the updated object.
+ *  @code
+ *  #include <ti/utils/json/json.h>
+ *
+ *  // The template is needed to specify the structure of the json object
+ *  #define EXAMPLE_TEMPLATE    \
+ *  "{"                         \
+ *      "\"name\": string,"     \
+ *      "\"age\": int32,"       \
+ *      "\"job\": string"       \
+ *  "}"
+ *
+ *  #define EXAMPLE_JSONBUF     \
+ *  "{"                         \
+ *      "\"name\": \"John\","   \
+ *      "\"age\": 32,"          \
+ *      "\"job\": \"Plumber\""  \
+ *  "}"
+ *
+ *  void mainThread() {
+ *      Json_Handle templateHandle;
+ *      Json_Handle objectHandle;
+ *      uint16_t    bufsize = 256;
+ *      char        outputBuffer[bufsize];
+ *
+ *      // Create an internal representation of the template for the library's use
+ *      Json_createTemplate(&templateHandle, EXAMPLE_TEMPLATE,
+ *                          strlen(EXAMPLE_TEMPLATE));
+ *
+ *      // Allocate memory needed for an object matching the generated template
+ *      Json_createObject(&objectHandle, templateHandle, 0);
+ *
+ *      // Parse the JSON
+ *      Json_parse(objectHandle, EXAMPLE_JSONBUF, strlen(EXAMPLE_JSONBUF));
+ *
+ *      // Set a value in the JSON object
+ *      Json_setValue(objectHandle, "\"job\"", "Contractor", strlen("Contractor"));
+ *      Json_setValue(objectHandle, "\"name\"", "John Sr.", strlen("John Sr."));
+ *
+ *      // Output data from the JSON objectHandle into the outputBuffer
+ *      Json_build(objectHandle, outputBuffer, &bufsize);
+ *  }
+ *  @endcode
+ *
+ *  When the JSON objects are no longer needed @ref Json_destroyObject and
+ *  @ref Json_destroyTemplate should be called:
+ *  @code
+ *  void snippet() {
+ *      Json_createTemplate(&templateHandle, EXAMPLE_TEMPLATE,
+ *                          strlen(EXAMPLE_TEMPLATE));
+ *
+ *      Json_createObject(&objectHandle, templateHandle, 0);
+ *
+ *      ...
+ *
+ *      Json_destroyObject(objectHandle);
+ *
+ *      Json_destroyTemplate(templateHandle);
+ *  }
  *  @endcode
  *
  *  @remark Floating point values are not parsed correctly and should not be
@@ -66,53 +288,6 @@
 /*
  *  ======== json.h ========
  *  @brief Contains JSON library APIs
- */
-
-/*
- * ==========================json scenario examples=========================
- *
- *  Create json from       | Parse the json and get | Parse the json, change
- *  scratch and build it   | its value              | its value and build it
- *  +--------------------+ | +--------------------+ | +--------------------+
- *  |Json_createTemplate | | |Json_createTemplate | | |Json_createTemplate |
- *  +--------------------+ | +--------------------+ | +--------------------+
- *             |           |            |           |            |
- *             v           |            v           |            v
- *  +--------------------+ | +--------------------+ | +--------------------+
- *  |Json_createObject   | | |Json_createObject   | | |Json_createObject   |
- *  +--------------------+ | +--------------------+ | +--------------------+
- *             |           |            |           |            |
- *             v           |            v           |            v
- *  +--------------------+ | +--------------------+ | +--------------------+
- *  |Json_setValue       | | |Json_parse          | | |Json_parse          |
- *  +--------------------+ | +--------------------+ | +--------------------+
- *             |           |            |           |            |
- *             v           |            v           |            v
- *  +--------------------+ | +--------------------+ | +--------------------+
- *  |Json_build          | | |Json_getValue       | | |Json_getValue       |
- *  +--------------------+ | +--------------------+ | +--------------------+
- *             |           |            |           |            |
- *             v           |            v           |            v
- *  +--------------------+ | +--------------------+ | +--------------------+
- *  |Json_destroyObject  | | |Json_destroyObject  | | |Json_setValue       |
- *  +--------------------+ | +--------------------+ | +--------------------+
- *             |           |            |           |            |
- *             v           |            v           |            v
- *  +--------------------+ | +--------------------+ | +--------------------+
- *  |Json_destroyTemplate| | |Json_destroyTemplate| | |Json_build          |
- *  +--------------------+ | +--------------------+ | +--------------------+
- *                         |                        |            |
- *                         |                        |            v
- *                         |                        | +--------------------+
- *                         |                        | |Json_destroyObject  |
- *                         |                        | +--------------------+
- *                         |                        |            |
- *                         |                        |            v
- *                         |                        | +--------------------+
- *                         |                        | |Json_destroyTemplate|
- *                         |                        | +--------------------+
- *
- * =========================================================================
  */
 
 #include <stdlib.h>
@@ -359,6 +534,10 @@ int16_t Json_getValue(Json_Handle objHandle, const char *pKey, void *pValue,
  *
  *  ret = Json_setValue(h, key, value, valueSize);
  *  @endcode
+ *
+ *  @remark For boolean types, valueSize should be set to 2 a.k.a. sizeof(uint16_t).
+ *          For all other integral types, calling @c sizeof() on the respective
+ *          type is sufficient.
  *
  *  @sa     Json_parse()
  */

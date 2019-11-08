@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = system_msp432p401r.obj startup_msp432p401r_ccs.obj main.obj dmaTasks.obj
+OBJECTS = dmaTasks.obj main.obj system_msp432p401r.obj ccs_startup_msp432p401r_ccs.obj
 
 NAME = cmsis_dsplib_ulp
 
@@ -48,11 +48,7 @@ LFLAGS = "-l$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/DSP_Li
 
 all: $(NAME).out
 
-system_msp432p401r.obj: ../system_msp432p401r.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-startup_msp432p401r_ccs.obj: ../ccs/startup_msp432p401r_ccs.c
+dmaTasks.obj: ../dmaTasks.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
@@ -60,13 +56,17 @@ main.obj: ../main.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-dmaTasks.obj: ../dmaTasks.c
+system_msp432p401r.obj: ../system_msp432p401r.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
+
+ccs_startup_msp432p401r_ccs.obj: ../ccs/startup_msp432p401r_ccs.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

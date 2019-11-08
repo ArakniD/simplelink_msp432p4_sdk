@@ -8,7 +8,7 @@ SYSCONFIG_PRODUCT := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
 
-OBJECTS = Board.obj main_freertos.obj commonComms.obj vibrationCapture.obj
+OBJECTS = freertos_main_freertos.obj commonComms.obj vibrationCapture.obj Board.obj
 
 NAME = tida_01575_serial
 
@@ -56,19 +56,16 @@ $(KERNEL_BUILD)/iar/freertos.lib:
 	@ echo $@ is not built.
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
+
 .INTERMEDIATE: syscfg
-Board.c Board.h : syscfg
+Board.c Board.h: syscfg
 	@ echo generation complete
 
 syscfg: ../../tida_01575_serial.syscfg
 	@ echo Generating configuration files...
-	@ $(NODE_JS) $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
+	@ $(SYSCONFIG_TOOL) --product $(SYSCONFIG_PRODUCT) --output $(@D) $<
 
-Board.obj: Board.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -o $@
-
-main_freertos.obj: ../../freertos/main_freertos.c Board.h
+freertos_main_freertos.obj: ../../freertos/main_freertos.c Board.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
@@ -80,13 +77,17 @@ vibrationCapture.obj: ../../vibrationCapture.c Board.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
+Board.obj: Board.c Board.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -o $@
+
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/iar/freertos.lib
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
-	@ $(RM) Board.c Board.h  > $(DEVNULL) 2>&1
+	@ $(RM) Board.c Board.h > $(DEVNULL) 2>&1

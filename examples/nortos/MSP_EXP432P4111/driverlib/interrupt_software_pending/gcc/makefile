@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = system_msp432p4111.obj startup_msp432p4111_gcc.obj interrupt_software_pending.obj
+OBJECTS = interrupt_software_pending.obj system_msp432p4111.obj gcc_startup_msp432p4111_gcc.obj
 
 NAME = interrupt_software_pending
 
@@ -53,21 +53,21 @@ LFLAGS = -Wl,-T,../gcc/msp432p4111.lds \
 
 all: $(NAME).out
 
+interrupt_software_pending.obj: ../interrupt_software_pending.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
 system_msp432p4111.obj: ../system_msp432p4111.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-startup_msp432p4111_gcc.obj: ../gcc/startup_msp432p4111_gcc.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
-interrupt_software_pending.obj: ../interrupt_software_pending.c
+gcc_startup_msp432p4111_gcc.obj: ../gcc/startup_msp432p4111_gcc.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...

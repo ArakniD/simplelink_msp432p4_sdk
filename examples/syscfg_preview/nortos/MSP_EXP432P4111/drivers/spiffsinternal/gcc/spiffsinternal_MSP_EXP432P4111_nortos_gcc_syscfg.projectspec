@@ -19,10 +19,58 @@
         ignoreDefaultDeviceSettings="true"
         ignoreDefaultCCSSettings="true"
         products="com.ti.SIMPLELINK_MSP432_SDK"
-        compilerBuildOptions=" -I${PROJECT_ROOT} -I${PROJECT_ROOT}/${ConfigName} -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/nortos -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/nortos/posix -mcpu=cortex-m4 -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffunction-sections -fdata-sections -g -gstrict-dwarf -Wall -I${CG_TOOL_ROOT}/arm-none-eabi/include/newlib-nano -I${CG_TOOL_ROOT}/arm-none-eabi/include"
+        compilerBuildOptions="
+            -I${PROJECT_ROOT}
+            -I${PROJECT_ROOT}/${ConfigName}
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/nortos
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/nortos/posix
+            -mcpu=cortex-m4
+            -march=armv7e-m
+            -mthumb
+            -mfloat-abi=hard
+            -mfpu=fpv4-sp-d16
+            -ffunction-sections
+            -fdata-sections
+            -g
+            -gstrict-dwarf
+            -Wall
+            -I${CG_TOOL_ROOT}/arm-none-eabi/include/newlib-nano
+            -I${CG_TOOL_ROOT}/arm-none-eabi/include
+        "
         compilerBuildOptions_c="-std=c99"
         compilerBuildOptions_cpp="-std=c++11"
-        linkerBuildOptions=" -nostartfiles -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source -l:ti/display/lib/display.am4fg -l:ti/grlib/lib/gcc/m4f/grlib.a -l:third_party/spiffs/lib/gcc/m4f/spiffs.a -l:ti/drivers/lib/drivers_msp432p4x1xi.am4fg -l:third_party/fatfs/lib/gcc/m4f/fatfs.a -eresetISR -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/nortos -l:lib/nortos_msp432p4x1xi.am4fg -l:ti/devices/msp432p4xx/driverlib/gcc/msp432p4xx_driverlib.a -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -static -Wl,--gc-sections -L${CG_TOOL_ROOT}/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard -L${CG_TOOL_ROOT}/arm-none-eabi/lib -lgcc -lc -lm -lnosys --specs=nano.specs"
+        linkerBuildOptions="
+             -nostartfiles
+             -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
+             -l:ti/display/lib/display.am4fg
+             -l:ti/grlib/lib/gcc/m4f/grlib.a
+             -l:third_party/spiffs/lib/gcc/m4f/spiffs.a
+             -l:ti/drivers/lib/drivers_msp432p4x1xi.am4fg
+             -l:third_party/fatfs/lib/gcc/m4f/fatfs.a
+             -eresetISR
+             -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/nortos
+             -l:lib/nortos_msp432p4x1xi.am4fg
+             -l:ti/devices/msp432p4xx/driverlib/gcc/msp432p4xx_driverlib.a
+             -march=armv7e-m
+             -mthumb
+             -mfloat-abi=hard
+             -mfpu=fpv4-sp-d16
+             -static
+             -Wl,--gc-sections
+             -L${CG_TOOL_ROOT}/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard
+             -L${CG_TOOL_ROOT}/arm-none-eabi/lib
+             -lgcc
+             -lc
+             -lm
+             -lnosys
+             --specs=nano.specs
+        "
+        preBuildStep="
+        "
+        postBuildStep="
+        "
         enableSysConfigTool="true"
         sysConfigBuildOptions="--product ${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/.metadata/product.json"
         description="An example using a SPIFFS file system on non-volatile memory">

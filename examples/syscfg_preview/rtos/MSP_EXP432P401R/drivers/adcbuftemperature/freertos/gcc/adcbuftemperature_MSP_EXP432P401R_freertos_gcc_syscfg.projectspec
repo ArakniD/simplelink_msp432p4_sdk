@@ -21,10 +21,57 @@
         ignoreDefaultCCSSettings="true"
         references="freertos_builds_MSP_EXP432P401R_release_gcc"
         requiredVariables="FREERTOS_INSTALL_DIR"
-        compilerBuildOptions=" -I${PROJECT_ROOT} -I${PROJECT_ROOT}/${ConfigName} -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include -D__MSP432P401R__ -DDeviceFamily_MSP432P401x -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/posix/gcc -I${FREERTOS_INSTALL_DIR}/FreeRTOS/Source/include -I${FREERTOS_INSTALL_DIR}/FreeRTOS/Source/portable/GCC/ARM_CM4F -I${WORKSPACE_LOC}/freertos_builds_MSP_EXP432P401R_release_gcc -mcpu=cortex-m4 -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffunction-sections -fdata-sections -g -gstrict-dwarf -Wall -I${CG_TOOL_ROOT}/arm-none-eabi/include/newlib-nano -I${CG_TOOL_ROOT}/arm-none-eabi/include"
-        compilerBuildOptions_c="-std=c99"
-        compilerBuildOptions_cpp="-std=c++11"
-        linkerBuildOptions=" -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source -l:ti/display/lib/display.am4fg -l:ti/grlib/lib/gcc/m4f/grlib.a -l:third_party/spiffs/lib/gcc/m4f/spiffs.a -l:ti/drivers/lib/drivers_msp432p401x.am4fg -l:third_party/fatfs/lib/gcc/m4f/fatfs.a -nostartfiles -L${WORKSPACE_LOC}/freertos_builds_MSP_EXP432P401R_release_gcc/Debug -l:libfreertos_builds_MSP_EXP432P401R_release_gcc.a -l:ti/devices/msp432p4xx/driverlib/gcc/msp432p4xx_driverlib.a -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -static -Wl,--gc-sections -L${CG_TOOL_ROOT}/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard -L${CG_TOOL_ROOT}/arm-none-eabi/lib -lgcc -lc -lm -lnosys --specs=nano.specs"
+        compilerBuildOptions="
+            -I${PROJECT_ROOT}
+            -I${PROJECT_ROOT}/${ConfigName}
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include
+            -D__MSP432P401R__
+            -DDeviceFamily_MSP432P401x
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/posix/gcc
+            -I${FREERTOS_INSTALL_DIR}/FreeRTOS/Source/include
+            -I${FREERTOS_INSTALL_DIR}/FreeRTOS/Source/portable/GCC/ARM_CM4F
+            -I${WORKSPACE_LOC}/freertos_builds_MSP_EXP432P401R_release_gcc
+            -mcpu=cortex-m4
+            -march=armv7e-m
+            -mthumb
+            -std=c99
+            -std=c++11
+            -mfloat-abi=hard
+            -mfpu=fpv4-sp-d16
+            -ffunction-sections
+            -fdata-sections
+            -g
+            -gstrict-dwarf
+            -Wall
+            -I${CG_TOOL_ROOT}/arm-none-eabi/include/newlib-nano
+            -I${CG_TOOL_ROOT}/arm-none-eabi/include
+        "
+        linkerBuildOptions="
+            -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
+            -l:ti/display/lib/display.am4fg
+            -l:ti/grlib/lib/gcc/m4f/grlib.a
+            -l:third_party/spiffs/lib/gcc/m4f/spiffs.a
+            -l:ti/drivers/lib/drivers_msp432p401x.am4fg
+            -l:third_party/fatfs/lib/gcc/m4f/fatfs.a
+            -nostartfiles
+            -L${WORKSPACE_LOC}/freertos_builds_MSP_EXP432P401R_release_gcc/Debug
+            -l:libfreertos_builds_MSP_EXP432P401R_release_gcc.a
+            -l:ti/devices/msp432p4xx/driverlib/gcc/msp432p4xx_driverlib.a
+            -march=armv7e-m
+            -mthumb
+            -mfloat-abi=hard
+            -mfpu=fpv4-sp-d16
+            -static
+            -Wl,--gc-sections
+            -L${CG_TOOL_ROOT}/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard
+            -L${CG_TOOL_ROOT}/arm-none-eabi/lib
+            -lgcc
+            -lc
+            -lm
+            -lnosys
+            --specs=nano.specs
+        "
         enableSysConfigTool="true"
         sysConfigBuildOptions="--product ${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/.metadata/product.json"
         description="TODO: Write description">
@@ -32,6 +79,12 @@
         <property name="buildProfile" value="release"/>
         <property name="isHybrid" value="true"/>
         <group id="adcbuftemperature.SIMPLELINK_MSP432_SDK.MSP_EXP432P401R.drivers.GCC"/>
+        <file path="../../freertos/main_freertos.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../freertos/gcc/MSP_EXP432P401R_FREERTOS.lds" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
         <file path="../../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../../Board.html" openOnCreation="false" excludeFromBuild="false" action="copy">
@@ -42,12 +95,5 @@
         </file>
         <file path="../../adcBufTemperature.syscfg" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
-        <file path="../../freertos/main_freertos.c" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../../freertos/gcc/MSP_EXP432P401R_FREERTOS.lds" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
     </project>
 </projectSpec>
-

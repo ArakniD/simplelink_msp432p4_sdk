@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- IAR Project Connection File -->
 
-<iarProjectConnection version="1.2" name="FatSD Raw" oneShot="true"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:noNamespaceSchemaLocation="IarProjectConnection_1.2.xsd">
+<iarProjectConnection version="1.8" name="fatsdraw" oneShot="true"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+  xsi:noNamespaceSchemaLocation="IarProjectConnection_1.8.xsd">
 
   <device>
     <name>MSP432P4111</name>
   </device>
 
+  <includePath>
+    <path>$PROJ_DIR$</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/CMSIS/Include</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/nortos</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/nortos/posix</path>
+  </includePath>
+
+  <defines>
+  </defines>
+
   <extraOptions>
-    <args>
-      <arg>-I$PROJ_DIR$</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/CMSIS/Include</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/nortos</arg>
-      <arg>-I$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/nortos/posix</arg>
+      <arg></arg>
       <arg>--debug</arg>
       <arg>--silent</arg>
       <arg>-e</arg>
       <arg>--aeabi</arg>
       <arg>--thumb</arg>
       <arg>--diag_suppress=Pa050</arg>
-    </args>
   </extraOptions>
 
   <asmIncludePath>
@@ -34,7 +39,7 @@
 
   <linkerFile>
     <override>true</override>
-    <path>$PROJ_DIR$/$PROJ_FNAME$_MSP_EXP432P4111_NoRTOS.icf</path>
+    <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/nortos/MSP_EXP432P4111/drivers/fatsdraw/iar/MSP_EXP432P4111_NoRTOS.icf</path>
   </linkerFile>
 
   <linkerExtraOptions>
@@ -51,8 +56,8 @@
     </args>
   </linkerExtraOptions>
 
-    <customBuildTools>
-    </customBuildTools>
+  <customBuildTools>
+  </customBuildTools>
 
   <heaps>
     <heap> <!-- If omitted, id="0" -->
@@ -74,7 +79,7 @@
       <path copyTo="$PROJ_DIR$/main_nortos.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/nortos/MSP_EXP432P4111/drivers/fatsdraw/main_nortos.c</path>
       <path copyTo="$PROJ_DIR$/fatsdraw_nortos.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/nortos/MSP_EXP432P4111/drivers/fatsdraw/fatsdraw_nortos.c</path>
       <path copyTo="$PROJ_DIR$/MSP_EXP432P4111.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/nortos/MSP_EXP432P4111/drivers/fatsdraw/MSP_EXP432P4111.c</path>
-      <path copyTo="$PROJ_DIR$/$PROJ_FNAME$_MSP_EXP432P4111_NoRTOS.icf">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/nortos/MSP_EXP432P4111/drivers/fatsdraw/iar/MSP_EXP432P4111_NoRTOS.icf</path>
+      <path copyTo="$PROJ_DIR$/MSP_EXP432P4111_NoRTOS.icf">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/nortos/MSP_EXP432P4111/drivers/fatsdraw/iar/MSP_EXP432P4111_NoRTOS.icf</path>
     </group>
 
     <group name="Header files">

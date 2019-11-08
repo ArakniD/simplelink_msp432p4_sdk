@@ -178,6 +178,7 @@ if (deviceId.match(/CC13.0|CC26.0/)) {
                 "/ti/drivers/AESCTR",
                 "/ti/drivers/AESCTRDRBG",
                 "/ti/drivers/AESCCM",
+                "/ti/drivers/AESECB",
                 "/ti/drivers/AESGCM",
                 "/ti/drivers/CRC",
                 "/ti/drivers/DMA",

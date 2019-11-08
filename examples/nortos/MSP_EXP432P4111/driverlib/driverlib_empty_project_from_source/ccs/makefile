@@ -5,7 +5,7 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = adc14.obj aes256.obj comp_e.obj cpu.obj crc32.obj cs.obj dma.obj flash_a.obj fpu.obj gpio.obj i2c.obj interrupt.obj lcd_f.obj mpu.obj pcm.obj pmap.obj pss.obj ref_a.obj reset.obj rtc_c.obj spi.obj sysctl_a.obj systick.obj timer32.obj timer_a.obj uart.obj wdt_a.obj system_msp432p4111.obj startup_msp432p4111_ccs.obj main.obj
+OBJECTS = main.obj adc14.obj aes256.obj comp_e.obj cpu.obj crc32.obj cs.obj dma.obj flash_a.obj fpu.obj gpio.obj i2c.obj interrupt.obj lcd_f.obj mpu.obj pcm.obj pmap.obj pss.obj ref_a.obj reset.obj rtc_c.obj spi.obj sysctl_a.obj systick.obj timer32.obj timer_a.obj uart.obj wdt_a.obj system_msp432p4111.obj ccs_startup_msp432p4111_ccs.obj
 
 NAME = driverlib_empty_project_from_source
 
@@ -44,6 +44,10 @@ LFLAGS = --stack_size=512 \
     -llibc.a
 
 all: $(NAME).out
+
+main.obj: ../main.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 adc14.obj: ../adc14.c
 	@ echo Building $@
@@ -157,17 +161,13 @@ system_msp432p4111.obj: ../system_msp432p4111.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-startup_msp432p4111_ccs.obj: ../ccs/startup_msp432p4111_ccs.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --output_file=$@
-
-main.obj: ../main.c
+ccs_startup_msp432p4111_ccs.obj: ../ccs/startup_msp432p4111_ccs.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
 clean:
 	@ echo Cleaning...
