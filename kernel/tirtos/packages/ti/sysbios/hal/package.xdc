@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017, Texas Instruments Incorporated
+ * Copyright (c) 2012-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -87,14 +87,11 @@ package ti.sysbios.hal [2,0,0,0] {
     module Core;
     module CoreNull;
     module Hwi;
-    module MemProtect;
     module Power;
     module PowerNull;
     module Seconds;
     module SecondsCallback;
     module SecondsClock;
-    module SysCall;
-    module SysCallNull;
     module Timer;
     module TimerNull;
 }

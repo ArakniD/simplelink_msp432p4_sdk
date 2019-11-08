@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014, Texas Instruments Incorporated
+ * Copyright (c) 2013-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -91,7 +91,7 @@ Void LoggerIdle_idleWriteEvent()
         LoggerIdle_module->bufferRead =
             (UInt32 *)((Char *)LoggerIdle_module->bufferRead + lengthInMAU);
 
-        if ((UInt32)LoggerIdle_module->bufferRead > (UInt32)LoggerIdle_module->bufferPad) {
+        if (LoggerIdle_module->bufferRead > LoggerIdle_module->bufferPad) {
             LoggerIdle_module->bufferRead = LoggerIdle_module->idleBuffer;
         }
 

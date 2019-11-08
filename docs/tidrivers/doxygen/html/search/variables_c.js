@@ -1,7 +1,7 @@
 var searchData=
 [
   ['name',['name',['../structspiffs__stat.html#a42b32d4cd1868c63f8a8598e5d888a8b',1,'spiffs_stat::name()'],['../structspiffs__dirent.html#abd0b462b485b05eb9ee1703b1ee5beab',1,'spiffs_dirent::name()']]],
-  ['next',['next',['../struct_list___elem.html#a0f1336247f6538e230d2c23b3ce4c92e',1,'List_Elem']]],
+  ['next',['next',['../struct_list___elem__.html#a3472db6d50d5191700bdf1670fdef9c5',1,'List_Elem_']]],
   ['nextptr',['nextPtr',['../struct_s_p_i___transaction.html#a3857151eff782605a3b3c4edeb884130',1,'SPI_Transaction']]],
   ['notifyfxn',['notifyFxn',['../struct_power___notify_obj.html#acfc434bbe72476fdac364ffe7df28f4c',1,'Power_NotifyObj']]],
   ['numbaudrateentries',['numBaudrateEntries',['../struct_u_a_r_t_m_s_p432___h_w_attrs_v1.html#a3bd173ab5c6307e2306dda8f3afd283f',1,'UARTMSP432_HWAttrsV1']]],

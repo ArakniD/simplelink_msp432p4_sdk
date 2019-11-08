@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_uia_events_UIAProfile__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_events_UIAProfile___VERS 200
@@ -294,7 +296,7 @@ __extern const ti_uia_events_UIAProfile_Fxns__ ti_uia_events_UIAProfile_Module__
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_events_UIAProfile_Module__startupDone__S, "ti_uia_events_UIAProfile_Module__startupDone__S")
-__extern xdc_Bool ti_uia_events_UIAProfile_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_events_UIAProfile_Module__startupDone__S( void);
 
 
 /*

@@ -3,20 +3,21 @@ SIMPLELINK_MSP432_SDK_INSTALL_DIR ?= $(abspath ../../../../../../..)
 include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 
 XDCPATH = $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source;$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/packages;
+XDCTARGET = ti.targets.arm.elf.M4F
+PLATFORM = ti.platforms.msp432:MSP432P401R
+.PRECIOUS: $(CONFIGPKG)/compiler.opt $(CONFIGPKG)/linker.cmd
 
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-XDCTARGET = ti.targets.arm.elf.M4F
-PLATFORM = ti.platforms.msp432:MSP432P401R
-
-OBJECTS = stairstep.obj MSP_EXP432P401R.obj
+OBJECTS = stairstep.obj ti_drivers_config.obj
 
 CONFIGPKG = stairstepStopMode
 
 NAME = stairstepStopMode
 
 CFLAGS = -I../.. \
+    -I. \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
     --advice:power=none \
@@ -50,27 +51,37 @@ LFLAGS = "-i$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     "-i$(CCS_ARMCOMPILER)/lib" \
     -llibc.a
 
-.PRECIOUS: $(CONFIGPKG)/compiler.opt $(CONFIGPKG)/linker.cmd
-
 all: $(NAME).out
+
+cflags.opt: makefile $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
+	@ echo --compileOptions $(CFLAGS) > $@
 
 $(CONFIGPKG)/compiler.opt: $(CONFIGPKG)/linker.cmd
 
-$(CONFIGPKG)/linker.cmd: ../../tirtos/stairstep.cfg
+$(CONFIGPKG)/linker.cmd: ../../tirtos/stairstep.cfg cflags.opt
 	@ echo Running Configuro...
-	@ $(XDC_INSTALL_DIR)/xs --xdcpath="$(XDCPATH)" xdc.tools.configuro -c "$(CCS_ARMCOMPILER)" -t $(XDCTARGET) -p $(PLATFORM) --compileOptions "$(CFLAGS)" -o "$(CONFIGPKG)" ../../tirtos/stairstep.cfg
+	@ $(XDC_INSTALL_DIR)/xs --xdcpath="$(XDCPATH)" xdc.tools.configuro -c "$(CCS_ARMCOMPILER)" -t $(XDCTARGET) -p $(PLATFORM) -@cflags.opt -o "$(CONFIGPKG)" ../../tirtos/stairstep.cfg
 
-stairstep.obj: ../../stairstep.c $(CONFIGPKG)/compiler.opt
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../../stairstep.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+stairstep.obj: ../../stairstep.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
-MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c $(CONFIGPKG)/compiler.opt
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
 $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) -l$(CONFIGPKG)/linker.cmd $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS) -l$(CONFIGPKG)/linker.cmd $(LFLAGS) -o $(NAME).out
+
 
 clean:
 	@ echo Cleaning...
@@ -78,3 +89,5 @@ clean:
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
 	@ $(RMDIR) $(NAME) > $(DEVNULL) 2>&1
+	@ $(RM) cflags.opt > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

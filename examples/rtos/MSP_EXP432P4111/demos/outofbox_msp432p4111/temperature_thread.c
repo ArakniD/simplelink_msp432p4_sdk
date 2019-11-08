@@ -52,8 +52,8 @@
 /* Driver Header files */
 #include <ti/drivers/ADC.h>
 
-/* Board Header files */
-#include "Board.h"
+/* Board Header file */
+#include "ti_drivers_config.h"
 
 /* Local Header Files */
 #include "callbacks.h"
@@ -84,7 +84,7 @@ void *temperatureThread(void *arg0)
     ADC_init();
 
     ADC_Params_init(&params);
-    adc = ADC_open(Board_ADC0, &params);
+    adc = ADC_open(CONFIG_ADC0, &params);
 
     if (adc == NULL) {
         while (1);

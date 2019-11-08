@@ -3,7 +3,7 @@ package/nortos.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/nortos.java
 package/nortos.class
 package/package_nortos.c

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_sysbios_family_arm_m3_TaskSupport__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_family_arm_m3_TaskSupport___VERS 200
@@ -263,12 +265,13 @@ __extern __FAR__ const CT__ti_sysbios_family_arm_m3_TaskSupport_stackAlignment t
 struct ti_sysbios_family_arm_m3_TaskSupport_Fxns__ {
     const xdc_runtime_Types_Base* __base;
     const xdc_runtime_Types_SysFxns2* __sysp;
-    xdc_Ptr (*start)(xdc_Ptr curTask, ti_sysbios_interfaces_ITaskSupport_FuncPtr enterFxn, ti_sysbios_interfaces_ITaskSupport_FuncPtr exitFxn, xdc_runtime_Error_Block* eb);
+    xdc_Ptr (*start)(xdc_Ptr curTask, ti_sysbios_interfaces_ITaskSupport_FuncPtr enter, ti_sysbios_interfaces_ITaskSupport_FuncPtr exit, xdc_runtime_Error_Block* eb);
     xdc_Void (*swap)(xdc_Ptr* oldtskContext, xdc_Ptr* newtskContext);
     xdc_Bool (*checkStack)(xdc_Char* stack, xdc_SizeT size);
     xdc_SizeT (*stackUsed)(xdc_Char* stack, xdc_SizeT size);
     xdc_UInt (*getStackAlignment)(void);
     xdc_SizeT (*getDefaultStackSize)(void);
+    xdc_Ptr (*getCheckValueAddr)(xdc_Ptr curTask);
     xdc_runtime_Types_SysFxns2 __sfxns;
 };
 #ifndef ti_sysbios_family_arm_m3_TaskSupport_Module__FXNS__CR
@@ -289,37 +292,42 @@ __extern const ti_sysbios_family_arm_m3_TaskSupport_Fxns__ ti_sysbios_family_arm
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_family_arm_m3_TaskSupport_Module__startupDone__S, "ti_sysbios_family_arm_m3_TaskSupport_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_family_arm_m3_TaskSupport_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_family_arm_m3_TaskSupport_Module__startupDone__S( void);
 
 /* start__E */
 #define ti_sysbios_family_arm_m3_TaskSupport_start ti_sysbios_family_arm_m3_TaskSupport_start__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_TaskSupport_start__E, "ti_sysbios_family_arm_m3_TaskSupport_start")
-__extern xdc_Ptr ti_sysbios_family_arm_m3_TaskSupport_start__E( xdc_Ptr curTask, ti_sysbios_interfaces_ITaskSupport_FuncPtr enterFxn, ti_sysbios_interfaces_ITaskSupport_FuncPtr exitFxn, xdc_runtime_Error_Block *eb );
+__extern xdc_Ptr ti_sysbios_family_arm_m3_TaskSupport_start__E( xdc_Ptr curTask, ti_sysbios_interfaces_ITaskSupport_FuncPtr enter, ti_sysbios_interfaces_ITaskSupport_FuncPtr exit, xdc_runtime_Error_Block *eb);
 
 /* swap__E */
 #define ti_sysbios_family_arm_m3_TaskSupport_swap ti_sysbios_family_arm_m3_TaskSupport_swap__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_TaskSupport_swap__E, "ti_sysbios_family_arm_m3_TaskSupport_swap")
-__extern xdc_Void ti_sysbios_family_arm_m3_TaskSupport_swap__E( xdc_Ptr *oldtskContext, xdc_Ptr *newtskContext );
+__extern xdc_Void ti_sysbios_family_arm_m3_TaskSupport_swap__E( xdc_Ptr *oldtskContext, xdc_Ptr *newtskContext);
 
 /* checkStack__E */
 #define ti_sysbios_family_arm_m3_TaskSupport_checkStack ti_sysbios_family_arm_m3_TaskSupport_checkStack__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_TaskSupport_checkStack__E, "ti_sysbios_family_arm_m3_TaskSupport_checkStack")
-__extern xdc_Bool ti_sysbios_family_arm_m3_TaskSupport_checkStack__E( xdc_Char *stack, xdc_SizeT size );
+__extern xdc_Bool ti_sysbios_family_arm_m3_TaskSupport_checkStack__E( xdc_Char *stack, xdc_SizeT size);
 
 /* stackUsed__E */
 #define ti_sysbios_family_arm_m3_TaskSupport_stackUsed ti_sysbios_family_arm_m3_TaskSupport_stackUsed__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_TaskSupport_stackUsed__E, "ti_sysbios_family_arm_m3_TaskSupport_stackUsed")
-__extern xdc_SizeT ti_sysbios_family_arm_m3_TaskSupport_stackUsed__E( xdc_Char *stack, xdc_SizeT size );
+__extern xdc_SizeT ti_sysbios_family_arm_m3_TaskSupport_stackUsed__E( xdc_Char *stack, xdc_SizeT size);
 
 /* getStackAlignment__E */
 #define ti_sysbios_family_arm_m3_TaskSupport_getStackAlignment ti_sysbios_family_arm_m3_TaskSupport_getStackAlignment__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_TaskSupport_getStackAlignment__E, "ti_sysbios_family_arm_m3_TaskSupport_getStackAlignment")
-__extern xdc_UInt ti_sysbios_family_arm_m3_TaskSupport_getStackAlignment__E( void );
+__extern xdc_UInt ti_sysbios_family_arm_m3_TaskSupport_getStackAlignment__E( void);
 
 /* getDefaultStackSize__E */
 #define ti_sysbios_family_arm_m3_TaskSupport_getDefaultStackSize ti_sysbios_family_arm_m3_TaskSupport_getDefaultStackSize__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_TaskSupport_getDefaultStackSize__E, "ti_sysbios_family_arm_m3_TaskSupport_getDefaultStackSize")
-__extern xdc_SizeT ti_sysbios_family_arm_m3_TaskSupport_getDefaultStackSize__E( void );
+__extern xdc_SizeT ti_sysbios_family_arm_m3_TaskSupport_getDefaultStackSize__E( void);
+
+/* getCheckValueAddr__E */
+#define ti_sysbios_family_arm_m3_TaskSupport_getCheckValueAddr ti_sysbios_family_arm_m3_TaskSupport_getCheckValueAddr__E
+xdc__CODESECT(ti_sysbios_family_arm_m3_TaskSupport_getCheckValueAddr__E, "ti_sysbios_family_arm_m3_TaskSupport_getCheckValueAddr")
+__extern xdc_Ptr ti_sysbios_family_arm_m3_TaskSupport_getCheckValueAddr__E( xdc_Ptr curTask);
 
 
 /*
@@ -425,6 +433,7 @@ static inline xdc_Void ti_sysbios_family_arm_m3_TaskSupport_Module_setMask(xdc_B
 #define TaskSupport_stackUsed ti_sysbios_family_arm_m3_TaskSupport_stackUsed
 #define TaskSupport_getStackAlignment ti_sysbios_family_arm_m3_TaskSupport_getStackAlignment
 #define TaskSupport_getDefaultStackSize ti_sysbios_family_arm_m3_TaskSupport_getDefaultStackSize
+#define TaskSupport_getCheckValueAddr ti_sysbios_family_arm_m3_TaskSupport_getCheckValueAddr
 #define TaskSupport_Module_name ti_sysbios_family_arm_m3_TaskSupport_Module_name
 #define TaskSupport_Module_id ti_sysbios_family_arm_m3_TaskSupport_Module_id
 #define TaskSupport_Module_startup ti_sysbios_family_arm_m3_TaskSupport_Module_startup

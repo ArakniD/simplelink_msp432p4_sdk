@@ -55,8 +55,8 @@
 #include <ti/drivers/PWM.h>
 #include <ti/drivers/Timer.h>
 
-/* Board Header files */
-#include "Board.h"
+/* Board Header file */
+#include "ti_drivers_config.h"
 
 /* Local Header Files */
 #include "callbacks.h"
@@ -101,19 +101,19 @@ void *ledThread(void *arg0)
     GPIO_init();
     Timer_init();
     /* install Button callback */
-    GPIO_setCallback(Board_GPIO_BUTTON0, gpioButton0_Callback);
+    GPIO_setCallback(CONFIG_GPIO_BUTTON0, gpioButton0_Callback);
 
     /* Enable interrupts */
-    GPIO_enableInt(Board_GPIO_BUTTON0);
+    GPIO_enableInt(CONFIG_GPIO_BUTTON0);
 
     /*
      *  If more than one input pin is available for your device, interrupts
-     *  will be enabled on Board_GPIO_BUTTON1.
+     *  will be enabled on CONFIG_GPIO_BUTTON1.
      */
-    if (Board_GPIO_BUTTON0 != Board_GPIO_BUTTON1) {
+    if (CONFIG_GPIO_BUTTON0 != CONFIG_GPIO_BUTTON1) {
         /* Install Button callback */
-        GPIO_setCallback(Board_GPIO_BUTTON1, gpioButton1_Callback);
-        GPIO_enableInt(Board_GPIO_BUTTON1);
+        GPIO_setCallback(CONFIG_GPIO_BUTTON1, gpioButton1_Callback);
+        GPIO_enableInt(CONFIG_GPIO_BUTTON1);
     }
 
     /* Create Timers with timer callbacks */
@@ -126,7 +126,7 @@ void *ledThread(void *arg0)
     timer_params.periodUnits = Timer_PERIOD_US;
     timer_params.timerMode = Timer_CONTINUOUS_CALLBACK;
     timer_params.timerCallback = intervalTimer_Callback;
-    intervalTimer = Timer_open(Board_TIMER0, &timer_params);
+    intervalTimer = Timer_open(CONFIG_TIMER0, &timer_params);
     if (intervalTimer == NULL) {
        /* Failed to initialized Timer */
        while(1);
@@ -138,7 +138,7 @@ void *ledThread(void *arg0)
     timer_params.periodUnits = Timer_PERIOD_US;
     timer_params.timerMode = Timer_CONTINUOUS_CALLBACK;
     timer_params.timerCallback = blinkTimer_Callback;
-    blinkTimer = Timer_open(Board_TIMER1, &timer_params);
+    blinkTimer = Timer_open(CONFIG_TIMER1, &timer_params);
     if (blinkTimer == NULL) {
        /* Failed to initialized Timer */
        while(1);
@@ -151,7 +151,7 @@ void *ledThread(void *arg0)
     timer_params.periodUnits = Timer_PERIOD_US;
     timer_params.timerMode = Timer_CONTINUOUS_CALLBACK;
     timer_params.timerCallback = debounceTimer_Callback;
-    debounceTimer = Timer_open(Board_TIMER3, &timer_params);
+    debounceTimer = Timer_open(CONFIG_TIMER3, &timer_params);
     if (debounceTimer == NULL) {
        /* Failed to initialized Timer */
        while(1);
@@ -167,28 +167,28 @@ void *ledThread(void *arg0)
     pwm_params.periodValue = pwmPeriod;
 
     /* Open/Start the Red LED PWM Module */
-    pwms[PWM_RED] = PWM_open(Board_PWM0, &pwm_params);
+    pwms[PWM_RED] = PWM_open(CONFIG_PWM0, &pwm_params);
     if (pwms[PWM_RED] == NULL) {
-      /* Board_PWM0 did not open */
+      /* CONFIG_PWM0 did not open */
       while (1);
     }
 
     /* Open/Start the Green LED PWM Module */
-    if (Board_PWM1 != Board_PWM0)
+    if (CONFIG_PWM1 != CONFIG_PWM0)
     {
-      pwms[PWM_GREEN] = PWM_open(Board_PWM1, &pwm_params);
+      pwms[PWM_GREEN] = PWM_open(CONFIG_PWM1, &pwm_params);
       if (pwms[PWM_GREEN] == NULL) {
-          /* Board_PWM1 did not open */
+          /* CONFIG_PWM1 did not open */
           while (1);
       }
     }
 
     /* Open the Blue LED PWM Module */
-    if (Board_PWM2 != Board_PWM1)
+    if (CONFIG_PWM2 != CONFIG_PWM1)
     {
-      pwms[PWM_BLUE] = PWM_open(Board_PWM2, &pwm_params);
+      pwms[PWM_BLUE] = PWM_open(CONFIG_PWM2, &pwm_params);
       if (pwms[PWM_BLUE] == NULL) {
-          /* Board_PWM2 did not open */
+          /* CONFIG_PWM2 did not open */
           while (1);
       }
     }
@@ -267,7 +267,7 @@ static void changeLedTogglePeriod(int colorMode, Timer_Params *timer_params, cha
         timer_params->periodUnits = Timer_PERIOD_US;
         timer_params->timerMode = Timer_CONTINUOUS_CALLBACK;
         timer_params->timerCallback = blinkTimer_Callback;
-        blinkTimer = Timer_open(Board_TIMER1, timer_params);
+        blinkTimer = Timer_open(CONFIG_TIMER1, timer_params);
         if (blinkTimer == NULL) {
             /* Failed to initialized Timer */
             while(1);

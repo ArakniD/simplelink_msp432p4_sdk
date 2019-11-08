@@ -6,7 +6,7 @@
 <body>
 <pre class=src>
      1    <span class="comment">/* 
-</span>     2    <span class="comment"> *  Copyright (c) 2008 Texas Instruments. All rights reserved.
+</span>     2    <span class="comment"> *  Copyright (c) 2008-2019 Texas Instruments Incorporated
 </span>     3    <span class="comment"> *  This program and the accompanying materials are made available under the
 </span>     4    <span class="comment"> *  terms of the Eclipse Public License v1.0 and Eclipse Distribution License
 </span>     5    <span class="comment"> *  v. 1.0 which accompanies this distribution. The Eclipse Public License is
@@ -38,53 +38,56 @@
 </span>    31    <span class="xdoc">     *  Return a 32-bit timestamp
 </span>    32    <span class="xdoc">     *
 </span>    33    <span class="xdoc">     *  <b>@a(returns)</b>
-</span>    34    <span class="xdoc">     *  Returns a 32-bit timestamp value.  
+</span>    34    <span class="xdoc">     *  Returns a 32-bit timestamp value.
 </span>    35    <span class="xdoc">     *  Use `{<b>@link</b> #getFreq}` to convert this value into units of real time.
 </span>    36    <span class="xdoc">     *
 </span>    37    <span class="xdoc">     *  <b>@see</b> #get64
 </span>    38    <span class="xdoc">     */</span>
-    39        Bits32 get32();
-    40    
-    41        <span class="xdoc">/*!
-</span>    42    <span class="xdoc">     *  ======== get64 ========
-</span>    43    <span class="xdoc">     *  Return a 64-bit timestamp
-</span>    44    <span class="xdoc">     *
-</span>    45    <span class="xdoc">     *  <b>@param(result)</b>  pointer to 64-bit result
-</span>    46    <span class="xdoc">     *
-</span>    47    <span class="xdoc">     *      This parameter is a pointer to a structure representing a 64-bit
-</span>    48    <span class="xdoc">     *      wide timestamp value where the current timestamp is written.
-</span>    49    <span class="xdoc">     *
-</span>    50    <span class="xdoc">     *      If the underlying hardware does not support 64-bit resolution, the
-</span>    51    <span class="xdoc">     *      `hi` field of `result` is always set to 0; see
-</span>    52    <span class="xdoc">     *      `{<b>@link</b> xdc.runtime.Types#Timestamp64}`.  So, it is possible for 
-</span>    53    <span class="xdoc">     *      the `lo` field to wrap around without any change to the `hi` field.
-</span>    54    <span class="xdoc">     *      Use `{<b>@link</b> #getFreq}` to convert this value into units of real 
-</span>    55    <span class="xdoc">     *      time.
-</span>    56    <span class="xdoc">     *
-</span>    57    <span class="xdoc">     *  <b>@see</b> #get32
-</span>    58    <span class="xdoc">     */</span>
-    59        Void get64(Types.Timestamp64 *result);
-    60        
-    61        <span class="xdoc">/*!
-</span>    62    <span class="xdoc">     *  ======== getFreq ========
-</span>    63    <span class="xdoc">     *  Get the timestamp timer's frequency (in Hz)
-</span>    64    <span class="xdoc">     *
-</span>    65    <span class="xdoc">     *  <b>@param(freq)</b>  pointer to a 64-bit result
+    39        <span class="comment">/* REQ_TAG(SYSBIOS-883) */</span>
+    40        Bits32 get32();
+    41    
+    42        <span class="xdoc">/*!
+</span>    43    <span class="xdoc">     *  ======== get64 ========
+</span>    44    <span class="xdoc">     *  Return a 64-bit timestamp
+</span>    45    <span class="xdoc">     *
+</span>    46    <span class="xdoc">     *  <b>@param(result)</b>  pointer to 64-bit result
+</span>    47    <span class="xdoc">     *
+</span>    48    <span class="xdoc">     *      This parameter is a pointer to a structure representing a 64-bit
+</span>    49    <span class="xdoc">     *      wide timestamp value where the current timestamp is written.
+</span>    50    <span class="xdoc">     *
+</span>    51    <span class="xdoc">     *      If the underlying hardware does not support 64-bit resolution, the
+</span>    52    <span class="xdoc">     *      `hi` field of `result` is always set to 0; see
+</span>    53    <span class="xdoc">     *      `{<b>@link</b> xdc.runtime.Types#Timestamp64}`.  So, it is possible for
+</span>    54    <span class="xdoc">     *      the `lo` field to wrap around without any change to the `hi` field.
+</span>    55    <span class="xdoc">     *      Use `{<b>@link</b> #getFreq}` to convert this value into units of real
+</span>    56    <span class="xdoc">     *      time.
+</span>    57    <span class="xdoc">     *
+</span>    58    <span class="xdoc">     *  <b>@see</b> #get32
+</span>    59    <span class="xdoc">     */</span>
+    60        <span class="comment">/* REQ_TAG(SYSBIOS-884) */</span>
+    61        Void get64(Types.Timestamp64 *result);
+    62    
+    63        <span class="xdoc">/*!
+</span>    64    <span class="xdoc">     *  ======== getFreq ========
+</span>    65    <span class="xdoc">     *  Get the timestamp timer's frequency (in Hz)
 </span>    66    <span class="xdoc">     *
-</span>    67    <span class="xdoc">     *      This parameter is a pointer to a structure representing a 64-bit
-</span>    68    <span class="xdoc">     *      wide frequency value where the timer's frequency (in Hz)
-</span>    69    <span class="xdoc">     *      is written; see `{<b>@link</b> xdc.runtime.Types#FreqHz}`.
-</span>    70    <span class="xdoc">     *      This function provides a way of converting timestamp 
-</span>    71    <span class="xdoc">     *      values into units of real time.
-</span>    72    <span class="xdoc">     *
-</span>    73    <span class="xdoc">     *  <b>@see</b> #get32
-</span>    74    <span class="xdoc">     *  <b>@see</b> #get64
-</span>    75    <span class="xdoc">     */</span>
-    76        Void getFreq(Types.FreqHz *freq);
-    77    }
-    78    <span class="comment">/*
-</span>    79    <span class="comment"> *  @(#) xdc.runtime; 2, 1, 0,0; 2-16-2019 22:17:03; /db/ztree/library/trees/xdc/xdc-G10/src/packages/
-</span>    80    <span class="comment"> */</span>
-    81    
+</span>    67    <span class="xdoc">     *  <b>@param(freq)</b>  pointer to a 64-bit result
+</span>    68    <span class="xdoc">     *
+</span>    69    <span class="xdoc">     *      This parameter is a pointer to a structure representing a 64-bit
+</span>    70    <span class="xdoc">     *      wide frequency value where the timer's frequency (in Hz)
+</span>    71    <span class="xdoc">     *      is written; see `{<b>@link</b> xdc.runtime.Types#FreqHz}`.
+</span>    72    <span class="xdoc">     *      This function provides a way of converting timestamp 
+</span>    73    <span class="xdoc">     *      values into units of real time.
+</span>    74    <span class="xdoc">     *
+</span>    75    <span class="xdoc">     *  <b>@see</b> #get32
+</span>    76    <span class="xdoc">     *  <b>@see</b> #get64
+</span>    77    <span class="xdoc">     */</span>
+    78        <span class="comment">/* REQ_TAG(SYSBIOS-885) */</span>
+    79        Void getFreq(Types.FreqHz *freq);
+    80    }
+    81    <span class="comment">/*
+</span>    82    <span class="comment"> *  @(#) xdc.runtime; 2, 1, 0,0; 8-21-2019 13:22:46; /db/ztree/library/trees/xdc/xdc-H25/src/packages/
+</span>    83    <span class="comment"> */</span>
+    84    
 </pre>
 </body></html>

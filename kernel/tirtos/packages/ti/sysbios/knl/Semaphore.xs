@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2018, Texas Instruments Incorporated
+ * Copyright (c) 2012-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,35 +45,6 @@ var Event = null;
 var Clock = null;
 var Program = null;
 var BIOS = null;
-
-/*
- * ======== getCFiles ========
- * return the array of C language files associated
- * with targetName (ie Program.build.target.$name)
- */
-function getCFiles(targetName)
-{
-    if (BIOS.mpeEnabled) {
-        return (["Semaphore.c", "Semaphore_svc.c"]);
-    }
-    else {
-        return (["Semaphore.c"]);
-    }
-}
-
-/*
- *  ======== module$meta$init ========
- */
-function module$meta$init()
-{
-    /* Only process during "cfg" phase */
-    if (xdc.om.$name != "cfg") {
-        return;
-    }
-
-    /* provide getCFiles() for Build.getCFiles() */
-    this.$private.getCFiles = getCFiles;
-}
 
 /*
  *  ======== module$use ========
@@ -292,13 +263,13 @@ function viewInitBasic(view, obj)
         }
 
 
-        if (pendElem.tpElem.clockHandle != 0) {
+        if (pendElem.tpElem.clock != 0) {
             try {
-                var clockView = Program.scanHandleView('ti.sysbios.knl.Clock', pendElem.tpElem.clockHandle, 'Basic');
+                var clockView = Program.scanHandleView('ti.sysbios.knl.Clock', pendElem.tpElem.clock, 'Basic');
             }
             catch (e) {
                 view.$status["timeout"] = "Problem scanning pending Clock 0x" +
-                                        Number(pendElem.tpElem.clockHandle).toString(16) + 
+                                        Number(pendElem.tpElem.clock).toString(16) + 
                                         ": " + e.toString();
                 return;
             }
@@ -319,21 +290,21 @@ function viewInitBasic(view, obj)
                 pendState = "Waiting forever";
                 break;
         }
-
-        /*
+        
+        /* 
          * The PendElem struct contains a handle to a Task instance.
          * Scan the handle. 
          */
         try {
-            var taskView = Program.scanHandleView('ti.sysbios.knl.Task', pendElem.tpElem.taskHandle, 'Basic');
+            var taskView = Program.scanHandleView('ti.sysbios.knl.Task', pendElem.tpElem.task, 'Basic');
         }
         catch (e) {
             view.$status["pendElems"] = "Problem scanning pending Task 0x" +
-                                        Number(pendElem.tpElem.taskHandle).toString(16) + 
+                                        Number(pendElem.tpElem.task).toString(16) + 
                                         ": " + e.toString();
             return;
         }
-
+        
         var pendElemString = Task.getNickName(taskView) + 
                              ", priority: " + taskView.priority + 
                              ", pendState: " + pendState;

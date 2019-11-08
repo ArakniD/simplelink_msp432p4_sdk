@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_family_arm_m3_TaskSupport__INTERNAL__
@@ -44,6 +44,10 @@
 /* getDefaultStackSize */
 #undef ti_sysbios_family_arm_m3_TaskSupport_getDefaultStackSize
 #define ti_sysbios_family_arm_m3_TaskSupport_getDefaultStackSize ti_sysbios_family_arm_m3_TaskSupport_getDefaultStackSize__E
+
+/* getCheckValueAddr */
+#undef ti_sysbios_family_arm_m3_TaskSupport_getCheckValueAddr
+#define ti_sysbios_family_arm_m3_TaskSupport_getCheckValueAddr ti_sysbios_family_arm_m3_TaskSupport_getCheckValueAddr__E
 
 /* Module_startup */
 #undef ti_sysbios_family_arm_m3_TaskSupport_Module_startup

@@ -139,7 +139,6 @@ void EUSCIB0_IRQHandler(void)
     uint_fast16_t status;
 
     status = MAP_I2C_getEnabledInterruptStatus(EUSCI_B0_BASE);
-    MAP_I2C_clearInterruptFlag(EUSCI_B0_BASE, status);
 
     /* Receives bytes into the receive buffer. If we have received all bytes,
      * send a STOP condition */

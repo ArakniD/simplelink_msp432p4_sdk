@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2018, Texas Instruments Incorporated
+ * Copyright (c) 2014-2017, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -150,6 +150,12 @@ metaonly module BiosProductView inherits xdc.tools.product.IProductView
 
     config ProductElemDesc ti_sysbios_family_c674_Power;
 
+    config ProductElemDesc ti_sysbios_family_msp430_ClockFreqs;
+    config ProductElemDesc ti_sysbios_family_msp430_Hwi;
+    config ProductElemDesc ti_sysbios_family_msp430_Power;
+    config ProductElemDesc ti_sysbios_family_msp430_Timer;
+    config ProductElemDesc ti_sysbios_family_msp430_TimestampProvider;
+
     config ProductElemDesc ti_sysbios_family_arm_arm9_Cache;
     config ProductElemDesc ti_sysbios_family_arm_arm9_Mmu;
     config ProductElemDesc ti_sysbios_family_arm_dm6446_Hwi;
@@ -228,6 +234,7 @@ metaonly module BiosProductView inherits xdc.tools.product.IProductView
     config ProductElemDesc c64tGroup;
     config ProductElemDesc c66Group;
     config ProductElemDesc c674Group;
+    config ProductElemDesc msp430Group;
     config ProductElemDesc armGroup;
     config ProductElemDesc arm9davinciGroup;
     config ProductElemDesc arm9da830Group;

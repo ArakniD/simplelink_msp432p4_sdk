@@ -1,7 +1,7 @@
 var searchData=
 [
   ['name',['name',['../structspiffs__stat.html#a42b32d4cd1868c63f8a8598e5d888a8b',1,'spiffs_stat::name()'],['../structspiffs__dirent.html#abd0b462b485b05eb9ee1703b1ee5beab',1,'spiffs_dirent::name()']]],
-  ['next',['next',['../struct_list___elem.html#a0f1336247f6538e230d2c23b3ce4c92e',1,'List_Elem']]],
+  ['next',['next',['../struct_list___elem__.html#a3472db6d50d5191700bdf1670fdef9c5',1,'List_Elem_']]],
   ['nextptr',['nextPtr',['../struct_s_p_i___transaction.html#a3857151eff782605a3b3c4edeb884130',1,'SPI_Transaction']]],
   ['nortos_2eh',['NoRTOS.h',['../_no_r_t_o_s_8h.html',1,'']]],
   ['nortos_5fconfig',['NoRTOS_Config',['../_no_r_t_o_s_8h.html#a28dea0ee567d35cc2ee31fa62b8a2a8a',1,'NoRTOS.h']]],

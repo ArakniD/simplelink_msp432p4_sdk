@@ -3,7 +3,7 @@ package/ti.sysbios.build.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_sysbios_build.java
 package/ti_sysbios_build.class
 package/package_ti.sysbios.build.c

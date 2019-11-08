@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -74,6 +74,9 @@ function getLibs()
     }
     else if (Program.cpu.deviceName.match(/MSP432P401/)) {
         libName = "_msp432p401x";
+    }
+    else if (Program.cpu.deviceName.match(/MTL1_CORE/)) {
+        libName = "_mtxx";
     }
     else {
         throw ("DPL not found for this device " + Program.cpu.deviceName +

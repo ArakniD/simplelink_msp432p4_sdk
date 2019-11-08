@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class gnu_targets_arm
 {
-    static final String VERS = "@(#) xdc-F14\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -1487,7 +1487,7 @@ public class gnu_targets_arm
         po.addFld("model", (Proto)om.findStrict("xdc.bld.ITarget.Model", "gnu.targets.arm"), Global.newObject("endian", "little", "shortEnums", false), "rh");
         po.addFld("alignDirectiveSupported", $$T_Bool, true, "rh");
         po.addFld("rts", $$T_Str, "gnu.targets.arm.rtsv8A", "rh");
-        po.addFld("platform", $$T_Str, "ti.platforms.cortexA:SIMMAXWELL", "wh");
+        po.addFld("platform", $$T_Str, "ti.platforms.cortexA:AM65X", "wh");
         po.addFld("GCCTARG", $$T_Str, "aarch64-elf", "wh");
         po.addFld("binaryParser", $$T_Str, "xdc.targets.omf.Elf", "wh");
         po.addFld("stdInclude", $$T_Str, "gnu/targets/arm/std.h", "rh");

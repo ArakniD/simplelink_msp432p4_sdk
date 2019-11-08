@@ -5,11 +5,12 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = main_nortos.obj display.obj splash_image.obj MSP_EXP432P401R.obj
+OBJECTS = display.obj splash_image.obj main_nortos.obj ti_drivers_config.obj
 
 NAME = display
 
 CFLAGS = -I.. \
+    -I. \
     -DBOARD_DISPLAY_USE_UART_ANSI=1 \
     -DBOARD_DISPLAY_USE_LCD=1 \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
@@ -50,7 +51,7 @@ LFLAGS = -Wl,-T,../gcc/MSP_EXP432P401R_NoRTOS.lds \
     -static \
     -Wl,--gc-sections \
     "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib" \
+    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/hard" \
     -lgcc \
     -lc \
     -lm \
@@ -59,28 +60,38 @@ LFLAGS = -Wl,-T,../gcc/MSP_EXP432P401R_NoRTOS.lds \
 
 all: $(NAME).out
 
-main_nortos.obj: ../main_nortos.c
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../display.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+display.obj: ../display.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-display.obj: ../display.c
+splash_image.obj: ../splash_image.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-splash_image.obj: ../splash_image.c
+main_nortos.obj: ../main_nortos.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
-MSP_EXP432P401R.obj: ../MSP_EXP432P401R.c
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
+
 
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

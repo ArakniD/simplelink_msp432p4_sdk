@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_interfaces__
@@ -92,13 +92,6 @@ typedef const struct ti_sysbios_interfaces_IRomDevice_Fxns__* ti_sysbios_interfa
 typedef struct ti_sysbios_interfaces_ISeconds_Time ti_sysbios_interfaces_ISeconds_Time;
 typedef struct ti_sysbios_interfaces_ISeconds_Fxns__ ti_sysbios_interfaces_ISeconds_Fxns__;
 typedef const struct ti_sysbios_interfaces_ISeconds_Fxns__* ti_sysbios_interfaces_ISeconds_Module;
-
-/*
- * ======== interface ti.sysbios.interfaces.ISysCall ========
- */
-
-typedef struct ti_sysbios_interfaces_ISysCall_Fxns__ ti_sysbios_interfaces_ISysCall_Fxns__;
-typedef const struct ti_sysbios_interfaces_ISysCall_Fxns__* ti_sysbios_interfaces_ISysCall_Module;
 
 
 #endif /* ti_sysbios_interfaces__ */ 

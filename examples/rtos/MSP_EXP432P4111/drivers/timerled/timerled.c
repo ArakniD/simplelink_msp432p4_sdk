@@ -41,7 +41,7 @@
 #include <ti/drivers/Timer.h>
 
 /* Board Header file */
-#include "Board.h"
+#include "ti_drivers_config.h"
 
 /* Callback used for toggling the LED. */
 void timerCallback(Timer_Handle myHandle);
@@ -59,10 +59,10 @@ void *mainThread(void *arg0)
     Timer_init();
 
     /* Configure the LED pin */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 
     /* Turn off user LED */
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_OFF);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_OFF);
 
     /* Setting up the timer in continuous callback mode that calls the callback
      * function every 1,000,000 microseconds, or 1 second.
@@ -73,7 +73,7 @@ void *mainThread(void *arg0)
     params.timerMode = Timer_CONTINUOUS_CALLBACK;
     params.timerCallback = timerCallback;
 
-    timer0 = Timer_open(Board_TIMER0, &params);
+    timer0 = Timer_open(CONFIG_TIMER_0, &params);
 
     if (timer0 == NULL) {
         /* Failed to initialized timer */
@@ -95,5 +95,5 @@ void *mainThread(void *arg0)
  * */
 void timerCallback(Timer_Handle myHandle)
 {
-    GPIO_toggle(Board_GPIO_LED0);
+    GPIO_toggle(CONFIG_GPIO_LED_0);
 }

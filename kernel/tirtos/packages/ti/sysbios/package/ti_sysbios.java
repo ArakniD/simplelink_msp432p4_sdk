@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios
 {
-    static final String VERS = "@(#) xdc-F14\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -147,7 +147,7 @@ public class ti_sysbios
         om.bind("ti.sysbios.BIOS.LibType_Debug", xdc.services.intern.xsr.Enum.make((Proto.Enm)om.findStrict("ti.sysbios.BIOS.LibType", "ti.sysbios"), "ti.sysbios.BIOS.LibType_Debug", 3));
         om.bind("ti.sysbios.BIOS.WAIT_FOREVER", Global.eval("~(0)"));
         om.bind("ti.sysbios.BIOS.NO_WAIT", 0L);
-        om.bind("ti.sysbios.BIOS.version", 0x67600L);
+        om.bind("ti.sysbios.BIOS.version", 0x68000L);
         om.bind("ti.sysbios.BIOS.linkedWithIncorrectBootLibrary", new Extern("ti_sysbios_BIOS_linkedWithIncorrectBootLibrary__E", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.BIOS.start", new Extern("ti_sysbios_BIOS_start__E", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.BIOS.exit", new Extern("ti_sysbios_BIOS_exit__E", "xdc_Void(*)(xdc_Int)", true, false));
@@ -352,14 +352,13 @@ public class ti_sysbios
                 po.addFld("$hostonly", $$T_Num, 0, "r");
                 po.addFld("WAIT_FOREVER", Proto.Elm.newCNum("(xdc_UInt)"), Global.eval("~(0)"), "rh");
                 po.addFld("NO_WAIT", Proto.Elm.newCNum("(xdc_UInt)"), 0L, "rh");
-                po.addFld("version", Proto.Elm.newCNum("(xdc_UInt32)"), 0x67600L, "rh");
+                po.addFld("version", Proto.Elm.newCNum("(xdc_UInt32)"), 0x68000L, "rh");
         if (isCFG) {
             po.addFld("rovViewInfo", (Proto)om.findStrict("xdc.rov.ViewInfo.Instance", "ti.sysbios"), $$UNDEF, "wh");
             po.addFld("libType", (Proto)om.findStrict("ti.sysbios.BIOS.LibType", "ti.sysbios"), om.find("ti.sysbios.BIOS.LibType_Instrumented"), "wh");
             po.addFld("customCCOpts", $$T_Str, $$UNDEF, "wh");
             po.addFld("includeXdcRuntime", $$T_Bool, false, "wh");
             po.addFld("smpEnabled", $$T_Bool, false, "w");
-            po.addFld("mpeEnabled", $$T_Bool, false, "w");
             po.addFld("cpuFreq", (Proto)om.findStrict("xdc.runtime.Types.FreqHz", "ti.sysbios"), $$DEFAULT, "w");
             po.addFld("runtimeCreatesEnabled", $$T_Bool, true, "w");
             po.addFld("taskEnabled", $$T_Bool, true, "w");
@@ -367,9 +366,6 @@ public class ti_sysbios
             po.addFld("clockEnabled", $$T_Bool, true, "w");
             po.addFld("assertsEnabled", $$T_Bool, true, "wh");
             po.addFld("logsEnabled", $$T_Bool, true, "wh");
-            po.addFld("defaultKernelHeapInstance", (Proto)om.findStrict("xdc.runtime.IHeap.Handle", "ti.sysbios"), null, "w");
-            po.addFld("kernelHeapSize", Proto.Elm.newCNum("(xdc_SizeT)"), 0x1000L, "w");
-            po.addFld("kernelHeapSection", $$T_Str, ".kernel_heap", "w");
             po.addFld("heapSize", Proto.Elm.newCNum("(xdc_SizeT)"), 0x1000L, "w");
             po.addFld("heapSection", $$T_Str, null, "w");
             po.addFld("heapTrackEnabled", $$T_Bool, false, "w");
@@ -379,6 +375,7 @@ public class ti_sysbios
             po.addFld("startupFxns", new Proto.Arr(new Proto.Adr("xdc_Void(*)(xdc_Void)", "PFv"), false), Global.newArray(new Object[]{}), "wh");
             po.addFld("buildingAppLib", $$T_Bool, true, "wh");
             po.addFld("libDir", $$T_Str, null, "wh");
+            po.addFld("codeCoverageEnabled", $$T_Bool, false, "wh");
             po.addFld("bitsPerInt", Proto.Elm.newCNum("(xdc_Char)"), $$UNDEF, "wh");
             po.addFld("installedErrorHook", new Proto.Adr("xdc_Void(*)(xdc_runtime_Error_Block*)", "PFv"), $$UNDEF, "w");
             po.addFldV("RtsGateProxy", (Proto)om.findStrict("xdc.runtime.IGateProvider.Module", "ti.sysbios"), null, "wh", $$delegGet, $$delegSet);
@@ -676,15 +673,11 @@ public class ti_sysbios
         vo.bind("ErrorView", om.findStrict("ti.sysbios.BIOS.ErrorView", "ti.sysbios"));
         tdefs.add(om.findStrict("ti.sysbios.BIOS.ErrorView", "ti.sysbios"));
         mcfgs.add("smpEnabled");
-        mcfgs.add("mpeEnabled");
         mcfgs.add("cpuFreq");
         mcfgs.add("runtimeCreatesEnabled");
         mcfgs.add("taskEnabled");
         mcfgs.add("swiEnabled");
         mcfgs.add("clockEnabled");
-        mcfgs.add("defaultKernelHeapInstance");
-        mcfgs.add("kernelHeapSize");
-        mcfgs.add("kernelHeapSection");
         mcfgs.add("heapSize");
         mcfgs.add("heapSection");
         mcfgs.add("heapTrackEnabled");
@@ -692,6 +685,7 @@ public class ti_sysbios
         mcfgs.add("useSK");
         icfgs.add("buildingAppLib");
         icfgs.add("libDir");
+        icfgs.add("codeCoverageEnabled");
         vo.bind("intSize", om.findStrict("ti.sysbios.BIOS.intSize", "ti.sysbios"));
         tdefs.add(om.findStrict("ti.sysbios.BIOS.intSize", "ti.sysbios"));
         icfgs.add("bitsPerInt");

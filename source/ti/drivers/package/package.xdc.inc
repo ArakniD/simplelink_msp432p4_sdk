@@ -4,7 +4,7 @@ package/ti.drivers.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_drivers.java
 package/ti_drivers.class
 package/package_ti.drivers.c

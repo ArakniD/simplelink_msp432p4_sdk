@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -82,19 +82,27 @@
 #define PinConfigPin(config) (1 << ((config) & 0x7))
 
 void ADCBufMSP432_close(ADCBuf_Handle handle);
-int_fast16_t ADCBufMSP432_control(ADCBuf_Handle handle, uint_fast16_t cmd, void * arg);
+int_fast16_t ADCBufMSP432_control(ADCBuf_Handle handle, uint_fast16_t cmd,
+                                  void * arg);
 void ADCBufMSP432_init(ADCBuf_Handle handle);
-ADCBuf_Handle ADCBufMSP432_open(ADCBuf_Handle handle, const ADCBuf_Params *params);
-int_fast16_t ADCBufMSP432_convert(ADCBuf_Handle handle, ADCBuf_Conversion *conversions, uint_fast8_t channelCount);
+ADCBuf_Handle ADCBufMSP432_open(ADCBuf_Handle handle,
+                                const ADCBuf_Params *params);
+int_fast16_t ADCBufMSP432_convert(ADCBuf_Handle handle,
+                                  ADCBuf_Conversion *conversions,
+                                  uint_fast8_t channelCount);
 int_fast16_t ADCBufMSP432_convertCancel(ADCBuf_Handle handle);
 uint_fast8_t ADCBufMSP432_getResolution(ADCBuf_Handle handle);
-int_fast16_t ADCBufMSP432_adjustRawValues(ADCBuf_Handle handle, void *sampleBuffer,
+int_fast16_t ADCBufMSP432_adjustRawValues(ADCBuf_Handle handle,
+                                          void *sampleBuffer,
         uint_fast16_t sampleCount, uint32_t adcChannel);
-int_fast16_t ADCBufMSP432_convertAdjustedToMicroVolts(ADCBuf_Handle handle, uint32_t adcChannel,
-        void *adjustedSampleBuffer, uint32_t outputMicroVoltBuffer[], uint_fast16_t sampleCount);
-static void blockingConvertCallback(ADCBuf_Handle handle, ADCBuf_Conversion *conversion,
+int_fast16_t ADCBufMSP432_convertAdjustedToMicroVolts(
+        ADCBuf_Handle handle, uint32_t adcChannel, void *adjustedSampleBuffer,
+        uint32_t outputMicroVoltBuffer[], uint_fast16_t sampleCount);
+static void blockingConvertCallback(ADCBuf_Handle handle,
+                                    ADCBuf_Conversion *conversion,
         void *activeADCBuffer, uint32_t completedChannel);
-static bool initHw(ADCBufMSP432_Object *object, ADCBufMSP432_HWAttrs const *hwAttrs);
+static bool initHw(ADCBufMSP432_Object *object,
+                   ADCBufMSP432_HWAttrs const *hwAttrs);
 static int_fast16_t configDMA(ADCBuf_Handle handle,
         ADCBufMSP432_HWAttrs const *hwAttrs, ADCBuf_Conversion *conversions);
 static void completeConversion(ADCBuf_Handle handle);
@@ -403,7 +411,8 @@ static bool initHw(ADCBufMSP432_Object *object,
     }
     if (hwAttrs->adcTriggerSource == ADCBufMSP432_SOFTWARE_AUTOMATIC_TRIGGER) {
         /* Set sample/hold time */
-        MAP_ADC14_setSampleHoldTime(object->samplingDuration, object->samplingDuration);
+        MAP_ADC14_setSampleHoldTime(object->samplingDuration,
+                                    object->samplingDuration);
     }
 
     return (ADCBuf_STATUS_SUCCESS);
@@ -426,7 +435,8 @@ static int_fast16_t primeConvert(ADCBuf_Handle handle,
     /* Store the channel count into object */
     object->channelCount = channelCount;
 
-    /* For multiple channels sampling, ref source and sampling duration should be same */
+    /* For multiple channels sampling, ref source and sampling duration should
+     * be same */
     uint32_t refSource =
         hwAttrs->channelSetting[conversions[0].adcChannel].refSource;
 
@@ -853,7 +863,7 @@ int_fast16_t ADCBufMSP432_convert(ADCBuf_Handle handle,
     /* Release the lock for this particular ADC handle */
     SemaphoreP_post(globalMutex);
 
-    /* Return the number of bytes transfered by the ADC */
+    /* Return the number of bytes transferred by the ADC */
     return (ret);
 }
 

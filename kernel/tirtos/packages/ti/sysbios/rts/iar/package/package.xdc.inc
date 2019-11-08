@@ -7,7 +7,7 @@ package/ti.sysbios.rts.iar.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_sysbios_rts_iar.java
 package/ti_sysbios_rts_iar.class
 package/package_ti.sysbios.rts.iar.c

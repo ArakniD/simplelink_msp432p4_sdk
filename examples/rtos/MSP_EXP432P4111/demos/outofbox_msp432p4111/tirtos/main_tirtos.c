@@ -47,7 +47,7 @@
 #include <ti/drivers/GPIO.h>
 
 /* Example/Board Header Files */
-#include "Board.h"
+#include <ti/drivers/Board.h>
 
 /* Local Header Files */
 #include "led_thread.h"
@@ -70,7 +70,7 @@ int main(void)
     int                 detachState;
 
     /* Call driver init functions */
-    Board_initGeneral();
+    Board_init();
 
     /*
      *  Message Queue to send messages to LED thread.

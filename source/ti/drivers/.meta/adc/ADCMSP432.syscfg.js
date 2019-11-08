@@ -45,8 +45,6 @@ let Common = system.getScript("/ti/drivers/Common.js");
  *  Device-specific extensions to be added to base ADC configuration
  */
 let devSpecific = {
-    maxInstances: 24,
-
     config: [
         {
             name: "referenceVoltage",
@@ -118,8 +116,51 @@ and indicates the internal voltage used in microvolts.
     templates: {
         boardc: "/ti/drivers/adc/ADCMSP432.Board.c.xdt",
         boardh: "/ti/drivers/adc/ADC.Board.h.xdt"
-    }
+    },
+
+    _getAdcPinName: _getAdcPinName,
+    _getPinResources: _getPinResources
 };
+
+/*
+/*
+ *  ======== _getAdcPinName ========
+ *  Returns ADC Pin Name
+ *
+ * Example inputs of chan:
+ * P4.3.GPIO/CS.MCLK/RTC_C.CLK/ADC14.A10
+ * P4.1.GPIO/ADC14.A12/LCD_F.L12
+ * P4.5.GPIO/ADC14.A8
+ */
+function _getAdcPinName(inst)
+{
+    let chan = inst.adc.adcPin.$solution.devicePinName;
+
+     /* PX.Y, ie P4.3 */
+    let pName = chan.match(/P\d\.\d/)[0];
+
+     /* ADC14.Axx */
+    let ax = chan.match(/ADC14\.A\d{1,2}/)[0].replace("ADC14.", "");
+    let px = pName.substr(0, 2);     /* PX */
+    let py = pName.substr(3, 1);     /* Y */
+
+    return (px + "_" + py + "_" + ax);
+}
+
+/*
+ *  ======== _getPinResources ========
+ */
+function _getPinResources(inst)
+{
+    let adcPin = _getAdcPinName(inst);
+    let pin = (adcPin.substring(0, adcPin.lastIndexOf("_"))).replace("_", ".");
+
+    if (inst.$hardware && inst.$hardware.displayName) {
+        pin += ", " + inst.$hardware.displayName;
+    }
+
+    return (pin);
+}
 
 /*
  *  ======== pinmuxRequirements ========

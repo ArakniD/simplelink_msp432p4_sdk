@@ -3,20 +3,21 @@ SIMPLELINK_MSP432_SDK_INSTALL_DIR ?= $(abspath ../../../../../../..)
 include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 
 XDCPATH = $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source;$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/packages;
+XDCTARGET = iar.targets.arm.M4F
+PLATFORM = ti.platforms.msp432:MSP432P401R
+.PRECIOUS: $(CONFIGPKG)/compiler.opt $(CONFIGPKG)/linker.cmd
 
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
 
-XDCTARGET = iar.targets.arm.M4F
-PLATFORM = ti.platforms.msp432:MSP432P401R
-
-OBJECTS = mailbox.obj MSP_EXP432P401R.obj
+OBJECTS = mailbox.obj ti_drivers_config.obj
 
 CONFIGPKG = mailbox
 
 NAME = mailbox
 
 CFLAGS = -I../.. \
+    -I. \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/posix/iar" \
@@ -40,21 +41,30 @@ LFLAGS = "$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/display/lib/display.arm
     --cpu=Cortex-M4F \
     --semihosting=iar_breakpoint
 
-.PRECIOUS: $(CONFIGPKG)/compiler.opt $(CONFIGPKG)/linker.cmd
-
 all: $(NAME).out
+
+cflags.opt: makefile $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
+	@ echo --compileOptions $(CFLAGS) > $@
 
 $(CONFIGPKG)/compiler.opt: $(CONFIGPKG)/linker.cmd
 
-$(CONFIGPKG)/linker.cmd: ../../tirtos/mailbox.cfg
+$(CONFIGPKG)/linker.cmd: ../../tirtos/mailbox.cfg cflags.opt
 	@ echo Running Configuro...
-	@ $(XDC_INSTALL_DIR)/xs --xdcpath="$(XDCPATH)" xdc.tools.configuro -c "$(IAR_ARMCOMPILER)" -t $(XDCTARGET) -p $(PLATFORM) --compileOptions "$(CFLAGS)" -o "$(CONFIGPKG)" ../../tirtos/mailbox.cfg
+	@ $(XDC_INSTALL_DIR)/xs --xdcpath="$(XDCPATH)" xdc.tools.configuro -c "$(IAR_ARMCOMPILER)" -t $(XDCTARGET) -p $(PLATFORM) -@cflags.opt -o "$(CONFIGPKG)" ../../tirtos/mailbox.cfg
 
-mailbox.obj: ../../mailbox.c $(CONFIGPKG)/compiler.opt
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../../mailbox.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+mailbox.obj: ../../mailbox.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -f $(CONFIGPKG)/compiler.opt -o $@
 
-MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c $(CONFIGPKG)/compiler.opt
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -f $(CONFIGPKG)/compiler.opt -o $@
 
@@ -62,9 +72,12 @@ $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS) -f $(CONFIGPKG)/linker.cmd $(LFLAGS) -o $(NAME).out
 
+
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
 	@ $(RMDIR) $(NAME) > $(DEVNULL) 2>&1
+	@ $(RM) cflags.opt > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

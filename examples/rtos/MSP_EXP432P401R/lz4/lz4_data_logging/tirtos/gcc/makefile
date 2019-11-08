@@ -34,10 +34,10 @@ CFLAGS = -I../.. \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/include" \
     "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include"
 
-LFLAGS = -Wl,-T,../../tirtos/gcc/MSP_EXP432P401R_TIRTOS.lds \
-    "-Wl,-Map,$(NAME).map" \
-    "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/compression/lz4/lib/gcc/m4f" \
+LFLAGS = "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/compression/lz4/lib/gcc/m4f" \
     -l:lz4.a \
+    -Wl,-T,../../tirtos/gcc/MSP_EXP432P401R_TIRTOS.lds \
+    "-Wl,-Map,$(NAME).map" \
     "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     -l:ti/display/lib/display.am4fg \
     -l:ti/grlib/lib/gcc/m4f/grlib.a \
@@ -56,7 +56,7 @@ LFLAGS = -Wl,-T,../../tirtos/gcc/MSP_EXP432P401R_TIRTOS.lds \
     -static \
     -Wl,--gc-sections \
     "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib" \
+    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/hard" \
     -lgcc \
     -lc \
     -lm \
@@ -90,6 +90,7 @@ tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c $(CONFIGPKG)/compiler.opt
 $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
+
 
 clean:
 	@ echo Cleaning...

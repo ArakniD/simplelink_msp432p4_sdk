@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -96,7 +96,7 @@
  *  static char uartStringBuf[MAXPRINTLEN];
  *
  *  const DisplayUart_HWAttrs displayUartHWAttrs = {
- *      .uartIdx      = Board_UART,
+ *      .uartIdx      = CONFIG_UART0,
  *      .baudRate     = 115200,
  *      .mutexTimeout = BIOS_WAIT_FOREVER,
  *      .strBuf       = uartStringBuf,

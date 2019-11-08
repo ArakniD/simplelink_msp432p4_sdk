@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -157,8 +157,8 @@ IArg GateMutexPri_enter(GateMutexPri_Object *obj)
     /* Remove tsk from ready list. */
     Task_block(tsk);
 
-    elem.taskHandle = tsk;
-    elem.clockHandle = NULL;
+    elem.task = tsk;
+    elem.clock = NULL;
     /* leave a pointer for Task_delete() */
     tsk->pendElem = &elem;
 
@@ -242,7 +242,7 @@ Void GateMutexPri_leave(GateMutexPri_Object *obj, IArg key)
          * highest priority of those waiting on the queue).
          */
         elem = (Task_PendElem *)Queue_dequeue(pendQ);
-        newOwner = elem->taskHandle;
+        newOwner = elem->task;
 
         /* Setup the gate. */
         obj->owner = newOwner;
@@ -284,7 +284,7 @@ Void GateMutexPri_insertPri(Queue_Object* queue, Queue_Elem* newElem, Int newPri
     for (qelem = Queue_head(queue); qelem != (Queue_Elem *)queue;
          qelem = Queue_next(qelem)) {
         /* Tasks of equal priority will be FIFO, so '>', not '>='. */
-        if (newPri > Task_getPri(((Task_PendElem *)qelem)->taskHandle)) {
+        if (newPri > Task_getPri(((Task_PendElem *)qelem)->task)) {
             /* Place the new element in front of the current qelem. */
             Queue_insert(qelem, newElem);
             return;

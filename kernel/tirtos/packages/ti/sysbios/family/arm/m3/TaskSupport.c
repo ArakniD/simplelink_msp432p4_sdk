@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,22 +36,15 @@
 #include <xdc/std.h>
 #include <xdc/runtime/Error.h>
 
-#include <ti/sysbios/BIOS.h>
 #define ti_sysbios_knl_Task__internalaccess
 #include <ti/sysbios/knl/Task.h>
 
 #include <ti/sysbios/interfaces/ITaskSupport.h>
 #include "package/internal/TaskSupport.xdc.h"
 
-#define TaskSupport_buildTaskStack \
-    ti_sysbios_family_arm_m3_TaskSupport_buildTaskStack
-#define TaskSupport_glue           \
-    ti_sysbios_family_arm_m3_TaskSupport_glue
-#define TaskSupport_glueUnpriv     \
-    ti_sysbios_family_arm_m3_TaskSupport_glueUnpriv
+#define TaskSupport_buildTaskStack ti_sysbios_family_arm_m3_TaskSupport_buildTaskStack
 
-extern Void ti_sysbios_family_arm_m3_TaskSupport_glue();
-extern Void ti_sysbios_family_arm_m3_TaskSupport_glueUnpriv();
+extern Ptr TaskSupport_buildTaskStack(Ptr stack, Task_FuncPtr fxn, TaskSupport_FuncPtr exit, TaskSupport_FuncPtr enter, UArg arg0, UArg arg1);
 
 /*
  *
@@ -99,104 +92,6 @@ extern Void ti_sysbios_family_arm_m3_TaskSupport_glueUnpriv();
  */
 
 /*
- *  ======== TaskSupport_buildTaskStack ========
- *
- *  initial stack image:
- *
- *      dummy
- *      stack limit
- *      d8-d15 = 0      if vfp supported
- *      r4 = -1
- *      r5 = -1
- *      r6 = -1
- *      r7 = -1
- *      r8 = -1
- *      r9 = -1
- *      r10 = -1
- *      r11 = -1
- *      glue (glueUnpriv for unprivileged task)
- *      arg0
- *      arg1
- *      fxn
- *      exit
- *      enter
- */
-Ptr TaskSupport_buildTaskStack(Ptr stackBase, SizeT stackSize, Task_FuncPtr fxn,
-    TaskSupport_FuncPtr exit, TaskSupport_FuncPtr enter, UArg arg0, UArg arg1,
-    Bool privileged)
-{
-    UInt32 *stack = (UInt32*)stackBase;
-    SizeT idx = stackSize >> 2;
-
-    stack[--idx] = (UInt32)enter;
-    stack[--idx] = (UInt32)exit;
-    stack[--idx] = (UInt32)fxn;
-    stack[--idx] = (UInt32)arg1;
-    stack[--idx] = (UInt32)arg0;
-
-    if (BIOS_mpeEnabled) {
-        if (privileged) {
-            stack[--idx] = (UInt32)&TaskSupport_glue;
-        }
-        else {
-            stack[--idx] = (UInt32)&TaskSupport_glueUnpriv;
-        }
-    }
-    else {
-        stack[--idx] = (UInt32)&TaskSupport_glue;
-    }
-
-    /* Init r4-r11 with -1 */
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-
-#if (defined(__ti__) && defined(__TI_VFP_SUPPORT__)) || \
-    (defined(__IAR_SYSTEMS_ICC__) && defined(__ARMVFP__)) || \
-    (defined(__GNUC__) && !defined(__ti__) && \
-     defined(__VFP_FP__) && !defined(__SOFTFP__)) || \
-    (defined(__clang__) && \
-     defined(__VFP_FP__) && !defined(__SOFTFP__))
-    /* Make room for 8 VFP saved by parent regs D8-D15 */
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-    stack[--idx] = (~0);
-#endif
-
-#if (defined(__IAR_SYSTEMS_ICC__) && (__CORE__ == __ARM8M_MAINLINE__)) || \
-    (defined(__GNUC__) && !defined(__ti__) && \
-     defined(__ARM_ARCH_8M_MAIN__)) || \
-    (defined(__clang__) && defined(__ARM_ARCH_8M_MAIN__))
-    /*
-     * Store task stack base address in initial stack frame. Task swap function
-     * will read this and program the hardware stack limit register.
-     */
-    stack[--idx] = (UInt32)stackBase;
-    stack[--idx] = (~0);
-#endif
-
-    return (&stack[idx]);
-}
-
-/*
  *  ======== TaskSupport_start ========
  *  Create a task's initial stack image
  */
@@ -221,17 +116,15 @@ Ptr TaskSupport_start(Ptr currTsk, ITaskSupport_FuncPtr enter, ITaskSupport_Func
     }
 
     /*
-     * The task stack buffer is aligned to 8 bytes by the
-     * Task create code and buildTaskStack preserves the
-     * 8-byte stack alignment. However, the Task swap code
-     * pops an odd number of registers leaving the stack
-     * 4-byte aligned on Task func entry. Therefore, the
-     * stack size passed to buildTaskStack must be adjusted
-     * such that the resulting stack is 4-byte aligned.
-     * With this change, the stack will be 8-byte aligned
-     * on Task func entry.
+     * The stack buffer is already aligned on 8 bytes.
+     * buildTaskStack creates a stack image that results in 8 byte alignment
+     * on Task func entry only if passed a 4 byte aligned stack ptr
+     *
+     * The top 32-bits of the stack are reclaimed by
+     * TaskSupport_getCheckValueAddr() as storage for the Task object's
+     * check value when Task object data integrity checking is enabled.
      */
-    sp = TaskSupport_buildTaskStack((Ptr)tsk->stack, tsk->stackSize - 4, tsk->fxn, exit, enter, tsk->arg0, tsk->arg1, tsk->privileged);
+    sp = TaskSupport_buildTaskStack((Ptr)((SizeT)tsk->stack + tsk->stackSize-4), tsk->fxn, exit, enter, tsk->arg0, tsk->arg1);
 
     return (sp);
 }
@@ -282,4 +175,14 @@ SizeT TaskSupport_getDefaultStackSize()
 UInt TaskSupport_getStackAlignment()
 {
     return (TaskSupport_stackAlignment);
+}
+
+/*
+ *  ======== getCheckValueAddr ========
+ */
+Ptr TaskSupport_getCheckValueAddr(Ptr curTask)
+{
+    Task_Object *tsk = (Task_Object *)(curTask);
+
+    return ((Ptr)((SizeT)tsk->stack + tsk->stackSize - 4));
 }

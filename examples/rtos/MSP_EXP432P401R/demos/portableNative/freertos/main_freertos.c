@@ -43,7 +43,7 @@
 /* Driver header files */
 #include <ti/drivers/GPIO.h>
 
-/* Example/Board Header files */
+/* Driver configuration */
 #include <ti/drivers/Board.h>
 
 extern void *temperatureThread(void *arg0);

@@ -40,8 +40,8 @@
 #include <ti/drivers/dpl/SemaphoreP.h>
 #include <stddef.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 /* Callback used for blinking LED on timer completion */
 void captureCallback(Capture_Handle handle, uint32_t interval);
@@ -90,7 +90,7 @@ void *mainThread(void *arg0)
     pwmParams.periodValue = pwmPeriod;
 
     /* Open PWM0 */
-    pwm0 = PWM_open(Board_PWM0, &pwmParams);
+    pwm0 = PWM_open(CONFIG_PWM_0, &pwmParams);
 
     if (!pwm0)
     {
@@ -101,7 +101,7 @@ void *mainThread(void *arg0)
     PWM_start(pwm0);
 
     /* Open PWM1 */
-    pwm1 = PWM_open(Board_PWM1, &pwmParams);
+    pwm1 = PWM_open(CONFIG_PWM_1, &pwmParams);
 
     if (!pwm1)
     {
@@ -130,7 +130,7 @@ void *mainThread(void *arg0)
     captureParams.periodUnit = Capture_PERIOD_US;
     captureParams.callbackFxn = captureCallback;
 
-    capture = Capture_open(Board_CAPTURE1, &captureParams);
+    capture = Capture_open(CONFIG_CAPTURE_0, &captureParams);
     if (capture == NULL)
     {
         Display_printf(display, 0, 0, "Failed to initialized Capture!\n");

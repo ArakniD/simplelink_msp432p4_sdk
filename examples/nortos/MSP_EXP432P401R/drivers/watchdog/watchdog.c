@@ -42,8 +42,8 @@
 #include <ti/drivers/Power.h>
 #include <ti/drivers/Watchdog.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 #define TIMEOUT_MS      1000
 #define SLEEP_US        500000
@@ -68,7 +68,7 @@ void watchdogCallback(uintptr_t watchdogHandle)
  */
 void gpioButtonIsr(uint_least8_t index)
 {
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
     /*
      * Simulate the application being stuck in an ISR. This ISR can be
@@ -91,9 +91,9 @@ void *mainThread(void *arg0)
     Watchdog_init();
 
     /* Configure the LED and button pins */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
-    GPIO_setConfig(Board_GPIO_BUTTON0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
-    GPIO_setCallback(Board_GPIO_BUTTON0, gpioButtonIsr);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_BUTTON_0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
+    GPIO_setCallback(CONFIG_GPIO_BUTTON_0, gpioButtonIsr);
 
     /* Open a Watchdog driver instance */
     Watchdog_Params_init(&params);
@@ -101,7 +101,7 @@ void *mainThread(void *arg0)
     params.debugStallMode = Watchdog_DEBUG_STALL_ON;
     params.resetMode = Watchdog_RESET_ON;
 
-    watchdogHandle = Watchdog_open(Board_WATCHDOG0, &params);
+    watchdogHandle = Watchdog_open(CONFIG_WATCHDOG_0, &params);
     if (watchdogHandle == NULL) {
         /* Error opening Watchdog */
         while (1) {}
@@ -127,9 +127,9 @@ void *mainThread(void *arg0)
         Watchdog_setReload(watchdogHandle, reloadValue);
     }
 
-    /* Turn on Board_GPIO_LED0 and enable Board_GPIO_BUTTON0 interrupt */
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
-    GPIO_enableInt(Board_GPIO_BUTTON0);
+    /* Turn on CONFIG_GPIO_LED_0 and enable CONFIG_GPIO_BUTTON_0 interrupt */
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
+    GPIO_enableInt(CONFIG_GPIO_BUTTON_0);
 
     while (1) {
 
@@ -143,7 +143,7 @@ void *mainThread(void *arg0)
         /* Sleep for SLEEP_US before clearing the watchdog */
         usleep(SLEEP_US);
         Watchdog_clear(watchdogHandle);
-        GPIO_toggle(Board_GPIO_LED0);
+        GPIO_toggle(CONFIG_GPIO_LED_0);
 
         /*
          * Enabling power policy will allow the device to enter a low
@@ -155,6 +155,6 @@ void *mainThread(void *arg0)
         /* Sleep for SLEEP_US before clearing the watchdog */
         usleep(SLEEP_US);
         Watchdog_clear(watchdogHandle);
-        GPIO_toggle(Board_GPIO_LED0);
+        GPIO_toggle(CONFIG_GPIO_LED_0);
     }
 }

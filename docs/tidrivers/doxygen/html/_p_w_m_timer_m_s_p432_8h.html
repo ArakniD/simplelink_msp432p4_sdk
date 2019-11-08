@@ -59,7 +59,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">PWMTimerMSP432.h File Reference</div>  </div>
@@ -90,7 +89,7 @@ $(function() {
 </ul>
 <p>After opening, the <a class="el" href="_p_w_m_8h.html#afc1925126582a5a0721f992b92739e06" title="Function to set the period of the specified PWM handle. This API can be called while the PWM is runni...">PWM_setPeriod()</a> API can be used to change the PWM period. Keep in mind the period is shared by all other PWMs on the timer, so all other PWM outputs on the timer will change.</p>
 <h3>MPS432 PWM Driver Configuration</h3>
-<p>In order to use the PWM APIs, the application is required to define 4 configuration items in the application Board.c file:</p>
+<p>In order to use the PWM APIs, the application is required to define 4 configuration items in the application ti_drivers_config.c file:</p>
 <ol type="1">
 <li>An array of <a class="el" href="struct_p_w_m_timer_m_s_p432___object.html" title="PWMTimerMSP432 Object. ">PWMTimerMSP432_Object</a> elements, which will be used by by the driver to maintain instance state. Below is an example <a class="el" href="struct_p_w_m_timer_m_s_p432___object.html" title="PWMTimerMSP432 Object. ">PWMTimerMSP432_Object</a> array appropriate for the MSP432 LaunchPad board: <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_p_w_m_8h.html">ti/drivers/PWM.h</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_p_w_m_timer_m_s_p432_8h.html">ti/drivers/pwm/PWMTimerMSP432.h</a>&gt;</span></div><div class="line"></div><div class="line"><a class="code" href="struct_p_w_m_timer_m_s_p432___object.html">PWMTimerMSP432_Object</a> pwmTimerMSP432Objects[2];</div></div><!-- fragment --></li>
 <li>An array of <a class="el" href="struct_p_w_m_timer_m_s_p432___h_w_attrs_v2.html" title="PWMTimerMSP432 Hardware attributes. ">PWMTimerMSP432_HWAttrsV2</a> elements that defines which pin will be used by the corresponding PWM instance (see <a class="el" href="group__pwm_pin_identifiers_m_s_p432.html">PWMTimerMSP432_HWAttrs 'pwmPin' field options</a>). Below is an example <a class="el" href="struct_p_w_m_timer_m_s_p432___h_w_attrs_v2.html" title="PWMTimerMSP432 Hardware attributes. ">PWMTimerMSP432_HWAttrsV2</a> array appropriate for the MSP432 LaunchPad board: <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="struct_p_w_m_timer_m_s_p432___h_w_attrs_v2.html">PWMTimerMSP432_HWAttrsV2</a> pwmTimerMSP432HWAttrs[2] = {</div><div class="line">    {</div><div class="line">        .<a class="code" href="struct_p_w_m_timer_m_s_p432___h_w_attrs_v2.html#a11da60d4ee0e5ebbcdcfc67bd1c119a8">clockSource</a> = TIMER_A_CLOCKSOURCE_SMCLK,</div><div class="line">        .pwmPin = <a class="code" href="group__pwm_pin_identifiers_m_s_p432.html#gaa1a8bfaa1bcf8da23a35f2e3d09a6b2e">PWMTimerMSP432_P2_1_TA1CCR1A</a></div><div class="line">    },</div><div class="line">    {</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,</div><div class="line">        .pwmPin = <a class="code" href="group__pwm_pin_identifiers_m_s_p432.html#ga72fefe91d97c5e1a1cf7ea18e73bd59f">PWMTimerMSP432_P2_2_TA1CCR2A</a></div><div class="line">    }</div><div class="line">};</div></div><!-- fragment --></li>
@@ -572,78 +571,11 @@ Macros</h2></td></tr>
 <tr class="memitem:gaad60bcc70ac9477ee0096b2effe77566"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pwm_pin_identifiers_m_s_p432.html#gaad60bcc70ac9477ee0096b2effe77566">PWMTimerMSP432_P10_5_TA3CCR1A</a></td></tr>
 <tr class="separator:gaad60bcc70ac9477ee0096b2effe77566"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a8bb6e70c5ef6305a23ad203af874dfea"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_p_w_m_timer_m_s_p432___h_w_attrs_v2.html">PWMTimerMSP432_HWAttrsV2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_p_w_m_timer_m_s_p432_8h.html#a8bb6e70c5ef6305a23ad203af874dfea">PWMTimerMSP432_HWAttrsV2</a></td></tr>
-<tr class="memdesc:a8bb6e70c5ef6305a23ad203af874dfea"><td class="mdescLeft">&#160;</td><td class="mdescRight">PWMTimerMSP432 Hardware attributes.  <a href="#a8bb6e70c5ef6305a23ad203af874dfea">More...</a><br /></td></tr>
-<tr class="separator:a8bb6e70c5ef6305a23ad203af874dfea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af75fb1cc6f34e3383ce5d416b90961de"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_p_w_m_timer_m_s_p432___status.html">PWMTimerMSP432_Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_p_w_m_timer_m_s_p432_8h.html#af75fb1cc6f34e3383ce5d416b90961de">PWMTimerMSP432_Status</a></td></tr>
-<tr class="memdesc:af75fb1cc6f34e3383ce5d416b90961de"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="struct_p_w_m_timer_m_s_p432___status.html" title="PWMTimerMSP432_Status. ">PWMTimerMSP432_Status</a>.  <a href="#af75fb1cc6f34e3383ce5d416b90961de">More...</a><br /></td></tr>
-<tr class="separator:af75fb1cc6f34e3383ce5d416b90961de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af38839ac281ee06be9b0aaa2b5f04d13"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_p_w_m_timer_m_s_p432___object.html">PWMTimerMSP432_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_p_w_m_timer_m_s_p432_8h.html#af38839ac281ee06be9b0aaa2b5f04d13">PWMTimerMSP432_Object</a></td></tr>
-<tr class="memdesc:af38839ac281ee06be9b0aaa2b5f04d13"><td class="mdescLeft">&#160;</td><td class="mdescRight">PWMTimerMSP432 Object.  <a href="#af38839ac281ee06be9b0aaa2b5f04d13">More...</a><br /></td></tr>
-<tr class="separator:af38839ac281ee06be9b0aaa2b5f04d13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a59f5d0f3c3d7da66fbfb61dc70dcac30"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="_p_w_m_8h.html#a1c3809a9bd3c63a04edc1bafa78cc2e2">PWM_FxnTable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_p_w_m_timer_m_s_p432_8h.html#a59f5d0f3c3d7da66fbfb61dc70dcac30">PWMTimerMSP432_fxnTable</a></td></tr>
+<tr class="memitem:a59f5d0f3c3d7da66fbfb61dc70dcac30"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_p_w_m___fxn_table.html">PWM_FxnTable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_p_w_m_timer_m_s_p432_8h.html#a59f5d0f3c3d7da66fbfb61dc70dcac30">PWMTimerMSP432_fxnTable</a></td></tr>
 <tr class="separator:a59f5d0f3c3d7da66fbfb61dc70dcac30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="a8bb6e70c5ef6305a23ad203af874dfea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bb6e70c5ef6305a23ad203af874dfea">&sect;&nbsp;</a></span>PWMTimerMSP432_HWAttrsV2</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_p_w_m_timer_m_s_p432___h_w_attrs_v2.html">PWMTimerMSP432_HWAttrsV2</a>  <a class="el" href="struct_p_w_m_timer_m_s_p432___h_w_attrs_v2.html">PWMTimerMSP432_HWAttrsV2</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>PWMTimerMSP432 Hardware attributes. </p>
-<p>The 'clockSource' field is used by driverlib APIs and therefore must be populated by driverlib macro definitions. For msp432_driverlib these definitions are found in:</p><ul>
-<li>timer_a.h</li>
-</ul>
-<p>The 'pwmPin' field identifies which physical pin as well as which timer compare register to use for a particular PWM channel. The encoded pin identifier for initializing the 'pwmPin' field must be selected from the <a class="el" href="group__pwm_pin_identifiers_m_s_p432.html">PWMTimerMSP432_HWAttrs 'pwmPin' field options</a> macros.</p>
-<p>A sample structure is shown below: </p><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="struct_p_w_m_timer_m_s_p432___h_w_attrs_v2.html">PWMTimerMSP432_HWAttrsV2</a> PWMTimerMSP432HWAttrs[] = {</div><div class="line">    {</div><div class="line">        .<a class="code" href="struct_p_w_m_timer_m_s_p432___h_w_attrs_v2.html#a11da60d4ee0e5ebbcdcfc67bd1c119a8">clockSource</a> = TIMER_A_CLOCKSOURCE_SMCLK,</div><div class="line">        .pwmPin = <a class="code" href="group__pwm_pin_identifiers_m_s_p432.html#gaa1a8bfaa1bcf8da23a35f2e3d09a6b2e">PWMTimerMSP432_P2_1_TA1CCR1A</a></div><div class="line">    },</div><div class="line">};</div></div><!-- fragment --> 
-</div>
-</div>
-<a id="af75fb1cc6f34e3383ce5d416b90961de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af75fb1cc6f34e3383ce5d416b90961de">&sect;&nbsp;</a></span>PWMTimerMSP432_Status</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_p_w_m_timer_m_s_p432___status.html">PWMTimerMSP432_Status</a>  <a class="el" href="struct_p_w_m_timer_m_s_p432___status.html">PWMTimerMSP432_Status</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="struct_p_w_m_timer_m_s_p432___status.html" title="PWMTimerMSP432_Status. ">PWMTimerMSP432_Status</a>. </p>
-<p>The application must not access any member variables of this structure! </p>
-
-</div>
-</div>
-<a id="af38839ac281ee06be9b0aaa2b5f04d13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af38839ac281ee06be9b0aaa2b5f04d13">&sect;&nbsp;</a></span>PWMTimerMSP432_Object</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_p_w_m_timer_m_s_p432___object.html">PWMTimerMSP432_Object</a>  <a class="el" href="struct_p_w_m_timer_m_s_p432___object.html">PWMTimerMSP432_Object</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>PWMTimerMSP432 Object. </p>
-<p>The application must not access any member variables of this structure! </p>
-
-</div>
-</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="a59f5d0f3c3d7da66fbfb61dc70dcac30"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a59f5d0f3c3d7da66fbfb61dc70dcac30">&sect;&nbsp;</a></span>PWMTimerMSP432_fxnTable</h2>
@@ -652,7 +584,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="_p_w_m_8h.html#a1c3809a9bd3c63a04edc1bafa78cc2e2">PWM_FxnTable</a> PWMTimerMSP432_fxnTable</td>
+          <td class="memname">const <a class="el" href="struct_p_w_m___fxn_table.html">PWM_FxnTable</a> PWMTimerMSP432_fxnTable</td>
         </tr>
       </table>
 </div><div class="memdoc">

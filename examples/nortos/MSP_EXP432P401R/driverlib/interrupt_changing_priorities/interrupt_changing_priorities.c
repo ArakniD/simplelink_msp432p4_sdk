@@ -68,8 +68,8 @@ int main(void)
     //![Simple NVIC Config]
     
     /* Configuring interrupt priorities  */
-    MAP_Interrupt_setPriority(INT_EUSCIB0, 0x20);
-    MAP_Interrupt_setPriority(INT_EUSCIA0, 0x40);
+    MAP_Interrupt_setPriority(INT_EUSCIB0, (1 << 5));
+    MAP_Interrupt_setPriority(INT_EUSCIA0, (2 << 5));
     
     //![Simple NVIC Config]
     while(1)

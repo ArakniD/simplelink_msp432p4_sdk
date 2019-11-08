@@ -1,27 +1,33 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# i2ctmp
-
----
-
 ## Example Summary
 
 Sample application that reads the temperature from a TMP sensor.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_GPIO_LED0` - Indicator LED
-* `Board_I2C_TMP` - I2C used to communicate with the TMP sensor.
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
 
-## Resources & Jumper Settings
+* `CONFIG_GPIO_LED_0` - Indicator LED
+* `CONFIG_I2C_TMP` - I2C bus used to communicate with the TMP sensor.
+* `CONFIG_GPIO_TMP116_EN` - TMP116 power pin
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+## BoosterPacks, Board Resources & Jumper Settings
+
+This example requires a
+[__BOOSTXL-BASSENSORS BoosterPack__][boostxl-bassensors].
+
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
+
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 ## Example Usage
 
@@ -42,7 +48,7 @@ The connection will have the following settings:
     Flow Control:    None
 ```
 
-* Run the example. `Board_GPIO_LED0` turns ON to indicate driver
+* Run the example. `CONFIG_GPIO_LED_0` turns ON to indicate driver
 initialization is complete.
 
 * The example will request temperature samples from an available TMP and display
@@ -102,15 +108,11 @@ FreeRTOS:
 * Please view the `FreeRTOSConfig.h` header file for example configuration
 information.
 
-Code Composer Studio:
-
-* When using in CCS for the CC32XX devices, it's recommended you do
-a  "Free Run" instead of "Run". This is because when the CC32XX device goes
-into low power mode, emulation is lost.
-
 SimpleLink Sensor and Actuator Plugin:
 
 * This example uses a TMP sensor. It interfaces via the I2C Driver. For a
 richer API set for the TMP sensors, please refer the SimpleLink Sensor and
 Actuator Plugin. This plugin also offers a Button module to handle
 debounce also.
+
+[boostxl-bassensors]: http://www.ti.com/tool/BOOSTXL-BASSENSORS

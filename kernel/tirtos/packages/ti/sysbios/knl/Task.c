@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,6 @@
 #include <ti/sysbios/knl/Clock.h>
 #include <ti/sysbios/knl/Swi.h>
 #include <ti/sysbios/knl/Intrinsics.h>
-#include <ti/sysbios/hal/MemProtect.h>
 
 #include "package/internal/Task.xdc.h"
 
@@ -67,7 +66,7 @@ extern UInt32 ti_sysbios_knl_Task_moduleStateCheckValue;
 #define Task_moduleStateCheckValue   \
     (ti_sysbios_knl_Task_moduleStateCheckValue)
 
-#ifdef __ti__
+#if defined(__ti__) && !defined(__clang__)
 /* disable unused local variable warning during optimized compile */
 #pragma diag_suppress=179
 #endif
@@ -78,6 +77,7 @@ extern UInt32 ti_sysbios_knl_Task_moduleStateCheckValue;
  *
  *  Must be called with interrupts disabled.
  */
+/* REQ_TAG(SYSBIOS-456) */
 Void Task_schedule(Void)
 {
     Queue_Handle maxQ;
@@ -105,10 +105,6 @@ Void Task_schedule(Void)
             Task_module->curQ = maxQ;
             Task_module->curTask = (Task_Handle)Queue_head(maxQ);
             curTask = Task_module->curTask;
-            /* CWARN.CONSTCOND.IF */
-            if (BIOS_mpeEnabled != FALSE) {
-                Task_module->curTaskPrivileged = curTask->privileged;
-            }
 
             if (Task_checkStackFlag) {
                 /* UNREACH.GEN */
@@ -139,11 +135,6 @@ Void Task_schedule(Void)
             Hwi_enable();
             Hwi_disable();
 #endif
-            if ((BIOS_mpeEnabled == TRUE) &&
-                (prevTask->domain != curTask->domain)) {
-                MemProtect_switch((MemProtect_Struct *)curTask->domain);
-            }
-
             Task_SupportProxy_swap((Ptr)&prevTask->context,
                             (Ptr)&curTask->context);
         }
@@ -178,6 +169,7 @@ Void Task_enter(Void)
  *  Called at system init time before main().
  */
 /* MISRA.FUNC.UNUSEDPAR.2012 */
+/* REQ_TAG(SYSBIOS-464) */
 Int Task_Module_startup (Int phase)
 {
     /*
@@ -204,7 +196,6 @@ Int Task_Module_startup (Int phase)
 
             if (Task_moduleStateCheckFlag) {
                 Task_moduleStateCheckValue =
-                    /* UNREACH.GEN */
                     Task_moduleStateCheckValueFxn(Task_module);
             }
 
@@ -266,10 +257,6 @@ Void Task_startCore(UInt coreId)
 
     Task_module->curQ = maxQ;
     Task_module->curTask = (Task_Handle)Queue_head(maxQ);
-    /* CWARN.CONSTCOND.IF */
-    if (BIOS_mpeEnabled) {
-        Task_module->curTaskPrivileged = Task_module->curTask->privileged;
-    }
 
     /* we've done the scheduler's work */
     Task_module->workFlag = 0;
@@ -305,14 +292,17 @@ Void Task_startCore(UInt coreId)
     /* inform dispatcher that we're running on task stack */
     Hwi_switchFromBootStack();
 
-    /* CWARN.CONSTCOND.IF */
-    if (BIOS_mpeEnabled) {
-        MemProtect_switch((MemProtect_Struct *)Task_module->curTask->domain);
-    }
-
-   /* start first task by way of enter() */
+    /* start first task by way of enter() */
     Task_SupportProxy_swap((Ptr)&prevTask->context,
                 (Ptr)&Task_module->curTask->context);
+}
+
+/*
+ *  ======== Task_unlockSched ========
+ */
+Void Task_unlockSched()
+{
+    Task_module->locked = FALSE;
 }
 
 /*
@@ -399,6 +389,7 @@ Void Task_restoreHwi(UInt tskKey)
 /*
  *  ======== Task_self ========
  */
+/* REQ_TAG(SYSBIOS-511) */
 Task_Handle Task_self(Void)
 {
     return (Task_module->curTask);
@@ -409,16 +400,18 @@ Task_Handle Task_self(Void)
  */
 Void Task_checkStacks(Task_Handle oldTask, Task_Handle newTask)
 {
+    UInt32 *checkValue;
     UInt oldTaskStack; /* used to obtain current (oldTask) stack address */
 
     if (Task_objectCheckFlag) {
-        /* UNREACH.GEN */
         if (oldTask != NULL) {
-            if (Task_objectCheckFxn(oldTask, oldTask->checkValue) != 0) {
+            checkValue = Task_SupportProxy_getCheckValueAddr(oldTask);
+            if (Task_objectCheckFxn(oldTask, *checkValue) != 0) {
                 Error_raise(NULL, Task_E_objectCheckFailed, oldTask, 0);
             }
         }
-        if (Task_objectCheckFxn(newTask, newTask->checkValue) != 0) {
+        checkValue = Task_SupportProxy_getCheckValueAddr(newTask);
+        if (Task_objectCheckFxn(newTask, *checkValue) != 0) {
             Error_raise(NULL, Task_E_objectCheckFailed, newTask, 0);
         }
     }
@@ -552,7 +545,7 @@ Void Task_sleepTimeout(UArg arg)
      * No need for Task_disable/restore sandwich since this
      * is called within Swi (or Hwi) thread
      */
-    Task_unblockI(elem->taskHandle, hwiKey);
+    Task_unblockI(elem->task, hwiKey);
 
     Hwi_restore(hwiKey);
 }
@@ -560,6 +553,7 @@ Void Task_sleepTimeout(UArg arg)
 /*
  *  ======== Task_sleep ========
  */
+/* REQ_TAG(SYSBIOS-518) */
 Void Task_sleep(UInt32 timeout)
 {
     Task_PendElem elem;
@@ -580,7 +574,7 @@ Void Task_sleep(UInt32 timeout)
     if (BIOS_clockEnabled) {
         /* add Clock event */
         Clock_addI(Clock_handle(&clockStruct), (Clock_FuncPtr)Task_sleepTimeout, timeout, (UArg)&elem);
-        elem.clockHandle = Clock_handle(&clockStruct);
+        elem.clock = Clock_handle(&clockStruct);
     }
 
     /* MISRA.CAST.FUNC_PTR.2012 MISRA.ETYPE.INAPPR.OPERAND.BINOP.2012 */
@@ -599,22 +593,22 @@ Void Task_sleep(UInt32 timeout)
     tskKey = Task_disable();
 
     /* get task handle and block tsk */
-    elem.taskHandle = Task_self();
+    elem.task = Task_self();
 
-    Task_blockI(elem.taskHandle);
+    Task_blockI(elem.task);
 
     /*
      * BIOS_clockEnabled check is here to eliminate Clock module 
      * references in the custom library
      */
     if (BIOS_clockEnabled) {
-        Clock_startI(elem.clockHandle);
+        Clock_startI(elem.clock);
     }
 
     /* Only needed for Task_delete() */
     Queue_elemClear(&elem.qElem);
 
-    elem.taskHandle->pendElem = (Ptr)(&elem);
+    elem.task->pendElem = (Ptr)(&elem);
 
     Hwi_restore(hwiKey);
 
@@ -628,12 +622,12 @@ Void Task_sleep(UInt32 timeout)
     if (BIOS_clockEnabled) {
         hwiKey = Hwi_disable();
         /* remove Clock object from Clock Q */
-        Clock_removeI(elem.clockHandle);
-        elem.clockHandle = NULL;
+        Clock_removeI(elem.clock);
+        elem.clock = NULL;
         Hwi_restore(hwiKey);
     }
 
-    elem.taskHandle->pendElem = NULL;
+    elem.task->pendElem = NULL;
 }
 
 
@@ -692,13 +686,13 @@ Task_Handle Task_getIdleTaskHandle(UInt coreId)
 /*
  *  ======== Task_Instance_init ========
  */
+/* REQ_TAG(SYSBIOS-575), REQ_TAG(SYSBIOS-463) */
 Int Task_Instance_init(Task_Object *tsk, Task_FuncPtr fxn,
                 const Task_Params *params, Error_Block *eb)
 {
     UInt align;
     Int status;
     SizeT stackSize;
-    Task_Object *curTask;
 
     Assert_isTrue((BIOS_taskEnabled == TRUE), Task_A_taskDisabled);
 
@@ -708,15 +702,6 @@ Int Task_Instance_init(Task_Object *tsk, Task_FuncPtr fxn,
     Assert_isTrue((((params->priority == -1) || (params->priority > 0)) &&
                    (params->priority < (Int)Task_numPriorities)),
                    Task_A_badPriority);
-
-    /* CWARN.CONSTCOND.IF */
-    if (BIOS_mpeEnabled) {
-        /* Check if Task object in kernel memory space */
-        if (MemProtect_isDataInKernelSpace((Ptr)tsk,
-            sizeof(Task_Object)) == FALSE) {
-            Error_raise(NULL, Task_E_objectNotInKernelSpace, 0, 0);
-        }
-    }
 
     tsk->priority = params->priority;
 
@@ -796,39 +781,6 @@ Int Task_Instance_init(Task_Object *tsk, Task_FuncPtr fxn,
         Task_module->vitalTasks += 1U;
     }
 
-    /* CWARN.CONSTCOND.IF */
-    if (BIOS_mpeEnabled == TRUE) {
-        curTask = Task_self();
-
-        if ((BIOS_ThreadType_Task == BIOS_getThreadType()) &&
-            (curTask->privileged == FALSE)) {
-            /*
-             * Tasks created by an unprivileged task run in unprivileged mode
-             * and inherit the parent task's domain.
-             */
-            if (params->privileged == TRUE) {
-                Assert_isTrue(0 == 1, NULL);
-                /* TODO return a meaningful error code */
-            }
-            else {
-                if ((params->domain != NULL) &&
-                     (params->domain != curTask->domain)) {
-                    Assert_isTrue(0 == 1, NULL);
-                    /* TODO return a meaningful error code */
-                }
-            }
-        }
-    }
-
-    /*
-     * These fields are not used when BIOS_mpeEnable is FALSE, but,
-     * are being initialized to mirror the static initialization.
-     */
-    tsk->privileged = params->privileged;
-    tsk->domain = params->domain;
-
-    tsk->tls = NULL;
-
 #ifndef ti_sysbios_knl_Task_DISABLE_ALL_HOOKS
     if (Task_hooks.length > 0) {
         tsk->hookEnv = (Ptr *)Memory_calloc(Task_Object_heap(),
@@ -864,6 +816,7 @@ Int Task_Instance_init(Task_Object *tsk, Task_FuncPtr fxn,
  */
 Int Task_postInit(Task_Object *tsk, Error_Block *eb)
 {
+    UInt32 *checkValue;
     UInt tskKey, hwiKey;
     Queue_Handle readyQ;
 #ifndef ti_sysbios_knl_Task_DISABLE_ALL_HOOKS
@@ -887,12 +840,8 @@ Int Task_postInit(Task_Object *tsk, Error_Block *eb)
 
     if (Task_objectCheckFlag) {
         /* UNREACH.GEN */
-        if (Task_objectCheckValueFxn == Task_getObjectCheckValue) {
-            tsk->checkValue = Task_getObjectCheckValue(tsk);
-        }
-        else {
-            tsk->checkValue = Task_objectCheckValueFxn(tsk);
-        }
+        checkValue = Task_SupportProxy_getCheckValueAddr(tsk);
+        *checkValue = Task_objectCheckValueFxn(tsk);
     }
 
 #ifndef ti_sysbios_knl_Task_DISABLE_ALL_HOOKS
@@ -986,8 +935,8 @@ Void Task_Instance_finalize(Task_Object *tsk, Int status)
              * then its clock object is still on the Clock service Q.
              */
             if (tsk->pendElem != NULL) {
-                if (BIOS_clockEnabled && tsk->pendElem->clockHandle) {
-                    Clock_removeI(tsk->pendElem->clockHandle);
+                if (BIOS_clockEnabled && tsk->pendElem->clock) {
+                    Clock_removeI(tsk->pendElem->clock);
                 }
             }
         }
@@ -998,8 +947,8 @@ Void Task_Instance_finalize(Task_Object *tsk, Int status)
             /* Seemingly redundant test in case Asserts are disabled */
             if (tsk->pendElem != NULL) {
                 Queue_remove(&(tsk->pendElem->qElem));
-                if (BIOS_clockEnabled && tsk->pendElem->clockHandle) {
-                    Clock_removeI(tsk->pendElem->clockHandle);
+                if (BIOS_clockEnabled && tsk->pendElem->clock) {
+                    Clock_removeI(tsk->pendElem->clock);
                 }
             }
         }
@@ -1093,6 +1042,7 @@ Ptr Task_getEnv(Task_Object *tsk)
 /*
  *  ======== Task_FuncPtr ========
  */
+/* REQ_TAG(SYSBIOS-455) */
 Task_FuncPtr Task_getFunc(Task_Object *task, UArg *arg0, UArg *arg1)
 {
     if (arg0 != NULL) {
@@ -1109,6 +1059,7 @@ Task_FuncPtr Task_getFunc(Task_Object *task, UArg *arg0, UArg *arg1)
 /*
  *  ======== Task_getHookContext ========
  */
+/* REQ_TAG(SYSBIOS-454) */
 Ptr Task_getHookContext(Task_Object *tsk, Int id)
 {
     return tsk->hookEnv[id];
@@ -1117,6 +1068,7 @@ Ptr Task_getHookContext(Task_Object *tsk, Int id)
 /*
  *  ======== Task_setHookContext ========
  */
+/* REQ_TAG(SYSBIOS-454) */
 Void Task_setHookContext(Task_Object *tsk, Int id, Ptr hookContext)
 {
     tsk->hookEnv[id] = hookContext;
@@ -1125,6 +1077,7 @@ Void Task_setHookContext(Task_Object *tsk, Int id, Ptr hookContext)
 /*
  *  ======== Task_getPri ========
  */
+/* REQ_TAG(SYSBIOS-510) */
 Int Task_getPri(Task_Object *tsk)
 {
    return tsk->priority;
@@ -1157,6 +1110,7 @@ Void Task_setEnv(Task_Object *tsk, Ptr env)
 /*
  *  ======== Task_setPri ========
  */
+/* REQ_TAG(SYSBIOS-510) */
 Int Task_setPri(Task_Object *tsk, Int priority)
 {
     Int oldPri;
@@ -1248,14 +1202,6 @@ Task_Mode Task_getMode(Task_Object *tsk)
 }
 
 /*
- *  ======== Task_getPrivileged ========
- */
-Bool Task_getPrivileged(Task_Object *tsk)
-{
-    return (tsk->privileged);
-}
-
-/*
  *  ======== Task_stat ========
  */
 Void Task_stat(Task_Object *tsk, Task_Stat *statbuf)
@@ -1299,10 +1245,11 @@ Void Task_blockI(Task_Object *tsk)
     Queue_Object *readyQ = tsk->readyQ;
     UInt curset = Task_module->curSet;
     UInt mask = tsk->mask;
+    UInt32 *checkValue;
 
     if (Task_objectCheckFlag) {
-        /* UNREACH.GEN */
-        if (Task_objectCheckFxn(tsk, tsk->checkValue) != 0) {
+        checkValue = Task_SupportProxy_getCheckValueAddr(tsk);
+        if (Task_objectCheckFxn(tsk, *checkValue) != 0) {
             Error_raise(NULL, Task_E_objectCheckFailed, tsk, 0);
         }
     }
@@ -1353,10 +1300,11 @@ Void Task_unblockI(Task_Object *tsk, UInt hwiKey)
 #endif
     UInt curset = Task_module->curSet;
     UInt mask = tsk->mask;
+    UInt32 *checkValue;
 
     if (Task_objectCheckFlag) {
-        /* UNREACH.GEN */
-        if (Task_objectCheckFxn(tsk, tsk->checkValue) != 0) {
+        checkValue = Task_SupportProxy_getCheckValueAddr(tsk);
+        if (Task_objectCheckFxn(tsk, *checkValue) != 0) {
             Error_raise(NULL, Task_E_objectCheckFailed, tsk, 0);
         }
     }

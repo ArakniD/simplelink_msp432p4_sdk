@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,7 +66,7 @@
  *  ### MPS432 Capture Driver Configuration #
  *
  *  In order to use the Capture APIs, the application is required
- *  to define 4 configuration items in the application Board.c file:
+ *  to define 4 configuration items in the application ti_drivers_config.c file:
  *
  *  1.  An array of CaptureMSP432_Object elements, which will be used by
  *  by the driver to maintain instance state.
@@ -151,15 +151,18 @@
  *    - After Capture_stop(): Conditions are equal as for after Capture_open.
  *    - After Capture_close(): The underlying GPTimer is turned off, and the
  *      clocks to the timer and pin are disabled.
+ *
+ *  # Capture Modes #
+ *  This device implementation only works with the following  modes for
+ *  #Capture_Mode :
+ *    - #Capture_RISING_EDGE
+ *    - #Capture_FALLING_EDGE
+ *    - #Capture_ANY_EDGE
+ *  All other modes will fail.
  ******************************************************************************
  */
 #ifndef ti_drivers_capture_CaptureMSP432__include
 #define ti_drivers_capture_CaptureMSP432__include
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -170,6 +173,11 @@ extern "C"
 
 #include <ti/devices/DeviceFamily.h>
 #include <ti/devices/msp432p4xx/driverlib/interrupt.h>
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 /*! \cond */
 /*
@@ -748,7 +756,7 @@ extern const Capture_FxnTable CaptureMSP432_captureFxnTable;
  *  };
  *  @endcode
  */
-typedef struct CaptureMSP432_HWAttrs_ {
+typedef struct {
     /*! Specifies the base address of the Timer_A peripheral. */
     uint32_t timerBaseAddress;
 
@@ -771,7 +779,7 @@ typedef struct CaptureMSP432_HWAttrs_ {
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct CaptureMSP432_Object_ {
+typedef struct {
     HwiP_Handle           hwiHandle;
     Capture_CallBackFxn   callBack;
     Capture_PeriodUnits   periodUnits;

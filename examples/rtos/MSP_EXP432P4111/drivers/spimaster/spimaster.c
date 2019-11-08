@@ -42,8 +42,8 @@
 #include <semaphore.h>
 #include <unistd.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 /* Driver Header files */
 #include <ti/drivers/GPIO.h>
@@ -69,7 +69,7 @@ sem_t masterSem;
 
 /*
  *  ======== slaveReadyFxn ========
- *  Callback function for the GPIO interrupt on Board_SPI_SLAVE_READY.
+ *  Callback function for the GPIO interrupt on CONFIG_SPI_SLAVE_READY.
  */
 void slaveReadyFxn(uint_least8_t index)
 {
@@ -91,7 +91,7 @@ void *masterThread(void *arg0)
     int32_t         status;
 
     /*
-     * Board_SPI_MASTER_READY & Board_SPI_SLAVE_READY are GPIO pins connected
+     * CONFIG_SPI_MASTER_READY & CONFIG_SPI_SLAVE_READY are GPIO pins connected
      * between the master & slave.  These pins are used to synchronize
      * the master & slave applications via a small 'handshake'.  The pins
      * are later used to synchronize transfers & ensure the master will not
@@ -99,36 +99,36 @@ void *masterThread(void *arg0)
      * differently between spimaster & spislave examples:
      *
      * spimaster example:
-     *     * Board_SPI_MASTER_READY is configured as an output pin.  During the
+     *     * CONFIG_SPI_MASTER_READY is configured as an output pin.  During the
      *       'handshake' this pin is changed from low to high output.  This
      *       notifies the slave the master is ready to run the application.
      *       Afterwards, the pin is used by the master to notify the slave it
-     *       has opened Board_SPI_MASTER.  When Board_SPI_MASTER is opened, this
+     *       has opened CONFIG_SPI_MASTER.  When CONFIG_SPI_MASTER is opened, this
      *       pin will be pulled low.
      *
-     *     * Board_SPI_SLAVE_READY is configured as an input pin. During the
+     *     * CONFIG_SPI_SLAVE_READY is configured as an input pin. During the
      *       'handshake' this pin is read & a high value will indicate the slave
      *       ready to run the application.  Afterwards, a falling edge interrupt
      *       will be configured on this pin.  When the slave is ready to perform
      *       a transfer, it will pull this pin low.
      *
-     * Below we set Board_SPI_MASTER_READY & Board_SPI_SLAVE_READY initial
+     * Below we set CONFIG_SPI_MASTER_READY & CONFIG_SPI_SLAVE_READY initial
      * conditions for the 'handshake'.
      */
-    GPIO_setConfig(Board_SPI_MASTER_READY, GPIO_CFG_OUTPUT | GPIO_CFG_OUT_LOW);
-    GPIO_setConfig(Board_SPI_SLAVE_READY, GPIO_CFG_INPUT);
+    GPIO_setConfig(CONFIG_SPI_MASTER_READY, GPIO_CFG_OUTPUT | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_SPI_SLAVE_READY, GPIO_CFG_INPUT);
 
     /*
-     * Handshake - Set Board_SPI_MASTER_READY high to indicate master is ready
-     * to run.  Wait Board_SPI_SLAVE_READY to be high.
+     * Handshake - Set CONFIG_SPI_MASTER_READY high to indicate master is ready
+     * to run.  Wait CONFIG_SPI_SLAVE_READY to be high.
      */
-    GPIO_write(Board_SPI_MASTER_READY, 1);
-    while (GPIO_read(Board_SPI_SLAVE_READY) == 0) {}
+    GPIO_write(CONFIG_SPI_MASTER_READY, 1);
+    while (GPIO_read(CONFIG_SPI_SLAVE_READY) == 0) {}
 
-    /* Handshake complete; now configure interrupt on Board_SPI_SLAVE_READY */
-    GPIO_setConfig(Board_SPI_SLAVE_READY, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
-    GPIO_setCallback(Board_SPI_SLAVE_READY, slaveReadyFxn);
-    GPIO_enableInt(Board_SPI_SLAVE_READY);
+    /* Handshake complete; now configure interrupt on CONFIG_SPI_SLAVE_READY */
+    GPIO_setConfig(CONFIG_SPI_SLAVE_READY, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
+    GPIO_setCallback(CONFIG_SPI_SLAVE_READY, slaveReadyFxn);
+    GPIO_enableInt(CONFIG_SPI_SLAVE_READY);
 
     /*
      * Create synchronization semaphore; the master will wait on this semaphore
@@ -145,7 +145,7 @@ void *masterThread(void *arg0)
     SPI_Params_init(&spiParams);
     spiParams.frameFormat = SPI_POL0_PHA1;
     spiParams.bitRate = 10000000;
-    masterSpi = SPI_open(Board_SPI_MASTER, &spiParams);
+    masterSpi = SPI_open(CONFIG_SPI_MASTER, &spiParams);
     if (masterSpi == NULL) {
         Display_printf(display, 0, 0, "Error initializing master SPI\n");
         while (1);
@@ -155,10 +155,10 @@ void *masterThread(void *arg0)
     }
 
     /*
-     * Master has opened Board_SPI_MASTER; set Board_SPI_MASTER_READY high to
+     * Master has opened CONFIG_SPI_MASTER; set CONFIG_SPI_MASTER_READY high to
      * inform the slave.
      */
-    GPIO_write(Board_SPI_MASTER_READY, 0);
+    GPIO_write(CONFIG_SPI_MASTER_READY, 0);
 
     /* Copy message to transmit buffer */
     strncpy((char *) masterTxBuffer, MASTER_MSG, SPI_MSG_LENGTH);
@@ -166,7 +166,7 @@ void *masterThread(void *arg0)
     for (i = 0; i < MAX_LOOP; i++) {
         /*
          * Wait until slave is ready for transfer; slave will pull
-         * Board_SPI_SLAVE_READY low.
+         * CONFIG_SPI_SLAVE_READY low.
          */
         sem_wait(&masterSem);
 
@@ -178,7 +178,7 @@ void *masterThread(void *arg0)
         transaction.rxBuf = (void *) masterRxBuffer;
 
         /* Toggle user LED, indicating a SPI transfer is in progress */
-        GPIO_toggle(Board_GPIO_LED1);
+        GPIO_toggle(CONFIG_GPIO_LED_1);
 
         /* Perform SPI transfer */
         transferOK = SPI_transfer(masterSpi, &transaction);
@@ -196,9 +196,9 @@ void *masterThread(void *arg0)
     SPI_close(masterSpi);
 
     /* Example complete - set pins to a known state */
-    GPIO_disableInt(Board_SPI_SLAVE_READY);
-    GPIO_setConfig(Board_SPI_SLAVE_READY, GPIO_CFG_OUTPUT | GPIO_CFG_OUT_LOW);
-    GPIO_write(Board_SPI_MASTER_READY, 0);
+    GPIO_disableInt(CONFIG_SPI_SLAVE_READY);
+    GPIO_setConfig(CONFIG_SPI_SLAVE_READY, GPIO_CFG_OUTPUT | GPIO_CFG_OUT_LOW);
+    GPIO_write(CONFIG_SPI_MASTER_READY, 0);
 
     Display_printf(display, 0, 0, "\nDone");
 
@@ -222,8 +222,8 @@ void *mainThread(void *arg0)
     SPI_init();
 
     /* Configure the LED pins */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
-    GPIO_setConfig(Board_GPIO_LED1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_LED_1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 
     /* Set performance level to allow custom SPI Frequency */
     Power_releaseConstraint(PowerMSP432_DISALLOW_PERFLEVEL_4);
@@ -237,7 +237,7 @@ void *mainThread(void *arg0)
     }
 
     /* Turn on user LED */
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
     Display_printf(display, 0, 0, "Starting the SPI master example");
     Display_printf(display, 0, 0, "This example requires external wires to be "

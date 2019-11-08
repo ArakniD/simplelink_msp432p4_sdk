@@ -119,30 +119,22 @@ metaonly module M3 inherits ti.targets.arm.elf.IArm {
     /*
      *  ======== profiles ========
      */
-    /*
-     * The compiler option -gdwarf-3 needs to be passed to workaround a
-     * known bug in TI LLVM compiler generation of debug information.
-     * See JIRA CODEGEN-4536 for more info.
-     */
     override config xdc.bld.ITarget.OptionSet profiles[string] = [
         ["debug", {
             compileOpts: {
                 copts: "-gdwarf-3",
-                defs:  "-D_DEBUG_=1",
-            },
-            linkOpts: "-gdwarf-3",
+                defs:  "-D_DEBUG_=1"
+            }
         }],
-
         ["release", {
             compileOpts: {
-                copts: " -O2 ",
-            },
-            linkOpts: " ",
-        }],
+                copts: "-gdwarf-3 -Oz"
+            }
+        }]
     ];
 }
 /*
- *  @(#) ti.targets.arm.clang; 1, 0, 0,1; 2-9-2019 16:22:58; /db/ztree/library/trees/xdctargets/xdctargets-t01/src/ xlibrary
+ *  @(#) ti.targets.arm.clang; 1, 0, 0,0; 8-9-2019 17:15:15; /db/ztree/library/trees/xdctargets/xdctargets-v00/src/ xlibrary
 
  */
 

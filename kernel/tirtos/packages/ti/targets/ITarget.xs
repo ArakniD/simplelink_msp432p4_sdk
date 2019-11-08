@@ -99,9 +99,9 @@ var _isaChainMap = {
 
 /*
  *  ======== _targetCmds ========
- *  Hash table of commands (indexed by target.suffix).  Commands are
- *  themselves hashtables (indexed by file type: "asm", "c", ...) that
- *  define the commands for cc, asm , etc.
+ *  Hash table of commands (indexed by target.suffix).  Commands are themselves
+ *  hashtables (indexed by file type: "asm", "c", ...) that define the commands
+ *  for cc, asm , etc.
  */
 var _targetCmds = null;
 
@@ -192,7 +192,7 @@ function genConstCustom(names, types)
     }
 
     var pragmaOnly = false;
-    if (this.binaryParser == "ti.targets.omf.elf.Elf32") {
+    if (this.binaryParser != "ti.targets.omf.cof.Coff") {
         pragmaOnly = true;
     }
 
@@ -439,7 +439,7 @@ function link(goal)
         var compString = this.getVersion().split('{')[1];
         var compVersion = compString.split(',');
 
-        if (_newLinker(target) && !target.$name.match(/clang/)) {
+        if (!target.$name.match(/clang/)) {
             var fsopt = "-fs $(XDCCFGDIR)$(dir $@)";
             if (Build.hostOSName == "Windows") {
                 /* This is a workaround for a CodeGen bug when '/' is the
@@ -756,24 +756,4 @@ function _setEnv(target, result)
 
     result.path = path;
     result.envs = ["C_DIR="];
-}
-
-/*
- *  ======== _newLinker ========
- *  This function checks if the linker supports '-fs' and '-ea' options, and
- *  if the generated asm file has the prefix 'lto'.
- */
-function _newLinker(target)
-{
-    var compString = target.getVersion().split('{')[1];
-    var compVersion = compString.split(',');
-
-    if ((target.isa[0] == "6" && compVersion[2] >= "7.1")
-        || (target.isa.substring(0, 3) == "430" && compVersion[2] >= "3.3")
-        || (target.isa.substring(0, 2) == "28" && compVersion[2] >= "6.0")
-        || (target.isa[0] == 'v')  // old Arm compilers are detected elsewhere
-        || (target.isa == "arp32")) {
-        return (true);
-    }
-    return (false);
 }

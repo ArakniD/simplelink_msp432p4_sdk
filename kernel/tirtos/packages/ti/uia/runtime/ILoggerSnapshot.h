@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_uia_runtime_ILoggerSnapshot__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_runtime_ILoggerSnapshot___VERS 200
@@ -480,7 +482,7 @@ static inline ti_uia_runtime_ILoggerSnapshot_Module ti_uia_runtime_ILoggerSnapsh
             return (ti_uia_runtime_ILoggerSnapshot_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_ti_uia_runtime_IUIATransfer */
@@ -533,7 +535,7 @@ static inline ti_uia_runtime_ILoggerSnapshot_Module ti_uia_runtime_ILoggerSnapsh
             return (ti_uia_runtime_ILoggerSnapshot_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_xdc_runtime_IFilterLogger */
@@ -586,7 +588,7 @@ static inline ti_uia_runtime_ILoggerSnapshot_Module ti_uia_runtime_ILoggerSnapsh
             return (ti_uia_runtime_ILoggerSnapshot_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_xdc_runtime_ILogger */

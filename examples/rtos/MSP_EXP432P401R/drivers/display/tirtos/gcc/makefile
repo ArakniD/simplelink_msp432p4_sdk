@@ -7,13 +7,14 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/builds/MSP_EX
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = display.obj splash_image.obj main_tirtos.obj MSP_EXP432P401R.obj
+OBJECTS = display.obj splash_image.obj tirtos_main_tirtos.obj ti_drivers_config.obj
 
 CONFIGPKG = $(KERNEL_BUILD)/gcc
 
 NAME = display
 
 CFLAGS = -I../.. \
+    -I. \
     -DBOARD_DISPLAY_USE_UART_ANSI=1 \
     -DBOARD_DISPLAY_USE_LCD=1 \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
@@ -54,7 +55,7 @@ LFLAGS = -Wl,-T,../../tirtos/gcc/MSP_EXP432P401R_TIRTOS.lds \
     -static \
     -Wl,--gc-sections \
     "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib" \
+    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/hard" \
     -lgcc \
     -lc \
     -lm \
@@ -69,28 +70,38 @@ $(CONFIGPKG)/linker.cmd $(CONFIGPKG)/compiler.opt:
 	@ echo You can build it by issuing $(MAKE) in $(CONFIGPKG).
 	@ $(ECHOBLANKLINE)
 
-display.obj: ../../display.c $(CONFIGPKG)/compiler.opt
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../../tirtos/display.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+display.obj: ../../display.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
-splash_image.obj: ../../splash_image.c $(CONFIGPKG)/compiler.opt
+splash_image.obj: ../../splash_image.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
-main_tirtos.obj: ../../tirtos/main_tirtos.c $(CONFIGPKG)/compiler.opt
+tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
-MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c $(CONFIGPKG)/compiler.opt
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
 $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
-	@ $(LNK)  $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
+
 
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

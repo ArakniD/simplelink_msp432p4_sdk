@@ -40,7 +40,6 @@
         .global ti_sysbios_family_xxx_Hwi_switchAndRunFunc
         .global ti_sysbios_family_arm_m3_Hwi_initStacks__E
         .global ti_sysbios_family_arm_m3_Hwi_getTaskSP__E
-        .global ti_sysbios_family_arm_m3_Hwi_setStackLimit__I
 
 @
 @  ======== ti_sysbios_family_xxx_Hwi_switchToIsrStack ========
@@ -182,18 +181,4 @@ lab$1Addr:
 fpccr:
         .word   0xe000ef34
 #endif
-
-@
-@  ======== ti_sysbios_family_arm_m3_Hwi_setStackLimit__I ========
-@
-
-        .section .text.ti_sysbios_family_arm_m3_Hwi_setStackLimit__I
-        .thumb_func
-
-ti_sysbios_family_arm_m3_Hwi_setStackLimit__I:
-#if defined(__ARM_ARCH_8M_MAIN__)
-        msr    msplim, r0
-#endif
-        bx     lr
-
         .end

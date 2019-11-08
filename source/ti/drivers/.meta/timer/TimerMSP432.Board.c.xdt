@@ -41,8 +41,9 @@
 
     /* shorthand names for some common references in template below */
     let instances = Timer.$instances;
+    if (instances.length == 0) return;
 
-    /* Board_XXXCOUNT string, derived from defaultInstanceName */
+    /* CONFIG_XXXCOUNT string, derived from defaultInstanceName */
     let countDef = Timer.defaultInstanceName + "COUNT";
 %%}
 /*
@@ -75,7 +76,6 @@ const TimerMSP432_HWAttrs TimerMSP432HWAttrs[`countDef`] = {
     % if (inst.timerType === "32 Bits") {
         % intNum++;
         % intNum = "INT_T32_INT" + intNum;
-        % clockSource += "SMCLK";
     % }
     % else {
         % intNum = "INT_TA" + intNum + "_0";
@@ -86,7 +86,9 @@ const TimerMSP432_HWAttrs TimerMSP432HWAttrs[`countDef`] = {
         .timerBaseAddress  = `baseAddr`,
         .intNum            = `intNum`,
         .intPriority       = `Common.intPriority2Hex(inst.interruptPriority)`,
+    % if (inst.timerType !== "32 Bits") {
         .clockSource       = `clockSource`
+    % }
     },
 % }
 };

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_hal
 {
-    static final String VERS = "@(#) xdc-F14\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -145,17 +145,6 @@ public class ti_sysbios_hal
         }//isROV
     }
 
-    void MemProtect$$OBJECTS()
-    {
-        Proto.Obj po, spo;
-        Value.Obj vo;
-
-        po = (Proto.Obj)om.bind("ti.sysbios.hal.MemProtect.Module", new Proto.Obj());
-        vo = (Value.Obj)om.bind("ti.sysbios.hal.MemProtect", new Value.Obj("ti.sysbios.hal.MemProtect", po));
-        pkgV.bind("MemProtect", vo);
-        // decls 
-    }
-
     void Power$$OBJECTS()
     {
         Proto.Obj po, spo;
@@ -214,28 +203,6 @@ public class ti_sysbios_hal
         om.bind("ti.sysbios.hal.SecondsClock.Time", om.findStrict("ti.sysbios.interfaces.ISeconds.Time", "ti.sysbios.hal"));
         spo = (Proto.Obj)om.bind("ti.sysbios.hal.SecondsClock$$Module_State", new Proto.Obj());
         om.bind("ti.sysbios.hal.SecondsClock.Module_State", new Proto.Str(spo, false));
-    }
-
-    void SysCall$$OBJECTS()
-    {
-        Proto.Obj po, spo;
-        Value.Obj vo;
-
-        po = (Proto.Obj)om.bind("ti.sysbios.hal.SysCall.Module", new Proto.Obj());
-        vo = (Value.Obj)om.bind("ti.sysbios.hal.SysCall", new Value.Obj("ti.sysbios.hal.SysCall", po));
-        pkgV.bind("SysCall", vo);
-        // decls 
-    }
-
-    void SysCallNull$$OBJECTS()
-    {
-        Proto.Obj po, spo;
-        Value.Obj vo;
-
-        po = (Proto.Obj)om.bind("ti.sysbios.hal.SysCallNull.Module", new Proto.Obj());
-        vo = (Value.Obj)om.bind("ti.sysbios.hal.SysCallNull", new Value.Obj("ti.sysbios.hal.SysCallNull", po));
-        pkgV.bind("SysCallNull", vo);
-        // decls 
     }
 
     void Timer$$OBJECTS()
@@ -366,17 +333,6 @@ public class ti_sysbios_hal
         om.bind("ti.sysbios.hal.Seconds_SecondsProxy.Time", om.findStrict("ti.sysbios.interfaces.ISeconds.Time", "ti.sysbios.hal"));
     }
 
-    void SysCall_SysCallProxy$$OBJECTS()
-    {
-        Proto.Obj po, spo;
-        Value.Obj vo;
-
-        po = (Proto.Obj)om.bind("ti.sysbios.hal.SysCall_SysCallProxy.Module", new Proto.Obj());
-        vo = (Value.Obj)om.bind("ti.sysbios.hal.SysCall_SysCallProxy", new Value.Obj("ti.sysbios.hal.SysCall_SysCallProxy", po));
-        pkgV.bind("SysCall_SysCallProxy", vo);
-        // decls 
-    }
-
     void Timer_TimerProxy$$OBJECTS()
     {
         Proto.Obj po, spo;
@@ -462,11 +418,6 @@ public class ti_sysbios_hal
         om.bind("ti.sysbios.hal.Hwi.clearInterrupt", new Extern("ti_sysbios_hal_Hwi_clearInterrupt__E", "xdc_Void(*)(xdc_UInt)", true, false));
     }
 
-    void MemProtect$$CONSTS()
-    {
-        // module MemProtect
-    }
-
     void Power$$CONSTS()
     {
         // module Power
@@ -503,19 +454,6 @@ public class ti_sysbios_hal
         om.bind("ti.sysbios.hal.SecondsClock.set", new Extern("ti_sysbios_hal_SecondsClock_set__E", "xdc_Void(*)(xdc_UInt32)", true, false));
         om.bind("ti.sysbios.hal.SecondsClock.setTime", new Extern("ti_sysbios_hal_SecondsClock_setTime__E", "xdc_UInt32(*)(ti_sysbios_interfaces_ISeconds_Time*)", true, false));
         om.bind("ti.sysbios.hal.SecondsClock.increment", new Extern("ti_sysbios_hal_SecondsClock_increment__I", "xdc_Void(*)(xdc_UArg)", true, false));
-    }
-
-    void SysCall$$CONSTS()
-    {
-        // module SysCall
-    }
-
-    void SysCallNull$$CONSTS()
-    {
-        // module SysCallNull
-        om.bind("ti.sysbios.hal.SysCallNull.enterPrivMode", new Extern("ti_sysbios_hal_SysCallNull_enterPrivMode__E", "xdc_Void(*)(xdc_Void)", true, false));
-        om.bind("ti.sysbios.hal.SysCallNull.enterUnprivMode", new Extern("ti_sysbios_hal_SysCallNull_enterUnprivMode__E", "xdc_Void(*)(xdc_Void)", true, false));
-        om.bind("ti.sysbios.hal.SysCallNull.restorePrivMode", new Extern("ti_sysbios_hal_SysCallNull_restorePrivMode__E", "xdc_Void(*)(xdc_Void)", true, false));
     }
 
     void Timer$$CONSTS()
@@ -589,14 +527,6 @@ public class ti_sysbios_hal
         om.bind("ti.sysbios.hal.Seconds_SecondsProxy.getTime", new Extern("ti_sysbios_hal_Seconds_SecondsProxy_getTime__E", "xdc_UInt32(*)(ti_sysbios_interfaces_ISeconds_Time*)", true, false));
         om.bind("ti.sysbios.hal.Seconds_SecondsProxy.set", new Extern("ti_sysbios_hal_Seconds_SecondsProxy_set__E", "xdc_Void(*)(xdc_UInt32)", true, false));
         om.bind("ti.sysbios.hal.Seconds_SecondsProxy.setTime", new Extern("ti_sysbios_hal_Seconds_SecondsProxy_setTime__E", "xdc_UInt32(*)(ti_sysbios_interfaces_ISeconds_Time*)", true, false));
-    }
-
-    void SysCall_SysCallProxy$$CONSTS()
-    {
-        // module SysCall_SysCallProxy
-        om.bind("ti.sysbios.hal.SysCall_SysCallProxy.enterPrivMode", new Extern("ti_sysbios_hal_SysCall_SysCallProxy_enterPrivMode__E", "xdc_Void(*)(xdc_Void)", true, false));
-        om.bind("ti.sysbios.hal.SysCall_SysCallProxy.enterUnprivMode", new Extern("ti_sysbios_hal_SysCall_SysCallProxy_enterUnprivMode__E", "xdc_Void(*)(xdc_Void)", true, false));
-        om.bind("ti.sysbios.hal.SysCall_SysCallProxy.restorePrivMode", new Extern("ti_sysbios_hal_SysCall_SysCallProxy_restorePrivMode__E", "xdc_Void(*)(xdc_Void)", true, false));
     }
 
     void Timer_TimerProxy$$CONSTS()
@@ -703,13 +633,6 @@ public class ti_sysbios_hal
         }//isCFG
     }
 
-    void MemProtect$$CREATES()
-    {
-        Proto.Fxn fxn;
-        StringBuilder sb;
-
-    }
-
     void Power$$CREATES()
     {
         Proto.Fxn fxn;
@@ -739,20 +662,6 @@ public class ti_sysbios_hal
     }
 
     void SecondsClock$$CREATES()
-    {
-        Proto.Fxn fxn;
-        StringBuilder sb;
-
-    }
-
-    void SysCall$$CREATES()
-    {
-        Proto.Fxn fxn;
-        StringBuilder sb;
-
-    }
-
-    void SysCallNull$$CREATES()
     {
         Proto.Fxn fxn;
         StringBuilder sb;
@@ -970,13 +879,6 @@ public class ti_sysbios_hal
 
     }
 
-    void SysCall_SysCallProxy$$CREATES()
-    {
-        Proto.Fxn fxn;
-        StringBuilder sb;
-
-    }
-
     void Timer_TimerProxy$$CREATES()
     {
         Proto.Fxn fxn;
@@ -1060,12 +962,6 @@ public class ti_sysbios_hal
                 fxn.addArg(0, "pi", new Proto.Adr("xdc_Ptr", "Pv"), $$UNDEF);
     }
 
-    void MemProtect$$FUNCTIONS()
-    {
-        Proto.Fxn fxn;
-
-    }
-
     void Power$$FUNCTIONS()
     {
         Proto.Fxn fxn;
@@ -1091,18 +987,6 @@ public class ti_sysbios_hal
     }
 
     void SecondsClock$$FUNCTIONS()
-    {
-        Proto.Fxn fxn;
-
-    }
-
-    void SysCall$$FUNCTIONS()
-    {
-        Proto.Fxn fxn;
-
-    }
-
-    void SysCallNull$$FUNCTIONS()
     {
         Proto.Fxn fxn;
 
@@ -1148,12 +1032,6 @@ public class ti_sysbios_hal
     }
 
     void Seconds_SecondsProxy$$FUNCTIONS()
-    {
-        Proto.Fxn fxn;
-
-    }
-
-    void SysCall_SysCallProxy$$FUNCTIONS()
     {
         Proto.Fxn fxn;
 
@@ -1211,13 +1089,6 @@ public class ti_sysbios_hal
         so.bind("$offsetof", fxn);
     }
 
-    void MemProtect$$SIZES()
-    {
-        Proto.Str so;
-        Object fxn;
-
-    }
-
     void Power$$SIZES()
     {
         Proto.Str so;
@@ -1268,20 +1139,6 @@ public class ti_sysbios_hal
         so.bind("$alignof", fxn);
         fxn = Global.eval("function(fld) { return $$offsetof(xdc.om['ti.sysbios.hal.SecondsClock.Module_State'], fld); }");
         so.bind("$offsetof", fxn);
-    }
-
-    void SysCall$$SIZES()
-    {
-        Proto.Str so;
-        Object fxn;
-
-    }
-
-    void SysCallNull$$SIZES()
-    {
-        Proto.Str so;
-        Object fxn;
-
     }
 
     void Timer$$SIZES()
@@ -1348,13 +1205,6 @@ public class ti_sysbios_hal
     }
 
     void Seconds_SecondsProxy$$SIZES()
-    {
-        Proto.Str so;
-        Object fxn;
-
-    }
-
-    void SysCall_SysCallProxy$$SIZES()
     {
         Proto.Str so;
         Object fxn;
@@ -1530,35 +1380,6 @@ public class ti_sysbios_hal
                 po.addFld("pi", (Proto)om.findStrict("ti.sysbios.hal.Hwi_HwiProxy.Handle", "ti.sysbios.hal"), $$UNDEF, "w");
     }
 
-    void MemProtect$$TYPES()
-    {
-        Scriptable cap;
-        Proto.Obj po;
-        Proto.Str ps;
-        Proto.Typedef pt;
-        Object fxn;
-
-        cap = (Scriptable)Global.callFxn("loadCapsule", xdcO, "ti/sysbios/hal/MemProtect.xs");
-        om.bind("ti.sysbios.hal.MemProtect$$capsule", cap);
-        po = (Proto.Obj)om.findStrict("ti.sysbios.hal.MemProtect.Module", "ti.sysbios.hal");
-        po.init("ti.sysbios.hal.MemProtect.Module", om.findStrict("xdc.runtime.IModule.Module", "ti.sysbios.hal"));
-                po.addFld("$hostonly", $$T_Num, 0, "r");
-        if (isCFG) {
-        }//isCFG
-        fxn = Global.get(cap, "module$use");
-        if (fxn != null) om.bind("ti.sysbios.hal.MemProtect$$module$use", true);
-        if (fxn != null) po.addFxn("module$use", $$T_Met, fxn);
-        fxn = Global.get(cap, "module$meta$init");
-        if (fxn != null) om.bind("ti.sysbios.hal.MemProtect$$module$meta$init", true);
-        if (fxn != null) po.addFxn("module$meta$init", $$T_Met, fxn);
-        fxn = Global.get(cap, "module$static$init");
-        if (fxn != null) om.bind("ti.sysbios.hal.MemProtect$$module$static$init", true);
-        if (fxn != null) po.addFxn("module$static$init", $$T_Met, fxn);
-        fxn = Global.get(cap, "module$validate");
-        if (fxn != null) om.bind("ti.sysbios.hal.MemProtect$$module$validate", true);
-        if (fxn != null) po.addFxn("module$validate", $$T_Met, fxn);
-    }
-
     void Power$$TYPES()
     {
         Scriptable cap;
@@ -1711,51 +1532,6 @@ public class ti_sysbios_hal
                 po.addFld("ticks", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "w");
                 po.addFldV("clock", (Proto)om.findStrict("ti.sysbios.knl.Clock.Object", "ti.sysbios.hal"), $$DEFAULT, "wh", $$objFldGet, $$objFldSet);
                 po.addFld("Object_field_clock", (Proto)om.findStrict("ti.sysbios.knl.Clock.Object", "ti.sysbios.hal"), $$DEFAULT, "w");
-    }
-
-    void SysCall$$TYPES()
-    {
-        Scriptable cap;
-        Proto.Obj po;
-        Proto.Str ps;
-        Proto.Typedef pt;
-        Object fxn;
-
-        cap = (Scriptable)Global.callFxn("loadCapsule", xdcO, "ti/sysbios/hal/SysCall.xs");
-        om.bind("ti.sysbios.hal.SysCall$$capsule", cap);
-        po = (Proto.Obj)om.findStrict("ti.sysbios.hal.SysCall.Module", "ti.sysbios.hal");
-        po.init("ti.sysbios.hal.SysCall.Module", om.findStrict("ti.sysbios.interfaces.ISysCall.Module", "ti.sysbios.hal"));
-                po.addFld("$hostonly", $$T_Num, 0, "r");
-        if (isCFG) {
-            po.addFldV("SysCallProxy", (Proto)om.findStrict("ti.sysbios.interfaces.ISysCall.Module", "ti.sysbios.hal"), null, "wh", $$delegGet, $$delegSet);
-        }//isCFG
-        fxn = Global.get(cap, "module$use");
-        if (fxn != null) om.bind("ti.sysbios.hal.SysCall$$module$use", true);
-        if (fxn != null) po.addFxn("module$use", $$T_Met, fxn);
-        fxn = Global.get(cap, "module$meta$init");
-        if (fxn != null) om.bind("ti.sysbios.hal.SysCall$$module$meta$init", true);
-        if (fxn != null) po.addFxn("module$meta$init", $$T_Met, fxn);
-        fxn = Global.get(cap, "module$static$init");
-        if (fxn != null) om.bind("ti.sysbios.hal.SysCall$$module$static$init", true);
-        if (fxn != null) po.addFxn("module$static$init", $$T_Met, fxn);
-        fxn = Global.get(cap, "module$validate");
-        if (fxn != null) om.bind("ti.sysbios.hal.SysCall$$module$validate", true);
-        if (fxn != null) po.addFxn("module$validate", $$T_Met, fxn);
-    }
-
-    void SysCallNull$$TYPES()
-    {
-        Scriptable cap;
-        Proto.Obj po;
-        Proto.Str ps;
-        Proto.Typedef pt;
-        Object fxn;
-
-        po = (Proto.Obj)om.findStrict("ti.sysbios.hal.SysCallNull.Module", "ti.sysbios.hal");
-        po.init("ti.sysbios.hal.SysCallNull.Module", om.findStrict("ti.sysbios.interfaces.ISysCall.Module", "ti.sysbios.hal"));
-                po.addFld("$hostonly", $$T_Num, 0, "r");
-        if (isCFG) {
-        }//isCFG
     }
 
     void Timer$$TYPES()
@@ -2011,22 +1787,6 @@ public class ti_sysbios_hal
         }//isCFG
     }
 
-    void SysCall_SysCallProxy$$TYPES()
-    {
-        Scriptable cap;
-        Proto.Obj po;
-        Proto.Str ps;
-        Proto.Typedef pt;
-        Object fxn;
-
-        po = (Proto.Obj)om.findStrict("ti.sysbios.hal.SysCall_SysCallProxy.Module", "ti.sysbios.hal");
-        po.init("ti.sysbios.hal.SysCall_SysCallProxy.Module", om.findStrict("ti.sysbios.interfaces.ISysCall.Module", "ti.sysbios.hal"));
-                po.addFld("delegate$", (Proto)om.findStrict("ti.sysbios.interfaces.ISysCall.Module", "ti.sysbios.hal"), null, "wh");
-                po.addFld("$hostonly", $$T_Num, 0, "r");
-        if (isCFG) {
-        }//isCFG
-    }
-
     void Timer_TimerProxy$$TYPES()
     {
         Scriptable cap;
@@ -2127,14 +1887,6 @@ public class ti_sysbios_hal
         po = (Proto.Obj)om.findStrict("ti.sysbios.hal.Hwi$$Instance_State", "ti.sysbios.hal");
     }
 
-    void MemProtect$$ROV()
-    {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.sysbios.hal.MemProtect", "ti.sysbios.hal");
-    }
-
     void Power$$ROV()
     {
         Proto.Obj po;
@@ -2175,22 +1927,6 @@ public class ti_sysbios_hal
         vo = (Value.Obj)om.findStrict("ti.sysbios.hal.SecondsClock", "ti.sysbios.hal");
         vo.bind("Module_State$fetchDesc", Global.newObject("type", "ti.sysbios.hal.SecondsClock.Module_State", "isScalar", false));
         po = (Proto.Obj)om.findStrict("ti.sysbios.hal.SecondsClock$$Module_State", "ti.sysbios.hal");
-    }
-
-    void SysCall$$ROV()
-    {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.sysbios.hal.SysCall", "ti.sysbios.hal");
-    }
-
-    void SysCallNull$$ROV()
-    {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.sysbios.hal.SysCallNull", "ti.sysbios.hal");
     }
 
     void Timer$$ROV()
@@ -2257,14 +1993,6 @@ public class ti_sysbios_hal
         Value.Obj vo;
 
         vo = (Value.Obj)om.findStrict("ti.sysbios.hal.Seconds_SecondsProxy", "ti.sysbios.hal");
-    }
-
-    void SysCall_SysCallProxy$$ROV()
-    {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.sysbios.hal.SysCall_SysCallProxy", "ti.sysbios.hal");
     }
 
     void Timer_TimerProxy$$ROV()
@@ -2855,92 +2583,6 @@ public class ti_sysbios_hal
         ((Value.Arr)pkgV.getv("$unitNames")).add("Hwi");
     }
 
-    void MemProtect$$SINGLETONS()
-    {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.sysbios.hal.MemProtect", "ti.sysbios.hal");
-        po = (Proto.Obj)om.findStrict("ti.sysbios.hal.MemProtect.Module", "ti.sysbios.hal");
-        vo.init2(po, "ti.sysbios.hal.MemProtect", $$DEFAULT, false);
-        vo.bind("Module", po);
-        vo.bind("$category", "Module");
-        vo.bind("$capsule", om.findStrict("ti.sysbios.hal.MemProtect$$capsule", "ti.sysbios.hal"));
-        vo.bind("$package", om.findStrict("ti.sysbios.hal", "ti.sysbios.hal"));
-        tdefs.clear();
-        proxies.clear();
-        mcfgs.clear();
-        icfgs.clear();
-        inherits.clear();
-        mcfgs.add("Module__diagsEnabled");
-        icfgs.add("Module__diagsEnabled");
-        mcfgs.add("Module__diagsIncluded");
-        icfgs.add("Module__diagsIncluded");
-        mcfgs.add("Module__diagsMask");
-        icfgs.add("Module__diagsMask");
-        mcfgs.add("Module__gateObj");
-        icfgs.add("Module__gateObj");
-        mcfgs.add("Module__gatePrms");
-        icfgs.add("Module__gatePrms");
-        mcfgs.add("Module__id");
-        icfgs.add("Module__id");
-        mcfgs.add("Module__loggerDefined");
-        icfgs.add("Module__loggerDefined");
-        mcfgs.add("Module__loggerObj");
-        icfgs.add("Module__loggerObj");
-        mcfgs.add("Module__loggerFxn0");
-        icfgs.add("Module__loggerFxn0");
-        mcfgs.add("Module__loggerFxn1");
-        icfgs.add("Module__loggerFxn1");
-        mcfgs.add("Module__loggerFxn2");
-        icfgs.add("Module__loggerFxn2");
-        mcfgs.add("Module__loggerFxn4");
-        icfgs.add("Module__loggerFxn4");
-        mcfgs.add("Module__loggerFxn8");
-        icfgs.add("Module__loggerFxn8");
-        mcfgs.add("Object__count");
-        icfgs.add("Object__count");
-        mcfgs.add("Object__heap");
-        icfgs.add("Object__heap");
-        mcfgs.add("Object__sizeof");
-        icfgs.add("Object__sizeof");
-        mcfgs.add("Object__table");
-        icfgs.add("Object__table");
-        vo.bind("$$tdefs", Global.newArray(tdefs.toArray()));
-        vo.bind("$$proxies", Global.newArray(proxies.toArray()));
-        vo.bind("$$mcfgs", Global.newArray(mcfgs.toArray()));
-        vo.bind("$$icfgs", Global.newArray(icfgs.toArray()));
-        inherits.add("xdc.runtime");
-        vo.bind("$$inherits", Global.newArray(inherits.toArray()));
-        ((Value.Arr)pkgV.getv("$modules")).add(vo);
-        ((Value.Arr)om.findStrict("$modules", "ti.sysbios.hal")).add(vo);
-        vo.bind("$$instflag", 0);
-        vo.bind("$$iobjflag", 0);
-        vo.bind("$$sizeflag", 1);
-        vo.bind("$$dlgflag", 0);
-        vo.bind("$$iflag", 0);
-        vo.bind("$$romcfgs", "|");
-        vo.bind("$$nortsflag", 0);
-        if (isCFG) {
-            Proto.Str ps = (Proto.Str)vo.find("Module_State");
-            if (ps != null) vo.bind("$object", ps.newInstance());
-            vo.bind("$$meta_iobj", 1);
-        }//isCFG
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_hal_MemProtect_Module__startupDone__E"));
-        vo.bind("$$logEvtCfgs", Global.newArray());
-        vo.bind("$$errorDescCfgs", Global.newArray());
-        vo.bind("$$assertDescCfgs", Global.newArray());
-        Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.setElem("", true);
-        atmap.seal("length");
-        vo.bind("MODULE_STARTUP$", 0);
-        vo.bind("PROXY$", 0);
-        loggables.clear();
-        vo.bind("$$loggables", loggables.toArray());
-        pkgV.bind("MemProtect", vo);
-        ((Value.Arr)pkgV.getv("$unitNames")).add("MemProtect");
-    }
-
     void Power$$SINGLETONS()
     {
         Proto.Obj po;
@@ -3204,8 +2846,8 @@ public class ti_sysbios_hal
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.setElem("", "./Seconds.xdt");
         atmap.setElem("", true);
+        atmap.setElem("", "./Seconds.xdt");
         atmap.seal("length");
         vo.bind("MODULE_STARTUP$", 0);
         vo.bind("PROXY$", 0);
@@ -3408,186 +3050,6 @@ public class ti_sysbios_hal
         vo.bind("$$loggables", loggables.toArray());
         pkgV.bind("SecondsClock", vo);
         ((Value.Arr)pkgV.getv("$unitNames")).add("SecondsClock");
-    }
-
-    void SysCall$$SINGLETONS()
-    {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.sysbios.hal.SysCall", "ti.sysbios.hal");
-        po = (Proto.Obj)om.findStrict("ti.sysbios.hal.SysCall.Module", "ti.sysbios.hal");
-        vo.init2(po, "ti.sysbios.hal.SysCall", $$DEFAULT, false);
-        vo.bind("Module", po);
-        vo.bind("$category", "Module");
-        vo.bind("$capsule", om.findStrict("ti.sysbios.hal.SysCall$$capsule", "ti.sysbios.hal"));
-        vo.bind("$package", om.findStrict("ti.sysbios.hal", "ti.sysbios.hal"));
-        tdefs.clear();
-        proxies.clear();
-        mcfgs.clear();
-        icfgs.clear();
-        inherits.clear();
-        mcfgs.add("Module__diagsEnabled");
-        icfgs.add("Module__diagsEnabled");
-        mcfgs.add("Module__diagsIncluded");
-        icfgs.add("Module__diagsIncluded");
-        mcfgs.add("Module__diagsMask");
-        icfgs.add("Module__diagsMask");
-        mcfgs.add("Module__gateObj");
-        icfgs.add("Module__gateObj");
-        mcfgs.add("Module__gatePrms");
-        icfgs.add("Module__gatePrms");
-        mcfgs.add("Module__id");
-        icfgs.add("Module__id");
-        mcfgs.add("Module__loggerDefined");
-        icfgs.add("Module__loggerDefined");
-        mcfgs.add("Module__loggerObj");
-        icfgs.add("Module__loggerObj");
-        mcfgs.add("Module__loggerFxn0");
-        icfgs.add("Module__loggerFxn0");
-        mcfgs.add("Module__loggerFxn1");
-        icfgs.add("Module__loggerFxn1");
-        mcfgs.add("Module__loggerFxn2");
-        icfgs.add("Module__loggerFxn2");
-        mcfgs.add("Module__loggerFxn4");
-        icfgs.add("Module__loggerFxn4");
-        mcfgs.add("Module__loggerFxn8");
-        icfgs.add("Module__loggerFxn8");
-        mcfgs.add("Object__count");
-        icfgs.add("Object__count");
-        mcfgs.add("Object__heap");
-        icfgs.add("Object__heap");
-        mcfgs.add("Object__sizeof");
-        icfgs.add("Object__sizeof");
-        mcfgs.add("Object__table");
-        icfgs.add("Object__table");
-        vo.bind("SysCallProxy$proxy", om.findStrict("ti.sysbios.hal.SysCall_SysCallProxy", "ti.sysbios.hal"));
-        proxies.add("SysCallProxy");
-        vo.bind("$$tdefs", Global.newArray(tdefs.toArray()));
-        vo.bind("$$proxies", Global.newArray(proxies.toArray()));
-        vo.bind("$$mcfgs", Global.newArray(mcfgs.toArray()));
-        vo.bind("$$icfgs", Global.newArray(icfgs.toArray()));
-        inherits.add("ti.sysbios.interfaces");
-        inherits.add("xdc.runtime");
-        vo.bind("$$inherits", Global.newArray(inherits.toArray()));
-        ((Value.Arr)pkgV.getv("$modules")).add(vo);
-        ((Value.Arr)om.findStrict("$modules", "ti.sysbios.hal")).add(vo);
-        vo.bind("$$instflag", 0);
-        vo.bind("$$iobjflag", 0);
-        vo.bind("$$sizeflag", 1);
-        vo.bind("$$dlgflag", 0);
-        vo.bind("$$iflag", 1);
-        vo.bind("$$romcfgs", "|");
-        vo.bind("$$nortsflag", 0);
-        if (isCFG) {
-            Proto.Str ps = (Proto.Str)vo.find("Module_State");
-            if (ps != null) vo.bind("$object", ps.newInstance());
-            vo.bind("$$meta_iobj", 1);
-        }//isCFG
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_hal_SysCall_Module__startupDone__E", "ti_sysbios_hal_SysCall_enterPrivMode__E", "ti_sysbios_hal_SysCall_enterUnprivMode__E", "ti_sysbios_hal_SysCall_restorePrivMode__E"));
-        vo.bind("$$logEvtCfgs", Global.newArray());
-        vo.bind("$$errorDescCfgs", Global.newArray());
-        vo.bind("$$assertDescCfgs", Global.newArray());
-        Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.seal("length");
-        vo.bind("MODULE_STARTUP$", 0);
-        vo.bind("PROXY$", 0);
-        loggables.clear();
-        vo.bind("$$loggables", loggables.toArray());
-        pkgV.bind("SysCall", vo);
-        ((Value.Arr)pkgV.getv("$unitNames")).add("SysCall");
-    }
-
-    void SysCallNull$$SINGLETONS()
-    {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.sysbios.hal.SysCallNull", "ti.sysbios.hal");
-        po = (Proto.Obj)om.findStrict("ti.sysbios.hal.SysCallNull.Module", "ti.sysbios.hal");
-        vo.init2(po, "ti.sysbios.hal.SysCallNull", $$DEFAULT, false);
-        vo.bind("Module", po);
-        vo.bind("$category", "Module");
-        vo.bind("$capsule", $$UNDEF);
-        vo.bind("$package", om.findStrict("ti.sysbios.hal", "ti.sysbios.hal"));
-        tdefs.clear();
-        proxies.clear();
-        mcfgs.clear();
-        icfgs.clear();
-        inherits.clear();
-        mcfgs.add("Module__diagsEnabled");
-        icfgs.add("Module__diagsEnabled");
-        mcfgs.add("Module__diagsIncluded");
-        icfgs.add("Module__diagsIncluded");
-        mcfgs.add("Module__diagsMask");
-        icfgs.add("Module__diagsMask");
-        mcfgs.add("Module__gateObj");
-        icfgs.add("Module__gateObj");
-        mcfgs.add("Module__gatePrms");
-        icfgs.add("Module__gatePrms");
-        mcfgs.add("Module__id");
-        icfgs.add("Module__id");
-        mcfgs.add("Module__loggerDefined");
-        icfgs.add("Module__loggerDefined");
-        mcfgs.add("Module__loggerObj");
-        icfgs.add("Module__loggerObj");
-        mcfgs.add("Module__loggerFxn0");
-        icfgs.add("Module__loggerFxn0");
-        mcfgs.add("Module__loggerFxn1");
-        icfgs.add("Module__loggerFxn1");
-        mcfgs.add("Module__loggerFxn2");
-        icfgs.add("Module__loggerFxn2");
-        mcfgs.add("Module__loggerFxn4");
-        icfgs.add("Module__loggerFxn4");
-        mcfgs.add("Module__loggerFxn8");
-        icfgs.add("Module__loggerFxn8");
-        mcfgs.add("Object__count");
-        icfgs.add("Object__count");
-        mcfgs.add("Object__heap");
-        icfgs.add("Object__heap");
-        mcfgs.add("Object__sizeof");
-        icfgs.add("Object__sizeof");
-        mcfgs.add("Object__table");
-        icfgs.add("Object__table");
-        vo.bind("$$tdefs", Global.newArray(tdefs.toArray()));
-        vo.bind("$$proxies", Global.newArray(proxies.toArray()));
-        vo.bind("$$mcfgs", Global.newArray(mcfgs.toArray()));
-        vo.bind("$$icfgs", Global.newArray(icfgs.toArray()));
-        inherits.add("ti.sysbios.interfaces");
-        inherits.add("xdc.runtime");
-        vo.bind("$$inherits", Global.newArray(inherits.toArray()));
-        ((Value.Arr)pkgV.getv("$modules")).add(vo);
-        ((Value.Arr)om.findStrict("$modules", "ti.sysbios.hal")).add(vo);
-        vo.bind("$$instflag", 0);
-        vo.bind("$$iobjflag", 0);
-        vo.bind("$$sizeflag", 1);
-        vo.bind("$$dlgflag", 0);
-        vo.bind("$$iflag", 1);
-        vo.bind("$$romcfgs", "|");
-        vo.bind("$$nortsflag", 0);
-        if (isCFG) {
-            Proto.Str ps = (Proto.Str)vo.find("Module_State");
-            if (ps != null) vo.bind("$object", ps.newInstance());
-            vo.bind("$$meta_iobj", 1);
-        }//isCFG
-        vo.bind("enterPrivMode", om.findStrict("ti.sysbios.hal.SysCallNull.enterPrivMode", "ti.sysbios.hal"));
-        vo.bind("enterUnprivMode", om.findStrict("ti.sysbios.hal.SysCallNull.enterUnprivMode", "ti.sysbios.hal"));
-        vo.bind("restorePrivMode", om.findStrict("ti.sysbios.hal.SysCallNull.restorePrivMode", "ti.sysbios.hal"));
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_hal_SysCallNull_Module__startupDone__E", "ti_sysbios_hal_SysCallNull_enterPrivMode__E", "ti_sysbios_hal_SysCallNull_enterUnprivMode__E", "ti_sysbios_hal_SysCallNull_restorePrivMode__E"));
-        vo.bind("$$logEvtCfgs", Global.newArray());
-        vo.bind("$$errorDescCfgs", Global.newArray());
-        vo.bind("$$assertDescCfgs", Global.newArray());
-        Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.setElem("", true);
-        atmap.seal("length");
-        vo.bind("MODULE_STARTUP$", 0);
-        vo.bind("PROXY$", 0);
-        loggables.clear();
-        vo.bind("$$loggables", loggables.toArray());
-        pkgV.bind("SysCallNull", vo);
-        ((Value.Arr)pkgV.getv("$unitNames")).add("SysCallNull");
     }
 
     void Timer$$SINGLETONS()
@@ -4123,59 +3585,6 @@ public class ti_sysbios_hal
         ((Value.Arr)pkgV.getv("$unitNames")).add("Seconds_SecondsProxy");
     }
 
-    void SysCall_SysCallProxy$$SINGLETONS()
-    {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.sysbios.hal.SysCall_SysCallProxy", "ti.sysbios.hal");
-        po = (Proto.Obj)om.findStrict("ti.sysbios.hal.SysCall_SysCallProxy.Module", "ti.sysbios.hal");
-        vo.init2(po, "ti.sysbios.hal.SysCall_SysCallProxy", $$DEFAULT, false);
-        vo.bind("Module", po);
-        vo.bind("$category", "Module");
-        vo.bind("$capsule", $$UNDEF);
-        vo.bind("$package", om.findStrict("ti.sysbios.hal", "ti.sysbios.hal"));
-        tdefs.clear();
-        proxies.clear();
-        proxies.add("delegate$");
-        inherits.clear();
-        vo.bind("$$tdefs", Global.newArray(tdefs.toArray()));
-        vo.bind("$$proxies", Global.newArray(proxies.toArray()));
-        inherits.add("ti.sysbios.interfaces");
-        inherits.add("xdc.runtime");
-        vo.bind("$$inherits", Global.newArray(inherits.toArray()));
-        ((Value.Arr)pkgV.getv("$modules")).add(vo);
-        ((Value.Arr)om.findStrict("$modules", "ti.sysbios.hal")).add(vo);
-        vo.bind("$$instflag", 0);
-        vo.bind("$$iobjflag", 0);
-        vo.bind("$$sizeflag", 0);
-        vo.bind("$$dlgflag", 0);
-        vo.bind("$$iflag", 1);
-        vo.bind("$$romcfgs", "|");
-        vo.bind("$$nortsflag", 0);
-        if (isCFG) {
-            Proto.Str ps = (Proto.Str)vo.find("Module_State");
-            if (ps != null) vo.bind("$object", ps.newInstance());
-            vo.bind("$$meta_iobj", 1);
-        }//isCFG
-        vo.bind("enterPrivMode", om.findStrict("ti.sysbios.hal.SysCall_SysCallProxy.enterPrivMode", "ti.sysbios.hal"));
-        vo.bind("enterUnprivMode", om.findStrict("ti.sysbios.hal.SysCall_SysCallProxy.enterUnprivMode", "ti.sysbios.hal"));
-        vo.bind("restorePrivMode", om.findStrict("ti.sysbios.hal.SysCall_SysCallProxy.restorePrivMode", "ti.sysbios.hal"));
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_hal_SysCall_SysCallProxy_DELEGATE__Handle__label", "ti_sysbios_hal_SysCall_SysCallProxy_DELEGATE__Module__startupDone", "ti_sysbios_hal_SysCall_SysCallProxy_DELEGATE__Object__create", "ti_sysbios_hal_SysCall_SysCallProxy_DELEGATE__Object__delete", "ti_sysbios_hal_SysCall_SysCallProxy_DELEGATE__Object__get", "ti_sysbios_hal_SysCall_SysCallProxy_DELEGATE__Object__first", "ti_sysbios_hal_SysCall_SysCallProxy_DELEGATE__Object__next", "ti_sysbios_hal_SysCall_SysCallProxy_DELEGATE__Params__init", "ti_sysbios_hal_SysCall_SysCallProxy_DELEGATE__Proxy__abstract", "ti_sysbios_hal_SysCall_SysCallProxy_DELEGATE__Proxy__delegate", "ti_sysbios_hal_SysCall_SysCallProxy_DELEGATE__enterPrivMode", "ti_sysbios_hal_SysCall_SysCallProxy_DELEGATE__enterUnprivMode", "ti_sysbios_hal_SysCall_SysCallProxy_DELEGATE__restorePrivMode"));
-        vo.bind("$$logEvtCfgs", Global.newArray());
-        vo.bind("$$errorDescCfgs", Global.newArray());
-        vo.bind("$$assertDescCfgs", Global.newArray());
-        Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.setElem("", true);
-        atmap.seal("length");
-        vo.bind("MODULE_STARTUP$", 0);
-        vo.bind("PROXY$", 1);
-        loggables.clear();
-        vo.bind("$$loggables", loggables.toArray());
-        pkgV.bind("SysCall_SysCallProxy", vo);
-        ((Value.Arr)pkgV.getv("$unitNames")).add("SysCall_SysCallProxy");
-    }
-
     void Timer_TimerProxy$$SINGLETONS()
     {
         Proto.Obj po;
@@ -4267,14 +3676,11 @@ public class ti_sysbios_hal
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.Core", "ti.sysbios.hal"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.CoreNull", "ti.sysbios.hal"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.Hwi", "ti.sysbios.hal"));
-        Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.MemProtect", "ti.sysbios.hal"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.Power", "ti.sysbios.hal"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.PowerNull", "ti.sysbios.hal"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.Seconds", "ti.sysbios.hal"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.SecondsCallback", "ti.sysbios.hal"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.SecondsClock", "ti.sysbios.hal"));
-        Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.SysCall", "ti.sysbios.hal"));
-        Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.SysCallNull", "ti.sysbios.hal"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.Timer", "ti.sysbios.hal"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.TimerNull", "ti.sysbios.hal"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.Cache_CacheProxy", "ti.sysbios.hal"));
@@ -4282,7 +3688,6 @@ public class ti_sysbios_hal
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.Hwi_HwiProxy", "ti.sysbios.hal"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.Power_PowerProxy", "ti.sysbios.hal"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.Seconds_SecondsProxy", "ti.sysbios.hal"));
-        Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.SysCall_SysCallProxy", "ti.sysbios.hal"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.sysbios.hal.Timer_TimerProxy", "ti.sysbios.hal"));
         Global.callFxn("init", pkgV);
         ((Value.Obj)om.getv("ti.sysbios.hal.Cache")).bless();
@@ -4290,14 +3695,11 @@ public class ti_sysbios_hal
         ((Value.Obj)om.getv("ti.sysbios.hal.Core")).bless();
         ((Value.Obj)om.getv("ti.sysbios.hal.CoreNull")).bless();
         ((Value.Obj)om.getv("ti.sysbios.hal.Hwi")).bless();
-        ((Value.Obj)om.getv("ti.sysbios.hal.MemProtect")).bless();
         ((Value.Obj)om.getv("ti.sysbios.hal.Power")).bless();
         ((Value.Obj)om.getv("ti.sysbios.hal.PowerNull")).bless();
         ((Value.Obj)om.getv("ti.sysbios.hal.Seconds")).bless();
         ((Value.Obj)om.getv("ti.sysbios.hal.SecondsCallback")).bless();
         ((Value.Obj)om.getv("ti.sysbios.hal.SecondsClock")).bless();
-        ((Value.Obj)om.getv("ti.sysbios.hal.SysCall")).bless();
-        ((Value.Obj)om.getv("ti.sysbios.hal.SysCallNull")).bless();
         ((Value.Obj)om.getv("ti.sysbios.hal.Timer")).bless();
         ((Value.Obj)om.getv("ti.sysbios.hal.TimerNull")).bless();
         ((Value.Obj)om.getv("ti.sysbios.hal.Cache_CacheProxy")).bless();
@@ -4305,7 +3707,6 @@ public class ti_sysbios_hal
         ((Value.Obj)om.getv("ti.sysbios.hal.Hwi_HwiProxy")).bless();
         ((Value.Obj)om.getv("ti.sysbios.hal.Power_PowerProxy")).bless();
         ((Value.Obj)om.getv("ti.sysbios.hal.Seconds_SecondsProxy")).bless();
-        ((Value.Obj)om.getv("ti.sysbios.hal.SysCall_SysCallProxy")).bless();
         ((Value.Obj)om.getv("ti.sysbios.hal.Timer_TimerProxy")).bless();
         ((Value.Arr)om.findStrict("$packages", "ti.sysbios.hal")).add(pkgV);
     }
@@ -4328,14 +3729,11 @@ public class ti_sysbios_hal
         Core$$OBJECTS();
         CoreNull$$OBJECTS();
         Hwi$$OBJECTS();
-        MemProtect$$OBJECTS();
         Power$$OBJECTS();
         PowerNull$$OBJECTS();
         Seconds$$OBJECTS();
         SecondsCallback$$OBJECTS();
         SecondsClock$$OBJECTS();
-        SysCall$$OBJECTS();
-        SysCallNull$$OBJECTS();
         Timer$$OBJECTS();
         TimerNull$$OBJECTS();
         Cache_CacheProxy$$OBJECTS();
@@ -4343,21 +3741,17 @@ public class ti_sysbios_hal
         Hwi_HwiProxy$$OBJECTS();
         Power_PowerProxy$$OBJECTS();
         Seconds_SecondsProxy$$OBJECTS();
-        SysCall_SysCallProxy$$OBJECTS();
         Timer_TimerProxy$$OBJECTS();
         Cache$$CONSTS();
         CacheNull$$CONSTS();
         Core$$CONSTS();
         CoreNull$$CONSTS();
         Hwi$$CONSTS();
-        MemProtect$$CONSTS();
         Power$$CONSTS();
         PowerNull$$CONSTS();
         Seconds$$CONSTS();
         SecondsCallback$$CONSTS();
         SecondsClock$$CONSTS();
-        SysCall$$CONSTS();
-        SysCallNull$$CONSTS();
         Timer$$CONSTS();
         TimerNull$$CONSTS();
         Cache_CacheProxy$$CONSTS();
@@ -4365,21 +3759,17 @@ public class ti_sysbios_hal
         Hwi_HwiProxy$$CONSTS();
         Power_PowerProxy$$CONSTS();
         Seconds_SecondsProxy$$CONSTS();
-        SysCall_SysCallProxy$$CONSTS();
         Timer_TimerProxy$$CONSTS();
         Cache$$CREATES();
         CacheNull$$CREATES();
         Core$$CREATES();
         CoreNull$$CREATES();
         Hwi$$CREATES();
-        MemProtect$$CREATES();
         Power$$CREATES();
         PowerNull$$CREATES();
         Seconds$$CREATES();
         SecondsCallback$$CREATES();
         SecondsClock$$CREATES();
-        SysCall$$CREATES();
-        SysCallNull$$CREATES();
         Timer$$CREATES();
         TimerNull$$CREATES();
         Cache_CacheProxy$$CREATES();
@@ -4387,21 +3777,17 @@ public class ti_sysbios_hal
         Hwi_HwiProxy$$CREATES();
         Power_PowerProxy$$CREATES();
         Seconds_SecondsProxy$$CREATES();
-        SysCall_SysCallProxy$$CREATES();
         Timer_TimerProxy$$CREATES();
         Cache$$FUNCTIONS();
         CacheNull$$FUNCTIONS();
         Core$$FUNCTIONS();
         CoreNull$$FUNCTIONS();
         Hwi$$FUNCTIONS();
-        MemProtect$$FUNCTIONS();
         Power$$FUNCTIONS();
         PowerNull$$FUNCTIONS();
         Seconds$$FUNCTIONS();
         SecondsCallback$$FUNCTIONS();
         SecondsClock$$FUNCTIONS();
-        SysCall$$FUNCTIONS();
-        SysCallNull$$FUNCTIONS();
         Timer$$FUNCTIONS();
         TimerNull$$FUNCTIONS();
         Cache_CacheProxy$$FUNCTIONS();
@@ -4409,21 +3795,17 @@ public class ti_sysbios_hal
         Hwi_HwiProxy$$FUNCTIONS();
         Power_PowerProxy$$FUNCTIONS();
         Seconds_SecondsProxy$$FUNCTIONS();
-        SysCall_SysCallProxy$$FUNCTIONS();
         Timer_TimerProxy$$FUNCTIONS();
         Cache$$SIZES();
         CacheNull$$SIZES();
         Core$$SIZES();
         CoreNull$$SIZES();
         Hwi$$SIZES();
-        MemProtect$$SIZES();
         Power$$SIZES();
         PowerNull$$SIZES();
         Seconds$$SIZES();
         SecondsCallback$$SIZES();
         SecondsClock$$SIZES();
-        SysCall$$SIZES();
-        SysCallNull$$SIZES();
         Timer$$SIZES();
         TimerNull$$SIZES();
         Cache_CacheProxy$$SIZES();
@@ -4431,21 +3813,17 @@ public class ti_sysbios_hal
         Hwi_HwiProxy$$SIZES();
         Power_PowerProxy$$SIZES();
         Seconds_SecondsProxy$$SIZES();
-        SysCall_SysCallProxy$$SIZES();
         Timer_TimerProxy$$SIZES();
         Cache$$TYPES();
         CacheNull$$TYPES();
         Core$$TYPES();
         CoreNull$$TYPES();
         Hwi$$TYPES();
-        MemProtect$$TYPES();
         Power$$TYPES();
         PowerNull$$TYPES();
         Seconds$$TYPES();
         SecondsCallback$$TYPES();
         SecondsClock$$TYPES();
-        SysCall$$TYPES();
-        SysCallNull$$TYPES();
         Timer$$TYPES();
         TimerNull$$TYPES();
         Cache_CacheProxy$$TYPES();
@@ -4453,7 +3831,6 @@ public class ti_sysbios_hal
         Hwi_HwiProxy$$TYPES();
         Power_PowerProxy$$TYPES();
         Seconds_SecondsProxy$$TYPES();
-        SysCall_SysCallProxy$$TYPES();
         Timer_TimerProxy$$TYPES();
         if (isROV) {
             Cache$$ROV();
@@ -4461,14 +3838,11 @@ public class ti_sysbios_hal
             Core$$ROV();
             CoreNull$$ROV();
             Hwi$$ROV();
-            MemProtect$$ROV();
             Power$$ROV();
             PowerNull$$ROV();
             Seconds$$ROV();
             SecondsCallback$$ROV();
             SecondsClock$$ROV();
-            SysCall$$ROV();
-            SysCallNull$$ROV();
             Timer$$ROV();
             TimerNull$$ROV();
             Cache_CacheProxy$$ROV();
@@ -4476,7 +3850,6 @@ public class ti_sysbios_hal
             Hwi_HwiProxy$$ROV();
             Power_PowerProxy$$ROV();
             Seconds_SecondsProxy$$ROV();
-            SysCall_SysCallProxy$$ROV();
             Timer_TimerProxy$$ROV();
         }//isROV
         $$SINGLETONS();
@@ -4485,14 +3858,11 @@ public class ti_sysbios_hal
         Core$$SINGLETONS();
         CoreNull$$SINGLETONS();
         Hwi$$SINGLETONS();
-        MemProtect$$SINGLETONS();
         Power$$SINGLETONS();
         PowerNull$$SINGLETONS();
         Seconds$$SINGLETONS();
         SecondsCallback$$SINGLETONS();
         SecondsClock$$SINGLETONS();
-        SysCall$$SINGLETONS();
-        SysCallNull$$SINGLETONS();
         Timer$$SINGLETONS();
         TimerNull$$SINGLETONS();
         Cache_CacheProxy$$SINGLETONS();
@@ -4500,7 +3870,6 @@ public class ti_sysbios_hal
         Hwi_HwiProxy$$SINGLETONS();
         Power_PowerProxy$$SINGLETONS();
         Seconds_SecondsProxy$$SINGLETONS();
-        SysCall_SysCallProxy$$SINGLETONS();
         Timer_TimerProxy$$SINGLETONS();
         $$INITIALIZATION();
     }

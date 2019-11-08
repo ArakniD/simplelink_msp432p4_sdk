@@ -9,7 +9,6 @@ DisplaySharp.h
 DisplayUart.h
 lcd/SharpGrLib.h
 package.bld
-.meta
 package/package.cfg.xdc.inc
 lib/display.aem4f
 package/package_ti.display.c

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,8 +45,12 @@ let config = [
     {
         name        : "regionBase",
         displayName : "Region Base",
-        description : "Base address of the region. Must be aligned an"
-            + " integer multiple of sector size boundary.",
+        description  : "Base address of the region. Must be aligned on an"
+            + " integer multiple of the sector size.",
+        longDescription : "NOTE: This setting has no effect when using the GCC"
+            + " toolchain. The linker script must be manually modified if"
+            + " the region must be at a specific location. See the nvsinternal"
+            + " example README file for details.",
         displayFormat: "hex",
         default     : 0x0
     },

@@ -54,9 +54,6 @@
 #include <ti/drivers/PWM.h>
 #include <ti/drivers/Timer.h>
 
-/* Board Header files */
-#include "Board.h"
-
 /* Local Header Files */
 #include "callbacks.h"
 #include "lcd_thread.h"

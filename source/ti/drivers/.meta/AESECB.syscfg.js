@@ -80,8 +80,8 @@ input blocks using AES.
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#AESECB_Configuration_Options "Configuration options reference"
 `,
     validate            : validate,
-    defaultInstanceName : "Board_AESECB",
-    config              : Common.addNameConfig(config, "/ti/drivers/AESECB", "Board_AESECB"),
+    defaultInstanceName : "CONFIG_AESECB_",
+    config              : Common.addNameConfig(config, "/ti/drivers/AESECB", "CONFIG_AESECB_"),
     modules: Common.autoForceModules(["Board", "Power", "DMA"])
 };
 

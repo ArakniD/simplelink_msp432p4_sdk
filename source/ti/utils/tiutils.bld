@@ -64,15 +64,13 @@ var Pkg = xdc.useModule('xdc.bld.PackageContents');
  * Linux86 => -std=c99 for (at least sscanf() and strtof())
  */
 var ccOpts = {
-    "ti.targets.arm.elf.M3"           : " -ms -g --c99 ",
     "ti.targets.arm.elf.M4"           : " -ms -g --c99 ",
     "ti.targets.arm.elf.M4F"          : " -ms -g --c99 ",
+    "ti.targets.arm.clang.M33"        : "",  // TBD
     "ti.targets.arm.clang.M33F"       : "",  // TBD
-    "iar.targets.arm.M3"              : "",
     "iar.targets.arm.M4"              : "",
     "iar.targets.arm.M4F"             : "",
     "gnu.targets.Linux86"             : " -m32 -Wall ",
-    "gnu.targets.arm.M3"              : " -std=c99 ",
     "gnu.targets.arm.M4"              : " -std=c99 ",
     "gnu.targets.arm.M4F"             : " -std=c99 ",
     "gnu.targets.arm.GCArmv7AF"       : " -Wall "
@@ -182,10 +180,6 @@ function getLibDirectory(suffix) {
     var libdir = "";
 
     switch (suffix) {
-        case "em3":
-            libdir = "lib/ccs/m3";
-            break;
-
         case "em4":
             libdir = "lib/ccs/m4";
             break;
@@ -194,12 +188,12 @@ function getLibDirectory(suffix) {
             libdir = "lib/ccs/m4f";
             break;
 
-        case "m33f":
-            libdir = "lib/ccs/m33f";
+        case "m33":
+            libdir = "lib/ccs/m33";
             break;
 
-        case "rm3":
-            libdir = "lib/iar/m3";
+        case "m33f":
+            libdir = "lib/ccs/m33f";
             break;
 
         case "rm4":
@@ -208,10 +202,6 @@ function getLibDirectory(suffix) {
 
         case "rm4f":
             libdir = "lib/iar/m4f";
-            break;
-
-        case "m3g":
-            libdir = "lib/gcc/m3";
             break;
 
         case "m4g":
@@ -242,20 +232,18 @@ function getPosixIncDirectory(suffix) {
     var incdir = "";
 
     switch (suffix) {
-        case "em3":
         case "em4":
         case "em4f":
+        case "m33":
         case "m33f":
             incdir = "ccs";
             break;
 
-        case "rm3":
         case "rm4":
         case "rm4f":
             incdir = "iar";
             break;
 
-        case "m3g":
         case "m4g":
         case "m4fg":
             incdir = "gcc";

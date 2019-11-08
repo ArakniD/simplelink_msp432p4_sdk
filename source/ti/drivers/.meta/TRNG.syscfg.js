@@ -77,9 +77,9 @@ private or symmetric keys.
 [3]: /tidrivers/doxygen/html/_t_r_n_g_8h.html#ti_drivers_TRNG_Examples "C usage examples"
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#TRNG_Configuration_Options "Configuration options reference"
 `,
+    defaultInstanceName : "CONFIG_TRNG_",
+    config              : Common.addNameConfig(config, "/ti/drivers/TRNG", "CONFIG_TRNG_"),
     validate            : validate,
-    defaultInstanceName : "Board_TRNG",
-    config              : Common.addNameConfig(config, "/ti/drivers/TRNG", "Board_TRNG"),
     modules: Common.autoForceModules(["Board", "Power"])
 };
 

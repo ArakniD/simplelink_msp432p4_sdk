@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -33,10 +33,12 @@
 #define ti_sysbios_interfaces_ITimestamp__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_interfaces_ITimestamp___VERS 200
@@ -155,7 +157,7 @@ static inline ti_sysbios_interfaces_ITimestamp_Module ti_sysbios_interfaces_ITim
             return (ti_sysbios_interfaces_ITimestamp_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_xdc_runtime_ITimestampProvider */
@@ -181,7 +183,7 @@ static inline ti_sysbios_interfaces_ITimestamp_Module ti_sysbios_interfaces_ITim
             return (ti_sysbios_interfaces_ITimestamp_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_xdc_runtime_ITimestampClient */

@@ -1,0 +1,997 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="_l_e_d_8h" kind="file" language="C++">
+    <compoundname>LED.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includes local="no">stdbool.h</includes>
+    <includes refid="_g_p_i_o_8h" local="no">ti/drivers/GPIO.h</includes>
+    <includes refid="_p_w_m_8h" local="no">ti/drivers/PWM.h</includes>
+    <includes local="no">ti/drivers/dpl/ClockP.h</includes>
+    <incdepgraph>
+      <node id="145">
+        <label>stdbool.h</label>
+      </node>
+      <node id="143">
+        <label>LED.h</label>
+        <link refid="_l_e_d_8h"/>
+        <childnode refid="144" relation="include">
+        </childnode>
+        <childnode refid="145" relation="include">
+        </childnode>
+        <childnode refid="146" relation="include">
+        </childnode>
+        <childnode refid="147" relation="include">
+        </childnode>
+        <childnode refid="148" relation="include">
+        </childnode>
+      </node>
+      <node id="144">
+        <label>stdint.h</label>
+      </node>
+      <node id="148">
+        <label>ti/drivers/dpl/ClockP.h</label>
+      </node>
+      <node id="147">
+        <label>ti/drivers/PWM.h</label>
+        <link refid="_p_w_m_8h"/>
+        <childnode refid="144" relation="include">
+        </childnode>
+      </node>
+      <node id="146">
+        <label>ti/drivers/GPIO.h</label>
+        <link refid="_g_p_i_o_8h"/>
+        <childnode refid="144" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <innerclass refid="struct_l_e_d___config" prot="public">LED_Config</innerclass>
+    <innerclass refid="struct_l_e_d___h_w_attrs" prot="public">LED_HWAttrs</innerclass>
+    <innerclass refid="struct_l_e_d___object" prot="public">LED_Object</innerclass>
+    <innerclass refid="struct_l_e_d___params" prot="public">LED_Params</innerclass>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="_l_e_d_8h_1a7bb18ca9f746ebcfbfc397886643f16d" prot="public" static="no">
+        <name>LED_BRIGHTNESS_MAX</name>
+        <initializer>100U  /* Max brightness in % is 100%*/</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="236" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" bodystart="236" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_l_e_d_8h_1a7c23f23fb4baef6038542bf4e3253892" prot="public" static="no">
+        <name>LED_BRIGHTNESS_MIN</name>
+        <initializer>0U    /* Max brightness in % is 0%*/</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="237" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" bodystart="237" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_l_e_d_8h_1af2e697ac60e05813d45ea2c9c9e79c25" prot="public" static="no">
+        <name>LED_ON</name>
+        <initializer>1U</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="239" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" bodystart="239" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_l_e_d_8h_1a80700bb63bd56ebabbb4728aa433fd29" prot="public" static="no">
+        <name>LED_OFF</name>
+        <initializer>0U</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="240" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" bodystart="240" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_l_e_d_8h_1ab086abacbb603f695c9fe7d392a54fce" prot="public" static="no">
+        <name>LED_BLINK_FOREVER</name>
+        <initializer>0xFFFF</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="242" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" bodystart="242" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="_l_e_d_8h_1a058b30c4dad8492729144d11afa6ddb1" prot="public" static="no">
+        <name>LED_Type</name>
+        <enumvalue id="_l_e_d_8h_1a058b30c4dad8492729144d11afa6ddb1af545c04416e7b8be433ad172a18a8b2b" prot="public">
+          <name>LED_NONE</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_l_e_d_8h_1a058b30c4dad8492729144d11afa6ddb1a5ea0edf61325cd915372af7b95954218" prot="public">
+          <name>LED_GPIO_CONTROLLED</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_l_e_d_8h_1a058b30c4dad8492729144d11afa6ddb1a0a374df97562bcbd852efe880eeaac99" prot="public">
+          <name>LED_PWM_CONTROLLED</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>LED types based on control source. </para>        </briefdescription>
+        <detaileddescription>
+<para>A LED can be controlled by GPIO or PWM. Only a PWM controlled LED can be operated to show brightness variation. An unopened instance will be of type <ref refid="_l_e_d_8h_1a058b30c4dad8492729144d11afa6ddb1af545c04416e7b8be433ad172a18a8b2b" kindref="member">LED_NONE</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="254" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" bodystart="254" bodyend="258"/>
+      </memberdef>
+      <memberdef kind="enum" id="_l_e_d_8h_1a4a8326721c03c1e5b40de78b999236b8" prot="public" static="no">
+        <name>LED_State</name>
+        <enumvalue id="_l_e_d_8h_1a4a8326721c03c1e5b40de78b999236b8a0eebea54c4dc200be6939742385ee789" prot="public">
+          <name>LED_STATE_OFF</name>
+          <initializer>=  0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_l_e_d_8h_1a4a8326721c03c1e5b40de78b999236b8a024f137d8368d2d31196fbcfb8345550" prot="public">
+          <name>LED_STATE_ON</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_l_e_d_8h_1a4a8326721c03c1e5b40de78b999236b8af61006685f03f51d1560923ea5420b93" prot="public">
+          <name>LED_STATE_BLINKING</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>LED State. </para>        </briefdescription>
+        <detaileddescription>
+<para>A LED can be in OFF, ON or BLINKING state</para><para>State of particular LED may be tied with a warning/alert in system which a thread/task may want to know. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="268" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" bodystart="268" bodyend="272"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" prot="public" static="no">
+        <type><ref refid="struct_l_e_d___config" kindref="compound">LED_Config</ref> *</type>
+        <definition>typedef LED_Config* LED_Handle</definition>
+        <argsstring></argsstring>
+        <name>LED_Handle</name>
+        <briefdescription>
+<para>A handle that is returned from a <ref refid="_l_e_d_8h_1a9ead54bbe388c4164fd7e0e4416b0017" kindref="member">LED_open()</ref> call. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="293" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" bodystart="293" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="_l_e_d_8h_1ab213809d7fa06eb80b26f56c9b72d1b4" prot="public" static="no" mutable="no">
+        <type>const uint_least8_t</type>
+        <definition>const uint_least8_t LED_count</definition>
+        <argsstring></argsstring>
+        <name>LED_count</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="245" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_l_e_d_8h_1a22daa13fd0b3e576de24272a574b5905" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LED_close</definition>
+        <argsstring>(LED_Handle ledHandle)</argsstring>
+        <name>LED_close</name>
+        <param>
+          <type><ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></type>
+          <declname>ledHandle</declname>
+        </param>
+        <briefdescription>
+<para>Function to close a LED specified by the LED handle. </para>        </briefdescription>
+        <detaileddescription>
+<para>This call will destruct associated clock, turn off LED, and close the PWM instance if applicable.</para><para><simplesect kind="pre"><para><ref refid="_l_e_d_8h_1a9ead54bbe388c4164fd7e0e4416b0017" kindref="member">LED_open()</ref> had to be called first.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ledHandle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref> returned from <ref refid="_l_e_d_8h_1a9ead54bbe388c4164fd7e0e4416b0017" kindref="member">LED_open()</ref> </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="357" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_l_e_d_8h_1a008301885ac288a61c5c9c6d6a9e92f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_l_e_d_8h_1a4a8326721c03c1e5b40de78b999236b8" kindref="member">LED_State</ref></type>
+        <definition>LED_State LED_getState</definition>
+        <argsstring>(LED_Handle ledHandle)</argsstring>
+        <name>LED_getState</name>
+        <param>
+          <type><ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></type>
+          <declname>ledHandle</declname>
+        </param>
+        <briefdescription>
+<para>Function to get LED state. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function may be useful in scenarios if a LED state(ON/OFF/BLINKING) is tied with some system warning/alerts</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ledHandle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref> returned from <ref refid="_l_e_d_8h_1a9ead54bbe388c4164fd7e0e4416b0017" kindref="member">LED_open()</ref></para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The LED State </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="369" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_l_e_d_8h_1a0a4419e3e369c088021add0b5054ff7b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LED_init</definition>
+        <argsstring>()</argsstring>
+        <name>LED_init</name>
+        <briefdescription>
+<para>Function to initialize LED driver. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function will initialize the LED driver. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="376" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_l_e_d_8h_1a9ead54bbe388c4164fd7e0e4416b0017" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></type>
+        <definition>LED_Handle LED_open</definition>
+        <argsstring>(uint_least8_t index, LED_Params *params)</argsstring>
+        <name>LED_open</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>index</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_l_e_d___params" kindref="compound">LED_Params</ref> *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+<para>Function to open an instance of LED. </para>        </briefdescription>
+        <detaileddescription>
+<para>Function to open an LED instance in the LED_config array. The GPIO or PWM configuartions must already exist before this function is called. The <ref refid="struct_l_e_d___params" kindref="compound">LED_Params</ref> input can be used to specify the run time options of the LED instance.</para><para><simplesect kind="pre"><para><ref refid="_l_e_d_8h_1a0a4419e3e369c088021add0b5054ff7b" kindref="member">LED_init()</ref> has to be called first</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index into the LED_config array specifying the <ref refid="struct_l_e_d___config" kindref="compound">LED_Config</ref> that is to be used to open the LED.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>*params</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to <ref refid="struct_l_e_d___params" kindref="compound">LED_Params</ref> structure. If NULL, it will use default values.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A LED_Handle on success, or a NULL on failure.</para></simplesect>
+<simplesect kind="see"><para><ref refid="_l_e_d_8h_1a0a4419e3e369c088021add0b5054ff7b" kindref="member">LED_init()</ref> </para></simplesect>
+<simplesect kind="see"><para><ref refid="_l_e_d_8h_1aff04caa98eb18018bc7cec02e89fea86" kindref="member">LED_Params_init()</ref> </para></simplesect>
+<simplesect kind="see"><para><ref refid="_l_e_d_8h_1a22daa13fd0b3e576de24272a574b5905" kindref="member">LED_close()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="400" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_l_e_d_8h_1aff04caa98eb18018bc7cec02e89fea86" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LED_Params_init</definition>
+        <argsstring>(LED_Params *params)</argsstring>
+        <name>LED_Params_init</name>
+        <param>
+          <type><ref refid="struct_l_e_d___params" kindref="compound">LED_Params</ref> *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+<para>Function to initialize a <ref refid="struct_l_e_d___params" kindref="compound">LED_Params</ref> struct to its defaults. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>params</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to <ref refid="struct_l_e_d___params" kindref="compound">LED_Params</ref> structure for initialization.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+The default parameters are:<itemizedlist>
+<listitem><para>LED initially off</para></listitem><listitem><para>Blink period of zero</para></listitem><listitem><para>Max brightness (for PWM LED only)</para></listitem><listitem><para>PWM period of 1 ms (for PWM LED only) </para></listitem></itemizedlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="414" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_l_e_d_8h_1ab918b2aeace73f7c38f0c22acf7ec34e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool LED_setBrightnessLevel</definition>
+        <argsstring>(LED_Handle ledHandle, uint8_t level)</argsstring>
+        <name>LED_setBrightnessLevel</name>
+        <param>
+          <type><ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></type>
+          <declname>ledHandle</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>level</declname>
+        </param>
+        <briefdescription>
+<para>Function to set brightness level of a LED. </para>        </briefdescription>
+        <detaileddescription>
+<para>Ignores brightness settings if LED is not PWM controlled. Fails if requested brightness is above 100%.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ledHandle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Brightness level in terms of percentage (0-100)</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true on success or false upon failure. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="428" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_l_e_d_8h_1aa5f4ef76e502faf11aba5714065f076a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool LED_setOff</definition>
+        <argsstring>(LED_Handle ledHandle)</argsstring>
+        <name>LED_setOff</name>
+        <param>
+          <type><ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></type>
+          <declname>ledHandle</declname>
+        </param>
+        <briefdescription>
+<para>Function to turn off an LED. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ledHandle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An <ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true on success or false upon failure. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="437" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_l_e_d_8h_1a6da3cef2f4e273fa33046e59da423362" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool LED_setOn</definition>
+        <argsstring>(LED_Handle ledHandle, uint8_t brightness)</argsstring>
+        <name>LED_setOn</name>
+        <param>
+          <type><ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></type>
+          <declname>ledHandle</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>brightness</declname>
+        </param>
+        <briefdescription>
+<para>Function to turn on an LED. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ledHandle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An <ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>brightness</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Brightness level in terms of percentage 0-100%. Is ignored for non PWM LEDs.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true on success or false upon failure. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="449" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_l_e_d_8h_1ab934d762491bdc04636ebbbe4a0a7d3a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LED_startBlinking</definition>
+        <argsstring>(LED_Handle ledHandle, uint16_t blinkPeriod, uint16_t blinkCount)</argsstring>
+        <name>LED_startBlinking</name>
+        <param>
+          <type><ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></type>
+          <declname>ledHandle</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>blinkPeriod</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>blinkCount</declname>
+        </param>
+        <briefdescription>
+<para>Function to start an LED blinking. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ledHandle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An <ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blinkPeriod</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Value in ms which determines how often the LED blinks. A value of 1000 will cause the LED to blink once a second. The maximum value is ~65 seconds or 0xFFFF ms.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blinkCount</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If not set to <ref refid="_l_e_d_8h_1ab086abacbb603f695c9fe7d392a54fce" kindref="member">LED_BLINK_FOREVER</ref>, the LED will blink the specified number of times and then will turn off. A value of zero will stop the LED blinking. Maximum number of blinks is 0x7FFF or 32,767 blinks. An input exceeding this value will be truncated to 0x7FFF. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="467" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_l_e_d_8h_1af561cccde227fd2d79aa8851a4f3217b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LED_stopBlinking</definition>
+        <argsstring>(LED_Handle ledHandle)</argsstring>
+        <name>LED_stopBlinking</name>
+        <param>
+          <type><ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></type>
+          <declname>ledHandle</declname>
+        </param>
+        <briefdescription>
+<para>Function to stop an LED blinking. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ledHandle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An <ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref> </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="477" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_l_e_d_8h_1ab0ca5c5548cb4905e0ff92babc100313" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LED_toggle</definition>
+        <argsstring>(LED_Handle ledHandle)</argsstring>
+        <name>LED_toggle</name>
+        <param>
+          <type><ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></type>
+          <declname>ledHandle</declname>
+        </param>
+        <briefdescription>
+<para>Function to toggle an LED. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ledHandle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An <ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref> </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="485" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_l_e_d_8h_1a229f28207624bf123fbc478e908534ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LED_write</definition>
+        <argsstring>(LED_Handle ledHandle, bool value)</argsstring>
+        <name>LED_write</name>
+        <param>
+          <type><ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></type>
+          <declname>ledHandle</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Specify binary state of an LED. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ledHandle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An <ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref></para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>TRUE for on, FALSE for off </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h" line="495" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>LED driver. </para>    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+</para><para>The LED driver is provided for easy access to common LED functionality. All functionality can be replicated using the <ref refid="_g_p_i_o_8h" kindref="compound">GPIO.h</ref> and <ref refid="_p_w_m_8h" kindref="compound">PWM.h</ref> APIs.</para><para><anchor id="_l_e_d_8h_1ti_drivers_LED_Synopsis"/><heading level="1">Synopsis</heading>
+</para><para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/apps/LED.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">LED_Handle<sp/>handle;</highlight></codeline>
+<codeline><highlight class="normal">LED_Params<sp/>ledParams;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Assume<sp/>our<sp/>LED<sp/>is<sp/>configured<sp/>to<sp/>be<sp/>a<sp/>PWM<sp/>LED</highlight></codeline>
+<codeline><highlight class="normal">LED_Params_init(&amp;ledParams);</highlight></codeline>
+<codeline><highlight class="normal">ledHandle<sp/>=<sp/>LED_open(CONFIG_LED0,<sp/>&amp;ledParams);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Turn<sp/>on,<sp/>set<sp/>brightness,<sp/>and<sp/>blink</highlight></codeline>
+<codeline><highlight class="normal">LED_setOn(handle,<sp/>80);</highlight></codeline>
+<codeline><highlight class="normal">LED_startBlinking(handle,<sp/>500,<sp/>LED_BLINK_FOREVER);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">LED_setOff(handle);</highlight></codeline>
+<codeline><highlight class="normal">LED_close(handle);</highlight></codeline>
+</programlisting></para><para><anchor id="_l_e_d_8h_1ti_drivers_LED_Examples"/><heading level="2">Examples</heading>
+</para><para><itemizedlist>
+<listitem><para><ref refid="_l_e_d_8h_1ti_drivers_LED_Examples_config_array" kindref="member">Generic Configuration</ref></para></listitem><listitem><para><ref refid="_l_e_d_8h_1ti_drivers_LED_Examples_gpio_config" kindref="member">GPIO Configuration</ref></para></listitem><listitem><para><ref refid="_l_e_d_8h_1ti_drivers_LED_Examples_pwm_led" kindref="member">PWM Mode</ref></para></listitem></itemizedlist>
+</para><para><heading level="1">Operation</heading>
+</para><para>LED driver simplifies using an LED (may be GPIO or PWM controlled) available on board and supports following operations - <verbatim>1. To Turn ON/OFF
+2. Blink with requested delay, stop when requested
+3. Vary brightness (can only be done to a PWM controlled LED)
+4. Toggle
+</verbatim></para><para>There are also APIs to open and close an LED handle and also one to get current state of a LED. User can request to set a LED into particular state while opening itself i.e. to start blink as part of <ref refid="_l_e_d_8h_1a9ead54bbe388c4164fd7e0e4416b0017" kindref="member">LED_open()</ref> call.</para><para><ref refid="_l_e_d_8h_1a0a4419e3e369c088021add0b5054ff7b" kindref="member">LED_init()</ref> must be called before using <ref refid="_l_e_d_8h_1a9ead54bbe388c4164fd7e0e4416b0017" kindref="member">LED_open()</ref>.</para><para><heading level="2">Defining <ref refid="struct_l_e_d___config" kindref="compound">LED_Config</ref>, <ref refid="struct_l_e_d___object" kindref="compound">LED_Object</ref> and <ref refid="struct_l_e_d___h_w_attrs" kindref="compound">LED_HWAttrs</ref></heading>
+</para><para>To use the LED driver, an application has to indicate how many LEDs it wants to operate, of what type (PWM or GPIO controlled), and which GPIO or PWM to index for each LED.</para><para>Each structure must be defined by the application. The following example is for an MSP432P401R platform in which four LEDs are available on board. The following declarations are placed in &quot;ti_drivers_config.c&quot;. How the gpio indices are defined is detailed in the next section.</para><para><heading level="3">LED_config structures</heading>
+</para><para><anchor id="_l_e_d_8h_1ti_drivers_LED_Examples_config_array"/> &quot;ti_drivers_config.c&quot; <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/apps/LED.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">LED_Object<sp/>LED_object[4];</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">const<sp/>LED_HWAttrs<sp/>LED_hwAttrs[4]<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.index<sp/>=<sp/>CONFIG_LED1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.type<sp/><sp/>=<sp/>LED_GPIO_CONTROLLED</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.index<sp/>=<sp/>CONFIG_LED_RED,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.type<sp/><sp/>=<sp/>LED_GPIO_CONTROLLED</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.index<sp/>=<sp/>CONFIG_NA_GPIO_PWMLED,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.type<sp/><sp/>=<sp/>LED_PWM_CONTROLLED</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.index<sp/>=<sp/>CONFIG_NA_GPIO_PWMLED,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.type<sp/><sp/>=<sp/>LED_PWM_CONTROLLED</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">const<sp/>LED_Config<sp/>LED_config[]<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/><sp/>&amp;LED_object[0],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;LED_hwAttrs[0],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/><sp/>&amp;LED_object[1],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;LED_hwAttrs[1],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/><sp/>&amp;LED_object[2],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;LED_hwAttrs[2],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/><sp/>&amp;LED_object[3],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;LED_hwAttrs[3],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">uint32_t<sp/>LED_count<sp/>=<sp/>4;</highlight></codeline>
+</programlisting></para><para><heading level="2">Setting up a GPIO controlled LED</heading>
+</para><para>The following code snippet shows how a GPIO pin controlling an LED is configured. The index the user provides to <ref refid="_l_e_d_8h_1a9ead54bbe388c4164fd7e0e4416b0017" kindref="member">LED_open()</ref> corresponds to an entry in the <ref refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" kindref="member">GPIO_PinConfig</ref> array which will source the LED. It is the user&apos;s responsibility to ensure that the pin is configured properly in the pin array. Typically this means configuring the pin as an output.</para><para><heading level="3">GPIO controlled LED</heading>
+</para><para><anchor id="_l_e_d_8h_1ti_drivers_LED_Examples_gpio_config"/> The following definitions are in &quot;ti_drivers_config.h&quot; and &quot;ti_drivers_config.c&quot; respectively. This example uses GPIO pins 1.0 and 2.0 which control LED1 and RED LED on LaunchPad respectively. In addition to the structures shown below, the other GPIO configuration data must exist. See <ref refid="_g_p_i_o_8h" kindref="compound">GPIO.h</ref>.</para><para>&quot;ti_drivers_config.h&quot; <programlisting><codeline><highlight class="normal">#define<sp/>CONFIG_LED1<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>CONFIG_LED_RED<sp/><sp/><sp/><sp/><sp/><sp/>1</highlight></codeline>
+</programlisting></para><para>&quot;ti_drivers_config.c&quot; <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/GPIO.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">GPIO_PinConfig<sp/>gpioPinConfigs[]<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GPIOMSP432_P1_0<sp/>|<sp/>GPIO_CFG_OUT_STD<sp/>|<sp/>GPIO_CFG_OUT_STR_HIGH<sp/>|<sp/>GPIO_CFG_OUT_LOW,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GPIOMSP432_P2_0<sp/>|<sp/>GPIO_CFG_OUT_STD<sp/>|<sp/>GPIO_CFG_OUT_STR_HIGH<sp/>|<sp/>GPIO_CFG_OUT_LOW,</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para><para><heading level="2">Configuring a PWM controlled LED</heading>
+</para><para>The LED driver allows for an LED to be driven by the PWM driver. This allows the user to set a brightness level in addition to the other LED features. The user must specify in the <ref refid="struct_l_e_d___h_w_attrs" kindref="compound">LED_HWAttrs</ref> of each <ref refid="struct_l_e_d___config" kindref="compound">LED_Config</ref> entry which <ref refid="_p_w_m_8h_1af4fdcd36077e2aba99d6996ae1ea64ec" kindref="member">PWM_Config</ref> the LED instance is allowed to use. LED instances cannot share a PWM instance.</para><para>The user may specify the period of the PWM signal in the <ref refid="struct_l_e_d___params" kindref="compound">LED_Params</ref> passed to <ref refid="_l_e_d_8h_1a9ead54bbe388c4164fd7e0e4416b0017" kindref="member">LED_open()</ref>. This is not to be confused with <ref refid="struct_l_e_d___params_1a58c5ea152a72482ed1238b8e88a65adc" kindref="member">LED_Params.blinkPeriod</ref> which specifies the default blink period.</para><para><heading level="3">Opening a PWM LED</heading>
+</para><para><anchor id="_l_e_d_8h_1ti_drivers_LED_Examples_pwm_led"/> We will borrow the 3rd LED_config entry from the <ref refid="_l_e_d_8h_1ti_drivers_LED_Examples_config_array" kindref="member">ti_drivers_LED_Examples_config_array</ref></para><para>In &quot;ti_drivers_config.h&quot; <programlisting><codeline><highlight class="normal">#define<sp/>CONFIG_LED0<sp/><sp/><sp/><sp/><sp/>0</highlight></codeline>
+</programlisting></para><para>In application code: <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/apps/LED.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">LED_Handle<sp/>LEDHandle;</highlight></codeline>
+<codeline><highlight class="normal">LED_Params<sp/>ledParams;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">LED_Params_init(&amp;ledParams);</highlight></codeline>
+<codeline><highlight class="normal">ledParams.pwmPeriod<sp/>=<sp/>100;<sp/>//<sp/>0.1<sp/>ms<sp/>period</highlight></codeline>
+<codeline><highlight class="normal">ledParams.blinkPeriod<sp/>=<sp/>500;<sp/>//<sp/>LED<sp/>will<sp/>toggle<sp/>twice<sp/>a<sp/>second</highlight></codeline>
+<codeline><highlight class="normal">ledParams.setState<sp/>=<sp/>LED_STATE_BLINKING;<sp/>//<sp/>Start<sp/>LED<sp/>blink<sp/>on<sp/>open</highlight></codeline>
+<codeline><highlight class="normal">ledHandle<sp/>=<sp/>LED_open(CONFIG_LED0,<sp/>&amp;ledParams);<sp/>//<sp/>Open<sp/>the<sp/>first<sp/>LED_Config</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Turn<sp/>on<sp/>at<sp/>half<sp/>brightness<sp/>level</highlight></codeline>
+<codeline><highlight class="normal">LED_setOn(ledHandle,<sp/>50);</highlight></codeline>
+</programlisting> </para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2016-2019,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>are<sp/>met:</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>Texas<sp/>Instruments<sp/>Incorporated<sp/>nor<sp/>the<sp/>names<sp/>of</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>its<sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>from<sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>THIS<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>BY<sp/>THE<sp/>COPYRIGHT<sp/>HOLDERS<sp/>AND<sp/>CONTRIBUTORS<sp/>&quot;AS<sp/>IS&quot;</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>AND<sp/>ANY<sp/>EXPRESS<sp/>OR<sp/>IMPLIED<sp/>WARRANTIES,<sp/>INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>THE<sp/>IMPLIED<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY<sp/>AND<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>PURPOSE<sp/>ARE<sp/>DISCLAIMED.<sp/>IN<sp/>NO<sp/>EVENT<sp/>SHALL<sp/>THE<sp/>COPYRIGHT<sp/>OWNER<sp/>OR</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>CONTRIBUTORS<sp/>BE<sp/>LIABLE<sp/>FOR<sp/>ANY<sp/>DIRECT,<sp/>INDIRECT,<sp/>INCIDENTAL,<sp/>SPECIAL,</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>EXEMPLARY,<sp/>OR<sp/>CONSEQUENTIAL<sp/>DAMAGES<sp/>(INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>PROCUREMENT<sp/>OF<sp/>SUBSTITUTE<sp/>GOODS<sp/>OR<sp/>SERVICES;<sp/>LOSS<sp/>OF<sp/>USE,<sp/>DATA,<sp/>OR<sp/>PROFITS;</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>OR<sp/>BUSINESS<sp/>INTERRUPTION)<sp/>HOWEVER<sp/>CAUSED<sp/>AND<sp/>ON<sp/>ANY<sp/>THEORY<sp/>OF<sp/>LIABILITY,</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>WHETHER<sp/>IN<sp/>CONTRACT,<sp/>STRICT<sp/>LIABILITY,<sp/>OR<sp/>TORT<sp/>(INCLUDING<sp/>NEGLIGENCE<sp/>OR</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>OTHERWISE)<sp/>ARISING<sp/>IN<sp/>ANY<sp/>WAY<sp/>OUT<sp/>OF<sp/>THE<sp/>USE<sp/>OF<sp/>THIS<sp/>SOFTWARE,</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>EVEN<sp/>IF<sp/>ADVISED<sp/>OF<sp/>THE<sp/>POSSIBILITY<sp/>OF<sp/>SUCH<sp/>DAMAGE.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">/*!*****************************************************************************</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/><sp/>@file<sp/><sp/><sp/><sp/><sp/><sp/><sp/>LED.h</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>LED<sp/>driver</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>LED<sp/>driver<sp/>is<sp/>provided<sp/>for<sp/>easy<sp/>access<sp/>to<sp/>common<sp/>LED<sp/>functionality.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/>All<sp/>functionality<sp/>can<sp/>be<sp/>replicated<sp/>using<sp/>the<sp/>GPIO.h<sp/>and<sp/>PWM.h<sp/>APIs.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/><sp/>@anchor<sp/>ti_drivers_LED_Synopsis</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/><sp/>#<sp/>Synopsis<sp/>#</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&lt;ti/drivers/apps/LED.h&gt;</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/><sp/>LED_Handle<sp/>handle;</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/><sp/>LED_Params<sp/>ledParams;</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/><sp/>//<sp/>Assume<sp/>our<sp/>LED<sp/>is<sp/>configured<sp/>to<sp/>be<sp/>a<sp/>PWM<sp/>LED</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/><sp/>LED_Params_init(&amp;ledParams);</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/><sp/>ledHandle<sp/>=<sp/>LED_open(CONFIG_LED0,<sp/>&amp;ledParams);</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/><sp/>//<sp/>Turn<sp/>on,<sp/>set<sp/>brightness,<sp/>and<sp/>blink</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/><sp/>LED_setOn(handle,<sp/>80);</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/><sp/>LED_startBlinking(handle,<sp/>500,<sp/>LED_BLINK_FOREVER);</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/><sp/>LED_setOff(handle);</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/><sp/>LED_close(handle);</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/><sp/>@anchor<sp/>ti_drivers_LED_Examples</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/><sp/>##<sp/>Examples<sp/>#</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*<sp/><sp/>*<sp/>@ref<sp/>ti_drivers_LED_Examples_config_array<sp/>&quot;Generic<sp/>Configuration&quot;</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/><sp/>*<sp/>@ref<sp/>ti_drivers_LED_Examples_gpio_config<sp/>&quot;GPIO<sp/>Configuration&quot;</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*<sp/><sp/>*<sp/>@ref<sp/>ti_drivers_LED_Examples_pwm_led<sp/>&quot;PWM<sp/>Mode&quot;</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*<sp/><sp/>#<sp/>Operation<sp/>#</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*<sp/><sp/>LED<sp/>driver<sp/>simplifies<sp/>using<sp/>an<sp/>LED<sp/>(may<sp/>be<sp/>GPIO<sp/>or<sp/>PWM<sp/>controlled)</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/><sp/>available<sp/>on<sp/>board<sp/>and<sp/>supports<sp/>following<sp/>operations<sp/>-</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>1.<sp/>To<sp/>Turn<sp/>ON/OFF</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>2.<sp/>Blink<sp/>with<sp/>requested<sp/>delay,<sp/>stop<sp/>when<sp/>requested</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>3.<sp/>Vary<sp/>brightness<sp/>(can<sp/>only<sp/>be<sp/>done<sp/>to<sp/>a<sp/>PWM<sp/>controlled<sp/>LED)</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>4.<sp/>Toggle</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*<sp/><sp/>There<sp/>are<sp/>also<sp/>APIs<sp/>to<sp/>open<sp/>and<sp/>close<sp/>an<sp/>LED<sp/>handle<sp/>and<sp/>also<sp/>one<sp/>to<sp/>get</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*<sp/><sp/>current<sp/>state<sp/>of<sp/>a<sp/>LED.<sp/>User<sp/>can<sp/>request<sp/>to<sp/>set<sp/>a<sp/>LED<sp/>into<sp/>particular<sp/>state</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*<sp/><sp/>while<sp/>opening<sp/>itself<sp/>i.e.<sp/>to<sp/>start<sp/>blink<sp/>as<sp/>part<sp/>of<sp/>LED_open()<sp/>call.</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/>*<sp/><sp/>LED_init()<sp/>must<sp/>be<sp/>called<sp/>before<sp/>using<sp/>LED_open().</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>*<sp/><sp/>##<sp/>Defining<sp/>#LED_Config,<sp/>#LED_Object<sp/>and<sp/>#LED_HWAttrs<sp/>#</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/>*<sp/><sp/>To<sp/>use<sp/>the<sp/>LED<sp/>driver,<sp/>an<sp/>application<sp/>has<sp/>to<sp/>indicate<sp/>how<sp/>many<sp/>LEDs<sp/>it</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/>*<sp/><sp/>wants<sp/>to<sp/>operate,<sp/>of<sp/>what<sp/>type<sp/>(PWM<sp/>or<sp/>GPIO<sp/>controlled),<sp/>and<sp/>which<sp/>GPIO<sp/>or</highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/>*<sp/><sp/>PWM<sp/>to<sp/>index<sp/>for<sp/>each<sp/>LED.</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/>*<sp/><sp/>Each<sp/>structure<sp/>must<sp/>be<sp/>defined<sp/>by<sp/>the<sp/>application.<sp/>The<sp/>following</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/>*<sp/><sp/>example<sp/>is<sp/>for<sp/>an<sp/>MSP432P401R<sp/>platform<sp/>in<sp/>which<sp/>four<sp/>LEDs<sp/>are<sp/>available</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/>*<sp/><sp/>on<sp/>board.</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>following<sp/>declarations<sp/>are<sp/>placed<sp/>in<sp/>&quot;ti_drivers_config.c&quot;.</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/>*<sp/><sp/>How<sp/>the<sp/>gpio<sp/>indices<sp/>are<sp/>defined<sp/>is<sp/>detailed<sp/>in<sp/>the<sp/>next<sp/>section.</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>LED_config<sp/>structures<sp/>#</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*<sp/><sp/>@anchor<sp/>ti_drivers_LED_Examples_config_array</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/>*<sp/><sp/>&quot;ti_drivers_config.c&quot;</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="100"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&lt;ti/drivers/apps/LED.h&gt;</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/>*<sp/><sp/>LED_Object<sp/>LED_object[4];</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/>*<sp/><sp/>const<sp/>LED_HWAttrs<sp/>LED_hwAttrs[4]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.index<sp/>=<sp/>CONFIG_LED1,</highlight></codeline>
+<codeline lineno="107"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.type<sp/><sp/>=<sp/>LED_GPIO_CONTROLLED</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.index<sp/>=<sp/>CONFIG_LED_RED,</highlight></codeline>
+<codeline lineno="111"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.type<sp/><sp/>=<sp/>LED_GPIO_CONTROLLED</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="113"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.index<sp/>=<sp/>CONFIG_NA_GPIO_PWMLED,</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.type<sp/><sp/>=<sp/>LED_PWM_CONTROLLED</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="117"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.index<sp/>=<sp/>CONFIG_NA_GPIO_PWMLED,</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.type<sp/><sp/>=<sp/>LED_PWM_CONTROLLED</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/>*<sp/><sp/>};</highlight></codeline>
+<codeline lineno="122"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="123"><highlight class="comment"><sp/>*<sp/><sp/>const<sp/>LED_Config<sp/>LED_config[]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="124"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="125"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/><sp/>&amp;LED_object[0],</highlight></codeline>
+<codeline lineno="126"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;LED_hwAttrs[0],</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="128"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/><sp/>&amp;LED_object[1],</highlight></codeline>
+<codeline lineno="130"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;LED_hwAttrs[1],</highlight></codeline>
+<codeline lineno="131"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="132"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="133"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/><sp/>&amp;LED_object[2],</highlight></codeline>
+<codeline lineno="134"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;LED_hwAttrs[2],</highlight></codeline>
+<codeline lineno="135"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="136"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="137"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/><sp/>&amp;LED_object[3],</highlight></codeline>
+<codeline lineno="138"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;LED_hwAttrs[3],</highlight></codeline>
+<codeline lineno="139"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="140"><highlight class="comment"><sp/>*<sp/><sp/>};</highlight></codeline>
+<codeline lineno="141"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="142"><highlight class="comment"><sp/>*<sp/><sp/>uint32_t<sp/>LED_count<sp/>=<sp/>4;</highlight></codeline>
+<codeline lineno="143"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="144"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="145"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="146"><highlight class="comment"><sp/>*<sp/><sp/>##Setting<sp/>up<sp/>a<sp/>GPIO<sp/>controlled<sp/>LED<sp/>#</highlight></codeline>
+<codeline lineno="147"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>following<sp/>code<sp/>snippet<sp/>shows<sp/>how<sp/>a<sp/>GPIO<sp/>pin<sp/>controlling<sp/>an<sp/>LED<sp/>is</highlight></codeline>
+<codeline lineno="148"><highlight class="comment"><sp/>*<sp/><sp/>configured.<sp/>The<sp/>index<sp/>the<sp/>user<sp/>provides<sp/>to<sp/>LED_open()<sp/>corresponds<sp/>to<sp/>an</highlight></codeline>
+<codeline lineno="149"><highlight class="comment"><sp/>*<sp/><sp/>entry<sp/>in<sp/>the<sp/>#GPIO_PinConfig<sp/>array<sp/>which<sp/>will<sp/>source<sp/>the<sp/>LED.<sp/>It<sp/>is<sp/>the</highlight></codeline>
+<codeline lineno="150"><highlight class="comment"><sp/>*<sp/><sp/>user&apos;s<sp/>responsibility<sp/>to<sp/>ensure<sp/>that<sp/>the<sp/>pin<sp/>is<sp/>configured<sp/>properly<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="151"><highlight class="comment"><sp/>*<sp/><sp/>pin<sp/>array.<sp/>Typically<sp/>this<sp/>means<sp/>configuring<sp/>the<sp/>pin<sp/>as<sp/>an<sp/>output.</highlight></codeline>
+<codeline lineno="152"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="153"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>GPIO<sp/>controlled<sp/>LED<sp/>#</highlight></codeline>
+<codeline lineno="154"><highlight class="comment"><sp/>*<sp/><sp/>@anchor<sp/>ti_drivers_LED_Examples_gpio_config</highlight></codeline>
+<codeline lineno="155"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="156"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>following<sp/>definitions<sp/>are<sp/>in</highlight></codeline>
+<codeline lineno="157"><highlight class="comment"><sp/>*<sp/><sp/>&quot;ti_drivers_config.h&quot;<sp/>and<sp/>&quot;ti_drivers_config.c&quot;<sp/>respectively.<sp/>This</highlight></codeline>
+<codeline lineno="158"><highlight class="comment"><sp/>*<sp/><sp/>example<sp/>uses<sp/>GPIO<sp/>pins<sp/>1.0<sp/>and<sp/>2.0<sp/>which<sp/>control<sp/>LED1<sp/>and<sp/>RED<sp/>LED<sp/>on</highlight></codeline>
+<codeline lineno="159"><highlight class="comment"><sp/>*<sp/><sp/>LaunchPad<sp/>respectively.<sp/>In<sp/>addition<sp/>to<sp/>the<sp/>structures<sp/>shown<sp/>below,<sp/>the</highlight></codeline>
+<codeline lineno="160"><highlight class="comment"><sp/>*<sp/><sp/>other<sp/>GPIO<sp/>configuration<sp/>data<sp/>must<sp/>exist.<sp/>See<sp/>@ref<sp/>GPIO.h.</highlight></codeline>
+<codeline lineno="161"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="162"><highlight class="comment"><sp/>*<sp/><sp/>&quot;ti_drivers_config.h&quot;</highlight></codeline>
+<codeline lineno="163"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="164"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>CONFIG_LED1<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0</highlight></codeline>
+<codeline lineno="165"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>CONFIG_LED_RED<sp/><sp/><sp/><sp/><sp/><sp/>1</highlight></codeline>
+<codeline lineno="166"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="167"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="168"><highlight class="comment"><sp/>*<sp/><sp/>&quot;ti_drivers_config.c&quot;</highlight></codeline>
+<codeline lineno="169"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="170"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&lt;ti/drivers/GPIO.h&gt;</highlight></codeline>
+<codeline lineno="171"><highlight class="comment"><sp/>*<sp/><sp/>GPIO_PinConfig<sp/>gpioPinConfigs[]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="172"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>GPIOMSP432_P1_0<sp/>|<sp/>GPIO_CFG_OUT_STD<sp/>|<sp/>GPIO_CFG_OUT_STR_HIGH<sp/>|<sp/>GPIO_CFG_OUT_LOW,</highlight></codeline>
+<codeline lineno="173"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>GPIOMSP432_P2_0<sp/>|<sp/>GPIO_CFG_OUT_STD<sp/>|<sp/>GPIO_CFG_OUT_STR_HIGH<sp/>|<sp/>GPIO_CFG_OUT_LOW,</highlight></codeline>
+<codeline lineno="174"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
+<codeline lineno="175"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="176"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="177"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="178"><highlight class="comment"><sp/>*<sp/><sp/>##<sp/>Configuring<sp/>a<sp/>PWM<sp/>controlled<sp/>LED<sp/>#</highlight></codeline>
+<codeline lineno="179"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>LED<sp/>driver<sp/>allows<sp/>for<sp/>an<sp/>LED<sp/>to<sp/>be<sp/>driven<sp/>by<sp/>the<sp/>PWM<sp/>driver.<sp/>This<sp/>allows</highlight></codeline>
+<codeline lineno="180"><highlight class="comment"><sp/>*<sp/><sp/>the<sp/>user<sp/>to<sp/>set<sp/>a<sp/>brightness<sp/>level<sp/>in<sp/>addition<sp/>to<sp/>the<sp/>other<sp/>LED<sp/>features.</highlight></codeline>
+<codeline lineno="181"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>user<sp/>must<sp/>specify<sp/>in<sp/>the<sp/>#LED_HWAttrs<sp/>of<sp/>each<sp/>#LED_Config<sp/>entry<sp/>which</highlight></codeline>
+<codeline lineno="182"><highlight class="comment"><sp/>*<sp/><sp/>#PWM_Config<sp/>the<sp/>LED<sp/>instance<sp/>is<sp/>allowed<sp/>to<sp/>use.<sp/>LED<sp/>instances<sp/>cannot<sp/>share</highlight></codeline>
+<codeline lineno="183"><highlight class="comment"><sp/>*<sp/><sp/>a<sp/>PWM<sp/>instance.</highlight></codeline>
+<codeline lineno="184"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="185"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>user<sp/>may<sp/>specify<sp/>the<sp/>period<sp/>of<sp/>the<sp/>PWM<sp/>signal<sp/>in<sp/>the<sp/>#LED_Params<sp/>passed</highlight></codeline>
+<codeline lineno="186"><highlight class="comment"><sp/>*<sp/><sp/>to<sp/>LED_open().<sp/>This<sp/>is<sp/>not<sp/>to<sp/>be<sp/>confused<sp/>with<sp/>#LED_Params.blinkPeriod</highlight></codeline>
+<codeline lineno="187"><highlight class="comment"><sp/>*<sp/><sp/>which<sp/>specifies<sp/>the<sp/>default<sp/>blink<sp/>period.</highlight></codeline>
+<codeline lineno="188"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="189"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>Opening<sp/>a<sp/>PWM<sp/>LED<sp/>#</highlight></codeline>
+<codeline lineno="190"><highlight class="comment"><sp/>*<sp/><sp/>@anchor<sp/>ti_drivers_LED_Examples_pwm_led</highlight></codeline>
+<codeline lineno="191"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="192"><highlight class="comment"><sp/>*<sp/><sp/>We<sp/>will<sp/>borrow<sp/>the<sp/>3rd<sp/>LED_config<sp/>entry<sp/>from<sp/>the</highlight></codeline>
+<codeline lineno="193"><highlight class="comment"><sp/>*<sp/><sp/>@ref<sp/>ti_drivers_LED_Examples_config_array</highlight></codeline>
+<codeline lineno="194"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="195"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>&quot;ti_drivers_config.h&quot;</highlight></codeline>
+<codeline lineno="196"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="197"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>CONFIG_LED0<sp/><sp/><sp/><sp/><sp/>0</highlight></codeline>
+<codeline lineno="198"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="199"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="200"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>application<sp/>code:</highlight></codeline>
+<codeline lineno="201"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="202"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&lt;ti/drivers/apps/LED.h&gt;</highlight></codeline>
+<codeline lineno="203"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="204"><highlight class="comment"><sp/>*<sp/><sp/>LED_Handle<sp/>LEDHandle;</highlight></codeline>
+<codeline lineno="205"><highlight class="comment"><sp/>*<sp/><sp/>LED_Params<sp/>ledParams;</highlight></codeline>
+<codeline lineno="206"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="207"><highlight class="comment"><sp/>*<sp/><sp/>LED_Params_init(&amp;ledParams);</highlight></codeline>
+<codeline lineno="208"><highlight class="comment"><sp/>*<sp/><sp/>ledParams.pwmPeriod<sp/>=<sp/>100;<sp/>//<sp/>0.1<sp/>ms<sp/>period</highlight></codeline>
+<codeline lineno="209"><highlight class="comment"><sp/>*<sp/><sp/>ledParams.blinkPeriod<sp/>=<sp/>500;<sp/>//<sp/>LED<sp/>will<sp/>toggle<sp/>twice<sp/>a<sp/>second</highlight></codeline>
+<codeline lineno="210"><highlight class="comment"><sp/>*<sp/><sp/>ledParams.setState<sp/>=<sp/>LED_STATE_BLINKING;<sp/>//<sp/>Start<sp/>LED<sp/>blink<sp/>on<sp/>open</highlight></codeline>
+<codeline lineno="211"><highlight class="comment"><sp/>*<sp/><sp/>ledHandle<sp/>=<sp/>LED_open(CONFIG_LED0,<sp/>&amp;ledParams);<sp/>//<sp/>Open<sp/>the<sp/>first<sp/>LED_Config</highlight></codeline>
+<codeline lineno="212"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="213"><highlight class="comment"><sp/>*<sp/><sp/>//<sp/>Turn<sp/>on<sp/>at<sp/>half<sp/>brightness<sp/>level</highlight></codeline>
+<codeline lineno="214"><highlight class="comment"><sp/>*<sp/><sp/>LED_setOn(ledHandle,<sp/>50);</highlight></codeline>
+<codeline lineno="215"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="216"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="217"><highlight class="comment"><sp/>*******************************************************************************</highlight></codeline>
+<codeline lineno="218"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ti_drivers_LED__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_drivers_LED__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Driver<sp/>Header<sp/>files<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_g_p_i_o_8h" kindref="compound">ti/drivers/GPIO.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_p_w_m_8h" kindref="compound">ti/drivers/PWM.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/ClockP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"></highlight></codeline>
+<codeline lineno="236" refid="_l_e_d_8h_1a7bb18ca9f746ebcfbfc397886643f16d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LED_BRIGHTNESS_MAX<sp/><sp/><sp/><sp/><sp/><sp/>100U<sp/><sp/></highlight><highlight class="comment">/*<sp/>Max<sp/>brightness<sp/>in<sp/>%<sp/>is<sp/>100%*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="237" refid="_l_e_d_8h_1a7c23f23fb4baef6038542bf4e3253892" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LED_BRIGHTNESS_MIN<sp/><sp/><sp/><sp/><sp/><sp/>0U<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Max<sp/>brightness<sp/>in<sp/>%<sp/>is<sp/>0%*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="238"><highlight class="normal"></highlight></codeline>
+<codeline lineno="239" refid="_l_e_d_8h_1af2e697ac60e05813d45ea2c9c9e79c25" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LED_ON<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1U</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="240" refid="_l_e_d_8h_1a80700bb63bd56ebabbb4728aa433fd29" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LED_OFF<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0U</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"></highlight></codeline>
+<codeline lineno="242" refid="_l_e_d_8h_1ab086abacbb603f695c9fe7d392a54fce" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LED_BLINK_FOREVER<sp/><sp/><sp/><sp/><sp/><sp/><sp/>0xFFFF</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Number<sp/>of<sp/>user<sp/>defined<sp/>LED<sp/>configurations<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint_least8_t<sp/><ref refid="_l_e_d_8h_1ab213809d7fa06eb80b26f56c9b72d1b4" kindref="member">LED_count</ref>;</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254" refid="_l_e_d_8h_1a058b30c4dad8492729144d11afa6ddb1" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="255" refid="_l_e_d_8h_1a058b30c4dad8492729144d11afa6ddb1af545c04416e7b8be433ad172a18a8b2b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_l_e_d_8h_1a058b30c4dad8492729144d11afa6ddb1af545c04416e7b8be433ad172a18a8b2b" kindref="member">LED_NONE</ref><sp/>=<sp/>0,</highlight></codeline>
+<codeline lineno="256" refid="_l_e_d_8h_1a058b30c4dad8492729144d11afa6ddb1a5ea0edf61325cd915372af7b95954218" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_l_e_d_8h_1a058b30c4dad8492729144d11afa6ddb1a5ea0edf61325cd915372af7b95954218" kindref="member">LED_GPIO_CONTROLLED</ref>,</highlight></codeline>
+<codeline lineno="257" refid="_l_e_d_8h_1a058b30c4dad8492729144d11afa6ddb1a0a374df97562bcbd852efe880eeaac99" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_l_e_d_8h_1a058b30c4dad8492729144d11afa6ddb1a0a374df97562bcbd852efe880eeaac99" kindref="member">LED_PWM_CONTROLLED</ref></highlight></codeline>
+<codeline lineno="258"><highlight class="normal">}<sp/><ref refid="_l_e_d_8h_1a058b30c4dad8492729144d11afa6ddb1" kindref="member">LED_Type</ref>;</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"></highlight></codeline>
+<codeline lineno="268" refid="_l_e_d_8h_1a4a8326721c03c1e5b40de78b999236b8" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="269" refid="_l_e_d_8h_1a4a8326721c03c1e5b40de78b999236b8a0eebea54c4dc200be6939742385ee789" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_l_e_d_8h_1a4a8326721c03c1e5b40de78b999236b8a0eebea54c4dc200be6939742385ee789" kindref="member">LED_STATE_OFF</ref><sp/>=<sp/><sp/>0,</highlight></codeline>
+<codeline lineno="270" refid="_l_e_d_8h_1a4a8326721c03c1e5b40de78b999236b8a024f137d8368d2d31196fbcfb8345550" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_l_e_d_8h_1a4a8326721c03c1e5b40de78b999236b8a024f137d8368d2d31196fbcfb8345550" kindref="member">LED_STATE_ON</ref>,</highlight></codeline>
+<codeline lineno="271" refid="_l_e_d_8h_1a4a8326721c03c1e5b40de78b999236b8af61006685f03f51d1560923ea5420b93" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_l_e_d_8h_1a4a8326721c03c1e5b40de78b999236b8af61006685f03f51d1560923ea5420b93" kindref="member">LED_STATE_BLINKING</ref></highlight></codeline>
+<codeline lineno="272"><highlight class="normal">}<sp/><ref refid="_l_e_d_8h_1a4a8326721c03c1e5b40de78b999236b8" kindref="member">LED_State</ref>;</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"></highlight></codeline>
+<codeline lineno="283" refid="struct_l_e_d___config" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="285" refid="struct_l_e_d___config_1afefeaa8dd2b92c7ce7c1cb6f7ba6dcfc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_l_e_d___config_1afefeaa8dd2b92c7ce7c1cb6f7ba6dcfc" kindref="member">object</ref>;</highlight></codeline>
+<codeline lineno="287" refid="struct_l_e_d___config_1a1b6dfd7052fcab6740bcd981aab9b5c4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><sp/>*<ref refid="struct_l_e_d___config_1a1b6dfd7052fcab6740bcd981aab9b5c4" kindref="member">hwAttrs</ref>;</highlight></codeline>
+<codeline lineno="288"><highlight class="normal">}<sp/><ref refid="struct_l_e_d___config" kindref="compound">LED_Config</ref>;</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"></highlight></codeline>
+<codeline lineno="293" refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/><ref refid="struct_l_e_d___config" kindref="compound">LED_Config</ref>*<sp/><ref refid="_l_e_d_8h_1a2a73ea54cf6feba7ebd1741ade8ea611" kindref="member">LED_Handle</ref>;</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"></highlight></codeline>
+<codeline lineno="302" refid="struct_l_e_d___h_w_attrs" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="303" refid="struct_l_e_d___h_w_attrs_1a00744b45a9df5a3fc9d480615b255eb8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint_least8_t<sp/><ref refid="struct_l_e_d___h_w_attrs_1a00744b45a9df5a3fc9d480615b255eb8" kindref="member">index</ref>;<sp/></highlight></codeline>
+<codeline lineno="304" refid="struct_l_e_d___h_w_attrs_1a56f4d54df1562f438ae6821f49812322" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>LED_Type<sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_l_e_d___h_w_attrs_1a56f4d54df1562f438ae6821f49812322" kindref="member">type</ref>;<sp/></highlight><highlight class="comment">/*&lt;!<sp/>GPIO<sp/>(binary)<sp/>or<sp/>PWM<sp/>(dimmable)<sp/>control<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal">}<sp/><ref refid="struct_l_e_d___h_w_attrs" kindref="compound">LED_HWAttrs</ref>;</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"></highlight></codeline>
+<codeline lineno="312" refid="struct_l_e_d___object" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="313" refid="struct_l_e_d___object_1ab52a396e57999d50900502be901b2626" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_l_e_d___object_1ab52a396e57999d50900502be901b2626" kindref="member">pwmPeriod</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="314" refid="struct_l_e_d___object_1a72fb1621eeccc1a3905096e611a0968a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_p_w_m___config__" kindref="compound">PWM_Handle</ref><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_l_e_d___object_1a72fb1621eeccc1a3905096e611a0968a" kindref="member">pwmHandle</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="315" refid="struct_l_e_d___object_1af9b7e617e11e9171682577951197ab6a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>ClockP_Handle<sp/><sp/><sp/><ref refid="struct_l_e_d___object_1af9b7e617e11e9171682577951197ab6a" kindref="member">clockHandle</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="316" refid="struct_l_e_d___object_1a3ca9f1577a9974690cc2877cf5e7c976" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>ClockP_Struct<sp/><sp/><sp/><ref refid="struct_l_e_d___object_1a3ca9f1577a9974690cc2877cf5e7c976" kindref="member">clock</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="317" refid="struct_l_e_d___object_1a73b5673feb140738b3d73940ffdd5c10" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>LED_State<sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_l_e_d___object_1a73b5673feb140738b3d73940ffdd5c10" kindref="member">state</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="318" refid="struct_l_e_d___object_1a46ff9c9af0c38b7e441266beb1f05dd3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>LED_State<sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_l_e_d___object_1a46ff9c9af0c38b7e441266beb1f05dd3" kindref="member">rawState</ref>;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="320" refid="struct_l_e_d___object_1a1e28d3974f8cbf8bd7c32ef6d2a50be8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>LED_Type<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_l_e_d___object_1a1e28d3974f8cbf8bd7c32ef6d2a50be8" kindref="member">ledType</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="321" refid="struct_l_e_d___object_1a7c71c80bf3db56df7995d2172647c01b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_l_e_d___object_1a7c71c80bf3db56df7995d2172647c01b" kindref="member">brightness</ref>;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="322" refid="struct_l_e_d___object_1ad58b29cf7c8abf187864f014f5e55722" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint_least8_t<sp/><sp/><sp/><ref refid="struct_l_e_d___object_1ad58b29cf7c8abf187864f014f5e55722" kindref="member">gpioIndex</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="323" refid="struct_l_e_d___object_1a14f9d02853c37989418dff8b8cc22c2f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_l_e_d___object_1a14f9d02853c37989418dff8b8cc22c2f" kindref="member">togglePeriod</ref>;<sp/></highlight></codeline>
+<codeline lineno="326" refid="struct_l_e_d___object_1a98cbfe65e3eaf9ba6101095b6126e458" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_l_e_d___object_1a98cbfe65e3eaf9ba6101095b6126e458" kindref="member">blinkCount</ref>;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="327"><highlight class="normal">}<sp/><ref refid="struct_l_e_d___object" kindref="compound">LED_Object</ref>;</highlight></codeline>
+<codeline lineno="328"><highlight class="normal"></highlight></codeline>
+<codeline lineno="339" refid="struct_l_e_d___params" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="340" refid="struct_l_e_d___params_1ae89cc105e98b217004f9cbbf61fbac5e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><ref refid="struct_l_e_d___params_1ae89cc105e98b217004f9cbbf61fbac5e" kindref="member">pwmPeriod</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="341" refid="struct_l_e_d___params_1a58c5ea152a72482ed1238b8e88a65adc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><ref refid="struct_l_e_d___params_1a58c5ea152a72482ed1238b8e88a65adc" kindref="member">blinkPeriod</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="342" refid="struct_l_e_d___params_1a828942684fc4dcd88c81bee6d740ee04" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><ref refid="struct_l_e_d___params_1a828942684fc4dcd88c81bee6d740ee04" kindref="member">brightness</ref>;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="343" refid="struct_l_e_d___params_1ad47abdd61ebfc122bd9a0d361abebadb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>LED_State<sp/><sp/><sp/><ref refid="struct_l_e_d___params_1ad47abdd61ebfc122bd9a0d361abebadb" kindref="member">setState</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="344"><highlight class="normal">}<sp/><ref refid="struct_l_e_d___params" kindref="compound">LED_Params</ref>;</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"></highlight></codeline>
+<codeline lineno="357"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_l_e_d_8h_1a22daa13fd0b3e576de24272a574b5905" kindref="member">LED_close</ref>(LED_Handle<sp/>ledHandle);</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"></highlight></codeline>
+<codeline lineno="369"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>LED_State<sp/><ref refid="_l_e_d_8h_1a008301885ac288a61c5c9c6d6a9e92f8" kindref="member">LED_getState</ref>(LED_Handle<sp/>ledHandle);</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"></highlight></codeline>
+<codeline lineno="376"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_l_e_d_8h_1a0a4419e3e369c088021add0b5054ff7b" kindref="member">LED_init</ref>();</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"></highlight></codeline>
+<codeline lineno="400"><highlight class="normal">LED_Handle<sp/><ref refid="_l_e_d_8h_1a9ead54bbe388c4164fd7e0e4416b0017" kindref="member">LED_open</ref>(uint_least8_t<sp/>index,<sp/><ref refid="struct_l_e_d___params" kindref="compound">LED_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="401"><highlight class="normal"></highlight></codeline>
+<codeline lineno="414"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_l_e_d_8h_1aff04caa98eb18018bc7cec02e89fea86" kindref="member">LED_Params_init</ref>(<ref refid="struct_l_e_d___params" kindref="compound">LED_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="415"><highlight class="normal"></highlight></codeline>
+<codeline lineno="428"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_l_e_d_8h_1ab918b2aeace73f7c38f0c22acf7ec34e" kindref="member">LED_setBrightnessLevel</ref>(LED_Handle<sp/>ledHandle,<sp/>uint8_t<sp/>level);</highlight></codeline>
+<codeline lineno="429"><highlight class="normal"></highlight></codeline>
+<codeline lineno="437"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_l_e_d_8h_1aa5f4ef76e502faf11aba5714065f076a" kindref="member">LED_setOff</ref>(LED_Handle<sp/>ledHandle);</highlight></codeline>
+<codeline lineno="438"><highlight class="normal"></highlight></codeline>
+<codeline lineno="449"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_l_e_d_8h_1a6da3cef2f4e273fa33046e59da423362" kindref="member">LED_setOn</ref>(LED_Handle<sp/>ledHandle,<sp/>uint8_t<sp/>brightness);</highlight></codeline>
+<codeline lineno="450"><highlight class="normal"></highlight></codeline>
+<codeline lineno="467"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_l_e_d_8h_1ab934d762491bdc04636ebbbe4a0a7d3a" kindref="member">LED_startBlinking</ref>(LED_Handle<sp/>ledHandle,</highlight></codeline>
+<codeline lineno="468"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/>blinkPeriod,</highlight></codeline>
+<codeline lineno="469"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/>blinkCount);</highlight></codeline>
+<codeline lineno="470"><highlight class="normal"></highlight></codeline>
+<codeline lineno="477"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_l_e_d_8h_1af561cccde227fd2d79aa8851a4f3217b" kindref="member">LED_stopBlinking</ref>(LED_Handle<sp/>ledHandle);</highlight></codeline>
+<codeline lineno="478"><highlight class="normal"></highlight></codeline>
+<codeline lineno="485"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_l_e_d_8h_1ab0ca5c5548cb4905e0ff92babc100313" kindref="member">LED_toggle</ref>(LED_Handle<sp/>ledHandle);</highlight></codeline>
+<codeline lineno="486"><highlight class="normal"></highlight></codeline>
+<codeline lineno="495"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_l_e_d_8h_1a229f28207624bf123fbc478e908534ac" kindref="member">LED_write</ref>(LED_Handle<sp/>ledHandle,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="496"><highlight class="normal"></highlight></codeline>
+<codeline lineno="497"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="498"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="499"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="500"><highlight class="normal"></highlight></codeline>
+<codeline lineno="501"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_LED__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="exports/tidrivers_msp432/source/ti/drivers/apps/LED.h"/>
+  </compounddef>
+</doxygen>

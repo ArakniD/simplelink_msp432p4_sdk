@@ -48,8 +48,8 @@
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/I2C.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 /*
  *  ======== HIGH_TEMP ========
@@ -88,7 +88,7 @@ volatile float temperatureF;
  */
 static void clearAlert(float temperature)
 {
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_OFF);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_OFF);
 }
 
 /*
@@ -98,7 +98,7 @@ static void clearAlert(float temperature)
  */
 static void sendAlert(float temperature)
 {
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 }
 
 /*
@@ -160,9 +160,9 @@ void *temperatureThread(void *arg0)
     Int key;
 
     /* Configure the LED and if applicable, the TMP116_EN pin */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
-#ifdef Board_GPIO_TMP116_EN
-    GPIO_setConfig(Board_GPIO_TMP116_EN, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+#ifdef CONFIG_GPIO_TMP116_EN
+    GPIO_setConfig(CONFIG_GPIO_TMP116_EN, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
     /* 1.5 ms reset time for the TMP116 */
     sleep(1);
 #endif
@@ -174,7 +174,7 @@ void *temperatureThread(void *arg0)
 
     I2C_Params_init(&i2cParams);
     i2cParams.bitRate = I2C_400kHz;
-    i2c = I2C_open(Board_I2C_TMP, &i2cParams);
+    i2c = I2C_open(CONFIG_I2C_TMP, &i2cParams);
     if (i2c == NULL) {
         while (1);
     }

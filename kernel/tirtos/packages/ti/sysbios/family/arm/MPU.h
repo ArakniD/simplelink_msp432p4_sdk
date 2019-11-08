@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_family_arm_MPU__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_family_arm_MPU___VERS 200
@@ -420,82 +422,82 @@ __extern __FAR__ const CT__ti_sysbios_family_arm_MPU_isMemoryMapped ti_sysbios_f
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_family_arm_MPU_Module__startupDone__S, "ti_sysbios_family_arm_MPU_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_family_arm_MPU_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_family_arm_MPU_Module__startupDone__S( void);
 
 /* disable__E */
 #define ti_sysbios_family_arm_MPU_disable ti_sysbios_family_arm_MPU_disable__E
 xdc__CODESECT(ti_sysbios_family_arm_MPU_disable__E, "ti_sysbios_family_arm_MPU_disable")
-__extern xdc_Void ti_sysbios_family_arm_MPU_disable__E( void );
+__extern xdc_Void ti_sysbios_family_arm_MPU_disable__E( void);
 
 /* enable__E */
 #define ti_sysbios_family_arm_MPU_enable ti_sysbios_family_arm_MPU_enable__E
 xdc__CODESECT(ti_sysbios_family_arm_MPU_enable__E, "ti_sysbios_family_arm_MPU_enable")
-__extern xdc_Void ti_sysbios_family_arm_MPU_enable__E( void );
+__extern xdc_Void ti_sysbios_family_arm_MPU_enable__E( void);
 
 /* disableBR__E */
 #define ti_sysbios_family_arm_MPU_disableBR ti_sysbios_family_arm_MPU_disableBR__E
 xdc__CODESECT(ti_sysbios_family_arm_MPU_disableBR__E, "ti_sysbios_family_arm_MPU_disableBR")
-__extern xdc_Void ti_sysbios_family_arm_MPU_disableBR__E( void );
+__extern xdc_Void ti_sysbios_family_arm_MPU_disableBR__E( void);
 
 /* enableBR__E */
 #define ti_sysbios_family_arm_MPU_enableBR ti_sysbios_family_arm_MPU_enableBR__E
 xdc__CODESECT(ti_sysbios_family_arm_MPU_enableBR__E, "ti_sysbios_family_arm_MPU_enableBR")
-__extern xdc_Void ti_sysbios_family_arm_MPU_enableBR__E( void );
+__extern xdc_Void ti_sysbios_family_arm_MPU_enableBR__E( void);
 
 /* initRegionAttrs__E */
 #define ti_sysbios_family_arm_MPU_initRegionAttrs ti_sysbios_family_arm_MPU_initRegionAttrs__E
 xdc__CODESECT(ti_sysbios_family_arm_MPU_initRegionAttrs__E, "ti_sysbios_family_arm_MPU_initRegionAttrs")
-__extern xdc_Void ti_sysbios_family_arm_MPU_initRegionAttrs__E( ti_sysbios_family_arm_MPU_RegionAttrs *regionAttrs );
+__extern xdc_Void ti_sysbios_family_arm_MPU_initRegionAttrs__E( ti_sysbios_family_arm_MPU_RegionAttrs *regionAttrs);
 
 /* isEnabled__E */
 #define ti_sysbios_family_arm_MPU_isEnabled ti_sysbios_family_arm_MPU_isEnabled__E
 xdc__CODESECT(ti_sysbios_family_arm_MPU_isEnabled__E, "ti_sysbios_family_arm_MPU_isEnabled")
-__extern xdc_Bool ti_sysbios_family_arm_MPU_isEnabled__E( void );
+__extern xdc_Bool ti_sysbios_family_arm_MPU_isEnabled__E( void);
 
 /* setRegion__E */
 #define ti_sysbios_family_arm_MPU_setRegion ti_sysbios_family_arm_MPU_setRegion__E
 xdc__CODESECT(ti_sysbios_family_arm_MPU_setRegion__E, "ti_sysbios_family_arm_MPU_setRegion")
-__extern xdc_Void ti_sysbios_family_arm_MPU_setRegion__E( xdc_UInt8 regionId, xdc_Ptr regionBaseAddr, ti_sysbios_family_arm_MPU_RegionSize regionSize, ti_sysbios_family_arm_MPU_RegionAttrs *attrs );
+__extern xdc_Void ti_sysbios_family_arm_MPU_setRegion__E( xdc_UInt8 regionId, xdc_Ptr regionBaseAddr, ti_sysbios_family_arm_MPU_RegionSize regionSize, ti_sysbios_family_arm_MPU_RegionAttrs *attrs);
 
 /* setRegionRaw__E */
 #define ti_sysbios_family_arm_MPU_setRegionRaw ti_sysbios_family_arm_MPU_setRegionRaw__E
 xdc__CODESECT(ti_sysbios_family_arm_MPU_setRegionRaw__E, "ti_sysbios_family_arm_MPU_setRegionRaw")
-__extern xdc_Void ti_sysbios_family_arm_MPU_setRegionRaw__E( xdc_UInt32 rbar, xdc_UInt32 rasr );
+__extern xdc_Void ti_sysbios_family_arm_MPU_setRegionRaw__E( xdc_UInt32 rbar, xdc_UInt32 rasr);
 
 /* startup__E */
 #define ti_sysbios_family_arm_MPU_startup ti_sysbios_family_arm_MPU_startup__E
 xdc__CODESECT(ti_sysbios_family_arm_MPU_startup__E, "ti_sysbios_family_arm_MPU_startup")
-__extern xdc_Void ti_sysbios_family_arm_MPU_startup__E( void );
+__extern xdc_Void ti_sysbios_family_arm_MPU_startup__E( void);
 
 /* disableAsm__I */
 #define ti_sysbios_family_arm_MPU_disableAsm ti_sysbios_family_arm_MPU_disableAsm__I
 xdc__CODESECT(ti_sysbios_family_arm_MPU_disableAsm__I, "ti_sysbios_family_arm_MPU_disableAsm")
-__extern xdc_Void ti_sysbios_family_arm_MPU_disableAsm__I( void );
+__extern xdc_Void ti_sysbios_family_arm_MPU_disableAsm__I( void);
 
 /* enableAsm__I */
 #define ti_sysbios_family_arm_MPU_enableAsm ti_sysbios_family_arm_MPU_enableAsm__I
 xdc__CODESECT(ti_sysbios_family_arm_MPU_enableAsm__I, "ti_sysbios_family_arm_MPU_enableAsm")
-__extern xdc_Void ti_sysbios_family_arm_MPU_enableAsm__I( void );
+__extern xdc_Void ti_sysbios_family_arm_MPU_enableAsm__I( void);
 
 /* disableBRAsm__I */
 #define ti_sysbios_family_arm_MPU_disableBRAsm ti_sysbios_family_arm_MPU_disableBRAsm__I
 xdc__CODESECT(ti_sysbios_family_arm_MPU_disableBRAsm__I, "ti_sysbios_family_arm_MPU_disableBRAsm")
-__extern xdc_Void ti_sysbios_family_arm_MPU_disableBRAsm__I( void );
+__extern xdc_Void ti_sysbios_family_arm_MPU_disableBRAsm__I( void);
 
 /* enableBRAsm__I */
 #define ti_sysbios_family_arm_MPU_enableBRAsm ti_sysbios_family_arm_MPU_enableBRAsm__I
 xdc__CODESECT(ti_sysbios_family_arm_MPU_enableBRAsm__I, "ti_sysbios_family_arm_MPU_enableBRAsm")
-__extern xdc_Void ti_sysbios_family_arm_MPU_enableBRAsm__I( void );
+__extern xdc_Void ti_sysbios_family_arm_MPU_enableBRAsm__I( void);
 
 /* isEnabledAsm__I */
 #define ti_sysbios_family_arm_MPU_isEnabledAsm ti_sysbios_family_arm_MPU_isEnabledAsm__I
 xdc__CODESECT(ti_sysbios_family_arm_MPU_isEnabledAsm__I, "ti_sysbios_family_arm_MPU_isEnabledAsm")
-__extern xdc_Bool ti_sysbios_family_arm_MPU_isEnabledAsm__I( void );
+__extern xdc_Bool ti_sysbios_family_arm_MPU_isEnabledAsm__I( void);
 
 /* setRegionAsm__I */
 #define ti_sysbios_family_arm_MPU_setRegionAsm ti_sysbios_family_arm_MPU_setRegionAsm__I
 xdc__CODESECT(ti_sysbios_family_arm_MPU_setRegionAsm__I, "ti_sysbios_family_arm_MPU_setRegionAsm")
-__extern xdc_Void ti_sysbios_family_arm_MPU_setRegionAsm__I( xdc_UInt8 regionId, xdc_UInt32 regionBaseAddr, xdc_UInt32 regionSize, xdc_UInt32 regionAttrs );
+__extern xdc_Void ti_sysbios_family_arm_MPU_setRegionAsm__I( xdc_UInt8 regionId, xdc_UInt32 regionBaseAddr, xdc_UInt32 regionSize, xdc_UInt32 regionAttrs);
 
 
 /*

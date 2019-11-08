@@ -5,21 +5,21 @@
     <includes local="no">stdint.h</includes>
     <includes refid="_g_p_i_o_8h" local="no">ti/drivers/GPIO.h</includes>
     <incdepgraph>
-      <node id="103">
+      <node id="111">
         <label>stdint.h</label>
       </node>
-      <node id="102">
-        <label>GPIOMSP432.h</label>
-        <link refid="_g_p_i_o_m_s_p432_8h"/>
-        <childnode refid="103" relation="include">
-        </childnode>
-        <childnode refid="104" relation="include">
-        </childnode>
-      </node>
-      <node id="104">
+      <node id="112">
         <label>ti/drivers/GPIO.h</label>
         <link refid="_g_p_i_o_8h"/>
-        <childnode refid="103" relation="include">
+        <childnode refid="111" relation="include">
+        </childnode>
+      </node>
+      <node id="110">
+        <label>GPIOMSP432.h</label>
+        <link refid="_g_p_i_o_m_s_p432_8h"/>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
         </childnode>
       </node>
     </incdepgraph>
@@ -923,35 +923,13 @@
         <location file="exports/tidrivers_msp432/source/ti/drivers/gpio/GPIOMSP432.h" line="330" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/gpio/GPIOMSP432.h" bodystart="330" bodyend="-1"/>
       </memberdef>
       </sectiondef>
-      <sectiondef kind="typedef">
-      <memberdef kind="typedef" id="_g_p_i_o_m_s_p432_8h_1a3fa6ee35bdd2b284677c9e839a7a4c85" prot="public" static="no">
-        <type>struct <ref refid="struct_g_p_i_o_m_s_p432___config" kindref="compound">GPIOMSP432_Config</ref></type>
-        <definition>typedef struct GPIOMSP432_Config  GPIOMSP432_Config</definition>
-        <argsstring></argsstring>
-        <name>GPIOMSP432_Config</name>
-        <briefdescription>
-<para>GPIO device specific driver configuration structure. </para>        </briefdescription>
-        <detaileddescription>
-<para>The device specific <ref refid="struct_g_p_i_o_m_s_p432___config" kindref="compound">GPIOMSP432_Config</ref> structure that tells the GPIO driver where the two aforementioned arrays are and the number of elements in each. The interrupt priority of all pins configured to generate interrupts is also specified here. Values for the interrupt priority are device-specific. You should be well-acquainted with the interrupt controller used in your device before setting this parameter to a non-default value. The sentinel value of (~0) (the default value) is used to indicate that the lowest possible priority should be used.</para><para>Below is an example of an initialized <ref refid="struct_g_p_i_o_m_s_p432___config" kindref="compound">GPIOMSP432_Config</ref> structure: <programlisting><codeline><highlight class="normal">const<sp/>GPIOMSP432_Config<sp/>GPIOMSP432_config<sp/>=<sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.pinConfigs<sp/>=<sp/>(GPIO_PinConfig<sp/>*)gpioPinConfigs,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.callbacks<sp/>=<sp/>(GPIO_CallbackFxn<sp/>*)gpioCallbackFunctions,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.numberOfPinConfigs<sp/>=<sp/>sizeof(gpioPinConfigs)/sizeof(GPIO_PinConfig),</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.numberOfCallbacks<sp/>=<sp/>sizeof(gpioCallbackFunctions)/sizeof(GPIO_CallbackFxn),</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>(~0)</highlight></codeline>
-<codeline><highlight class="normal">};</highlight></codeline>
-</programlisting> </para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/gpio/GPIOMSP432.h" line="210" column="1"/>
-      </memberdef>
-      </sectiondef>
     <briefdescription>
 <para>GPIO driver implementation for MSP432 devices. </para>    </briefdescription>
     <detaileddescription>
 <para>============================================================================</para><para>The GPIO header file should be included in an application as follows: <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/GPIO.h&gt;</highlight></codeline>
 <codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/gpio/GPIOMSP432.h&gt;</highlight></codeline>
 </programlisting></para><para>Refer to <ref refid="_g_p_i_o_8h" kindref="compound">GPIO.h</ref> for a complete description of the GPIO driver APIs provided and examples of their use.</para><para><heading level="3">MSP432 GPIO Driver Configuration</heading>
-</para><para>In order to use the GPIO APIs, the application is required to provide 3 structures in the Board.c file:</para><para><orderedlist>
+</para><para>In order to use the GPIO APIs, the application is required to provide 3 structures in the ti_drivers_config.c file:</para><para><orderedlist>
 <listitem><para>An array of <ref refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" kindref="member">GPIO_PinConfig</ref> elements that defines the initial configuration of each pin used by the application. A pin is referenced in the application by its corresponding index in this array. The pin type (that is, INPUT/OUTPUT), its initial state (that is OUTPUT_HIGH or LOW), interrupt behavior (RISING/FALLING edge, etc.) (see <ref refid="group___g_p_i_o___pin_config_settings" kindref="compound">Macros used to configure GPIO pins</ref>), and device specific pin identification (see <ref refid="group___g_p_i_o_m_s_p432___pin_config_ids" kindref="compound">GPIO pin identification macros used to configure GPIO pins</ref>) are configured in each element of this array. Below is an MSP432 device specific example of the GPIO_PinConfig array: <programlisting><codeline><highlight class="normal">//</highlight></codeline>
 <codeline><highlight class="normal">//<sp/>Array<sp/>of<sp/>Pin<sp/>configurations</highlight></codeline>
 <codeline><highlight class="normal">//<sp/>NOTE:<sp/>The<sp/>order<sp/>of<sp/>the<sp/>pin<sp/>configurations<sp/>must<sp/>coincide<sp/>with<sp/>what<sp/>was</highlight></codeline>
@@ -1001,7 +979,7 @@
  </para>    </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2018,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2019,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
 <codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
 <codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
@@ -1034,14 +1012,14 @@
 <codeline lineno="149"><highlight class="preprocessor">#ifndef<sp/>ti_drivers_GPIOMSP432__include</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="150"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_drivers_GPIOMSP432__include</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="151"><highlight class="normal"></highlight></codeline>
-<codeline lineno="152"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="153"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="154"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="155"><highlight class="normal"></highlight></codeline>
-<codeline lineno="156"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="157"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_g_p_i_o_8h" kindref="compound">ti/drivers/GPIO.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_g_p_i_o_8h" kindref="compound">ti/drivers/GPIO.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="158"><highlight class="normal"></highlight></codeline>
-<codeline lineno="183" refid="struct_g_p_i_o_m_s_p432___config" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_g_p_i_o_m_s_p432___config" kindref="compound">GPIOMSP432_Config</ref><sp/>{</highlight></codeline>
+<codeline lineno="183" refid="struct_g_p_i_o_m_s_p432___config" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
 <codeline lineno="185" refid="struct_g_p_i_o_m_s_p432___config_1ad61e701f1cb3830a20815378bfeb3f9e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" kindref="member">GPIO_PinConfig</ref><sp/><sp/>*<ref refid="struct_g_p_i_o_m_s_p432___config_1ad61e701f1cb3830a20815378bfeb3f9e" kindref="member">pinConfigs</ref>;</highlight></codeline>
 <codeline lineno="186"><highlight class="normal"></highlight></codeline>
 <codeline lineno="188" refid="struct_g_p_i_o_m_s_p432___config_1afbe064dac3400a1a2611af3ed82a7861" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_g_p_i_o_8h_1a46b0c9afbe998c88539abc92082a1173" kindref="member">GPIO_CallbackFxn</ref><sp/><sp/>*<ref refid="struct_g_p_i_o_m_s_p432___config_1afbe064dac3400a1a2611af3ed82a7861" kindref="member">callbacks</ref>;</highlight></codeline>
@@ -1051,7 +1029,7 @@
 <codeline lineno="194" refid="struct_g_p_i_o_m_s_p432___config_1adf1fcd7f8dc5c1b82699519f46ebe85d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_g_p_i_o_m_s_p432___config_1adf1fcd7f8dc5c1b82699519f46ebe85d" kindref="member">numberOfCallbacks</ref>;</highlight></codeline>
 <codeline lineno="195"><highlight class="normal"></highlight></codeline>
 <codeline lineno="209" refid="struct_g_p_i_o_m_s_p432___config_1a6cfc0b5cac2a793b7c2ff64b05ff0994" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_g_p_i_o_m_s_p432___config_1a6cfc0b5cac2a793b7c2ff64b05ff0994" kindref="member">intPriority</ref>;</highlight></codeline>
-<codeline lineno="210"><highlight class="normal">}<sp/><ref refid="_g_p_i_o_m_s_p432_8h_1a3fa6ee35bdd2b284677c9e839a7a4c85" kindref="member">GPIOMSP432_Config</ref>;</highlight></codeline>
+<codeline lineno="210"><highlight class="normal">}<sp/><ref refid="struct_g_p_i_o_m_s_p432___config" kindref="compound">GPIOMSP432_Config</ref>;</highlight></codeline>
 <codeline lineno="211"><highlight class="normal"></highlight></codeline>
 <codeline lineno="221" refid="group___g_p_i_o_m_s_p432___pin_config_ids_1gabd739123f242bc7f1d3a609e79f44a63" refkind="member"><highlight class="preprocessor">#define<sp/>GPIOMSP432_EMPTY_PIN<sp/>0x0000<sp/></highlight></codeline>
 <codeline lineno="227" refid="group___g_p_i_o_m_s_p432___pin_config_ids_1ga6bbc131a3dceefc93680e74ac89113a1" refkind="member"><highlight class="preprocessor">#define<sp/>GPIOMSP432_P1_0<sp/><sp/><sp/><sp/>0x101<sp/><sp/><sp/><sp/></highlight></codeline>

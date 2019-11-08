@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -37,10 +37,12 @@
 #define ti_sysbios_heaps_HeapCallback__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_heaps_HeapCallback___VERS 200
@@ -396,60 +398,60 @@ __extern void ti_sysbios_heaps_HeapCallback_destruct(ti_sysbios_heaps_HeapCallba
 
 /* Handle__label__S */
 xdc__CODESECT(ti_sysbios_heaps_HeapCallback_Handle__label__S, "ti_sysbios_heaps_HeapCallback_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_sysbios_heaps_HeapCallback_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_sysbios_heaps_HeapCallback_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_heaps_HeapCallback_Module__startupDone__S, "ti_sysbios_heaps_HeapCallback_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_heaps_HeapCallback_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_heaps_HeapCallback_Module__startupDone__S( void);
 
 /* Object__create__S */
 xdc__CODESECT(ti_sysbios_heaps_HeapCallback_Object__create__S, "ti_sysbios_heaps_HeapCallback_Object__create__S")
-__extern xdc_Ptr ti_sysbios_heaps_HeapCallback_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb );
+__extern xdc_Ptr ti_sysbios_heaps_HeapCallback_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb);
 
 /* Object__delete__S */
 xdc__CODESECT(ti_sysbios_heaps_HeapCallback_Object__delete__S, "ti_sysbios_heaps_HeapCallback_Object__delete__S")
-__extern xdc_Void ti_sysbios_heaps_HeapCallback_Object__delete__S( xdc_Ptr instp );
+__extern xdc_Void ti_sysbios_heaps_HeapCallback_Object__delete__S( xdc_Ptr instp);
 
 /* Object__get__S */
 xdc__CODESECT(ti_sysbios_heaps_HeapCallback_Object__get__S, "ti_sysbios_heaps_HeapCallback_Object__get__S")
-__extern xdc_Ptr ti_sysbios_heaps_HeapCallback_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_sysbios_heaps_HeapCallback_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_sysbios_heaps_HeapCallback_Object__first__S, "ti_sysbios_heaps_HeapCallback_Object__first__S")
-__extern xdc_Ptr ti_sysbios_heaps_HeapCallback_Object__first__S( void );
+__extern xdc_Ptr ti_sysbios_heaps_HeapCallback_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_sysbios_heaps_HeapCallback_Object__next__S, "ti_sysbios_heaps_HeapCallback_Object__next__S")
-__extern xdc_Ptr ti_sysbios_heaps_HeapCallback_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_sysbios_heaps_HeapCallback_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_sysbios_heaps_HeapCallback_Params__init__S, "ti_sysbios_heaps_HeapCallback_Params__init__S")
-__extern xdc_Void ti_sysbios_heaps_HeapCallback_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_sysbios_heaps_HeapCallback_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* alloc__E */
 #define ti_sysbios_heaps_HeapCallback_alloc ti_sysbios_heaps_HeapCallback_alloc__E
 xdc__CODESECT(ti_sysbios_heaps_HeapCallback_alloc__E, "ti_sysbios_heaps_HeapCallback_alloc")
-__extern xdc_Ptr ti_sysbios_heaps_HeapCallback_alloc__E( ti_sysbios_heaps_HeapCallback_Handle __inst, xdc_SizeT size, xdc_SizeT align, xdc_runtime_Error_Block *eb );
+__extern xdc_Ptr ti_sysbios_heaps_HeapCallback_alloc__E( ti_sysbios_heaps_HeapCallback_Handle instp, xdc_SizeT size, xdc_SizeT align, xdc_runtime_Error_Block *eb);
 
 /* free__E */
 #define ti_sysbios_heaps_HeapCallback_free ti_sysbios_heaps_HeapCallback_free__E
 xdc__CODESECT(ti_sysbios_heaps_HeapCallback_free__E, "ti_sysbios_heaps_HeapCallback_free")
-__extern xdc_Void ti_sysbios_heaps_HeapCallback_free__E( ti_sysbios_heaps_HeapCallback_Handle __inst, xdc_Ptr block, xdc_SizeT size );
+__extern xdc_Void ti_sysbios_heaps_HeapCallback_free__E( ti_sysbios_heaps_HeapCallback_Handle instp, xdc_Ptr block, xdc_SizeT size);
 
 /* isBlocking__E */
 #define ti_sysbios_heaps_HeapCallback_isBlocking ti_sysbios_heaps_HeapCallback_isBlocking__E
 xdc__CODESECT(ti_sysbios_heaps_HeapCallback_isBlocking__E, "ti_sysbios_heaps_HeapCallback_isBlocking")
-__extern xdc_Bool ti_sysbios_heaps_HeapCallback_isBlocking__E( ti_sysbios_heaps_HeapCallback_Handle __inst );
+__extern xdc_Bool ti_sysbios_heaps_HeapCallback_isBlocking__E( ti_sysbios_heaps_HeapCallback_Handle instp);
 
 /* getStats__E */
 #define ti_sysbios_heaps_HeapCallback_getStats ti_sysbios_heaps_HeapCallback_getStats__E
 xdc__CODESECT(ti_sysbios_heaps_HeapCallback_getStats__E, "ti_sysbios_heaps_HeapCallback_getStats")
-__extern xdc_Void ti_sysbios_heaps_HeapCallback_getStats__E( ti_sysbios_heaps_HeapCallback_Handle __inst, xdc_runtime_Memory_Stats *stats );
+__extern xdc_Void ti_sysbios_heaps_HeapCallback_getStats__E( ti_sysbios_heaps_HeapCallback_Handle instp, xdc_runtime_Memory_Stats *stats);
 
 /* getContext__E */
 #define ti_sysbios_heaps_HeapCallback_getContext ti_sysbios_heaps_HeapCallback_getContext__E
 xdc__CODESECT(ti_sysbios_heaps_HeapCallback_getContext__E, "ti_sysbios_heaps_HeapCallback_getContext")
-__extern xdc_UArg ti_sysbios_heaps_HeapCallback_getContext__E( ti_sysbios_heaps_HeapCallback_Handle __inst );
+__extern xdc_UArg ti_sysbios_heaps_HeapCallback_getContext__E( ti_sysbios_heaps_HeapCallback_Handle instp);
 
 
 /*
@@ -556,8 +558,8 @@ static inline void ti_sysbios_heaps_HeapCallback_Params_copy(ti_sysbios_heaps_He
 #define ti_sysbios_heaps_HeapCallback_Object_sizeof() ti_sysbios_heaps_HeapCallback_Object__sizeof__C
 
 /* Object_get */
-static inline ti_sysbios_heaps_HeapCallback_Handle ti_sysbios_heaps_HeapCallback_Object_get(ti_sysbios_heaps_HeapCallback_Instance_State *oarr, int i);
-static inline ti_sysbios_heaps_HeapCallback_Handle ti_sysbios_heaps_HeapCallback_Object_get(ti_sysbios_heaps_HeapCallback_Instance_State *oarr, int i) 
+static inline ti_sysbios_heaps_HeapCallback_Handle ti_sysbios_heaps_HeapCallback_Object_get(ti_sysbios_heaps_HeapCallback_Object *oarr, int i);
+static inline ti_sysbios_heaps_HeapCallback_Handle ti_sysbios_heaps_HeapCallback_Object_get(ti_sysbios_heaps_HeapCallback_Object *oarr, int i) 
 {
     return (ti_sysbios_heaps_HeapCallback_Handle)ti_sysbios_heaps_HeapCallback_Object__get__S(oarr, i);
 }

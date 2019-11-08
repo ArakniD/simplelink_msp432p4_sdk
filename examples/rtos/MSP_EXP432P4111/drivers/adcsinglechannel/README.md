@@ -1,28 +1,30 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# adcsinglechannel
-
----
-
 ## Example Summary
 
 Example that uses the ADC driver to make a number of samples
 and print them via UART.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_ADC0`
-* `Board_ADC1`
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
 
-## Resources & Jumper Settings
+* `CONFIG_ADC_0`
+* `CONFIG_ADC_1`
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+## BoosterPacks, Board Resources & Jumper Settings
+
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
+
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 
 ## Example Usage
@@ -31,7 +33,7 @@ Otherwise, you can find Board.html in the directory
 Display driver documentation found in the SimpleLink MCU SDK User's Guide.
 
 * Connect the ADC channels to the sampling sources.
-    * For quick testing, connect `Board_ADC0` to `GND` and `Board_ADC1` to `3V3`.
+    * For quick testing, connect `CONFIG_ADC_0` to `GND` and `CONFIG_ADC_1` to `3V3`.
 
 >__Important:__ Caution should be used when connecting the pins to analog inputs greater than 3VDC.
 
@@ -64,8 +66,8 @@ Example snippet of outputs:
         ADC1 convert result (9): 3000000 uV
 ```
 
-* The example outputs one sample from `Board_ADC0` and ten samples from
-`Board_ADC1`.
+* The example outputs one sample from `CONFIG_ADC_0` and ten samples from
+`CONFIG_ADC_1`.
 
 * The actual conversion result values may vary depending on the reference
 voltage settings. Please refer to the board specific datasheet for more details.

@@ -5,7 +5,7 @@
     <includes refid="_u_a_r_t_8h" local="no">UART.h</includes>
       <sectiondef kind="public-attrib">
       <memberdef kind="variable" id="struct_u_a_r_t___config___1a20c35d866935a4bb465c5a4d02183d74" prot="public" static="no" mutable="no">
-        <type><ref refid="_u_a_r_t_8h_1ad50e0d914874c8fcbc16b451984a8f5e" kindref="member">UART_FxnTable</ref> const  *</type>
+        <type><ref refid="struct_u_a_r_t___fxn_table" kindref="compound">UART_FxnTable</ref> const  *</type>
         <definition>UART_FxnTable const* UART_Config_::fxnTablePtr</definition>
         <argsstring></argsstring>
         <name>fxnTablePtr</name>
@@ -50,17 +50,10 @@
 <para>The UART_Config structure contains a set of pointers used to characterize the UART driver implementation.</para><para>This structure needs to be defined before calling <ref refid="_u_a_r_t_8h_1ab60a36f7295d704926120d22f806dcd1" kindref="member">UART_init()</ref> and it must not be changed thereafter.</para><para><simplesect kind="see"><para><ref refid="_u_a_r_t_8h_1ab60a36f7295d704926120d22f806dcd1" kindref="member">UART_init()</ref> </para></simplesect>
 </para>    </detaileddescription>
     <collaborationgraph>
-      <node id="265">
-        <label>UART_Config_</label>
-        <link refid="struct_u_a_r_t___config__"/>
-        <childnode refid="266" relation="usage">
-          <edgelabel>fxnTablePtr</edgelabel>
-        </childnode>
-      </node>
-      <node id="266">
-        <label>UART_FxnTable_</label>
-        <link refid="struct_u_a_r_t___fxn_table__"/>
-        <childnode refid="265" relation="usage">
+      <node id="291">
+        <label>UART_FxnTable</label>
+        <link refid="struct_u_a_r_t___fxn_table"/>
+        <childnode refid="290" relation="usage">
           <edgelabel>writeFxn</edgelabel>
           <edgelabel>readCancelFxn</edgelabel>
           <edgelabel>closeFxn</edgelabel>
@@ -72,6 +65,13 @@
           <edgelabel>writePollingFxn</edgelabel>
           <edgelabel>readFxn</edgelabel>
           <edgelabel>...</edgelabel>
+        </childnode>
+      </node>
+      <node id="290">
+        <label>UART_Config_</label>
+        <link refid="struct_u_a_r_t___config__"/>
+        <childnode refid="291" relation="usage">
+          <edgelabel>fxnTablePtr</edgelabel>
         </childnode>
       </node>
     </collaborationgraph>

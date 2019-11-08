@@ -121,7 +121,6 @@ void EUSCIB0_IRQHandler(void)
     uint_fast16_t status;
 
     status = MAP_I2C_getEnabledInterruptStatus(EUSCI_B0_BASE);
-    MAP_I2C_clearInterruptFlag(EUSCI_B0_BASE, status);
 
     /* RXIFG */
     if (status & EUSCI_B_I2C_RECEIVE_INTERRUPT0)

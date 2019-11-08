@@ -291,11 +291,7 @@ extern uint32_t Interrupt_getPriorityGrouping(void);
 //!
 //! The hardware priority mechanism only looks at the upper N bits of the
 //! priority level (where N is 3 for the MSP432 family), so any
-//! prioritization must be performed in those bits.  The remaining bits can be
-//! used to sub-prioritize the interrupt sources, and may be used by the
-//! hardware priority mechanism on a future part.  This arrangement allows
-//! priorities to migrate to different NVIC implementations without changing
-//! the gross prioritization of the interrupts.
+//! prioritization must be performed in those bits.
 //!
 //! See \link Interrupt_enableInterrupt \endlink for details about the interrupt
 //! parameter

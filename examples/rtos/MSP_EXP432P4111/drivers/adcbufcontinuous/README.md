@@ -1,37 +1,39 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# adcbufcontinuous
-
----
-
 ## Example Summary
 
 Example that uses the ADCBuf driver to make a number of samples
 and echo them via UART. This example shows how to initialize the
 ADCBuf driver in continuous mode.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_ADCBUF0` - Buffer instance used to manage samples from ADCBuf channel.
-* `Board_ADCBUF0CHANNEL0` - ADCBuf channel 0.
-* `Board_UART0` - Used to echo samples to host serial session.
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
 
-## Resources & Jumper Settings
+* `CONFIG_ADCBUF_0` - ADCBuf instance
+* `CONFIG_ADCBUF_0_CHANNEL_0` - ADC channel 0 of the `CONFIG_ADCBUF_0` instance
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+## BoosterPacks, Board Resources & Jumper Settings
+
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
+
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 ## Example Usage
 
 * Connect the ADC channel to a sampling source.
-    * For quick testing, connect `Board_ADCBUF0CHANNEL0` to `GND` or `3V3`.
+    * For quick testing, connect `CONFIG_ADCBUF_0_CHANNEL_0` to `GND` or `3V3`.
 
->__Important:__ Caution should be used when connecting the pins to analog inputs greater than 3VDC.
+>__Important:__ Caution should be used when connecting the pins to analog
+inputs greater than 3VDC.
 
 * Open a serial session (e.g. [`PuTTY`](http://www.putty.org/ "PuTTY's
 Homepage"), etc.) to the appropriate COM port.
@@ -52,6 +54,12 @@ The connection will have the following settings:
 * The target will send packages of 50 samples and a header to the serial
 session. Adjusted raw values and microvolt values are displayed
 on respective new lines.
+
+* Note that many ADCBuf driver implementations use the DMA peripheral in a
+ping pong buffer configuration. Because of this setting breakpoints while
+active ADC conversions and DMA transactions are happening will result in
+unreliable behavior. It is recommended to not set breakpoints in this code
+example and instead read results via the UART terminal.
 
 ## Application Design Details
 

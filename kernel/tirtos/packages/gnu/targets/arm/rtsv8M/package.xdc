@@ -49,7 +49,7 @@ package gnu.targets.arm.rtsv8M [1,0,0] {
     module Settings;
 }
 /*
- *  @(#) gnu.targets.arm.rtsv8M; 1, 0, 0,0; 2-9-2019 16:33:36; /db/ztree/library/trees/xdctargets/xdctargets-t01/src/ xlibrary
+ *  @(#) gnu.targets.arm.rtsv8M; 1, 0, 0,0; 8-9-2019 17:26:19; /db/ztree/library/trees/xdctargets/xdctargets-v00/src/ xlibrary
 
  */
 

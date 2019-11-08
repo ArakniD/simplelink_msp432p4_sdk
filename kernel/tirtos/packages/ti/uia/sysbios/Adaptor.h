@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_uia_sysbios_Adaptor__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_sysbios_Adaptor___VERS 200
@@ -317,67 +319,67 @@ __extern xdc_Int ti_uia_sysbios_Adaptor_Module_startup__F( xdc_Int state );
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_sysbios_Adaptor_Module__startupDone__S, "ti_uia_sysbios_Adaptor_Module__startupDone__S")
-__extern xdc_Bool ti_uia_sysbios_Adaptor_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_sysbios_Adaptor_Module__startupDone__S( void);
 
 /* freePacket__E */
 #define ti_uia_sysbios_Adaptor_freePacket ti_uia_sysbios_Adaptor_freePacket__E
 xdc__CODESECT(ti_uia_sysbios_Adaptor_freePacket__E, "ti_uia_sysbios_Adaptor_freePacket")
-__extern xdc_Void ti_uia_sysbios_Adaptor_freePacket__E( ti_uia_runtime_UIAPacket_Hdr *packet );
+__extern xdc_Void ti_uia_sysbios_Adaptor_freePacket__E( ti_uia_runtime_UIAPacket_Hdr *packet);
 
 /* getFreePacket__E */
 #define ti_uia_sysbios_Adaptor_getFreePacket ti_uia_sysbios_Adaptor_getFreePacket__E
 xdc__CODESECT(ti_uia_sysbios_Adaptor_getFreePacket__E, "ti_uia_sysbios_Adaptor_getFreePacket")
-__extern ti_uia_runtime_UIAPacket_Hdr *ti_uia_sysbios_Adaptor_getFreePacket__E( ti_uia_runtime_UIAPacket_HdrType type, xdc_UInt timeout );
+__extern ti_uia_runtime_UIAPacket_Hdr *ti_uia_sysbios_Adaptor_getFreePacket__E( ti_uia_runtime_UIAPacket_HdrType type, xdc_UInt timeout);
 
 /* requestEnergy__E */
 #define ti_uia_sysbios_Adaptor_requestEnergy ti_uia_sysbios_Adaptor_requestEnergy__E
 xdc__CODESECT(ti_uia_sysbios_Adaptor_requestEnergy__E, "ti_uia_sysbios_Adaptor_requestEnergy")
-__extern xdc_Void ti_uia_sysbios_Adaptor_requestEnergy__E( xdc_Int id );
+__extern xdc_Void ti_uia_sysbios_Adaptor_requestEnergy__E( xdc_Int id);
 
 /* sendPacket__E */
 #define ti_uia_sysbios_Adaptor_sendPacket ti_uia_sysbios_Adaptor_sendPacket__E
 xdc__CODESECT(ti_uia_sysbios_Adaptor_sendPacket__E, "ti_uia_sysbios_Adaptor_sendPacket")
-__extern xdc_Bool ti_uia_sysbios_Adaptor_sendPacket__E( ti_uia_runtime_UIAPacket_Hdr *packet );
+__extern xdc_Bool ti_uia_sysbios_Adaptor_sendPacket__E( ti_uia_runtime_UIAPacket_Hdr *packet);
 
 /* setPeriod__E */
 #define ti_uia_sysbios_Adaptor_setPeriod ti_uia_sysbios_Adaptor_setPeriod__E
 xdc__CODESECT(ti_uia_sysbios_Adaptor_setPeriod__E, "ti_uia_sysbios_Adaptor_setPeriod")
-__extern xdc_Void ti_uia_sysbios_Adaptor_setPeriod__E( xdc_Int id, xdc_UInt32 periodInMs );
+__extern xdc_Void ti_uia_sysbios_Adaptor_setPeriod__E( xdc_Int id, xdc_UInt32 periodInMs);
 
 /* rxTaskFxn__E */
 #define ti_uia_sysbios_Adaptor_rxTaskFxn ti_uia_sysbios_Adaptor_rxTaskFxn__E
 xdc__CODESECT(ti_uia_sysbios_Adaptor_rxTaskFxn__E, "ti_uia_sysbios_Adaptor_rxTaskFxn")
-__extern xdc_Void ti_uia_sysbios_Adaptor_rxTaskFxn__E( xdc_UArg arg0, xdc_UArg arg1 );
+__extern xdc_Void ti_uia_sysbios_Adaptor_rxTaskFxn__E( xdc_UArg arg0, xdc_UArg arg1);
 
 /* transferAgentTaskFxn__E */
 #define ti_uia_sysbios_Adaptor_transferAgentTaskFxn ti_uia_sysbios_Adaptor_transferAgentTaskFxn__E
 xdc__CODESECT(ti_uia_sysbios_Adaptor_transferAgentTaskFxn__E, "ti_uia_sysbios_Adaptor_transferAgentTaskFxn")
-__extern xdc_Void ti_uia_sysbios_Adaptor_transferAgentTaskFxn__E( xdc_UArg arg0, xdc_UArg arg1 );
+__extern xdc_Void ti_uia_sysbios_Adaptor_transferAgentTaskFxn__E( xdc_UArg arg0, xdc_UArg arg1);
 
 /* clockFxn__E */
 #define ti_uia_sysbios_Adaptor_clockFxn ti_uia_sysbios_Adaptor_clockFxn__E
 xdc__CODESECT(ti_uia_sysbios_Adaptor_clockFxn__E, "ti_uia_sysbios_Adaptor_clockFxn")
-__extern xdc_Void ti_uia_sysbios_Adaptor_clockFxn__E( xdc_UArg arg0 );
+__extern xdc_Void ti_uia_sysbios_Adaptor_clockFxn__E( xdc_UArg arg0);
 
 /* giveEnergy__I */
 #define ti_uia_sysbios_Adaptor_giveEnergy ti_uia_sysbios_Adaptor_giveEnergy__I
 xdc__CODESECT(ti_uia_sysbios_Adaptor_giveEnergy__I, "ti_uia_sysbios_Adaptor_giveEnergy")
-__extern xdc_Void ti_uia_sysbios_Adaptor_giveEnergy__I( void );
+__extern xdc_Void ti_uia_sysbios_Adaptor_giveEnergy__I( void);
 
 /* sendToHost__I */
 #define ti_uia_sysbios_Adaptor_sendToHost ti_uia_sysbios_Adaptor_sendToHost__I
 xdc__CODESECT(ti_uia_sysbios_Adaptor_sendToHost__I, "ti_uia_sysbios_Adaptor_sendToHost")
-__extern xdc_Bool ti_uia_sysbios_Adaptor_sendToHost__I( ti_uia_runtime_UIAPacket_Hdr *packet );
+__extern xdc_Bool ti_uia_sysbios_Adaptor_sendToHost__I( ti_uia_runtime_UIAPacket_Hdr *packet);
 
 /* sendToService__I */
 #define ti_uia_sysbios_Adaptor_sendToService ti_uia_sysbios_Adaptor_sendToService__I
 xdc__CODESECT(ti_uia_sysbios_Adaptor_sendToService__I, "ti_uia_sysbios_Adaptor_sendToService")
-__extern xdc_Void ti_uia_sysbios_Adaptor_sendToService__I( ti_uia_sysbios_Adaptor_Entry *entry );
+__extern xdc_Void ti_uia_sysbios_Adaptor_sendToService__I( ti_uia_sysbios_Adaptor_Entry *entry);
 
 /* runScheduledServices__I */
 #define ti_uia_sysbios_Adaptor_runScheduledServices ti_uia_sysbios_Adaptor_runScheduledServices__I
 xdc__CODESECT(ti_uia_sysbios_Adaptor_runScheduledServices__I, "ti_uia_sysbios_Adaptor_runScheduledServices")
-__extern xdc_Void ti_uia_sysbios_Adaptor_runScheduledServices__I( void );
+__extern xdc_Void ti_uia_sysbios_Adaptor_runScheduledServices__I( void);
 
 
 /*

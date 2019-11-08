@@ -7,34 +7,34 @@
     <includes local="no">stdint.h</includes>
     <includedby refid="_s_p_i_f_f_s_n_v_s_8h" local="no">SPIFFSNVS.h</includedby>
     <incdepgraph>
-      <node id="154">
+      <node id="169">
         <label>stdbool.h</label>
       </node>
-      <node id="156">
+      <node id="171">
         <label>stdint.h</label>
       </node>
-      <node id="155">
+      <node id="170">
         <label>stddef.h</label>
       </node>
-      <node id="153">
+      <node id="168">
         <label>NVS.h</label>
         <link refid="_n_v_s_8h"/>
-        <childnode refid="154" relation="include">
+        <childnode refid="169" relation="include">
         </childnode>
-        <childnode refid="155" relation="include">
+        <childnode refid="170" relation="include">
         </childnode>
-        <childnode refid="156" relation="include">
+        <childnode refid="171" relation="include">
         </childnode>
       </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="157">
+      <node id="172">
         <label>NVS.h</label>
         <link refid="_n_v_s_8h"/>
-        <childnode refid="158" relation="include">
+        <childnode refid="173" relation="include">
         </childnode>
       </node>
-      <node id="158">
+      <node id="173">
         <label>SPIFFSNVS.h</label>
         <link refid="_s_p_i_f_f_s_n_v_s_8h"/>
       </node>
@@ -961,7 +961,7 @@
 <codeline><highlight class="normal">NVS_Params<sp/>nvsParams;</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">NVS_Params_init(&amp;nvsParams);</highlight></codeline>
-<codeline><highlight class="normal">nvsRegion<sp/>=<sp/>NVS_open(Board_NVS0,<sp/>&amp;nvsParams);</highlight></codeline>
+<codeline><highlight class="normal">nvsRegion<sp/>=<sp/>NVS_open(CONFIG_NVS0,<sp/>&amp;nvsParams);</highlight></codeline>
 </programlisting></para><para><anchor id="_n_v_s_8h_1ti_drivers_NVS_Examples_typical"/><heading level="2">Erasing, writing, reading an NVS region</heading>
 </para><para>The following code example opens an NVS region instance, erases the first sector of that region, writes a string into it, then prints the string after reading it back into a local buffer. If the string is directly CPU addressable (i.e. not in SPI flash), the string is printed from its location in flash memory.</para><para><programlisting><codeline><highlight class="normal">//<sp/>Import<sp/>NVS<sp/>Driver<sp/>definitions</highlight></codeline>
 <codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/NVS.h&gt;</highlight></codeline>
@@ -977,11 +977,11 @@
 <codeline></codeline>
 <codeline><highlight class="normal">//</highlight></codeline>
 <codeline><highlight class="normal">//<sp/>Open<sp/>the<sp/>NVS<sp/>region<sp/>specified<sp/>by<sp/>the<sp/>0th<sp/>element<sp/>in<sp/>the<sp/>NVS_config[]</highlight></codeline>
-<codeline><highlight class="normal">//<sp/>array<sp/>defined<sp/>in<sp/>Board.c.</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>array<sp/>defined<sp/>in<sp/>ti_drivers_config.c.</highlight></codeline>
 <codeline><highlight class="normal">//</highlight></codeline>
 <codeline><highlight class="normal">//<sp/>Use<sp/>default<sp/>NVS_Params<sp/>to<sp/>open<sp/>this<sp/>memory<sp/>region,<sp/>hence<sp/>&apos;NULL&apos;</highlight></codeline>
 <codeline><highlight class="normal">//</highlight></codeline>
-<codeline><highlight class="normal">nvsRegion<sp/>=<sp/>NVS_open(Board_NVS0,<sp/>NULL);</highlight></codeline>
+<codeline><highlight class="normal">nvsRegion<sp/>=<sp/>NVS_open(CONFIG_NVS0,<sp/>NULL);</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">//<sp/>Confirm<sp/>that<sp/>the<sp/>NVS<sp/>region<sp/>opened<sp/>properly</highlight></codeline>
 <codeline><highlight class="normal">if<sp/>(nvsRegion<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
@@ -1029,7 +1029,7 @@
 </para><para>Refer to the <ref refid="index_1driver_configuration" kindref="member">Driver&apos;s Configuration</ref> section for driver configuration information. <hruler/>
 </para><para><heading level="1">Example discussion</heading>
 </para><para>Details for the <ref refid="_n_v_s_8h_1ti_drivers_NVS_Examples_typical" kindref="member">Typical NVS region operations</ref> example code above are described in the following subsections.</para><para><heading level="3">NVS Driver Configuration</heading>
-</para><para>In order to use the NVS APIs, the application is required to provide device-specific NVS configuration in the Board.c file. The NVS driver interface defines a configuration data structure, <ref refid="_n_v_s_8h_1a5fc4d942abf495e07fba7f3c0a7da83e" kindref="member">NVS_Config</ref>.</para><para>The application must declare an array of <ref refid="_n_v_s_8h_1a5fc4d942abf495e07fba7f3c0a7da83e" kindref="member">NVS_Config</ref> elements, named <computeroutput>NVS_config</computeroutput>[]. Each element of <computeroutput>NVS_config</computeroutput>[] is populated with pointers to a device specific NVS driver implementation&apos;s function table, driver object, and hardware attributes. The hardware attributes define properties such as the NVS region&apos;s base address and size, Each element in <computeroutput>NVS_config</computeroutput>[] corresponds to a NVS instance, and none of the elements should have NULL pointers.</para><para>You will need to check the device-specific NVS driver implementation&apos;s header file for example configuration. Please also refer to the Board.c file of any of the provided examples to see the NVS configuration.</para><para><heading level="3">Initializing the NVS Driver</heading>
+</para><para>In order to use the NVS APIs, the application is required to provide device-specific NVS configuration in the ti_drivers_config.c file. The NVS driver interface defines a configuration data structure, <ref refid="_n_v_s_8h_1a5fc4d942abf495e07fba7f3c0a7da83e" kindref="member">NVS_Config</ref>.</para><para>The application must declare an array of <ref refid="_n_v_s_8h_1a5fc4d942abf495e07fba7f3c0a7da83e" kindref="member">NVS_Config</ref> elements, named <computeroutput>NVS_config</computeroutput>[]. Each element of <computeroutput>NVS_config</computeroutput>[] is populated with pointers to a device specific NVS driver implementation&apos;s function table, driver object, and hardware attributes. The hardware attributes define properties such as the NVS region&apos;s base address and size, Each element in <computeroutput>NVS_config</computeroutput>[] corresponds to a NVS instance, and none of the elements should have NULL pointers.</para><para>You will need to check the device-specific NVS driver implementation&apos;s header file for example configuration. Please also refer to the ti_drivers_config.c file of any of the examples to see the NVS configuration.</para><para><heading level="3">Initializing the NVS Driver</heading>
 </para><para><ref refid="_n_v_s_8h_1a94e249f718eba502cdf34d098c83209e" kindref="member">NVS_init()</ref> must be called before any other NVS APIs. This function calls the device implementation&apos;s NVS initialization function, for each element of <computeroutput>NVS_config</computeroutput>[].</para><para><heading level="3">Opening the NVS Driver</heading>
 </para><para>Opening a NVS requires four steps:<orderedlist>
 <listitem><para>Optionally create and initialize a <ref refid="struct_n_v_s___params" kindref="compound">NVS_Params</ref> structure.</para></listitem><listitem><para>Fill in the desired parameters.</para></listitem><listitem><para>Call <ref refid="_n_v_s_8h_1a15488564c98e00aa62400a54dde3d44e" kindref="member">NVS_open()</ref>, passing the index of the NVS region in the <ref refid="_n_v_s_8h_1a5fc4d942abf495e07fba7f3c0a7da83e" kindref="member">NVS_Config</ref> structure, and the address of the <ref refid="struct_n_v_s___params" kindref="compound">NVS_Params</ref> structure.</para></listitem><listitem><para>Check that the <ref refid="_n_v_s_8h_1abdc600f33c94c8bd706ad42ccdafcf3d" kindref="member">NVS_Handle</ref> returned by <ref refid="_n_v_s_8h_1a15488564c98e00aa62400a54dde3d44e" kindref="member">NVS_open()</ref> is non-NULL, and save it. The handle will be used to read and write to the NVS you just opened.</para></listitem></orderedlist>
@@ -1144,7 +1144,7 @@
 <codeline lineno="103"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>NVS_Params<sp/>nvsParams;</highlight></codeline>
 <codeline lineno="104"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="105"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>NVS_Params_init(&amp;nvsParams);</highlight></codeline>
-<codeline lineno="106"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>nvsRegion<sp/>=<sp/>NVS_open(Board_NVS0,<sp/>&amp;nvsParams);</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>nvsRegion<sp/>=<sp/>NVS_open(CONFIG_NVS0,<sp/>&amp;nvsParams);</highlight></codeline>
 <codeline lineno="107"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
 <codeline lineno="108"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="109"><highlight class="comment"><sp/>*<sp/><sp/>@anchor<sp/>ti_drivers_NVS_Examples_typical</highlight></codeline>
@@ -1172,11 +1172,11 @@
 <codeline lineno="131"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="132"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//</highlight></codeline>
 <codeline lineno="133"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Open<sp/>the<sp/>NVS<sp/>region<sp/>specified<sp/>by<sp/>the<sp/>0th<sp/>element<sp/>in<sp/>the<sp/>NVS_config[]</highlight></codeline>
-<codeline lineno="134"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>array<sp/>defined<sp/>in<sp/>Board.c.</highlight></codeline>
+<codeline lineno="134"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>array<sp/>defined<sp/>in<sp/>ti_drivers_config.c.</highlight></codeline>
 <codeline lineno="135"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//</highlight></codeline>
 <codeline lineno="136"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Use<sp/>default<sp/>NVS_Params<sp/>to<sp/>open<sp/>this<sp/>memory<sp/>region,<sp/>hence<sp/>&apos;NULL&apos;</highlight></codeline>
 <codeline lineno="137"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//</highlight></codeline>
-<codeline lineno="138"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>nvsRegion<sp/>=<sp/>NVS_open(Board_NVS0,<sp/>NULL);</highlight></codeline>
+<codeline lineno="138"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>nvsRegion<sp/>=<sp/>NVS_open(CONFIG_NVS0,<sp/>NULL);</highlight></codeline>
 <codeline lineno="139"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="140"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Confirm<sp/>that<sp/>the<sp/>NVS<sp/>region<sp/>opened<sp/>properly</highlight></codeline>
 <codeline lineno="141"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(nvsRegion<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
@@ -1237,8 +1237,8 @@
 <codeline lineno="196"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="197"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>NVS<sp/>Driver<sp/>Configuration<sp/>#</highlight></codeline>
 <codeline lineno="198"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="199"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>order<sp/>to<sp/>use<sp/>the<sp/>NVS<sp/>APIs,<sp/>the<sp/>application<sp/>is<sp/>required</highlight></codeline>
-<codeline lineno="200"><highlight class="comment"><sp/>*<sp/><sp/>to<sp/>provide<sp/>device-specific<sp/>NVS<sp/>configuration<sp/>in<sp/>the<sp/>Board.c<sp/>file.</highlight></codeline>
+<codeline lineno="199"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>order<sp/>to<sp/>use<sp/>the<sp/>NVS<sp/>APIs,<sp/>the<sp/>application<sp/>is<sp/>required<sp/>to<sp/>provide</highlight></codeline>
+<codeline lineno="200"><highlight class="comment"><sp/>*<sp/><sp/>device-specific<sp/>NVS<sp/>configuration<sp/>in<sp/>the<sp/>ti_drivers_config.c<sp/>file.</highlight></codeline>
 <codeline lineno="201"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>NVS<sp/>driver<sp/>interface<sp/>defines<sp/>a<sp/>configuration<sp/>data<sp/>structure,</highlight></codeline>
 <codeline lineno="202"><highlight class="comment"><sp/>*<sp/><sp/>#NVS_Config.</highlight></codeline>
 <codeline lineno="203"><highlight class="comment"><sp/>*</highlight></codeline>
@@ -1252,7 +1252,7 @@
 <codeline lineno="211"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="212"><highlight class="comment"><sp/>*<sp/><sp/>You<sp/>will<sp/>need<sp/>to<sp/>check<sp/>the<sp/>device-specific<sp/>NVS<sp/>driver<sp/>implementation&apos;s</highlight></codeline>
 <codeline lineno="213"><highlight class="comment"><sp/>*<sp/><sp/>header<sp/>file<sp/>for<sp/>example<sp/>configuration.<sp/><sp/>Please<sp/>also<sp/>refer<sp/>to<sp/>the</highlight></codeline>
-<codeline lineno="214"><highlight class="comment"><sp/>*<sp/><sp/>Board.c<sp/>file<sp/>of<sp/>any<sp/>of<sp/>the<sp/>provided<sp/>examples<sp/>to<sp/>see<sp/>the<sp/>NVS<sp/>configuration.</highlight></codeline>
+<codeline lineno="214"><highlight class="comment"><sp/>*<sp/><sp/>ti_drivers_config.c<sp/>file<sp/>of<sp/>any<sp/>of<sp/>the<sp/>examples<sp/>to<sp/>see<sp/>the<sp/>NVS<sp/>configuration.</highlight></codeline>
 <codeline lineno="215"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="216"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>Initializing<sp/>the<sp/>NVS<sp/>Driver<sp/>#</highlight></codeline>
 <codeline lineno="217"><highlight class="comment"><sp/>*</highlight></codeline>

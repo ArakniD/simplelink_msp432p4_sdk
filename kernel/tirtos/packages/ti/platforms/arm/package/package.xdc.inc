@@ -5,7 +5,7 @@ package/ti.platforms.arm.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_platforms_arm.java
 package/ti_platforms_arm.class
 package/package_ti.platforms.arm.c

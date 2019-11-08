@@ -35,7 +35,7 @@
         </docSect>
         <docSect name='Note'>
             <docPara content='Local+variables+defined+in+main%28%29+no+longer+exist+once+BIOS_start%28%29+is%0A++called.+The+RAM+where+main%27s+local+variables+reside+is+reassigned+for%0A++use+as+the+interrupt+stack+during+the+execution+of+BIOS_start%28%29.'/>
-            <docPara content='Below+is+a+configuration+script+excerpt+that+installs+a+user-supplied%0A++startup+function+at+every+possible+control+point+in+the+RTSC+and%0A++SYS%2FBIOS+startup%0A++sequence%3A'/>
+            <docPara content='Below+is+a+configuration+script+excerpt+that+installs+a+user-supplied%0A++startup+function+at+every+possible+control+point+in+the+RTSC+and%0A++SYS%2FBIOS+startup+sequence%3A'/>
             <docPara content='%3CPRE+class%3D%22Example%22%3E++%2F%2F+get+handle+to+xdc+Startup+module%0A++var+Startup+%3D+xdc.useModule%28%27xdc.runtime.Startup%27%29%3B%0A%0A++%2F%2F+install+%22reset+function%22%0A++Startup.resetFxn+%3D+%27%26amp%3BmyReset%27%3B%0A%0A++%2F%2F+install+a+%22first+function%22%0A++var+len+%3D+Startup.firstFxns.length%0A++Startup.firstFxns.length%2B%2B%3B%0A++Startup.firstFxns%5Blen%5D+%3D+%27%26amp%3BmyFirst%27%3B%0A%0A++%2F%2F+install+a+%22last+function%22%0A++var+len+%3D+Startup.lastFxns.length%0A++Startup.lastFxns.length%2B%2B%3B%0A++Startup.lastFxns%5Blen%5D+%3D+%27%26amp%3BmyLast%27%3B%0A%0A++%2F%2F+get+handle+to+SYS%2FBIOS+module%0A++var+BIOS+%3D+xdc.useModule%28%27ti.sysbios.BIOS%27%29%3B%0A%0A++%2F%2F+install+a+SYS%2FBIOS+startup+function%0A++BIOS.addUserStartupFunction%28%27%26amp%3BmyBiosStartup%27%29%3B%0A%3C%2FPRE%3E'/>
             <docPara content='%3Ch3%3E+Calling+Context+%3C%2Fh3%3E%0A++%3Ctable+border%3D%221%22+cellpadding%3D%223%22%3E%0A++++%3Ccolgroup+span%3D%221%22%3E%3C%2Fcolgroup%3E+%3Ccolgroup+span%3D%225%22+align%3D%22center%22%3E%0A++++%3C%2Fcolgroup%3E%0A%0A++++%3Ctr%3E%3Cth%3E+Function+++++++++++++++++%3C%2Fth%3E%3Cth%3E++Hwi+++%3C%2Fth%3E%3Cth%3E++Swi+++%3C%2Fth%3E%0A++++%3Cth%3E++Task++%3C%2Fth%3E%3Cth%3E++Main++%3C%2Fth%3E%3Cth%3E++Startup++%3C%2Fth%3E%3C%2Ftr%3E%0A++++%3C%21--++++++++++++++++++++++++++++++++++++++++--%3E%0A++++%3Ctr%3E%3Ctd%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23get.Cpu.Freq%22+title%3D%22getCpuFreq%22%3EgetCpuFreq%3C%2Fa%3E++++++%3C%2Ftd%3E%3Ctd%3E+++Y++++%3C%2Ftd%3E%3Ctd%3E+++Y++++%3C%2Ftd%3E%0A++++%3Ctd%3E+++Y++++%3C%2Ftd%3E%3Ctd%3E+++Y++++%3C%2Ftd%3E%3Ctd%3E+++Y++++%3C%2Ftd%3E%3C%2Ftr%3E%0A++++%3Ctr%3E%3Ctd%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23get.Thread.Type%22+title%3D%22getThreadType%22%3EgetThreadType%3C%2Fa%3E+++%3C%2Ftd%3E%3Ctd%3E+++Y++++%3C%2Ftd%3E%3Ctd%3E+++Y++++%3C%2Ftd%3E%0A++++%3Ctd%3E+++Y++++%3C%2Ftd%3E%3Ctd%3E+++Y++++%3C%2Ftd%3E%3Ctd%3E+++N++++%3C%2Ftd%3E%3C%2Ftr%3E%0A++++%3Ctr%3E%3Ctd%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23set.Cpu.Freq%22+title%3D%22setCpuFreq%22%3EsetCpuFreq%3C%2Fa%3E++++++%3C%2Ftd%3E%3Ctd%3E+++Y++++%3C%2Ftd%3E%3Ctd%3E+++Y++++%3C%2Ftd%3E%0A++++%3Ctd%3E+++Y++++%3C%2Ftd%3E%3Ctd%3E+++Y++++%3C%2Ftd%3E%3Ctd%3E+++Y++++%3C%2Ftd%3E%3C%2Ftr%3E%0A++++%3Ctr%3E%3Ctd%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23start%22+title%3D%22start%22%3Estart%3C%2Fa%3E++++++%3C%2Ftd%3E%3Ctd%3E+++N++++%3C%2Ftd%3E%3Ctd%3E+++N++++%3C%2Ftd%3E%0A++++%3Ctd%3E+++N++++%3C%2Ftd%3E%3Ctd%3E+++Y++++%3C%2Ftd%3E%3Ctd%3E+++N++++%3C%2Ftd%3E%3C%2Ftr%3E%0A++++%3Ctr%3E%3Ctd+colspan%3D%226%22%3E+Definitions%3A+%3Cbr+%2F%3E%0A+++++++%3Cul%3E%0A+++++++++%3Cli%3E+%3Cb%3EHwi%3C%2Fb%3E%3A+API+is+callable+from+a+Hwi+thread.+%3C%2Fli%3E%0A+++++++++%3Cli%3E+%3Cb%3ESwi%3C%2Fb%3E%3A+API+is+callable+from+a+Swi+thread.+%3C%2Fli%3E%0A+++++++++%3Cli%3E+%3Cb%3ETask%3C%2Fb%3E%3A+API+is+callable+from+a+Task+thread.+%3C%2Fli%3E%0A+++++++++%3Cli%3E+%3Cb%3EMain%3C%2Fb%3E%3A+API+is+callable+during+any+of+these+phases%3A+%3C%2Fli%3E%0A+++++++++++%3Cul%3E%0A+++++++++++++%3Cli%3E+In+your+module+startup+after+this+module+is+started%0A++++++++++++++++++%28e.g.+BIOS_Module_startupDone%28%29+returns+TRUE%29.+%3C%2Fli%3E%0A+++++++++++++%3Cli%3E+During+xdc.runtime.Startup.lastFxns.+%3C%2Fli%3E%0A+++++++++++++%3Cli%3E+During+main%28%29.%3C%2Fli%3E%0A+++++++++++++%3Cli%3E+During+BIOS.startupFxns.%3C%2Fli%3E%0A+++++++++++%3C%2Ful%3E%0A+++++++++%3Cli%3E+%3Cb%3EStartup%3C%2Fb%3E%3A+API+is+callable+during+any+of+these+phases%3A%3C%2Fli%3E%0A+++++++++++%3Cul%3E%0A+++++++++++++%3Cli%3E+During+xdc.runtime.Startup.firstFxns.%3C%2Fli%3E%0A+++++++++++++%3Cli%3E+In+your+module+startup+before+this+module+is+started%0A++++++++++++++++++%28e.g.+BIOS_Module_startupDone%28%29+returns+FALSE%29.%3C%2Fli%3E%0A+++++++++++%3C%2Ful%3E%0A+++++++%3C%2Ful%3E%0A++++%3C%2Ftd%3E%3C%2Ftr%3E%0A%0A++%3C%2Ftable%3E'/>
         </docSect>
@@ -86,13 +86,13 @@
             </decl>
             <decl kind='const' name='version' anchor='version' altext='ti.sysbios.BIOS.version' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='SYS%2FBIOS+version+number+macro'>
                 <synopSpec>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Econst%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EUInt32%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eversion%3C%2Fspan%3E%3C%2Fgo%3E+%3D+0x67600%3B'/>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Econst%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EUInt32%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eversion%3C%2Fspan%3E%3C%2Fgo%3E+%3D+0x68000%3B'/>
                 </synopSpec>
                 <synopMeta>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Econst%3C%2Fspan%3E+%3Cgo%3EBIOS.%3Cspan+class%3D%22xdoc-id%22%3Eversion%3C%2Fspan%3E%3C%2Fgo%3E+%3D+0x67600%3B'/>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Econst%3C%2Fspan%3E+%3Cgo%3EBIOS.%3Cspan+class%3D%22xdoc-id%22%3Eversion%3C%2Fspan%3E%3C%2Fgo%3E+%3D+0x68000%3B'/>
                 </synopMeta>
                 <synopTarg>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw3%22%3E%23define%3C%2Fspan%3E+%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EBIOS_version%3C%2Fspan%3E%3C%2Fgo%3E++%28%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3EUInt32%3C%2Fspan%3E%3C%2Fi%3E%290x67600'/>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw3%22%3E%23define%3C%2Fspan%3E+%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EBIOS_version%3C%2Fspan%3E%3C%2Fgo%3E++%28%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3EUInt32%3C%2Fspan%3E%3C%2Fi%3E%290x68000'/>
                 </synopTarg>
                 <docSect name='details'>
                     <docPara content='This+macro+has+a+hex+value+that+represents+the+SYS%2FBIOS+version%0A++number.+The+hex+value+has+the+version+format+0xMmmpp%2C+where%0A++M+is+a+single+digit+Major+number%2C+mm+is+a+2+digit+minor+number%0A++and+pp+is+a+2+digit+patch+number.'/>
@@ -612,20 +612,6 @@
                     <docPara content='%3CPRE+class%3D%22Example%22%3E+++++var+BIOS+%3D+xdc.useModule%28%27ti.sysbios.BIOS%27%29%3B%0A+++++BIOS.cpuFreq.hi+%3D+0%3B%0A+++++BIOS.cpuFreq.lo+%3D+720000000%3B%0A%3C%2FPRE%3E'/>
                 </docSect>
             </decl>
-            <decl kind='config' name='defaultKernelHeapInstance' anchor='default.Kernel.Heap.Instance' altext='ti.sysbios.BIOS.defaultKernelHeapInstance' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Default+Kernel+heap+instance'>
-                <synopSpec>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIHeap.html%23per-instance_object_types%22+title%3D%22xdc.runtime.IHeap.Handle%22%3EIHeap.Handle%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EdefaultKernelHeapInstance%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%253Cspan%2Bclass%253D%2522xdoc-kw2%2522%253Enull%253C%252Fspan%253E%3B'/>
-                </synopSpec>
-                <synopMeta>
-                    <line tab='0' content='%3Cgo%3EBIOS.%3Cspan+class%3D%22xdoc-id%22%3EdefaultKernelHeapInstance%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIHeap.html%23per-instance_object_types%22+title%3D%22xdc.runtime.IHeap.Handle%22%3EIHeap.Handle%3C%2Fa%3E%3C%2Fi%3E+%253Cspan%2Bclass%253D%2522xdoc-kw2%2522%253Enull%253C%252Fspan%253E%3B'/>
-                </synopMeta>
-                <synopTarg>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Eextern+const%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIHeap.html%23per-instance_object_types%22+title%3D%22xdc.runtime.IHeap.Handle%22%3EIHeap_Handle%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EBIOS_defaultKernelHeapInstance%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
-                </synopTarg>
-                <docSect name='details'>
-                    <docPara content='If+SYS%2FBIOS+Memory+Protection+Extensions%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23mpe.Enabled%22+title%3D%22mpeEnabled%22%3EBIOS.mpeEnabled%3C%2Fa%3E+are+enabled%2C+a+dedicated+kernel%0A++heap+is+created.+This+heap+is+used+for+allocating+kernel+objects%0A++when+create%28%29+calls+are+made.+The+kernel+heap+resides+in+privileged%0A++memory+and+is+protected+against+unauthorized+access+from+User+Tasks.'/>
-                </docSect>
-            </decl>
             <decl kind='config' name='heapSection' anchor='heap.Section' altext='ti.sysbios.BIOS.heapSection' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Section+to+place+the+system+heap'>
                 <synopSpec>
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EString%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EheapSection%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%253Cspan%2Bclass%253D%2522xdoc-kw2%2522%253Enull%253C%252Fspan%253E%3B'/>
@@ -639,9 +625,6 @@
                 <docSect name='details'>
                     <docPara content='This+configuration+parameter+allows+you+to+specify+a+named+output%0A++section+that+will+contain+the+SYS%2FBIOS+system+heap.++The+system+heap%0A++is%2C+by+default%2C+used+to+allocate+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fti%2Fsysbios%2Fknl%2FTask.html%22+title%3D%22ti.sysbios.knl.Task%22%3ETask%3C%2Fa%3E%0A++stacks+and+instance+object+state+structures.++So%2C+giving+this+section%0A++a+name+and+explicitly+placing+it+via+a+linker+command+file+can%0A++significantly+improve+system+performance.'/>
                     <docPara content='If+heapSection+is+%3Ctt%3Enull%3C%2Ftt%3E+%28or+%3Ctt%3Eundefined%3C%2Ftt%3E%29+the+system+heap+is+placed%0A++in+the+target%27s+default+data+section.'/>
-                </docSect>
-                <docSect name='Note'>
-                    <docPara content='If+SYS%2FBIOS+Memory+Protection+Extensions%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23mpe.Enabled%22+title%3D%22mpeEnabled%22%3EBIOS.mpeEnabled%3C%2Fa%3E+are+enabled%2C+a+dedicated+kernel+heap%0A++is+allocated+%28see%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23default.Kernel.Heap.Instance%22+title%3D%22defaultKernelHeapInstance%22%3EBIOS.defaultKernelHeapInstance%3C%2Fa%3E%29.+The%0A++System+heap+is+placed+in+a+public+section+%28accessible+from%0A++privileged+and+user+Tasks%29+called+%22.public_heap%22+by+default.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='heapSize' anchor='heap.Size' altext='ti.sysbios.BIOS.heapSize' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Size+of+system+heap%2C+units+are+in+MAUs'>
@@ -657,9 +640,6 @@
                 <docSect name='details'>
                     <docPara content='The+system+heap+is%2C+by+default%2C+used+to+allocate+instance+object%0A++state+structures%2C+such+as+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fti%2Fsysbios%2Fknl%2FTask.html%22+title%3D%22ti.sysbios.knl.Task%22%3ETask%3C%2Fa%3E+objects%0A++and+their+stacks%2C+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fti%2Fsysbios%2Fknl%2FSemaphore.html%22+title%3D%22ti.sysbios.knl.Semaphore%22%3ESemaphore%3C%2Fa%3E+objects%2C%0A++etc.'/>
                     <docPara content='If+the+application+configuration+does+not+set%0A++Memory.defaultHeapInstance%2C+then+SYS%2FBIOS+will+create+a%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fti%2Fsysbios%2Fheaps%2FHeapMem.html%22+title%3D%22ti.sysbios.heaps.HeapMem%22%3EHeapMem%3C%2Fa%3E+heap+of+this+size.++This%0A++heap+will+be+assigned+to%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FMemory.html%23default.Heap.Instance%22+title%3D%22xdc.runtime.Memory.defaultHeapInstance%22%3EMemory.defaultHeapInstance%3C%2Fa%3E%0A++and+will+therefore+be+used+as+the+default+system+heap.++This+heap%0A++will+also+be+used+by+the+SYS%2FBIOS+version+of+the+standard+C+library%0A++functions+malloc%28%29%2C+calloc%28%29+and+free%28%29.'/>
-                </docSect>
-                <docSect name='Note'>
-                    <docPara content='If+SYS%2FBIOS+Memory+Protection+Extensions%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23mpe.Enabled%22+title%3D%22mpeEnabled%22%3EBIOS.mpeEnabled%3C%2Fa%3E+are+enabled%2C+a+dedicated+kernel+heap%0A++is+allocated+%28see%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23default.Kernel.Heap.Instance%22+title%3D%22defaultKernelHeapInstance%22%3EBIOS.defaultKernelHeapInstance%3C%2Fa%3E%29.+The%0A++System+heap+is+placed+in+a+public+section+%28accessible+from%0A++privileged+and+user+Tasks%29+called+%22.public_heap%22+by+default.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='heapTrackEnabled' anchor='heap.Track.Enabled' altext='ti.sysbios.BIOS.heapTrackEnabled' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Use+HeapTrack+with+system+default+heap'>
@@ -686,46 +666,6 @@
                 <synopTarg>
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Eextern+const%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%28*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EBIOS_installedErrorHook%3C%2Fspan%3E%3C%2Fgo%3E%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FError.html%23.Block%22+title%3D%22xdc.runtime.Error.Block%22%3EError_Block%3C%2Fa%3E*%29%3B'/>
                 </synopTarg>
-            </decl>
-            <decl kind='config' name='kernelHeapSection' anchor='kernel.Heap.Section' altext='ti.sysbios.BIOS.kernelHeapSection' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Kernel+heap+section+name'>
-                <synopSpec>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EString%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EkernelHeapSection%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%2522.kernel_heap%2522%3B'/>
-                </synopSpec>
-                <synopMeta>
-                    <line tab='0' content='%3Cgo%3EBIOS.%3Cspan+class%3D%22xdoc-id%22%3EkernelHeapSection%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3EString%3C%2Fspan%3E%3C%2Fi%3E+%2522.kernel_heap%2522%3B'/>
-                </synopMeta>
-                <synopTarg>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Eextern+const%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EString%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EBIOS_kernelHeapSection%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
-                </synopTarg>
-            </decl>
-            <decl kind='config' name='kernelHeapSize' anchor='kernel.Heap.Size' altext='ti.sysbios.BIOS.kernelHeapSize' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Kernel+heap+size%2C+units+are+in+MAUs'>
-                <synopSpec>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3ESizeT%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EkernelHeapSize%3C%2Fspan%3E%3C%2Fgo%3E+%3D+0x1000%3B'/>
-                </synopSpec>
-                <synopMeta>
-                    <line tab='0' content='%3Cgo%3EBIOS.%3Cspan+class%3D%22xdoc-id%22%3EkernelHeapSize%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3ESizeT%3C%2Fspan%3E%3C%2Fi%3E+0x1000%3B'/>
-                </synopMeta>
-                <synopTarg>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Eextern+const%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3ESizeT%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EBIOS_kernelHeapSize%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
-                </synopTarg>
-                <docSect name='details'>
-                    <docPara content='If+SYS%2FBIOS+Memory+Protection+Extensions%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23mpe.Enabled%22+title%3D%22mpeEnabled%22%3EBIOS.mpeEnabled%3C%2Fa%3E+are+enabled%2C+a+dedicated+kernel%0A++heap+is+created.+This+heap+is+used+for+allocating+kernel+objects%0A++when+create%28%29+calls+are+made.+The+kernel+heap+resides+in+privileged%0A++memory+and+is+protected+against+unauthorized+access+from+User+Tasks.'/>
-                </docSect>
-            </decl>
-            <decl kind='config' name='mpeEnabled' anchor='mpe.Enabled' altext='ti.sysbios.BIOS.mpeEnabled' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Enables+Memory+Protection+Extensions+%28MPE%29'>
-                <synopSpec>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EBool%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EmpeEnabled%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%253Cspan%2Bclass%253D%2522xdoc-kw2%2522%253Efalse%253C%252Fspan%253E%3B'/>
-                </synopSpec>
-                <synopMeta>
-                    <line tab='0' content='%3Cgo%3EBIOS.%3Cspan+class%3D%22xdoc-id%22%3EmpeEnabled%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3EBool%3C%2Fspan%3E%3C%2Fi%3E+%253Cspan%2Bclass%253D%2522xdoc-kw2%2522%253Efalse%253C%252Fspan%253E%3B'/>
-                </synopMeta>
-                <synopTarg>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Eextern+const%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EBool%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EBIOS_mpeEnabled%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
-                </synopTarg>
-                <docSect name='details'>
-                    <docPara content='SYS%2FBIOS+memory+protection+extensions+add+the+capability+to%0A++create+privileged+and+unprivileged+tasks+as+well+as+define%0A++access+privileges+for+the+unprivileged+tasks.'/>
-                    <docPara content='This+functionality+is+available+on+only+select+devices.'/>
-                </docSect>
             </decl>
             <decl kind='config' name='runtimeCreatesEnabled' anchor='runtime.Creates.Enabled' altext='ti.sysbios.BIOS.runtimeCreatesEnabled' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Runtime+instance+creation+enable+flag'>
                 <synopSpec>
@@ -818,7 +758,7 @@
                 </synopMeta>
                 <docSect name='details'>
                     <docPara content='When+set+to+true%2C+Assert+checking+code+is+compiled+into%0A++the+custom+library+created+when+%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23lib.Type%22+title%3D%22libType%22%3EBIOS.libType%3C%2Fa%3E%0A++is+set+to+%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23.Lib.Type_.Custom%22+title%3D%22LibType_Custom%22%3EBIOS_LibType_Custom%3C%2Fa%3E+or%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23.Lib.Type_.Debug%22+title%3D%22LibType_Debug%22%3EBIOS_LibType_Debug%3C%2Fa%3E.'/>
-                    <docPara content='When+set+to+false%2C+Assert+checking+code+is+removed+from%0A++the+custom+library+created+when+BIOS.libType+is+set+to+BIOS.LibType_Custom%0A++or+BIOS.LibType_Debug.%0A++This+option+can+considerably+improve+runtime+performance+as+well%0A++significantly+reduce+the+application%27s+code+size.'/>
+                    <docPara content='When+set+to+false%2C+Assert+checking+code+is+removed+from+the+custom%0A++library+created+when+BIOS.libType+is+set+to+BIOS.LibType_Custom%0A++or+BIOS.LibType_Debug.%0A++This+option+can+considerably+improve+runtime+performance+as+well%0A++significantly+reduce+the+application%27s+code+size.'/>
                     <docPara content='see+%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23lib.Type%22+title%3D%22libType%22%3EBIOS.libType%3C%2Fa%3E.'/>
                 </docSect>
             </decl>
@@ -838,6 +778,14 @@
                     <line tab='0' content='%3Cgo%3EBIOS.%3Cspan+class%3D%22xdoc-id%22%3EbuildingAppLib%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3EBool%3C%2Fspan%3E%3C%2Fi%3E+%253Cspan%2Bclass%253D%2522xdoc-kw2%2522%253Etrue%253C%252Fspan%253E%3B'/>
                 </synopMeta>
             </decl>
+            <decl kind='config' name='codeCoverageEnabled' anchor='code.Coverage.Enabled' altext='ti.sysbios.BIOS.codeCoverageEnabled' nodoc='0' external='0' overrides='0' readonly='0' instance='0' summary='' metaonly='1'>
+                <synopSpec>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Emetaonly+%3C%2Fspan%3E%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EBool%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EcodeCoverageEnabled%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%253Cspan%2Bclass%253D%2522xdoc-kw2%2522%253Efalse%253C%252Fspan%253E%3B'/>
+                </synopSpec>
+                <synopMeta>
+                    <line tab='0' content='%3Cgo%3EBIOS.%3Cspan+class%3D%22xdoc-id%22%3EcodeCoverageEnabled%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3EBool%3C%2Fspan%3E%3C%2Fi%3E+%253Cspan%2Bclass%253D%2522xdoc-kw2%2522%253Efalse%253C%252Fspan%253E%3B'/>
+                </synopMeta>
+            </decl>
             <decl kind='config' name='common$' anchor='common$' altext='ti.sysbios.BIOS.common$' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Common+module+configuration+parameters' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23common%24%22+title%3D%22xdc.runtime.IModule.common%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
                 <synopSpec>
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Emetaonly+%3C%2Fspan%3E%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
@@ -846,7 +794,7 @@
                     <line tab='0' content='%3Cgo%3EBIOS.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='customCCOpts' anchor='custom.C.C.Opts' altext='ti.sysbios.BIOS.customCCOpts' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Compiler+options+used+when+building+a+custom+SYS%2FBIOS+library' metaonly='1'>
@@ -858,15 +806,15 @@
                 </synopMeta>
                 <docSect name='details'>
                     <docPara content='When+%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23lib.Type%22+title%3D%22libType%22%3EBIOS.libType%3C%2Fa%3E+is+set+to%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23.Lib.Type_.Custom%22+title%3D%22LibType_Custom%22%3EBIOS_LibType_Custom%3C%2Fa%3E+or%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23.Lib.Type_.Debug%22+title%3D%22LibType_Debug%22%3EBIOS_LibType_Debug%3C%2Fa%3E%2C%0A++this+string+contains+the+options+passed+to+the+compiler+during+any%0A++build+of+the+SYS%2FBIOS+sources.'/>
-                    <docPara content='In+addition+to+the+options%0A++specified+by+%3Ctt%3EBIOS.customCCOpts%3C%2Ftt%3E%2C+several+%3Ctt%3E-D%3C%2Ftt%3E+and+%3Ctt%3E-I%3C%2Ftt%3E+options+are+also%0A++passed+to+the+compiler.++The+options+specified+by+%3Ctt%3EBIOS.customCCOpts%3C%2Ftt%3E+are%2C%0A++however%2C+the+first+options+passed+to+the+compiler+on+the+command+line.'/>
+                    <docPara content='In+addition+to+the+options+specified+by+%3Ctt%3EBIOS.customCCOpts%3C%2Ftt%3E%2C+several%0A++%3Ctt%3E-D%3C%2Ftt%3E+and+%3Ctt%3E-I%3C%2Ftt%3E+options+are+also+passed+to+the+compiler.++The+options%0A++specified+by+%3Ctt%3EBIOS.customCCOpts%3C%2Ftt%3E+are%2C+however%2C+the+first+options+passed%0A++to+the+compiler+on+the+command+line.'/>
                     <docPara content='To+view+the+custom+compiler+options%2C+add+the+following+line+to+your%0A++config+script%3A'/>
                     <docPara content='%3CPRE+class%3D%22Example%22%3E++print%28BIOS.customCCOpts%29%3B%0A%3C%2FPRE%3E'/>
                     <docPara content='When+%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23lib.Type%22+title%3D%22libType%22%3EBIOS.libType%3C%2Fa%3E+is+set+to%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23.Lib.Type_.Custom%22+title%3D%22LibType_Custom%22%3EBIOS_LibType_Custom%3C%2Fa%3E%2C%0A++%3Ctt%3EBIOS.customCCOpts%3C%2Ftt%3E+is+initialized+to+settings+that+create+a+highly%0A++optimized+SYS%2FBIOS+library.'/>
-                    <docPara content='When+%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23lib.Type%22+title%3D%22libType%22%3EBIOS.libType%3C%2Fa%3E+is+set+to%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23.Lib.Type_.Debug%22+title%3D%22LibType_Debug%22%3EBIOS_LibType_Debug%3C%2Fa%3E%2C%0A++%3Ctt%3EBIOS.customCCOpts%3C%2Ftt%3E+is+initialized+to+settings+that+create+a+non-optimized%0A++SYS%2FBIOS+library+that+can+be+used+to+single-step+through+the+APIs+with%0A++the+CCS+debugger.'/>
+                    <docPara content='When+%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23lib.Type%22+title%3D%22libType%22%3EBIOS.libType%3C%2Fa%3E+is+set+to%0A++%3Ca+class%3D%22xdoc-link%22+href%3D%22BIOS.html%23.Lib.Type_.Debug%22+title%3D%22LibType_Debug%22%3EBIOS_LibType_Debug%3C%2Fa%3E%2C%0A++%3Ctt%3EBIOS.customCCOpts%3C%2Ftt%3E+is+initialized+to+settings+that+create+a%0A++non-optimized+SYS%2FBIOS+library+that+can+be+used+to+single-step+through%0A++the+APIs+with+the+CCS+debugger.'/>
                     <docPara content='More+information+about+using+%3Ctt%3EBIOS.customCCOpts%3C%2Ftt%3E+is+provided+in+the%0A++%3Ca+class%3D%22xdoc-linkExt%22+href%3D%22http%3A%2F%2Fprocessors.wiki.ti.com%2Findex.php%2FSYS%2FBIOS_FAQs%22+title%3D%22http%3A%2F%2Fprocessors.wiki.ti.com%2Findex.php%2FSYS%2FBIOS_FAQs%22%3ESYS%2FBIOS+FAQs%3C%2Fa%3E.'/>
                 </docSect>
                 <docSect name='Warning'>
-                    <docPara content='The+default+value+of+%3Ctt%3EBIOS.customCCOpts%3C%2Ftt%3E%2C+which+is+derived+from+the+target%0A++specified+by+your+configuration%2C+includes+runtime+model+options%0A++%28such+as+endianess%29+that+must+be+the+same+for+all+sources+built+and%0A++linked+into+your+application.++You+must+not+change+or+add+any+options%0A++that+can+alter+the+runtime+model+specified+by+the+default+value+of%0A++%3Ctt%3EBIOS.customCCOpts%3C%2Ftt%3E.'/>
+                    <docPara content='The+default+value+of+%3Ctt%3EBIOS.customCCOpts%3C%2Ftt%3E%2C+which+is+derived+from+the%0A++target+specified+by+your+configuration%2C+includes+runtime+model+options%0A++%28such+as+endianess%29+that+must+be+the+same+for+all+sources+built+and%0A++linked+into+your+application.++You+must+not+change+or+add+any+options%0A++that+can+alter+the+runtime+model+specified+by+the+default+value+of%0A++%3Ctt%3EBIOS.customCCOpts%3C%2Ftt%3E.'/>
                     <docPara content='Setting+%3Ctt%3EBIOS.libType%3C%2Ftt%3E+overwrites+%3Ctt%3EBIOS.customCCOpts%3C%2Ftt%3E.+Therefore%2C+if+an%0A++application%27s+*.cfg+file+sets+both+these+config+params%2C+the+libType+must%0A++be+set+before+customCCOpts+so+the+changes+to+customCCOpts+persist.'/>
                 </docSect>
             </decl>

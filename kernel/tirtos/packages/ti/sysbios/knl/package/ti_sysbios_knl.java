@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_knl
 {
-    static final String VERS = "@(#) xdc-F14\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -535,7 +535,6 @@ public class ti_sysbios_knl
         om.bind("ti.sysbios.knl.Task.startCore", new Extern("ti_sysbios_knl_Task_startCore__E", "xdc_Void(*)(xdc_UInt)", true, false));
         om.bind("ti.sysbios.knl.Task.schedule", new Extern("ti_sysbios_knl_Task_schedule__I", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.knl.Task.enter", new Extern("ti_sysbios_knl_Task_enter__I", "xdc_Void(*)(xdc_Void)", true, false));
-        om.bind("ti.sysbios.knl.Task.enterUnpriv", new Extern("ti_sysbios_knl_Task_enterUnpriv__I", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.knl.Task.sleepTimeout", new Extern("ti_sysbios_knl_Task_sleepTimeout__I", "xdc_Void(*)(xdc_UArg)", true, false));
         om.bind("ti.sysbios.knl.Task.postInit", new Extern("ti_sysbios_knl_Task_postInit__I", "xdc_Int(*)(ti_sysbios_knl_Task_Object*,xdc_runtime_Error_Block*)", true, false));
         om.bind("ti.sysbios.knl.Task.allBlockedFunction", new Extern("ti_sysbios_knl_Task_allBlockedFunction__I", "xdc_Void(*)(xdc_Void)", true, false));
@@ -545,7 +544,6 @@ public class ti_sysbios_knl
         om.bind("ti.sysbios.knl.Task.getModuleStateCheckValue", new Extern("ti_sysbios_knl_Task_getModuleStateCheckValue__I", "xdc_UInt32(*)(ti_sysbios_knl_Task_Module_State*)", true, false));
         om.bind("ti.sysbios.knl.Task.objectCheck", new Extern("ti_sysbios_knl_Task_objectCheck__I", "xdc_Int(*)(ti_sysbios_knl_Task_Handle,xdc_UInt32)", true, false));
         om.bind("ti.sysbios.knl.Task.getObjectCheckValue", new Extern("ti_sysbios_knl_Task_getObjectCheckValue__I", "xdc_UInt32(*)(ti_sysbios_knl_Task_Handle)", true, false));
-        om.bind("ti.sysbios.knl.Task.enableOtherCores", new Extern("ti_sysbios_knl_Task_enableOtherCores__I", "xdc_Void(*)(xdc_Void)", true, false));
     }
 
     void Clock_TimerProxy$$CONSTS()
@@ -571,6 +569,7 @@ public class ti_sysbios_knl
         om.bind("ti.sysbios.knl.Task_SupportProxy.stackUsed", new Extern("ti_sysbios_knl_Task_SupportProxy_stackUsed__E", "xdc_SizeT(*)(xdc_Char*,xdc_SizeT)", true, false));
         om.bind("ti.sysbios.knl.Task_SupportProxy.getStackAlignment", new Extern("ti_sysbios_knl_Task_SupportProxy_getStackAlignment__E", "xdc_UInt(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.knl.Task_SupportProxy.getDefaultStackSize", new Extern("ti_sysbios_knl_Task_SupportProxy_getDefaultStackSize__E", "xdc_SizeT(*)(xdc_Void)", true, false));
+        om.bind("ti.sysbios.knl.Task_SupportProxy.getCheckValueAddr", new Extern("ti_sysbios_knl_Task_SupportProxy_getCheckValueAddr__E", "xdc_Ptr(*)(xdc_Ptr)", true, false));
     }
 
     void Clock$$CREATES()
@@ -1525,8 +1524,8 @@ public class ti_sysbios_knl
         so = (Proto.Str)om.findStrict("ti.sysbios.knl.Task.PendElem", "ti.sysbios.knl");
         sizes.clear();
         sizes.add(Global.newArray("qElem", "Sti.sysbios.knl.Queue;Elem"));
-        sizes.add(Global.newArray("taskHandle", "UPtr"));
-        sizes.add(Global.newArray("clockHandle", "UPtr"));
+        sizes.add(Global.newArray("task", "UPtr"));
+        sizes.add(Global.newArray("clock", "UPtr"));
         so.bind("$$sizes", Global.newArray(sizes.toArray()));
         fxn = Global.eval("function() { return $$sizeof(xdc.om['ti.sysbios.knl.Task.PendElem']); }");
         so.bind("$sizeof", fxn);
@@ -1554,10 +1553,6 @@ public class ti_sysbios_knl
         sizes.add(Global.newArray("readyQ", "UPtr"));
         sizes.add(Global.newArray("curCoreId", "UInt"));
         sizes.add(Global.newArray("affinity", "UInt"));
-        sizes.add(Global.newArray("privileged", "UShort"));
-        sizes.add(Global.newArray("domain", "UPtr"));
-        sizes.add(Global.newArray("checkValue", "UInt32"));
-        sizes.add(Global.newArray("tls", "UPtr"));
         so.bind("$$sizes", Global.newArray(sizes.toArray()));
         fxn = Global.eval("function() { return $$sizeof(xdc.om['ti.sysbios.knl.Task.Instance_State']); }");
         so.bind("$sizeof", fxn);
@@ -1580,7 +1575,6 @@ public class ti_sysbios_knl
         sizes.add(Global.newArray("smpReadyQ", "UPtr"));
         sizes.add(Global.newArray("idleTask", "UPtr"));
         sizes.add(Global.newArray("constructedTasks", "UPtr"));
-        sizes.add(Global.newArray("curTaskPrivileged", "UShort"));
         sizes.add(Global.newArray("inactiveQ", "Sti.sysbios.knl.Queue;Instance_State"));
         sizes.add(Global.newArray("terminatedQ", "Sti.sysbios.knl.Queue;Instance_State"));
         so.bind("$$sizes", Global.newArray(sizes.toArray()));
@@ -2244,7 +2238,6 @@ public class ti_sysbios_knl
             po.addFld("A_badContext", (Proto)om.findStrict("xdc.runtime.Assert$$Id", "ti.sysbios.knl"), Global.newObject("msg", "A_badContext: bad calling context. Must be called from a Task."), "w");
             po.addFld("A_overflow", (Proto)om.findStrict("xdc.runtime.Assert$$Id", "ti.sysbios.knl"), Global.newObject("msg", "A_overflow: Count has exceeded 65535 and rolled over."), "w");
             po.addFld("A_pendTaskDisabled", (Proto)om.findStrict("xdc.runtime.Assert$$Id", "ti.sysbios.knl"), Global.newObject("msg", "A_pendTaskDisabled: Cannot call Semaphore_pend() while the Task or Swi scheduler is disabled."), "w");
-            po.addFld("E_objectNotInKernelSpace", (Proto)om.findStrict("xdc.runtime.Error$$Id", "ti.sysbios.knl"), Global.newObject("msg", "E_objectNotInKernelSpace: Semaphore object passed not in Kernel address space."), "w");
             po.addFld("supportsEvents", $$T_Bool, false, "w");
             po.addFld("supportsPriority", $$T_Bool, true, "w");
             po.addFld("eventPost", new Proto.Adr("xdc_Void(*)(ti_sysbios_knl_Event_Handle,xdc_UInt)", "PFv"), $$UNDEF, "w");
@@ -2514,7 +2507,6 @@ public class ti_sysbios_knl
             po.addFld("E_deleteNotAllowed", (Proto)om.findStrict("xdc.runtime.Error$$Id", "ti.sysbios.knl"), Global.newObject("msg", "E_deleteNotAllowed: Task 0x%x."), "w");
             po.addFld("E_moduleStateCheckFailed", (Proto)om.findStrict("xdc.runtime.Error$$Id", "ti.sysbios.knl"), Global.newObject("msg", "E_moduleStateCheckFailed: Task module state data integrity check failed."), "w");
             po.addFld("E_objectCheckFailed", (Proto)om.findStrict("xdc.runtime.Error$$Id", "ti.sysbios.knl"), Global.newObject("msg", "E_objectCheckFailed: Task 0x%x object data integrity check failed."), "w");
-            po.addFld("E_objectNotInKernelSpace", (Proto)om.findStrict("xdc.runtime.Error$$Id", "ti.sysbios.knl"), Global.newObject("msg", "E_objectNotInKernelSpace: Task object passed not in Kernel address space."), "w");
             po.addFld("A_badThreadType", (Proto)om.findStrict("xdc.runtime.Assert$$Id", "ti.sysbios.knl"), Global.newObject("msg", "A_badThreadType: Cannot create/delete a task from Hwi or Swi thread."), "w");
             po.addFld("A_badTaskState", (Proto)om.findStrict("xdc.runtime.Assert$$Id", "ti.sysbios.knl"), Global.newObject("msg", "A_badTaskState: Can't delete a task in RUNNING state."), "w");
             po.addFld("A_noPendElem", (Proto)om.findStrict("xdc.runtime.Assert$$Id", "ti.sysbios.knl"), Global.newObject("msg", "A_noPendElem: Not enough info to delete BLOCKED task."), "w");
@@ -2588,8 +2580,6 @@ public class ti_sysbios_knl
             po.addFld("env", new Proto.Adr("xdc_Ptr", "Pv"), null, "w");
             po.addFld("vitalTaskFlag", $$T_Bool, true, "w");
             po.addFld("affinity", Proto.Elm.newCNum("(xdc_UInt)"), $$UNDEF, "w");
-            po.addFld("privileged", $$T_Bool, true, "w");
-            po.addFld("domain", new Proto.Adr("xdc_Ptr", "Pv"), null, "w");
                         po.addFld("instance", (Proto)om.findStrict("xdc.runtime.IInstance.Params", "ti.sysbios.knl"), $$UNDEF, "w");
         }//isCFG
         po = (Proto.Obj)om.findStrict("ti.sysbios.knl.Task$$Params", "ti.sysbios.knl");
@@ -2607,8 +2597,6 @@ public class ti_sysbios_knl
             po.addFld("env", new Proto.Adr("xdc_Ptr", "Pv"), null, "w");
             po.addFld("vitalTaskFlag", $$T_Bool, true, "w");
             po.addFld("affinity", Proto.Elm.newCNum("(xdc_UInt)"), $$UNDEF, "w");
-            po.addFld("privileged", $$T_Bool, true, "w");
-            po.addFld("domain", new Proto.Adr("xdc_Ptr", "Pv"), null, "w");
                         po.addFld("instance", (Proto)om.findStrict("xdc.runtime.IInstance.Params", "ti.sysbios.knl"), $$UNDEF, "w");
         }//isCFG
         po = (Proto.Obj)om.findStrict("ti.sysbios.knl.Task$$Object", "ti.sysbios.knl");
@@ -2714,8 +2702,8 @@ public class ti_sysbios_knl
         po.init("ti.sysbios.knl.Task.PendElem", null);
                 po.addFld("$hostonly", $$T_Num, 0, "r");
                 po.addFld("qElem", (Proto)om.findStrict("ti.sysbios.knl.Queue.Elem", "ti.sysbios.knl"), $$DEFAULT, "w");
-                po.addFld("taskHandle", (Proto)om.findStrict("ti.sysbios.knl.Task.Handle", "ti.sysbios.knl"), $$UNDEF, "w");
-                po.addFld("clockHandle", (Proto)om.findStrict("ti.sysbios.knl.Clock.Handle", "ti.sysbios.knl"), $$UNDEF, "w");
+                po.addFld("task", (Proto)om.findStrict("ti.sysbios.knl.Task.Handle", "ti.sysbios.knl"), $$UNDEF, "w");
+                po.addFld("clock", (Proto)om.findStrict("ti.sysbios.knl.Clock.Handle", "ti.sysbios.knl"), $$UNDEF, "w");
         // struct Task.Instance_State
         po = (Proto.Obj)om.findStrict("ti.sysbios.knl.Task$$Instance_State", "ti.sysbios.knl");
         po.init("ti.sysbios.knl.Task.Instance_State", null);
@@ -2738,10 +2726,6 @@ public class ti_sysbios_knl
                 po.addFld("readyQ", (Proto)om.findStrict("ti.sysbios.knl.Queue.Handle", "ti.sysbios.knl"), $$UNDEF, "w");
                 po.addFld("curCoreId", Proto.Elm.newCNum("(xdc_UInt)"), $$UNDEF, "w");
                 po.addFld("affinity", Proto.Elm.newCNum("(xdc_UInt)"), $$UNDEF, "w");
-                po.addFld("privileged", $$T_Bool, $$UNDEF, "w");
-                po.addFld("domain", new Proto.Adr("xdc_Ptr", "Pv"), $$UNDEF, "w");
-                po.addFld("checkValue", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "w");
-                po.addFld("tls", new Proto.Adr("xdc_Ptr", "Pv"), $$UNDEF, "w");
         // struct Task.Module_State
         po = (Proto.Obj)om.findStrict("ti.sysbios.knl.Task$$Module_State", "ti.sysbios.knl");
         po.init("ti.sysbios.knl.Task.Module_State", null);
@@ -2759,7 +2743,6 @@ public class ti_sysbios_knl
                 po.addFld("smpReadyQ", new Proto.Arr((Proto)om.findStrict("ti.sysbios.knl.Queue.Handle", "ti.sysbios.knl"), false), $$DEFAULT, "w");
                 po.addFld("idleTask", new Proto.Arr((Proto)om.findStrict("ti.sysbios.knl.Task.Handle", "ti.sysbios.knl"), false), $$DEFAULT, "w");
                 po.addFld("constructedTasks", new Proto.Arr((Proto)om.findStrict("ti.sysbios.knl.Task.Handle", "ti.sysbios.knl"), false), $$DEFAULT, "w");
-                po.addFld("curTaskPrivileged", $$T_Bool, $$UNDEF, "w");
                 po.addFldV("inactiveQ", (Proto)om.findStrict("ti.sysbios.knl.Queue.Object", "ti.sysbios.knl"), $$DEFAULT, "wh", $$objFldGet, $$objFldSet);
                 po.addFld("Object_field_inactiveQ", (Proto)om.findStrict("ti.sysbios.knl.Queue.Object", "ti.sysbios.knl"), $$DEFAULT, "w");
                 po.addFldV("terminatedQ", (Proto)om.findStrict("ti.sysbios.knl.Queue.Object", "ti.sysbios.knl"), $$DEFAULT, "wh", $$objFldGet, $$objFldSet);
@@ -3212,10 +3195,10 @@ public class ti_sysbios_knl
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray("A_clockDisabled", "A_badThreadType"));
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./Clock.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.sysbios.knl.Clock.Object", "ti.sysbios.knl"));
@@ -3804,7 +3787,6 @@ public class ti_sysbios_knl
         mcfgs.add("A_badContext");
         mcfgs.add("A_overflow");
         mcfgs.add("A_pendTaskDisabled");
-        mcfgs.add("E_objectNotInKernelSpace");
         mcfgs.add("supportsEvents");
         mcfgs.add("supportsPriority");
         mcfgs.add("eventPost");
@@ -3848,10 +3830,9 @@ public class ti_sysbios_knl
         vo.bind("pendTimeout", om.findStrict("ti.sysbios.knl.Semaphore.pendTimeout", "ti.sysbios.knl"));
         vo.bind("$$fxntab", Global.newArray("ti_sysbios_knl_Semaphore_Handle__label__E", "ti_sysbios_knl_Semaphore_Module__startupDone__E", "ti_sysbios_knl_Semaphore_Object__create__E", "ti_sysbios_knl_Semaphore_Object__delete__E", "ti_sysbios_knl_Semaphore_Object__get__E", "ti_sysbios_knl_Semaphore_Object__first__E", "ti_sysbios_knl_Semaphore_Object__next__E", "ti_sysbios_knl_Semaphore_Params__init__E", "ti_sysbios_knl_Semaphore_getCount__E", "ti_sysbios_knl_Semaphore_pend__E", "ti_sysbios_knl_Semaphore_post__E", "ti_sysbios_knl_Semaphore_registerEvent__E", "ti_sysbios_knl_Semaphore_reset__E"));
         vo.bind("$$logEvtCfgs", Global.newArray("LM_post", "LM_pend"));
-        vo.bind("$$errorDescCfgs", Global.newArray("E_objectNotInKernelSpace"));
+        vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray("A_noEvents", "A_invTimeout", "A_badContext", "A_overflow", "A_pendTaskDisabled"));
         Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.setElem("", true);
         atmap.setElem("", true);
         atmap.setElem("", true);
         atmap.setElem("", true);
@@ -4098,7 +4079,6 @@ public class ti_sysbios_knl
         mcfgs.add("E_deleteNotAllowed");
         mcfgs.add("E_moduleStateCheckFailed");
         mcfgs.add("E_objectCheckFailed");
-        mcfgs.add("E_objectNotInKernelSpace");
         mcfgs.add("A_badThreadType");
         mcfgs.add("A_badTaskState");
         mcfgs.add("A_noPendElem");
@@ -4181,7 +4161,6 @@ public class ti_sysbios_knl
         vo.bind("startCore", om.findStrict("ti.sysbios.knl.Task.startCore", "ti.sysbios.knl"));
         vo.bind("schedule", om.findStrict("ti.sysbios.knl.Task.schedule", "ti.sysbios.knl"));
         vo.bind("enter", om.findStrict("ti.sysbios.knl.Task.enter", "ti.sysbios.knl"));
-        vo.bind("enterUnpriv", om.findStrict("ti.sysbios.knl.Task.enterUnpriv", "ti.sysbios.knl"));
         vo.bind("sleepTimeout", om.findStrict("ti.sysbios.knl.Task.sleepTimeout", "ti.sysbios.knl"));
         vo.bind("postInit", om.findStrict("ti.sysbios.knl.Task.postInit", "ti.sysbios.knl"));
         vo.bind("allBlockedFunction", om.findStrict("ti.sysbios.knl.Task.allBlockedFunction", "ti.sysbios.knl"));
@@ -4191,17 +4170,16 @@ public class ti_sysbios_knl
         vo.bind("getModuleStateCheckValue", om.findStrict("ti.sysbios.knl.Task.getModuleStateCheckValue", "ti.sysbios.knl"));
         vo.bind("objectCheck", om.findStrict("ti.sysbios.knl.Task.objectCheck", "ti.sysbios.knl"));
         vo.bind("getObjectCheckValue", om.findStrict("ti.sysbios.knl.Task.getObjectCheckValue", "ti.sysbios.knl"));
-        vo.bind("enableOtherCores", om.findStrict("ti.sysbios.knl.Task.enableOtherCores", "ti.sysbios.knl"));
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_knl_Task_Handle__label__E", "ti_sysbios_knl_Task_Module__startupDone__E", "ti_sysbios_knl_Task_Object__create__E", "ti_sysbios_knl_Task_Object__delete__E", "ti_sysbios_knl_Task_Object__get__E", "ti_sysbios_knl_Task_Object__first__E", "ti_sysbios_knl_Task_Object__next__E", "ti_sysbios_knl_Task_Params__init__E", "ti_sysbios_knl_Task_startup__E", "ti_sysbios_knl_Task_enabled__E", "ti_sysbios_knl_Task_unlockSched__E", "ti_sysbios_knl_Task_disable__E", "ti_sysbios_knl_Task_enable__E", "ti_sysbios_knl_Task_restore__E", "ti_sysbios_knl_Task_restoreHwi__E", "ti_sysbios_knl_Task_self__E", "ti_sysbios_knl_Task_selfMacro__E", "ti_sysbios_knl_Task_checkStacks__E", "ti_sysbios_knl_Task_exit__E", "ti_sysbios_knl_Task_sleep__E", "ti_sysbios_knl_Task_yield__E", "ti_sysbios_knl_Task_getIdleTask__E", "ti_sysbios_knl_Task_getIdleTaskHandle__E", "ti_sysbios_knl_Task_startCore__E", "ti_sysbios_knl_Task_getArg0__E", "ti_sysbios_knl_Task_getArg1__E", "ti_sysbios_knl_Task_getEnv__E", "ti_sysbios_knl_Task_getFunc__E", "ti_sysbios_knl_Task_getHookContext__E", "ti_sysbios_knl_Task_getPri__E", "ti_sysbios_knl_Task_setArg0__E", "ti_sysbios_knl_Task_setArg1__E", "ti_sysbios_knl_Task_setEnv__E", "ti_sysbios_knl_Task_setHookContext__E", "ti_sysbios_knl_Task_setPri__E", "ti_sysbios_knl_Task_stat__E", "ti_sysbios_knl_Task_getMode__E", "ti_sysbios_knl_Task_setAffinity__E", "ti_sysbios_knl_Task_getAffinity__E", "ti_sysbios_knl_Task_block__E", "ti_sysbios_knl_Task_unblock__E", "ti_sysbios_knl_Task_blockI__E", "ti_sysbios_knl_Task_unblockI__E", "ti_sysbios_knl_Task_getPrivileged__E"));
+        vo.bind("$$fxntab", Global.newArray("ti_sysbios_knl_Task_Handle__label__E", "ti_sysbios_knl_Task_Module__startupDone__E", "ti_sysbios_knl_Task_Object__create__E", "ti_sysbios_knl_Task_Object__delete__E", "ti_sysbios_knl_Task_Object__get__E", "ti_sysbios_knl_Task_Object__first__E", "ti_sysbios_knl_Task_Object__next__E", "ti_sysbios_knl_Task_Params__init__E", "ti_sysbios_knl_Task_startup__E", "ti_sysbios_knl_Task_enabled__E", "ti_sysbios_knl_Task_unlockSched__E", "ti_sysbios_knl_Task_disable__E", "ti_sysbios_knl_Task_enable__E", "ti_sysbios_knl_Task_restore__E", "ti_sysbios_knl_Task_restoreHwi__E", "ti_sysbios_knl_Task_self__E", "ti_sysbios_knl_Task_selfMacro__E", "ti_sysbios_knl_Task_checkStacks__E", "ti_sysbios_knl_Task_exit__E", "ti_sysbios_knl_Task_sleep__E", "ti_sysbios_knl_Task_yield__E", "ti_sysbios_knl_Task_getIdleTask__E", "ti_sysbios_knl_Task_getIdleTaskHandle__E", "ti_sysbios_knl_Task_startCore__E", "ti_sysbios_knl_Task_getArg0__E", "ti_sysbios_knl_Task_getArg1__E", "ti_sysbios_knl_Task_getEnv__E", "ti_sysbios_knl_Task_getFunc__E", "ti_sysbios_knl_Task_getHookContext__E", "ti_sysbios_knl_Task_getPri__E", "ti_sysbios_knl_Task_setArg0__E", "ti_sysbios_knl_Task_setArg1__E", "ti_sysbios_knl_Task_setEnv__E", "ti_sysbios_knl_Task_setHookContext__E", "ti_sysbios_knl_Task_setPri__E", "ti_sysbios_knl_Task_stat__E", "ti_sysbios_knl_Task_getMode__E", "ti_sysbios_knl_Task_setAffinity__E", "ti_sysbios_knl_Task_getAffinity__E", "ti_sysbios_knl_Task_block__E", "ti_sysbios_knl_Task_unblock__E", "ti_sysbios_knl_Task_blockI__E", "ti_sysbios_knl_Task_unblockI__E"));
         vo.bind("$$logEvtCfgs", Global.newArray("LM_switch", "LM_sleep", "LD_ready", "LD_block", "LM_yield", "LM_setPri", "LD_exit", "LM_setAffinity", "LM_schedule", "LM_noWork"));
-        vo.bind("$$errorDescCfgs", Global.newArray("E_stackOverflow", "E_spOutOfBounds", "E_deleteNotAllowed", "E_moduleStateCheckFailed", "E_objectCheckFailed", "E_objectNotInKernelSpace"));
+        vo.bind("$$errorDescCfgs", Global.newArray("E_stackOverflow", "E_spOutOfBounds", "E_deleteNotAllowed", "E_moduleStateCheckFailed", "E_objectCheckFailed"));
         vo.bind("$$assertDescCfgs", Global.newArray("A_badThreadType", "A_badTaskState", "A_noPendElem", "A_taskDisabled", "A_badPriority", "A_badTimeout", "A_badAffinity", "A_sleepTaskDisabled", "A_invalidCoreId"));
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./Task.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.sysbios.knl.Task.Object", "ti.sysbios.knl"));
@@ -4374,7 +4352,8 @@ public class ti_sysbios_knl
         vo.bind("stackUsed", om.findStrict("ti.sysbios.knl.Task_SupportProxy.stackUsed", "ti.sysbios.knl"));
         vo.bind("getStackAlignment", om.findStrict("ti.sysbios.knl.Task_SupportProxy.getStackAlignment", "ti.sysbios.knl"));
         vo.bind("getDefaultStackSize", om.findStrict("ti.sysbios.knl.Task_SupportProxy.getDefaultStackSize", "ti.sysbios.knl"));
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_knl_Task_SupportProxy_DELEGATE__Handle__label", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Module__startupDone", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Object__create", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Object__delete", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Object__get", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Object__first", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Object__next", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Params__init", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Proxy__abstract", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Proxy__delegate", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__start", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__swap", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__checkStack", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__stackUsed", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__getStackAlignment", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__getDefaultStackSize", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__stackUsed$view", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__getCallStack$view"));
+        vo.bind("getCheckValueAddr", om.findStrict("ti.sysbios.knl.Task_SupportProxy.getCheckValueAddr", "ti.sysbios.knl"));
+        vo.bind("$$fxntab", Global.newArray("ti_sysbios_knl_Task_SupportProxy_DELEGATE__Handle__label", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Module__startupDone", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Object__create", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Object__delete", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Object__get", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Object__first", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Object__next", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Params__init", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Proxy__abstract", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__Proxy__delegate", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__start", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__swap", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__checkStack", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__stackUsed", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__getStackAlignment", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__getDefaultStackSize", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__getCheckValueAddr", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__stackUsed$view", "ti_sysbios_knl_Task_SupportProxy_DELEGATE__getCallStack$view"));
         vo.bind("$$logEvtCfgs", Global.newArray());
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());

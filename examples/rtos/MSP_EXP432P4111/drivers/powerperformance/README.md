@@ -1,30 +1,32 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# powerperformance
-
----
-
 ## Example Summary
 
 Application that demonstrates the different device performance levels that are
 possible in the application. The application steps between the performance
 levels, and also displays the CPU clock speed at each performance level
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_GPIO_LED0` - Indicates that the board was initialized within
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
+
+
+* `CONFIG_GPIO_LED_0` - Indicates that the board was initialized within
 `mainThread()`
 
-## Resources & Jumper Settings
+## BoosterPacks, Board Resources & Jumper Settings
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
 
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 ## Example Usage
 
@@ -45,7 +47,7 @@ The connection will have the following settings:
     Flow Control:    None
 ```
 
-* Run the example. `Board_GPIO_LED0` turns ON to indicate driver
+* Run the example. `CONFIG_GPIO_LED_0` turns ON to indicate driver
 initialization is complete.
 
 Messages should appear via UART as follows:
@@ -91,14 +93,14 @@ This application uses one thread:
 
 `mainThread` - perfroms the following actions:
 
-1. Turns on `Board_GPIO_LED0`
+1. Turns on `CONFIG_GPIO_LED_0`
 
 2. Prints the initial performance level and clock frequencies.
 
 3. Sets up power notifications
     * `notifyFxn` is called when a performance level change is initiated or
 completed.
-    * Board_GPIO_LED0 turn OFF when Performace Change Starts and turns OFF
+    * `CONFIG_GPIO_LED_0` turns OFF when Performace Change Starts and turns OFF
 when Performance change Ends
 
 4. `runPerfLevel` is called consecutively; adjusting the performance level

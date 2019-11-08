@@ -1,47 +1,50 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-
-# spimaster
-
----
-
 ## Example Summary
 
 Demonstrates how to use SPI driver in master mode to communicate with another
-SimpleLink device.  To run this example successfully, another SimpleLink
+SimpleLink device. To run this example successfully, another SimpleLink
 device running the `spislave` example is required.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_SPI_MASTER` - SPI peripheral assigned as a master
-* `Board_MASTER_READY` - GPIO managed by master to notify the slave
-Board_SPI_MASTER has been opened
-* `Board_SLAVE_READY` - GPIO to notify the master the slave is ready for a
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
+
+* `CONFIG_SPI_MASTER` - SPI peripheral assigned as a master
+* `CONFIG_SPI_MASTER_READY` - GPIO managed by master to notify the slave
+`CONFIG_SPI_MASTER` has been opened
+* `CONFIG_SPI_SLAVE_READY` - GPIO to notify the master the slave is ready for a
 transfer
-* `Board_GPIO_LED0` - Indicator LED
-* `Board_GPIO_LED1` - Indicator LED
+* `CONFIG_GPIO_LED_0` - Indicator LED
+* `CONFIG_GPIO_LED_1` - Indicator LED
 
-## Resources & Jumper Settings
+## BoosterPacks, Board Resources & Jumper Settings
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+This example requires 2 LaunchPads.
+
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
+
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 Before running the example the following pins must be connected between master
 & slave devices.
 
-  |Master Pins              |Slave Pins              |
-  |-------------------------|------------------------|
-  |`Board_SPI_MASTER` `CLK` |`Board_SPI_SLAVE` `CLK` |
-  |`Board_SPI_MASTER` `MOSI`|`Board_SPI_SLAVE` `MOSI`|
-  |`Board_SPI_MASTER` `MISO`|`Board_SPI_SLAVE` `MISO`|
-  |`Board_SPI_MASTER` `CS`  |`Board_SPI_SLAVE` `CS`  |
-  |`Board_SPI_MASTER_READY` |`Board_SPI_MASTER_READY`|
-  |`Board_SPI_SLAVE_READY`  |`Board_SPI_SLAVE_READY` |
+  |      SPI Master LaunchPad      |      SPI Slave LaunchPad      |
+  |:------------------------------:|:-----------------------------:|
+  | __`CONFIG_SPI_MASTER` `CLK`__  | __`CONFIG_SPI_SLAVE` `CLK`__  |
+  | __`CONFIG_SPI_MASTER` `MOSI`__ | __`CONFIG_SPI_SLAVE` `MOSI`__ |
+  | __`CONFIG_SPI_MASTER` `MISO`__ | __`CONFIG_SPI_SLAVE` `MISO`__ |
+  | __`CONFIG_SPI_MASTER` `CS`__   | __`CONFIG_SPI_SLAVE` `CS`__   |
+  | __`CONFIG_SPI_MASTER_READY`__  | __`CONFIG_SPI_MASTER_READY`__ |
+  | __`CONFIG_SPI_SLAVE_READY`__   | __`CONFIG_SPI_SLAVE_READY`__  |
 
 > The SPI can be used in 4-pin or 3-pin modes (chip select is optional).  When
 running this example SPI peripherals on both SimpleLink devices must align on
@@ -70,10 +73,10 @@ The connection will have the following settings:
     Flow Control:    None
 ```
 
-* Run the example. `Board_GPIO_LED0` turns ON to show the example is running.
+* Run the example. `CONFIG_GPIO_LED_0` turns ON to show the example is running.
 
 * Once the slave is running, master & slave devices will exchange messages in
-a loop.  While the SPI transactions are taking place, `Board_GPIO_LED1` will
+a loop.  While the SPI transactions are taking place, `CONFIG_GPIO_LED_1` will
 toggle on/off indicating transfers are occurring. After a transfer is complete,
 the messages are printed via UART. The loop is repeated `MAX_LOOP` times.
 
@@ -98,20 +101,11 @@ Messages should appear as follows:
     Done
 ```
 
-> Note: The SPI peripheral on CC13x0, CC26x0, and CC26x0R2 devices have a bug
-which may result in TX data being lost when operating in SPI slave mode
-(SSI Advisory 04 & 05 in device errata). This bug causes the first SPI frame
-sent from the slave to be 0 instead of the actual data.  When the master prints
-the received message to the display, the 0 will be interpreted as a NULL
-termination character & the message will not be printed.  When this occurs, halt
-the master SPI device & check the contents of the receive buffer; the slave
-message should have been received with the first frame as 0.
-
 ## Application Design Details
 
 This application uses a single thread:
 
-`masterThread` - creates the master SPI message, opens `Board_SPI_MASTER` and
+`masterThread` - creates the master SPI message, opens `CONFIG_SPI_MASTER` and
 waits for the slave to be ready for a SPI transfer.  When the slave is ready it
 starts the transfer.  Once complete, the master prepares the next transaction
 & waits for the slave once more.  A total of `MAX_LOOP` SPI transactions are
@@ -121,21 +115,21 @@ The `masterThread` performs the following actions:
 
 1.  Before performing transfers, we must make sure both, `spimaster` &
 `spislave` applications are synchronized with each other.  The master will set
-`Board_SPI_MASTER_READY` to 1 to notify the slave it is ready to synchronize.
-The master will then wait for the slave to pull `Board_SPI_SLAVE_READY` high in
+`CONFIG_SPI_MASTER_READY` to 1 to notify the slave it is ready to synchronize.
+The master will then wait for the slave to pull `CONFIG_SPI_SLAVE_READY` high in
 acknowledgment.
 
-2.  Opens `Board_SPI_MASTER` & sets `Board_SPI_MASTER_READY` to 0.  Setting
-`Board_SPI_MASTER_READY` will notify the slave `Board_SPI_MASTER` has been
+2.  Opens `CONFIG_SPI_MASTER` & sets `CONFIG_SPI_MASTER_READY` to 0.  Setting
+`CONFIG_SPI_MASTER_READY` will notify the slave `CONFIG_SPI_MASTER` has been
 opened.
 
 3.  Waits for the slave to be ready for the SPI transfer.  The slave will pull
-`Board_SPI_SLAVE_READY` low when ready for a transfer.
+`CONFIG_SPI_SLAVE_READY` low when ready for a transfer.
 
 4. Creates a SPI transaction structure and sets txBuffer to `Hello from
 master, msg# n`, where n is the iteration number.
 
-5. Toggles `Board_GPIO_LED1`.
+5. Toggles `CONFIG_GPIO_LED_1`.
 
 6. Transfers the message. If the transfer is successful, the message
 received from the slave SPI is printed. Otherwise, an error message

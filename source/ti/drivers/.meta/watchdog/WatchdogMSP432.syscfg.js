@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,6 +43,7 @@ let Common = system.getScript("/ti/drivers/Common.js");
 let intPriority = Common.newIntPri()[0];
 intPriority.name = "interruptPriority";
 intPriority.displayName = "Interrupt Priority";
+intPriority.default = "1";
 
 /*
  *  ======== devSpecific ========
@@ -53,7 +54,6 @@ let devSpecific = {
         intPriority
     ],
 
-    maxInstances : 1,
     templates : {
         boardc : "/ti/drivers/watchdog/WatchdogMSP432.Board.c.xdt",
         boardh : "/ti/drivers/watchdog/Watchdog.Board.h.xdt"

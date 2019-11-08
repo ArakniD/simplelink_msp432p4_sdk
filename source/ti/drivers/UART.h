@@ -87,7 +87,7 @@
  *
  *  // Open the UART
  *  UART_Handle uart;
- *  uart = UART_open(Board_UART0, &params);
+ *  uart = UART_open(CONFIG_UART0, &params);
  *
  *  // Read from the UART
  *  int32_t readCount;
@@ -125,7 +125,7 @@
  *    uartParams.baudRate = 115200;
  *
  *    // Open an instance of the UART drivers
- *    uart = UART_open(Board_UART0, &uartParams);
+ *    uart = UART_open(CONFIG_UART0, &uartParams);
  *
  *    if (uart == NULL) {
  *        // UART_open() failed
@@ -158,8 +158,8 @@
  *  time with the same index previosly passed to UART_open() will result in
  *  an error.  You can, though, re-use the index if the instance is closed
  *  via UART_close().
- *  In the example code, Board_UART0 is passed to UART_open().  This macro
- *  is defined in the example's Board.h file.
+ *  In the example code, CONFIG_UART0 is passed to UART_open().  This macro
+ *  is defined in the example's ti_drivers_config.h file.
  *
  *
  *  ### Modes of Operation #
@@ -254,12 +254,12 @@
 #ifndef ti_drivers_UART__include
 #define ti_drivers_UART__include
 
+#include <stddef.h>
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <stddef.h>
-#include <stdint.h>
 
 /**
  *  @defgroup UART_CONTROL UART_control command and status codes
@@ -425,7 +425,7 @@ typedef void (*UART_Callback) (UART_Handle handle, void *buf, size_t count);
  *
  *  This enum defines the read and write modes for the configured UART.
  */
-typedef enum UART_Mode_ {
+typedef enum {
     /*!
       *  Uses a semaphore to block while data is being sent.  Context of the call
       *  must be a Task.
@@ -458,7 +458,7 @@ typedef enum UART_Mode_ {
  *
  *  @pre        UART driver must be used in #UART_DATA_TEXT mode.
  */
-typedef enum UART_ReturnMode_ {
+typedef enum {
     /*! Unblock/callback when buffer is full. */
     UART_RETURN_FULL,
 
@@ -480,7 +480,7 @@ typedef enum UART_ReturnMode_ {
  *  effectively treats all device line endings as LF, and all host PC line
  *  endings as CRLF.
  */
-typedef enum UART_DataMode_ {
+typedef enum {
     UART_DATA_BINARY = 0, /*!< Data is not processed */
     UART_DATA_TEXT = 1    /*!< Data is processed according to above */
 } UART_DataMode;
@@ -498,7 +498,7 @@ typedef enum UART_DataMode_ {
  *
  *  @pre        UART driver must be used in #UART_DATA_TEXT mode.
  */
-typedef enum UART_Echo_ {
+typedef enum {
     UART_ECHO_OFF = 0,  /*!< Data is not echoed */
     UART_ECHO_ON = 1    /*!< Data is echoed */
 } UART_Echo;
@@ -508,7 +508,7 @@ typedef enum UART_Echo_ {
  *
  *  This enumeration defines the UART data lengths.
  */
-typedef enum UART_LEN_ {
+typedef enum {
     UART_LEN_5 = 0,  /*!< Data length is 5 bits */
     UART_LEN_6 = 1,  /*!< Data length is 6 bits */
     UART_LEN_7 = 2,  /*!< Data length is 7 bits */
@@ -520,7 +520,7 @@ typedef enum UART_LEN_ {
  *
  *  This enumeration defines the UART stop bits.
  */
-typedef enum UART_STOP_ {
+typedef enum {
     UART_STOP_ONE = 0,  /*!< One stop bit */
     UART_STOP_TWO = 1   /*!< Two stop bits */
 } UART_STOP;
@@ -530,7 +530,7 @@ typedef enum UART_STOP_ {
  *
  *  This enumeration defines the UART parity types.
  */
-typedef enum UART_PAR_ {
+typedef enum {
     UART_PAR_NONE = 0,  /*!< No parity */
     UART_PAR_EVEN = 1,  /*!< Parity bit is even */
     UART_PAR_ODD  = 2,  /*!< Parity bit is odd */
@@ -546,7 +546,7 @@ typedef enum UART_PAR_ {
  *
  *  @sa       UART_Params_init()
  */
-typedef struct UART_Params_ {
+typedef struct {
     UART_Mode       readMode;        /*!< Mode for all read calls */
     UART_Mode       writeMode;       /*!< Mode for all write calls */
     uint32_t        readTimeout;     /*!< Timeout for read calls in blocking mode. */
@@ -632,7 +632,7 @@ typedef void (*UART_WriteCancelFxn) (UART_Handle handle);
  *              required set of functions to control a specific UART driver
  *              implementation.
  */
-typedef struct UART_FxnTable_ {
+typedef struct {
     /*! Function to close the specified peripheral */
     UART_CloseFxn        closeFxn;
 

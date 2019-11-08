@@ -57,7 +57,7 @@ void _system_post_cinit(void)
     xdc_runtime_Startup_exec__E();
 }
 /*
- *  @(#) ti.targets.arm.rtsarm; 1, 0, 0,0; 2-9-2019 16:33:59; /db/ztree/library/trees/xdctargets/xdctargets-t01/src/ xlibrary
+ *  @(#) ti.targets.arm.rtsarm; 1, 0, 0,0; 8-9-2019 17:26:43; /db/ztree/library/trees/xdctargets/xdctargets-v00/src/ xlibrary
 
  */
 

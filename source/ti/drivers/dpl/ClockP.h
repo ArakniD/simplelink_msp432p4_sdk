@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -57,13 +57,13 @@
 #ifndef ti_dpl_ClockP__include
 #define ti_dpl_ClockP__include
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*!
  *  @brief    Number of bytes greater than or equal to the size of any RTOS
@@ -88,7 +88,7 @@ typedef union ClockP_Struct {
 /*!
  *  @brief  Frequency-in-hertz struct
  */
-typedef struct ClockP_FreqHz {
+typedef struct {
     uint32_t hi;      /*!< most significant 32-bits of frequency */
     uint32_t lo;      /*!< least significant 32-bits of frequency */
 } ClockP_FreqHz;
@@ -96,7 +96,7 @@ typedef struct ClockP_FreqHz {
 /*!
  *  @brief    Status codes for ClockP APIs
  */
-typedef enum ClockP_Status {
+typedef enum {
     ClockP_OK = 0,
     ClockP_FAILURE = -1
 } ClockP_Status;
@@ -137,7 +137,7 @@ typedef void (*ClockP_Fxn)(uintptr_t arg);
  *  clock is initially started and set to expire with the 'timeout'
  *  argument.
  */
-typedef struct ClockP_Params {
+typedef struct {
     bool      startFlag; /*!< Start immediately after instance is created. */
     uint32_t  period;    /*!< Period of clock object. */
     uintptr_t arg;       /*!< Argument passed into the clock function. */

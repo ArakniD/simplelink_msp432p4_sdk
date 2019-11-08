@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_sysbios_knl_Semaphore__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_knl_Semaphore___VERS 200
@@ -54,13 +56,11 @@
 #include <xdc/runtime/xdc.h>
 #include <xdc/runtime/Types.h>
 #include <xdc/runtime/IInstance.h>
-#include <ti/sysbios/knl/Semaphore__prologue.h>
 #include <ti/sysbios/knl/package/package.defs.h>
 
 #include <xdc/runtime/Diags.h>
 #include <xdc/runtime/Log.h>
 #include <xdc/runtime/Assert.h>
-#include <xdc/runtime/Error.h>
 #include <ti/sysbios/knl/Queue.h>
 #include <ti/sysbios/knl/Task.h>
 #include <ti/sysbios/knl/Clock.h>
@@ -332,15 +332,6 @@ __extern __FAR__ const CT__ti_sysbios_knl_Semaphore_A_pendTaskDisabled ti_sysbio
 #define ti_sysbios_knl_Semaphore_A_pendTaskDisabled (ti_sysbios_knl_Semaphore_A_pendTaskDisabled__C)
 #endif
 
-/* E_objectNotInKernelSpace */
-typedef xdc_runtime_Error_Id CT__ti_sysbios_knl_Semaphore_E_objectNotInKernelSpace;
-__extern __FAR__ const CT__ti_sysbios_knl_Semaphore_E_objectNotInKernelSpace ti_sysbios_knl_Semaphore_E_objectNotInKernelSpace__C;
-#ifdef ti_sysbios_knl_Semaphore_E_objectNotInKernelSpace__CR
-#define ti_sysbios_knl_Semaphore_E_objectNotInKernelSpace (*((CT__ti_sysbios_knl_Semaphore_E_objectNotInKernelSpace*)(xdcRomConstPtr + ti_sysbios_knl_Semaphore_E_objectNotInKernelSpace__C_offset)))
-#else
-#define ti_sysbios_knl_Semaphore_E_objectNotInKernelSpace (ti_sysbios_knl_Semaphore_E_objectNotInKernelSpace__C)
-#endif
-
 /* supportsEvents */
 typedef xdc_Bool CT__ti_sysbios_knl_Semaphore_supportsEvents;
 __extern __FAR__ const CT__ti_sysbios_knl_Semaphore_supportsEvents ti_sysbios_knl_Semaphore_supportsEvents__C;
@@ -446,65 +437,65 @@ __extern void ti_sysbios_knl_Semaphore_destruct(ti_sysbios_knl_Semaphore_Struct 
 
 /* Handle__label__S */
 xdc__CODESECT(ti_sysbios_knl_Semaphore_Handle__label__S, "ti_sysbios_knl_Semaphore_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_sysbios_knl_Semaphore_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_sysbios_knl_Semaphore_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_knl_Semaphore_Module__startupDone__S, "ti_sysbios_knl_Semaphore_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_knl_Semaphore_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_knl_Semaphore_Module__startupDone__S( void);
 
 /* Object__create__S */
 xdc__CODESECT(ti_sysbios_knl_Semaphore_Object__create__S, "ti_sysbios_knl_Semaphore_Object__create__S")
-__extern xdc_Ptr ti_sysbios_knl_Semaphore_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb );
+__extern xdc_Ptr ti_sysbios_knl_Semaphore_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb);
 
 /* Object__delete__S */
 xdc__CODESECT(ti_sysbios_knl_Semaphore_Object__delete__S, "ti_sysbios_knl_Semaphore_Object__delete__S")
-__extern xdc_Void ti_sysbios_knl_Semaphore_Object__delete__S( xdc_Ptr instp );
+__extern xdc_Void ti_sysbios_knl_Semaphore_Object__delete__S( xdc_Ptr instp);
 
 /* Object__get__S */
 xdc__CODESECT(ti_sysbios_knl_Semaphore_Object__get__S, "ti_sysbios_knl_Semaphore_Object__get__S")
-__extern xdc_Ptr ti_sysbios_knl_Semaphore_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_sysbios_knl_Semaphore_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_sysbios_knl_Semaphore_Object__first__S, "ti_sysbios_knl_Semaphore_Object__first__S")
-__extern xdc_Ptr ti_sysbios_knl_Semaphore_Object__first__S( void );
+__extern xdc_Ptr ti_sysbios_knl_Semaphore_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_sysbios_knl_Semaphore_Object__next__S, "ti_sysbios_knl_Semaphore_Object__next__S")
-__extern xdc_Ptr ti_sysbios_knl_Semaphore_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_sysbios_knl_Semaphore_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_sysbios_knl_Semaphore_Params__init__S, "ti_sysbios_knl_Semaphore_Params__init__S")
-__extern xdc_Void ti_sysbios_knl_Semaphore_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_sysbios_knl_Semaphore_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* getCount__E */
 #define ti_sysbios_knl_Semaphore_getCount ti_sysbios_knl_Semaphore_getCount__E
 xdc__CODESECT(ti_sysbios_knl_Semaphore_getCount__E, "ti_sysbios_knl_Semaphore_getCount")
-__extern xdc_Int ti_sysbios_knl_Semaphore_getCount__E( ti_sysbios_knl_Semaphore_Handle __inst );
+__extern xdc_Int ti_sysbios_knl_Semaphore_getCount__E( ti_sysbios_knl_Semaphore_Handle instp);
 
 /* pend__E */
 #define ti_sysbios_knl_Semaphore_pend ti_sysbios_knl_Semaphore_pend__E
 xdc__CODESECT(ti_sysbios_knl_Semaphore_pend__E, "ti_sysbios_knl_Semaphore_pend")
-__extern xdc_Bool ti_sysbios_knl_Semaphore_pend__E( ti_sysbios_knl_Semaphore_Handle __inst, xdc_UInt32 timeout );
+__extern xdc_Bool ti_sysbios_knl_Semaphore_pend__E( ti_sysbios_knl_Semaphore_Handle instp, xdc_UInt32 timeout);
 
 /* post__E */
 #define ti_sysbios_knl_Semaphore_post ti_sysbios_knl_Semaphore_post__E
 xdc__CODESECT(ti_sysbios_knl_Semaphore_post__E, "ti_sysbios_knl_Semaphore_post")
-__extern xdc_Void ti_sysbios_knl_Semaphore_post__E( ti_sysbios_knl_Semaphore_Handle __inst );
+__extern xdc_Void ti_sysbios_knl_Semaphore_post__E( ti_sysbios_knl_Semaphore_Handle instp);
 
 /* registerEvent__E */
 #define ti_sysbios_knl_Semaphore_registerEvent ti_sysbios_knl_Semaphore_registerEvent__E
 xdc__CODESECT(ti_sysbios_knl_Semaphore_registerEvent__E, "ti_sysbios_knl_Semaphore_registerEvent")
-__extern xdc_Void ti_sysbios_knl_Semaphore_registerEvent__E( ti_sysbios_knl_Semaphore_Handle __inst, ti_sysbios_knl_Event_Handle event, xdc_UInt eventId );
+__extern xdc_Void ti_sysbios_knl_Semaphore_registerEvent__E( ti_sysbios_knl_Semaphore_Handle instp, ti_sysbios_knl_Event_Handle event, xdc_UInt eventId);
 
 /* reset__E */
 #define ti_sysbios_knl_Semaphore_reset ti_sysbios_knl_Semaphore_reset__E
 xdc__CODESECT(ti_sysbios_knl_Semaphore_reset__E, "ti_sysbios_knl_Semaphore_reset")
-__extern xdc_Void ti_sysbios_knl_Semaphore_reset__E( ti_sysbios_knl_Semaphore_Handle __inst, xdc_Int count );
+__extern xdc_Void ti_sysbios_knl_Semaphore_reset__E( ti_sysbios_knl_Semaphore_Handle instp, xdc_Int count);
 
 /* pendTimeout__I */
 #define ti_sysbios_knl_Semaphore_pendTimeout ti_sysbios_knl_Semaphore_pendTimeout__I
 xdc__CODESECT(ti_sysbios_knl_Semaphore_pendTimeout__I, "ti_sysbios_knl_Semaphore_pendTimeout")
-__extern xdc_Void ti_sysbios_knl_Semaphore_pendTimeout__I( xdc_UArg arg );
+__extern xdc_Void ti_sysbios_knl_Semaphore_pendTimeout__I( xdc_UArg arg);
 
 
 /*
@@ -575,8 +566,8 @@ static inline void ti_sysbios_knl_Semaphore_Params_copy(ti_sysbios_knl_Semaphore
 #define ti_sysbios_knl_Semaphore_Object_sizeof() ti_sysbios_knl_Semaphore_Object__sizeof__C
 
 /* Object_get */
-static inline ti_sysbios_knl_Semaphore_Handle ti_sysbios_knl_Semaphore_Object_get(ti_sysbios_knl_Semaphore_Instance_State *oarr, int i);
-static inline ti_sysbios_knl_Semaphore_Handle ti_sysbios_knl_Semaphore_Object_get(ti_sysbios_knl_Semaphore_Instance_State *oarr, int i) 
+static inline ti_sysbios_knl_Semaphore_Handle ti_sysbios_knl_Semaphore_Object_get(ti_sysbios_knl_Semaphore_Object *oarr, int i);
+static inline ti_sysbios_knl_Semaphore_Handle ti_sysbios_knl_Semaphore_Object_get(ti_sysbios_knl_Semaphore_Object *oarr, int i) 
 {
     return (ti_sysbios_knl_Semaphore_Handle)ti_sysbios_knl_Semaphore_Object__get__S(oarr, i);
 }
@@ -628,8 +619,6 @@ static inline ti_sysbios_knl_Semaphore_Struct *ti_sysbios_knl_Semaphore_struct(t
 /*
  * ======== EPILOGUE ========
  */
-
-#include <ti/sysbios/knl/Semaphore__epilogue.h>
 
 #ifdef ti_sysbios_knl_Semaphore__top__
 #undef __nested__
@@ -705,7 +694,6 @@ static inline ti_sysbios_knl_Queue_Handle ti_sysbios_knl_Semaphore_Instance_Stat
 #define Semaphore_A_badContext ti_sysbios_knl_Semaphore_A_badContext
 #define Semaphore_A_overflow ti_sysbios_knl_Semaphore_A_overflow
 #define Semaphore_A_pendTaskDisabled ti_sysbios_knl_Semaphore_A_pendTaskDisabled
-#define Semaphore_E_objectNotInKernelSpace ti_sysbios_knl_Semaphore_E_objectNotInKernelSpace
 #define Semaphore_supportsEvents ti_sysbios_knl_Semaphore_supportsEvents
 #define Semaphore_supportsPriority ti_sysbios_knl_Semaphore_supportsPriority
 #define Semaphore_eventPost ti_sysbios_knl_Semaphore_eventPost

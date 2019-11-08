@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_uia_runtime_QueueDescriptor__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_runtime_QueueDescriptor___VERS 200
@@ -278,22 +280,22 @@ __extern __FAR__ const CT__ti_uia_runtime_QueueDescriptor_Object__table ti_uia_r
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_runtime_QueueDescriptor_Module__startupDone__S, "ti_uia_runtime_QueueDescriptor_Module__startupDone__S")
-__extern xdc_Bool ti_uia_runtime_QueueDescriptor_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_runtime_QueueDescriptor_Module__startupDone__S( void);
 
 /* addToList__E */
 #define ti_uia_runtime_QueueDescriptor_addToList ti_uia_runtime_QueueDescriptor_addToList__E
 xdc__CODESECT(ti_uia_runtime_QueueDescriptor_addToList__E, "ti_uia_runtime_QueueDescriptor_addToList")
-__extern xdc_Void ti_uia_runtime_QueueDescriptor_addToList__E( ti_uia_runtime_QueueDescriptor_Header *pHdrToAdd );
+__extern xdc_Void ti_uia_runtime_QueueDescriptor_addToList__E( ti_uia_runtime_QueueDescriptor_Header *pHdrToAdd);
 
 /* initHeader__E */
 #define ti_uia_runtime_QueueDescriptor_initHeader ti_uia_runtime_QueueDescriptor_initHeader__E
 xdc__CODESECT(ti_uia_runtime_QueueDescriptor_initHeader__E, "ti_uia_runtime_QueueDescriptor_initHeader")
-__extern xdc_Void ti_uia_runtime_QueueDescriptor_initHeader__E( ti_uia_runtime_QueueDescriptor_Header *pHdr, xdc_Ptr start, xdc_SizeT size, xdc_UInt loggerModuleId, xdc_UInt loggerInstanceId, xdc_UInt loggerPriority, xdc_UInt type, xdc_Ptr pNumDroppedCtr );
+__extern xdc_Void ti_uia_runtime_QueueDescriptor_initHeader__E( ti_uia_runtime_QueueDescriptor_Header *pHdr, xdc_Ptr start, xdc_SizeT size, xdc_UInt loggerModuleId, xdc_UInt loggerInstanceId, xdc_UInt loggerPriority, xdc_UInt type, xdc_Ptr pNumDroppedCtr);
 
 /* removeFromList__E */
 #define ti_uia_runtime_QueueDescriptor_removeFromList ti_uia_runtime_QueueDescriptor_removeFromList__E
 xdc__CODESECT(ti_uia_runtime_QueueDescriptor_removeFromList__E, "ti_uia_runtime_QueueDescriptor_removeFromList")
-__extern xdc_Void ti_uia_runtime_QueueDescriptor_removeFromList__E( ti_uia_runtime_QueueDescriptor_Header *pHdrToRemove );
+__extern xdc_Void ti_uia_runtime_QueueDescriptor_removeFromList__E( ti_uia_runtime_QueueDescriptor_Header *pHdrToRemove);
 
 
 /*

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -35,10 +35,12 @@
 #define ti_sysbios_BIOS_RtsGateProxy__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_BIOS_RtsGateProxy___VERS 200
@@ -286,50 +288,50 @@ __extern void ti_sysbios_BIOS_RtsGateProxy_delete(ti_sysbios_BIOS_RtsGateProxy_H
 
 /* Handle__label__S */
 xdc__CODESECT(ti_sysbios_BIOS_RtsGateProxy_Handle__label__S, "ti_sysbios_BIOS_RtsGateProxy_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_sysbios_BIOS_RtsGateProxy_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_sysbios_BIOS_RtsGateProxy_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_BIOS_RtsGateProxy_Module__startupDone__S, "ti_sysbios_BIOS_RtsGateProxy_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_BIOS_RtsGateProxy_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_BIOS_RtsGateProxy_Module__startupDone__S( void);
 
 /* Object__get__S */
 xdc__CODESECT(ti_sysbios_BIOS_RtsGateProxy_Object__get__S, "ti_sysbios_BIOS_RtsGateProxy_Object__get__S")
-__extern xdc_Ptr ti_sysbios_BIOS_RtsGateProxy_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_sysbios_BIOS_RtsGateProxy_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_sysbios_BIOS_RtsGateProxy_Object__first__S, "ti_sysbios_BIOS_RtsGateProxy_Object__first__S")
-__extern xdc_Ptr ti_sysbios_BIOS_RtsGateProxy_Object__first__S( void );
+__extern xdc_Ptr ti_sysbios_BIOS_RtsGateProxy_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_sysbios_BIOS_RtsGateProxy_Object__next__S, "ti_sysbios_BIOS_RtsGateProxy_Object__next__S")
-__extern xdc_Ptr ti_sysbios_BIOS_RtsGateProxy_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_sysbios_BIOS_RtsGateProxy_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_sysbios_BIOS_RtsGateProxy_Params__init__S, "ti_sysbios_BIOS_RtsGateProxy_Params__init__S")
-__extern xdc_Void ti_sysbios_BIOS_RtsGateProxy_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_sysbios_BIOS_RtsGateProxy_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* Proxy__abstract__S */
 xdc__CODESECT(ti_sysbios_BIOS_RtsGateProxy_Proxy__abstract__S, "ti_sysbios_BIOS_RtsGateProxy_Proxy__abstract__S")
-__extern xdc_Bool ti_sysbios_BIOS_RtsGateProxy_Proxy__abstract__S( void );
+__extern xdc_Bool ti_sysbios_BIOS_RtsGateProxy_Proxy__abstract__S( void);
 
 /* Proxy__delegate__S */
 xdc__CODESECT(ti_sysbios_BIOS_RtsGateProxy_Proxy__delegate__S, "ti_sysbios_BIOS_RtsGateProxy_Proxy__delegate__S")
-__extern xdc_CPtr ti_sysbios_BIOS_RtsGateProxy_Proxy__delegate__S( void );
+__extern xdc_CPtr ti_sysbios_BIOS_RtsGateProxy_Proxy__delegate__S( void);
 
 /* query__E */
 #define ti_sysbios_BIOS_RtsGateProxy_query ti_sysbios_BIOS_RtsGateProxy_query__E
 xdc__CODESECT(ti_sysbios_BIOS_RtsGateProxy_query__E, "ti_sysbios_BIOS_RtsGateProxy_query")
-__extern xdc_Bool ti_sysbios_BIOS_RtsGateProxy_query__E( xdc_Int qual );
+__extern xdc_Bool ti_sysbios_BIOS_RtsGateProxy_query__E( xdc_Int qual);
 
 /* enter__E */
 #define ti_sysbios_BIOS_RtsGateProxy_enter ti_sysbios_BIOS_RtsGateProxy_enter__E
 xdc__CODESECT(ti_sysbios_BIOS_RtsGateProxy_enter__E, "ti_sysbios_BIOS_RtsGateProxy_enter")
-__extern xdc_IArg ti_sysbios_BIOS_RtsGateProxy_enter__E( ti_sysbios_BIOS_RtsGateProxy_Handle __inst );
+__extern xdc_IArg ti_sysbios_BIOS_RtsGateProxy_enter__E( ti_sysbios_BIOS_RtsGateProxy_Handle instp);
 
 /* leave__E */
 #define ti_sysbios_BIOS_RtsGateProxy_leave ti_sysbios_BIOS_RtsGateProxy_leave__E
 xdc__CODESECT(ti_sysbios_BIOS_RtsGateProxy_leave__E, "ti_sysbios_BIOS_RtsGateProxy_leave")
-__extern xdc_Void ti_sysbios_BIOS_RtsGateProxy_leave__E( ti_sysbios_BIOS_RtsGateProxy_Handle __inst, xdc_IArg key );
+__extern xdc_Void ti_sysbios_BIOS_RtsGateProxy_leave__E( ti_sysbios_BIOS_RtsGateProxy_Handle instp, xdc_IArg key);
 
 
 /*
@@ -361,7 +363,7 @@ static inline ti_sysbios_BIOS_RtsGateProxy_Handle ti_sysbios_BIOS_RtsGateProxy_H
 static inline ti_sysbios_BIOS_RtsGateProxy_Handle ti_sysbios_BIOS_RtsGateProxy_Handle_downCast(xdc_runtime_IGateProvider_Handle i)
 {
     xdc_runtime_IGateProvider_Handle i2 = (xdc_runtime_IGateProvider_Handle)i;
-    if (ti_sysbios_BIOS_RtsGateProxy_Proxy__abstract__S()) {
+    if (ti_sysbios_BIOS_RtsGateProxy_Proxy__abstract__S() != 0U) {
         return (ti_sysbios_BIOS_RtsGateProxy_Handle)i;
     }
     return ((const void*)i2->__fxns == (const void*)ti_sysbios_BIOS_RtsGateProxy_Proxy__delegate__S()) ? (ti_sysbios_BIOS_RtsGateProxy_Handle)i : (ti_sysbios_BIOS_RtsGateProxy_Handle)NULL;
@@ -471,7 +473,6 @@ static inline void ti_sysbios_BIOS_RtsGateProxy_Params_copy(ti_sysbios_BIOS_RtsG
 #define BIOS_RtsGateProxy_Object_sizeof ti_sysbios_BIOS_RtsGateProxy_Object_sizeof
 #define BIOS_RtsGateProxy_Params_copy ti_sysbios_BIOS_RtsGateProxy_Params_copy
 #define BIOS_RtsGateProxy_Params_init ti_sysbios_BIOS_RtsGateProxy_Params_init
-#define BIOS_RtsGateProxy_Instance_State ti_sysbios_BIOS_RtsGateProxy_Instance_State
 #define BIOS_RtsGateProxy_Proxy_abstract ti_sysbios_BIOS_RtsGateProxy_Proxy_abstract
 #define BIOS_RtsGateProxy_Proxy_delegate ti_sysbios_BIOS_RtsGateProxy_Proxy_delegate
 #define BIOS_RtsGateProxy_delete ti_sysbios_BIOS_RtsGateProxy_delete

@@ -18,14 +18,13 @@
 # will build using each non-empty *_ARMCOMPILER cgtool.
 #
 
-XDC_INSTALL_DIR        ?= c:/ti/xdctools_3_51_03_28_core
-SYSCONFIG_TOOL         ?= c:/ti/ccs910/ccs/utils/sysconfig/sysconfig_cli.bat
+XDC_INSTALL_DIR        ?= c:/ti/xdctools_3_60_00_24_core
+SYSCONFIG_TOOL         ?= c:/ti/ccs920/ccs/utils/sysconfig/sysconfig_cli.bat
 
 FREERTOS_INSTALL_DIR   ?= c:/FreeRTOSv10.1.1
 
-CCS_ARMCOMPILER        ?= c:/ti/ccs910/ccs/tools/compiler/ti-cgt-arm_18.12.2.LTS
-CLANG_ARMCOMPILER      ?= c:/path/to/clang/compiler
-GCC_ARMCOMPILER        ?= c:/ti/ccs910/ccs/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major-win32
+CCS_ARMCOMPILER        ?= c:/ti/ccs920/ccs/tools/compiler/ti-cgt-arm_18.12.3.LTS
+GCC_ARMCOMPILER        ?= c:/ti/ccs920/ccs/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major-win32
 IAR_ARMCOMPILER        ?= c:/Program Files (x86)/IAR Systems/Embedded Workbench 8.2/arm
 
 ifeq ("$(SHELL)","sh.exe")

@@ -12,11 +12,12 @@ IR4.xdc
 R4Ft.xdc
 IR5.xdc
 R5F.xdc
+R5Ft.xdc
 package/ti.targets.arm.elf.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_targets_arm_elf.java
 package/ti_targets_arm_elf.class
 package/package_ti.targets.arm.elf.c
@@ -32,4 +33,5 @@ IR4.h
 R4Ft.h
 IR5.h
 R5F.h
+R5Ft.h
 package/ti.targets.arm.elf.ccs

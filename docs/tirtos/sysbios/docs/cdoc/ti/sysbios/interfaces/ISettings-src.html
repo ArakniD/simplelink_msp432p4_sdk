@@ -6,7 +6,7 @@
 <body>
 <pre class=src>
      1    <span class="comment">/*
-</span>     2    <span class="comment"> * Copyright (c) 2012-2017, Texas Instruments Incorporated
+</span>     2    <span class="comment"> * Copyright (c) 2012-2014, Texas Instruments Incorporated
 </span>     3    <span class="comment"> * All rights reserved.
 </span>     4    <span class="comment"> *
 </span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
@@ -38,64 +38,62 @@
 </span>    31    <span class="comment"> */</span>
     32    <span class="comment">/*
 </span>    33    <span class="comment"> *  ======== ISettings.xdc ========
-</span>    34    <span class="comment"> */</span>
-    35    <span class=key>package</span> ti.sysbios.interfaces;
-    36    
-    37    <span class="xdoc">/*!
-</span>    38    <span class="xdoc"> *  ======== ISettings ========
-</span>    39    <span class="xdoc"> *  Interface for family-specific Settings modules.
-</span>    40    <span class="xdoc"> *
-</span>    41    <span class="xdoc"> *  Every new device family must implement this interface.
-</span>    42    <span class="xdoc"> */</span>
-    43    <span class=key>metaonly</span> <span class=key>interface</span> ISettings
-    44    {
-    45        <span class="xdoc">/*! returns the family-specific Core module delegate */</span>
-    46        String getDefaultCoreDelegate();
-    47        
-    48        <span class="xdoc">/*! returns the family-specific Hwi module delegate */</span>
-    49        String getDefaultHwiDelegate();
-    50    
-    51        <span class="xdoc">/*! returns the family-specific Timer module delegate */</span>
-    52        String getDefaultTimerDelegate();
-    53        
-    54        <span class="xdoc">/*! returns the family-specific Clock Timer module delegate */</span>
-    55        String getDefaultClockTimerDelegate();
-    56    
-    57        <span class="xdoc">/*! returns the family-specific Timer Support module delegate */</span>
-    58        String getDefaultTimerSupportDelegate();
-    59    
-    60        <span class="xdoc">/*! returns the family-specific Timestamp module delegate */</span>
-    61        String getDefaultTimestampDelegate();
-    62    
-    63        <span class="xdoc">/*! returns the family-specific TaskSupport module delegate */</span>
-    64        String getDefaultTaskSupportDelegate();
-    65    
-    66        <span class="xdoc">/*! returns the family-specific IntrinsicsSupport module delegate */</span>
-    67        String getDefaultIntrinsicsSupportDelegate();
-    68    
-    69        <span class="xdoc">/*! returns the family-specific CacheSupport module delegate */</span>
-    70        String getDefaultCacheDelegate();
-    71    
-    72        <span class="xdoc">/*! returns the family-specific Power module delegate */</span>
-    73        String getDefaultPowerDelegate();
-    74    
-    75        <span class="xdoc">/*! returns the family-specific Seconds module delegate */</span>
-    76        String getDefaultSecondsDelegate();
-    77    
-    78        <span class="xdoc">/*! returns the family-specific SysCall module delegate */</span>
-    79        String getDefaultSysCallDelegate();
-    80    
-    81        <span class="xdoc">/*! returns the family-specific Boot module. */</span>
-    82        String getDefaultBootModule();
-    83    
-    84        <span class="xdoc">/*! returns the family-specific Mmu module. */</span>
-    85        String getDefaultMmuModule();
-    86        
-    87        <span class="xdoc">/*! Returns the path to the family-specific Grace page. */</span>
-    88        String getFamilySettingsXml();
-    89        
-    90        <span class="xdoc">/*! returns the family-specific Clock tickPeriod */</span>
-    91        UInt32 getDefaultClockTickPeriod();
-    92    }
+</span>    34    <span class="comment"> *
+</span>    35    <span class="comment"> */</span>
+    36    <span class=key>package</span> ti.sysbios.interfaces;
+    37    
+    38    <span class="xdoc">/*!
+</span>    39    <span class="xdoc"> *  ======== ISettings ========
+</span>    40    <span class="xdoc"> *  Interface for family-specific Settings modules.
+</span>    41    <span class="xdoc"> *
+</span>    42    <span class="xdoc"> *  Every new device family must implement this interface.
+</span>    43    <span class="xdoc"> */</span>
+    44    <span class=key>metaonly</span> <span class=key>interface</span> ISettings
+    45    {
+    46        <span class="xdoc">/*! returns the family-specific Core module delegate */</span>
+    47        String getDefaultCoreDelegate();
+    48        
+    49        <span class="xdoc">/*! returns the family-specific Hwi module delegate */</span>
+    50        String getDefaultHwiDelegate();
+    51    
+    52        <span class="xdoc">/*! returns the family-specific Timer module delegate */</span>
+    53        String getDefaultTimerDelegate();
+    54        
+    55        <span class="xdoc">/*! returns the family-specific Clock Timer module delegate */</span>
+    56        String getDefaultClockTimerDelegate();
+    57    
+    58        <span class="xdoc">/*! returns the family-specific Timer Support module delegate */</span>
+    59        String getDefaultTimerSupportDelegate();
+    60    
+    61        <span class="xdoc">/*! returns the family-specific Timestamp module delegate */</span>
+    62        String getDefaultTimestampDelegate();
+    63    
+    64        <span class="xdoc">/*! returns the family-specific TaskSupport module delegate */</span>
+    65        String getDefaultTaskSupportDelegate();
+    66    
+    67        <span class="xdoc">/*! returns the family-specific IntrinsicsSupport module delegate */</span>
+    68        String getDefaultIntrinsicsSupportDelegate();
+    69    
+    70        <span class="xdoc">/*! returns the family-specific CacheSupport module delegate */</span>
+    71        String getDefaultCacheDelegate();
+    72    
+    73        <span class="xdoc">/*! returns the family-specific Power module delegate */</span>
+    74        String getDefaultPowerDelegate();
+    75    
+    76        <span class="xdoc">/*! returns the family-specific Seconds module delegate */</span>
+    77        String getDefaultSecondsDelegate();
+    78    
+    79        <span class="xdoc">/*! returns the family-specific Boot module. */</span>
+    80        String getDefaultBootModule();
+    81    
+    82        <span class="xdoc">/*! returns the family-specific Mmu module. */</span>
+    83        String getDefaultMmuModule();
+    84        
+    85        <span class="xdoc">/*! Returns the path to the family-specific Grace page. */</span>
+    86        String getFamilySettingsXml();
+    87        
+    88        <span class="xdoc">/*! returns the family-specific Clock tickPeriod */</span>
+    89        UInt32 getDefaultClockTickPeriod();
+    90    }
 </pre>
 </body></html>

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_uia_events_UIAUserCtx__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_events_UIAUserCtx___VERS 200
@@ -306,32 +308,32 @@ __extern const ti_uia_events_UIAUserCtx_Fxns__ ti_uia_events_UIAUserCtx_Module__
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_events_UIAUserCtx_Module__startupDone__S, "ti_uia_events_UIAUserCtx_Module__startupDone__S")
-__extern xdc_Bool ti_uia_events_UIAUserCtx_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_events_UIAUserCtx_Module__startupDone__S( void);
 
 /* getCtxId__E */
 #define ti_uia_events_UIAUserCtx_getCtxId ti_uia_events_UIAUserCtx_getCtxId__E
 xdc__CODESECT(ti_uia_events_UIAUserCtx_getCtxId__E, "ti_uia_events_UIAUserCtx_getCtxId")
-__extern xdc_UInt ti_uia_events_UIAUserCtx_getCtxId__E( void );
+__extern xdc_UInt ti_uia_events_UIAUserCtx_getCtxId__E( void);
 
 /* getEnableOnValue__E */
 #define ti_uia_events_UIAUserCtx_getEnableOnValue ti_uia_events_UIAUserCtx_getEnableOnValue__E
 xdc__CODESECT(ti_uia_events_UIAUserCtx_getEnableOnValue__E, "ti_uia_events_UIAUserCtx_getEnableOnValue")
-__extern xdc_UInt ti_uia_events_UIAUserCtx_getEnableOnValue__E( void );
+__extern xdc_UInt ti_uia_events_UIAUserCtx_getEnableOnValue__E( void);
 
 /* setEnableOnValue__E */
 #define ti_uia_events_UIAUserCtx_setEnableOnValue ti_uia_events_UIAUserCtx_setEnableOnValue__E
 xdc__CODESECT(ti_uia_events_UIAUserCtx_setEnableOnValue__E, "ti_uia_events_UIAUserCtx_setEnableOnValue")
-__extern xdc_Void ti_uia_events_UIAUserCtx_setEnableOnValue__E( xdc_UInt value );
+__extern xdc_Void ti_uia_events_UIAUserCtx_setEnableOnValue__E( xdc_UInt value);
 
 /* isLoggingEnabled__E */
 #define ti_uia_events_UIAUserCtx_isLoggingEnabled ti_uia_events_UIAUserCtx_isLoggingEnabled__E
 xdc__CODESECT(ti_uia_events_UIAUserCtx_isLoggingEnabled__E, "ti_uia_events_UIAUserCtx_isLoggingEnabled")
-__extern xdc_Bool ti_uia_events_UIAUserCtx_isLoggingEnabled__E( xdc_UInt newUserCtx );
+__extern xdc_Bool ti_uia_events_UIAUserCtx_isLoggingEnabled__E( xdc_UInt newUserCtx);
 
 /* setOldValue__E */
 #define ti_uia_events_UIAUserCtx_setOldValue ti_uia_events_UIAUserCtx_setOldValue__E
 xdc__CODESECT(ti_uia_events_UIAUserCtx_setOldValue__E, "ti_uia_events_UIAUserCtx_setOldValue")
-__extern xdc_UInt ti_uia_events_UIAUserCtx_setOldValue__E( xdc_UInt newValue );
+__extern xdc_UInt ti_uia_events_UIAUserCtx_setOldValue__E( xdc_UInt newValue);
 
 
 /*

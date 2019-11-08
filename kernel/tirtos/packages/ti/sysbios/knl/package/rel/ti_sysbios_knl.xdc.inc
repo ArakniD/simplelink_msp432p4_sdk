@@ -13,11 +13,9 @@ Task.xdt
 Task__prologue.h
 Task__epilogue.h
 Task_smp.c
-Task_svc.c
 Swi.xml
 Swi_smp.c
 Idle.xml
-Semaphore_svc.c
 Semaphore.xml
 Event__prologue.h
 Event__epilogue.h

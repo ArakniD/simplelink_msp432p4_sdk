@@ -489,11 +489,11 @@ bool FlashCtl_protectSector(uint_fast8_t memorySpace, uint32_t sectorMask)
         FLCTL->BANK1_MAIN_WEPROT |= sectorMask;
         break;
     case FLASH_INFO_MEMORY_SPACE_BANK0:
-        ASSERT(sectorMask <= 0x04);
+        ASSERT(sectorMask <= 0x03);
         FLCTL->BANK0_INFO_WEPROT |= sectorMask;
         break;
     case FLASH_INFO_MEMORY_SPACE_BANK1:
-        ASSERT(sectorMask <= 0x04);
+        ASSERT(sectorMask <= 0x03);
         FLCTL->BANK1_INFO_WEPROT |= sectorMask;
         break;
 
@@ -1483,9 +1483,9 @@ void __FlashCtl_remaskBurstDataPre(uint32_t addr, uint32_t size)
     size = (size / 4);
     for (ii = 0; ii < size; ii++)
     {
-        HWREG32(__getBurstProgramRegs[ii]) |=
-                ~(HWREG32(__getBurstProgramRegs[ii])
-                        | HWREG32(addr));
+        uint32_t temp1 = HWREG32(__getBurstProgramRegs[ii]);
+        uint32_t temp2 = HWREG32(addr);
+        HWREG32(__getBurstProgramRegs[ii]) |= ~(temp1 | temp2);
         addr += 4;
     }
 
@@ -1547,8 +1547,9 @@ void __FlashCtl_remaskBurstDataPost(uint32_t addr, uint32_t size)
     size = (size / 4);
     for (ii = 0; ii < size; ii++)
     {
-        HWREG32(__getBurstProgramRegs[ii]) = ~(~(HWREG32(
-                __getBurstProgramRegs[ii])) & HWREG32(addr));
+        uint32_t temp1 = (HWREG32(__getBurstProgramRegs[ii]));
+        uint32_t temp2 = HWREG32(addr);
+        HWREG32(__getBurstProgramRegs[ii]) = ~(~temp1 & temp2);
 
         addr += 4;
     }

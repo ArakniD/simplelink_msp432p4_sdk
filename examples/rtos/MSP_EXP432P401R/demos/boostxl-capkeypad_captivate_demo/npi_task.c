@@ -39,8 +39,9 @@
 #include <pthread.h>
 #include <ti/drivers/I2C.h>
 #include <ti/drivers/GPIO.h>
-/* Local Defines */
-#include "Board.h"
+/* Board Header file */
+#include "ti_drivers_config.h"
+
 #include "captivate_task.h"
 #include "npi_task.h"
 #include "npi_master.h"
@@ -142,14 +143,14 @@ void *NPI_taskFxn(void *arg0)
     I2C_Params i2cParams;
 
     /* Captivate IRQ init */
-    GPIO_setCallback(Board_CAPTIVATE_IRQ, (GPIO_CallbackFxn) NPI_irqHandler);
-    GPIO_clearInt(Board_CAPTIVATE_IRQ);
-    GPIO_enableInt(Board_CAPTIVATE_IRQ);
+    GPIO_setCallback(CONFIG_CAPTIVATE_IRQ, (GPIO_CallbackFxn) NPI_irqHandler);
+    GPIO_clearInt(CONFIG_CAPTIVATE_IRQ);
+    GPIO_enableInt(CONFIG_CAPTIVATE_IRQ);
 
     /* Initialize I2C interface */
     I2C_Params_init(&i2cParams);
     i2cParams.bitRate = I2C_400kHz;
-    i2cCaptivateHandle = I2C_open(Board_I2C_CAPTIVATE, &i2cParams);
+    i2cCaptivateHandle = I2C_open(CONFIG_I2C_CAPTIVATE, &i2cParams);
 
     while(1) {
         switch(npi_state) {
@@ -210,12 +211,12 @@ void NPI_irqHandler(uint_least8_t index)
 {
     uint32_t delayDebounce = 0;
 
-    GPIO_disableInt(Board_CAPTIVATE_IRQ);
+    GPIO_disableInt(CONFIG_CAPTIVATE_IRQ);
 
     /* Delay for switch debounce */
     for (delayDebounce = 0; delayDebounce < 100; delayDebounce++);
 
     sem_post(&npiIrqSem);
-    GPIO_clearInt(Board_CAPTIVATE_IRQ);
-    GPIO_enableInt(Board_CAPTIVATE_IRQ);
+    GPIO_clearInt(CONFIG_CAPTIVATE_IRQ);
+    GPIO_enableInt(CONFIG_CAPTIVATE_IRQ);
 }

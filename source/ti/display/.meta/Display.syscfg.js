@@ -123,9 +123,16 @@ let config = [
 function moduleInstances(inst)
 {
     if (inst.displayType === "UART") {
+
+        let displayName = "UART";
+        if (inst.$hardware && inst.$hardware.displayName) {
+            displayName = inst.$hardware.displayName;
+        }
+
         return ([
             {
                 name       : "uart",
+                displayName: displayName,
                 moduleName : "/ti/drivers/UART",
                 hardware   : inst.$hardware
             }
@@ -133,23 +140,53 @@ function moduleInstances(inst)
     }
 
     if (inst.displayType === "LCD") {
+
+        let enableName = "LCD Enable";
+        let enableHardware = null;
+        let powerName = "LCD Power";
+        let powerHardware = null;
+        let selectName = "LCD Slave Select";
+        let selectHardware = null;
+
+        /* Speculatively get hardware and displayName */
+        if (inst.$hardware && inst.$hardware.subComponents) {
+            let components = inst.$hardware.subComponents;
+
+            enableHardware = components.ENABLE;
+            powerHardware = components.POWER;
+            selectHardware = components.SELECT;
+
+            if (enableHardware && enableHardware.displayName) {
+                enableName = enableHardware.displayName;
+            }
+            if (powerHardware && powerHardware.displayName) {
+                powerName = powerHardware.displayName;
+            }
+            if (selectHardware && selectHardware.displayName) {
+                selectName = selectHardware.displayName;
+            }
+        }
+
         return ([
             {
                 name       : "lcdEnable",
+                displayName: enableName,
                 moduleName : "/ti/drivers/GPIO",
-                hardware   : inst.$hardware ? inst.$hardware.subComponents.LCD_ENABLE : null,
+                hardware   : enableHardware,
                 args       : { mode: "Dynamic" }
             },
             {
                 name       : "lcdPower",
+                displayName: powerName,
                 moduleName : "/ti/drivers/GPIO",
-                hardware   : inst.$hardware ? inst.$hardware.subComponents.LCD_POWER : null,
+                hardware   : powerHardware,
                 args       : { mode: "Dynamic" }
             },
             {
                 name       : "lcdSS",
+                displayName: selectName,
                 moduleName : "/ti/drivers/GPIO",
-                hardware   : inst.$hardware ? inst.$hardware.subComponents.LCD_SS : null,
+                hardware   : selectHardware,
                 args       : { mode: "Dynamic" }
             }
         ]);
@@ -164,11 +201,25 @@ function moduleInstances(inst)
 function sharedModuleInstances(inst)
 {
     if (inst.displayType == "LCD") {
+
+        let spiName = "LCD SPI";
+        let spiHardware = null;
+
+        /* Speculatively get hardware and displayName */
+        if (inst.$hardware && inst.$hardware.subComponents) {
+            let components = inst.$hardware.subComponents;
+            spiHardware = components.SPI;
+            if (spiHardware && spiHardware.displayName) {
+                spiName = spiHardware.displayName;
+            }
+        }
+
         return ([
             {
                 name       : "spi",
+                displayName: spiName,
                 moduleName : "/ti/drivers/SPI",
-                hardware   : inst.$hardware ? inst.$hardware.subComponents.LCD_SPI : null
+                hardware   : spiHardware
             }
         ]);
     }
@@ -182,12 +233,12 @@ function sharedModuleInstances(inst)
 function validate(inst, validation)
 {
     if (inst.mutexTimeoutValue <= 0) {
-        logError(validation, inst, 'mutexTimeoutValue', 
+        logError(validation, inst, 'mutexTimeoutValue',
                  'Must be a positive integer.');
     }
 
     if (inst.uartBufferSize < 32) {
-        logError(validation, inst, 'uartBufferSize', 
+        logError(validation, inst, 'uartBufferSize',
                  'Must be greater than 32 bytes.');
     }
 
@@ -221,7 +272,7 @@ function validate(inst, validation)
  */
 function onChangeMutexTimeout(inst, ui)
 {
-    if (inst.mutexTimeout == "Custom") {
+    if (inst.mutexTimeout === "Custom") {
         ui.mutexTimeoutValue.hidden = false;
     }
     else {
@@ -263,6 +314,13 @@ function onDisplayTypeChange(inst, ui)
         ui.mutexTimeout.hidden = false;
         onChangeMutexTimeout(inst, ui);
     }
+
+    if (inst.$hardware) {
+        ui.displayType.readOnly = true;
+    }
+    else {
+        ui.displayType.readOnly = false;
+    }
 }
 
 /*
@@ -272,11 +330,9 @@ function filterHardware(component)
 {
     let ret = false;
 
-    if (component.name) {
-        if (component.name.match("MSP430BOOST_SHARP96")) {
-            return (true);
-        }
-        if (component.name.match("BOOSTXL_SHARP128")) {
+    if (component.type) {
+        /* Check for know component types */
+        if (Common.typeMatches(component.type, ["SHARP_LCD", "SPI_LCD"])) {
             return (true);
         }
     }
@@ -292,43 +348,60 @@ function filterHardware(component)
 function onHardwareChanged(inst, ui)
 {
     if (inst.$hardware) {
-        if (inst.$hardware.name) {
-            if (inst.$hardware.name.match("MSP430BOOST_SHARP96")) {
-                ui.displayType.readOnly = false;
-                inst.displayType = "LCD";
-                onDisplayTypeChange(inst, ui);
-                inst.lcdSize = 96;
-                ui.displayType.readOnly = true;
 
-                return;
-            }
-            if (inst.$hardware.name.match("BOOSTXL_SHARP128")) {
-                ui.displayType.readOnly = false;
-                inst.displayType = "LCD";
-                onDisplayTypeChange(inst, ui);
-                inst.lcdSize = 128;
-                ui.displayType.readOnly = true;
-
-                return;
-            }
-        }
-
-        if (Common.typeMatches(inst.$hardware.type, ["UART"])) {
-            ui.displayType.readOnly = false;
+        if (Common.typeMatches(inst.$hardware.type, ["SHARP_LCD", "SPI_LCD"])) {
+            inst.displayType = "LCD";
+            inst.lcdSize = inst.$hardware.settings.Display.size;
+        } else if (Common.typeMatches(inst.$hardware.type, ["UART"])) {
             inst.displayType = "UART";
-            onDisplayTypeChange(inst, ui);
-            ui.displayType.readOnly = true;
-
-            return;
         }
     }
     else {
-        ui.displayType.readOnly = false;
+        /* Set defaults */
         inst.displayType = "UART";
-        onDisplayTypeChange(inst, ui);
-
-        return;
+        inst.mutexTimeout = "Never Timeout";
     }
+
+    onDisplayTypeChange(inst, ui);
+}
+
+/*
+ *  ======== getLibs ========
+ *  Argument to the /ti/utils/build/GenLibs.cmd.xdt template
+ */
+function getLibs(mod)
+{
+    let libGroup = {
+        name: "/ti/display",
+        vers: "1.0.0.0",
+        deps: [],
+        libs: []
+    };
+
+    /* get device information from DriverLib */
+    var DriverLib = system.getScript("/ti/devices/DriverLib");
+    let attrs = DriverLib.getAttrs(system.deviceData.deviceId);
+
+    /* compute RTSC targt suffix from device family */
+    let m3 = attrs.deviceDefine.match(/^DeviceFamily_CC[12][36]X0/);
+    let wifi = attrs.deviceDefine.match(/^DeviceFamily_CC32/);
+    let suffix = m3 ? ".aem3" : (wifi ? ".aem4" : ".aem4f");
+
+    /* add the display library to libGroup's libs */
+    libGroup.libs.push("ti/display/lib/display" + suffix);
+
+    /* add dependency on /ti/drivers (if needed) */
+    let needDrivers = false;
+    for (let i = 0; i < mod.$instances.length; i++) {
+        let inst =  mod.$instances[i];
+        if (inst.displayType != "HOST") {
+            needDrivers = true;
+            break;
+        }
+    }
+    libGroup.deps = needDrivers ? ["/ti/drivers"] : [];
+
+    return (libGroup);
 }
 
 /*
@@ -351,17 +424,22 @@ and portable APIs.
 [3]: /tidrivers/doxygen/html/_display_8h.html#ti_drivers_Display_Examples "C usage examples"
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#Display_Configuration_Options "Configuration options reference"
 `,
-    documentation: "/tidrivers/doxygen/html/_display_8h.html",
-    defaultInstanceName   : "Board_Display",
-    config                : Common.addNameConfig(config, "ti/drivers/Display","Board_Display"),
+    defaultInstanceName   : "CONFIG_Display_",
+    config                : Common.addNameConfig(config, "ti/drivers/Display","CONFIG_Display_"),
     validate              : validate,
     maxInstances          : 3,
     filterHardware        : filterHardware,
     onHardwareChanged     : onHardwareChanged,
+    modules               : Common.autoForceModules(["Board"]),
     moduleInstances       : moduleInstances,
     sharedModuleInstances : sharedModuleInstances,
     templates             : {
-        boardc: "/ti/display/Display.Board.c.xdt"
+        /* contribute to TI-DRIVERS configuration file */
+        boardc: "/ti/display/Display.Board.c.xdt",
+
+        /* contribute libraries to linker command file */
+        "/ti/utils/build/GenLibs.cmd.xdt":
+            {modName: "/ti/display/Display", getLibs: getLibs}
     }
 };
 

@@ -83,19 +83,19 @@ function validate(mod, validation)
  */
 let base = {
     displayName : "DMA",
-    description : "Direct Memory Access (DMA) Driver",
-    defaultInstanceName : "Board_DMA",
+    description : "On-chip DMA resource allocation",
+    defaultInstanceName : "CONFIG_DMA_",
     longDescription : `
 The DMA module provides support to other drivers that
 need to allocate exclusive access to a DMA resource to support
 CPU-less peripheral data transfers. There is no user API for this module.
 See [__Driver configurations reference__][1] for more information.
 
-[1]: /tidrivers/syscfg/html/ConfigDoc.html "Configuration Options"
+[1]: /tidrivers/syscfg/html/ConfigDoc.html#DMA_Configuration_Options "Configuration options reference"
 `,
     maxInstances : 1,
     moduleStatic : {
-        config: Common.addNameConfig(config, "/ti/drivers/DMA", "Board_DMA"),
+        config: Common.addNameConfig(config, "/ti/drivers/DMA", "CONFIG_DMA_"),
         modules: Common.autoForceModules(["Board"]),
         validate : validate
     }

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_productview
 {
-    static final String VERS = "@(#) xdc-F14\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -187,6 +187,11 @@ public class ti_sysbios_productview
         po.addFld("ti_sysbios_family_c66_Cache", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
         po.addFld("ti_sysbios_family_c66_tci66xx_CpIntc", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
         po.addFld("ti_sysbios_family_c674_Power", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
+        po.addFld("ti_sysbios_family_msp430_ClockFreqs", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
+        po.addFld("ti_sysbios_family_msp430_Hwi", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
+        po.addFld("ti_sysbios_family_msp430_Power", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
+        po.addFld("ti_sysbios_family_msp430_Timer", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
+        po.addFld("ti_sysbios_family_msp430_TimestampProvider", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
         po.addFld("ti_sysbios_family_arm_arm9_Cache", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
         po.addFld("ti_sysbios_family_arm_arm9_Mmu", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
         po.addFld("ti_sysbios_family_arm_dm6446_Hwi", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
@@ -243,6 +248,7 @@ public class ti_sysbios_productview
         po.addFld("c64tGroup", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
         po.addFld("c66Group", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
         po.addFld("c674Group", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
+        po.addFld("msp430Group", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
         po.addFld("armGroup", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
         po.addFld("arm9davinciGroup", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");
         po.addFld("arm9da830Group", (Proto)om.findStrict("ti.sysbios.productview.BiosProductView.ProductElemDesc", "ti.sysbios.productview"), $$DEFAULT, "wh");

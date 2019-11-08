@@ -1,0 +1,492 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Benchmarking &mdash; LZ4 Compression Library 1.00.01.00 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="LZ4 Compression Library 1.00.01.00 documentation" href="../../../../index.html"/>
+        <link rel="next" title="LZ4 Compression Library" href="index.html"/>
+        <link rel="prev" title="LZ4 Compression Library" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../../../../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> LZ4 Compression Library
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.00.01.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmarking</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#canterbury-corpus">Canterbury Corpus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#silesia-corpus">Silesia Corpus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lz4-compression-speed">LZ4 Compression Speed</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">LZ4 Compression Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">LZ4 Compression Library</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+    <li>Benchmarking</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="benchmarking">
+<h1>Benchmarking<a class="headerlink" href="#benchmarking" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="canterbury-corpus">
+<h2>Canterbury Corpus<a class="headerlink" href="#canterbury-corpus" title="Permalink to this headline">¶</a></h2>
+<p>The Canterbury Corpus is a set of small sized files that represent a wide range of data formats and is used to compare lossless compression algorithm performance. Applications can compare typical data sets with the corpus files to determine a rough estimate of compression performance. Since the benchmark does not measure compression speed the LZ4 compression utility has been compiled without modifications using GCC and run on a Windows PC to obtain the following results. The results are comparable to the original LZ4 implementation with the default command line options (fast compression).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="18%" />
+<col width="14%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">File</th>
+<th class="head">Category</th>
+<th class="head">Size (bytes)</th>
+<th class="head">Ratio (H2LS 10)</th>
+<th class="head">Ratio (H2LS 12)</th>
+<th class="head">Ratio (H2LS 14)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">alice29.txt</span></code></td>
+<td>English text</td>
+<td>152089</td>
+<td>1.3079</td>
+<td>1.5266</td>
+<td>1.6782</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">asyoulik.txt</span></code></td>
+<td>Shakespeare</td>
+<td>125179</td>
+<td>1.2684</td>
+<td>1.4457</td>
+<td>1.585</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">cp.html</span></code></td>
+<td>HTML source</td>
+<td>24603</td>
+<td>1.6461</td>
+<td>1.9097</td>
+<td>2.0294</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">fields.c</span></code></td>
+<td>C source</td>
+<td>11150</td>
+<td>1.9161</td>
+<td>2.0614</td>
+<td>2.0896</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">grammar.lsp</span></code></td>
+<td>LISP source</td>
+<td>3721</td>
+<td>1.8512</td>
+<td>1.9062</td>
+<td>1.9141</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">kennedy.xls</span></code></td>
+<td>Excel Spreadsheet</td>
+<td>1029744</td>
+<td>2.3826</td>
+<td>2.5877</td>
+<td>2.7481</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">lcet10.txt</span></code></td>
+<td>Technical writing</td>
+<td>426754</td>
+<td>1.3491</td>
+<td>1.6052</td>
+<td>1.7899</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">plrabn12.txt</span></code></td>
+<td>Poetry</td>
+<td>481861</td>
+<td>1.1735</td>
+<td>1.3459</td>
+<td>1.5018</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ptt5</span></code></td>
+<td>CCITT test set</td>
+<td>513216</td>
+<td>5.6318</td>
+<td>5.8115</td>
+<td>5.9357</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">sum</span></code></td>
+<td>SPARC Executable</td>
+<td>38240</td>
+<td>1.6961</td>
+<td>1.9148</td>
+<td>1.9827</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">xargs.1</span></code></td>
+<td>GNU manual page</td>
+<td>4227</td>
+<td>1.4526</td>
+<td>1.5326</td>
+<td>1.5632</td>
+</tr>
+<tr class="row-odd"><td><strong>Total</strong></td>
+<td>&nbsp;</td>
+<td><strong>2810784</strong></td>
+<td><strong>1.8572</strong></td>
+<td><strong>2.0987</strong></td>
+<td><strong>2.2825</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The benchmark files, additional details and results for other compression algorithms can be found on the <a class="reference external" href="http://corpus.canterbury.ac.nz/">Canterbury Corpus webpage</a>.</p>
+</div>
+<div class="section" id="silesia-corpus">
+<h2>Silesia Corpus<a class="headerlink" href="#silesia-corpus" title="Permalink to this headline">¶</a></h2>
+<p>The Silesia Corpus is a set of large size files that represent a wide range of data formats and is used to compare lossless compression algorithm performance. While large file sizes are not typical in embedded applications they can still be used to compare typical data sets with the corpus files to determine a rough estimate of compression performance. Since the benchmark does not measure compression speed the LZ4 compression utility has been compiled without modifications using GCC and run on a Windows PC to obtain the following results. The results are comparable to the original LZ4 implementation with the default command line options (fast compression).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="15%" />
+<col width="15%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">File</th>
+<th class="head">Category</th>
+<th class="head">Size (bytes)</th>
+<th class="head">Ratio (H2LS 10)</th>
+<th class="head">Ratio (H2LS 12)</th>
+<th class="head">Ratio (H2LS 14)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">alice29.txt</span></code></td>
+<td>English Text</td>
+<td>10192446</td>
+<td>1.2268</td>
+<td>1.4259</td>
+<td>1.5882</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">mozilla</span></code></td>
+<td>Executable</td>
+<td>51220480</td>
+<td>1.7236</td>
+<td>1.8536</td>
+<td>1.9501</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">mr</span></code></td>
+<td>Medical image</td>
+<td>9970564</td>
+<td>1.5728</td>
+<td>1.6653</td>
+<td>1.7521</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">nci</span></code></td>
+<td>Database</td>
+<td>33553445</td>
+<td>4.5649</td>
+<td>5.357</td>
+<td>5.7073</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ooffice</span></code></td>
+<td>Executable</td>
+<td>6152192</td>
+<td>1.2934</td>
+<td>1.3811</td>
+<td>1.466</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">osdb</span></code></td>
+<td>Database</td>
+<td>10085684</td>
+<td>1.1354</td>
+<td>1.4785</td>
+<td>1.965</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">reymont</span></code></td>
+<td>Polish pdf</td>
+<td>6627202</td>
+<td>1.5583</td>
+<td>1.7694</td>
+<td>1.8747</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">samba</span></code></td>
+<td>Source code</td>
+<td>21606400</td>
+<td>2.1857</td>
+<td>2.5442</td>
+<td>2.7149</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">sao</span></code></td>
+<td>Binary data</td>
+<td>7251944</td>
+<td>1.0208</td>
+<td>1.0538</td>
+<td>1.0945</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">webster</span></code></td>
+<td>HTML</td>
+<td>41458703</td>
+<td>1.5805</td>
+<td>1.8459</td>
+<td>2.0475</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">xml</span></code></td>
+<td>HTML</td>
+<td>5345280</td>
+<td>3.2759</td>
+<td>3.8561</td>
+<td>4.1454</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">x-ray</span></code></td>
+<td>Medical image</td>
+<td>8474240</td>
+<td>1.0036</td>
+<td>1.0115</td>
+<td>1.0441</td>
+</tr>
+<tr class="row-even"><td><strong>Total</strong></td>
+<td>&nbsp;</td>
+<td><strong>211938580</strong></td>
+<td><strong>1.7244</strong></td>
+<td><strong>1.9328</strong></td>
+<td><strong>2.0910</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The benchmark files, additional details and results for other compression algorithms can be found on the <a class="reference external" href="http://sun.aei.polsl.pl/~sdeor/index.php?page=silesia">Silesia Corpus webpage</a>.</p>
+</div>
+<div class="section" id="lz4-compression-speed">
+<h2>LZ4 Compression Speed<a class="headerlink" href="#lz4-compression-speed" title="Permalink to this headline">¶</a></h2>
+<p>The speed at which data can be compressed is directly related to the compression ratio of the data. Data that can be compressed at a higher ratio can be compressed faster because there are more matched bytes and fewer literals that must be hashed into the table. The plot below shows a synthetic benchmark created to show how well the LZ4 algorithm performs on an embedded device. The original file being compressed is 32KB and a hash table size of 4096 is used.</p>
+<div class="figure" id="id1">
+<img alt="LZ4 Ratio Time" src="srcs/docs/lz4/users_guide/lz4_ratio_time.png" />
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">LZ4 Ratio Time</span></p>
+</div>
+<p>As the compression ratio decreases the advantage becomes even more significant. This is because lower compression ratio results in less matches and more calls to the hashing function, decreasing the overall compression speed.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="index.html" class="btn btn-neutral float-right" title="LZ4 Compression Library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../../index.html" class="btn btn-neutral" title="LZ4 Compression Library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 1995-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'1.00.01.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

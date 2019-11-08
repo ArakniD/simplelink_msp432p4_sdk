@@ -125,9 +125,6 @@ void TA0_N_IRQHandler(void)
 {
     uint32_t jj;
 
-    MAP_Timer_A_clearCaptureCompareInterrupt(TIMER_A0_BASE,
-            TIMER_A_CAPTURECOMPARE_REGISTER_1);
-
     timerAcaptureValues[timerAcapturePointer++] =
             MAP_Timer_A_getCaptureCompareCount(TIMER_A0_BASE,
                                              TIMER_A_CAPTURECOMPARE_REGISTER_1);

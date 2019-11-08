@@ -285,7 +285,7 @@ uint_fast8_t RTC_C_getInterruptStatus(void)
 uint_fast8_t RTC_C_getEnabledInterruptStatus(void)
 {
 
-    uint32_t intStatus = RTC_C_getInterruptStatus();
+    uint16_t intStatus = RTC_C_getInterruptStatus();
 
     if (!BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_OFIE_OFS))
     {

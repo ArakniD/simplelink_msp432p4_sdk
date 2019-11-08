@@ -81,8 +81,8 @@ multiples of the block cipher block size.
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#AESCCM_Configuration_Options "Configuration options reference"
 `,
     validate            : validate,
-    defaultInstanceName : "Board_AESCCM",
-    config              : Common.addNameConfig(config, "/ti/drivers/AESCCM", "Board_AESCCM"),
+    defaultInstanceName : "CONFIG_AESCCM_",
+    config              : Common.addNameConfig(config, "/ti/drivers/AESCCM", "CONFIG_AESCCM_"),
     modules: Common.autoForceModules(["Board", "Power", "DMA"])
 };
 

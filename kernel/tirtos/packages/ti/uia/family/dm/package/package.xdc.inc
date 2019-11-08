@@ -6,7 +6,7 @@ package/ti.uia.family.dm.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_uia_family_dm.java
 package/ti_uia_family_dm.class
 package/package_ti.uia.family.dm.c

@@ -34,14 +34,14 @@
  */
 
 /* Board Header file */
-#include "Board.h"
+#include "ti_drivers_config.h"
 
 /* Required when including driverlib header files*/
-#ifdef Board_MSP_EXP432P401R
+#ifdef CONFIG_MSP_EXP432P401R
 #ifndef __MSP432P401R__
 #define __MSP432P401R__
 #endif
-#elif defined(Board_MSP_EXP432P4111)
+#elif defined(CONFIG_MSP_EXP432P4111)
 #ifndef __MSP432P4111__
 #define __MSP432P4111__
 #endif
@@ -75,9 +75,9 @@ void *mainThread(void *arg0)
     Display_init();
 
     /* Configure the LED pin */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
     /* Open the display for output */
     display = Display_open(Display_Type_UART, NULL);
@@ -129,10 +129,10 @@ unsigned int notifyFxn(unsigned int eventType, unsigned int eventArg,
  unsigned int clientArg)
 {
     if(eventType == PowerMSP432_START_CHANGE_PERF_LEVEL) {
-        GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_OFF);
+        GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_OFF);
     }
     else {
-        GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+        GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
     }
     return(Power_NOTIFYDONE);
 }

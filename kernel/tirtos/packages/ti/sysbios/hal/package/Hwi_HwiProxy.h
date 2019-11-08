@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_sysbios_hal_Hwi_HwiProxy__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_hal_Hwi_HwiProxy___VERS 200
@@ -379,125 +381,125 @@ __extern void ti_sysbios_hal_Hwi_HwiProxy_delete(ti_sysbios_hal_Hwi_HwiProxy_Han
 
 /* Handle__label__S */
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_Handle__label__S, "ti_sysbios_hal_Hwi_HwiProxy_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_sysbios_hal_Hwi_HwiProxy_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_sysbios_hal_Hwi_HwiProxy_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_Module__startupDone__S, "ti_sysbios_hal_Hwi_HwiProxy_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_hal_Hwi_HwiProxy_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_hal_Hwi_HwiProxy_Module__startupDone__S( void);
 
 /* Object__get__S */
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_Object__get__S, "ti_sysbios_hal_Hwi_HwiProxy_Object__get__S")
-__extern xdc_Ptr ti_sysbios_hal_Hwi_HwiProxy_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_sysbios_hal_Hwi_HwiProxy_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_Object__first__S, "ti_sysbios_hal_Hwi_HwiProxy_Object__first__S")
-__extern xdc_Ptr ti_sysbios_hal_Hwi_HwiProxy_Object__first__S( void );
+__extern xdc_Ptr ti_sysbios_hal_Hwi_HwiProxy_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_Object__next__S, "ti_sysbios_hal_Hwi_HwiProxy_Object__next__S")
-__extern xdc_Ptr ti_sysbios_hal_Hwi_HwiProxy_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_sysbios_hal_Hwi_HwiProxy_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_Params__init__S, "ti_sysbios_hal_Hwi_HwiProxy_Params__init__S")
-__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* Proxy__abstract__S */
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_Proxy__abstract__S, "ti_sysbios_hal_Hwi_HwiProxy_Proxy__abstract__S")
-__extern xdc_Bool ti_sysbios_hal_Hwi_HwiProxy_Proxy__abstract__S( void );
+__extern xdc_Bool ti_sysbios_hal_Hwi_HwiProxy_Proxy__abstract__S( void);
 
 /* Proxy__delegate__S */
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_Proxy__delegate__S, "ti_sysbios_hal_Hwi_HwiProxy_Proxy__delegate__S")
-__extern xdc_CPtr ti_sysbios_hal_Hwi_HwiProxy_Proxy__delegate__S( void );
+__extern xdc_CPtr ti_sysbios_hal_Hwi_HwiProxy_Proxy__delegate__S( void);
 
 /* getStackInfo__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_getStackInfo ti_sysbios_hal_Hwi_HwiProxy_getStackInfo__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_getStackInfo__E, "ti_sysbios_hal_Hwi_HwiProxy_getStackInfo")
-__extern xdc_Bool ti_sysbios_hal_Hwi_HwiProxy_getStackInfo__E( ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth );
+__extern xdc_Bool ti_sysbios_hal_Hwi_HwiProxy_getStackInfo__E( ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth);
 
 /* getCoreStackInfo__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo__E, "ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo")
-__extern xdc_Bool ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo__E( ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth, xdc_UInt coreId );
+__extern xdc_Bool ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo__E( ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth, xdc_UInt coreId);
 
 /* startup__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_startup ti_sysbios_hal_Hwi_HwiProxy_startup__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_startup__E, "ti_sysbios_hal_Hwi_HwiProxy_startup")
-__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_startup__E( void );
+__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_startup__E( void);
 
 /* disable__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_disable ti_sysbios_hal_Hwi_HwiProxy_disable__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_disable__E, "ti_sysbios_hal_Hwi_HwiProxy_disable")
-__extern xdc_UInt ti_sysbios_hal_Hwi_HwiProxy_disable__E( void );
+__extern xdc_UInt ti_sysbios_hal_Hwi_HwiProxy_disable__E( void);
 
 /* enable__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_enable ti_sysbios_hal_Hwi_HwiProxy_enable__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_enable__E, "ti_sysbios_hal_Hwi_HwiProxy_enable")
-__extern xdc_UInt ti_sysbios_hal_Hwi_HwiProxy_enable__E( void );
+__extern xdc_UInt ti_sysbios_hal_Hwi_HwiProxy_enable__E( void);
 
 /* restore__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_restore ti_sysbios_hal_Hwi_HwiProxy_restore__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_restore__E, "ti_sysbios_hal_Hwi_HwiProxy_restore")
-__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_restore__E( xdc_UInt key );
+__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_restore__E( xdc_UInt key);
 
 /* switchFromBootStack__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_switchFromBootStack ti_sysbios_hal_Hwi_HwiProxy_switchFromBootStack__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_switchFromBootStack__E, "ti_sysbios_hal_Hwi_HwiProxy_switchFromBootStack")
-__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_switchFromBootStack__E( void );
+__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_switchFromBootStack__E( void);
 
 /* post__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_post ti_sysbios_hal_Hwi_HwiProxy_post__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_post__E, "ti_sysbios_hal_Hwi_HwiProxy_post")
-__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_post__E( xdc_UInt intNum );
+__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_post__E( xdc_UInt intNum);
 
 /* getTaskSP__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_getTaskSP ti_sysbios_hal_Hwi_HwiProxy_getTaskSP__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_getTaskSP__E, "ti_sysbios_hal_Hwi_HwiProxy_getTaskSP")
-__extern xdc_Char *ti_sysbios_hal_Hwi_HwiProxy_getTaskSP__E( void );
+__extern xdc_Char *ti_sysbios_hal_Hwi_HwiProxy_getTaskSP__E( void);
 
 /* disableInterrupt__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_disableInterrupt ti_sysbios_hal_Hwi_HwiProxy_disableInterrupt__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_disableInterrupt__E, "ti_sysbios_hal_Hwi_HwiProxy_disableInterrupt")
-__extern xdc_UInt ti_sysbios_hal_Hwi_HwiProxy_disableInterrupt__E( xdc_UInt intNum );
+__extern xdc_UInt ti_sysbios_hal_Hwi_HwiProxy_disableInterrupt__E( xdc_UInt intNum);
 
 /* enableInterrupt__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_enableInterrupt ti_sysbios_hal_Hwi_HwiProxy_enableInterrupt__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_enableInterrupt__E, "ti_sysbios_hal_Hwi_HwiProxy_enableInterrupt")
-__extern xdc_UInt ti_sysbios_hal_Hwi_HwiProxy_enableInterrupt__E( xdc_UInt intNum );
+__extern xdc_UInt ti_sysbios_hal_Hwi_HwiProxy_enableInterrupt__E( xdc_UInt intNum);
 
 /* restoreInterrupt__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_restoreInterrupt ti_sysbios_hal_Hwi_HwiProxy_restoreInterrupt__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_restoreInterrupt__E, "ti_sysbios_hal_Hwi_HwiProxy_restoreInterrupt")
-__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_restoreInterrupt__E( xdc_UInt intNum, xdc_UInt key );
+__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_restoreInterrupt__E( xdc_UInt intNum, xdc_UInt key);
 
 /* clearInterrupt__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_clearInterrupt ti_sysbios_hal_Hwi_HwiProxy_clearInterrupt__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_clearInterrupt__E, "ti_sysbios_hal_Hwi_HwiProxy_clearInterrupt")
-__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_clearInterrupt__E( xdc_UInt intNum );
+__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_clearInterrupt__E( xdc_UInt intNum);
 
 /* getFunc__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_getFunc ti_sysbios_hal_Hwi_HwiProxy_getFunc__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_getFunc__E, "ti_sysbios_hal_Hwi_HwiProxy_getFunc")
-__extern ti_sysbios_interfaces_IHwi_FuncPtr ti_sysbios_hal_Hwi_HwiProxy_getFunc__E( ti_sysbios_hal_Hwi_HwiProxy_Handle __inst, xdc_UArg *arg );
+__extern ti_sysbios_interfaces_IHwi_FuncPtr ti_sysbios_hal_Hwi_HwiProxy_getFunc__E( ti_sysbios_hal_Hwi_HwiProxy_Handle instp, xdc_UArg *arg);
 
 /* setFunc__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_setFunc ti_sysbios_hal_Hwi_HwiProxy_setFunc__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_setFunc__E, "ti_sysbios_hal_Hwi_HwiProxy_setFunc")
-__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_setFunc__E( ti_sysbios_hal_Hwi_HwiProxy_Handle __inst, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg );
+__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_setFunc__E( ti_sysbios_hal_Hwi_HwiProxy_Handle instp, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg);
 
 /* getHookContext__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_getHookContext ti_sysbios_hal_Hwi_HwiProxy_getHookContext__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_getHookContext__E, "ti_sysbios_hal_Hwi_HwiProxy_getHookContext")
-__extern xdc_Ptr ti_sysbios_hal_Hwi_HwiProxy_getHookContext__E( ti_sysbios_hal_Hwi_HwiProxy_Handle __inst, xdc_Int id );
+__extern xdc_Ptr ti_sysbios_hal_Hwi_HwiProxy_getHookContext__E( ti_sysbios_hal_Hwi_HwiProxy_Handle instp, xdc_Int id);
 
 /* setHookContext__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_setHookContext ti_sysbios_hal_Hwi_HwiProxy_setHookContext__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_setHookContext__E, "ti_sysbios_hal_Hwi_HwiProxy_setHookContext")
-__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_setHookContext__E( ti_sysbios_hal_Hwi_HwiProxy_Handle __inst, xdc_Int id, xdc_Ptr hookContext );
+__extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_setHookContext__E( ti_sysbios_hal_Hwi_HwiProxy_Handle instp, xdc_Int id, xdc_Ptr hookContext);
 
 /* getIrp__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_getIrp ti_sysbios_hal_Hwi_HwiProxy_getIrp__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_getIrp__E, "ti_sysbios_hal_Hwi_HwiProxy_getIrp")
-__extern ti_sysbios_interfaces_IHwi_Irp ti_sysbios_hal_Hwi_HwiProxy_getIrp__E( ti_sysbios_hal_Hwi_HwiProxy_Handle __inst );
+__extern ti_sysbios_interfaces_IHwi_Irp ti_sysbios_hal_Hwi_HwiProxy_getIrp__E( ti_sysbios_hal_Hwi_HwiProxy_Handle instp);
 
 
 /*
@@ -529,7 +531,7 @@ static inline ti_sysbios_hal_Hwi_HwiProxy_Handle ti_sysbios_hal_Hwi_HwiProxy_Han
 static inline ti_sysbios_hal_Hwi_HwiProxy_Handle ti_sysbios_hal_Hwi_HwiProxy_Handle_downCast(ti_sysbios_interfaces_IHwi_Handle i)
 {
     ti_sysbios_interfaces_IHwi_Handle i2 = (ti_sysbios_interfaces_IHwi_Handle)i;
-    if (ti_sysbios_hal_Hwi_HwiProxy_Proxy__abstract__S()) {
+    if (ti_sysbios_hal_Hwi_HwiProxy_Proxy__abstract__S() != 0U) {
         return (ti_sysbios_hal_Hwi_HwiProxy_Handle)i;
     }
     return ((const void*)i2->__fxns == (const void*)ti_sysbios_hal_Hwi_HwiProxy_Proxy__delegate__S()) ? (ti_sysbios_hal_Hwi_HwiProxy_Handle)i : (ti_sysbios_hal_Hwi_HwiProxy_Handle)NULL;
@@ -661,7 +663,6 @@ static inline void ti_sysbios_hal_Hwi_HwiProxy_Params_copy(ti_sysbios_hal_Hwi_Hw
 #define Hwi_HwiProxy_Object_sizeof ti_sysbios_hal_Hwi_HwiProxy_Object_sizeof
 #define Hwi_HwiProxy_Params_copy ti_sysbios_hal_Hwi_HwiProxy_Params_copy
 #define Hwi_HwiProxy_Params_init ti_sysbios_hal_Hwi_HwiProxy_Params_init
-#define Hwi_HwiProxy_Instance_State ti_sysbios_hal_Hwi_HwiProxy_Instance_State
 #define Hwi_HwiProxy_Instance_finalize ti_sysbios_hal_Hwi_HwiProxy_Instance_finalize
 #define Hwi_HwiProxy_Proxy_abstract ti_sysbios_hal_Hwi_HwiProxy_Proxy_abstract
 #define Hwi_HwiProxy_Proxy_delegate ti_sysbios_hal_Hwi_HwiProxy_Proxy_delegate

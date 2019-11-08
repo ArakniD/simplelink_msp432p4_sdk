@@ -64,7 +64,6 @@ The Task module makes available a set of functions that manipulate task
   <span class="xdoc-link" href="../../../ti/sysbios/BIOS.html#smp.Enabled" title="ti.sysbios.BIOS.smpEnabled">ti.sysbios.BIOS.smpEnabled</span> set to true)</span></span></a>(<span class="xdoc-kw2">UInt</span>&nbsp;<span class="xdoc-id">coreId</span>);</div></td></tr>
 <tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><a class="xdoc-link" href="../../../ti/sysbios/knl/Task.html#.Mode" title="ti.sysbios.knl.Task.Mode">Task_Mode</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get.Mode"><span class="xdoc-id">Task_getMode</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Retrieve the <span class="xdoc-link" href="Task.html#.Mode" title="Mode">Mode</span> of a task</span></span></a>(<a class="xdoc-link" href="../../../ti/sysbios/knl/Task.html#per-instance_object_types" title="ti.sysbios.knl.Task.Handle">Task_Handle</a> handle);</div></td></tr>
 <tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Int</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get.Pri"><span class="xdoc-id">Task_getPri</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Get task priority</span></span></a>(<a class="xdoc-link" href="../../../ti/sysbios/knl/Task.html#per-instance_object_types" title="ti.sysbios.knl.Task.Handle">Task_Handle</a> handle);</div></td></tr>
-<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#get.Privileged"><span class="xdoc-id">Task_getPrivileged</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns boolean indicating if Task is privileged</span></span></a>(<a class="xdoc-link" href="../../../ti/sysbios/knl/Task.html#per-instance_object_types" title="ti.sysbios.knl.Task.Handle">Task_Handle</a> handle);</div></td></tr>
 <tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#per-instance_config_parameters"><span class="xdoc-id">Task_Params_init</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Initialize this config-params structure with supplier-specified defaults before instance creation</span></span></a>(<a class="xdoc-link" href="../../../ti/sysbios/knl/Task.html#per-instance_config_parameters" title="ti.sysbios.knl.Task.Params">Task_Params</a> *params);</div></td></tr>
 <tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#restore"><span class="xdoc-id">Task_restore</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Restore Task scheduling state</span></span></a>(<span class="xdoc-kw2">UInt</span>&nbsp;<span class="xdoc-id">key</span>);</div></td></tr>
 <tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><a class="xdoc-link" href="../../../ti/sysbios/knl/Task.html#per-instance_object_types" title="ti.sysbios.knl.Task.Handle">Task_Handle</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#self"><span class="xdoc-id">Task_self</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Returns a handle to the currently executing Task object</span></span></a>();</div></td></tr>
@@ -151,10 +150,6 @@ The Task module makes available a set of functions that manipulate task
 <tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Id" title="xdc.runtime.Error.Id">Error_Id</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.E_object.Check.Failed"><span class="xdoc-id">Task_E_objectCheckFailed</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Error raised when the check value of the Task object does not match
   the stored check value (computed during startup). This indicates
   that the Task object was corrupted</span></span></a>;</div></td></tr>
-<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Id" title="xdc.runtime.Error.Id">Error_Id</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.E_object.Not.In.Kernel.Space"><span class="xdoc-id">Task_E_objectNotInKernelSpace</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Error raised when BIOS.mpeEnabled is TRUE and Task object passed to
-  Task_construct() is not in Kernel address space. This can happen if a
-  user Task passes a Task object that resides in unprivileged memory to
-  Task_construct()</span></span></a>;</div></td></tr>
 <tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Id" title="xdc.runtime.Error.Id">Error_Id</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.E_sp.Out.Of.Bounds"><span class="xdoc-id">Task_E_spOutOfBounds</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Error raised when a task's stack pointer (SP) does not point
   somewhere within the task's stack</span></span></a>;</div></td></tr>
 <tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Id" title="xdc.runtime.Error.Id">Error_Id</a>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.E_stack.Overflow"><span class="xdoc-id">Task_E_stackOverflow</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Error raised when a stack overflow (or corruption) is detected</span></span></a>;</div></td></tr>
@@ -998,29 +993,6 @@ The Task module makes available a set of functions that manipulate task
 <div class="xdocSynTdcl">
 <div class="xdocSynCode">
 <tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Id" title="xdc.runtime.Error.Id">Error_Id</a>&nbsp;<span class="xdoc-id">Task_E_objectCheckFailed</span>;
-</div>
-</div>
-<div class="xdocSynSpacer">&nbsp;</div>
-<div class="xdocSynSpacer">&nbsp;</div>
-<a class="xdocAnchor" id=".E_object.Not.In.Kernel.Space"></a>
-<table class="xdocHdr"><tr>
-<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Task_</span><span class="xdoc-id">E_objectNotInKernelSpace</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
-<td class="xdocHdrArrow">
-<a class="xdocHdrLink" href="../../../ti/sysbios/knl/Task.html" title="module Task"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
-</table>
-<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/sysbios/knl/Task.html#.E_object.Not.In.Kernel.Space">index URL</a></div>
-<p class="xdocHdrSummaryDcl">Error raised when BIOS.mpeEnabled is TRUE and Task object passed to
-  Task_construct() is not in Kernel address space. This can happen if a
-  user Task passes a Task object that resides in unprivileged memory to
-  Task_construct()</p>
-<span id='targ-synop'></span>
-<table class="xdocLabel"><tr>
-<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
-<td class="xdocLabelRight">target-domain</td>
-</tr></table>
-<div class="xdocSynTdcl">
-<div class="xdocSynCode">
-<tt></tt><tt></tt><span class="xdoc-kw1">extern const</span> <a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Id" title="xdc.runtime.Error.Id">Error_Id</a>&nbsp;<span class="xdoc-id">Task_E_objectNotInKernelSpace</span>;
 </div>
 </div>
 <div class="xdocSynSpacer">&nbsp;</div>
@@ -2329,10 +2301,6 @@ The Task module makes available a set of functions that manipulate task
 </div>
 <div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Task function argument. Default is 0</div>
 <div class="xdocSynCode">
-<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">domain</span>;
-</div>
-<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Domain Handle</div>
-<div class="xdocSynCode">
 <tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">env</span>;
 </div>
 <div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Environment data struct</div>
@@ -2341,10 +2309,6 @@ The Task module makes available a set of functions that manipulate task
 </div>
 <div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Task priority (0 to Task.numPriorities-1, or -1).
   Default is 1</div>
-<div class="xdocSynCode">
-<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">privileged</span>;
-</div>
-<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Privileged task</div>
 <div class="xdocSynCode">
 <tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">stack</span>;
 </div>
@@ -2461,32 +2425,6 @@ The Task module makes available a set of functions that manipulate task
 </div>
 <div class="xdocSynSpacer">&nbsp;</div>
 <div class="xdocSynSpacer">&nbsp;</div>
-<a class="xdocAnchor" id="domain"></a>
-<table class="xdocHdr"><tr>
-<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Task_Params.</span><span class="xdoc-id">domain</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
-<td class="xdocHdrArrow">
-<a class="xdocHdrLink" href="../../../ti/sysbios/knl/Task.html" title="module Task"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
-</table>
-<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/sysbios/knl/Task.html#domain">index URL</a></div>
-<p class="xdocHdrSummaryDcl">Domain Handle</p>
-<span id='targ-synop'></span>
-<table class="xdocLabel"><tr>
-<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
-<td class="xdocLabelRight">target-domain</td>
-</tr></table>
-<div class="xdocSynTdcl">
-<div class="xdocSynCode">
-<tt></tt><tt></tt><span class="xdoc-kw1">struct</span> <a class="xdoc-link" href="../../../ti/sysbios/knl/Task.html#per-instance_config_parameters" title="ti.sysbios.knl.Task.Params">Task_Params</a> {
-</div>
-<div class="xdocSynCode">
-<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><b>&nbsp;&nbsp;...</b>
-</div>
-<div class="xdocSynCode">
-<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Ptr</span>&nbsp;<span class="xdoc-id">domain</span>;
-</div>
-</div>
-<div class="xdocSynSpacer">&nbsp;</div>
-<div class="xdocSynSpacer">&nbsp;</div>
 <a class="xdocAnchor" id="env"></a>
 <table class="xdocHdr"><tr>
 <td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Task_Params.</span><span class="xdoc-id">env</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
@@ -2536,32 +2474,6 @@ The Task module makes available a set of functions that manipulate task
 </div>
 <div class="xdocSynCode">
 <tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Int</span>&nbsp;<span class="xdoc-id">priority</span>;
-</div>
-</div>
-<div class="xdocSynSpacer">&nbsp;</div>
-<div class="xdocSynSpacer">&nbsp;</div>
-<a class="xdocAnchor" id="privileged"></a>
-<table class="xdocHdr"><tr>
-<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Task_Params.</span><span class="xdoc-id">privileged</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
-<td class="xdocHdrArrow">
-<a class="xdocHdrLink" href="../../../ti/sysbios/knl/Task.html" title="module Task"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
-</table>
-<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/sysbios/knl/Task.html#privileged">index URL</a></div>
-<p class="xdocHdrSummaryDcl">Privileged task</p>
-<span id='targ-synop'></span>
-<table class="xdocLabel"><tr>
-<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
-<td class="xdocLabelRight">target-domain</td>
-</tr></table>
-<div class="xdocSynTdcl">
-<div class="xdocSynCode">
-<tt></tt><tt></tt><span class="xdoc-kw1">struct</span> <a class="xdoc-link" href="../../../ti/sysbios/knl/Task.html#per-instance_config_parameters" title="ti.sysbios.knl.Task.Params">Task_Params</a> {
-</div>
-<div class="xdocSynCode">
-<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><b>&nbsp;&nbsp;...</b>
-</div>
-<div class="xdocSynCode">
-<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">privileged</span>;
 </div>
 </div>
 <div class="xdocSynSpacer">&nbsp;</div>
@@ -3026,34 +2938,6 @@ The Task module makes available a set of functions that manipulate task
 <span id="xdoc-sect-3"></span>
 <div class="xdocSect">DETAILS</div>
 <div class="xdocText">Task_getPri returns the priority of the referenced task.</div>
-<div class="xdocSynSpacer">&nbsp;</div>
-<a class="xdocAnchor" id="get.Privileged"></a>
-<table class="xdocHdr"><tr>
-<td class="xdocHdrTitle"><span class="xdoc-id">Task_</span><span class="xdoc-id">getPrivileged</span>()&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
-<td class="xdocHdrArrow">
-<a class="xdocHdrLink" href="../../../ti/sysbios/knl/Task.html" title="module Task"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
-</table>
-<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/sysbios/knl/Task.html#get.Privileged">index URL</a></div>
-<p class="xdocHdrSummaryDcl">Returns boolean indicating if Task is privileged</p>
-<span id='targ-synop'></span>
-<table class="xdocLabel"><tr>
-<td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
-<td class="xdocLabelRight">target-domain</td>
-</tr></table>
-<div class="xdocSynTdcl">
-<div class="xdocSynCode">
-<tt></tt><tt></tt><span class="xdoc-kw2">Bool</span>&nbsp;<span class="xdoc-id">Task_getPrivileged</span>(<a class="xdoc-link" href="../../../ti/sysbios/knl/Task.html#per-instance_object_types" title="ti.sysbios.knl.Task.Handle">Task_Handle</a> handle);
-</div>
-</div>
-<div class="xdocSynSpacer">&nbsp;</div>
-<span id="xdoc-sect-1"></span>
-<div class="xdocSect">ARGUMENTS</div>
-<div class="xdocChild"><span class="xdocChildId">handle</span>
-<span class="xdocChildSum">&#151;&nbsp;handle of a previously-created <tt>Task</tt> instance object</span>
-</div>
-<span id="xdoc-sect-2"></span>
-<div class="xdocSect">RETURNS</div>
-<div class="xdocText">TRUE - privileged Task, FALSE - unprivileged Task</div>
 <div class="xdocSynSpacer">&nbsp;</div>
 <a class="xdocAnchor" id="set.Affinity"></a>
 <table class="xdocHdr"><tr>
@@ -3540,18 +3424,6 @@ The Task module makes available a set of functions that manipulate task
 <tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
 </div>
 <div class="xdocSynCode">
-<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#meta.E_object.Not.In.Kernel.Space">Task.<span class="xdoc-id">E_objectNotInKernelSpace</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Error raised when BIOS.mpeEnabled is TRUE and Task object passed to
-  Task_construct() is not in Kernel address space. This can happen if a
-  user Task passes a Task object that resides in unprivileged memory to
-  Task_construct()</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Desc" title="xdc.runtime.Error.Desc">Error.Desc</a></i> {
-</div>
-<div class="xdocSynCode">
-<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "E_objectNotInKernelSpace: Task object passed not in Kernel address space."
-</div>
-<div class="xdocSynCode">
-<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt>};
-</div>
-<div class="xdocSynCode">
 <tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt></tt><a class="xdocSynGo" href="#meta.E_sp.Out.Of.Bounds">Task.<span class="xdoc-id">E_spOutOfBounds</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Error raised when a task's stack pointer (SP) does not point
   somewhere within the task's stack</span></span></a> = <i><a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Desc" title="xdc.runtime.Error.Desc">Error.Desc</a></i> {
 </div>
@@ -3787,17 +3659,11 @@ The Task module makes available a set of functions that manipulate task
 <tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#metaarg1"><span class="xdoc-id">arg1</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Task function argument. Default is 0</span></span></a> = <i><span class="xdoc-kw2">UArg</span></i> 0;
 </div>
 <div class="xdocSynCode">
-<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#metadomain"><span class="xdoc-id">domain</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Domain Handle</span></span></a> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
-</div>
-<div class="xdocSynCode">
 <tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#metaenv"><span class="xdoc-id">env</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Environment data struct</span></span></a> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
 </div>
 <div class="xdocSynCode">
 <tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#metapriority"><span class="xdoc-id">priority</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Task priority (0 to Task.numPriorities-1, or -1).
   Default is 1</span></span></a> = <i><span class="xdoc-kw2">Int</span></i> 1;
-</div>
-<div class="xdocSynCode">
-<tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#metaprivileged"><span class="xdoc-id">privileged</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Privileged task</span></span></a> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
 </div>
 <div class="xdocSynCode">
 <tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<a class="xdocSynGo" href="#metastack"><span class="xdoc-id">stack</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Task stack pointer. Default = null</span></span></a> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
@@ -4341,37 +4207,6 @@ The Task module makes available a set of functions that manipulate task
 <div class="xdocSynSpacer">&nbsp;</div>
 <div class="xdocSect">C SYNOPSIS</div>
 <div class="xdocText"><a class="xdoc-link" href="#.E_object.Check.Failed" title="Task_E_objectCheckFailed">Task_E_objectCheckFailed</a></div>
-<div class="xdocSynSpacer">&nbsp;</div>
-<a class="xdocAnchor" id="meta.E_object.Not.In.Kernel.Space"></a>
-<table class="xdocHdr"><tr>
-<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Task.</span><span class="xdoc-id">E_objectNotInKernelSpace</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;module-wide</span></small></td>
-<td class="xdocHdrArrow">
-<a class="xdocHdrLink" href="../../../ti/sysbios/knl/Task.html" title="module Task"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
-</table>
-<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/sysbios/knl/Task.html#.E_object.Not.In.Kernel.Space">index URL</a></div>
-<p class="xdocHdrSummaryDcl">Error raised when BIOS.mpeEnabled is TRUE and Task object passed to
-  Task_construct() is not in Kernel address space. This can happen if a
-  user Task passes a Task object that resides in unprivileged memory to
-  Task_construct()</p>
-<span id='meta-synop'></span>
-<table class="xdocLabel"><tr>
-<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
-<td class="xdocLabelRight"></td>
-</tr></table>
-<div class="xdocSynMdcl">
-<div class="xdocSynCode">
-<tt></tt><tt></tt>Task.<span class="xdoc-id">E_objectNotInKernelSpace</span> = <i><a class="xdoc-link" href="../../../xdc/runtime/Error.html#.Desc" title="xdc.runtime.Error.Desc">Error.Desc</a></i> {
-</div>
-<div class="xdocSynCode">
-<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>msg: "E_objectNotInKernelSpace: Task object passed not in Kernel address space."
-</div>
-<div class="xdocSynCode">
-<tt></tt><tt></tt>};
-</div>
-</div>
-<div class="xdocSynSpacer">&nbsp;</div>
-<div class="xdocSect">C SYNOPSIS</div>
-<div class="xdocText"><a class="xdoc-link" href="#.E_object.Not.In.Kernel.Space" title="Task_E_objectNotInKernelSpace">Task_E_objectNotInKernelSpace</a></div>
 <div class="xdocSynSpacer">&nbsp;</div>
 <a class="xdocAnchor" id="meta.E_sp.Out.Of.Bounds"></a>
 <table class="xdocHdr"><tr>
@@ -5396,11 +5231,10 @@ The Task module makes available a set of functions that manipulate task
 <div class="xdocSynSpacer">&nbsp;</div>
 <span id="xdoc-sect-1"></span>
 <div class="xdocSect">DETAILS</div>
-<div class="xdocText">All modules have this configuration parameter.  Its name
-  contains the '$' character to ensure it does not conflict with
-  configuration parameters declared by the module.  This allows
-  new configuration parameters to be added in the future without
-  any chance of breaking existing modules.</div>
+<div class="xdocText">All modules have this configuration parameter. Its name contains the '$'
+  character to ensure it does not conflict with configuration parameters
+  declared by the module. This allows new configuration parameters to be 
+  added in the future without any chance of breaking existing modules.</div>
 <div class="xdocSynSpacer">&nbsp;</div>
 <a class="xdocAnchor" id="default.Affinity"></a>
 <table class="xdocHdr"><tr>
@@ -5734,10 +5568,6 @@ The Task module makes available a set of functions that manipulate task
 </div>
 <div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Task function argument. Default is 0</div>
 <div class="xdocSynCode">
-<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">domain</span> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
-</div>
-<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Domain Handle</div>
-<div class="xdocSynCode">
 <tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">env</span> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
 </div>
 <div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Environment data struct</div>
@@ -5746,10 +5576,6 @@ The Task module makes available a set of functions that manipulate task
 </div>
 <div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Task priority (0 to Task.numPriorities-1, or -1).
   Default is 1</div>
-<div class="xdocSynCode">
-<tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">privileged</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
-</div>
-<div class='xdocSynSum'><tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>//&nbsp;Privileged task</div>
 <div class="xdocSynCode">
 <tt></tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;</tt>params.<span class="xdoc-id">stack</span> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
 </div>
@@ -5868,34 +5694,6 @@ The Task module makes available a set of functions that manipulate task
 <div class="xdocSect">C SYNOPSIS</div>
 <div class="xdocText"><a class="xdoc-link" href="#arg1" title="Task_Params.arg1">Task_Params.arg1</a></div>
 <div class="xdocSynSpacer">&nbsp;</div>
-<a class="xdocAnchor" id="metadomain"></a>
-<table class="xdocHdr"><tr>
-<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Task.Params.</span><span class="xdoc-id">domain</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
-<td class="xdocHdrArrow">
-<a class="xdocHdrLink" href="../../../ti/sysbios/knl/Task.html" title="module Task"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
-</table>
-<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/sysbios/knl/Task.html#domain">index URL</a></div>
-<p class="xdocHdrSummaryDcl">Domain Handle</p>
-<span id='meta-synop'></span>
-<table class="xdocLabel"><tr>
-<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
-<td class="xdocLabelRight"></td>
-</tr></table>
-<div class="xdocSynMdcl">
-<div class="xdocSynCode">
-<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Task.<span class="xdoc-id">Params</span>;
-</div>
-<div class="xdocSynCode">
-<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
-</div>
-<div class="xdocSynCode">
-<tt></tt><tt></tt>params.<span class="xdoc-id">domain</span> = <i><span class="xdoc-kw2">Ptr</span></i> <span class="xdoc-kw2">null</span>;
-</div>
-</div>
-<div class="xdocSynSpacer">&nbsp;</div>
-<div class="xdocSect">C SYNOPSIS</div>
-<div class="xdocText"><a class="xdoc-link" href="#domain" title="Task_Params.domain">Task_Params.domain</a></div>
-<div class="xdocSynSpacer">&nbsp;</div>
 <a class="xdocAnchor" id="metaenv"></a>
 <table class="xdocHdr"><tr>
 <td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Task.Params.</span><span class="xdoc-id">env</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
@@ -5952,34 +5750,6 @@ The Task module makes available a set of functions that manipulate task
 <div class="xdocSynSpacer">&nbsp;</div>
 <div class="xdocSect">C SYNOPSIS</div>
 <div class="xdocText"><a class="xdoc-link" href="#priority" title="Task_Params.priority">Task_Params.priority</a></div>
-<div class="xdocSynSpacer">&nbsp;</div>
-<a class="xdocAnchor" id="metaprivileged"></a>
-<table class="xdocHdr"><tr>
-<td class="xdocHdrTitle"><span class="xdoc-kw1">config</span> <span class="xdoc-id">Task.Params.</span><span class="xdoc-id">privileged</span>&nbsp;&nbsp;<small><span class="xdocSynSum">//&nbsp;instance</span></small></td>
-<td class="xdocHdrArrow">
-<a class="xdocHdrLink" href="../../../ti/sysbios/knl/Task.html" title="module Task"><img class="xdocHdrArrow" src="../../../Arrow_up.png"/></a></td>
-</table>
-<div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../../index.html#ti/sysbios/knl/Task.html#privileged">index URL</a></div>
-<p class="xdocHdrSummaryDcl">Privileged task</p>
-<span id='meta-synop'></span>
-<table class="xdocLabel"><tr>
-<td class="xdocLabelLeft"><tt><span class="xdoc-id-meta2dcl"></span></tt>Configuration settings</td>
-<td class="xdocLabelRight"></td>
-</tr></table>
-<div class="xdocSynMdcl">
-<div class="xdocSynCode">
-<tt></tt><tt></tt><span class="xdoc-kw1">var</span> params = <span class="xdoc-kw1">new</span> Task.<span class="xdoc-id">Params</span>;
-</div>
-<div class="xdocSynCode">
-<tt></tt><tt></tt><b>&nbsp;&nbsp;...</b>
-</div>
-<div class="xdocSynCode">
-<tt></tt><tt></tt>params.<span class="xdoc-id">privileged</span> = <i><span class="xdoc-kw2">Bool</span></i> <span class="xdoc-kw2">true</span>;
-</div>
-</div>
-<div class="xdocSynSpacer">&nbsp;</div>
-<div class="xdocSect">C SYNOPSIS</div>
-<div class="xdocText"><a class="xdoc-link" href="#privileged" title="Task_Params.privileged">Task_Params.privileged</a></div>
 <div class="xdocSynSpacer">&nbsp;</div>
 <a class="xdocAnchor" id="metastack"></a>
 <table class="xdocHdr"><tr>
@@ -6253,6 +6023,6 @@ The Task module makes available a set of functions that manipulate task
 </LI><LI> The stackHeap attribute must identify a valid memory Heap.
 </LI></UL></div>
 </div>
-<div id="xdocDate">generated on Sat, 23 Feb 2019 02:49:59 GMT</div>
+<div id="xdocDate">generated on Wed, 28 Aug 2019 17:00:29 GMT</div>
 </div></div></body>
 </html>

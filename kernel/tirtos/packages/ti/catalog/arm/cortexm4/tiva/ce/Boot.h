@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_catalog_arm_cortexm4_tiva_ce_Boot__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_catalog_arm_cortexm4_tiva_ce_Boot___VERS 200
@@ -252,37 +254,37 @@ __extern __FAR__ const CT__ti_catalog_arm_cortexm4_tiva_ce_Boot_A_mustNotUseEnha
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_catalog_arm_cortexm4_tiva_ce_Boot_Module__startupDone__S, "ti_catalog_arm_cortexm4_tiva_ce_Boot_Module__startupDone__S")
-__extern xdc_Bool ti_catalog_arm_cortexm4_tiva_ce_Boot_Module__startupDone__S( void );
+__extern xdc_Bool ti_catalog_arm_cortexm4_tiva_ce_Boot_Module__startupDone__S( void);
 
 /* sysCtlClockSet__E */
 #define ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockSet ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockSet__E
 xdc__CODESECT(ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockSet__E, "ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockSet")
-__extern xdc_Void ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockSet__E( xdc_ULong ulConfig );
+__extern xdc_Void ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockSet__E( xdc_ULong ulConfig);
 
 /* sysCtlClockFreqSet__E */
 #define ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockFreqSet ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockFreqSet__E
 xdc__CODESECT(ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockFreqSet__E, "ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockFreqSet")
-__extern xdc_ULong ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockFreqSet__E( xdc_ULong ulConfig, xdc_ULong ulSysClock );
+__extern xdc_ULong ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockFreqSet__E( xdc_ULong ulConfig, xdc_ULong ulSysClock);
 
 /* sysCtlClockSetI__I */
 #define ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockSetI ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockSetI__I
 xdc__CODESECT(ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockSetI__I, "ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockSetI")
-__extern xdc_Void ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockSetI__I( xdc_ULong ulConfig );
+__extern xdc_Void ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockSetI__I( xdc_ULong ulConfig);
 
 /* sysCtlClockFreqSetI__I */
 #define ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockFreqSetI ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockFreqSetI__I
 xdc__CODESECT(ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockFreqSetI__I, "ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockFreqSetI")
-__extern xdc_ULong ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockFreqSetI__I( xdc_ULong ulConfig, xdc_ULong ulSysClock );
+__extern xdc_ULong ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlClockFreqSetI__I( xdc_ULong ulConfig, xdc_ULong ulSysClock);
 
 /* sysCtlDelayI__I */
 #define ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlDelayI ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlDelayI__I
 xdc__CODESECT(ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlDelayI__I, "ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlDelayI")
-__extern xdc_Void ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlDelayI__I( xdc_ULong ulCount );
+__extern xdc_Void ti_catalog_arm_cortexm4_tiva_ce_Boot_sysCtlDelayI__I( xdc_ULong ulCount);
 
 /* init__I */
 #define ti_catalog_arm_cortexm4_tiva_ce_Boot_init ti_catalog_arm_cortexm4_tiva_ce_Boot_init__I
 xdc__CODESECT(ti_catalog_arm_cortexm4_tiva_ce_Boot_init__I, "ti_catalog_arm_cortexm4_tiva_ce_Boot_init")
-__extern xdc_Void ti_catalog_arm_cortexm4_tiva_ce_Boot_init__I( void );
+__extern xdc_Void ti_catalog_arm_cortexm4_tiva_ce_Boot_init__I( void);
 
 
 /*

@@ -172,6 +172,15 @@ void I2C_setTimeout(uint32_t moduleInstance, uint_fast16_t timeout)
 
 uint8_t I2C_masterReceiveSingleByte(uint32_t moduleInstance)
 {
+
+    uint_fast16_t rxieStatus;
+
+    //Store current RXIE status
+    rxieStatus = EUSCI_B_CMSIS(moduleInstance)->IE & EUSCI_B_IE_RXIE0;
+
+    //Disable receive interrupt enable
+    BITBAND_PERI(EUSCI_B_CMSIS(moduleInstance)->IE, EUSCI_B_IE_RXIE0_OFS) = 0;
+
     //Set USCI in Receive mode
     BITBAND_PERI(EUSCI_B_CMSIS(moduleInstance)->CTLW0, EUSCI_B_CTLW0_TR_OFS) =
             0;
@@ -185,8 +194,17 @@ uint8_t I2C_masterReceiveSingleByte(uint32_t moduleInstance)
             EUSCI_B_IFG_RXIFG_OFS))
         ;
 
-    //Send single byte data.
-    return (EUSCI_B_CMSIS(moduleInstance)->RXBUF & EUSCI_B_RXBUF_RXBUF_MASK);
+    //Receive single byte data.
+    uint8_t receivedByte = (EUSCI_B_CMSIS(moduleInstance)->RXBUF & EUSCI_B_RXBUF_RXBUF_MASK);
+
+    //Clear receive interrupt flag before enabling interrupt again
+    BITBAND_PERI(EUSCI_B_CMSIS(moduleInstance)->IFG, EUSCI_B_IFG_RXIFG0_OFS) =
+            0;
+
+    //Reinstate receive interrupt enable
+    EUSCI_B_CMSIS(moduleInstance)->IE |= rxieStatus;
+
+    return receivedByte;
 }
 
 void I2C_slavePutData(uint32_t moduleInstance, uint8_t transmitData)

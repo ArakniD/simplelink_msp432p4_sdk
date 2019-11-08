@@ -5,7 +5,7 @@
     <includes refid="_watchdog_8h" local="no">Watchdog.h</includes>
       <sectiondef kind="public-attrib">
       <memberdef kind="variable" id="struct_watchdog___config___1a2ceb6aabf71a42cf6e4162d1ce314e58" prot="public" static="no" mutable="no">
-        <type><ref refid="_watchdog_8h_1aa8370f2ff642b6a253e37c0b7b44fbed" kindref="member">Watchdog_FxnTable</ref> const  *</type>
+        <type><ref refid="struct_watchdog___fxn_table" kindref="compound">Watchdog_FxnTable</ref> const  *</type>
         <definition>Watchdog_FxnTable const* Watchdog_Config_::fxnTablePtr</definition>
         <argsstring></argsstring>
         <name>fxnTablePtr</name>
@@ -50,17 +50,10 @@
 <para>The Watchdog_Config structure contains a set of pointers used to characterize the Watchdog driver implementation.</para><para>This structure needs to be defined before calling <ref refid="_watchdog_8h_1afaadfb59be17661ae95562f2081355e7" kindref="member">Watchdog_init()</ref> and it must not be changed thereafter.</para><para><simplesect kind="see"><para><ref refid="_watchdog_8h_1afaadfb59be17661ae95562f2081355e7" kindref="member">Watchdog_init()</ref> </para></simplesect>
 </para>    </detaileddescription>
     <collaborationgraph>
-      <node id="302">
-        <label>Watchdog_Config_</label>
-        <link refid="struct_watchdog___config__"/>
-        <childnode refid="303" relation="usage">
-          <edgelabel>fxnTablePtr</edgelabel>
-        </childnode>
-      </node>
-      <node id="303">
-        <label>Watchdog_FxnTable_</label>
-        <link refid="struct_watchdog___fxn_table__"/>
-        <childnode refid="302" relation="usage">
+      <node id="328">
+        <label>Watchdog_FxnTable</label>
+        <link refid="struct_watchdog___fxn_table"/>
+        <childnode refid="327" relation="usage">
           <edgelabel>watchdogClose</edgelabel>
           <edgelabel>watchdogControl</edgelabel>
           <edgelabel>watchdogOpen</edgelabel>
@@ -68,6 +61,13 @@
           <edgelabel>watchdogInit</edgelabel>
           <edgelabel>watchdogConvertMsToTicks</edgelabel>
           <edgelabel>watchdogClear</edgelabel>
+        </childnode>
+      </node>
+      <node id="327">
+        <label>Watchdog_Config_</label>
+        <link refid="struct_watchdog___config__"/>
+        <childnode refid="328" relation="usage">
+          <edgelabel>fxnTablePtr</edgelabel>
         </childnode>
       </node>
     </collaborationgraph>

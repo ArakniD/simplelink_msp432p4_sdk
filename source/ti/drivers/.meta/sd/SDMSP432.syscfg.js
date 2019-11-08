@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,75 +37,17 @@
 
 "use strict";
 
-let Common = system.getScript("/ti/drivers/Common.js");
-
 /*
  *  ======== devSpecific ========
  *  Device-specific extensions to be added to base SD configuration
  */
 let devSpecific = {
 
-    sharedModuleInstances: sharedModuleInstances,
-
-    moduleInstances: moduleInstances,
-
-    filterHardware: filterHardware,
-
     templates: {
-        boardc: "/ti/drivers/sd/SDMSP432E4.Board.c.xdt",
+        boardc: "/ti/drivers/sd/SD.Board.c.xdt",
         boardh: "/ti/drivers/sd/SD.Board.h.xdt"
     }
 };
-
-/*
- *  ======== sharedModuleInstances ========
- */
-function sharedModuleInstances(inst)
-{
-    return ([{
-        name: "spiInstance",
-        displayName: "SPI",
-        moduleName: "/ti/drivers/SPI",
-        hardware: inst.$hardware ? inst.$hardware.subComponents.spi : null
-    }]);
-}
-
-/*
- *  ======== moduleInstances ========
- */
-function moduleInstances(inst)
-{
-    return ([{
-        name: "slaveSelect",
-        displayName: "Slave Select",
-        moduleName: "/ti/drivers/GPIO",
-        hardware: inst.$hardware ? inst.$hardware.subComponents.select : null,
-        args: {
-            comment: "%l    /* SDSPI Chip Select */",
-            mode: "Output",
-            outputType: "Standard",
-            initialOutputState:"High"
-        }
-    }]);
-}
-
-/*
- *  ========= filterHardware ========
- *  param component - hardware object describing signals and
- *                    resources
- *
- *  returns Boolean indicating whether or not to allow the component to
- *           be assigned to an instance's $hardware config
- */
-function filterHardware(component) {
-    if (component.type) {
-        if (Common.typeMatches(component.type, ["SD_SPI_FLASH"])) {
-            return (true);
-        }
-    }
-
-    return (false);
-}
 
 /*
  *  ======== extend ========

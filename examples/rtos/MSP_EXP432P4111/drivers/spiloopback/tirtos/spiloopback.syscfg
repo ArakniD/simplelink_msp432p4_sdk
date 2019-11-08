@@ -1,0 +1,111 @@
+/*
+ * Copyright (c) 2019, Texas Instruments Incorporated
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+// @cliArgs --board /ti/boards/MSP_EXP432P4111
+
+/*
+ *  spiloopback.syscfg
+ */
+
+/* ======== RTOS ======== */
+var RTOS = scripting.addModule("/ti/drivers/RTOS");
+RTOS.name = "TI-RTOS";
+
+/* ======== Board ======== */
+var board = system.deviceData.board.name;
+
+/* ======== GPIO ======== */
+var GPIO = scripting.addModule("/ti/drivers/GPIO");
+
+var gpio0 = GPIO.addInstance();
+gpio0.$hardware = system.deviceData.board.components.LED0;
+gpio0.$name = "CONFIG_GPIO_LED_0";
+
+var gpio1 = GPIO.addInstance();
+gpio1.$hardware = system.deviceData.board.components.LED1;
+gpio1.$name = "CONFIG_GPIO_LED_1";
+
+/* ======== SPI ======== */
+var SPI = scripting.addModule("/ti/drivers/SPI");
+
+var spi0 = SPI.addInstance();
+spi0.$name = "CONFIG_SPI_0";
+
+var spi1 = SPI.addInstance();
+spi1.$name = "CONFIG_SPI_1";
+
+if (board.match(/MSP.EXP432P/)) {
+    spi0.mode = "Three Pin";
+    spi0.spi.$assign = "EUSCI_B0"; /* Use the peripheral */
+    spi0.spi.sclkPin.$assign = "P1.5";
+    spi0.spi.dmaTxChannel.$assign = "DMA_CH0";
+    spi0.spi.dmaRxChannel.$assign = "DMA_CH1";
+    spi0.spi.dmaInterruptNumber.$assign = "DMA_INT1";
+    spi0.spi.mosiPin.$assign = "P1.6";
+    spi0.spi.misoPin.$assign = "P1.7";
+    spi0.defaultTxBufferValue = "0xFF";
+
+    spi1.mode = "Three Pin";
+    spi1.spi.$assign = "EUSCI_B2"; /* Use the peripheral */
+    spi1.spi.sclkPin.$assign = "P3.5";
+    spi1.spi.dmaTxChannel.$assign = "DMA_CH4";
+    spi1.spi.dmaRxChannel.$assign = "DMA_CH5";
+    spi1.spi.dmaInterruptNumber.$assign = "DMA_INT2";
+    spi1.spi.mosiPin.$assign = "P3.6";
+    spi1.spi.misoPin.$assign = "P3.7";
+    spi1.defaultTxBufferValue = "0xFF";
+}
+else if (board.match(/MSP.EXP432E/)) {
+    spi0.mode = "Four Pin SS Active Low";
+    spi0.defaultTxBufferValue = "0xFFFF";
+    spi0.spi.$assign = "SSI2";
+    spi0.spi.sclkPin.$assign = "PD3";
+    spi0.spi.misoPin.$assign = "PD0";
+    spi0.spi.mosiPin.$assign = "PD1";
+    spi0.spi.ssPin.$assign = "PD2";
+    spi0.spi.dmaTxChannel.$assign = "UDMA_CH13";
+    spi0.spi.dmaRxChannel.$assign = "UDMA_CH12";
+
+    spi1.mode = "Four Pin SS Active Low";
+    spi1.defaultTxBufferValue = "0xFFFF";
+    spi1.spi.$assign = "SSI3";
+    spi1.spi.sclkPin.$assign = "PQ0";
+    spi1.spi.misoPin.$assign = "PQ3";
+    spi1.spi.mosiPin.$assign = "PQ2";
+    spi1.spi.ssPin.$assign = "PQ1";
+    spi1.spi.dmaTxChannel.$assign = "UDMA_CH15";
+    spi1.spi.dmaRxChannel.$assign = "UDMA_CH14";
+}
+
+/* ======== Display ======== */
+var Display = scripting.addModule("/ti/display/Display");
+var display = Display.addInstance();
+display.$hardware = system.deviceData.board.components.XDS110UART;

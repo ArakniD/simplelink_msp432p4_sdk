@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2018, Texas Instruments Incorporated
+ * Copyright (c) 2012-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -332,7 +332,7 @@ UIAPacket_MsgType Rta_readMask(Rta_Packet *resp, UArg addr)
     Bits16 *maskAddr;
 
     /* Make sure we don't have any NULL pointers */
-    if (((Bits16 *)addr == NULL) || (*(Bits16 *)addr == NULL)) {
+    if ((addr == (UArg)NULL) || (*(Bits16 *)addr == 0)) {
         resp->arg0 = Rta_ErrorCode_NULLPOINTER;
         return (UIAPacket_MsgType_NACK_WITH_ERROR_CODE);
     }
@@ -356,7 +356,7 @@ UIAPacket_MsgType Rta_writeMask(Rta_Packet *resp, UArg addr, UArg val)
     Bits16 *maskAddr;
 
     /* Make sure we don't have any NULL pointers */
-    if (((Bits16 *)addr == NULL) || (*(Bits16 *)addr == NULL)) {
+    if ((addr == (UArg)NULL) || (*(Bits16 *)addr == 0)) {
         resp->arg0 = Rta_ErrorCode_NULLPOINTER;
         return (UIAPacket_MsgType_NACK_WITH_ERROR_CODE);
     }

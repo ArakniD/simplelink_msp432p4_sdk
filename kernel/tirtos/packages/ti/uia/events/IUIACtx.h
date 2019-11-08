@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -33,10 +33,12 @@
 #define ti_uia_events_IUIACtx__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_events_IUIACtx___VERS 200
@@ -123,7 +125,7 @@ static inline ti_uia_events_IUIACtx_Module ti_uia_events_IUIACtx_Module_downCast
             return (ti_uia_events_IUIACtx_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_ti_uia_events_IUIAEvent */

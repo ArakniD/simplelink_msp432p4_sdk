@@ -7,11 +7,12 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = adcBufMultiChannel.obj MSP_EXP432P4111.obj freertos_main_freertos.obj
+OBJECTS = adcBufMultiChannel.obj ti_drivers_config.obj freertos_main_freertos.obj
 
 NAME = adcbufmultichannel
 
 CFLAGS = -I../.. \
+    -I. \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
     -D__MSP432P4111__ \
@@ -58,15 +59,23 @@ $(KERNEL_BUILD)/ccs/freertos.lib:
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
 
-adcBufMultiChannel.obj: ../../adcBufMultiChannel.c
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../../adcBufMultiChannel.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+adcBufMultiChannel.obj: ../../adcBufMultiChannel.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-MSP_EXP432P4111.obj: ../../MSP_EXP432P4111.c
+freertos_main_freertos.obj: ../../freertos/main_freertos.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-freertos_main_freertos.obj: ../../freertos/main_freertos.c
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
@@ -74,8 +83,10 @@ $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/ccs/freertos.lib
 	@ echo linking $@
 	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
+
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

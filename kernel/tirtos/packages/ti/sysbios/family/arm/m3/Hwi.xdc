@@ -485,6 +485,7 @@ module Hwi inherits ti.sysbios.interfaces.IHwi
     /*! @_nodoc */
     metaonly struct ModuleView {
         String      options[4];
+        String      processorState;
         String      activeInterrupt;
         String      pendingInterrupt;
         String      exception;
@@ -580,6 +581,14 @@ module Hwi inherits ti.sysbios.interfaces.IHwi
     };
 
     // Errors
+
+    /*!
+     *  Error raised if an attempt is made to create a Hwi
+     *  with an interrupt number greater than Hwi_NUM_INTERRUPTS - 1.
+     */
+    config Error.Id E_badIntNum = {
+        msg: "E_badIntNum, intnum: %d is out of range"
+    };
 
     /*!
      *  Error raised when Hwi is already defined

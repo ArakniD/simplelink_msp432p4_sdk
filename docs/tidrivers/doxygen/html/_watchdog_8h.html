@@ -78,14 +78,14 @@ $(function() {
 <p><a class="anchor" id="ti_drivers_Watchdog_Usage"></a></p><h1>Usage</h1>
 <p>This section will cover driver usage. <a class="anchor" id="ti_drivers_Watchdog_Synopsis"></a></p><h2>Synopsis</h2>
 <p>Open the driver with default settings: </p><div class="fragment"><div class="line"><a class="code" href="struct_watchdog___config__.html">Watchdog_Handle</a> watchdogHandle;</div><div class="line"></div><div class="line"><a class="code" href="_watchdog_8h.html#afaadfb59be17661ae95562f2081355e7">Watchdog_init</a>();</div><div class="line">watchdogHandle = <a class="code" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced">Watchdog_open</a>(WATCHDOG_INDEX, NULL);</div><div class="line"><span class="keywordflow">if</span> (watchdogHandle == NULL) {</div><div class="line">    <span class="comment">// Spin forever</span></div><div class="line">    <span class="keywordflow">while</span>(1);</div><div class="line">}</div></div><!-- fragment --><p>The Watchdog driver must be initialized by calling <a class="el" href="_watchdog_8h.html#afaadfb59be17661ae95562f2081355e7" title="Initializes the Watchdog module. ">Watchdog_init()</a>, before any other Watchdog APIs can be called. Once the watchdog is initialized, a Watchdog object can be created through the following steps:</p><ul>
-<li>Create and initialize the <a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c" title="Watchdog Parameters. ">Watchdog_Params</a> structure.</li>
+<li>Create and initialize the <a class="el" href="struct_watchdog___params.html" title="Watchdog Parameters. ">Watchdog_Params</a> structure.</li>
 <li>Assign desired values to parameters.</li>
 <li>Call <a class="el" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced" title="Opens a Watchdog. ">Watchdog_open()</a>.</li>
 <li>Save the Watchdog_Handle returned by <a class="el" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced" title="Opens a Watchdog. ">Watchdog_open()</a>. This will be used to interact with the Watchdog object just created.</li>
 </ul>
-<p>To have a user-defined function run at the hardware interrupt caused by a watchdog timer timeout, define a function of the following type: </p><div class="fragment"><div class="line"><span class="keyword">typedef</span> void (*<a class="code" href="_watchdog_8h.html#a2d201451a10bb67efc3e222ac7f099c1">Watchdog_Callback</a>)(uintptr_t);</div></div><!-- fragment --><p> Then pass the function to <a class="el" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced" title="Opens a Watchdog. ">Watchdog_open()</a> through the <a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c" title="Watchdog Parameters. ">Watchdog_Params</a> structure.</p>
-<p>An example of the Watchdog creation process that uses a callback function: <a class="anchor" id="ti_drivers_Watchdog_example_callback"></a></p><div class="fragment"><div class="line"><span class="keywordtype">void</span> UserCallbackFxn(<a class="code" href="struct_watchdog___config__.html">Watchdog_Handle</a> handle)</div><div class="line">{</div><div class="line">    printf(<span class="stringliteral">&quot;Watchdog timer triggered!\n&quot;</span>);</div><div class="line">    releaseResources();</div><div class="line">}</div><div class="line"></div><div class="line">...</div><div class="line"></div><div class="line">Watchdog_Params params;</div><div class="line"><a class="code" href="struct_watchdog___config__.html">Watchdog_Handle</a> watchdogHandle;</div><div class="line"></div><div class="line"><a class="code" href="_watchdog_8h.html#afaadfb59be17661ae95562f2081355e7">Watchdog_init</a>();</div><div class="line"></div><div class="line"><a class="code" href="_watchdog_8h.html#a6a6f54cfdac33d3bf33464a212262afc">Watchdog_Params_init</a>(&amp;params);</div><div class="line">params.resetMode = <a class="code" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546faafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a>;</div><div class="line">params.callbackFxn = (<a class="code" href="_watchdog_8h.html#a2d201451a10bb67efc3e222ac7f099c1">Watchdog_Callback</a>) UserCallbackFxn;</div><div class="line"></div><div class="line">watchdogHandle = <a class="code" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced">Watchdog_open</a>(Board_WATCHDOG0, &amp;params);</div><div class="line"><span class="keywordflow">if</span> (watchdogHandle == NULL) {</div><div class="line">   <span class="comment">// Error opening Watchdog</span></div><div class="line">   <span class="keywordflow">while</span> (1);</div><div class="line">}</div></div><!-- fragment --><p>If no <a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c" title="Watchdog Parameters. ">Watchdog_Params</a> structure is passed to <a class="el" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced" title="Opens a Watchdog. ">Watchdog_open()</a>, the default values are used. By default, the Watchdog driver has resets turned on, no callback function specified, and stalls the timer at breakpoints during debugging.</p>
-<p>Options for the resetMode parameter are <a class="el" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546faafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a> and <a class="el" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546fa78ba6b49345f0116143f4d4e7a9ec488">Watchdog_RESET_OFF</a>. The latter allows the watchdog to be used like another timer interrupt. When resetMode is <a class="el" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546faafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a>, it is up to the application to call <a class="el" href="_watchdog_8h.html#a396decd6b1807db10c636f9987c3be4c" title="Clears the Watchdog. ">Watchdog_clear()</a> to clear the Watchdog interrupt flag to prevent a reset. <a class="el" href="_watchdog_8h.html#a396decd6b1807db10c636f9987c3be4c" title="Clears the Watchdog. ">Watchdog_clear()</a> can be called at any time.</p>
+<p>To have a user-defined function run at the hardware interrupt caused by a watchdog timer timeout, define a function of the following type: </p><div class="fragment"><div class="line"><span class="keyword">typedef</span> void (*<a class="code" href="_watchdog_8h.html#a2d201451a10bb67efc3e222ac7f099c1">Watchdog_Callback</a>)(uintptr_t);</div></div><!-- fragment --><p> Then pass the function to <a class="el" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced" title="Opens a Watchdog. ">Watchdog_open()</a> through the <a class="el" href="struct_watchdog___params.html" title="Watchdog Parameters. ">Watchdog_Params</a> structure.</p>
+<p>An example of the Watchdog creation process that uses a callback function: <a class="anchor" id="ti_drivers_Watchdog_example_callback"></a></p><div class="fragment"><div class="line"><span class="keywordtype">void</span> UserCallbackFxn(<a class="code" href="struct_watchdog___config__.html">Watchdog_Handle</a> handle)</div><div class="line">{</div><div class="line">    printf(<span class="stringliteral">&quot;Watchdog timer triggered!\n&quot;</span>);</div><div class="line">    releaseResources();</div><div class="line">}</div><div class="line"></div><div class="line">...</div><div class="line"></div><div class="line">Watchdog_Params params;</div><div class="line"><a class="code" href="struct_watchdog___config__.html">Watchdog_Handle</a> watchdogHandle;</div><div class="line"></div><div class="line"><a class="code" href="_watchdog_8h.html#afaadfb59be17661ae95562f2081355e7">Watchdog_init</a>();</div><div class="line"></div><div class="line"><a class="code" href="_watchdog_8h.html#a6a6f54cfdac33d3bf33464a212262afc">Watchdog_Params_init</a>(&amp;params);</div><div class="line">params.resetMode = <a class="code" href="_watchdog_8h.html#ada0db7216129d7dad494bb0cd0169f88aafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a>;</div><div class="line">params.callbackFxn = (<a class="code" href="_watchdog_8h.html#a2d201451a10bb67efc3e222ac7f099c1">Watchdog_Callback</a>) UserCallbackFxn;</div><div class="line"></div><div class="line">watchdogHandle = <a class="code" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced">Watchdog_open</a>(CONFIG_WATCHDOG0, &amp;params);</div><div class="line"><span class="keywordflow">if</span> (watchdogHandle == NULL) {</div><div class="line">   <span class="comment">// Error opening Watchdog</span></div><div class="line">   <span class="keywordflow">while</span> (1);</div><div class="line">}</div></div><!-- fragment --><p>If no <a class="el" href="struct_watchdog___params.html" title="Watchdog Parameters. ">Watchdog_Params</a> structure is passed to <a class="el" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced" title="Opens a Watchdog. ">Watchdog_open()</a>, the default values are used. By default, the Watchdog driver has resets turned on, no callback function specified, and stalls the timer at breakpoints during debugging.</p>
+<p>Options for the resetMode parameter are <a class="el" href="_watchdog_8h.html#ada0db7216129d7dad494bb0cd0169f88aafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a> and <a class="el" href="_watchdog_8h.html#ada0db7216129d7dad494bb0cd0169f88a78ba6b49345f0116143f4d4e7a9ec488">Watchdog_RESET_OFF</a>. The latter allows the watchdog to be used like another timer interrupt. When resetMode is <a class="el" href="_watchdog_8h.html#ada0db7216129d7dad494bb0cd0169f88aafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a>, it is up to the application to call <a class="el" href="_watchdog_8h.html#a396decd6b1807db10c636f9987c3be4c" title="Clears the Watchdog. ">Watchdog_clear()</a> to clear the Watchdog interrupt flag to prevent a reset. <a class="el" href="_watchdog_8h.html#a396decd6b1807db10c636f9987c3be4c" title="Clears the Watchdog. ">Watchdog_clear()</a> can be called at any time.</p>
 <p><a class="anchor" id="ti_drivers_Watchdog_Examples"></a></p><h1>Examples</h1>
 <ul>
 <li><a class="el" href="_watchdog_8h.html#ti_drivers_Watchdog_Synopsis">Default Example</a></li>
@@ -114,11 +114,11 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_watchdog___params__.html">Watchdog_Params_</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog Parameters.  <a href="struct_watchdog___params__.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_watchdog___params.html">Watchdog_Params</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog Parameters.  <a href="struct_watchdog___params.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_watchdog___fxn_table__.html">Watchdog_FxnTable_</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The definition of a Watchdog function table that contains the required set of functions to control a specific Watchdog driver implementation.  <a href="struct_watchdog___fxn_table__.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_watchdog___fxn_table.html">Watchdog_FxnTable</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The definition of a Watchdog function table that contains the required set of functions to control a specific Watchdog driver implementation.  <a href="struct_watchdog___fxn_table.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_watchdog___config__.html">Watchdog_Config_</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog Global configuration.  <a href="struct_watchdog___config__.html#details">More...</a><br /></td></tr>
@@ -148,18 +148,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ab9ae92ba1721e383cedcff2eea73d9ca"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_watchdog___config__.html">Watchdog_Config_</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a></td></tr>
 <tr class="memdesc:ab9ae92ba1721e383cedcff2eea73d9ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog Handle.  <a href="#ab9ae92ba1721e383cedcff2eea73d9ca">More...</a><br /></td></tr>
 <tr class="separator:ab9ae92ba1721e383cedcff2eea73d9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e44509e7d94eac768c6f33e6c85e038"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="_watchdog_8h.html#ab7cc980c0ab934800cf77f768c2ac5d6">Watchdog_DebugMode_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a9e44509e7d94eac768c6f33e6c85e038">Watchdog_DebugMode</a></td></tr>
-<tr class="memdesc:a9e44509e7d94eac768c6f33e6c85e038"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog debug stall settings.  <a href="#a9e44509e7d94eac768c6f33e6c85e038">More...</a><br /></td></tr>
-<tr class="separator:a9e44509e7d94eac768c6f33e6c85e038"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb96d6e8d483083ce85f89d67341d866"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546f">Watchdog_ResetMode_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#afb96d6e8d483083ce85f89d67341d866">Watchdog_ResetMode</a></td></tr>
-<tr class="memdesc:afb96d6e8d483083ce85f89d67341d866"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog reset mode settings.  <a href="#afb96d6e8d483083ce85f89d67341d866">More...</a><br /></td></tr>
-<tr class="separator:afb96d6e8d483083ce85f89d67341d866"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d201451a10bb67efc3e222ac7f099c1"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a2d201451a10bb67efc3e222ac7f099c1">Watchdog_Callback</a>) (uintptr_t handle)</td></tr>
 <tr class="memdesc:a2d201451a10bb67efc3e222ac7f099c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog callback pointer.  <a href="#a2d201451a10bb67efc3e222ac7f099c1">More...</a><br /></td></tr>
 <tr class="separator:a2d201451a10bb67efc3e222ac7f099c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24c29fb9023f176ac6b7810ab149e67c"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_watchdog___params__.html">Watchdog_Params_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c">Watchdog_Params</a></td></tr>
-<tr class="memdesc:a24c29fb9023f176ac6b7810ab149e67c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog Parameters.  <a href="#a24c29fb9023f176ac6b7810ab149e67c">More...</a><br /></td></tr>
-<tr class="separator:a24c29fb9023f176ac6b7810ab149e67c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0315c4931ba68423472f47c23c86f296"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a0315c4931ba68423472f47c23c86f296">Watchdog_ClearFxn</a>) (<a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a> handle)</td></tr>
 <tr class="memdesc:a0315c4931ba68423472f47c23c86f296"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of <a class="el" href="_watchdog_8h.html#a396decd6b1807db10c636f9987c3be4c" title="Clears the Watchdog. ">Watchdog_clear()</a>.  <a href="#a0315c4931ba68423472f47c23c86f296">More...</a><br /></td></tr>
 <tr class="separator:a0315c4931ba68423472f47c23c86f296"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,7 +163,7 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a6401b1a23d9048efb4ed69a074ea60f9"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a6401b1a23d9048efb4ed69a074ea60f9">Watchdog_InitFxn</a>) (<a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a> handle)</td></tr>
 <tr class="memdesc:a6401b1a23d9048efb4ed69a074ea60f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of <a class="el" href="_watchdog_8h.html#afaadfb59be17661ae95562f2081355e7" title="Initializes the Watchdog module. ">Watchdog_init()</a>.  <a href="#a6401b1a23d9048efb4ed69a074ea60f9">More...</a><br /></td></tr>
 <tr class="separator:a6401b1a23d9048efb4ed69a074ea60f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05ae778da809a34e4d84c95d35ba5f58"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a05ae778da809a34e4d84c95d35ba5f58">Watchdog_OpenFxn</a>) (<a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a> handle, <a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c">Watchdog_Params</a> *params)</td></tr>
+<tr class="memitem:a05ae778da809a34e4d84c95d35ba5f58"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a05ae778da809a34e4d84c95d35ba5f58">Watchdog_OpenFxn</a>) (<a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a> handle, <a class="el" href="struct_watchdog___params.html">Watchdog_Params</a> *params)</td></tr>
 <tr class="memdesc:a05ae778da809a34e4d84c95d35ba5f58"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of <a class="el" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced" title="Opens a Watchdog. ">Watchdog_open()</a>.  <a href="#a05ae778da809a34e4d84c95d35ba5f58">More...</a><br /></td></tr>
 <tr class="separator:a05ae778da809a34e4d84c95d35ba5f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afced0e92286fe54ad1fe51c496da7a0c"><td class="memItemLeft" align="right" valign="top">typedef int_fast16_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#afced0e92286fe54ad1fe51c496da7a0c">Watchdog_SetReloadFxn</a>) (<a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a> handle, uint32_t ticks)</td></tr>
@@ -181,25 +172,22 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a18910effbe7c123ab85385e9b34ac54f"><td class="memItemLeft" align="right" valign="top">typedef uint32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a18910effbe7c123ab85385e9b34ac54f">Watchdog_ConvertMsToTicksFxn</a>) (<a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a> handle, uint32_t milliseconds)</td></tr>
 <tr class="memdesc:a18910effbe7c123ab85385e9b34ac54f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer to a driver specific implementation of <a class="el" href="_watchdog_8h.html#a18910effbe7c123ab85385e9b34ac54f" title="A function pointer to a driver specific implementation of Watchdog_ConvertMsToTicksFxn(). ">Watchdog_ConvertMsToTicksFxn()</a>.  <a href="#a18910effbe7c123ab85385e9b34ac54f">More...</a><br /></td></tr>
 <tr class="separator:a18910effbe7c123ab85385e9b34ac54f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8370f2ff642b6a253e37c0b7b44fbed"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_watchdog___fxn_table__.html">Watchdog_FxnTable_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#aa8370f2ff642b6a253e37c0b7b44fbed">Watchdog_FxnTable</a></td></tr>
-<tr class="memdesc:aa8370f2ff642b6a253e37c0b7b44fbed"><td class="mdescLeft">&#160;</td><td class="mdescRight">The definition of a Watchdog function table that contains the required set of functions to control a specific Watchdog driver implementation.  <a href="#aa8370f2ff642b6a253e37c0b7b44fbed">More...</a><br /></td></tr>
-<tr class="separator:aa8370f2ff642b6a253e37c0b7b44fbed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e9f9a94559ff298a7a288a0618bbcf0"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_watchdog___config__.html">Watchdog_Config_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a7e9f9a94559ff298a7a288a0618bbcf0">Watchdog_Config</a></td></tr>
 <tr class="memdesc:a7e9f9a94559ff298a7a288a0618bbcf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog Global configuration.  <a href="#a7e9f9a94559ff298a7a288a0618bbcf0">More...</a><br /></td></tr>
 <tr class="separator:a7e9f9a94559ff298a7a288a0618bbcf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ab7cc980c0ab934800cf77f768c2ac5d6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#ab7cc980c0ab934800cf77f768c2ac5d6">Watchdog_DebugMode_</a> { <a class="el" href="_watchdog_8h.html#ab7cc980c0ab934800cf77f768c2ac5d6a787c87976091a6f294070dadd1747ed0">Watchdog_DEBUG_STALL_ON</a>, 
-<a class="el" href="_watchdog_8h.html#ab7cc980c0ab934800cf77f768c2ac5d6a745be9d89bc0c15eda5c4082020f8bb2">Watchdog_DEBUG_STALL_OFF</a>
- }<tr class="memdesc:ab7cc980c0ab934800cf77f768c2ac5d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog debug stall settings.  <a href="_watchdog_8h.html#ab7cc980c0ab934800cf77f768c2ac5d6">More...</a><br /></td></tr>
+<tr class="memitem:ab1aa5862661c88a16b9d7bc12709d51e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#ab1aa5862661c88a16b9d7bc12709d51e">Watchdog_DebugMode</a> { <a class="el" href="_watchdog_8h.html#ab1aa5862661c88a16b9d7bc12709d51ea787c87976091a6f294070dadd1747ed0">Watchdog_DEBUG_STALL_ON</a>, 
+<a class="el" href="_watchdog_8h.html#ab1aa5862661c88a16b9d7bc12709d51ea745be9d89bc0c15eda5c4082020f8bb2">Watchdog_DEBUG_STALL_OFF</a>
+ }<tr class="memdesc:ab1aa5862661c88a16b9d7bc12709d51e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog debug stall settings.  <a href="_watchdog_8h.html#ab1aa5862661c88a16b9d7bc12709d51e">More...</a><br /></td></tr>
 </td></tr>
-<tr class="separator:ab7cc980c0ab934800cf77f768c2ac5d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14a5aaacb2ab91f555ec55e349d9546f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546f">Watchdog_ResetMode_</a> { <a class="el" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546fa78ba6b49345f0116143f4d4e7a9ec488">Watchdog_RESET_OFF</a>, 
-<a class="el" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546faafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a>
- }<tr class="memdesc:a14a5aaacb2ab91f555ec55e349d9546f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog reset mode settings.  <a href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546f">More...</a><br /></td></tr>
+<tr class="separator:ab1aa5862661c88a16b9d7bc12709d51e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada0db7216129d7dad494bb0cd0169f88"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#ada0db7216129d7dad494bb0cd0169f88">Watchdog_ResetMode</a> { <a class="el" href="_watchdog_8h.html#ada0db7216129d7dad494bb0cd0169f88a78ba6b49345f0116143f4d4e7a9ec488">Watchdog_RESET_OFF</a>, 
+<a class="el" href="_watchdog_8h.html#ada0db7216129d7dad494bb0cd0169f88aafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a>
+ }<tr class="memdesc:ada0db7216129d7dad494bb0cd0169f88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog reset mode settings.  <a href="_watchdog_8h.html#ada0db7216129d7dad494bb0cd0169f88">More...</a><br /></td></tr>
 </td></tr>
-<tr class="separator:a14a5aaacb2ab91f555ec55e349d9546f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ada0db7216129d7dad494bb0cd0169f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -215,11 +203,11 @@ Functions</h2></td></tr>
 <tr class="memitem:afaadfb59be17661ae95562f2081355e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#afaadfb59be17661ae95562f2081355e7">Watchdog_init</a> (void)</td></tr>
 <tr class="memdesc:afaadfb59be17661ae95562f2081355e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the Watchdog module.  <a href="#afaadfb59be17661ae95562f2081355e7">More...</a><br /></td></tr>
 <tr class="separator:afaadfb59be17661ae95562f2081355e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26795f67f599b74de830ca7bf36bdced"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced">Watchdog_open</a> (uint_least8_t index, <a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c">Watchdog_Params</a> *params)</td></tr>
+<tr class="memitem:a26795f67f599b74de830ca7bf36bdced"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced">Watchdog_open</a> (uint_least8_t index, <a class="el" href="struct_watchdog___params.html">Watchdog_Params</a> *params)</td></tr>
 <tr class="memdesc:a26795f67f599b74de830ca7bf36bdced"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a Watchdog.  <a href="#a26795f67f599b74de830ca7bf36bdced">More...</a><br /></td></tr>
 <tr class="separator:a26795f67f599b74de830ca7bf36bdced"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a6f54cfdac33d3bf33464a212262afc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a6a6f54cfdac33d3bf33464a212262afc">Watchdog_Params_init</a> (<a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c">Watchdog_Params</a> *params)</td></tr>
-<tr class="memdesc:a6a6f54cfdac33d3bf33464a212262afc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to initialize the <a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c" title="Watchdog Parameters. ">Watchdog_Params</a> structure to its defaults.  <a href="#a6a6f54cfdac33d3bf33464a212262afc">More...</a><br /></td></tr>
+<tr class="memitem:a6a6f54cfdac33d3bf33464a212262afc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a6a6f54cfdac33d3bf33464a212262afc">Watchdog_Params_init</a> (<a class="el" href="struct_watchdog___params.html">Watchdog_Params</a> *params)</td></tr>
+<tr class="memdesc:a6a6f54cfdac33d3bf33464a212262afc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to initialize the <a class="el" href="struct_watchdog___params.html" title="Watchdog Parameters. ">Watchdog_Params</a> structure to its defaults.  <a href="#a6a6f54cfdac33d3bf33464a212262afc">More...</a><br /></td></tr>
 <tr class="separator:a6a6f54cfdac33d3bf33464a212262afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63ea82dda83e42e236578b9810e56880"><td class="memItemLeft" align="right" valign="top">int_fast16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_8h.html#a63ea82dda83e42e236578b9810e56880">Watchdog_setReload</a> (<a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a> handle, uint32_t ticks)</td></tr>
 <tr class="memdesc:a63ea82dda83e42e236578b9810e56880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the Watchdog reload value.  <a href="#a63ea82dda83e42e236578b9810e56880">More...</a><br /></td></tr>
@@ -245,40 +233,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9e44509e7d94eac768c6f33e6c85e038"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e44509e7d94eac768c6f33e6c85e038">&sect;&nbsp;</a></span>Watchdog_DebugMode</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef enum <a class="el" href="_watchdog_8h.html#ab7cc980c0ab934800cf77f768c2ac5d6">Watchdog_DebugMode_</a>  <a class="el" href="_watchdog_8h.html#a9e44509e7d94eac768c6f33e6c85e038">Watchdog_DebugMode</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Watchdog debug stall settings. </p>
-<p>This enumeration defines the debug stall modes for the Watchdog. On some targets, the Watchdog timer will continue to count down while a debugging session is halted. To avoid unwanted resets, the Watchdog can be set to stall while the processor is stopped by the debugger. </p>
-
-</div>
-</div>
-<a id="afb96d6e8d483083ce85f89d67341d866"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb96d6e8d483083ce85f89d67341d866">&sect;&nbsp;</a></span>Watchdog_ResetMode</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef enum <a class="el" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546f">Watchdog_ResetMode_</a>  <a class="el" href="_watchdog_8h.html#afb96d6e8d483083ce85f89d67341d866">Watchdog_ResetMode</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Watchdog reset mode settings. </p>
-<p>This enumeration defines the reset modes for the Watchdog. The Watchdog can be configured to either generate a reset upon timeout or simply produce a periodic interrupt. </p>
-
-</div>
-</div>
 <a id="a2d201451a10bb67efc3e222ac7f099c1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2d201451a10bb67efc3e222ac7f099c1">&sect;&nbsp;</a></span>Watchdog_Callback</h2>
 
@@ -292,25 +246,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Watchdog callback pointer. </p>
-<p>This is the typedef for the function pointer that will allow a callback function to be specified in the <a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c" title="Watchdog Parameters. ">Watchdog_Params</a> structure. The function will take a <a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca" title="Watchdog Handle. ">Watchdog_Handle</a> of the Watchdog causing the interrupt (cast as a uintptr_t) as an argument. </p>
-
-</div>
-</div>
-<a id="a24c29fb9023f176ac6b7810ab149e67c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24c29fb9023f176ac6b7810ab149e67c">&sect;&nbsp;</a></span>Watchdog_Params</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_watchdog___params__.html">Watchdog_Params_</a>  <a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c">Watchdog_Params</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Watchdog Parameters. </p>
-<p>Watchdog parameters are used to with the <a class="el" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced" title="Opens a Watchdog. ">Watchdog_open()</a> call. Default values for these parameters are set using <a class="el" href="_watchdog_8h.html#a6a6f54cfdac33d3bf33464a212262afc" title="Function to initialize the Watchdog_Params structure to its defaults. ">Watchdog_Params_init()</a>.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="_watchdog_8h.html#a6a6f54cfdac33d3bf33464a212262afc" title="Function to initialize the Watchdog_Params structure to its defaults. ">Watchdog_Params_init()</a> </dd></dl>
+<p>This is the typedef for the function pointer that will allow a callback function to be specified in the <a class="el" href="struct_watchdog___params.html" title="Watchdog Parameters. ">Watchdog_Params</a> structure. The function will take a <a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca" title="Watchdog Handle. ">Watchdog_Handle</a> of the Watchdog causing the interrupt (cast as a uintptr_t) as an argument. </p>
 
 </div>
 </div>
@@ -385,7 +321,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a>(* Watchdog_OpenFxn) (<a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a> handle, <a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c">Watchdog_Params</a> *params)</td>
+          <td class="memname">typedef <a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a>(* Watchdog_OpenFxn) (<a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca">Watchdog_Handle</a> handle, <a class="el" href="struct_watchdog___params.html">Watchdog_Params</a> *params)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -426,22 +362,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa8370f2ff642b6a253e37c0b7b44fbed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8370f2ff642b6a253e37c0b7b44fbed">&sect;&nbsp;</a></span>Watchdog_FxnTable</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_watchdog___fxn_table__.html">Watchdog_FxnTable_</a>  <a class="el" href="_watchdog_8h.html#aa8370f2ff642b6a253e37c0b7b44fbed">Watchdog_FxnTable</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The definition of a Watchdog function table that contains the required set of functions to control a specific Watchdog driver implementation. </p>
-
-</div>
-</div>
 <a id="a7e9f9a94559ff298a7a288a0618bbcf0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7e9f9a94559ff298a7a288a0618bbcf0">&sect;&nbsp;</a></span>Watchdog_Config</h2>
 
@@ -462,14 +382,14 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="ab7cc980c0ab934800cf77f768c2ac5d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7cc980c0ab934800cf77f768c2ac5d6">&sect;&nbsp;</a></span>Watchdog_DebugMode_</h2>
+<a id="ab1aa5862661c88a16b9d7bc12709d51e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1aa5862661c88a16b9d7bc12709d51e">&sect;&nbsp;</a></span>Watchdog_DebugMode</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="_watchdog_8h.html#ab7cc980c0ab934800cf77f768c2ac5d6">Watchdog_DebugMode_</a></td>
+          <td class="memname">enum <a class="el" href="_watchdog_8h.html#ab1aa5862661c88a16b9d7bc12709d51e">Watchdog_DebugMode</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -477,22 +397,22 @@ Functions</h2></td></tr>
 <p>Watchdog debug stall settings. </p>
 <p>This enumeration defines the debug stall modes for the Watchdog. On some targets, the Watchdog timer will continue to count down while a debugging session is halted. To avoid unwanted resets, the Watchdog can be set to stall while the processor is stopped by the debugger. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab7cc980c0ab934800cf77f768c2ac5d6a787c87976091a6f294070dadd1747ed0"></a>Watchdog_DEBUG_STALL_ON&#160;</td><td class="fielddoc"><p>Watchdog will be stalled at breakpoints </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab1aa5862661c88a16b9d7bc12709d51ea787c87976091a6f294070dadd1747ed0"></a>Watchdog_DEBUG_STALL_ON&#160;</td><td class="fielddoc"><p>Watchdog will be stalled at breakpoints </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ab7cc980c0ab934800cf77f768c2ac5d6a745be9d89bc0c15eda5c4082020f8bb2"></a>Watchdog_DEBUG_STALL_OFF&#160;</td><td class="fielddoc"><p>Watchdog will keep running at breakpoints </p>
+<tr><td class="fieldname"><a id="ab1aa5862661c88a16b9d7bc12709d51ea745be9d89bc0c15eda5c4082020f8bb2"></a>Watchdog_DEBUG_STALL_OFF&#160;</td><td class="fielddoc"><p>Watchdog will keep running at breakpoints </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="a14a5aaacb2ab91f555ec55e349d9546f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14a5aaacb2ab91f555ec55e349d9546f">&sect;&nbsp;</a></span>Watchdog_ResetMode_</h2>
+<a id="ada0db7216129d7dad494bb0cd0169f88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada0db7216129d7dad494bb0cd0169f88">&sect;&nbsp;</a></span>Watchdog_ResetMode</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546f">Watchdog_ResetMode_</a></td>
+          <td class="memname">enum <a class="el" href="_watchdog_8h.html#ada0db7216129d7dad494bb0cd0169f88">Watchdog_ResetMode</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -500,9 +420,9 @@ Functions</h2></td></tr>
 <p>Watchdog reset mode settings. </p>
 <p>This enumeration defines the reset modes for the Watchdog. The Watchdog can be configured to either generate a reset upon timeout or simply produce a periodic interrupt. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a14a5aaacb2ab91f555ec55e349d9546fa78ba6b49345f0116143f4d4e7a9ec488"></a>Watchdog_RESET_OFF&#160;</td><td class="fielddoc"><p>Timeouts generate interrupts only </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ada0db7216129d7dad494bb0cd0169f88a78ba6b49345f0116143f4d4e7a9ec488"></a>Watchdog_RESET_OFF&#160;</td><td class="fielddoc"><p>Timeouts generate interrupts only </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a14a5aaacb2ab91f555ec55e349d9546faafccd6330c396d9ffc2786524625bf1f"></a>Watchdog_RESET_ON&#160;</td><td class="fielddoc"><p>Generates reset after timeout </p>
+<tr><td class="fieldname"><a id="ada0db7216129d7dad494bb0cd0169f88aafccd6330c396d9ffc2786524625bf1f"></a>Watchdog_RESET_ON&#160;</td><td class="fielddoc"><p>Generates reset after timeout </p>
 </td></tr>
 </table>
 
@@ -526,7 +446,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Clears the Watchdog. </p>
-<p>Clears the Watchdog to to prevent a reset signal from being generated if the module is in <a class="el" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546faafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a> reset mode.</p>
+<p>Clears the Watchdog to to prevent a reset signal from being generated if the module is in <a class="el" href="_watchdog_8h.html#ada0db7216129d7dad494bb0cd0169f88aafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a> reset mode.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">handle</td><td>A <a class="el" href="_watchdog_8h.html#ab9ae92ba1721e383cedcff2eea73d9ca" title="Watchdog Handle. ">Watchdog_Handle</a> </td></tr>
@@ -653,7 +573,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c">Watchdog_Params</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_watchdog___params.html">Watchdog_Params</a> *&#160;</td>
           <td class="paramname"><em>params</em>&#160;</td>
         </tr>
         <tr>
@@ -669,7 +589,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">index</td><td>Logical peripheral number for the Watchdog indexed into the Watchdog_config table</td></tr>
-    <tr><td class="paramname">params</td><td>Pointer to a <a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c" title="Watchdog Parameters. ">Watchdog_Params</a>, if NULL it will use default values. All the fields in this structure are RO (read-only).</td></tr>
+    <tr><td class="paramname">params</td><td>Pointer to a <a class="el" href="struct_watchdog___params.html" title="Watchdog Parameters. ">Watchdog_Params</a>, if NULL it will use default values. All the fields in this structure are RO (read-only).</td></tr>
   </table>
   </dd>
 </dl>
@@ -689,21 +609,21 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void Watchdog_Params_init </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c">Watchdog_Params</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_watchdog___params.html">Watchdog_Params</a> *&#160;</td>
           <td class="paramname"><em>params</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Function to initialize the <a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c" title="Watchdog Parameters. ">Watchdog_Params</a> structure to its defaults. </p>
+<p>Function to initialize the <a class="el" href="struct_watchdog___params.html" title="Watchdog Parameters. ">Watchdog_Params</a> structure to its defaults. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">params</td><td>An pointer to <a class="el" href="_watchdog_8h.html#a24c29fb9023f176ac6b7810ab149e67c" title="Watchdog Parameters. ">Watchdog_Params</a> structure for initialization</td></tr>
+    <tr><td class="paramname">params</td><td>An pointer to <a class="el" href="struct_watchdog___params.html" title="Watchdog Parameters. ">Watchdog_Params</a> structure for initialization</td></tr>
   </table>
   </dd>
 </dl>
-<p>Default parameters: callbackFxn = NULL resetMode = <a class="el" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546faafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a> debugStallMode = <a class="el" href="_watchdog_8h.html#ab7cc980c0ab934800cf77f768c2ac5d6a787c87976091a6f294070dadd1747ed0">Watchdog_DEBUG_STALL_ON</a> </p>
+<p>Default parameters: callbackFxn = NULL resetMode = <a class="el" href="_watchdog_8h.html#ada0db7216129d7dad494bb0cd0169f88aafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a> debugStallMode = <a class="el" href="_watchdog_8h.html#ab1aa5862661c88a16b9d7bc12709d51ea787c87976091a6f294070dadd1747ed0">Watchdog_DEBUG_STALL_ON</a> </p>
 
 </div>
 </div>

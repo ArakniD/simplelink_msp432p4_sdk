@@ -119,7 +119,7 @@ uint32_t CRC32_getResult(uint_fast8_t crcType)
     {
         result = CRC32->INIRES32_HI;
         result = (result << 16);
-        result |= CRC32->INIRES32_LO;
+        result |= (uint32_t) CRC32->INIRES32_LO;
         return (result);
     }
 }
@@ -135,7 +135,7 @@ uint32_t CRC32_getResultReversed(uint_fast8_t crcType)
     {
         result = CRC32->RESR32_HI;
         result = (result << 16);
-        result |= CRC32->RESR32_LO;
+        result |= (uint32_t) CRC32->RESR32_LO;
         return (result);
     }
 }

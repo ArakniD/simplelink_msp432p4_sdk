@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -383,6 +383,7 @@ import ti.sysbios.knl.Queue;
  */
 
 @DirectCall
+/* REQ_TAG(SYSBIOS-464) */
 @ModuleStartup      /* generate a call to Task_Module_startup at startup */
 @InstanceInitStatic /* Construct/Destruct CAN becalled at runtime */
 @InstanceFinalize   /* generate call to Task_Instance_finalize on delete */
@@ -452,6 +453,7 @@ module Task
      *  Sets of hook functions can be specified for the Task module.
      *  See {@link #hookfunc Hook Functions} for details.
      */
+    /* REQ_TAG(SYSBIOS-454) */
     struct HookSet {
         Void (*registerFxn)(Int);
         Void (*createFxn)(Handle, Error.Block *);
@@ -659,16 +661,6 @@ module Task
      */
     config Error.Id E_objectCheckFailed = {
         msg: "E_objectCheckFailed: Task 0x%x object data integrity check failed."
-    };
-
-    /*!
-     *  Error raised when BIOS.mpeEnabled is TRUE and Task object passed to
-     *  Task_construct() is not in Kernel address space. This can happen if a
-     *  user Task passes a Task object that resides in unprivileged memory to
-     *  Task_construct().
-     */
-    config Error.Id E_objectNotInKernelSpace = {
-        msg: "E_objectNotInKernelSpace: Task object passed not in Kernel address space."
     };
 
     // Asserts
@@ -1474,6 +1466,7 @@ module Task
      *
      *  @b(returns)     address of currently executing task object
      */
+    /* REQ_TAG(SYSBIOS-511) */
     Handle self();
 
     /*!
@@ -1585,6 +1578,7 @@ module Task
      *
      *  nticks cannot be {@link ti.sysbios.BIOS#WAIT_FOREVER BIOS_WAIT_FOREVER}.
      */
+    /* REQ_TAG(SYSBIOS-518) */
     Void sleep(UInt32 nticks);
 
     /*!
@@ -1740,6 +1734,7 @@ instance:
     create(FuncPtr fxn);
 
     // -------- Handle Parameters --------
+    /* REQ_TAG(SYSBIOS-463) */
 
     /*! Task function argument. Default is 0 */
     config UArg arg0 = 0;
@@ -1823,12 +1818,6 @@ instance:
      */
     config UInt affinity;
 
-    /*! Privileged task */
-    config Bool privileged = true;
-
-    /*! Domain Handle */
-    config Ptr domain = null;
-
     // -------- Handle Functions --------
 
     /*!
@@ -1877,6 +1866,7 @@ instance:
      *
      *  @b(returns)     Task function
      */
+    /* REQ_TAG(SYSBIOS-455) */
     FuncPtr getFunc(UArg *arg0, UArg *arg1);
 
     /*!
@@ -1904,6 +1894,7 @@ instance:
      *  @param(id)      hook set ID
      *  @b(returns)     hook set context for task
      */
+    /* REQ_TAG(SYSBIOS-454) */
     Ptr getHookContext(Int id);
 
     /*!
@@ -1914,6 +1905,7 @@ instance:
      *
      *  @b(returns)     task priority
      */
+    /* REQ_TAG(SYSBIOS-510) */
     Int getPri();
 
     /*!
@@ -1971,6 +1963,7 @@ instance:
      *  @param(id)              hook set ID
      *  @param(hookContext)     value to write to context
      */
+    /* REQ_TAG(SYSBIOS-454) */
     Void setHookContext(Int id, Ptr hookContext);
 
     /*!
@@ -2025,6 +2018,7 @@ instance:
      *  The new priority should not be zero (0). This priority level is
      *  reserved for the Idle task.
      */
+    /* REQ_TAG(SYSBIOS-510) */
     Int setPri(Int newpri);
 
     /*!
@@ -2156,14 +2150,6 @@ instance:
      */
     Void unblockI(UInt hwiKey);
 
-    /*!
-     *  ======== getPrivileged ========
-     *  Returns boolean indicating if Task is privileged.
-     *
-     *  @b(returns)    TRUE - privileged Task, FALSE - unprivileged Task
-     */
-    Bool getPrivileged(); 
-
 internal:   /* not for client use */
 
     /*! Target-specific support functions. */
@@ -2175,6 +2161,7 @@ internal:   /* not for client use */
      *
      *  Must be called with interrupts disabled.
      */
+    /* REQ_TAG(SYSBIOS-456) */
     Void schedule();
 
     /*
@@ -2182,12 +2169,6 @@ internal:   /* not for client use */
      *  Task's initial entry point before entering task function.
      */
     Void enter();
-
-    /*
-     *  ======== enterUnpriv ========
-     *  Task's initial entry point before entering task function.
-     */
-    Void enterUnpriv();
 
     /*
      *  ======== sleepTimeout ========
@@ -2249,11 +2230,6 @@ internal:   /* not for client use */
     UInt32 getObjectCheckValue(Task.Handle handle);
 
     /*
-     *  ======== enableOtherCores ========
-     */
-    Void enableOtherCores();
-
-    /*
      *  ======== startupHookFunc ========
      *  Called by core 0 just before switch to first task
      */
@@ -2265,8 +2241,8 @@ internal:   /* not for client use */
      */
     struct PendElem {
         Queue.Elem      qElem;
-        Task.Handle     taskHandle;
-        Clock.Handle    clockHandle;
+        Task.Handle     task;
+        Clock.Handle    clock;
     };
 
     struct Instance_State {
@@ -2292,10 +2268,6 @@ internal:   /* not for client use */
         UInt            curCoreId;      // Core this task is currently running on.
         UInt            affinity;       // Core this task must run on
                                         // Task_AFFINITY_NONE = don't care
-        Bool            privileged;
-        Ptr             domain;
-        UInt32          checkValue;     // 32-bit Task object checksum value
-        Ptr             tls;            // TLS pointer
     };
 
     struct Module_State {
@@ -2325,8 +2297,6 @@ internal:   /* not for client use */
         Handle          idleTask[];             // Idle Task handles
         Handle          constructedTasks[];     // array of statically
                                                 // constructed Tasks
-        Bool            curTaskPrivileged;      // TRUE - privielged
-                                                // FALSE - unprivileged
     };
 
     struct RunQEntry {

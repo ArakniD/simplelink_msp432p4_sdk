@@ -5,7 +5,7 @@
     <includes refid="_i2_c_8h" local="no">I2C.h</includes>
       <sectiondef kind="public-attrib">
       <memberdef kind="variable" id="struct_i2_c___config___1a635dcef77b14e153ffb35e270cd46886" prot="public" static="no" mutable="no">
-        <type><ref refid="_i2_c_8h_1a58fd875c3596b3856b6f1aebbceb3085" kindref="member">I2C_FxnTable</ref> const  *</type>
+        <type><ref refid="struct_i2_c___fxn_table" kindref="compound">I2C_FxnTable</ref> const  *</type>
         <definition>I2C_FxnTable const* I2C_Config_::fxnTablePtr</definition>
         <argsstring></argsstring>
         <name>fxnTablePtr</name>
@@ -15,7 +15,7 @@
 <para>Pointer to a <ref refid="index_1driver_function_table" kindref="member">function pointer table</ref> with driver-specific implementations of I2C APIs </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/I2C.h" line="622" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/I2C.h" bodystart="622" bodyend="-1"/>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/I2C.h" line="623" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/I2C.h" bodystart="623" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_i2_c___config___1a8bdac95426bbb6b46559fab1e81898ba" prot="public" static="no" mutable="no">
         <type>void *</type>
@@ -28,7 +28,7 @@
 <para>Pointer to a driver specific <ref refid="index_1driver_objects" kindref="member">data object</ref>. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/I2C.h" line="625" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/I2C.h" bodystart="625" bodyend="-1"/>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/I2C.h" line="626" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/I2C.h" bodystart="626" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_i2_c___config___1af4722d351fb7137a34166e047a4f96bc" prot="public" static="no" mutable="no">
         <type>void const  *</type>
@@ -41,7 +41,7 @@
 <para>Pointer to a driver specific <ref refid="index_1driver_hardware_attributes" kindref="member">hardware attributes structure</ref>. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/I2C.h" line="629" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/I2C.h" bodystart="629" bodyend="-1"/>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/I2C.h" line="630" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/I2C.h" bodystart="630" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -51,10 +51,17 @@
 <simplesect kind="see"><para><ref refid="_i2_c_8h_1a2db3461e1e956d9b86af414da2fb05f6" kindref="member">I2C_open()</ref> </para></simplesect>
 </para>    </detaileddescription>
     <collaborationgraph>
-      <node id="90">
-        <label>I2C_FxnTable_</label>
-        <link refid="struct_i2_c___fxn_table__"/>
-        <childnode refid="89" relation="usage">
+      <node id="101">
+        <label>I2C_Config_</label>
+        <link refid="struct_i2_c___config__"/>
+        <childnode refid="102" relation="usage">
+          <edgelabel>fxnTablePtr</edgelabel>
+        </childnode>
+      </node>
+      <node id="102">
+        <label>I2C_FxnTable</label>
+        <link refid="struct_i2_c___fxn_table"/>
+        <childnode refid="101" relation="usage">
           <edgelabel>closeFxn</edgelabel>
           <edgelabel>initFxn</edgelabel>
           <edgelabel>controlFxn</edgelabel>
@@ -63,15 +70,8 @@
           <edgelabel>transferFxn</edgelabel>
         </childnode>
       </node>
-      <node id="89">
-        <label>I2C_Config_</label>
-        <link refid="struct_i2_c___config__"/>
-        <childnode refid="90" relation="usage">
-          <edgelabel>fxnTablePtr</edgelabel>
-        </childnode>
-      </node>
     </collaborationgraph>
-    <location file="exports/tidrivers_msp432/source/ti/drivers/I2C.h" line="619" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/I2C.h" bodystart="619" bodyend="630"/>
+    <location file="exports/tidrivers_msp432/source/ti/drivers/I2C.h" line="620" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/I2C.h" bodystart="620" bodyend="631"/>
     <listofallmembers>
       <member refid="struct_i2_c___config___1a635dcef77b14e153ffb35e270cd46886" prot="public" virt="non-virtual"><scope>I2C_Config_</scope><name>fxnTablePtr</name></member>
       <member refid="struct_i2_c___config___1af4722d351fb7137a34166e047a4f96bc" prot="public" virt="non-virtual"><scope>I2C_Config_</scope><name>hwAttrs</name></member>

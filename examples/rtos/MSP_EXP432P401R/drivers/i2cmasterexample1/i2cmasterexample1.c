@@ -41,8 +41,8 @@
 #include <ti/drivers/I2C.h>
 #include <ti/display/Display.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 static Display_Handle display;
 
@@ -74,7 +74,7 @@ void *mainThread(void *arg0)
     /* Create I2C for usage */
     I2C_Params_init(&i2cParams);
     i2cParams.bitRate = I2C_100kHz;
-    i2c = I2C_open(Board_I2C_TMP, &i2cParams);
+    i2c = I2C_open(CONFIG_I2C_0, &i2cParams);
 
     if (i2c == NULL) {
         Display_printf(display, 0, 0, "Error Initializing I2C!\n");

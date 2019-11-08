@@ -13,86 +13,86 @@
     <includes refid="_ring_buf_8h" local="no">ti/drivers/utils/RingBuf.h</includes>
     <includes local="no">ti/devices/msp432p4xx/inc/msp.h</includes>
     <incdepgraph>
-      <node id="311">
+      <node id="333">
         <label>stdbool.h</label>
       </node>
-      <node id="317">
-        <label>ti/drivers/utils/List.h</label>
-        <link refid="_list_8h"/>
-        <childnode refid="310" relation="include">
-        </childnode>
-        <childnode refid="311" relation="include">
-        </childnode>
-        <childnode refid="318" relation="include">
-        </childnode>
-      </node>
-      <node id="310">
+      <node id="332">
         <label>stdint.h</label>
       </node>
-      <node id="321">
+      <node id="343">
         <label>ti/devices/msp432p4xx/inc/msp.h</label>
       </node>
-      <node id="315">
+      <node id="337">
         <label>ti/drivers/dpl/SemaphoreP.h</label>
       </node>
-      <node id="318">
+      <node id="340">
         <label>stddef.h</label>
       </node>
-      <node id="316">
-        <label>ti/drivers/Power.h</label>
-        <link refid="_power_8h"/>
-        <childnode refid="317" relation="include">
-        </childnode>
-      </node>
-      <node id="312">
+      <node id="334">
         <label>ti/devices/DeviceFamily.h</label>
       </node>
-      <node id="314">
+      <node id="336">
         <label>ti/drivers/dpl/HwiP.h</label>
       </node>
-      <node id="313">
+      <node id="335">
         <label>ti/drivers/dpl/ClockP.h</label>
       </node>
-      <node id="319">
-        <label>ti/drivers/UART.h</label>
-        <link refid="_u_a_r_t_8h"/>
-        <childnode refid="318" relation="include">
+      <node id="339">
+        <label>ti/drivers/utils/List.h</label>
+        <link refid="_list_8h"/>
+        <childnode refid="332" relation="include">
         </childnode>
-        <childnode refid="310" relation="include">
+        <childnode refid="333" relation="include">
+        </childnode>
+        <childnode refid="340" relation="include">
         </childnode>
       </node>
-      <node id="320">
+      <node id="342">
         <label>ti/drivers/utils/RingBuf.h</label>
         <link refid="_ring_buf_8h"/>
-        <childnode refid="310" relation="include">
+        <childnode refid="332" relation="include">
         </childnode>
-        <childnode refid="318" relation="include">
+        <childnode refid="340" relation="include">
         </childnode>
-        <childnode refid="311" relation="include">
+        <childnode refid="333" relation="include">
         </childnode>
       </node>
-      <node id="309">
+      <node id="331">
         <label>UARTMSP432.h</label>
         <link refid="_u_a_r_t_m_s_p432_8h"/>
-        <childnode refid="310" relation="include">
+        <childnode refid="332" relation="include">
         </childnode>
-        <childnode refid="311" relation="include">
+        <childnode refid="333" relation="include">
         </childnode>
-        <childnode refid="312" relation="include">
+        <childnode refid="334" relation="include">
         </childnode>
-        <childnode refid="313" relation="include">
+        <childnode refid="335" relation="include">
         </childnode>
-        <childnode refid="314" relation="include">
+        <childnode refid="336" relation="include">
         </childnode>
-        <childnode refid="315" relation="include">
+        <childnode refid="337" relation="include">
         </childnode>
-        <childnode refid="316" relation="include">
+        <childnode refid="338" relation="include">
         </childnode>
-        <childnode refid="319" relation="include">
+        <childnode refid="341" relation="include">
         </childnode>
-        <childnode refid="320" relation="include">
+        <childnode refid="342" relation="include">
         </childnode>
-        <childnode refid="321" relation="include">
+        <childnode refid="343" relation="include">
+        </childnode>
+      </node>
+      <node id="341">
+        <label>ti/drivers/UART.h</label>
+        <link refid="_u_a_r_t_8h"/>
+        <childnode refid="340" relation="include">
+        </childnode>
+        <childnode refid="332" relation="include">
+        </childnode>
+      </node>
+      <node id="338">
+        <label>ti/drivers/Power.h</label>
+        <link refid="_power_8h"/>
+        <childnode refid="339" relation="include">
         </childnode>
       </node>
     </incdepgraph>
@@ -1759,110 +1759,9 @@
         </inbodydescription>
         <location file="exports/tidrivers_msp432/source/ti/drivers/uart/UARTMSP432.h" line="347" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/uart/UARTMSP432.h" bodystart="347" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="typedef" id="_u_a_r_t_m_s_p432_8h_1abe16bba058f09acef62973f6bb9498d5" prot="public" static="no">
-        <type>struct <ref refid="struct_u_a_r_t_m_s_p432___fxn_set" kindref="compound">UARTMSP432_FxnSet</ref></type>
-        <definition>typedef struct UARTMSP432_FxnSet  UARTMSP432_FxnSet</definition>
-        <argsstring></argsstring>
-        <name>UARTMSP432_FxnSet</name>
-        <briefdescription>
-<para>Complement set of read functions to be used by the UART ISR and UARTMSP432_read(). Internal use only. </para>        </briefdescription>
-        <detaileddescription>
-<para>These functions should not be used by the user and are solely intended for the UARTMSP432 driver. The <ref refid="struct_u_a_r_t_m_s_p432___fxn_set" kindref="compound">UARTMSP432_FxnSet</ref> is a pair of complement functions that are design to operate with one another in a task context and in an ISR context. The readTaskFxn is called by UARTMSP432_read() to drain a circular buffer, whereas the readIsrFxn is used by the UARTMSP432_hwiIntFxn to fill up the circular buffer.</para><para>readTaskFxn: Function called by UART read These variables are set and available for use to the readTaskFxn. object-&gt;readBuf = buffer; //Pointer to a user buffer object-&gt;readSize = size; //Desired no. of bytes to read object-&gt;readCount = size; //Remaining no. of bytes to read</para><para>readIsrFxn: The required ISR counterpart to readTaskFxn </para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/uart/UARTMSP432.h" line="373" column="1"/>
-      </memberdef>
-      <memberdef kind="typedef" id="_u_a_r_t_m_s_p432_8h_1a928164bf503e9f2e23b9ed0c0f4a0ae7" prot="public" static="no">
-        <type>struct <ref refid="struct_u_a_r_t_m_s_p432___baudrate_config" kindref="compound">UARTMSP432_BaudrateConfig</ref></type>
-        <definition>typedef struct UARTMSP432_BaudrateConfig  UARTMSP432_BaudrateConfig</definition>
-        <argsstring></argsstring>
-        <name>UARTMSP432_BaudrateConfig</name>
-        <briefdescription>
-<para>UARTMSP432 Baudrate configuration. </para>        </briefdescription>
-        <detaileddescription>
-<para>This structure is used to specifiy the EUSCI controller&apos;s clock divider settings to achieve the desired baudrate given the a clock input frequency. Divider values can be determined by referring to the MSP432 baudrate calculator. <ulink url="http://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSP430BaudRateConverter/index.html">http://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSP430BaudRateConverter/index.html</ulink></para><para>A sample structure is shown below: <programlisting><codeline><highlight class="normal">const<sp/>UARTMSP432_BaudrateConfig<sp/>uartBaudrates[]<sp/>=<sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>{baudrate,<sp/>input<sp/>clock,<sp/>prescalar,<sp/>UCBRFx,<sp/>UCBRSx,<sp/>oversampling}</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.outputBaudrate<sp/>=<sp/>115200,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.inputClockFreq<sp/>=<sp/>12000000,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.prescalar<sp/>=<sp/>6,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwRegUCBRFx<sp/>=<sp/>8,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwRegUCBRSx<sp/>=<sp/>32,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.oversampling<sp/>=<sp/>1</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{115200,<sp/>6000000,<sp/><sp/><sp/>3,<sp/><sp/>4,<sp/><sp/><sp/>2,<sp/>1},</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{115200,<sp/>3000000,<sp/><sp/><sp/>1,<sp/>10,<sp/><sp/><sp/>0,<sp/>1},</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{9600,<sp/><sp/><sp/>12000000,<sp/>78,<sp/><sp/>2,<sp/><sp/><sp/>0,<sp/>1},</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{9600,<sp/><sp/><sp/>6000000,<sp/><sp/>39,<sp/><sp/>1,<sp/><sp/><sp/>0,<sp/>1},</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{9600,<sp/><sp/><sp/>3000000,<sp/><sp/>19,<sp/><sp/>8,<sp/><sp/>85,<sp/>1},</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{9600,<sp/><sp/><sp/>32768,<sp/><sp/><sp/><sp/><sp/>3,<sp/><sp/>0,<sp/>146,<sp/>0}</highlight></codeline>
-<codeline><highlight class="normal">};</highlight></codeline>
-</programlisting> </para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/uart/UARTMSP432.h" line="413" column="1"/>
-      </memberdef>
-      <memberdef kind="typedef" id="_u_a_r_t_m_s_p432_8h_1ab8c80b9a1bed36d241b4bba838c4c77b" prot="public" static="no">
-        <type>struct <ref refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1" kindref="compound">UARTMSP432_HWAttrsV1</ref></type>
-        <definition>typedef struct UARTMSP432_HWAttrsV1  UARTMSP432_HWAttrsV1</definition>
-        <argsstring></argsstring>
-        <name>UARTMSP432_HWAttrsV1</name>
-        <briefdescription>
-<para>UARTMSP432 Hardware attributes. </para>        </briefdescription>
-        <detaileddescription>
-<para>These fields are used by driverlib APIs and therefore must be populated by driverlib macro definitions. For MSP432Ware these definitions are found in:<itemizedlist>
-<listitem><para><ref refid="_u_a_r_t_8h" kindref="compound">uart.h</ref></para></listitem></itemizedlist>
-</para><para>intPriority is the UART peripheral&apos;s interrupt priority, as defined by the underlying OS. It is passed unmodified to the underlying OS&apos;s interrupt handler creation code, so you need to refer to the OS documentation for usage. For example, for SYS/BIOS applications, refer to the ti.sysbios.family.arm.m3.Hwi documentation for SYS/BIOS usage of interrupt priorities. If the driver uses the ti.dpl interface instead of making OS calls directly, then the HwiP port handles the interrupt priority in an OS specific way. In the case of the SYS/BIOS port, intPriority is passed unmodified to Hwi_create().</para><para>A sample structure is shown below: <programlisting><codeline><highlight class="normal">unsigned<sp/>char<sp/>uartMSP432RingBuffer[2][32];</highlight></codeline>
-<codeline></codeline>
-<codeline><highlight class="normal">const<sp/>UARTMSP432_HWAttrsV1<sp/>uartMSP432HWAttrs[MSP_EXP432P401R_UARTCOUNT]<sp/>=<sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.baseAddr<sp/>=<sp/>EUSCI_A0_BASE,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_EUSCIA0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>(~0),</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>EUSCI_A_UART_CLOCKSOURCE_SMCLK,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.bitOrder<sp/>=<sp/>EUSCI_A_UART_LSB_FIRST,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.numBaudrateEntries<sp/>=<sp/>sizeof(uartMSP432Baudrates)<sp/>/</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sizeof(UARTMSP432_BaudrateConfig),</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.baudrateLUT<sp/>=<sp/>uartMSP432Baudrates,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.ringBufPtr<sp/><sp/>=<sp/>uartMSP432RingBuffer[0],</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.ringBufSize<sp/>=<sp/>sizeof(uartMSP432RingBuffer[0]),</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.errorFxn<sp/>=<sp/>NULL</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.baseAddr<sp/>=<sp/>EUSCI_A2_BASE,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_EUSCIA2,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>(~0),</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>EUSCI_A_UART_CLOCKSOURCE_SMCLK,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.bitOrder<sp/>=<sp/>EUSCI_A_UART_LSB_FIRST,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.numBaudrateEntries<sp/>=<sp/>sizeof(uartMSP432Baudrates)<sp/>/</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sizeof(UARTMSP432_BaudrateConfig),</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.baudrateLUT<sp/>=<sp/>uartMSP432Baudrates</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.ringBufPtr<sp/><sp/>=<sp/>uartMSP432RingBuffer[1],</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.ringBufSize<sp/>=<sp/>sizeof(uartMSP432RingBuffer[1]),</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.errorFxn<sp/>=<sp/>NULL</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline><highlight class="normal">};</highlight></codeline>
-</programlisting> </para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/uart/UARTMSP432.h" line="491" column="1"/>
-      </memberdef>
-      <memberdef kind="typedef" id="_u_a_r_t_m_s_p432_8h_1a033bd8e3088bba16d5b001a647330d88" prot="public" static="no">
-        <type>struct <ref refid="struct_u_a_r_t_m_s_p432___object" kindref="compound">UARTMSP432_Object</ref></type>
-        <definition>typedef struct UARTMSP432_Object  UARTMSP432_Object</definition>
-        <argsstring></argsstring>
-        <name>UARTMSP432_Object</name>
-        <briefdescription>
-<para>UARTMSP432 Object. </para>        </briefdescription>
-        <detaileddescription>
-<para>The application must not access any member variables of this structure! </para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/uart/UARTMSP432.h" line="563" column="1"/>
-      </memberdef>
-      <memberdef kind="typedef" id="_u_a_r_t_m_s_p432_8h_1a507727808b1fc4b980a69bdf4ec54b53" prot="public" static="no">
+      <memberdef kind="typedef" id="_u_a_r_t_m_s_p432_8h_1a5459811191b5af0706f53cdba522c031" prot="public" static="no">
         <type>struct <ref refid="struct_u_a_r_t_m_s_p432___object" kindref="compound">UARTMSP432_Object</ref> *</type>
-        <definition>typedef struct UARTMSP432_Object * UARTMSP432_Handle</definition>
+        <definition>typedef  struct UARTMSP432_Object * UARTMSP432_Handle</definition>
         <argsstring></argsstring>
         <name>UARTMSP432_Handle</name>
         <briefdescription>
@@ -1876,7 +1775,7 @@
       </sectiondef>
       <sectiondef kind="var">
       <memberdef kind="variable" id="_u_a_r_t_m_s_p432_8h_1af8c4e502226de31497aa3aa8224ffd76" prot="public" static="no" mutable="no">
-        <type>const <ref refid="_u_a_r_t_8h_1ad50e0d914874c8fcbc16b451984a8f5e" kindref="member">UART_FxnTable</ref></type>
+        <type>const <ref refid="struct_u_a_r_t___fxn_table" kindref="compound">UART_FxnTable</ref></type>
         <definition>const UART_FxnTable UARTMSP432_fxnTable</definition>
         <argsstring></argsstring>
         <name>UARTMSP432_fxnTable</name>
@@ -1909,7 +1808,7 @@ Some pins that are not on ports P2, P3, or P7, can be configured as UART TX or U
  </para>    </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2018,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2019,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
 <codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
 <codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
@@ -1942,23 +1841,23 @@ Some pins that are not on ports P2, P3, or P7, can be configured as UART TX or U
 <codeline lineno="85"><highlight class="preprocessor">#ifndef<sp/>ti_drivers_uart_UARTMSP432__include</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="86"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_drivers_uart_UARTMSP432__include</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="87"><highlight class="normal"></highlight></codeline>
-<codeline lineno="88"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="89"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="90"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="91"><highlight class="normal"></highlight></codeline>
-<codeline lineno="92"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="93"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="94"><highlight class="normal"></highlight></codeline>
-<codeline lineno="95"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/devices/DeviceFamily.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="96"><highlight class="normal"></highlight></codeline>
-<codeline lineno="97"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/ClockP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="98"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/HwiP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="99"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/SemaphoreP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="100"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_power_8h" kindref="compound">ti/drivers/Power.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="101"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_u_a_r_t_8h" kindref="compound">ti/drivers/UART.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="102"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_ring_buf_8h" kindref="compound">ti/drivers/utils/RingBuf.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="103"><highlight class="normal"></highlight></codeline>
-<codeline lineno="104"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/devices/msp432p4xx/inc/msp.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/devices/DeviceFamily.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/ClockP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/HwiP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/SemaphoreP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_power_8h" kindref="compound">ti/drivers/Power.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_u_a_r_t_8h" kindref="compound">ti/drivers/UART.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_ring_buf_8h" kindref="compound">ti/drivers/utils/RingBuf.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/devices/msp432p4xx/inc/msp.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="105"><highlight class="normal"></highlight></codeline>
 <codeline lineno="106" refid="_u_a_r_t_m_s_p432_8h_1aed4e926b68fcbdefac2d84b92088fc39" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>UARTMSP432_P1_2_UCA0RXD<sp/><sp/>0x00000112<sp/><sp/></highlight><highlight class="comment">/*<sp/>Primary,<sp/>port<sp/>1,<sp/>pin<sp/>2<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="107" refid="_u_a_r_t_m_s_p432_8h_1a17aed091bc645aea1c607a8fcf3f3d30" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>UARTMSP432_P1_3_UCA0TXD<sp/><sp/>0x00000113<sp/><sp/></highlight><highlight class="comment">/*<sp/>Primary,<sp/>port<sp/>1,<sp/>pin<sp/>3<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
@@ -2163,25 +2062,25 @@ Some pins that are not on ports P2, P3, or P7, can be configured as UART TX or U
 <codeline lineno="328"><highlight class="comment">/*<sp/>Add<sp/>UARTMSP432_CMD_*<sp/>macros<sp/>here<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="329"><highlight class="normal"></highlight></codeline>
 <codeline lineno="332"><highlight class="comment">/*<sp/>UART<sp/>function<sp/>table<sp/>pointer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="333"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_u_a_r_t___fxn_table__" kindref="compound">UART_FxnTable</ref><sp/><ref refid="_u_a_r_t_m_s_p432_8h_1af8c4e502226de31497aa3aa8224ffd76" kindref="member">UARTMSP432_fxnTable</ref>;</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_u_a_r_t___fxn_table" kindref="compound">UART_FxnTable</ref><sp/><ref refid="_u_a_r_t_m_s_p432_8h_1af8c4e502226de31497aa3aa8224ffd76" kindref="member">UARTMSP432_fxnTable</ref>;</highlight></codeline>
 <codeline lineno="334"><highlight class="normal"></highlight></codeline>
 <codeline lineno="347" refid="_u_a_r_t_m_s_p432_8h_1a71394fc9d5e127fefec5f28c3807e6a6" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="_u_a_r_t_m_s_p432_8h_1a71394fc9d5e127fefec5f28c3807e6a6" kindref="member">UARTMSP432_ErrorCallback</ref>)<sp/>(<ref refid="struct_u_a_r_t___config__" kindref="compound">UART_Handle</ref><sp/>handle,<sp/><sp/>uint32_t<sp/>error);</highlight></codeline>
 <codeline lineno="348"><highlight class="normal"></highlight></codeline>
-<codeline lineno="370" refid="struct_u_a_r_t_m_s_p432___fxn_set" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_u_a_r_t_m_s_p432___fxn_set" kindref="compound">UARTMSP432_FxnSet</ref><sp/>{</highlight></codeline>
-<codeline lineno="371" refid="struct_u_a_r_t_m_s_p432___fxn_set_1a36c8cc2c79e05138ab96e95b4b090fcf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>(*<ref refid="struct_u_a_r_t_m_s_p432___fxn_set_1a36c8cc2c79e05138ab96e95b4b090fcf" kindref="member">readIsrFxn</ref>)<sp/><sp/>(<ref refid="struct_u_a_r_t___config__" kindref="compound">UART_Handle</ref><sp/>handle);</highlight></codeline>
-<codeline lineno="372" refid="struct_u_a_r_t_m_s_p432___fxn_set_1a037fc6ffa691eb4eff208a14271c67ae" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/><sp/>(*<ref refid="struct_u_a_r_t_m_s_p432___fxn_set_1a037fc6ffa691eb4eff208a14271c67ae" kindref="member">readTaskFxn</ref>)<sp/>(<ref refid="struct_u_a_r_t___config__" kindref="compound">UART_Handle</ref><sp/>handle);</highlight></codeline>
-<codeline lineno="373"><highlight class="normal">}<sp/><ref refid="_u_a_r_t_m_s_p432_8h_1abe16bba058f09acef62973f6bb9498d5" kindref="member">UARTMSP432_FxnSet</ref>;</highlight></codeline>
+<codeline lineno="370" refid="struct_u_a_r_t_m_s_p432___fxn_set" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="371" refid="struct_u_a_r_t_m_s_p432___fxn_set_1a36c8cc2c79e05138ab96e95b4b090fcf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>(*readIsrFxn)<sp/><sp/>(<ref refid="struct_u_a_r_t___config__" kindref="compound">UART_Handle</ref><sp/>handle);</highlight></codeline>
+<codeline lineno="372" refid="struct_u_a_r_t_m_s_p432___fxn_set_1a037fc6ffa691eb4eff208a14271c67ae" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/><sp/>(*readTaskFxn)<sp/>(<ref refid="struct_u_a_r_t___config__" kindref="compound">UART_Handle</ref><sp/>handle);</highlight></codeline>
+<codeline lineno="373"><highlight class="normal">}<sp/><ref refid="struct_u_a_r_t_m_s_p432___fxn_set" kindref="compound">UARTMSP432_FxnSet</ref>;</highlight></codeline>
 <codeline lineno="374"><highlight class="normal"></highlight></codeline>
-<codeline lineno="405" refid="struct_u_a_r_t_m_s_p432___baudrate_config" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_u_a_r_t_m_s_p432___baudrate_config" kindref="compound">UARTMSP432_BaudrateConfig</ref><sp/>{</highlight></codeline>
+<codeline lineno="405" refid="struct_u_a_r_t_m_s_p432___baudrate_config" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
 <codeline lineno="406" refid="struct_u_a_r_t_m_s_p432___baudrate_config_1a903e0a3558989cce5cb81d244669f293" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___baudrate_config_1a903e0a3558989cce5cb81d244669f293" kindref="member">outputBaudrate</ref>;<sp/></highlight></codeline>
 <codeline lineno="407" refid="struct_u_a_r_t_m_s_p432___baudrate_config_1ae8dc8424fd4457d5b9234678d0edaa10" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___baudrate_config_1ae8dc8424fd4457d5b9234678d0edaa10" kindref="member">inputClockFreq</ref>;<sp/></highlight></codeline>
 <codeline lineno="409" refid="struct_u_a_r_t_m_s_p432___baudrate_config_1a2a49b530580e8d6a2826dc9eab79d699" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___baudrate_config_1a2a49b530580e8d6a2826dc9eab79d699" kindref="member">prescalar</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="410" refid="struct_u_a_r_t_m_s_p432___baudrate_config_1ab0bd32e5fbee49e6f205aefed9b16407" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___baudrate_config_1ab0bd32e5fbee49e6f205aefed9b16407" kindref="member">hwRegUCBRFx</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="411" refid="struct_u_a_r_t_m_s_p432___baudrate_config_1a32214f6731b6cbaa74b3498e7e3f0732" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___baudrate_config_1a32214f6731b6cbaa74b3498e7e3f0732" kindref="member">hwRegUCBRSx</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="412" refid="struct_u_a_r_t_m_s_p432___baudrate_config_1a7fa251289a4ce2ca9ea0ce1745f36505" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___baudrate_config_1a7fa251289a4ce2ca9ea0ce1745f36505" kindref="member">oversampling</ref>;<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="413"><highlight class="normal">}<sp/><ref refid="_u_a_r_t_m_s_p432_8h_1a928164bf503e9f2e23b9ed0c0f4a0ae7" kindref="member">UARTMSP432_BaudrateConfig</ref>;</highlight></codeline>
+<codeline lineno="413"><highlight class="normal">}<sp/><ref refid="struct_u_a_r_t_m_s_p432___baudrate_config" kindref="compound">UARTMSP432_BaudrateConfig</ref>;</highlight></codeline>
 <codeline lineno="414"><highlight class="normal"></highlight></codeline>
-<codeline lineno="467" refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1" kindref="compound">UARTMSP432_HWAttrsV1</ref><sp/>{</highlight></codeline>
+<codeline lineno="467" refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
 <codeline lineno="469" refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1_1ab2a93d74fdde525f1300f7213e889c40" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1_1ab2a93d74fdde525f1300f7213e889c40" kindref="member">baseAddr</ref>;</highlight></codeline>
 <codeline lineno="471" refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1_1ae45bd825a8a031edf6200c86009056c7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1_1ae45bd825a8a031edf6200c86009056c7" kindref="member">intNum</ref>;</highlight></codeline>
 <codeline lineno="473" refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1_1ac6afb92a2a909eef2eed3a4bcd7a36fb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1_1ac6afb92a2a909eef2eed3a4bcd7a36fb" kindref="member">intPriority</ref>;</highlight></codeline>
@@ -2195,18 +2094,18 @@ Some pins that are not on ports P2, P3, or P7, can be configured as UART TX or U
 <codeline lineno="487" refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1_1a816af6c2122604d57d783e9c95952478" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1_1a816af6c2122604d57d783e9c95952478" kindref="member">rxPin</ref>;</highlight></codeline>
 <codeline lineno="488" refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1_1a1af241f65064590245b51675ce7a66b8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1_1a1af241f65064590245b51675ce7a66b8" kindref="member">txPin</ref>;</highlight></codeline>
 <codeline lineno="490" refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1_1a7f5aaf37bb47f9cc0645a0e1baf3b730" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_m_s_p432_8h_1a71394fc9d5e127fefec5f28c3807e6a6" kindref="member">UARTMSP432_ErrorCallback</ref><sp/><ref refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1_1a7f5aaf37bb47f9cc0645a0e1baf3b730" kindref="member">errorFxn</ref>;</highlight></codeline>
-<codeline lineno="491"><highlight class="normal">}<sp/><ref refid="_u_a_r_t_m_s_p432_8h_1ab8c80b9a1bed36d241b4bba838c4c77b" kindref="member">UARTMSP432_HWAttrsV1</ref>;</highlight></codeline>
+<codeline lineno="491"><highlight class="normal">}<sp/><ref refid="struct_u_a_r_t_m_s_p432___h_w_attrs_v1" kindref="compound">UARTMSP432_HWAttrsV1</ref>;</highlight></codeline>
 <codeline lineno="492"><highlight class="normal"></highlight></codeline>
-<codeline lineno="498" refid="struct_u_a_r_t_m_s_p432___object" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_u_a_r_t_m_s_p432___object" kindref="compound">UARTMSP432_Object</ref><sp/>{</highlight></codeline>
+<codeline lineno="498" refid="struct_u_a_r_t_m_s_p432___object" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
 <codeline lineno="499"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>UART<sp/>state<sp/>variable<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="500"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
 <codeline lineno="501" refid="struct_u_a_r_t_m_s_p432___object_1a56896783561056912d7d0b98dabbf423" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>opened:1;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Has<sp/>the<sp/>obj<sp/>been<sp/>opened<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="502" refid="struct_u_a_r_t_m_s_p432___object_1af599412f4005eb2beab1c2c21532e2bc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1ae41b00c68f1c34e4e0efc704d912e979" kindref="member">UART_Mode</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>readMode:1;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Mode<sp/>for<sp/>all<sp/>read<sp/>calls<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="503" refid="struct_u_a_r_t_m_s_p432___object_1a1a9281681ab2b5e8a174549ce8a0e18b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1ae41b00c68f1c34e4e0efc704d912e979" kindref="member">UART_Mode</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>writeMode:1;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Mode<sp/>for<sp/>all<sp/>write<sp/>calls<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="504" refid="struct_u_a_r_t_m_s_p432___object_1a9fbc4bc31d6cfcb6bdf90fd29896dab6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1a408e7775f62e5ef3af6be261e54cfe6f" kindref="member">UART_DataMode</ref><sp/><sp/><sp/><sp/>readDataMode:1;<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Type<sp/>of<sp/>data<sp/>being<sp/>read<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="505" refid="struct_u_a_r_t_m_s_p432___object_1a590b29b38a431078583b2043e1d17e7c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1a408e7775f62e5ef3af6be261e54cfe6f" kindref="member">UART_DataMode</ref><sp/><sp/><sp/><sp/>writeDataMode:1;<sp/><sp/></highlight><highlight class="comment">/*<sp/>Type<sp/>of<sp/>data<sp/>being<sp/>written<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="506" refid="struct_u_a_r_t_m_s_p432___object_1a857bcbb3f5b67e620cdcf7907f89c849" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1ad7e89f8faac3d6d04a1de1328c77d360" kindref="member">UART_ReturnMode</ref><sp/><sp/>readReturnMode:1;<sp/></highlight><highlight class="comment">/*<sp/>Receive<sp/>return<sp/>mode<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="507" refid="struct_u_a_r_t_m_s_p432___object_1a18a1d1d334a37c3a76b1dc022757d42e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1a6ad9119f540c4b08fafdec744910944c" kindref="member">UART_Echo</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>readEcho:1;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Echo<sp/>received<sp/>data<sp/>back<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="502" refid="struct_u_a_r_t_m_s_p432___object_1af599412f4005eb2beab1c2c21532e2bc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1a2507a620dba95cd20885c52494d19e90" kindref="member">UART_Mode</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>readMode:1;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Mode<sp/>for<sp/>all<sp/>read<sp/>calls<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="503" refid="struct_u_a_r_t_m_s_p432___object_1a1a9281681ab2b5e8a174549ce8a0e18b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1a2507a620dba95cd20885c52494d19e90" kindref="member">UART_Mode</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>writeMode:1;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Mode<sp/>for<sp/>all<sp/>write<sp/>calls<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="504" refid="struct_u_a_r_t_m_s_p432___object_1a9fbc4bc31d6cfcb6bdf90fd29896dab6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1a694090fdb166f94ac30b809f9cba87b8" kindref="member">UART_DataMode</ref><sp/><sp/><sp/><sp/>readDataMode:1;<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Type<sp/>of<sp/>data<sp/>being<sp/>read<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="505" refid="struct_u_a_r_t_m_s_p432___object_1a590b29b38a431078583b2043e1d17e7c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1a694090fdb166f94ac30b809f9cba87b8" kindref="member">UART_DataMode</ref><sp/><sp/><sp/><sp/>writeDataMode:1;<sp/><sp/></highlight><highlight class="comment">/*<sp/>Type<sp/>of<sp/>data<sp/>being<sp/>written<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="506" refid="struct_u_a_r_t_m_s_p432___object_1a857bcbb3f5b67e620cdcf7907f89c849" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1acb5a82843435a1b5d51b6c27028d914f" kindref="member">UART_ReturnMode</ref><sp/><sp/>readReturnMode:1;<sp/></highlight><highlight class="comment">/*<sp/>Receive<sp/>return<sp/>mode<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="507" refid="struct_u_a_r_t_m_s_p432___object_1a18a1d1d334a37c3a76b1dc022757d42e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1aac6a03c2e1d76f53e1d9d923dcdc24f2" kindref="member">UART_Echo</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>readEcho:1;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Echo<sp/>received<sp/>data<sp/>back<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="508" refid="struct_u_a_r_t_m_s_p432___object_1a66df5c01e1479b461dc8b6cfcfb0d51c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>writeCR:1;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Write<sp/>a<sp/>return<sp/>character<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="509"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
 <codeline lineno="510"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<sp/>Flag<sp/>to<sp/>determine<sp/>if<sp/>a<sp/>timeout<sp/>has<sp/>occurred<sp/>when<sp/>the<sp/>user<sp/>called</highlight></codeline>
@@ -2236,9 +2135,9 @@ Some pins that are not on ports P2, P3, or P7, can be configured as UART TX or U
 <codeline lineno="534" refid="struct_u_a_r_t_m_s_p432___object_1ad2a535f44ab58704130b1381c0c3d03c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>HwiP_Handle<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___object_1ad2a535f44ab58704130b1381c0c3d03c" kindref="member">hwiHandle</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Hwi<sp/>handle<sp/>for<sp/>interrupts<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="535" refid="struct_u_a_r_t_m_s_p432___object_1ae48d206e09cdff169c9076a1ef02ad24" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>ClockP_Handle<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___object_1ae48d206e09cdff169c9076a1ef02ad24" kindref="member">timeoutClk</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Clock<sp/>object<sp/>to<sp/>for<sp/>timeouts<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="536" refid="struct_u_a_r_t_m_s_p432___object_1a3d0c8b50ade46baa9363911c07aff967" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___object_1a3d0c8b50ade46baa9363911c07aff967" kindref="member">baudRate</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Baud<sp/>rate<sp/>for<sp/>UART<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="537" refid="struct_u_a_r_t_m_s_p432___object_1a8af08764df3f4b82b5ef3c7e69a00ff9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1aa703b480e2570985c9b017d55318a744" kindref="member">UART_STOP</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___object_1a8af08764df3f4b82b5ef3c7e69a00ff9" kindref="member">stopBits</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Stop<sp/>bits<sp/>for<sp/>UART<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="538" refid="struct_u_a_r_t_m_s_p432___object_1ab68a9aa8287dd5572f3747753ac3ab96" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1a9319492fe8fd31a7ed85e22f3564cbf4" kindref="member">UART_PAR</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___object_1ab68a9aa8287dd5572f3747753ac3ab96" kindref="member">parityType</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Parity<sp/>bit<sp/>type<sp/>for<sp/>UART<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="539" refid="struct_u_a_r_t_m_s_p432___object_1ad04640ade69534d04836de08fb23698f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1a1ce6782f5b01eba1a9743624a5679676" kindref="member">UART_LEN</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___object_1ad04640ade69534d04836de08fb23698f" kindref="member">dataLength</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>7<sp/>or<sp/>8-bit<sp/>data<sp/>supported<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="537" refid="struct_u_a_r_t_m_s_p432___object_1a8af08764df3f4b82b5ef3c7e69a00ff9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1a176b71ca19bc13d7534fa30fc18c2243" kindref="member">UART_STOP</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___object_1a8af08764df3f4b82b5ef3c7e69a00ff9" kindref="member">stopBits</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Stop<sp/>bits<sp/>for<sp/>UART<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="538" refid="struct_u_a_r_t_m_s_p432___object_1ab68a9aa8287dd5572f3747753ac3ab96" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1ac70b5aa75500b8c45a51ec560deccfc4" kindref="member">UART_PAR</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___object_1ab68a9aa8287dd5572f3747753ac3ab96" kindref="member">parityType</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Parity<sp/>bit<sp/>type<sp/>for<sp/>UART<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="539" refid="struct_u_a_r_t_m_s_p432___object_1ad04640ade69534d04836de08fb23698f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_u_a_r_t_8h_1adf245d5f10db0abcbd8ad62a0d80c694" kindref="member">UART_LEN</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___object_1ad04640ade69534d04836de08fb23698f" kindref="member">dataLength</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>7<sp/>or<sp/>8-bit<sp/>data<sp/>supported<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="540"><highlight class="normal"></highlight></codeline>
 <codeline lineno="541"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>UART<sp/>read<sp/>variables<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="542" refid="struct_u_a_r_t_m_s_p432___object_1a77d3d4221017d17f2e9b0fbfa0ed189e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_ring_buf___object" kindref="compound">RingBuf_Object</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___object_1a77d3d4221017d17f2e9b0fbfa0ed189e" kindref="member">ringBuffer</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>local<sp/>circular<sp/>buffer<sp/>object<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
@@ -2262,7 +2161,7 @@ Some pins that are not on ports P2, P3, or P7, can be configured as UART TX or U
 <codeline lineno="560"><highlight class="normal"></highlight></codeline>
 <codeline lineno="561" refid="struct_u_a_r_t_m_s_p432___object_1a55a77a6aece384b747ef647cbc8b2b44" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_power___notify_obj" kindref="compound">Power_NotifyObj</ref><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___object_1a55a77a6aece384b747ef647cbc8b2b44" kindref="member">perfChangeNotify</ref>;</highlight></codeline>
 <codeline lineno="562" refid="struct_u_a_r_t_m_s_p432___object_1a6dff7cf786b5cbcc1cfb8726684aac1a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_u_a_r_t_m_s_p432___object_1a6dff7cf786b5cbcc1cfb8726684aac1a" kindref="member">perfConstraintMask</ref>;</highlight></codeline>
-<codeline lineno="563"><highlight class="normal">}<sp/><ref refid="_u_a_r_t_m_s_p432_8h_1a033bd8e3088bba16d5b001a647330d88" kindref="member">UARTMSP432_Object</ref>,<sp/>*<ref refid="_u_a_r_t_m_s_p432_8h_1a507727808b1fc4b980a69bdf4ec54b53" kindref="member">UARTMSP432_Handle</ref>;</highlight></codeline>
+<codeline lineno="563"><highlight class="normal">}<sp/><ref refid="struct_u_a_r_t_m_s_p432___object" kindref="compound">UARTMSP432_Object</ref>,<sp/>*<ref refid="_u_a_r_t_m_s_p432_8h_1a5459811191b5af0706f53cdba522c031" kindref="member">UARTMSP432_Handle</ref>;</highlight></codeline>
 <codeline lineno="564"><highlight class="normal"></highlight></codeline>
 <codeline lineno="565"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="566"><highlight class="normal">}</highlight></codeline>

@@ -41,32 +41,32 @@
 
     /* localize the object names with this device ID */
     let devId = system.deviceData.deviceId;
-    let devFamily = Common.device2DeviceFamily(devId);
+    let part = system.deviceData.part;
+    let devFamily = Common.device2DeviceFamily(devId, part);
     let boardName = Common.boardName();
     if (devFamily == null || devFamily == "") {
         throw new Error("unknown device family for device Id '" + devId + "'");
     }
 %%}
 /*
- *  ======== Board.h ========
+ *  ======== ti_drivers_config.h ========
  *  Configured TI-Drivers module declarations
  *
  *  DO NOT EDIT - This file is generated for the `boardName`
  *  by the SysConfig tool.
  */
-#ifndef Board_h
-#define Board_h
+#ifndef ti_drivers_config_h
+#define ti_drivers_config_h
 
-#define Board_SYSCONFIG_PREVIEW
+#define CONFIG_SYSCONFIG_PREVIEW
 
-#define Board_`boardName`
-
-/* Temporary define for backwards compatibility!!! */
-#define __`boardName`_BOARD_H__
+#define CONFIG_`boardName`
 
 #ifndef `devFamily`
 #define `devFamily`
 #endif
+
+#include <ti/devices/DeviceFamily.h>
 
 #include <stdint.h>
 

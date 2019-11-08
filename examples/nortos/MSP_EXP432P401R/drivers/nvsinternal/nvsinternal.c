@@ -41,8 +41,8 @@
 #include <ti/display/Display.h>
 #include <ti/drivers/NVS.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 #define FOOTER "=================================================="
 
@@ -79,7 +79,7 @@ void *mainThread(void *arg0)
     }
 
     NVS_Params_init(&nvsParams);
-    nvsHandle = NVS_open(Board_NVSINTERNAL, &nvsParams);
+    nvsHandle = NVS_open(CONFIG_NVSINTERNAL, &nvsParams);
 
     if (nvsHandle == NULL) {
         Display_printf(displayHandle, 0, 0, "NVS_open() failed.");

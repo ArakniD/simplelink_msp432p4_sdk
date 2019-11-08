@@ -1,25 +1,25 @@
 var searchData=
 [
-  ['table',['table',['../doxygen__drivers_8txt.html#a3b29574e3b125c16315cf5e53d90a264',1,'doxygen_drivers.txt']]],
-  ['tail',['tail',['../struct_list___list.html#aaa078249706663590a38d168b115171e',1,'List_List::tail()'],['../struct_ring_buf___object.html#ab792bbd6ff48d13ae09eedc33bb79289',1,'RingBuf_Object::tail()']]],
+  ['tail',['tail',['../struct_list___list.html#aaa078249706663590a38d168b115171e',1,'List_List::tail()'],['../struct_ring_buf___object.html#ab792bbd6ff48d13ae09eedc33bb79289',1,'RingBuf_Object::tail()'],['../struct_struct_ring_buf___object.html#ac3af0daaebc471b35756f5c76be7f39f',1,'StructRingBuf_Object::tail()']]],
   ['tempcal30',['tempCal30',['../struct_a_d_c_buf_m_s_p432___object.html#af40bbd0c6061fd03feeb05f5a938bd00',1,'ADCBufMSP432_Object']]],
   ['tempcal85',['tempCal85',['../struct_a_d_c_buf_m_s_p432___object.html#a29b8e37df0829d56ef0fef2d25a4735c',1,'ADCBufMSP432_Object']]],
   ['tempcaldifference',['tempCalDifference',['../struct_a_d_c_buf_m_s_p432___object.html#a60e7733a43e2d1454e00255e1415e94a',1,'ADCBufMSP432_Object']]],
   ['timeoutclk',['timeoutClk',['../struct_u_a_r_t_m_s_p432___object.html#ae48d206e09cdff169c9076a1ef02ad24',1,'UARTMSP432_Object']]],
   ['timeraddr',['timerAddr',['../struct_a_d_c_buf_m_s_p432___object.html#a798306ab2237e0f9b42c94b39c58725c',1,'ADCBufMSP432_Object']]],
-  ['timerbaseaddress',['timerBaseAddress',['../struct_capture_m_s_p432___h_w_attrs__.html#a974a48db97887fb71b438674d22d0a45',1,'CaptureMSP432_HWAttrs_::timerBaseAddress()'],['../struct_timer_m_s_p432___h_w_attr__.html#aee448f9833084c652169ed1986484119',1,'TimerMSP432_HWAttr_::timerBaseAddress()']]],
+  ['timerbaseaddress',['timerBaseAddress',['../struct_capture_m_s_p432___h_w_attrs.html#aadf2abb0b0d60ab97eb49a836d7620d0',1,'CaptureMSP432_HWAttrs::timerBaseAddress()'],['../struct_timer_m_s_p432___h_w_attrs.html#afb2d40717cba65259f404bc32d3cfb7e',1,'TimerMSP432_HWAttrs::timerBaseAddress()']]],
   ['timercallback',['timerCallback',['../struct_timer___params.html#a922a81e82f3cd1af089cc541c85b7098',1,'Timer_Params']]],
   ['timerdutycycle',['timerDutyCycle',['../struct_a_d_c_buf_m_s_p432___h_w_attrs.html#a9e942c859ea920b5a16556218eac94d6',1,'ADCBufMSP432_HWAttrs']]],
   ['timermode',['timerMode',['../struct_timer___params.html#a2ef959938ec2dd893d67b0c7a41ac02f',1,'Timer_Params']]],
   ['timermsp432_5ftimer32_5ffxntable',['TimerMSP432_Timer32_fxnTable',['../_timer_m_s_p432_8h.html#adfc465b5a2bf4e50e5f30f996313fdf6',1,'TimerMSP432.h']]],
   ['timermsp432_5ftimer_5fa_5ffxntable',['TimerMSP432_Timer_A_fxnTable',['../_timer_m_s_p432_8h.html#ad3b622d4875264bf82f29de28fcc9b9e',1,'TimerMSP432.h']]],
-  ['timersem',['timerSem',['../struct_timer_m_s_p432___object__.html#ac4d1b2ea5e78abff9faf53ba4110997d',1,'TimerMSP432_Object_']]],
+  ['timersem',['timerSem',['../struct_timer_m_s_p432___object.html#a700d69ee397f578ed1ae35d8245e072b',1,'TimerMSP432_Object']]],
   ['timerstatus',['timerStatus',['../struct_p_w_m_timer_m_s_p432___object.html#af0b4a424c7804313c51b10255f34d666',1,'PWMTimerMSP432_Object']]],
+  ['toggleperiod',['togglePeriod',['../struct_l_e_d___object.html#a14f9d02853c37989418dff8b8cc22c2f',1,'LED_Object']]],
   ['transaction',['transaction',['../struct_s_p_i_m_s_p432_d_m_a___object.html#a05b6c0fd159850420ff9a570c3ff1d63',1,'SPIMSP432DMA_Object']]],
   ['transfercallbackfxn',['transferCallbackFxn',['../struct_i2_c___params.html#a57edf1b900368904779d0c57a73cf047',1,'I2C_Params::transferCallbackFxn()'],['../struct_i2_c_slave_m_s_p432___object.html#a78980d713a6d09c493772618541819fe',1,'I2CSlaveMSP432_Object::transferCallbackFxn()'],['../struct_i2_c_slave___params.html#afed4d41de559f2ba40d23c0b597db7b8',1,'I2CSlave_Params::transferCallbackFxn()'],['../struct_s_p_i_m_s_p432_d_m_a___object.html#ad0c5ac127447fb06a8c828ef3fd4ba7a',1,'SPIMSP432DMA_Object::transferCallbackFxn()'],['../struct_s_p_i___params.html#a68d1d610da6a6bf299121b939ef2a352',1,'SPI_Params::transferCallbackFxn()']]],
   ['transfercancelfxn',['transferCancelFxn',['../struct_s_p_i___fxn_table.html#a50f7f21536780c912dedf32c0918034c',1,'SPI_FxnTable']]],
   ['transfercomplete',['transferComplete',['../struct_i2_c_slave_m_s_p432___object.html#a3b9a04526663e3a85479977acf8c86d0',1,'I2CSlaveMSP432_Object::transferComplete()'],['../struct_s_p_i_m_s_p432_d_m_a___object.html#aaeab9f08da3f972b118eed52f910ad97',1,'SPIMSP432DMA_Object::transferComplete()']]],
-  ['transferfxn',['transferFxn',['../struct_i2_c___fxn_table__.html#acbc284ea2ca7877265e72167f716f3c4',1,'I2C_FxnTable_::transferFxn()'],['../struct_s_p_i___fxn_table.html#ae4294e8e6273b581459432386439ca88',1,'SPI_FxnTable::transferFxn()']]],
+  ['transferfxn',['transferFxn',['../struct_i2_c___fxn_table.html#a16048b22814e3d123f82a7674599b15c',1,'I2C_FxnTable::transferFxn()'],['../struct_s_p_i___fxn_table.html#ae4294e8e6273b581459432386439ca88',1,'SPI_FxnTable::transferFxn()']]],
   ['transferinprogress',['transferInProgress',['../struct_i2_c_slave_m_s_p432___object.html#abe80580357e25d77c0368725af83782e',1,'I2CSlaveMSP432_Object']]],
   ['transfermode',['transferMode',['../struct_u_d_m_a_m_s_p432___transfer.html#af06f2fea0a791a3c7eefe4204fd48e03',1,'UDMAMSP432_Transfer::transferMode()'],['../struct_u_d_m_a_m_s_p432___ping_pong_transfer.html#ab8af74086bc86aeac51c73b33aa63b40',1,'UDMAMSP432_PingPongTransfer::transferMode()'],['../struct_i2_c___params.html#a79c5c51380ffbdb21df1dff6cb57de0e',1,'I2C_Params::transferMode()'],['../struct_i2_c_slave_m_s_p432___object.html#a5988ec41a9d94eeaf9ad8a7ad5da8d7b',1,'I2CSlaveMSP432_Object::transferMode()'],['../struct_i2_c_slave___params.html#a51c76c5694cd3a9e9102b9273cfe4a7f',1,'I2CSlave_Params::transferMode()'],['../struct_s_p_i_m_s_p432_d_m_a___object.html#af414c465c1098091d71e78dfdee87d32',1,'SPIMSP432DMA_Object::transferMode()'],['../struct_s_p_i___params.html#a16dbcc3768a01fb7deae25b48fc0d69c',1,'SPI_Params::transferMode()']]],
   ['transfersize',['transferSize',['../struct_u_d_m_a_m_s_p432___transfer.html#a74d0c3f6df0fa304e2187259f984e26f',1,'UDMAMSP432_Transfer::transferSize()'],['../struct_u_d_m_a_m_s_p432___ping_pong_transfer.html#a8435040eaceba022cdbd110245579038',1,'UDMAMSP432_PingPongTransfer::transferSize()']]],
@@ -29,5 +29,5 @@ var searchData=
   ['txdmachannelindex',['txDMAChannelIndex',['../struct_s_p_i_m_s_p432_d_m_a___h_w_attrs_v1.html#a62499bab06a4b5fe9032b6cba41e4919',1,'SPIMSP432DMA_HWAttrsV1']]],
   ['txenabled',['txEnabled',['../struct_u_a_r_t_m_s_p432___object.html#a77009f703339d8eb9f9b0e2a9748da1c',1,'UARTMSP432_Object']]],
   ['txpin',['txPin',['../struct_u_a_r_t_m_s_p432___h_w_attrs_v1.html#a1af241f65064590245b51675ce7a66b8',1,'UARTMSP432_HWAttrsV1']]],
-  ['type',['type',['../structspiffs__stat.html#ae08c958bb4b22fd9c6d576e1fea23685',1,'spiffs_stat::type()'],['../structspiffs__dirent.html#a38414e80ef79bb9dcf421555e9435f89',1,'spiffs_dirent::type()']]]
+  ['type',['type',['../structspiffs__stat.html#ae08c958bb4b22fd9c6d576e1fea23685',1,'spiffs_stat::type()'],['../structspiffs__dirent.html#a38414e80ef79bb9dcf421555e9435f89',1,'spiffs_dirent::type()'],['../struct_l_e_d___h_w_attrs.html#a56f4d54df1562f438ae6821f49812322',1,'LED_HWAttrs::type()']]]
 ];

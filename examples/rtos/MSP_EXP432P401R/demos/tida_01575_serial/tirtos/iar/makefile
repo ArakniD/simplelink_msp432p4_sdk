@@ -7,13 +7,14 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/builds/MSP_EX
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
 
-OBJECTS = commonComms.obj vibrationCapture.obj MSP_EXP432P401R.obj tirtos_main_tirtos.obj
+OBJECTS = tirtos_main_tirtos.obj commonComms.obj vibrationCapture.obj ti_drivers_config.obj
 
 CONFIGPKG = $(KERNEL_BUILD)/iar
 
 NAME = tida_01575_serial
 
 CFLAGS = -I../.. \
+    -I. \
     -DARM_MATH_CM4 \
     -D__FPU_PRESENT=1 \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
@@ -53,19 +54,27 @@ $(CONFIGPKG)/linker.cmd $(CONFIGPKG)/compiler.opt:
 	@ echo You can build it by issuing $(MAKE) in $(CONFIGPKG).
 	@ $(ECHOBLANKLINE)
 
-commonComms.obj: ../../commonComms.c $(CONFIGPKG)/compiler.opt
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../../tida_01575_serial.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -f $(CONFIGPKG)/compiler.opt -o $@
 
-vibrationCapture.obj: ../../vibrationCapture.c $(CONFIGPKG)/compiler.opt
+commonComms.obj: ../../commonComms.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -f $(CONFIGPKG)/compiler.opt -o $@
 
-MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c $(CONFIGPKG)/compiler.opt
+vibrationCapture.obj: ../../vibrationCapture.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -f $(CONFIGPKG)/compiler.opt -o $@
 
-tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c $(CONFIGPKG)/compiler.opt
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -f $(CONFIGPKG)/compiler.opt -o $@
 
@@ -73,8 +82,10 @@ $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
+
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

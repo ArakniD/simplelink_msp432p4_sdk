@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -33,10 +33,12 @@
 #define ti_uia_runtime_IUIATimestampProvider__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_runtime_IUIATimestampProvider___VERS 200
@@ -176,7 +178,7 @@ static inline ti_uia_runtime_IUIATimestampProvider_Module ti_uia_runtime_IUIATim
             return (ti_uia_runtime_IUIATimestampProvider_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_xdc_runtime_ITimestampProvider */
@@ -202,7 +204,7 @@ static inline ti_uia_runtime_IUIATimestampProvider_Module ti_uia_runtime_IUIATim
             return (ti_uia_runtime_IUIATimestampProvider_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_xdc_runtime_ITimestampClient */

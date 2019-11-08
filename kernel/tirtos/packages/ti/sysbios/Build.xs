@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2015-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,14 +41,17 @@ var custom28xOpts = " -q -mo ";
 var custom6xOpts = " -q -mi10 -mo -pdr -pden -pds=238 -pds=880 -pds1110 ";
 var customARP32xOpts = " -q --gen_func_subsections ";
 var customArmOpts = " -q -ms --opt_for_speed=2 ";
-var customArmClangM33FOpts = " ";
+
+/*
+ * '-Wno-buildin-requires-header' is a workaround to suppress pthread.h
+ * warnings. This should be removed. Removal is tracked by TIRTOS-1906.
+ */
 var customArmClangM3Opts = " ";
 var customArmClangM4Opts = " ";
 var customArmClangM4FOpts = " ";
 var customGnuArmM3Opts = " ";
 var customGnuArmM4Opts = " ";
 var customGnuArmM4FOpts = " ";
-var customGnuArmM33FOpts = " ";
 var customGnuArmA9Opts = " ";
 var customGnuArmA8Opts = " ";
 var customGnuArmA15Opts = " ";
@@ -75,14 +78,12 @@ var ccOptsList = {
     "ti.targets.arm.elf.R4Ft"                   : customArmOpts,
     "ti.targets.arm.elf.R5F"                    : customArmOpts,
     "ti.targets.arm.elf.R5F_big_endian"         : customArmOpts,
-    "ti.targets.arm.clang.M33F"                 : customArmClangM33FOpts,
     "ti.targets.arm.clang.M3"                   : customArmClangM3Opts,
     "ti.targets.arm.clang.M4"                   : customArmClangM4Opts,
     "ti.targets.arm.clang.M4F"                  : customArmClangM4FOpts,
     "gnu.targets.arm.M3"                        : customGnuArmM3Opts,
     "gnu.targets.arm.M4"                        : customGnuArmM4Opts,
     "gnu.targets.arm.M4F"                       : customGnuArmM4FOpts,
-    "gnu.targets.arm.M33F"                      : customGnuArmM33FOpts,
     "gnu.targets.arm.A8F"                       : customGnuArmA8Opts,
     "gnu.targets.arm.A9F"                       : customGnuArmA9Opts,
     "gnu.targets.arm.A15F"                      : customGnuArmA15Opts,
@@ -90,7 +91,6 @@ var ccOptsList = {
     "iar.targets.arm.M3"                        : customIarArmOpts,
     "iar.targets.arm.M4"                        : customIarArmOpts,
     "iar.targets.arm.M4F"                       : customIarArmOpts,
-    "iar.targets.arm.M33"                       : customIarArmOpts,
 };
 
 /*
@@ -288,8 +288,6 @@ var biosPackages = [
     "ti.sysbios.family.arm.ducati.smp",
     "ti.sysbios.family.arm.exc",
     "ti.sysbios.family.arm.f28m35x",
-    "ti.sysbios.family.arm.f2838x",
-    "ti.sysbios.family.arm.f2838x.init",
     "ti.sysbios.family.arm.lm4",
     "ti.sysbios.family.arm.lm4.rtc",
     "ti.sysbios.family.arm.lm3",
@@ -305,18 +303,10 @@ var biosPackages = [
     "ti.sysbios.family.arm.tms570",
     "ti.sysbios.family.arm.v7a",
     "ti.sysbios.family.arm.v7a.smp",
-    "ti.sysbios.family.arm.v7m",
-    "ti.sysbios.family.arm.v7m.keystone3",
-    "ti.sysbios.family.arm.v8",
     "ti.sysbios.family.arm.v8a",
-    "ti.sysbios.family.arm.v8a.smp",
-    "ti.sysbios.family.arm.v8m",
-    "ti.sysbios.family.arm.v8m.mtl",
     "ti.sysbios.family.c28",
     "ti.sysbios.family.c28.f28m35x",
     "ti.sysbios.family.c28.f2837x",
-    "ti.sysbios.family.c28.f2838x",
-    "ti.sysbios.family.c28.f2838x.init",
     "ti.sysbios.family.c62",
     "ti.sysbios.family.c64",
     "ti.sysbios.family.c64p",
@@ -331,7 +321,6 @@ var biosPackages = [
     "ti.sysbios.family.c674",
     "ti.sysbios.family.c7x",
     "ti.sysbios.family.arp32",
-    "ti.sysbios.family.shared.fvp_mps2",
     "ti.sysbios.family.shared.keystone3",
     "ti.sysbios.family.shared.vayu",
     "ti.sysbios.gates",
@@ -402,13 +391,10 @@ function getDefaultCustomCCOpts()
         }
     }
     else if (Program.build.target.$name.match(/clang/)) {
-        /*
-         * Do not produce debug information to avoid a known issues with
-         * TI LLVM tools. See https://jira.itg.ti.com/browse/CODEGEN-4691
-         * for more info.
-         */
-        customCCOpts += " -O3 ";
-        //customCCOpts += " -O3 -g ";
+        customCCOpts += " -Oz -gdwarf-3 ";
+        /* add any target unique CC options provided in config.bld */
+        customCCOpts = Program.build.target.ccOpts.prefix + " " + customCCOpts;
+        customCCOpts += Program.build.target.ccOpts.suffix + " ";
     }
     else {
         /* ti targets do program level compile */
@@ -424,17 +410,15 @@ function getDefaultCustomCCOpts()
     if (BIOS.libType == BIOS.LibType_Debug) {
         if (Program.build.target.$name.match(/gnu/)) {
             customCCOpts = customCCOpts.replace("-O3","");
-            if (Program.build.target.$name != "gnu.targets.arm.A53F") {
-                /* add in stack frames for stack back trace */
-                customCCOpts += " -mapcs ";
-            }
+            /* add in stack frames for stack back trace */
+            customCCOpts += " -mapcs ";
         }
         else if (Program.build.target.$name.match(/iar/)) {
             customCCOpts = customCCOpts.replace("-Ohs","--debug");
             customCCOpts = customCCOpts.replace("-Ohz","--debug");
         }
         else if (Program.build.target.$name.match(/clang/)) {
-            customCCOpts = customCCOpts.replace(" -O3","");
+            customCCOpts = customCCOpts.replace(" -Oz","");
         }
         else {
             customCCOpts = customCCOpts.replace(" -o3","");
@@ -474,24 +458,27 @@ function getDefs()
                + " -Dti_sysbios_knl_Task_objectCheckFlag__D=" + (Task.objectCheckFlag ? "TRUE" : "FALSE");
 
     if (xdc.module(HwiDelegate).hooks.length == 0) {
-        defs += " -Dti_sysbios_hal_Hwi_DISABLE_ALL_HOOKS";
+        if (!(BIOS.codeCoverageEnabled)) {
+            defs += " -Dti_sysbios_hal_Hwi_DISABLE_ALL_HOOKS";
+        }
     }
 
     if (Swi.hooks.length == 0) {
-        defs += " -Dti_sysbios_knl_Swi_DISABLE_ALL_HOOKS";
+        if (!(BIOS.codeCoverageEnabled)) {
+            defs += " -Dti_sysbios_knl_Swi_DISABLE_ALL_HOOKS";
+        }
     }
 
     defs += " -Dti_sysbios_BIOS_smpEnabled__D="
             + (BIOS.smpEnabled ? "TRUE" : "FALSE");
-
-    defs += " -Dti_sysbios_BIOS_mpeEnabled__D="
-            + (BIOS.mpeEnabled ? "TRUE" : "FALSE");
 
     if (BIOS.smpEnabled == false) {
         defs += " -Dti_sysbios_Build_useHwiMacros";
     }
 
     if ((BIOS.buildingAppLib == true) && (Build.buildROM == false)) {
+        defs += " -Dti_sysbios_Build_useIndirectReferences=FALSE";
+
         defs += " -Dti_sysbios_knl_Swi_numPriorities__D=" + Swi.numPriorities;
         defs += " -Dti_sysbios_knl_Task_deleteTerminatedTasks__D=" + (Task.deleteTerminatedTasks ? "TRUE" : "FALSE");
         defs += " -Dti_sysbios_knl_Task_numPriorities__D=" + Task.numPriorities;
@@ -503,7 +490,9 @@ function getDefs()
         }
 
         if (Task.hooks.length == 0) {
-            defs += " -Dti_sysbios_knl_Task_DISABLE_ALL_HOOKS";
+            if (!(BIOS.codeCoverageEnabled)) {
+                defs += " -Dti_sysbios_knl_Task_DISABLE_ALL_HOOKS";
+            }
         }
 
         /*
@@ -1085,6 +1074,10 @@ function buildLibs(objList, relList, filter, xdcArgs, incs)
          */
         var asmopts = "";
         var ccopts = "";
+
+        ccopts += " -Dti_sysbios_Build_useIndirectReferences=FALSE"
+
+        asmopts += " -Dti_sysbios_Build_useIndirectReferences=FALSE"
         asmopts += " -Dti_sysbios_BIOS_smpEnabled__D=FALSE";
         asmopts += " -Dti_sysbios_BIOS_mpeEnabled__D=FALSE";
         asmopts += " -Dti_sysbios_hal_Core_numCores__D=1";

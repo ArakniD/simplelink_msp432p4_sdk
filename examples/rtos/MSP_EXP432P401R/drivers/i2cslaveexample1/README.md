@@ -1,17 +1,15 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# i2cslaveexample1
-
----
-
 ## Example Summary
 
 Sample application to demonstrate I2C Master and I2C Slave communication.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
+
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
+
+* This example requires two LaunchPads.
 
 * The first LaunchPad will run the __i2cmasterexample1__ example and act as the
 I2C master.
@@ -19,23 +17,30 @@ I2C master.
 * The second LaunchPad will run the __i2cslaveexample1__ example and act as the
 I2C slave.
 
-* `Board_I2C_TMP` - I2C instance used by the I2C master.
-* `Board_I2CSLAVE0` - I2C instance used by the I2C slave.
+* `CONFIG_I2CSLAVE_0` - I2C instance used by the I2C slave.
 
-## Resources & Jumper Settings
+## BoosterPacks, Board Resources & Jumper Settings
 
-If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
 
-  |Master Pins|Pull-Up Resistor|Slave Pins|
-  |---|---|---|
-  |`Board_I2C_TMP` `SDA`|10K|`Board_I2CSLAVE0` `SDA`|
-  |`Board_I2C_TMP` `SCL`|10K|`Board_I2CSLAVE0` `SCL`|
-  |`GND`|None|`GND`|
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
+
+  | Master LaunchPad Pins | Pull-Up Resistor | Slave LaunchPad Pins |
+  |-----------------------|:----------------:|----------------------|
+  |       __`SDA`__       |     __10K__      |      __`SDA`__       |
+  |       __`SCL`__       |     __10K__      |      __`SCL`__       |
+  |       __`GND`__       |     __None__     |      __`GND`__       |
 
 Note that two 10K pull-up resistors are needed, one for SDA, and one for SCL.
+
+## Example Usage
 
 ## Example Usage
 

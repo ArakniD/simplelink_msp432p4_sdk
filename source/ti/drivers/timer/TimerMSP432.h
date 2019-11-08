@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,8 +44,8 @@
  *
  *  ### MPS432 Timer Driver Configuration #
  *
- *  In order to use the Timer APIs, the application is required
- *  to define 4 configuration items in the application Board.c file:
+ *  In order to use the Timer APIs, the application is required to define
+ *  4 configuration items in the application ti_drivers_config.c file:
  *
  *  1.  An array of TimerMSP432_Object elements, which will be used by
  *  by the driver to maintain instance state.
@@ -155,11 +155,6 @@
 #ifndef ti_drivers_timer_TimerMSP432__include
 #define ti_drivers_timer_TimerMSP432__include
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -167,6 +162,11 @@ extern "C"
 #include <ti/drivers/Timer.h>
 #include <ti/drivers/dpl/HwiP.h>
 #include <ti/drivers/dpl/SemaphoreP.h>
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 extern const Timer_FxnTable TimerMSP432_Timer_A_fxnTable;
 extern const Timer_FxnTable TimerMSP432_Timer32_fxnTable;
@@ -205,7 +205,7 @@ extern const Timer_FxnTable TimerMSP432_Timer32_fxnTable;
  *  };
  *  @endcode
  */
-typedef struct TimerMSP432_HWAttr_ {
+typedef struct {
     /*! The base address of the timer peripheral. */
     uint32_t timerBaseAddress;
 
@@ -224,7 +224,7 @@ typedef struct TimerMSP432_HWAttr_ {
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct TimerMSP432_Object_ {
+typedef struct {
     HwiP_Handle         hwiHandle;
     SemaphoreP_Handle   timerSem;
     Power_NotifyObj     perfChangeNotify;

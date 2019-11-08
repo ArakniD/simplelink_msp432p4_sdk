@@ -162,6 +162,11 @@ Int Hwi_Instance_init(Hwi_Object *hwi, Int intNum,
 {
     Int status;
 
+    if (intNum >= Hwi_NUM_INTERRUPTS) {
+        Error_raise(eb, Hwi_E_badIntNum, intNum, 0);
+        return (1);
+    }
+
     hwi->intNum = intNum;
 
     /* check vector table entry for already in use vector */
@@ -284,13 +289,13 @@ Int Hwi_postInit (Hwi_Object *hwi, Error_Block *eb)
     }
     else {
         if (Hwi_numSparseInterrupts) {
-            Int i;
+            Int i = 0;
             UInt32 *sparseInterruptTableEntry = Hwi_module->dispatchTable;
             Char *vectorPtr;
             Bool found = FALSE;
 
             /* find an unused sparseTableEntry */
-            for (i = 0; i < (Int)Hwi_numSparseInterrupts; i++) {
+            do {
                 if (sparseInterruptTableEntry[2] == 0) {
                     found = TRUE;
                     break;
@@ -298,7 +303,8 @@ Int Hwi_postInit (Hwi_Object *hwi, Error_Block *eb)
                 else {
                     sparseInterruptTableEntry += 3;
                 }
-            }
+                i++;
+            } while (i < (Int)Hwi_numSparseInterrupts);
 
             if (found) {
                 /* point it to the Hwi object */
@@ -386,10 +392,10 @@ Void Hwi_Instance_finalize(Hwi_Object *hwi, Int status)
     Hwi_plug(intNum, (Void *)(UArg)Hwi_nullIsrFunc);
 
     if (Hwi_numSparseInterrupts) {
-        Int i;
+        Int i = 0;
         UInt32 *sparseInterruptTableEntry = Hwi_module->dispatchTable;
 
-        for (i = 0; i < (Int)Hwi_numSparseInterrupts; i++) {
+        do {
             if (sparseInterruptTableEntry[2] == (UInt32)hwi) {
                 sparseInterruptTableEntry[2] = 0;
                 break;
@@ -397,7 +403,8 @@ Void Hwi_Instance_finalize(Hwi_Object *hwi, Int status)
             else {
                 sparseInterruptTableEntry += 3;
             }
-        }
+            i++;
+        } while (i < (Int)Hwi_numSparseInterrupts);
     }
     else {
         Hwi_Object **dispatchTable = (Hwi_Object **)Hwi_module->dispatchTable;
@@ -453,12 +460,6 @@ Void Hwi_initNVIC()
     defined(__ARMVFP__))
     /* disable lazy stacking mode fp indications in control register */
     Hwi_nvic.FPCCR &= ~0xc0000000; /* clear ASPEN and LSPEN bits */
-#endif
-
-#if (defined(__IAR_SYSTEMS_ICC__) && (__CORE__ == __ARM8M_MAINLINE__)) || \
-    (defined(__GNUC__) && !defined(__ti__) && \
-     defined(__ARM_ARCH_8M_MAIN__))
-    Hwi_setStackLimit(Hwi_module->isrStackBase);
 #endif
 }
 
@@ -787,7 +788,8 @@ Bool Hwi_getStackInfo(Hwi_StackInfo *stkInfo, Bool computeStackDepth)
     if (computeStackDepth && !stackOverflow) {
         /* Compute stack depth */
         do {
-        } while(*isrSP++ == (Char)0xbe);
+            isrSP++;
+        } while(*isrSP == (Char)0xbe);
         stkInfo->hwiStackPeak = stkInfo->hwiStackSize - (SizeT)(--isrSP - (Char *)stkInfo->hwiStackBase);
     }
     else {
@@ -795,6 +797,15 @@ Bool Hwi_getStackInfo(Hwi_StackInfo *stkInfo, Bool computeStackDepth)
     }
 
     return stackOverflow;
+}
+
+/*
+ *  ======== Hwi_getCoreStackInfo ========
+ *  Used to get Hwi stack usage info.
+ */
+Bool Hwi_getCoreStackInfo(Hwi_StackInfo *stkInfo, Bool computeStackDepth, UInt coreId)
+{
+    return (Hwi_getStackInfo(stkInfo, computeStackDepth));
 }
 
 /*
@@ -969,11 +980,14 @@ Void Hwi_excHandlerMin(UInt *excStack, UInt lr)
     else {
         Error_raise(0, Hwi_E_noIsr, excNum, excStack[14]);
     }
+/* LCOV_EXCL_START */
 }
+/* LCOV_EXCL_STOP */
 
 /*
  *  ======== Hwi_excHandlerMax ========
  */
+/* LCOV_EXCL_START */
 Void Hwi_excHandlerMax(UInt *excStack, UInt lr)
 {
     Hwi_ExcContext excContext;
@@ -1043,10 +1057,12 @@ Void Hwi_excHandlerMax(UInt *excStack, UInt lr)
 
     BIOS_exit(0);
 }
+/* LCOV_EXCL_STOP */
 
 /*
  *  ======== Hwi_excFillContext ========
  */
+/* LCOV_EXCL_START */
 Void Hwi_excFillContext(UInt *excStack)
 {
     Hwi_ExcContext *excContext;
@@ -1133,10 +1149,12 @@ Void Hwi_excFillContext(UInt *excStack)
     excContext->BFAR = (Ptr)Hwi_nvic.BFAR;
     excContext->AFSR = (Ptr)Hwi_nvic.AFSR;
 }
+/* LCOV_EXCL_STOP */
 
 /*
  *  ======== Hwi_excNmi ========
  */
+/* LCOV_EXCL_START */
 Void Hwi_excNmi(UInt *excStack)
 {
     Error_Block eb;
@@ -1144,10 +1162,12 @@ Void Hwi_excNmi(UInt *excStack)
 
     Error_raise(&eb, Hwi_E_NMI, NULL, 0);
 }
+/* LCOV_EXCL_STOP */
 
 /*
  *  ======== Hwi_excHardFault ========
  */
+/* LCOV_EXCL_START */
 Void Hwi_excHardFault(UInt *excStack)
 {
     Char *fault;
@@ -1174,10 +1194,12 @@ Void Hwi_excHardFault(UInt *excStack)
     }
     Error_raise(&eb, Hwi_E_hardFault, fault, 0);
 }
+/* LCOV_EXCL_STOP */
 
 /*
  *  ======== Hwi_excMemFault ========
  */
+/* LCOV_EXCL_START */
 Void Hwi_excMemFault(UInt *excStack)
 {
     Char *fault;
@@ -1203,10 +1225,12 @@ Void Hwi_excMemFault(UInt *excStack)
         Error_raise(&eb, Hwi_E_memFault, fault, Hwi_nvic.MMAR);
     }
 }
+/* LCOV_EXCL_STOP */
 
 /*
  *  ======== Hwi_excBusFault ========
  */
+/* LCOV_EXCL_START */
 Void Hwi_excBusFault(UInt *excStack)
 {
     Char *fault;
@@ -1235,10 +1259,12 @@ Void Hwi_excBusFault(UInt *excStack)
         Error_raise(&eb, Hwi_E_busFault, fault, Hwi_nvic.BFAR);
     }
 }
+/* LCOV_EXCL_STOP */
 
 /*
  *  ======== Hwi_excUsageFault ========
  */
+/* LCOV_EXCL_START */
 Void Hwi_excUsageFault(UInt *excStack)
 {
     Char *fault;
@@ -1258,9 +1284,6 @@ Void Hwi_excUsageFault(UInt *excStack)
         else if (Hwi_nvic.UFSR & 0x0008) {
             fault = "NOCP: Attempting to use co-processor";
         }
-        else if (Hwi_nvic.UFSR & 0x0010) {
-            fault = "STKOF: Stack overflow error has occurred";
-        }
         else if (Hwi_nvic.UFSR & 0x0100) {
             fault = "UNALIGNED: Unaligned memory access";
         }
@@ -1273,10 +1296,12 @@ Void Hwi_excUsageFault(UInt *excStack)
         Error_raise(&eb, Hwi_E_usageFault, fault, 0);
     }
 }
+/* LCOV_EXCL_STOP */
 
 /*
  *  ======== Hwi_excSvCall ========
  */
+/* LCOV_EXCL_START */
 Void Hwi_excSvCall(UInt *excStack)
 {
     UInt8 *pc;
@@ -1288,10 +1313,12 @@ Void Hwi_excSvCall(UInt *excStack)
 
     Error_raise(&eb, Hwi_E_svCall, pc[-2], 0);
 }
+/* LCOV_EXCL_STOP */
 
 /*
  *  ======== Hwi_excDebugMon ========
  */
+/* LCOV_EXCL_START */
 Void Hwi_excDebugMon(UInt *excStack)
 {
     Char *fault;
@@ -1320,10 +1347,12 @@ Void Hwi_excDebugMon(UInt *excStack)
         Error_raise(&eb, Hwi_E_debugMon, fault, 0);
     }
 }
+/* LCOV_EXCL_STOP */
 
 /*
  *  ======== Hwi_excReserved ========
  */
+/* LCOV_EXCL_START */
 Void Hwi_excReserved(UInt *excStack, UInt excNum)
 {
     Error_Block eb;
@@ -1331,10 +1360,12 @@ Void Hwi_excReserved(UInt *excStack, UInt excNum)
 
     Error_raise(&eb, Hwi_E_reserved, "Exception #:", excNum);
 }
+/* LCOV_EXCL_STOP */
 
 /*
  *  ======== Hwi_excNoIsr ========
  */
+/* LCOV_EXCL_START */
 Void Hwi_excNoIsr(UInt *excStack, UInt excNum)
 {
     Error_Block eb;
@@ -1342,6 +1373,7 @@ Void Hwi_excNoIsr(UInt *excStack, UInt excNum)
 
     Error_raise(&eb, Hwi_E_noIsr, excNum, excStack[14]);
 }
+/* LCOV_EXCL_STOP */
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic ignored "-Wint-to-pointer-cast"
@@ -1354,6 +1386,7 @@ Void Hwi_excNoIsr(UInt *excStack, UInt excNum)
 /*
  *  ======== Hwi_excDumpRegs ========
  */
+/* LCOV_EXCL_START */
 Void Hwi_excDumpRegs(UInt lr)
 {
     Hwi_ExcContext *excp;
@@ -1438,6 +1471,7 @@ Void Hwi_excDumpRegs(UInt lr)
     System_printf("BFAR = 0x%08x\n", Hwi_nvic.BFAR);
     System_printf("AFSR = 0x%08x\n", Hwi_nvic.AFSR);
 }
+/* LCOV_EXCL_STOP */
 
 /*
  *  ======== Hwi_flushVnvic ========

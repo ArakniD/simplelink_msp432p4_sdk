@@ -77,9 +77,9 @@ int main(void)
     MAP_Timer32_setCount(TIMER32_BASE,3000000);
 
     /* Configuring interrupt priorities and setting the priority mask to 0x40 */
-    MAP_Interrupt_setPriority(INT_PORT1, 0x20);
-    MAP_Interrupt_setPriority(INT_T32_INT1, 0x40);
-    MAP_Interrupt_setPriorityMask(0x40);
+    MAP_Interrupt_setPriority(INT_PORT1, 1 << 5);
+    MAP_Interrupt_setPriority(INT_T32_INT1, 2 << 5);
+    MAP_Interrupt_setPriorityMask(2 << 5);
 
     /* Enabling interrupts */
     MAP_GPIO_enableInterrupt(GPIO_PORT_P1, GPIO_PIN1);

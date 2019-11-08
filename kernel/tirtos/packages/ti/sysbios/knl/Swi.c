@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,7 @@
 #define TASK_RESTORE (Swi_taskRestore)
 #endif
 
-#ifdef __ti__
+#if defined(__ti__) && !defined(__clang__)
 /* disable unused local variable warning during optimized compile */
 #pragma diag_suppress=179
 #endif
@@ -289,6 +289,14 @@ Int Swi_Module_startup(Int phase)
 Void Swi_startup(Void)
 {
     Swi_restore(FALSE);
+}
+
+/*
+ *  ======== Swi_unlockSched ========
+ */
+Void Swi_unlockSched()
+{
+    Swi_module->locked = FALSE;
 }
 
 /*

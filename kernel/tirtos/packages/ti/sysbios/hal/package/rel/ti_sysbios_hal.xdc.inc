@@ -11,7 +11,6 @@ Timer.xml
 Cache.xml
 Seconds.xml
 Seconds.xdt
-MemProtect.h
 package/package.cfg.xdc.inc
 lib/debug/ti.sysbios.hal.aem4f
 package/package_ti.sysbios.hal.c
@@ -22,14 +21,11 @@ CoreNull.c
 Hwi.c
 Hwi_stack.c
 Hwi_startup.c
-MemProtectNull.c
 Power.c
 PowerNull.c
 Seconds.c
 SecondsCallback.c
 SecondsClock.c
-SysCall.c
-SysCallNull.c
 Timer.c
 TimerNull.c
 lib/debug/ti.sysbios.hal.am4fg

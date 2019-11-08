@@ -7,13 +7,14 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/builds/MSP_EX
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = callbacks.obj lcd_thread.obj led_thread.obj temperature_thread.obj uart_thread.obj MSP_EXP432P4111.obj cJSON_cJSON.obj LCD_HAL_lcd_hal.obj tirtos_main_tirtos.obj
+OBJECTS = tirtos_main_tirtos.obj callbacks.obj lcd_thread.obj led_thread.obj temperature_thread.obj uart_thread.obj ti_drivers_config.obj cJSON_cJSON.obj LCD_HAL_lcd_hal.obj
 
 CONFIGPKG = $(KERNEL_BUILD)/ccs
 
 NAME = outofbox_msp432p4111
 
 CFLAGS = -I../.. \
+    -I. \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
     -D__MSP432P4111__ \
@@ -58,39 +59,47 @@ $(CONFIGPKG)/linker.cmd $(CONFIGPKG)/compiler.opt:
 	@ echo You can build it by issuing $(MAKE) in $(CONFIGPKG).
 	@ $(ECHOBLANKLINE)
 
-callbacks.obj: ../../callbacks.c $(CONFIGPKG)/compiler.opt
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../../outOfBox_msp432p4111.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
-lcd_thread.obj: ../../lcd_thread.c $(CONFIGPKG)/compiler.opt
+callbacks.obj: ../../callbacks.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
-led_thread.obj: ../../led_thread.c $(CONFIGPKG)/compiler.opt
+lcd_thread.obj: ../../lcd_thread.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
-temperature_thread.obj: ../../temperature_thread.c $(CONFIGPKG)/compiler.opt
+led_thread.obj: ../../led_thread.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
-uart_thread.obj: ../../uart_thread.c $(CONFIGPKG)/compiler.opt
+temperature_thread.obj: ../../temperature_thread.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
-MSP_EXP432P4111.obj: ../../MSP_EXP432P4111.c $(CONFIGPKG)/compiler.opt
+uart_thread.obj: ../../uart_thread.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
-cJSON_cJSON.obj: ../../cJSON/cJSON.c $(CONFIGPKG)/compiler.opt
+cJSON_cJSON.obj: ../../cJSON/cJSON.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
-LCD_HAL_lcd_hal.obj: ../../LCD_HAL/lcd_hal.c $(CONFIGPKG)/compiler.opt
+LCD_HAL_lcd_hal.obj: ../../LCD_HAL/lcd_hal.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
-tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c $(CONFIGPKG)/compiler.opt
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
@@ -98,8 +107,10 @@ $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
 	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
+
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

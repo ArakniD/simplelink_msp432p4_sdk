@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IAR Project Connection File -->
+
+<iarProjectConnection version="1.2" name="SPI Master" oneShot="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="IarProjectConnection_1.2.xsd">
+
+    <device>
+        <name>MSP432P4111</name>
+    </device>
+
+    <asmIncludePath>
+        <path>$PROJ_DIR$</path>
+    </asmIncludePath>
+
+    <includePath>
+        <path>$PROJ_DIR$</path>
+        <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source</path>
+        <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/CMSIS/Include</path>
+        <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/posix/iar</path>
+    </includePath>
+
+    <extraOptions>
+        <args>
+            <arg>-f$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/tirtos/builds/MSP_EXP432P4111/release/iar/compiler.opt.defs</arg>
+            <arg>--debug</arg>
+            <arg>--silent</arg>
+            <arg>-e</arg>
+            <arg>--aeabi</arg>
+            <arg>--thumb</arg>
+            <arg>--diag_suppress=Pa050</arg>
+        </args>
+    </extraOptions>
+
+    <linkerFile>
+        <override>true</override>
+        <path>$PROJ_DIR$/MSP_EXP432P4111_TIRTOS.icf</path>
+    </linkerFile>
+
+    <linkerExtraOptions>
+        <args>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/display/lib/display.arm4f</arg>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/grlib/lib/iar/m4f/grlib.a</arg>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/spiffs/lib/iar/m4f/spiffs.a</arg>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/drivers/lib/drivers_msp432p4x1xi.arm4f</arg>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/fatfs/lib/iar/m4f/fatfs.a</arg>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/tirtos/packages/ti/dpl/lib/dpl_msp432p4x1xi.arm4f</arg>
+            <arg>-f$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/tirtos/builds/MSP_EXP432P4111/release/iar/linker.cmd</arg>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/devices/msp432p4xx/driverlib/iar/msp432p4xx_driverlib.a</arg>
+            <arg>--silent</arg>
+            <arg>--cpu=Cortex-M4F</arg>
+        </args>
+    </linkerExtraOptions>
+
+    <customBuildTools>
+        <customBuildTool atRoot="true" name="SysConfig"> <!-- Custom build tool for entire project-->
+            <fileExtensions>.syscfg</fileExtensions>
+            <command>$SYSCONFIG_ROOT$/sysconfig_cli.bat -o $PROJ_DIR$ -s "$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/.metadata/product.json" --compiler iar $FILE_PATH$
+            </command>
+            <output>
+                <path>SysConfig_Generated_Files.ipcf</path>
+            </output>
+            <hasPrio>true</hasPrio> <!-- true: run this tool before all other tools-->
+        </customBuildTool>
+    </customBuildTools>
+
+    <heaps>
+        <heap> <!-- If omitted, id="0" -->
+            <size>0</size>
+        </heap>
+        <heap id="1">
+            <size>0</size>
+        </heap>
+    </heaps>
+    <stacks>
+        <stack> <!-- If omitted, id="0" -->
+            <size>512</size>
+        </stack>
+    </stacks>
+
+    <preBuild>
+        <command>iarbuild.exe $SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/tirtos/builds/MSP_EXP432P4111/release/iar/tirtos_builds_MSP_EXP432P4111_release.ewp Debug -log all</command>
+    </preBuild>
+
+    <files>
+        <path copyTo="$PROJ_DIR$/spimaster.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/drivers/spimaster/spimaster.c</path>
+        <path copyTo="$PROJ_DIR$/README.md">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/drivers/spimaster/README.md</path>
+        <path copyTo="$PROJ_DIR$/README.html">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/drivers/spimaster/README.html</path>
+        <path copyTo="$PROJ_DIR$/overview.rov.json">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/drivers/spimaster/overview.rov.json</path>
+        <path copyTo="$PROJ_DIR$/main_tirtos.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/drivers/spimaster/tirtos/main_tirtos.c</path>
+        <path copyTo="$PROJ_DIR$/spimaster.syscfg">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/drivers/spimaster/tirtos/spimaster.syscfg</path>
+        <path reference="$PROJ_DIR$/Board.html">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/boards/MSP_EXP432P4111/Board.html</path>
+        <path copyTo="$PROJ_DIR$/MSP_EXP432P4111_TIRTOS.icf">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/drivers/spimaster/tirtos/iar/MSP_EXP432P4111_TIRTOS.icf</path>
+    </files>
+</iarProjectConnection>

@@ -44,7 +44,7 @@
 
 /* Local Defines */
 #include "npi_task.h"
-#include "Board.h"
+
 #include "captivate_task.h"
 #include "npi_message.h"
 

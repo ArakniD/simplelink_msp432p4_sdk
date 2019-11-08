@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_family_arm_m3
 {
-    static final String VERS = "@(#) xdc-F14\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -303,6 +303,7 @@ public class ti_sysbios_family_arm_m3
         om.bind("ti.sysbios.family.arm.m3.TaskSupport.stackUsed", new Extern("ti_sysbios_family_arm_m3_TaskSupport_stackUsed__E", "xdc_SizeT(*)(xdc_Char*,xdc_SizeT)", true, false));
         om.bind("ti.sysbios.family.arm.m3.TaskSupport.getStackAlignment", new Extern("ti_sysbios_family_arm_m3_TaskSupport_getStackAlignment__E", "xdc_UInt(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.family.arm.m3.TaskSupport.getDefaultStackSize", new Extern("ti_sysbios_family_arm_m3_TaskSupport_getDefaultStackSize__E", "xdc_SizeT(*)(xdc_Void)", true, false));
+        om.bind("ti.sysbios.family.arm.m3.TaskSupport.getCheckValueAddr", new Extern("ti_sysbios_family_arm_m3_TaskSupport_getCheckValueAddr__E", "xdc_Ptr(*)(xdc_Ptr)", true, false));
     }
 
     void Timer$$CONSTS()
@@ -930,6 +931,7 @@ public class ti_sysbios_family_arm_m3
             po.addFld("LM_begin", (Proto)om.findStrict("xdc.runtime.Log$$Event", "ti.sysbios.family.arm.m3"), Global.newObject("mask", Global.eval("0x0100 | 0x0200"), "msg", "LM_begin: hwi: 0x%x, func: 0x%x, preThread: %d, intNum: %d, irp: 0x%x"), "w");
             po.addFld("LD_end", (Proto)om.findStrict("xdc.runtime.Log$$Event", "ti.sysbios.family.arm.m3"), Global.newObject("mask", 0x0200L, "msg", "LD_end: hwi: 0x%x"), "w");
             po.addFld("A_unsupportedMaskingOption", (Proto)om.findStrict("xdc.runtime.Assert$$Id", "ti.sysbios.family.arm.m3"), Global.newObject("msg", "A_unsupportedMaskingOption: unsupported maskSetting."), "w");
+            po.addFld("E_badIntNum", (Proto)om.findStrict("xdc.runtime.Error$$Id", "ti.sysbios.family.arm.m3"), Global.newObject("msg", "E_badIntNum, intnum: %d is out of range"), "w");
             po.addFld("E_alreadyDefined", (Proto)om.findStrict("xdc.runtime.Error$$Id", "ti.sysbios.family.arm.m3"), Global.newObject("msg", "E_alreadyDefined: Hwi already defined: intr# %d"), "w");
             po.addFld("E_hwiLimitExceeded", (Proto)om.findStrict("xdc.runtime.Error$$Id", "ti.sysbios.family.arm.m3"), Global.newObject("msg", "E_hwiLimitExceeded: Too many interrupts defined"), "w");
             po.addFld("E_exception", (Proto)om.findStrict("xdc.runtime.Error$$Id", "ti.sysbios.family.arm.m3"), Global.newObject("msg", "E_exception: id = %d, pc = %08x.\nTo see more exception detail, set ti.sysbios.family.arm.m3.Hwi.enableException = true or,\nexamine the Exception view for the ti.sysbios.family.arm.m3.Hwi module using ROV."), "w");
@@ -1199,6 +1201,7 @@ public class ti_sysbios_family_arm_m3
         po.init("ti.sysbios.family.arm.m3.Hwi.ModuleView", null);
                 po.addFld("$hostonly", $$T_Num, 1, "r");
                 po.addFld("options", new Proto.Arr($$T_Str, false, xdc.services.intern.xsr.Enum.intValue(4L)), $$DEFAULT, "w");
+                po.addFld("processorState", $$T_Str, $$UNDEF, "w");
                 po.addFld("activeInterrupt", $$T_Str, $$UNDEF, "w");
                 po.addFld("pendingInterrupt", $$T_Str, $$UNDEF, "w");
                 po.addFld("exception", $$T_Str, $$UNDEF, "w");
@@ -1309,7 +1312,6 @@ public class ti_sysbios_family_arm_m3
         if (isCFG) {
             po.addFld("defaultStackSize", Proto.Elm.newCNum("(xdc_SizeT)"), 2048L, "r");
             po.addFld("stackAlignment", Proto.Elm.newCNum("(xdc_UInt)"), 8L, "r");
-            po.addFld("usesMonitors", $$T_Bool, true, "wh");
         }//isCFG
         fxn = Global.get(cap, "module$use");
         if (fxn != null) om.bind("ti.sysbios.family.arm.m3.TaskSupport$$module$use", true);
@@ -1896,6 +1898,7 @@ public class ti_sysbios_family_arm_m3
         mcfgs.add("LM_begin");
         mcfgs.add("LD_end");
         mcfgs.add("A_unsupportedMaskingOption");
+        mcfgs.add("E_badIntNum");
         mcfgs.add("E_alreadyDefined");
         mcfgs.add("E_hwiLimitExceeded");
         mcfgs.add("E_exception");
@@ -2017,14 +2020,14 @@ public class ti_sysbios_family_arm_m3
         vo.bind("doTaskRestore", om.findStrict("ti.sysbios.family.arm.m3.Hwi.doTaskRestore", "ti.sysbios.family.arm.m3"));
         vo.bind("$$fxntab", Global.newArray("ti_sysbios_family_arm_m3_Hwi_Handle__label__E", "ti_sysbios_family_arm_m3_Hwi_Module__startupDone__E", "ti_sysbios_family_arm_m3_Hwi_Object__create__E", "ti_sysbios_family_arm_m3_Hwi_Object__delete__E", "ti_sysbios_family_arm_m3_Hwi_Object__get__E", "ti_sysbios_family_arm_m3_Hwi_Object__first__E", "ti_sysbios_family_arm_m3_Hwi_Object__next__E", "ti_sysbios_family_arm_m3_Hwi_Params__init__E", "ti_sysbios_family_arm_m3_Hwi_getStackInfo__E", "ti_sysbios_family_arm_m3_Hwi_getCoreStackInfo__E", "ti_sysbios_family_arm_m3_Hwi_startup__E", "ti_sysbios_family_arm_m3_Hwi_switchFromBootStack__E", "ti_sysbios_family_arm_m3_Hwi_post__E", "ti_sysbios_family_arm_m3_Hwi_getTaskSP__E", "ti_sysbios_family_arm_m3_Hwi_disableInterrupt__E", "ti_sysbios_family_arm_m3_Hwi_enableInterrupt__E", "ti_sysbios_family_arm_m3_Hwi_restoreInterrupt__E", "ti_sysbios_family_arm_m3_Hwi_clearInterrupt__E", "ti_sysbios_family_arm_m3_Hwi_getFunc__E", "ti_sysbios_family_arm_m3_Hwi_setFunc__E", "ti_sysbios_family_arm_m3_Hwi_getHookContext__E", "ti_sysbios_family_arm_m3_Hwi_setHookContext__E", "ti_sysbios_family_arm_m3_Hwi_getIrp__E", "ti_sysbios_family_arm_m3_Hwi_construct2__E", "ti_sysbios_family_arm_m3_Hwi_disable__E", "ti_sysbios_family_arm_m3_Hwi_enable__E", "ti_sysbios_family_arm_m3_Hwi_restore__E", "ti_sysbios_family_arm_m3_Hwi_disableFxn__E", "ti_sysbios_family_arm_m3_Hwi_enableFxn__E", "ti_sysbios_family_arm_m3_Hwi_restoreFxn__E", "ti_sysbios_family_arm_m3_Hwi_plug__E", "ti_sysbios_family_arm_m3_Hwi_getHandle__E", "ti_sysbios_family_arm_m3_Hwi_setPriority__E", "ti_sysbios_family_arm_m3_Hwi_excSetBuffers__E", "ti_sysbios_family_arm_m3_Hwi_initNVIC__E", "ti_sysbios_family_arm_m3_Hwi_initStacks__E", "ti_sysbios_family_arm_m3_Hwi_flushVnvic__E", "ti_sysbios_family_arm_m3_Hwi_reconfig__E"));
         vo.bind("$$logEvtCfgs", Global.newArray("LM_begin", "LD_end"));
-        vo.bind("$$errorDescCfgs", Global.newArray("E_alreadyDefined", "E_hwiLimitExceeded", "E_exception", "E_noIsr", "E_NMI", "E_hardFault", "E_memFault", "E_busFault", "E_usageFault", "E_svCall", "E_debugMon", "E_reserved"));
+        vo.bind("$$errorDescCfgs", Global.newArray("E_badIntNum", "E_alreadyDefined", "E_hwiLimitExceeded", "E_exception", "E_noIsr", "E_NMI", "E_hardFault", "E_memFault", "E_busFault", "E_usageFault", "E_svCall", "E_debugMon", "E_reserved"));
         vo.bind("$$assertDescCfgs", Global.newArray("A_unsupportedMaskingOption"));
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./Hwi.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.sysbios.family.arm.m3.Hwi.Object", "ti.sysbios.family.arm.m3"));
@@ -2206,7 +2209,8 @@ public class ti_sysbios_family_arm_m3
         vo.bind("stackUsed", om.findStrict("ti.sysbios.family.arm.m3.TaskSupport.stackUsed", "ti.sysbios.family.arm.m3"));
         vo.bind("getStackAlignment", om.findStrict("ti.sysbios.family.arm.m3.TaskSupport.getStackAlignment", "ti.sysbios.family.arm.m3"));
         vo.bind("getDefaultStackSize", om.findStrict("ti.sysbios.family.arm.m3.TaskSupport.getDefaultStackSize", "ti.sysbios.family.arm.m3"));
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_family_arm_m3_TaskSupport_Module__startupDone__E", "ti_sysbios_family_arm_m3_TaskSupport_start__E", "ti_sysbios_family_arm_m3_TaskSupport_swap__E", "ti_sysbios_family_arm_m3_TaskSupport_checkStack__E", "ti_sysbios_family_arm_m3_TaskSupport_stackUsed__E", "ti_sysbios_family_arm_m3_TaskSupport_getStackAlignment__E", "ti_sysbios_family_arm_m3_TaskSupport_getDefaultStackSize__E"));
+        vo.bind("getCheckValueAddr", om.findStrict("ti.sysbios.family.arm.m3.TaskSupport.getCheckValueAddr", "ti.sysbios.family.arm.m3"));
+        vo.bind("$$fxntab", Global.newArray("ti_sysbios_family_arm_m3_TaskSupport_Module__startupDone__E", "ti_sysbios_family_arm_m3_TaskSupport_start__E", "ti_sysbios_family_arm_m3_TaskSupport_swap__E", "ti_sysbios_family_arm_m3_TaskSupport_checkStack__E", "ti_sysbios_family_arm_m3_TaskSupport_stackUsed__E", "ti_sysbios_family_arm_m3_TaskSupport_getStackAlignment__E", "ti_sysbios_family_arm_m3_TaskSupport_getDefaultStackSize__E", "ti_sysbios_family_arm_m3_TaskSupport_getCheckValueAddr__E"));
         vo.bind("$$logEvtCfgs", Global.newArray());
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());
@@ -2447,7 +2451,6 @@ public class ti_sysbios_family_arm_m3
         Value.Map atmap = (Value.Map)vo.getv("$attr");
         atmap.setElem("", true);
         atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("MODULE_STARTUP$", 1);
         vo.bind("PROXY$", 0);
@@ -2536,8 +2539,8 @@ public class ti_sysbios_family_arm_m3
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.setElem("", "./Power.xdt");
         atmap.setElem("", true);
+        atmap.setElem("", "./Power.xdt");
         atmap.seal("length");
         vo.bind("MODULE_STARTUP$", 0);
         vo.bind("PROXY$", 0);

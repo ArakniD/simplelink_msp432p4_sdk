@@ -35,15 +35,12 @@
 
 #define Board_MSP_EXP432P401R
 
+#include <ti/drivers/Board.h>
+#include "MSP_EXP432P401R.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <ti/drivers/Board.h>
-
-#define Board_initGeneral()     Board_init()  /* deprecated */
-
-#include "MSP_EXP432P401R.h"
 
 #define Board_ADC0                  MSP_EXP432P401R_ADC0
 #define Board_ADC1                  MSP_EXP432P401R_ADC1

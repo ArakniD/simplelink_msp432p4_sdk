@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_sysbios_hal_SecondsClock__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_hal_SecondsClock___VERS 200
@@ -266,32 +268,32 @@ __extern xdc_Int ti_sysbios_hal_SecondsClock_Module_startup__F( xdc_Int state );
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_hal_SecondsClock_Module__startupDone__S, "ti_sysbios_hal_SecondsClock_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_hal_SecondsClock_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_hal_SecondsClock_Module__startupDone__S( void);
 
 /* get__E */
 #define ti_sysbios_hal_SecondsClock_get ti_sysbios_hal_SecondsClock_get__E
 xdc__CODESECT(ti_sysbios_hal_SecondsClock_get__E, "ti_sysbios_hal_SecondsClock_get")
-__extern xdc_UInt32 ti_sysbios_hal_SecondsClock_get__E( void );
+__extern xdc_UInt32 ti_sysbios_hal_SecondsClock_get__E( void);
 
 /* getTime__E */
 #define ti_sysbios_hal_SecondsClock_getTime ti_sysbios_hal_SecondsClock_getTime__E
 xdc__CODESECT(ti_sysbios_hal_SecondsClock_getTime__E, "ti_sysbios_hal_SecondsClock_getTime")
-__extern xdc_UInt32 ti_sysbios_hal_SecondsClock_getTime__E( ti_sysbios_interfaces_ISeconds_Time *ts );
+__extern xdc_UInt32 ti_sysbios_hal_SecondsClock_getTime__E( ti_sysbios_interfaces_ISeconds_Time *ts);
 
 /* set__E */
 #define ti_sysbios_hal_SecondsClock_set ti_sysbios_hal_SecondsClock_set__E
 xdc__CODESECT(ti_sysbios_hal_SecondsClock_set__E, "ti_sysbios_hal_SecondsClock_set")
-__extern xdc_Void ti_sysbios_hal_SecondsClock_set__E( xdc_UInt32 seconds );
+__extern xdc_Void ti_sysbios_hal_SecondsClock_set__E( xdc_UInt32 seconds);
 
 /* setTime__E */
 #define ti_sysbios_hal_SecondsClock_setTime ti_sysbios_hal_SecondsClock_setTime__E
 xdc__CODESECT(ti_sysbios_hal_SecondsClock_setTime__E, "ti_sysbios_hal_SecondsClock_setTime")
-__extern xdc_UInt32 ti_sysbios_hal_SecondsClock_setTime__E( ti_sysbios_interfaces_ISeconds_Time *ts );
+__extern xdc_UInt32 ti_sysbios_hal_SecondsClock_setTime__E( ti_sysbios_interfaces_ISeconds_Time *ts);
 
 /* increment__I */
 #define ti_sysbios_hal_SecondsClock_increment ti_sysbios_hal_SecondsClock_increment__I
 xdc__CODESECT(ti_sysbios_hal_SecondsClock_increment__I, "ti_sysbios_hal_SecondsClock_increment")
-__extern xdc_Void ti_sysbios_hal_SecondsClock_increment__I( xdc_UArg arg );
+__extern xdc_Void ti_sysbios_hal_SecondsClock_increment__I( xdc_UArg arg);
 
 
 /*

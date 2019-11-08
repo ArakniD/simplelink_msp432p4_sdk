@@ -4,7 +4,7 @@ package/ti.display.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_display.java
 package/ti_display.class
 package/package_ti.display.c

@@ -1,28 +1,30 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# pwmled2
-
----
-
 ## Example Summary
 
 Sample application to control on-board LEDs with the PWM driver.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_PWM0` - PWM instance used to control brightness of LED connected to `Board_PWM0`
-* `Board_PWM1` - PWM instance used to control brightness of LED connected to `Board_PWM1`
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
 
-## Resources & Jumper Settings
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+* `CONFIG_PWM_0` - PWM instance used to control brightness of LED
+* `CONFIG_PWM_1` - PWM instance used to control brightness of LED
 
+## BoosterPacks, Board Resources & Jumper Settings
+
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
+
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 ## Example Usage
 
@@ -30,8 +32,8 @@ Otherwise, you can find Board.html in the directory
 
 * The onboard LEDs will slowly vary in intensity.
 
-* Both LEDs connected to `Board_PWM0` and `Board_PWM1` will fade-in and fade-out
-when running the application.
+* Both LEDs connected to `CONFIG_PWM_0` and `CONFIG_PWM_1` will fade-in and
+  fade-out when running the application.
 
 ## Application Design Details
 

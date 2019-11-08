@@ -59,7 +59,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">CaptureMSP432.h File Reference</div>  </div>
@@ -71,16 +70,16 @@ $(function() {
 <p>Refer to <a class="el" href="_capture_8h.html">Capture.h</a> for a complete description of APIs &amp; example of use.</p>
 <h1>Operation</h1>
 <p>This driver leverages the Timer_A peripheral of the MSP432 device. Each instance of a capture driver will occupy exactly one Timer_A peripheral on the device. This is done to reduce contingencies and conflicts that may arise from using more than one capture/compare registers on a Timer_A peripheral.</p>
-<p>The specific capture/compare register and pin used by the capture module is determined by the capturePort definition. If a mappable pin is contained in the capturePort parameter of the CaptureMSP432_HWAttrs structure, the driver will automatically configure the Port Mapping Controller (PMAP) module with the correct/corresponding pin assignments.</p>
+<p>The specific capture/compare register and pin used by the capture module is determined by the capturePort definition. If a mappable pin is contained in the capturePort parameter of the <a class="el" href="struct_capture_m_s_p432___h_w_attrs.html" title="CaptureMSP432 Hardware Attributes. ">CaptureMSP432_HWAttrs</a> structure, the driver will automatically configure the Port Mapping Controller (PMAP) module with the correct/corresponding pin assignments.</p>
 <h1>Accuracy</h1>
-<p>Each Timer_A peripheral has 16-bits of resolution. An appropriate clockSource and clockDivider must be specified in the CaptureMSP432_HWAttrs for each specific capture application. A higher clock rate may provide a better capture resolution at the cost of a smaller capturable period. The maximum capture period for a given clockSource and clockDivider is calculated as:</p>
+<p>Each Timer_A peripheral has 16-bits of resolution. An appropriate clockSource and clockDivider must be specified in the <a class="el" href="struct_capture_m_s_p432___h_w_attrs.html" title="CaptureMSP432 Hardware Attributes. ">CaptureMSP432_HWAttrs</a> for each specific capture application. A higher clock rate may provide a better capture resolution at the cost of a smaller capturable period. The maximum capture period for a given clockSource and clockDivider is calculated as:</p>
 <p>MAX_CAPTURE_PERIOD = 2 * ((clockDivider * MATCH_VALUE) / CYCLES_PER_US) - 1</p>
 <p>Given that: MATCH_VALUE = 0xFFFF (65535) CYCLES_PER_US = clockSource / 1000000</p>
 <h3>MPS432 Capture Driver Configuration</h3>
-<p>In order to use the Capture APIs, the application is required to define 4 configuration items in the application Board.c file:</p>
+<p>In order to use the Capture APIs, the application is required to define 4 configuration items in the application ti_drivers_config.c file:</p>
 <ol type="1">
-<li>An array of CaptureMSP432_Object elements, which will be used by by the driver to maintain instance state. Below is an example CaptureMSP432_Object array appropriate for the MSP432 LaunchPad board: <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_capture_8h.html">ti/drivers/Capture.h</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_capture_m_s_p432_8h.html">ti/drivers/capture/CaptureMSP432.h</a>&gt;</span></div><div class="line"></div><div class="line"><a class="code" href="struct_capture_m_s_p432___object__.html">CaptureMSP432_Object</a> captureMSP432Objects[2];</div></div><!-- fragment --></li>
-<li>An array of CaptureMSP432_HWAttrs elements that defines which pin will be used by the corresponding capture instance (see <a class="el" href="group__capture_port_identifiers_m_s_p432.html">CaptureMSP432_HWAttrs 'capturePort'</a>). Below is an example CaptureMSP432_HWAttrs array appropriate for the MSP432 LaunchPad board: <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="struct_capture_m_s_p432___h_w_attrs__.html">CaptureMSP432_HWAttrs</a> captureMSP432HWAttrs[2] = {</div><div class="line">    {</div><div class="line">        .<a class="code" href="struct_capture_m_s_p432___h_w_attrs__.html#a974a48db97887fb71b438674d22d0a45">timerBaseAddress</a> = TIMER_A1_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,</div><div class="line">        .clockDivider = TIMER_A_CLOCKSOURCE_DIVIDER_64,</div><div class="line">        .capturePort = <a class="code" href="group__capture_port_identifiers_m_s_p432.html#ga124c8e4f0f30a8cbee5894d4b14f4a0e">CaptureMSP432_P2_3_TA1</a>,</div><div class="line">        .intPriority = ~0</div><div class="line">    },</div><div class="line">    {</div><div class="line">        .timerBaseAddress = TIMER_A2_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_ACLK,</div><div class="line">        .clockDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1,</div><div class="line">        .capturePort = <a class="code" href="group__capture_port_identifiers_m_s_p432.html#ga50428559b9add30ceac5c04b7dc22a25">CaptureMSP432_P6_6_TA2</a>,</div><div class="line">        .intPriority = ~0</div><div class="line">    },</div><div class="line">};</div></div><!-- fragment --></li>
+<li>An array of <a class="el" href="struct_capture_m_s_p432___object.html" title="CaptureMSP432 Object. ">CaptureMSP432_Object</a> elements, which will be used by by the driver to maintain instance state. Below is an example <a class="el" href="struct_capture_m_s_p432___object.html" title="CaptureMSP432 Object. ">CaptureMSP432_Object</a> array appropriate for the MSP432 LaunchPad board: <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_capture_8h.html">ti/drivers/Capture.h</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_capture_m_s_p432_8h.html">ti/drivers/capture/CaptureMSP432.h</a>&gt;</span></div><div class="line"></div><div class="line"><a class="code" href="struct_capture_m_s_p432___object.html">CaptureMSP432_Object</a> captureMSP432Objects[2];</div></div><!-- fragment --></li>
+<li>An array of <a class="el" href="struct_capture_m_s_p432___h_w_attrs.html" title="CaptureMSP432 Hardware Attributes. ">CaptureMSP432_HWAttrs</a> elements that defines which pin will be used by the corresponding capture instance (see <a class="el" href="group__capture_port_identifiers_m_s_p432.html">CaptureMSP432_HWAttrs 'capturePort'</a>). Below is an example <a class="el" href="struct_capture_m_s_p432___h_w_attrs.html" title="CaptureMSP432 Hardware Attributes. ">CaptureMSP432_HWAttrs</a> array appropriate for the MSP432 LaunchPad board: <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="struct_capture_m_s_p432___h_w_attrs.html">CaptureMSP432_HWAttrs</a> captureMSP432HWAttrs[2] = {</div><div class="line">    {</div><div class="line">        .<a class="code" href="struct_capture_m_s_p432___h_w_attrs.html#aadf2abb0b0d60ab97eb49a836d7620d0">timerBaseAddress</a> = TIMER_A1_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,</div><div class="line">        .clockDivider = TIMER_A_CLOCKSOURCE_DIVIDER_64,</div><div class="line">        .capturePort = <a class="code" href="group__capture_port_identifiers_m_s_p432.html#ga124c8e4f0f30a8cbee5894d4b14f4a0e">CaptureMSP432_P2_3_TA1</a>,</div><div class="line">        .intPriority = ~0</div><div class="line">    },</div><div class="line">    {</div><div class="line">        .timerBaseAddress = TIMER_A2_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_ACLK,</div><div class="line">        .clockDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1,</div><div class="line">        .capturePort = <a class="code" href="group__capture_port_identifiers_m_s_p432.html#ga50428559b9add30ceac5c04b7dc22a25">CaptureMSP432_P6_6_TA2</a>,</div><div class="line">        .intPriority = ~0</div><div class="line">    },</div><div class="line">};</div></div><!-- fragment --></li>
 <li>An array of <a class="el" href="_capture_8h.html#a3945a1b3420ba168ee166cb8e7931911">Capture_Config</a> elements, one for each Capture instance. Each element of this array identifies the device-specific API function table, the device specific capture object instance, and the device specific Hardware Attributes to be used for each capture channel. Below is an example <a class="el" href="_capture_8h.html#a3945a1b3420ba168ee166cb8e7931911">Capture_Config</a> array appropriate for the MSP432 LaunchPad board: <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="struct_capture___config__.html">Capture_Config</a> Capture_config[2] = {</div><div class="line">  {</div><div class="line">      .<a class="code" href="struct_capture___config__.html#ab70ae8cc52fd4bcaaa63e8b849645e2d">fxnTablePtr</a> = &amp;<a class="code" href="_capture_m_s_p432_8h.html#acbda93b37e34986c66d721c4b3ed65f4">CaptureMSP432_captureFxnTable</a>,</div><div class="line">      .object = &amp;captureMSP432Objects[0],</div><div class="line">      .hwAttrs = &amp;captureMSP432HWAttrs[0]</div><div class="line">  },</div><div class="line">  {</div><div class="line">      .fxnTablePtr = &amp;<a class="code" href="_capture_m_s_p432_8h.html#acbda93b37e34986c66d721c4b3ed65f4">CaptureMSP432_captureFxnTable</a>,</div><div class="line">      .object = &amp;captureMSP432Objects[1],</div><div class="line">      .hwAttrs = &amp;captureMSP432HWAttrs[1]</div><div class="line">  }</div><div class="line">};</div></div><!-- fragment --></li>
 <li>A global variable, Capture_count, that informs the driver how many capture instances are defined: <div class="fragment"><div class="line"><span class="keyword">const</span> uint_least8_t Capture_count = 2;</div></div><!-- fragment --></li>
 </ol>
@@ -92,7 +91,13 @@ $(function() {
 <li>After <a class="el" href="_capture_8h.html#af627bf1b9d94ec29bea351e7d4cc9c34" title="Function to open a given capture instance specified by the index argument. The Capture_Params specifi...">Capture_open()</a>: Clocks are enabled to the timer resource and the configured capture pin. Dynamic performance level changes are allowed.</li>
 <li>After <a class="el" href="_capture_8h.html#aedfad453a8fc2f449c3680b397421e9a" title="Function to start the capture instance. ">Capture_start()</a>: DEEPSLEEP is disabled for MSP432P401x devices. Performance level changes are not allowed.</li>
 <li>After <a class="el" href="_capture_8h.html#a82c4e453c52c4ecb7e4f87544e0e1460" title="Function to stop a capture instance. If the capture instance is already stopped, this function has no...">Capture_stop()</a>: Conditions are equal as for after Capture_open.</li>
-<li>After <a class="el" href="_capture_8h.html#a1e5d3de290f67a950f52571e6cff185f" title="Function to close a capture driver instance. The corresponding timer peripheral to Capture_handle bec...">Capture_close()</a>: The underlying GPTimer is turned off, and the clocks to the timer and pin are disabled. </li>
+<li>After <a class="el" href="_capture_8h.html#a1e5d3de290f67a950f52571e6cff185f" title="Function to close a capture driver instance. The corresponding timer peripheral to Capture_handle bec...">Capture_close()</a>: The underlying GPTimer is turned off, and the clocks to the timer and pin are disabled.</li>
+</ul>
+<h1>Capture Modes</h1>
+<p>This device implementation only works with the following modes for <a class="el" href="_capture_8h.html#a6382e7d47f7d4551ff15a421e79da231" title="Capture mode settings. ">Capture_Mode</a> :</p><ul>
+<li><a class="el" href="_capture_8h.html#a6382e7d47f7d4551ff15a421e79da231ad86339bd12f32a5783138536e92bf35d">Capture_RISING_EDGE</a></li>
+<li><a class="el" href="_capture_8h.html#a6382e7d47f7d4551ff15a421e79da231ad81d8c687bce527cf986b738dcc0bc5e">Capture_FALLING_EDGE</a></li>
+<li><a class="el" href="_capture_8h.html#a6382e7d47f7d4551ff15a421e79da231a3cda7df083b56d1e1ed54d19d1813528">Capture_ANY_EDGE</a> All other modes will fail. </li>
 </ul>
 </div><div class="textblock"><code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
@@ -118,11 +123,11 @@ Include dependency graph for CaptureMSP432.h:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_capture_m_s_p432___h_w_attrs__.html">CaptureMSP432_HWAttrs_</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CaptureMSP432 Hardware Attributes.  <a href="struct_capture_m_s_p432___h_w_attrs__.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_capture_m_s_p432___h_w_attrs.html">CaptureMSP432_HWAttrs</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CaptureMSP432 Hardware Attributes.  <a href="struct_capture_m_s_p432___h_w_attrs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_capture_m_s_p432___object__.html">CaptureMSP432_Object_</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CaptureMSP432 Object.  <a href="struct_capture_m_s_p432___object__.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_capture_m_s_p432___object.html">CaptureMSP432_Object</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CaptureMSP432 Object.  <a href="struct_capture_m_s_p432___object.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -305,55 +310,11 @@ Macros</h2></td></tr>
 <tr class="memitem:ga9810d2b4fd4a64912d42ecbe58a4e208"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__capture_port_identifiers_m_s_p432.html#ga9810d2b4fd4a64912d42ecbe58a4e208">CaptureMSP432_P10_5_TA3</a></td></tr>
 <tr class="separator:ga9810d2b4fd4a64912d42ecbe58a4e208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a975d859e14e764ca4191348cf98c4248"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_capture_m_s_p432___h_w_attrs__.html">CaptureMSP432_HWAttrs_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_capture_m_s_p432_8h.html#a975d859e14e764ca4191348cf98c4248">CaptureMSP432_HWAttrs</a></td></tr>
-<tr class="memdesc:a975d859e14e764ca4191348cf98c4248"><td class="mdescLeft">&#160;</td><td class="mdescRight">CaptureMSP432 Hardware Attributes.  <a href="#a975d859e14e764ca4191348cf98c4248">More...</a><br /></td></tr>
-<tr class="separator:a975d859e14e764ca4191348cf98c4248"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c0372da4d32f14e94871b2abc42b6d7"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_capture_m_s_p432___object__.html">CaptureMSP432_Object_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_capture_m_s_p432_8h.html#a8c0372da4d32f14e94871b2abc42b6d7">CaptureMSP432_Object</a></td></tr>
-<tr class="memdesc:a8c0372da4d32f14e94871b2abc42b6d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">CaptureMSP432 Object.  <a href="#a8c0372da4d32f14e94871b2abc42b6d7">More...</a><br /></td></tr>
-<tr class="separator:a8c0372da4d32f14e94871b2abc42b6d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:acbda93b37e34986c66d721c4b3ed65f4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_capture___fxn_table.html">Capture_FxnTable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_capture_m_s_p432_8h.html#acbda93b37e34986c66d721c4b3ed65f4">CaptureMSP432_captureFxnTable</a></td></tr>
 <tr class="separator:acbda93b37e34986c66d721c4b3ed65f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="a975d859e14e764ca4191348cf98c4248"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a975d859e14e764ca4191348cf98c4248">&sect;&nbsp;</a></span>CaptureMSP432_HWAttrs</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_capture_m_s_p432___h_w_attrs__.html">CaptureMSP432_HWAttrs_</a>  <a class="el" href="_capture_m_s_p432_8h.html#a975d859e14e764ca4191348cf98c4248">CaptureMSP432_HWAttrs</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>CaptureMSP432 Hardware Attributes. </p>
-<p>Capture hardware attributes that tell the CaptureMSP432 driver specific hardware configurations and interrupt/priority settings.</p>
-<p>A sample structure is shown below: </p><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="struct_capture_m_s_p432___h_w_attrs__.html">CaptureMSP432_HWAttrs</a> captureMSP432HWAttrs[] =</div><div class="line">{</div><div class="line">    {</div><div class="line">        .<a class="code" href="struct_capture_m_s_p432___h_w_attrs__.html#a974a48db97887fb71b438674d22d0a45">timerBaseAddress</a> = TIMER_A1_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,</div><div class="line">        .clockDivider = TIMER_A_CLOCKSOURCE_DIVIDER_64,</div><div class="line">        .capturePort = <a class="code" href="group__capture_port_identifiers_m_s_p432.html#ga124c8e4f0f30a8cbee5894d4b14f4a0e">CaptureMSP432_P2_3_TA1</a>,</div><div class="line">        .intPriority = ~0</div><div class="line">    },</div><div class="line">    {</div><div class="line">        .timerBaseAddress = TIMER_A2_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_ACLK,</div><div class="line">        .clockDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1,</div><div class="line">        .capturePort = <a class="code" href="group__capture_port_identifiers_m_s_p432.html#ga50428559b9add30ceac5c04b7dc22a25">CaptureMSP432_P6_6_TA2</a>,</div><div class="line">        .intPriority = ~0</div><div class="line">    },</div><div class="line">};</div></div><!-- fragment --> 
-</div>
-</div>
-<a id="a8c0372da4d32f14e94871b2abc42b6d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c0372da4d32f14e94871b2abc42b6d7">&sect;&nbsp;</a></span>CaptureMSP432_Object</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_capture_m_s_p432___object__.html">CaptureMSP432_Object_</a>  <a class="el" href="_capture_m_s_p432_8h.html#a8c0372da4d32f14e94871b2abc42b6d7">CaptureMSP432_Object</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>CaptureMSP432 Object. </p>
-<p>The application must not access any member variables of this structure! </p>
-
-</div>
-</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="acbda93b37e34986c66d721c4b3ed65f4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acbda93b37e34986c66d721c4b3ed65f4">&sect;&nbsp;</a></span>CaptureMSP432_captureFxnTable</h2>

@@ -49,8 +49,8 @@
 #include <ti/drivers/power/PowerCC32XX.h>
 #endif
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 /* Console display strings */
 const char consoleDisplay[]   = "\fConsole (h for help)\r\n";
@@ -84,7 +84,7 @@ static void itoa(int n, char s[]);
 
 /*
  *  ======== gpioButtonFxn ========
- *  Callback function for the GPIO interrupt on Board_GPIO_BUTTON1.
+ *  Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON_1.
  *  There is no debounce logic here since we are just looking for
  *  a button push. The uartEnabled variable protects use against any
  *  additional interrupts cased by the bouncing of the button.
@@ -182,11 +182,11 @@ void *consoleThread(void *arg0)
 #endif
 
     /* Configure the button pin */
-    GPIO_setConfig(Board_GPIO_BUTTON1, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
+    GPIO_setConfig(CONFIG_GPIO_BUTTON_1, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
 
     /* install Button callback and enable it */
-    GPIO_setCallback(Board_GPIO_BUTTON1, gpioButtonFxn);
-    GPIO_enableInt(Board_GPIO_BUTTON1);
+    GPIO_setCallback(CONFIG_GPIO_BUTTON_1, gpioButtonFxn);
+    GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
 
     retc = sem_init(&semConsole, 0, 0);
     if (retc == -1) {
@@ -215,7 +215,7 @@ void *consoleThread(void *arg0)
         }
 
         /* Create a UART for the console */
-        uart = UART_open(Board_UART0, &uartParams);
+        uart = UART_open(CONFIG_UART_0, &uartParams);
         if (uart == NULL) {
             while (1);
         }

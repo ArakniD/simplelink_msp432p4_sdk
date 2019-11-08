@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -37,10 +37,12 @@
 #define ti_uia_family_c64p_TimestampC64XLocal__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_family_c64p_TimestampC64XLocal___VERS 200
@@ -322,55 +324,55 @@ __extern void ti_uia_family_c64p_TimestampC64XLocal_destruct(ti_uia_family_c64p_
 
 /* Handle__label__S */
 xdc__CODESECT(ti_uia_family_c64p_TimestampC64XLocal_Handle__label__S, "ti_uia_family_c64p_TimestampC64XLocal_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_uia_family_c64p_TimestampC64XLocal_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_uia_family_c64p_TimestampC64XLocal_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_family_c64p_TimestampC64XLocal_Module__startupDone__S, "ti_uia_family_c64p_TimestampC64XLocal_Module__startupDone__S")
-__extern xdc_Bool ti_uia_family_c64p_TimestampC64XLocal_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_family_c64p_TimestampC64XLocal_Module__startupDone__S( void);
 
 /* Object__create__S */
 xdc__CODESECT(ti_uia_family_c64p_TimestampC64XLocal_Object__create__S, "ti_uia_family_c64p_TimestampC64XLocal_Object__create__S")
-__extern xdc_Ptr ti_uia_family_c64p_TimestampC64XLocal_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb );
+__extern xdc_Ptr ti_uia_family_c64p_TimestampC64XLocal_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb);
 
 /* Object__delete__S */
 xdc__CODESECT(ti_uia_family_c64p_TimestampC64XLocal_Object__delete__S, "ti_uia_family_c64p_TimestampC64XLocal_Object__delete__S")
-__extern xdc_Void ti_uia_family_c64p_TimestampC64XLocal_Object__delete__S( xdc_Ptr instp );
+__extern xdc_Void ti_uia_family_c64p_TimestampC64XLocal_Object__delete__S( xdc_Ptr instp);
 
 /* Object__get__S */
 xdc__CODESECT(ti_uia_family_c64p_TimestampC64XLocal_Object__get__S, "ti_uia_family_c64p_TimestampC64XLocal_Object__get__S")
-__extern xdc_Ptr ti_uia_family_c64p_TimestampC64XLocal_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_uia_family_c64p_TimestampC64XLocal_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_uia_family_c64p_TimestampC64XLocal_Object__first__S, "ti_uia_family_c64p_TimestampC64XLocal_Object__first__S")
-__extern xdc_Ptr ti_uia_family_c64p_TimestampC64XLocal_Object__first__S( void );
+__extern xdc_Ptr ti_uia_family_c64p_TimestampC64XLocal_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_uia_family_c64p_TimestampC64XLocal_Object__next__S, "ti_uia_family_c64p_TimestampC64XLocal_Object__next__S")
-__extern xdc_Ptr ti_uia_family_c64p_TimestampC64XLocal_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_uia_family_c64p_TimestampC64XLocal_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_uia_family_c64p_TimestampC64XLocal_Params__init__S, "ti_uia_family_c64p_TimestampC64XLocal_Params__init__S")
-__extern xdc_Void ti_uia_family_c64p_TimestampC64XLocal_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_uia_family_c64p_TimestampC64XLocal_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* get32__E */
 #define ti_uia_family_c64p_TimestampC64XLocal_get32 ti_uia_family_c64p_TimestampC64XLocal_get32__E
 xdc__CODESECT(ti_uia_family_c64p_TimestampC64XLocal_get32__E, "ti_uia_family_c64p_TimestampC64XLocal_get32")
-__extern xdc_Bits32 ti_uia_family_c64p_TimestampC64XLocal_get32__E( void );
+__extern xdc_Bits32 ti_uia_family_c64p_TimestampC64XLocal_get32__E( void);
 
 /* get64__E */
 #define ti_uia_family_c64p_TimestampC64XLocal_get64 ti_uia_family_c64p_TimestampC64XLocal_get64__E
 xdc__CODESECT(ti_uia_family_c64p_TimestampC64XLocal_get64__E, "ti_uia_family_c64p_TimestampC64XLocal_get64")
-__extern xdc_Void ti_uia_family_c64p_TimestampC64XLocal_get64__E( xdc_runtime_Types_Timestamp64 *result );
+__extern xdc_Void ti_uia_family_c64p_TimestampC64XLocal_get64__E( xdc_runtime_Types_Timestamp64 *result);
 
 /* getFreq__E */
 #define ti_uia_family_c64p_TimestampC64XLocal_getFreq ti_uia_family_c64p_TimestampC64XLocal_getFreq__E
 xdc__CODESECT(ti_uia_family_c64p_TimestampC64XLocal_getFreq__E, "ti_uia_family_c64p_TimestampC64XLocal_getFreq")
-__extern xdc_Void ti_uia_family_c64p_TimestampC64XLocal_getFreq__E( xdc_runtime_Types_FreqHz *freq );
+__extern xdc_Void ti_uia_family_c64p_TimestampC64XLocal_getFreq__E( xdc_runtime_Types_FreqHz *freq);
 
 /* setFreq__E */
 #define ti_uia_family_c64p_TimestampC64XLocal_setFreq ti_uia_family_c64p_TimestampC64XLocal_setFreq__E
 xdc__CODESECT(ti_uia_family_c64p_TimestampC64XLocal_setFreq__E, "ti_uia_family_c64p_TimestampC64XLocal_setFreq")
-__extern xdc_Void ti_uia_family_c64p_TimestampC64XLocal_setFreq__E( xdc_runtime_Types_FreqHz *freq );
+__extern xdc_Void ti_uia_family_c64p_TimestampC64XLocal_setFreq__E( xdc_runtime_Types_FreqHz *freq);
 
 
 /*
@@ -476,8 +478,8 @@ static inline void ti_uia_family_c64p_TimestampC64XLocal_Params_copy(ti_uia_fami
 #define ti_uia_family_c64p_TimestampC64XLocal_Object_sizeof() ti_uia_family_c64p_TimestampC64XLocal_Object__sizeof__C
 
 /* Object_get */
-static inline ti_uia_family_c64p_TimestampC64XLocal_Handle ti_uia_family_c64p_TimestampC64XLocal_Object_get(ti_uia_family_c64p_TimestampC64XLocal_Instance_State *oarr, int i);
-static inline ti_uia_family_c64p_TimestampC64XLocal_Handle ti_uia_family_c64p_TimestampC64XLocal_Object_get(ti_uia_family_c64p_TimestampC64XLocal_Instance_State *oarr, int i) 
+static inline ti_uia_family_c64p_TimestampC64XLocal_Handle ti_uia_family_c64p_TimestampC64XLocal_Object_get(ti_uia_family_c64p_TimestampC64XLocal_Object *oarr, int i);
+static inline ti_uia_family_c64p_TimestampC64XLocal_Handle ti_uia_family_c64p_TimestampC64XLocal_Object_get(ti_uia_family_c64p_TimestampC64XLocal_Object *oarr, int i) 
 {
     return (ti_uia_family_c64p_TimestampC64XLocal_Handle)ti_uia_family_c64p_TimestampC64XLocal_Object__get__S(oarr, i);
 }
@@ -615,7 +617,6 @@ struct ti_uia_family_c64p_TimestampC64XLocal_Object {
 #define TimestampC64XLocal_Object_sizeof ti_uia_family_c64p_TimestampC64XLocal_Object_sizeof
 #define TimestampC64XLocal_Params_copy ti_uia_family_c64p_TimestampC64XLocal_Params_copy
 #define TimestampC64XLocal_Params_init ti_uia_family_c64p_TimestampC64XLocal_Params_init
-#define TimestampC64XLocal_Instance_State ti_uia_family_c64p_TimestampC64XLocal_Instance_State
 #define TimestampC64XLocal_delete ti_uia_family_c64p_TimestampC64XLocal_delete
 #define TimestampC64XLocal_destruct ti_uia_family_c64p_TimestampC64XLocal_destruct
 #define TimestampC64XLocal_Module_upCast ti_uia_family_c64p_TimestampC64XLocal_Module_upCast

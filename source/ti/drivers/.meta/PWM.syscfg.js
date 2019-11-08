@@ -58,6 +58,16 @@ function validate(inst, validation)
 }
 
 /*
+ *  ======== _getPinResources ========
+ */
+/* istanbul ignore next */
+function _getPinResources(inst)
+{
+    return;
+}
+
+
+/*
  *  ======== base ========
  *  Define the base PWM properties and methods
  */
@@ -77,10 +87,12 @@ via simple and portable APIs.
 [3]: /tidrivers/doxygen/html/_p_w_m_8h.html#ti_drivers_PWM_Examples "C usage examples"
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#PWM_Configuration_Options "Configuration options reference"
 `,
-    defaultInstanceName: "Board_PWM",
-    config: Common.addNameConfig(pwmConfig, "/ti/drivers/PWM", "Board_PWM"),
+    defaultInstanceName: "CONFIG_PWM_",
+    config: Common.addNameConfig(pwmConfig, "/ti/drivers/PWM", "CONFIG_PWM_"),
     validate: validate,
-    modules: Common.autoForceModules(["Board", "Power"])
+    modules: Common.autoForceModules(["Board", "Power"]),
+
+    _getPinResources: _getPinResources
 };
 
 /* Get family-specific PWM module. Some PWM drivers are based on a timer

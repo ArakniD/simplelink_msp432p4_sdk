@@ -1,7 +1,3 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
 ---
 # adcbufmultichannel
 
@@ -17,7 +13,7 @@ ADCBuf driver in continuous mode using a single sequencer and multiple channels.
 
 * `Board_ADCBUF0` - Buffer instance used to manage samples from ADCBuf channel.
 * `Board_ADCBUF0CHANNEL0` - ADCBuf channel 0.
-* `Board_ADCBUF0CHANNEL4` - ADCBuf channel 4.
+* `Board_ADCBUF0CHANNEL1` - ADCBuf channel 1.
 * `Board_UART0` - Used to echo samples to host serial session.
 
 ## Resources & Jumper Settings
@@ -30,7 +26,7 @@ Otherwise, you can find Board.html in the directory
 ## Example Usage
 
 * Connect the ADC channel to a sampling source.
-    * For quick testing, connect `Board_ADCBUF0CHANNEL0` and `Board_ADCBUF0CHANNEL4` to `GND` or `3V3`.
+    * For quick testing, connect `Board_ADCBUF0CHANNEL0` and `Board_ADCBUF0CHANNEL1` to `GND` or `3V3`.
 
 >__Important:__ Caution should be used when connecting the pins to analog inputs greater than 3VDC.
 
@@ -67,7 +63,7 @@ easily interpretable output. The maximum sampling rates are device specific.
 full. The contents of the buffer are
 sent via UART.
 
->__Important:__ The sample buffer will contain alternating values between `Board_ADCBUF0CHANNEL0` and `Board_ADCBUF0CHANNEL4`. This order can be disrupted when sampling at higher frequencies and when using software trigger.
+>__Important:__ The sample buffer will contain alternating values between `Board_ADCBUF0CHANNEL0` and `Board_ADCBUF0CHANNEL1`. This order can be disrupted when sampling at higher frequencies and when using software trigger.
 
 TI-RTOS:
 

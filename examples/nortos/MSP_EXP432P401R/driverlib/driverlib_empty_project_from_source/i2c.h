@@ -1019,7 +1019,8 @@ extern uint8_t I2C_masterIsStopSent(uint32_t moduleInstance);
 //! This function checks the status of the bus via UCTXSTT bit in
 //! UCBxCTL1 register.
 //!
-//! \return Returns true if the START has been sent, false if it is sending
+//! \return Returns EUSCI_B_I2C_BUS_BUSY if the I2C Master is busy; otherwise,
+//!         returns EUSCI_B_I2C_BUS_NOT_BUSY.
 //
 //*****************************************************************************
 extern bool I2C_masterIsStartSent(uint32_t moduleInstance);

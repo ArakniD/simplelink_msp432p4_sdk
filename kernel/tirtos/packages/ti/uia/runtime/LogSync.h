@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -37,10 +37,12 @@
 #define ti_uia_runtime_LogSync__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_runtime_LogSync___VERS 200
@@ -354,72 +356,72 @@ __extern void ti_uia_runtime_LogSync_destruct(ti_uia_runtime_LogSync_Struct *obj
 
 /* Handle__label__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_Handle__label__S, "ti_uia_runtime_LogSync_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_uia_runtime_LogSync_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_uia_runtime_LogSync_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_Module__startupDone__S, "ti_uia_runtime_LogSync_Module__startupDone__S")
-__extern xdc_Bool ti_uia_runtime_LogSync_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_runtime_LogSync_Module__startupDone__S( void);
 
 /* Object__create__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_Object__create__S, "ti_uia_runtime_LogSync_Object__create__S")
-__extern xdc_Ptr ti_uia_runtime_LogSync_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb );
+__extern xdc_Ptr ti_uia_runtime_LogSync_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb);
 
 /* Object__delete__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_Object__delete__S, "ti_uia_runtime_LogSync_Object__delete__S")
-__extern xdc_Void ti_uia_runtime_LogSync_Object__delete__S( xdc_Ptr instp );
+__extern xdc_Void ti_uia_runtime_LogSync_Object__delete__S( xdc_Ptr instp);
 
 /* Object__get__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_Object__get__S, "ti_uia_runtime_LogSync_Object__get__S")
-__extern xdc_Ptr ti_uia_runtime_LogSync_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_uia_runtime_LogSync_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_Object__first__S, "ti_uia_runtime_LogSync_Object__first__S")
-__extern xdc_Ptr ti_uia_runtime_LogSync_Object__first__S( void );
+__extern xdc_Ptr ti_uia_runtime_LogSync_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_Object__next__S, "ti_uia_runtime_LogSync_Object__next__S")
-__extern xdc_Ptr ti_uia_runtime_LogSync_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_uia_runtime_LogSync_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_Params__init__S, "ti_uia_runtime_LogSync_Params__init__S")
-__extern xdc_Void ti_uia_runtime_LogSync_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_uia_runtime_LogSync_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* enable__E */
 #define ti_uia_runtime_LogSync_enable ti_uia_runtime_LogSync_enable__E
 xdc__CODESECT(ti_uia_runtime_LogSync_enable__E, "ti_uia_runtime_LogSync_enable")
-__extern xdc_Bool ti_uia_runtime_LogSync_enable__E( void );
+__extern xdc_Bool ti_uia_runtime_LogSync_enable__E( void);
 
 /* disable__E */
 #define ti_uia_runtime_LogSync_disable ti_uia_runtime_LogSync_disable__E
 xdc__CODESECT(ti_uia_runtime_LogSync_disable__E, "ti_uia_runtime_LogSync_disable")
-__extern xdc_Bool ti_uia_runtime_LogSync_disable__E( void );
+__extern xdc_Bool ti_uia_runtime_LogSync_disable__E( void);
 
 /* idleHook__E */
 #define ti_uia_runtime_LogSync_idleHook ti_uia_runtime_LogSync_idleHook__E
 xdc__CODESECT(ti_uia_runtime_LogSync_idleHook__E, "ti_uia_runtime_LogSync_idleHook")
-__extern xdc_Void ti_uia_runtime_LogSync_idleHook__E( void );
+__extern xdc_Void ti_uia_runtime_LogSync_idleHook__E( void);
 
 /* timerHook__E */
 #define ti_uia_runtime_LogSync_timerHook ti_uia_runtime_LogSync_timerHook__E
 xdc__CODESECT(ti_uia_runtime_LogSync_timerHook__E, "ti_uia_runtime_LogSync_timerHook")
-__extern xdc_Void ti_uia_runtime_LogSync_timerHook__E( xdc_UArg arg );
+__extern xdc_Void ti_uia_runtime_LogSync_timerHook__E( xdc_UArg arg);
 
 /* putSyncPoint__E */
 #define ti_uia_runtime_LogSync_putSyncPoint ti_uia_runtime_LogSync_putSyncPoint__E
 xdc__CODESECT(ti_uia_runtime_LogSync_putSyncPoint__E, "ti_uia_runtime_LogSync_putSyncPoint")
-__extern xdc_Void ti_uia_runtime_LogSync_putSyncPoint__E( void );
+__extern xdc_Void ti_uia_runtime_LogSync_putSyncPoint__E( void);
 
 /* writeSyncPointRaw__E */
 #define ti_uia_runtime_LogSync_writeSyncPointRaw ti_uia_runtime_LogSync_writeSyncPointRaw__E
 xdc__CODESECT(ti_uia_runtime_LogSync_writeSyncPointRaw__E, "ti_uia_runtime_LogSync_writeSyncPointRaw")
-__extern xdc_Void ti_uia_runtime_LogSync_writeSyncPointRaw__E( const xdc_runtime_Types_Timestamp64 *cpuTS, const xdc_runtime_Types_Timestamp64 *globalTS, const xdc_runtime_Types_FreqHz *globalTickFreq );
+__extern xdc_Void ti_uia_runtime_LogSync_writeSyncPointRaw__E( const xdc_runtime_Types_Timestamp64 *cpuTS, const xdc_runtime_Types_Timestamp64 *globalTS, const xdc_runtime_Types_FreqHz *globalTickFreq);
 xdc__CODESECT(ti_uia_runtime_LogSync_writeSyncPointRaw__F, "ti_uia_runtime_LogSync_writeSyncPointRaw")
-__extern xdc_Void ti_uia_runtime_LogSync_writeSyncPointRaw__F( const xdc_runtime_Types_Timestamp64 *cpuTS, const xdc_runtime_Types_Timestamp64 *globalTS, const xdc_runtime_Types_FreqHz *globalTickFreq );
+__extern xdc_Void ti_uia_runtime_LogSync_writeSyncPointRaw__F( const xdc_runtime_Types_Timestamp64 *cpuTS, const xdc_runtime_Types_Timestamp64 *globalTS, const xdc_runtime_Types_FreqHz *globalTickFreq);
 
 /* isSyncEventRequired__E */
 #define ti_uia_runtime_LogSync_isSyncEventRequired ti_uia_runtime_LogSync_isSyncEventRequired__E
 xdc__CODESECT(ti_uia_runtime_LogSync_isSyncEventRequired__E, "ti_uia_runtime_LogSync_isSyncEventRequired")
-__extern xdc_Bool ti_uia_runtime_LogSync_isSyncEventRequired__E( void );
+__extern xdc_Bool ti_uia_runtime_LogSync_isSyncEventRequired__E( void);
 
 
 /*
@@ -515,8 +517,8 @@ static inline void ti_uia_runtime_LogSync_Params_copy(ti_uia_runtime_LogSync_Par
 #define ti_uia_runtime_LogSync_Object_sizeof() ti_uia_runtime_LogSync_Object__sizeof__C
 
 /* Object_get */
-static inline ti_uia_runtime_LogSync_Handle ti_uia_runtime_LogSync_Object_get(ti_uia_runtime_LogSync_Instance_State *oarr, int i);
-static inline ti_uia_runtime_LogSync_Handle ti_uia_runtime_LogSync_Object_get(ti_uia_runtime_LogSync_Instance_State *oarr, int i) 
+static inline ti_uia_runtime_LogSync_Handle ti_uia_runtime_LogSync_Object_get(ti_uia_runtime_LogSync_Object *oarr, int i);
+static inline ti_uia_runtime_LogSync_Handle ti_uia_runtime_LogSync_Object_get(ti_uia_runtime_LogSync_Object *oarr, int i) 
 {
     return (ti_uia_runtime_LogSync_Handle)ti_uia_runtime_LogSync_Object__get__S(oarr, i);
 }
@@ -664,7 +666,6 @@ struct ti_uia_runtime_LogSync_Object {
 #define LogSync_Object_sizeof ti_uia_runtime_LogSync_Object_sizeof
 #define LogSync_Params_copy ti_uia_runtime_LogSync_Params_copy
 #define LogSync_Params_init ti_uia_runtime_LogSync_Params_init
-#define LogSync_Instance_State ti_uia_runtime_LogSync_Instance_State
 #define LogSync_delete ti_uia_runtime_LogSync_delete
 #define LogSync_destruct ti_uia_runtime_LogSync_destruct
 #define LogSync_Module_upCast ti_uia_runtime_LogSync_Module_upCast

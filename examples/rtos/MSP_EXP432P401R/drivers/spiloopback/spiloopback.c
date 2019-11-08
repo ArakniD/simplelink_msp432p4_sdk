@@ -46,8 +46,8 @@
 #include <ti/drivers/SPI.h>
 #include <ti/display/Display.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 #define SPI_MSG_LENGTH  50
 
@@ -86,7 +86,7 @@ void *slaveThread(void *arg0)
     slaveSpiParams.frameFormat = SPI_POL0_PHA1;
     slaveSpiParams.mode = SPI_SLAVE;
 
-    slaveSpi = SPI_open(Board_SPI1, &slaveSpiParams);
+    slaveSpi = SPI_open(CONFIG_SPI_1, &slaveSpiParams);
     if (slaveSpi == NULL) {
         Display_printf(display, 0, 0, "Error initializing slave SPI\n");
         while (1);
@@ -143,7 +143,7 @@ void *masterThread(void *arg0)
     /* Initialize SPI handle as default master */
     SPI_Params_init(&masterSpiParams);
     masterSpiParams.frameFormat = SPI_POL0_PHA1;
-    masterSpi = SPI_open(Board_SPI0, &masterSpiParams);
+    masterSpi = SPI_open(CONFIG_SPI_0, &masterSpiParams);
     if (masterSpi == NULL) {
         Display_printf(display, 0, 0, "Error initializing master SPI\n");
         while (1);
@@ -164,7 +164,7 @@ void *masterThread(void *arg0)
         masterTransaction.rxBuf = (void *)masterRxBuffer;
 
         /* Turn on user LED, indicating a SPI transfer is in progress */
-        GPIO_write(Board_GPIO_LED1, Board_GPIO_LED_ON);
+        GPIO_write(CONFIG_GPIO_LED_1, CONFIG_GPIO_LED_ON);
 
         /* Initiate SPI transfer */
         transferOK = SPI_transfer(masterSpi, &masterTransaction);
@@ -181,7 +181,7 @@ void *masterThread(void *arg0)
         usleep(500000);
 
         /* Turn off user LED, indicating the SPI transfer is done */
-        GPIO_write(Board_GPIO_LED1, Board_GPIO_LED_OFF);
+        GPIO_write(CONFIG_GPIO_LED_1, CONFIG_GPIO_LED_OFF);
 
         /* Sleep for a bit before starting the next SPI transfer  */
         sleep(3);
@@ -211,8 +211,8 @@ void *mainThread(void *arg0)
     SPI_init();
 
     /* Configure the LED pins */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
-    GPIO_setConfig(Board_GPIO_LED1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_LED_1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 
     /*
      *  Create a barrier to allow the master task to open its SPI
@@ -231,7 +231,7 @@ void *mainThread(void *arg0)
     }
 
     /* Turn on user LED */
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
     Display_printf(display, 0, 0, "Starting the SPI loop-back example\n");
 

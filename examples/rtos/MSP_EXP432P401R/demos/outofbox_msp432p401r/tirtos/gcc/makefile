@@ -7,13 +7,14 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/builds/MSP_EX
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = callbacks.obj led_thread.obj uart_thread.obj MSP_EXP432P401R.obj tirtos_main_tirtos.obj
+OBJECTS = tirtos_main_tirtos.obj callbacks.obj led_thread.obj uart_thread.obj ti_drivers_config.obj
 
 CONFIGPKG = $(KERNEL_BUILD)/gcc
 
 NAME = outofbox_msp432p401r
 
 CFLAGS = -I../.. \
+    -I. \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
     -D__MSP432P401R__ \
@@ -54,7 +55,7 @@ LFLAGS = -Wl,-T,../../tirtos/gcc/MSP_EXP432P401R_TIRTOS.lds \
     -static \
     -Wl,--gc-sections \
     "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib" \
+    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/hard" \
     -lgcc \
     -lc \
     -lm \
@@ -69,23 +70,31 @@ $(CONFIGPKG)/linker.cmd $(CONFIGPKG)/compiler.opt:
 	@ echo You can build it by issuing $(MAKE) in $(CONFIGPKG).
 	@ $(ECHOBLANKLINE)
 
-callbacks.obj: ../../callbacks.c $(CONFIGPKG)/compiler.opt
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../../outofbox_msp432p401r.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
-led_thread.obj: ../../led_thread.c $(CONFIGPKG)/compiler.opt
+callbacks.obj: ../../callbacks.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
-uart_thread.obj: ../../uart_thread.c $(CONFIGPKG)/compiler.opt
+led_thread.obj: ../../led_thread.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
-MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c $(CONFIGPKG)/compiler.opt
+uart_thread.obj: ../../uart_thread.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
-tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c $(CONFIGPKG)/compiler.opt
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
@@ -93,8 +102,10 @@ $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
+
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

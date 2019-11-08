@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,6 +44,10 @@
 
 #include "package/internal/Timer.xdc.h"
 
+/* 
+ * TIMER_DELETED (0) is passed in when you call Timer_delete 
+ * BAD_PERIOD is currently not used
+ */
 #define TIMER_DELETED   0
 #define BAD_TIMER_ID    1
 #define NO_TIMER_AVAIL  2
@@ -104,6 +108,7 @@ Int Timer_Module_startup(Int status)
     obj = Timer_module->handle;
     /* if timer was statically created/constructed */
     if ((obj != NULL) && (obj->staticInst)) {
+        /* This function currently only returns 0. Adjust if this changes */
         Timer_postInit(obj, NULL);
     }
     return (Startup_DONE);
@@ -153,7 +158,6 @@ Timer_Handle Timer_getHandle(UInt id)
 Int Timer_Instance_init(Timer_Object *obj, Int id, Timer_FuncPtr tickFxn, const Timer_Params *params, Error_Block *eb)
 {
     UInt key;
-    Int status;
     Hwi_Params hwiParams;
     UInt tempId = 0xffff;
 
@@ -197,11 +201,8 @@ Int Timer_Instance_init(Timer_Object *obj, Int id, Timer_FuncPtr tickFxn, const 
     obj->extFreq.hi = params->extFreq.hi;
 
     if (obj->periodType == Timer_PeriodType_MICROSECS) {
-        if (!Timer_setPeriodMicroSecs(obj, obj->period)) {
-            Error_raise(eb, Timer_E_cannotSupport, obj->period, 0);
-            Hwi_restore(key);
-            return (BAD_PERIOD);
-        }
+        /* This function currently only returns TRUE. Adjust if this changes */
+        Timer_setPeriodMicroSecs(obj, obj->period);
     }
   
     obj->arg = params->arg;
@@ -235,11 +236,8 @@ Int Timer_Instance_init(Timer_Object *obj, Int id, Timer_FuncPtr tickFxn, const 
         obj->hwi = NULL;
     }
 
-    status = Timer_postInit(obj, eb);
-
-    if (status) {
-        return (status);
-    }
+    /* This function currently only returns 0. Adjust if this changes */
+    Timer_postInit(obj, eb);
 
     if (obj->startMode == Timer_StartMode_AUTO) {
         Timer_start(obj);
@@ -268,9 +266,8 @@ Void Timer_reconfig (Timer_Object *obj, Timer_FuncPtr tickFxn, const Timer_Param
     obj->periodType = params->periodType;
 
     if (obj->periodType == Timer_PeriodType_MICROSECS) {
-        if (!Timer_setPeriodMicroSecs(obj, obj->period)) {
-            Error_raise(eb, Timer_E_cannotSupport, obj->period, 0);
-        }
+        /* This function currently only returns TRUE. Adjust if this changes */
+        Timer_setPeriodMicroSecs(obj, obj->period);        
     }
 
     obj->arg = params->arg;
@@ -294,6 +291,7 @@ Void Timer_reconfig (Timer_Object *obj, Timer_FuncPtr tickFxn, const Timer_Param
         }
     }
 
+    /* This function currently only returns 0. Adjust if this changes */
     Timer_postInit(obj, eb);
 
     if (obj->startMode == Timer_StartMode_AUTO) {
@@ -316,6 +314,10 @@ Int Timer_postInit(Timer_Object *obj, Error_Block *eb)
 
     Hwi_restore(hwiKey);
 
+    /*
+     *  Several places in this file assume that only 0 is returned.
+     *  Adjust them accordingly if this is changes.
+     */
     return (0);
 }
 
@@ -330,9 +332,6 @@ Void Timer_Instance_finalize(Timer_Object *obj, Int status)
     switch (status) {
         /* Timer_delete() */
         case TIMER_DELETED:
-
-        /* setPeriodMicroSecs failed */
-        case BAD_PERIOD:
             Timer_initDevice(obj);
             if (obj->hwi) {
                 Hwi_delete(&obj->hwi);
@@ -497,6 +496,10 @@ Bool Timer_setPeriodMicroSecs(Timer_Object *obj, UInt32 period)
 
     Timer_setPeriod(obj, counts);
 
+    /*
+     *  Several places in this file assume that only TRUE is returned.
+     *  Adjust them accordingly if this is changes.
+     */
     return(TRUE);
 }
 
@@ -647,7 +650,7 @@ UInt32 Timer_getCurrentTick(Timer_Object *obj, Bool saveFlag)
  */
 Void Timer_getFreq(Timer_Object *obj, Types_FreqHz *freq)
 {
-    if (obj->extFreq.lo != NULL) {
+    if (obj->extFreq.lo != 0U) {
         *freq = obj->extFreq;
     }
     else {

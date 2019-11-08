@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,6 @@ package ti.sysbios;
 import xdc.rov.ViewInfo;
 
 import xdc.runtime.Error;
-import xdc.runtime.IHeap;
 import xdc.runtime.Types;
 
 /*! ======== BIOS ========
@@ -113,8 +112,7 @@ import xdc.runtime.Types;
  *
  *  Below is a configuration script excerpt that installs a user-supplied
  *  startup function at every possible control point in the RTSC and
- *  SYS/BIOS startup
- *  sequence:
+ *  SYS/BIOS startup sequence:
  *
  *  @p(code)
  *  // get handle to xdc Startup module
@@ -359,10 +357,10 @@ module BIOS
      *  this string contains the options passed to the compiler during any
      *  build of the SYS/BIOS sources.
      *
-     *  In addition to the options
-     *  specified by `BIOS.customCCOpts`, several `-D` and `-I` options are also
-     *  passed to the compiler.  The options specified by `BIOS.customCCOpts` are,
-     *  however, the first options passed to the compiler on the command line.
+     *  In addition to the options specified by `BIOS.customCCOpts`, several
+     *  `-D` and `-I` options are also passed to the compiler.  The options
+     *  specified by `BIOS.customCCOpts` are, however, the first options passed
+     *  to the compiler on the command line.
      *
      *  To view the custom compiler options, add the following line to your
      *  config script:
@@ -378,16 +376,16 @@ module BIOS
      *
      *  When {@link #libType BIOS.libType} is set to
      *  {@link #LibType_Debug BIOS_LibType_Debug},
-     *  `BIOS.customCCOpts` is initialized to settings that create a non-optimized
-     *  SYS/BIOS library that can be used to single-step through the APIs with
-     *  the CCS debugger.
+     *  `BIOS.customCCOpts` is initialized to settings that create a
+     *  non-optimized SYS/BIOS library that can be used to single-step through
+     *  the APIs with the CCS debugger.
      *
      *  More information about using `BIOS.customCCOpts` is provided in the
      *  {@link http://processors.wiki.ti.com/index.php/SYS/BIOS_FAQs SYS/BIOS FAQs}.
      *
      *  @a(Warning)
-     *  The default value of `BIOS.customCCOpts`, which is derived from the target
-     *  specified by your configuration, includes runtime model options
+     *  The default value of `BIOS.customCCOpts`, which is derived from the
+     *  target specified by your configuration, includes runtime model options
      *  (such as endianess) that must be the same for all sources built and
      *  linked into your application.  You must not change or add any options
      *  that can alter the runtime model specified by the default value of
@@ -426,18 +424,6 @@ module BIOS
      *  {@link http://processors.wiki.ti.com/index.php/SMP/BIOS SMP/BIOS}.
      */
     config Bool smpEnabled = false;
-
-    /*!
-     *  ======== mpeEnabled ========
-     *  Enables Memory Protection Extensions (MPE)
-     *
-     *  SYS/BIOS memory protection extensions add the capability to
-     *  create privileged and unprivileged tasks as well as define
-     *  access privileges for the unprivileged tasks.
-     *
-     *  This functionality is available on only select devices.
-     */
-    config Bool mpeEnabled = false;
 
     /*!
      *  ======== cpuFreq ========
@@ -538,8 +524,8 @@ module BIOS
      *  is set to {@link #LibType_Custom BIOS_LibType_Custom} or
      *  {@link #LibType_Debug BIOS_LibType_Debug}.
      *
-     *  When set to false, Assert checking code is removed from
-     *  the custom library created when BIOS.libType is set to BIOS.LibType_Custom
+     *  When set to false, Assert checking code is removed from the custom
+     *  library created when BIOS.libType is set to BIOS.LibType_Custom
      *  or BIOS.LibType_Debug.
      *  This option can considerably improve runtime performance as well
      *  significantly reduce the application's code size.
@@ -575,36 +561,6 @@ module BIOS
     metaonly config Bool logsEnabled = true;
 
     /*!
-     *  ======== defaultKernelHeapInstance ========
-     *  Default Kernel heap instance
-     *
-     *  If SYS/BIOS Memory Protection Extensions
-     *  {@link #mpeEnabled BIOS.mpeEnabled} are enabled, a dedicated kernel
-     *  heap is created. This heap is used for allocating kernel objects
-     *  when create() calls are made. The kernel heap resides in privileged
-     *  memory and is protected against unauthorized access from User Tasks.
-     */
-    config IHeap.Handle defaultKernelHeapInstance = null;
-
-    /*!
-     *  ======== kernelHeapSize ========
-     *  Kernel heap size, units are in MAUs
-     *
-     *  If SYS/BIOS Memory Protection Extensions
-     *  {@link #mpeEnabled BIOS.mpeEnabled} are enabled, a dedicated kernel
-     *  heap is created. This heap is used for allocating kernel objects
-     *  when create() calls are made. The kernel heap resides in privileged
-     *  memory and is protected against unauthorized access from User Tasks.
-     */
-    config SizeT kernelHeapSize = 0x1000;
-
-    /*!
-     *  ======== kernelHeapSection ========
-     *  Kernel heap section name
-     */
-    config String kernelHeapSection = ".kernel_heap";
-
-    /*!
      *  ======== heapSize ========
      *  Size of system heap, units are in MAUs
      *
@@ -621,14 +577,6 @@ module BIOS
      *  and will therefore be used as the default system heap.  This heap
      *  will also be used by the SYS/BIOS version of the standard C library
      *  functions malloc(), calloc() and free().
-     *
-     *  @a(Note)
-     *  If SYS/BIOS Memory Protection Extensions
-     *  {@link #mpeEnabled BIOS.mpeEnabled} are enabled, a dedicated kernel heap
-     *  is allocated (see
-     *  {@link #defaultKernelHeapInstance BIOS.defaultKernelHeapInstance}). The
-     *  System heap is placed in a public section (accessible from
-     *  privileged and user Tasks) called ".public_heap" by default.
      */
     config SizeT heapSize = 0x1000;
 
@@ -645,14 +593,6 @@ module BIOS
      *
      *  If heapSection is `null` (or `undefined`) the system heap is placed
      *  in the target's default data section.
-     *
-     *  @a(Note)
-     *  If SYS/BIOS Memory Protection Extensions
-     *  {@link #mpeEnabled BIOS.mpeEnabled} are enabled, a dedicated kernel heap
-     *  is allocated (see
-     *  {@link #defaultKernelHeapInstance BIOS.defaultKernelHeapInstance}). The
-     *  System heap is placed in a public section (accessible from
-     *  privileged and user Tasks) called ".public_heap" by default.
      */
     config String heapSection = null;
 
@@ -767,7 +707,7 @@ module BIOS
      *  Example: A macro hex value of 0x64501 implies that the SYS/BIOS
      *  product version number is 6.45.01
      */
-    const UInt32 version = 0x67600;
+    const UInt32 version = 0x68000;
 
     /*!
      *  ======== addUserStartupFunction ========
@@ -964,6 +904,17 @@ internal:
      *  Specify output library directory
      */
     metaonly config String libDir = null;
+
+    /*
+     *  @_nodoc
+     *  ======== codeCoverageEnabled ========
+     *  Setting this to 'true' will tweak other settings for
+     *  code coverage.
+     *
+     *  For example, by setting this to true, the code that melts
+     *  away when hook.length is 0 does not melt away.
+     */
+    metaonly config Bool codeCoverageEnabled = false;
 
     /*
      *  ======== getCCOpts ========

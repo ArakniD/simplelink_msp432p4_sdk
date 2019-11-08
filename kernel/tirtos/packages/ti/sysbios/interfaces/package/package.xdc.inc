@@ -11,12 +11,11 @@ ISettings.xdc
 IPower.xdc
 IRomDevice.xdc
 ISeconds.xdc
-ISysCall.xdc
 package/ti.sysbios.interfaces.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_sysbios_interfaces.java
 package/ti_sysbios_interfaces.class
 package/package_ti.sysbios.interfaces.c
@@ -32,5 +31,4 @@ ICache.h
 IPower.h
 IRomDevice.h
 ISeconds.h
-ISysCall.h
 package/ti.sysbios.interfaces.ccs

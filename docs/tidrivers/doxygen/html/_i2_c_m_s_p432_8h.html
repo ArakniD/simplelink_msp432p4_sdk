@@ -60,7 +60,6 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">I2CMSP432.h File Reference</div>  </div>
@@ -312,15 +311,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a56089976f484fe382d826e0736e0e32d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_i2_c_m_s_p432_8h.html#a56089976f484fe382d826e0736e0e32d">I2CMSP432_P10_3_UCB3SCL</a>&#160;&#160;&#160;0x000001A3</td></tr>
 <tr class="separator:a56089976f484fe382d826e0736e0e32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a953c3d21e5e753bcaf37293850a5dc48"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_i2_c_m_s_p432___h_w_attrs_v1.html">I2CMSP432_HWAttrsV1</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_i2_c_m_s_p432_8h.html#a953c3d21e5e753bcaf37293850a5dc48">I2CMSP432_HWAttrsV1</a></td></tr>
-<tr class="memdesc:a953c3d21e5e753bcaf37293850a5dc48"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2CMSP432 Hardware attributes.  <a href="#a953c3d21e5e753bcaf37293850a5dc48">More...</a><br /></td></tr>
-<tr class="separator:a953c3d21e5e753bcaf37293850a5dc48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ac37ce573655ee78327e304ed2b16a268"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="_i2_c_8h.html#a58fd875c3596b3856b6f1aebbceb3085">I2C_FxnTable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_i2_c_m_s_p432_8h.html#ac37ce573655ee78327e304ed2b16a268">I2CMSP432_fxnTable</a></td></tr>
+<tr class="memitem:ac37ce573655ee78327e304ed2b16a268"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_i2_c___fxn_table.html">I2C_FxnTable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_i2_c_m_s_p432_8h.html#ac37ce573655ee78327e304ed2b16a268">I2CMSP432_fxnTable</a></td></tr>
 <tr class="separator:ac37ce573655ee78327e304ed2b16a268"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -1884,28 +1877,6 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="a953c3d21e5e753bcaf37293850a5dc48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a953c3d21e5e753bcaf37293850a5dc48">&sect;&nbsp;</a></span>I2CMSP432_HWAttrsV1</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_i2_c_m_s_p432___h_w_attrs_v1.html">I2CMSP432_HWAttrsV1</a>  <a class="el" href="struct_i2_c_m_s_p432___h_w_attrs_v1.html">I2CMSP432_HWAttrsV1</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>I2CMSP432 Hardware attributes. </p>
-<p>The baseAddr and intNum fields define the base address and interrupt number of the EUSCI peripheral. And the clockSource field selects the clock to be used by the EUSCI. These values are passed directly to driverlib APIs, and therefore must be populated by driverlib macro definitions, which are found in:</p><ul>
-<li>driverlib/i2c.h</li>
-</ul>
-<p>intPriority is the I2C interrupt priority. This driver uses the ti.dpl interface instead of making OS calls directly, and the corresponding HwiP port handles the interrupt priority in an OS-specific way. For example, in the case of the TI-RTOS kernel port, the intPriority is passed unmodified to Hwi_create() provided by the ti.sysbios.family.arm.m3.Hwi module; so the documentation for the ti.sysbios.family.arm.m3.Hwi module should be referenced for a description of usage of priority.</p>
-<p>clkPin and dataPin define the pin mapping to be used for the SCL and SDA pins, respectively. Macro values defined in this header file should be used for these fields.</p>
-<p>An example structure is shown below: </p><div class="fragment"><div class="line"><span class="keyword">const</span> I2CMSP432_HWAttrs i2cMSP432HWAttrsV1[] = {</div><div class="line">    {</div><div class="line">        .baseAddr = EUSCI_B0_BASE,</div><div class="line">        .intNum = INT_EUSCIB0,</div><div class="line">        .intPriority = (~0),</div><div class="line">        .clockSource = EUSCI_B_I2C_CLOCKSOURCE_SMCLK,</div><div class="line">        .clkPin = <a class="code" href="_i2_c_m_s_p432_8h.html#af8be05cd49f265cbf20080f4c99fc454">I2CMSP432_P1_7_UCB0SCL</a></div><div class="line">        .dataPin = <a class="code" href="_i2_c_m_s_p432_8h.html#aaaffec609d7e2b5d962763969a1abc41">I2CMSP432_P1_6_UCB0SDA</a>,</div><div class="line">    }</div><div class="line">};</div></div><!-- fragment --> 
-</div>
-</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="ac37ce573655ee78327e304ed2b16a268"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac37ce573655ee78327e304ed2b16a268">&sect;&nbsp;</a></span>I2CMSP432_fxnTable</h2>
@@ -1914,7 +1885,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="_i2_c_8h.html#a58fd875c3596b3856b6f1aebbceb3085">I2C_FxnTable</a> I2CMSP432_fxnTable</td>
+          <td class="memname">const <a class="el" href="struct_i2_c___fxn_table.html">I2C_FxnTable</a> I2CMSP432_fxnTable</td>
         </tr>
       </table>
 </div><div class="memdoc">

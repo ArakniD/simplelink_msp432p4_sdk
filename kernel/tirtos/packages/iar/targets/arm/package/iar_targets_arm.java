@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class iar_targets_arm
 {
-    static final String VERS = "@(#) xdc-F14\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -328,7 +328,7 @@ public class iar_targets_arm
         po.addFld("alignDirectiveSupported", $$T_Bool, true, "rh");
         po.addFld("stdTypes", (Proto)om.findStrict("xdc.bld.ITarget.StdTypes", "iar.targets.arm"), Global.newObject("t_IArg", Global.newObject("size", 4L, "align", 4L), "t_Char", Global.newObject("size", 1L, "align", 1L), "t_Double", Global.newObject("size", 8L, "align", 8L), "t_Float", Global.newObject("size", 4L, "align", 4L), "t_Fxn", Global.newObject("size", 4L, "align", 4L), "t_Int", Global.newObject("size", 4L, "align", 4L), "t_Int8", Global.newObject("size", 1L, "align", 1L), "t_Int16", Global.newObject("size", 2L, "align", 2L), "t_Int32", Global.newObject("size", 4L, "align", 4L), "t_Long", Global.newObject("size", 4L, "align", 4L), "t_LDouble", Global.newObject("size", 8L, "align", 8L), "t_LLong", Global.newObject("size", 8L, "align", 8L), "t_Ptr", Global.newObject("size", 4L, "align", 4L), "t_Short", Global.newObject("size", 2L, "align", 2L), "t_Size", Global.newObject("size", 4L, "align", 4L), "t_Int64", Global.newObject("size", 8L, "align", 8L)), "rh");
         po.addFld("profiles", new Proto.Map((Proto)om.findStrict("xdc.bld.ITarget.OptionSet", "iar.targets.arm")), Global.newArray(new Object[]{Global.newArray(new Object[]{"debug", Global.newObject("compileOpts", Global.newObject("copts", "--debug --dlib_config $(rootDir)/inc/c/DLib_Config_Normal.h"), "linkOpts", "--semihosting=iar_breakpoint")}), Global.newArray(new Object[]{"release", Global.newObject("compileOpts", Global.newObject("copts", "-Ohs --dlib_config $(rootDir)/inc/c/DLib_Config_Normal.h"), "linkOpts", "--semihosting=iar_breakpoint")}), Global.newArray(new Object[]{"debug_full", Global.newObject("compileOpts", Global.newObject("copts", "--debug --dlib_config $(rootDir)/inc/c/DLib_Config_Full.h"), "linkOpts", "--semihosting=iar_breakpoint")}), Global.newArray(new Object[]{"release_full", Global.newObject("compileOpts", Global.newObject("copts", "-Ohs --dlib_config $(rootDir)/inc/c/DLib_Config_Full.h"), "linkOpts", "--semihosting=iar_breakpoint")})}), "wh");
-        po.addFld("binaryParser", $$T_Str, "ti.targets.omf.elf.Elf32", "wh");
+        po.addFld("binaryParser", $$T_Str, "xdc.targets.omf.Elf", "wh");
         fxn = Global.get(cap, "module$use");
         if (fxn != null) om.bind("iar.targets.arm.ITarget$$module$use", true);
         if (fxn != null) po.addFxn("module$use", $$T_Met, fxn);

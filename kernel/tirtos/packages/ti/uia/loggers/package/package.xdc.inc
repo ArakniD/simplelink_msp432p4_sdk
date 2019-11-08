@@ -18,7 +18,7 @@ package/ti.uia.loggers.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_uia_loggers.java
 package/ti_uia_loggers.class
 package/package_ti.uia.loggers.c

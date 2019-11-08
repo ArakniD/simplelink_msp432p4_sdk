@@ -59,8 +59,8 @@
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/SDFatFS.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 /* Buffer size used for the file copy process */
 #ifndef CPY_BUFF_SIZE
@@ -160,7 +160,7 @@ void *mainThread(void *arg0)
     SDFatFS_init();
 
     /* Configure the LED pin */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 
     /* Open the display for output */
     display = Display_open(Display_Type_UART, NULL);
@@ -170,7 +170,7 @@ void *mainThread(void *arg0)
     }
 
     /* Turn on user LED */
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
     Display_printf(display, 0, 0, "Starting the FatSD Raw example\n");
     Display_printf(display, 0, 0,
@@ -179,7 +179,7 @@ void *mainThread(void *arg0)
         "You will get errors if your SD card is not formatted with a filesystem.\n");
 
     /* Mount and register the SD Card */
-    sdfatfsHandle = SDFatFS_open(Board_SDFatFS0, DRIVE_NUM);
+    sdfatfsHandle = SDFatFS_open(CONFIG_SDFatFS_0, DRIVE_NUM);
     if (sdfatfsHandle == NULL) {
         Display_printf(display, 0, 0, "Error starting the SD card\n");
         while (1);

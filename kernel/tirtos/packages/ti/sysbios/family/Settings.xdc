@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2017, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -125,17 +125,6 @@ metaonly module Settings inherits ti.sysbios.interfaces.ISettings
      *  @_nodoc
      */
     config String secondsDelegate;
-
-    /*!
-     *  ======== syscallDelegate ========
-     *  Device-specific SysCall module support services
-     *
-     *  This parameter is used by the BIOS Overview Grace page to provide a
-     *  link to the device-specific module.
-     *
-     *  @_nodoc
-     */
-    config String syscallDelegate;
 
     /*!
      *  ======== timerDelegate ========

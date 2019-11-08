@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,7 @@
 /* TI-RTOS Header files */
 #include <ti/drivers/UART.h>
 
-/* Example/Board Header files */
+/* Driver configuration */
 #include "Board.h"
 #include "UARTUtils.h"
 

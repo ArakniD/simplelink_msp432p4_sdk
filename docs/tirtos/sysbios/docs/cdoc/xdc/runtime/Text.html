@@ -25,7 +25,7 @@
 <div class="xdocBrief">
 This module efficiently manages a collection of strings that have common
   substrings.  Collections with a high degree of commonality are stored in
-  much less space than as ordinary table of independent C strings.
+  much less space than as an ordinary table of independent C strings.
 [&nbsp;<a class="xdocBrief" href="#xdoc-desc">more</a>&nbsp;...&nbsp;]
 </div>
 <span id='targ-synop'></span>
@@ -76,12 +76,12 @@ This module efficiently manages a collection of strings that have common
 <div class="xdocSect">DETAILS</div>
 <div class="xdocText">This module efficiently manages a collection of strings that have common
   substrings.  Collections with a high degree of commonality are stored in
-  much less space than as ordinary table of independent C strings.</div>
+  much less space than as an ordinary table of independent C strings.</div>
 <div class="xdocText">To further save space, the "compressed" representation need not even
   be loaded in the target's memory; see <tt><a class="xdoc-link" href="Text.html#is.Loaded" title="isLoaded">isLoaded</a></tt>.</div>
 <div class="xdocText">The total space available for the compressed representation of text strings
-  is limited to 64K characters; each string is represented by a 16-bit
-  "rope id".</div>
+  is limited to 32K characters; the lowest 15 bits of a 16-bit "rope id" are
+  an index of a storage array.</div>
 <div id="xdocSep">
 </div>
 <div id="xdocElems">
@@ -129,19 +129,17 @@ This module efficiently manages a collection of strings that have common
 <div class="xdocText">Character strings managed by this module are allocated together
   with other character strings, and loaded to the target, when this
   parameter is set to its default value <tt>true</tt>. If this parameter is
-  set to <tt>false</tt>, the character strings managed by Text are removed from
-  the application.</div>
-<div class="xdocText">A consequence of setting this parameter to <tt>false</tt> is that all names 
- assigned to static instances are set to NULL, and cannot be displayed by
- the code loaded to the target. Also, the Log Events that automatically
- print instance names will print NULL for any static instance. The same
- code would print the pointers to the names if this parameter is set to
- <tt>true</tt> and 'isLoaded<tt> is set to '</tt>false`.</div>
+  set to <tt>false</tt>, the character strings managed by Text are kept in the
+  application object file, but they are not loaded to the target.</div>
+<div class="xdocText">A consequence of setting this parameter to <tt>false</tt> is that all names
+  assigned to static instances are set to NULL, and cannot be displayed by
+  the code loaded to the target. Also, the Log Events that automatically
+  print instance names will print NULL for any static instance.</div>
 <div class="xdocText">ROV is not affected by this parameter and it will also correctly display
- names of static instances in their modules' views. ROV detects these
- names from the saved configuration files.</div>
+  names of static instances in their modules' views. ROV detects these
+  names from the saved configuration files.</div>
 <div class="xdocText">Module and event IDs are still unique and Log.Events within one module
- have consecutive IDs.</div>
+  have consecutive IDs.</div>
 <div class="xdocSynSpacer">&nbsp;</div>
 <a class="xdocAnchor" id="name.Empty"></a>
 <table class="xdocHdr"><tr>
@@ -468,19 +466,17 @@ This module efficiently manages a collection of strings that have common
 <div class="xdocText">Character strings managed by this module are allocated together
   with other character strings, and loaded to the target, when this
   parameter is set to its default value <tt>true</tt>. If this parameter is
-  set to <tt>false</tt>, the character strings managed by Text are removed from
-  the application.</div>
-<div class="xdocText">A consequence of setting this parameter to <tt>false</tt> is that all names 
- assigned to static instances are set to NULL, and cannot be displayed by
- the code loaded to the target. Also, the Log Events that automatically
- print instance names will print NULL for any static instance. The same
- code would print the pointers to the names if this parameter is set to
- <tt>true</tt> and 'isLoaded<tt> is set to '</tt>false`.</div>
+  set to <tt>false</tt>, the character strings managed by Text are kept in the
+  application object file, but they are not loaded to the target.</div>
+<div class="xdocText">A consequence of setting this parameter to <tt>false</tt> is that all names
+  assigned to static instances are set to NULL, and cannot be displayed by
+  the code loaded to the target. Also, the Log Events that automatically
+  print instance names will print NULL for any static instance.</div>
 <div class="xdocText">ROV is not affected by this parameter and it will also correctly display
- names of static instances in their modules' views. ROV detects these
- names from the saved configuration files.</div>
+  names of static instances in their modules' views. ROV detects these
+  names from the saved configuration files.</div>
 <div class="xdocText">Module and event IDs are still unique and Log.Events within one module
- have consecutive IDs.</div>
+  have consecutive IDs.</div>
 <div class="xdocSect">C SYNOPSIS</div>
 <div class="xdocText"><a class="xdoc-link" href="#is.Loaded" title="Text_isLoaded">Text_isLoaded</a></div>
 <div class="xdocSynSpacer">&nbsp;</div>
@@ -582,12 +578,11 @@ This module efficiently manages a collection of strings that have common
 <div class="xdocSynSpacer">&nbsp;</div>
 <span id="xdoc-sect-1"></span>
 <div class="xdocSect">DETAILS</div>
-<div class="xdocText">All modules have this configuration parameter.  Its name
-  contains the '$' character to ensure it does not conflict with
-  configuration parameters declared by the module.  This allows
-  new configuration parameters to be added in the future without
-  any chance of breaking existing modules.</div>
+<div class="xdocText">All modules have this configuration parameter. Its name contains the '$'
+  character to ensure it does not conflict with configuration parameters
+  declared by the module. This allows new configuration parameters to be 
+  added in the future without any chance of breaking existing modules.</div>
 </div>
-<div id="xdocDate">generated on Sat, 23 Feb 2019 02:50:23 GMT</div>
+<div id="xdocDate">generated on Wed, 28 Aug 2019 17:00:50 GMT</div>
 </div></div></body>
 </html>

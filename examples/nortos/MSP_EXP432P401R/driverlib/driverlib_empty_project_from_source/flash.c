@@ -489,11 +489,11 @@ bool FlashCtl_protectSector(uint_fast8_t memorySpace, uint32_t sectorMask)
         FLCTL->BANK1_MAIN_WEPROT |= sectorMask;
         break;
     case FLASH_INFO_MEMORY_SPACE_BANK0:
-        ASSERT(sectorMask <= 0x04);
+        ASSERT(sectorMask <= 0x03);
         FLCTL->BANK0_INFO_WEPROT |= sectorMask;
         break;
     case FLASH_INFO_MEMORY_SPACE_BANK1:
-        ASSERT(sectorMask <= 0x04);
+        ASSERT(sectorMask <= 0x03);
         FLCTL->BANK1_INFO_WEPROT |= sectorMask;
         break;
 

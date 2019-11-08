@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectSpec>
+    <applicability>
+        <when>
+            <context
+                deviceFamily="MSP432"
+                deviceId="MSP432P4111"
+            />
+        </when>
+    </applicability>
+
+    <import spec="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/freertos/builds/MSP_EXP432P4111/release/ccs/freertos_builds_MSP_EXP432P4111_release_ccs.projectspec"/>
+
+    <project
+        title="Empty Legacy Project"
+        name="empty_legacy_MSP_EXP432P4111_freertos_ccs"
+        configurations="Debug"
+        toolChain="TI"
+        connection="TIXDS110_Connection.xml"
+        device="MSP432P4111"
+        ignoreDefaultDeviceSettings="true"
+        ignoreDefaultCCSSettings="true"
+        references="freertos_builds_MSP_EXP432P4111_release_ccs"
+        requiredVariables="FREERTOS_INSTALL_DIR"
+        compilerBuildOptions="
+            -I${PROJECT_ROOT}
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include
+            --advice:power=none
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/posix/ccs
+            -I${FREERTOS_INSTALL_DIR}/FreeRTOS/Source/include
+            -I${FREERTOS_INSTALL_DIR}/FreeRTOS/Source/portable/CCS/ARM_CM4F
+            -I${WORKSPACE_LOC}/freertos_builds_MSP_EXP432P4111_release_ccs
+            --silicon_version=7M4
+            --code_state=16
+            --little_endian
+            --display_error_number
+            --diag_warning=255
+            --diag_wrap=off
+            --gen_func_subsections=on
+            --float_support=FPv4SPD16
+            --symdebug:dwarf
+            -I${CG_TOOL_ROOT}/include
+        "
+        linkerBuildOptions="
+            -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
+            -lti/display/lib/display.aem4f
+            -lti/grlib/lib/ccs/m4f/grlib.a
+            -lthird_party/spiffs/lib/ccs/m4f/spiffs.a
+            -lti/drivers/lib/drivers_msp432p4x1xi.aem4f
+            -lthird_party/fatfs/lib/ccs/m4f/fatfs.a
+            --diag_suppress=10063
+            -i${WORKSPACE_LOC}/freertos_builds_MSP_EXP432P4111_release_ccs/Debug
+            -lfreertos_builds_MSP_EXP432P4111_release_ccs.lib
+            -lti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib
+            --warn_sections
+            --display_error_number
+            --diag_wrap=off
+            --rom_model
+            -i${CG_TOOL_ROOT}/lib
+            -llibc.a
+        "
+        description="An empty RTOS project that does not use SysConfig">
+
+        <property name="buildProfile" value="release"/>
+        <property name="isHybrid" value="true"/>
+        <group id="empty_legacy.SIMPLELINK_MSP432_SDK.MSP_EXP432P4111.drivers.TI"/>
+        <file path="../../empty_legacy.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../freertos/main_freertos.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/boards/MSP_EXP432P4111/Board.html" openOnCreation="false" excludeFromBuild="false" action="link">
+        </file>
+        <file path="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/boards/MSP_EXP432P4111/Board_legacy.html" openOnCreation="false" excludeFromBuild="false" action="link">
+        </file>
+        <file path="../../Board.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../MSP_EXP432P4111.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../MSP_EXP432P4111.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../freertos/ccs/MSP_EXP432P4111_FREERTOS.cmd" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+    </project>
+</projectSpec>

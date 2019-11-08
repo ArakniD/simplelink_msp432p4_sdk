@@ -6,8 +6,8 @@
 <body>
 <pre class=src>
      1    <span class="comment">/* 
-</span>     2    <span class="comment"> *  Copyright (c) 2008 Texas Instruments. All rights reserved. 
-</span>     3    <span class="comment"> *  This program and the accompanying materials are made available under the 
+</span>     2    <span class="comment"> *  Copyright (c) 2008-2019 Texas Instruments Incorporated
+</span>     3    <span class="comment"> *  This program and the accompanying materials are made available under the
 </span>     4    <span class="comment"> *  terms of the Eclipse Public License v1.0 and Eclipse Distribution License
 </span>     5    <span class="comment"> *  v. 1.0 which accompanies this distribution. The Eclipse Public License is
 </span>     6    <span class="comment"> *  available at http://www.eclipse.org/legal/epl-v10.html and the Eclipse
@@ -27,7 +27,7 @@
 </span>    20    <span class="xdoc"> *  ======== Defaults ========
 </span>    21    <span class="xdoc"> *  Default attributes inherited by all target modules
 </span>    22    <span class="xdoc"> *
-</span>    23    <span class="xdoc"> *  This module defines default values for `common$` structure. If other 
+</span>    23    <span class="xdoc"> *  This module defines default values for `common$` structure. If other
 </span>    24    <span class="xdoc"> *  modules do not set `common$` properties explicitly, these values will be
 </span>    25    <span class="xdoc"> *  used.
 </span>    26    <span class="xdoc"> */</span>
@@ -75,11 +75,11 @@
 </span>    68    <span class="xdoc">     *  module in order for events to be logged.
 </span>    69    <span class="xdoc">     *
 </span>    70    <span class="xdoc">     *  <b>@a(diags_INFO)</b>
-</span>    71    <span class="xdoc">     *  Enables logging of generic informational events. Default is 
+</span>    71    <span class="xdoc">     *  Enables logging of generic informational events. Default is
 </span>    72    <span class="xdoc">     *  `ALWAYS_OFF`.
 </span>    73    <span class="xdoc">     *
 </span>    74    <span class="xdoc">     *  <b>@a(diags_ANALYSIS)</b>
-</span>    75    <span class="xdoc">     *  Enables logging of analysis events, such as benchmarking events. 
+</span>    75    <span class="xdoc">     *  Enables logging of analysis events, such as benchmarking events.
 </span>    76    <span class="xdoc">     *  Default is `ALWAYS_OFF`.
 </span>    77    <span class="xdoc">     *
 </span>    78    <span class="xdoc">     *  <b>@a(diags_USER)</b>
@@ -101,42 +101,42 @@
 </span>    94    <span class="xdoc">     *  the heap specified by `{<b>@link</b> Memory#defaultHeapInstance}`.
 </span>    95    <span class="xdoc">     *
 </span>    96    <span class="xdoc">     *  <b>@a(instanceSection)</b>
-</span>    97    <span class="xdoc">     *  Specify section to be used to place module instances. Default is
-</span>    98    <span class="xdoc">     *  `null`.
-</span>    99    <span class="xdoc">     *
-</span>   100    <span class="xdoc">     *  <b>@a(logger)</b>
-</span>   101    <span class="xdoc">     *  Default logger used by modules to write logs. By default there is 
-</span>   102    <span class="xdoc">     *  no logger.
-</span>   103    <span class="xdoc">     *
-</span>   104    <span class="xdoc">     *  <b>@a(memoryPolicy)</b>
-</span>   105    <span class="xdoc">     *  Used to specify type of application. `Types.STATIC_POLICY` is used when
-</span>   106    <span class="xdoc">     *  all objects are created statically. `Types.CREATE_POLICY` is used when 
-</span>   107    <span class="xdoc">     *  the application creates objects at runtime. `Types.DELETE_POLICY` is
-</span>   108    <span class="xdoc">     *  used when the application creates and deletes objects at runtime. This
-</span>   109    <span class="xdoc">     *  helps eliminate unwanted create and delete code.
-</span>   110    <span class="xdoc">     *
-</span>   111    <span class="xdoc">     *  <b>@a(namedInstance)</b>
-</span>   112    <span class="xdoc">     *  This parameter should be set to `true` if space needs to be allocated in
-</span>   113    <span class="xdoc">     *  instance objects for instance names. Allocating space for a name
-</span>   114    <span class="xdoc">     *  allows object view tools to display the names. The runtime functions
-</span>   115    <span class="xdoc">     *  `Mod_Handle_name()` and `Mod_Handle_label()` defined for each module
-</span>   116    <span class="xdoc">     *  `Mod` can be used to retrieve the name at runtime.
-</span>   117    <span class="xdoc">     *
-</span>   118    <span class="xdoc">     *  <b>@a(namedModule)</b>
-</span>   119    <span class="xdoc">     *  This field allows the name of the module to be retained on the target.
-</span>   120    <span class="xdoc">     *  Setting this to `false` will save space but will also prevent
-</span>   121    <span class="xdoc">     *  the target from being able to display the module names appearing
-</span>   122    <span class="xdoc">     *  in `Log` events and `Error`s.
-</span>   123    <span class="xdoc">     *
-</span>   124    <span class="xdoc">     *  Setting `namedModule` to `false` causes all modules, except for
-</span>   125    <span class="xdoc">     *  `{<b>@link</b> Memory}` and `{<b>@link</b> Main}` to be unnamed by default.  To
-</span>   126    <span class="xdoc">     *  eliminate the string names for these modules you must explicitly
-</span>   127    <span class="xdoc">     *  set their `common$.namedModule` parameters to `false`; without these
-</span>   128    <span class="xdoc">     *  two names, target-side display of error messages is somewhat cryptic.
-</span>   129    <span class="xdoc">     *
-</span>   130    <span class="xdoc">     *  <b>@a(romPatchTable)</b>
-</span>   131    <span class="xdoc">     *  Specify whether modules that are allocated to ROM are patchable.
-</span>   132    <span class="xdoc">     */</span>
+</span>    97    <span class="xdoc">     *  Specify section to be used to place module instances. Default is `null`.
+</span>    98    <span class="xdoc">     *
+</span>    99    <span class="xdoc">     *  <b>@a(logger)</b>
+</span>   100    <span class="xdoc">     *  Default logger used by modules to write logs. By default there is
+</span>   101    <span class="xdoc">     *  no logger.
+</span>   102    <span class="xdoc">     *
+</span>   103    <span class="xdoc">     *  <b>@a(memoryPolicy)</b>
+</span>   104    <span class="xdoc">     *  Used to specify type of application. `Types.STATIC_POLICY` is used when
+</span>   105    <span class="xdoc">     *  all objects are created statically. `Types.CREATE_POLICY` is used when
+</span>   106    <span class="xdoc">     *  the application creates objects at runtime. `Types.DELETE_POLICY` is
+</span>   107    <span class="xdoc">     *  used when the application creates and deletes objects at runtime. This
+</span>   108    <span class="xdoc">     *  helps eliminate unwanted create and delete code.
+</span>   109    <span class="xdoc">     *
+</span>   110    <span class="xdoc">     *  <b>@a(namedInstance)</b>
+</span>   111    <span class="xdoc">     *  This parameter should be set to `true` if space needs to be allocated in
+</span>   112    <span class="xdoc">     *  instance objects for instance names. Allocating space for a name
+</span>   113    <span class="xdoc">     *  allows object view tools to display the names. The runtime functions
+</span>   114    <span class="xdoc">     *  `Mod_Handle_name()` and `Mod_Handle_label()` defined for each module
+</span>   115    <span class="xdoc">     *  `Mod` can be used to retrieve the name at runtime.
+</span>   116    <span class="xdoc">     *
+</span>   117    <span class="xdoc">     *  <b>@a(namedModule)</b>
+</span>   118    <span class="xdoc">     *  This field allows the name of the module to be retained on the target.
+</span>   119    <span class="xdoc">     *  Setting this to `false` will save space but will also prevent
+</span>   120    <span class="xdoc">     *  the target from being able to display the module names appearing
+</span>   121    <span class="xdoc">     *  in `Log` events and `Error`s.
+</span>   122    <span class="xdoc">     *
+</span>   123    <span class="xdoc">     *  Setting `namedModule` to `false` causes all modules, except for
+</span>   124    <span class="xdoc">     *  `{<b>@link</b> Memory}` and `{<b>@link</b> Main}` to be unnamed by default.  To
+</span>   125    <span class="xdoc">     *  eliminate the string names for these modules you must explicitly
+</span>   126    <span class="xdoc">     *  set their `common$.namedModule` parameters to `false`; without these
+</span>   127    <span class="xdoc">     *  two names, target-side display of error messages is somewhat cryptic.
+</span>   128    <span class="xdoc">     *
+</span>   129    <span class="xdoc">     *  <b>@a(romPatchTable)</b>
+</span>   130    <span class="xdoc">     *  Specify whether modules that are allocated to ROM are patchable.
+</span>   131    <span class="xdoc">     */</span>
+   132        <span class="comment">/* REQ_TAG(SYSBIOS-921) */</span>
    133        <span class=key>override</span> <span class=key>metaonly</span> <span class=key>config</span> Types.Common$ common$ = {
    134            diags_ASSERT:       Diags.ALWAYS_ON,
    135            diags_ENTRY:        Diags.ALWAYS_OFF,
@@ -229,7 +229,7 @@
    222        <span class=key>metaonly</span> Any getCommon(IModule.Module mod, String param);
    223    };
    224    <span class="comment">/*
-</span>   225    <span class="comment"> *  @(#) xdc.runtime; 2, 1, 0,0; 2-16-2019 22:17:03; /db/ztree/library/trees/xdc/xdc-G10/src/packages/
+</span>   225    <span class="comment"> *  @(#) xdc.runtime; 2, 1, 0,0; 8-21-2019 13:22:46; /db/ztree/library/trees/xdc/xdc-H25/src/packages/
 </span>   226    <span class="comment"> */</span>
    227    
 </pre>

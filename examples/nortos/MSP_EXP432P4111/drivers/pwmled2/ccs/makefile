@@ -5,11 +5,12 @@ include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = main_nortos.obj pwmled2.obj MSP_EXP432P4111.obj
+OBJECTS = pwmled2.obj main_nortos.obj ti_drivers_config.obj
 
 NAME = pwmled2
 
 CFLAGS = -I.. \
+    -I. \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
     --advice:power=none \
@@ -48,24 +49,34 @@ LFLAGS = "-i$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
 
 all: $(NAME).out
 
-main_nortos.obj: ../main_nortos.c
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../pwmled2.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+pwmled2.obj: ../pwmled2.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-pwmled2.obj: ../pwmled2.c
+main_nortos.obj: ../main_nortos.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-MSP_EXP432P4111.obj: ../MSP_EXP432P4111.c
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
+
 
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

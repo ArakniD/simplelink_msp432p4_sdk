@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,7 @@
 void _DebugP_assert(int expression, const char *file, int line)
 {
     if (!expression) {
-        xdc_runtime_Assert_raise__I(Module__MID, file, line, NULL);
+        xdc_runtime_Assert_raise__I(Module__MID, file, line, 0U);
     }
 }
 /*

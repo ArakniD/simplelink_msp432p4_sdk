@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['capture_5fmode',['Capture_Mode',['../_capture_8h.html#a6382e7d47f7d4551ff15a421e79da231',1,'Capture.h']]],
-  ['capture_5fperiodunits',['Capture_PeriodUnits',['../_capture_8h.html#aaca480a01a184f77deba46e78fd61037',1,'Capture.h']]]
+  ['button_5fevents',['Button_Events',['../_button_8h.html#a616c2f9898615555ed92b3695ba41b6d',1,'Button.h']]],
+  ['button_5fpull',['Button_Pull',['../_button_8h.html#a7540f487e4c8d28b980847bb68e708f5',1,'Button.h']]]
 ];

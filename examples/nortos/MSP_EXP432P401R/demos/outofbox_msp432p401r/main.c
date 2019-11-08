@@ -110,7 +110,7 @@ const uint8_t port_mapping[] =
  * at:
  *http://processors.wiki.ti.com/index.php/USCI_UART_Baud_Rate_Gen_Mode_Selection
  */
-const eUSCI_UART_Config uartConfig =
+const eUSCI_UART_ConfigV1 uartConfig =
 {
         EUSCI_A_UART_CLOCKSOURCE_SMCLK,          // SMCLK Clock Source
         26,                                      // BRDIV = 26
@@ -120,7 +120,8 @@ const eUSCI_UART_Config uartConfig =
         EUSCI_A_UART_LSB_FIRST,                  // MSB First
         EUSCI_A_UART_ONE_STOP_BIT,               // One stop bit
         EUSCI_A_UART_MODE,                       // UART mode
-        EUSCI_A_UART_LOW_FREQUENCY_BAUDRATE_GENERATION  // Low Frequency Mode
+        EUSCI_A_UART_LOW_FREQUENCY_BAUDRATE_GENERATION,  // Low Frequency Mode
+        EUSCI_A_UART_8_BIT_LEN                  // 8 bit data length
 };
 
 

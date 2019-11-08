@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2014-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,9 @@
 
 /* !!! Placed in separate C file to maintain ROM compatability !!! */
 
-#ifdef __ti__
+#if defined(__ti__) && defined(__clang__)
+Void Hwi_startup(void) __attribute__ ((used));
+#elif defined(__ti__)
 #pragma FUNC_EXT_CALLED(ti_sysbios_hal_Hwi_startup__E)
 #endif
 

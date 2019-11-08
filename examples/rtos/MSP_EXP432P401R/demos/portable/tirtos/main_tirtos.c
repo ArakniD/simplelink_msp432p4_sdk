@@ -45,7 +45,7 @@
 /* Driver header files */
 #include <ti/drivers/GPIO.h>
 
-/* Example/Board Header files */
+/* Driver configuration */
 #include <ti/drivers/Board.h>
 
 /* Mutex to protect the reading/writing of the temperature variables */

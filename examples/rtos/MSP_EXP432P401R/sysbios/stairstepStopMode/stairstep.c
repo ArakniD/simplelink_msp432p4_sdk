@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@
 #include <ti/sysbios/hal/Timer.h>
 
 /* Board Header file */
-#include "Board.h"
+#include <ti/drivers/Board.h>
 
 #define LOAD_STEPS    20
 #define PERIOD        100                /* 100 ms (0.1 seconds) */

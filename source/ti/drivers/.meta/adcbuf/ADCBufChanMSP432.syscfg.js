@@ -201,16 +201,23 @@ function onInputSourceChange(inst, ui)
     if (inst.inputSource != "External Pin") {
         ui.mode.hidden = true;
         inst.mode = "Non Differential";
-        if (ui.$hardware) {
-            //ui.$hardware.hidden = true;
-            inst.$hardware = null;
-        }
     }
     else {
         ui.mode.hidden = false;
-        if (ui.$hardware) {
-            //ui.$hardware.hidden = false;
-        }
+    }
+}
+
+/*
+ *  ======== onHardwareChange ========
+ */
+function onHardwareChanged(inst, ui)
+{
+    if (inst.$hardware != null || inst.$hardware != undefined) {
+        inst.inputSource = "External Pin";
+        ui.inputSource.readOnly = true;
+    }
+    else {
+        ui.inputSource.readOnly = false;
     }
 }
 
@@ -225,5 +232,7 @@ exports = {
 
     moduleInstances: moduleInstances,
 
-    filterHardware: filterHardware
+    filterHardware: filterHardware,
+
+    onHardwareChanged: onHardwareChanged
 };

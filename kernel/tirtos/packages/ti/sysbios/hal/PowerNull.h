@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_sysbios_hal_PowerNull__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_hal_PowerNull___VERS 200
@@ -267,7 +269,7 @@ __extern const ti_sysbios_hal_PowerNull_Fxns__ ti_sysbios_hal_PowerNull_Module__
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_hal_PowerNull_Module__startupDone__S, "ti_sysbios_hal_PowerNull_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_hal_PowerNull_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_hal_PowerNull_Module__startupDone__S( void);
 
 
 /*

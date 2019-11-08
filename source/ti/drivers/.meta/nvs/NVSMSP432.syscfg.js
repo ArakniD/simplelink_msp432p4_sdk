@@ -44,10 +44,39 @@ let logWarning = Common.logWarning;
 
 let config = [
     {
+        name         : "regionType",
+        displayName  : "Region Type",
+        description  : "Specifies the type of region used",
+        longDescription:`
+Specifies the type of region used.
+
+* __Generated__ - An internal flash region is automatically generated.
+* __Pointer__ - Provide a pointer to the memory location of a
+predefined internal flash region.
+`,
+        default      : "Generated",
+        options      : [
+            {
+                name: "Generated",
+                description: "An internal flash region is automatically"
+                    + " generated."
+            },
+            {
+                name: "Pointer",
+                description: "Provide a pointer to the memory location"
+                    + " of a predefined internal flash region."
+            }
+        ]
+    },
+    {
         name         : "regionBase",
         displayName  : "Region Base",
-        description  : "Base address of the region. Must be aligned an"
-            + " integer multiple of sector size boundary.",
+        description  : "Base address of the region. Must be aligned on an"
+            + " integer multiple of the sector size.",
+        longDescription : "NOTE: This setting has no effect when using the GCC"
+            + " toolchain. The linker script must be manually modified if"
+            + " the region must be at a specific location. See the nvsinternal"
+            + " example README file for details.",
         displayFormat: "hex",
         default      : 0x0
     },
@@ -102,13 +131,13 @@ function validate(inst, validation)
         let tRegionSize = tinst.regionSize;
         if ((regionBase >= tRegionBase) &&
             (regionBase < (tRegionBase + tRegionSize))) {
-            let message = "Region Base overlaps with NVS region: " + tinst.$name + ".";
+            let message = "Region Base overlaps with NVS region: " + tinst.$ownedBy.$name + ".";
             logWarning(validation, inst, "regionBase", message);
             break;
         }
         if (((regionBase + regionSize) > tRegionBase) &&
             ((regionBase + regionSize) <= (tRegionBase + tRegionSize))) {
-            let message = "Region Base + Region Size overlaps with NVS region: " + tinst.$name + ".";
+            let message = "Region Base + Region Size overlaps with NVS region: " + tinst.$ownedBy.$name + ".";
             logWarning(validation, inst, "regionBase", message);
             break;
         }
@@ -116,9 +145,21 @@ function validate(inst, validation)
 }
 
 /*
+ *  ======== extend ========
+ *  Extends a base exports object to include any device specifics
+ *
+ *  This should only modify the base config
+ */
+ function extend(base)
+ {
+    return (base);
+ }
+
+/*
  *  ======== exports ========
  */
 exports = {
     config: config,
-    validate: validate
+    validate: validate,
+    extend: extend
 };

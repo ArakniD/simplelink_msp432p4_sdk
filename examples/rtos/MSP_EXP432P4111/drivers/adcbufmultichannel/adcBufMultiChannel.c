@@ -30,7 +30,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- *  ======== adcBufContinuousSampling.c ========
+ *  ======== adcbufMultiChannel.c ========
  */
 /* DriverLib Includes */
 #include <stdint.h>
@@ -46,8 +46,8 @@
 #include <ti/display/Display.h>
 #include <ti/display/DisplayUart.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Board Header file */
+#include "ti_drivers_config.h"
 
 #define ADCBUFFERSIZE    (5)
 
@@ -122,17 +122,17 @@ void *mainThread(void *arg0)
     adcBufParams.recurrenceMode = ADCBuf_RECURRENCE_MODE_CONTINUOUS;
     adcBufParams.returnMode = ADCBuf_RETURN_MODE_CALLBACK;
     adcBufParams.samplingFrequency = 200;
-    adcBuf = ADCBuf_open(Board_ADCBUF0, &adcBufParams);
+    adcBuf = ADCBuf_open(CONFIG_ADCBUF0, &adcBufParams);
 
     /* Configure the conversion struct for two channels on same sequencer */
     continuousConversion[0].arg = NULL;
-    continuousConversion[0].adcChannel = Board_ADCBUF0CHANNEL0;
+    continuousConversion[0].adcChannel = CONFIG_ADCBUF0CHANNEL_0;
     continuousConversion[0].sampleBuffer = sampleBufferOne;
     continuousConversion[0].sampleBufferTwo = sampleBufferTwo;
     continuousConversion[0].samplesRequestedCount = ADCBUFFERSIZE;
 
     continuousConversion[1].arg = NULL;
-    continuousConversion[1].adcChannel = Board_ADCBUF0CHANNEL1;
+    continuousConversion[1].adcChannel = CONFIG_ADCBUF0CHANNEL_1;
     continuousConversion[1].sampleBuffer = sampleBufferThree;
     continuousConversion[1].sampleBufferTwo = sampleBufferFour;
     continuousConversion[1].samplesRequestedCount = ADCBUFFERSIZE;

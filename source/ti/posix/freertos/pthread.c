@@ -375,7 +375,7 @@ int pthread_create(pthread_t *newthread, const pthread_attr_t *attr,
     thread->cleanupList = NULL;
     thread->keyList.next = thread->keyList.prev = NULL;
 
-    if (attr->detachstate == PTHREAD_CREATE_JOINABLE) {
+    if (pAttr->detachstate == PTHREAD_CREATE_JOINABLE) {
         /*
          *  Create the join semaphore for pthread_join().  The semaphore
          *  is created in the 'empty' state.

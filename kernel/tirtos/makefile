@@ -19,9 +19,11 @@ BOARDNAME ?= *
 RELEASE-CCS-SUBDIRS   = $(wildcard builds/$(BOARDNAME)/release/ccs/.)
 RELEASE-GCC-SUBDIRS   = $(wildcard builds/$(BOARDNAME)/release/gcc/.)
 RELEASE-IAR-SUBDIRS   = $(wildcard builds/$(BOARDNAME)/release/iar/.)
+RELEASE-TICLANG-SUBDIRS   = $(wildcard builds/$(BOARDNAME)/release/ticlang/.)
 DEBUG-CCS-SUBDIRS     = $(wildcard builds/$(BOARDNAME)/debug/ccs/.)
 DEBUG-GCC-SUBDIRS     = $(wildcard builds/$(BOARDNAME)/debug/gcc/.)
 DEBUG-IAR-SUBDIRS     = $(wildcard builds/$(BOARDNAME)/debug/iar/.)
+DEBUG-TICLANG-SUBDIRS     = $(wildcard builds/$(BOARDNAME)/debug/ticlang/.)
 
 include ../../imports.mak
 
@@ -38,6 +40,10 @@ endif
 ifneq ($(IAR_ARMCOMPILER),)
 	RELEASE-SUBDIRS += $(RELEASE-IAR-SUBDIRS)
 	DEBUG-SUBDIRS += $(DEBUG-IAR-SUBDIRS)
+endif
+ifneq ($(TICLANG_ARMCOMPILER),)
+	RELEASE-SUBDIRS += $(RELEASE-TICLANG-SUBDIRS)
+	DEBUG-SUBDIRS += $(DEBUG-TICLANG-SUBDIRS)
 endif
 
 .PHONY: release debug $(RELEASE-SUBDIRS) $(DEBUG-SUBDIRS)

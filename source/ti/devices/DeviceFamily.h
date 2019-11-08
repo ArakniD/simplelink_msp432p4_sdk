@@ -169,6 +169,11 @@ extern "C" {
     #if !defined(__MTL__)
         #define __MTL__
     #endif
+
+    #if !defined(__CPUSS0__) && !defined(__CPUSS1__)
+        #error "CPU not selected. You must define '__CPUSS0__' or '__CPUSS1__' when building an MTXX image!"
+    #endif
+
 #else
     #error "DeviceFamily_XYZ undefined. You must define a DeviceFamily_XYZ!"
 #endif

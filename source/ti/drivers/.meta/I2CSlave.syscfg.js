@@ -103,6 +103,15 @@ function filterHardware(component)
 }
 
 /*
+ *  ======== _getPinResources ========
+ */
+/* istanbul ignore next */
+function _getPinResources(inst)
+{
+    return;
+}
+
+/*
  *  ======== validate ========
  *  Validate this inst's configuration
  *
@@ -134,13 +143,15 @@ let base = {
 [3]: /tidrivers/doxygen/html/_i2_c_slave_8h.html#ti_drivers_I2CSlave_Examples "C usage examples"
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#I2CSlave_Configuration_Options "Configuration options reference"
 `,
-    defaultInstanceName: "Board_I2CSLAVE",
-    config: Common.addNameConfig(config, "/ti/drivers/I2CSlave", "Board_I2CSLAVE"),
+    defaultInstanceName: "CONFIG_I2CSLAVE_",
+    config: Common.addNameConfig(config, "/ti/drivers/I2CSlave", "CONFIG_I2CSLAVE_"),
     validate: validate,
     modules: Common.autoForceModules(["Board", "Power"]),
     busModule: true, /* true => instances of this module can be shared */
     filterHardware: filterHardware,
-    pinmuxRequirements: pinmuxRequirements
+    pinmuxRequirements: pinmuxRequirements,
+
+    _getPinResources: _getPinResources
 };
 
 /* extend the base exports to include family-specific content */

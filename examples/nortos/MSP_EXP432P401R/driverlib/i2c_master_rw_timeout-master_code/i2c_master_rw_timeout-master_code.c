@@ -155,7 +155,6 @@ void EUSCIB0_IRQHandler(void)
     uint_fast16_t status;
 
     status = MAP_I2C_getEnabledInterruptStatus(EUSCI_B0_BASE);
-    MAP_I2C_clearInterruptFlag(EUSCI_B0_BASE, status);
 
     /* Check for clock low timeout and increment timeout counter */
     if (status & EUSCI_B_I2C_CLOCK_LOW_TIMEOUT_INTERRUPT)

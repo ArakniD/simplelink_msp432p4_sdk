@@ -9,55 +9,55 @@
     <includes local="no">ti/drivers/dpl/SemaphoreP.h</includes>
     <includes refid="_power_8h" local="no">ti/drivers/Power.h</includes>
     <incdepgraph>
-      <node id="111">
+      <node id="119">
         <label>stdbool.h</label>
       </node>
-      <node id="116">
-        <label>ti/drivers/utils/List.h</label>
-        <link refid="_list_8h"/>
-        <childnode refid="110" relation="include">
+      <node id="117">
+        <label>I2CMSP432.h</label>
+        <link refid="_i2_c_m_s_p432_8h"/>
+        <childnode refid="118" relation="include">
         </childnode>
-        <childnode refid="111" relation="include">
+        <childnode refid="119" relation="include">
         </childnode>
-        <childnode refid="117" relation="include">
+        <childnode refid="120" relation="include">
+        </childnode>
+        <childnode refid="121" relation="include">
+        </childnode>
+        <childnode refid="122" relation="include">
+        </childnode>
+        <childnode refid="123" relation="include">
         </childnode>
       </node>
-      <node id="110">
-        <label>stdint.h</label>
-      </node>
-      <node id="114">
-        <label>ti/drivers/dpl/SemaphoreP.h</label>
-      </node>
-      <node id="112">
+      <node id="120">
         <label>ti/drivers/I2C.h</label>
         <link refid="_i2_c_8h"/>
       </node>
-      <node id="117">
+      <node id="118">
+        <label>stdint.h</label>
+      </node>
+      <node id="122">
+        <label>ti/drivers/dpl/SemaphoreP.h</label>
+      </node>
+      <node id="125">
         <label>stddef.h</label>
       </node>
-      <node id="115">
-        <label>ti/drivers/Power.h</label>
-        <link refid="_power_8h"/>
-        <childnode refid="116" relation="include">
-        </childnode>
-      </node>
-      <node id="113">
+      <node id="121">
         <label>ti/drivers/dpl/HwiP.h</label>
       </node>
-      <node id="109">
-        <label>I2CMSP432.h</label>
-        <link refid="_i2_c_m_s_p432_8h"/>
-        <childnode refid="110" relation="include">
+      <node id="124">
+        <label>ti/drivers/utils/List.h</label>
+        <link refid="_list_8h"/>
+        <childnode refid="118" relation="include">
         </childnode>
-        <childnode refid="111" relation="include">
+        <childnode refid="119" relation="include">
         </childnode>
-        <childnode refid="112" relation="include">
+        <childnode refid="125" relation="include">
         </childnode>
-        <childnode refid="113" relation="include">
-        </childnode>
-        <childnode refid="114" relation="include">
-        </childnode>
-        <childnode refid="115" relation="include">
+      </node>
+      <node id="123">
+        <label>ti/drivers/Power.h</label>
+        <link refid="_power_8h"/>
+        <childnode refid="124" relation="include">
         </childnode>
       </node>
     </incdepgraph>
@@ -1208,36 +1208,9 @@
         <location file="exports/tidrivers_msp432/source/ti/drivers/i2c/I2CMSP432.h" line="350" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/i2c/I2CMSP432.h" bodystart="350" bodyend="-1"/>
       </memberdef>
       </sectiondef>
-      <sectiondef kind="typedef">
-      <memberdef kind="typedef" id="_i2_c_m_s_p432_8h_1a953c3d21e5e753bcaf37293850a5dc48" prot="public" static="no">
-        <type>struct <ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1" kindref="compound">I2CMSP432_HWAttrsV1</ref></type>
-        <definition>typedef struct I2CMSP432_HWAttrsV1  I2CMSP432_HWAttrsV1</definition>
-        <argsstring></argsstring>
-        <name>I2CMSP432_HWAttrsV1</name>
-        <briefdescription>
-<para>I2CMSP432 Hardware attributes. </para>        </briefdescription>
-        <detaileddescription>
-<para>The baseAddr and intNum fields define the base address and interrupt number of the EUSCI peripheral. And the clockSource field selects the clock to be used by the EUSCI. These values are passed directly to driverlib APIs, and therefore must be populated by driverlib macro definitions, which are found in:<itemizedlist>
-<listitem><para>driverlib/i2c.h</para></listitem></itemizedlist>
-</para><para>intPriority is the I2C interrupt priority. This driver uses the ti.dpl interface instead of making OS calls directly, and the corresponding HwiP port handles the interrupt priority in an OS-specific way. For example, in the case of the TI-RTOS kernel port, the intPriority is passed unmodified to Hwi_create() provided by the ti.sysbios.family.arm.m3.Hwi module; so the documentation for the ti.sysbios.family.arm.m3.Hwi module should be referenced for a description of usage of priority.</para><para>clkPin and dataPin define the pin mapping to be used for the SCL and SDA pins, respectively. Macro values defined in this header file should be used for these fields.</para><para>An example structure is shown below: <programlisting><codeline><highlight class="normal">const<sp/>I2CMSP432_HWAttrs<sp/>i2cMSP432HWAttrsV1[]<sp/>=<sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.baseAddr<sp/>=<sp/>EUSCI_B0_BASE,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_EUSCIB0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>(~0),</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>EUSCI_B_I2C_CLOCKSOURCE_SMCLK,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clkPin<sp/>=<sp/>I2CMSP432_P1_7_UCB0SCL</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.dataPin<sp/>=<sp/>I2CMSP432_P1_6_UCB0SDA,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline><highlight class="normal">};</highlight></codeline>
-</programlisting> </para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/i2c/I2CMSP432.h" line="448" column="1"/>
-      </memberdef>
-      </sectiondef>
       <sectiondef kind="var">
       <memberdef kind="variable" id="_i2_c_m_s_p432_8h_1ac37ce573655ee78327e304ed2b16a268" prot="public" static="no" mutable="no">
-        <type>const <ref refid="_i2_c_8h_1a58fd875c3596b3856b6f1aebbceb3085" kindref="member">I2C_FxnTable</ref></type>
+        <type>const <ref refid="struct_i2_c___fxn_table" kindref="compound">I2C_FxnTable</ref></type>
         <definition>const I2C_FxnTable I2CMSP432_fxnTable</definition>
         <argsstring></argsstring>
         <name>I2CMSP432_fxnTable</name>
@@ -1262,7 +1235,7 @@
 </para>    </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2018,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2019,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
 <codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
 <codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
@@ -1318,17 +1291,17 @@
 <codeline lineno="55"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ti_drivers_i2c_I2CMSP432__include</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="56"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_drivers_i2c_I2CMSP432__include</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="57"><highlight class="normal"></highlight></codeline>
-<codeline lineno="58"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="59"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="60"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="61"><highlight class="normal"></highlight></codeline>
-<codeline lineno="62"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="63"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="64"><highlight class="normal"></highlight></codeline>
-<codeline lineno="65"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_i2_c_8h" kindref="compound">ti/drivers/I2C.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="66"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/HwiP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="67"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/SemaphoreP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="68"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_power_8h" kindref="compound">ti/drivers/Power.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_i2_c_8h" kindref="compound">ti/drivers/I2C.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/HwiP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/SemaphoreP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_power_8h" kindref="compound">ti/drivers/Power.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="69"><highlight class="normal"></highlight></codeline>
 <codeline lineno="70"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
 <codeline lineno="71"><highlight class="comment"><sp/>*<sp/><sp/>I2C<sp/>port/pin<sp/>defines<sp/>for<sp/>pin<sp/>configuration.<sp/><sp/>Ports<sp/>P2,<sp/>P3,<sp/>and<sp/>P7<sp/>are</highlight></codeline>
@@ -1591,55 +1564,56 @@
 <codeline lineno="377"><highlight class="comment">/*<sp/>Add<sp/>I2CMSP432_CMD_*<sp/>macros<sp/>here<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="378"><highlight class="normal"></highlight></codeline>
 <codeline lineno="381"><highlight class="comment">/*<sp/>I2C<sp/>function<sp/>table<sp/>pointer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="382"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_i2_c___fxn_table__" kindref="compound">I2C_FxnTable</ref><sp/><ref refid="_i2_c_m_s_p432_8h_1ac37ce573655ee78327e304ed2b16a268" kindref="member">I2CMSP432_fxnTable</ref>;</highlight></codeline>
+<codeline lineno="382"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_i2_c___fxn_table" kindref="compound">I2C_FxnTable</ref><sp/><ref refid="_i2_c_m_s_p432_8h_1ac37ce573655ee78327e304ed2b16a268" kindref="member">I2CMSP432_fxnTable</ref>;</highlight></codeline>
 <codeline lineno="383"><highlight class="normal"></highlight></codeline>
-<codeline lineno="390"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>I2CMSP432_Mode<sp/>{</highlight></codeline>
+<codeline lineno="390"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{</highlight></codeline>
 <codeline lineno="391"><highlight class="normal"><sp/><sp/><sp/><sp/>I2CMSP432_IDLE_MODE<sp/>=<sp/>0,<sp/><sp/></highlight><highlight class="comment">/*<sp/>I2C<sp/>is<sp/>not<sp/>performing<sp/>a<sp/>transaction<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="392"><highlight class="normal"><sp/><sp/><sp/><sp/>I2CMSP432_WRITE_MODE,<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>I2C<sp/>is<sp/>currently<sp/>performing<sp/>write<sp/>operations<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/>I2CMSP432_READ_MODE,<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>I2C<sp/>is<sp/>currently<sp/>performing<sp/>read<sp/>operations<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="394"><highlight class="normal"><sp/><sp/><sp/><sp/>I2CMSP432_ERROR<sp/>=<sp/>0xFF<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>I2C<sp/>error<sp/>has<sp/>occurred,<sp/>exit<sp/>gracefully<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="395"><highlight class="normal">}<sp/>I2CMSP432_Mode;</highlight></codeline>
-<codeline lineno="435" refid="struct_i2_c_m_s_p432___h_w_attrs_v1" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1" kindref="compound">I2CMSP432_HWAttrsV1</ref><sp/>{</highlight></codeline>
-<codeline lineno="437" refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a9b8f84235ac43c5170dece6a57b5174d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a9b8f84235ac43c5170dece6a57b5174d" kindref="member">baseAddr</ref>;</highlight></codeline>
-<codeline lineno="439" refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a0999c3d52304de6f9cc2b9b13b0b8141" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a0999c3d52304de6f9cc2b9b13b0b8141" kindref="member">intNum</ref>;</highlight></codeline>
-<codeline lineno="441" refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a60fdd9557bde5c3a859112d1c33791f4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a60fdd9557bde5c3a859112d1c33791f4" kindref="member">intPriority</ref>;</highlight></codeline>
-<codeline lineno="443" refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a69caa7ec8948af6f4e9789787fef8ead" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a69caa7ec8948af6f4e9789787fef8ead" kindref="member">clockSource</ref>;</highlight></codeline>
-<codeline lineno="445" refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a4dd84ac08dcdf1836b0ee99f7980c5bd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a4dd84ac08dcdf1836b0ee99f7980c5bd" kindref="member">clkPin</ref>;</highlight></codeline>
-<codeline lineno="447" refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a692daec32f2086bacff69d55fc12f8d7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a692daec32f2086bacff69d55fc12f8d7" kindref="member">dataPin</ref>;</highlight></codeline>
-<codeline lineno="448"><highlight class="normal">}<sp/><ref refid="_i2_c_m_s_p432_8h_1a953c3d21e5e753bcaf37293850a5dc48" kindref="member">I2CMSP432_HWAttrsV1</ref>;</highlight></codeline>
-<codeline lineno="449"><highlight class="normal"></highlight></codeline>
-<codeline lineno="455"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">I2CMSP432_Object<sp/>{</highlight></codeline>
-<codeline lineno="456"><highlight class="normal"><sp/><sp/><sp/><sp/>SemaphoreP_Handle<sp/>mutex;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Grants<sp/>exclusive<sp/>access<sp/>to<sp/>I2C<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="457"><highlight class="normal"><sp/><sp/><sp/><sp/>SemaphoreP_Handle<sp/>transferComplete;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Notify<sp/>finished<sp/>I2C<sp/>transfer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="458"><highlight class="normal"></highlight></codeline>
-<codeline lineno="459"><highlight class="normal"><sp/><sp/><sp/><sp/>HwiP_Handle<sp/><sp/><sp/><sp/><sp/><sp/><sp/>hwiHandle;</highlight></codeline>
-<codeline lineno="460"><highlight class="normal"></highlight></codeline>
-<codeline lineno="461"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_i2_c___transaction" kindref="compound">I2C_Transaction</ref><sp/><sp/>*currentTransaction;<sp/><sp/></highlight><highlight class="comment">/*<sp/>Ptr<sp/>to<sp/>current<sp/>I2C<sp/>transaction<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="462"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_i2_c_8h_1adaa5c99b7c23a00bac52d15a2469764e" kindref="member">I2C_CallbackFxn</ref><sp/><sp/><sp/>transferCallbackFxn;<sp/></highlight><highlight class="comment">/*<sp/>Callback<sp/>function<sp/>pointer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="463"><highlight class="normal"></highlight></codeline>
-<codeline lineno="464"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>I2C<sp/>transaction<sp/>pointers<sp/>for<sp/>I2C_MODE_CALLBACK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="465"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_i2_c___transaction" kindref="compound">I2C_Transaction</ref><sp/><sp/>*headPtr;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Head<sp/>ptr<sp/>for<sp/>queued<sp/>transactions<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="466"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_i2_c___transaction" kindref="compound">I2C_Transaction</ref><sp/><sp/>*tailPtr;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Tail<sp/>ptr<sp/>for<sp/>queued<sp/>transactions<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="467"><highlight class="normal"></highlight></codeline>
-<codeline lineno="468"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*writeBufIdx;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Internal<sp/>inc.<sp/>writeBuf<sp/>index<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="469"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>writeCountIdx;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Internal<sp/>dec.<sp/>writeCounter<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="470"><highlight class="normal"></highlight></codeline>
-<codeline lineno="471"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*readBufIdx;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Internal<sp/>inc.<sp/>readBuf<sp/>index<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="472"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>readCountIdx;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Internal<sp/>dec.<sp/>readCounter<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="473"><highlight class="normal"></highlight></codeline>
-<codeline lineno="474"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_power___notify_obj" kindref="compound">Power_NotifyObj</ref><sp/><sp/><sp/>perfChangeNotify;</highlight></codeline>
-<codeline lineno="475"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>perfConstraintMask;</highlight></codeline>
-<codeline lineno="476"><highlight class="normal"></highlight></codeline>
-<codeline lineno="477"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">volatile</highlight><highlight class="normal"><sp/>I2CMSP432_Mode<sp/>mode;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Stores<sp/>the<sp/>I2C<sp/>state<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="478"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_i2_c_8h_1a39f3b9340fc4ee241b0d2da9b2841c26" kindref="member">I2C_TransferMode</ref><sp/><sp/>transferMode;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Blocking<sp/>or<sp/>Callback<sp/>mode<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="479"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bitRate;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>SPI<sp/>bit<sp/>rate<sp/>in<sp/>Hz<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="480"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>isOpen;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>To<sp/>determine<sp/>if<sp/>the<sp/>SPI<sp/>is<sp/>open<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="481"><highlight class="normal">}<sp/>I2CMSP432_Object;</highlight></codeline>
-<codeline lineno="484"><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="485"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="486"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="487"><highlight class="normal"></highlight></codeline>
-<codeline lineno="488"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_i2c_I2CMSP432__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+<codeline lineno="394"><highlight class="normal"><sp/><sp/><sp/><sp/>I2CMSP432_TIMEOUT,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>I2C<sp/>timed-out<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="395"><highlight class="normal"><sp/><sp/><sp/><sp/>I2CMSP432_ERROR<sp/>=<sp/>0xFF<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>I2C<sp/>error<sp/>has<sp/>occurred,<sp/>exit<sp/>gracefully<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="396"><highlight class="normal">}<sp/>I2CMSP432_Mode;</highlight></codeline>
+<codeline lineno="436" refid="struct_i2_c_m_s_p432___h_w_attrs_v1" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="438" refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a9b8f84235ac43c5170dece6a57b5174d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a9b8f84235ac43c5170dece6a57b5174d" kindref="member">baseAddr</ref>;</highlight></codeline>
+<codeline lineno="440" refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a0999c3d52304de6f9cc2b9b13b0b8141" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a0999c3d52304de6f9cc2b9b13b0b8141" kindref="member">intNum</ref>;</highlight></codeline>
+<codeline lineno="442" refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a60fdd9557bde5c3a859112d1c33791f4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a60fdd9557bde5c3a859112d1c33791f4" kindref="member">intPriority</ref>;</highlight></codeline>
+<codeline lineno="444" refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a69caa7ec8948af6f4e9789787fef8ead" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a69caa7ec8948af6f4e9789787fef8ead" kindref="member">clockSource</ref>;</highlight></codeline>
+<codeline lineno="446" refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a4dd84ac08dcdf1836b0ee99f7980c5bd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a4dd84ac08dcdf1836b0ee99f7980c5bd" kindref="member">clkPin</ref>;</highlight></codeline>
+<codeline lineno="448" refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a692daec32f2086bacff69d55fc12f8d7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1_1a692daec32f2086bacff69d55fc12f8d7" kindref="member">dataPin</ref>;</highlight></codeline>
+<codeline lineno="449"><highlight class="normal">}<sp/><ref refid="struct_i2_c_m_s_p432___h_w_attrs_v1" kindref="compound">I2CMSP432_HWAttrsV1</ref>;</highlight></codeline>
+<codeline lineno="450"><highlight class="normal"></highlight></codeline>
+<codeline lineno="456"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="457"><highlight class="normal"><sp/><sp/><sp/><sp/>SemaphoreP_Handle<sp/>mutex;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Grants<sp/>exclusive<sp/>access<sp/>to<sp/>I2C<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="458"><highlight class="normal"><sp/><sp/><sp/><sp/>SemaphoreP_Handle<sp/>transferComplete;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Notify<sp/>finished<sp/>I2C<sp/>transfer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="459"><highlight class="normal"></highlight></codeline>
+<codeline lineno="460"><highlight class="normal"><sp/><sp/><sp/><sp/>HwiP_Handle<sp/><sp/><sp/><sp/><sp/><sp/><sp/>hwiHandle;</highlight></codeline>
+<codeline lineno="461"><highlight class="normal"></highlight></codeline>
+<codeline lineno="462"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_i2_c___transaction" kindref="compound">I2C_Transaction</ref><sp/><sp/>*currentTransaction;<sp/><sp/></highlight><highlight class="comment">/*<sp/>Ptr<sp/>to<sp/>current<sp/>I2C<sp/>transaction<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="463"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_i2_c_8h_1adaa5c99b7c23a00bac52d15a2469764e" kindref="member">I2C_CallbackFxn</ref><sp/><sp/><sp/>transferCallbackFxn;<sp/></highlight><highlight class="comment">/*<sp/>Callback<sp/>function<sp/>pointer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="464"><highlight class="normal"></highlight></codeline>
+<codeline lineno="465"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>I2C<sp/>transaction<sp/>pointers<sp/>for<sp/>I2C_MODE_CALLBACK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="466"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_i2_c___transaction" kindref="compound">I2C_Transaction</ref><sp/><sp/>*headPtr;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Head<sp/>ptr<sp/>for<sp/>queued<sp/>transactions<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="467"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_i2_c___transaction" kindref="compound">I2C_Transaction</ref><sp/><sp/>*tailPtr;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Tail<sp/>ptr<sp/>for<sp/>queued<sp/>transactions<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="468"><highlight class="normal"></highlight></codeline>
+<codeline lineno="469"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*writeBufIdx;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Internal<sp/>inc.<sp/>writeBuf<sp/>index<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="470"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>writeCountIdx;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Internal<sp/>dec.<sp/>writeCounter<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="471"><highlight class="normal"></highlight></codeline>
+<codeline lineno="472"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*readBufIdx;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Internal<sp/>inc.<sp/>readBuf<sp/>index<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="473"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>readCountIdx;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Internal<sp/>dec.<sp/>readCounter<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="474"><highlight class="normal"></highlight></codeline>
+<codeline lineno="475"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_power___notify_obj" kindref="compound">Power_NotifyObj</ref><sp/><sp/><sp/>perfChangeNotify;</highlight></codeline>
+<codeline lineno="476"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>perfConstraintMask;</highlight></codeline>
+<codeline lineno="477"><highlight class="normal"></highlight></codeline>
+<codeline lineno="478"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">volatile</highlight><highlight class="normal"><sp/>I2CMSP432_Mode<sp/>mode;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Stores<sp/>the<sp/>I2C<sp/>state<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="479"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_i2_c_8h_1a39f3b9340fc4ee241b0d2da9b2841c26" kindref="member">I2C_TransferMode</ref><sp/><sp/>transferMode;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Blocking<sp/>or<sp/>Callback<sp/>mode<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="480"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bitRate;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>SPI<sp/>bit<sp/>rate<sp/>in<sp/>Hz<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="481"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>isOpen;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>To<sp/>determine<sp/>if<sp/>the<sp/>SPI<sp/>is<sp/>open<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="482"><highlight class="normal">}<sp/>I2CMSP432_Object;</highlight></codeline>
+<codeline lineno="485"><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="486"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="487"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="488"><highlight class="normal"></highlight></codeline>
+<codeline lineno="489"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_i2c_I2CMSP432__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
     <location file="exports/tidrivers_msp432/source/ti/drivers/i2c/I2CMSP432.h"/>
   </compounddef>

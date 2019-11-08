@@ -95,7 +95,7 @@ int_fast16_t Random_seedAutomatic(void) {
 
     TRNG_init();
 
-    TRNG_Handle handle = TRNGCC26XX_construct(&config, &params);
+    TRNG_Handle handle = TRNG_construct(&config, &params);
 
     if (!handle) {
         return Random_STATUS_ERROR;

@@ -70,23 +70,11 @@ ti_sysbios_family_arm_m3_Hwi_dispatch__I:
 ; If this hwi switched to MSP then IRP is on PSP stack
 ; else if this is a nested interrupt then IRP is on current MSP stack
 ;
-    .if ti_sysbios_BIOS_mpeEnabled__D
-        mrs     r0, control
-        tst     lr, #4          ; context on PSP?
-        itte    NE
-        mrsne   r1, psp         ; if yes, then use PSP
-        strne   r0, [r1, #-8]!  ; save control register
-        moveq   r1, sp          ; else use MSP
-        bic     r0, #1
-        msr     control, r0     ; make thread mode privileged
-        ldr     r0, [r1, #32]   ; get IRP (2nd of 8 items to be pushed)
-    .else
         tst     lr, #4          ; context on PSP?
         ite     NE
         mrsne   r1, psp         ; if yes, then use PSP
         moveq   r1, sp          ; else use MSP
         ldr     r0, [r1, #24]   ; get IRP (2nd of 8 items to be pushed)
-    .endif
 
     .if __TI_VFP_SUPPORT__
         sub     r2, r1, #72     ; make room for 9 FP regs
@@ -96,9 +84,6 @@ ti_sysbios_family_arm_m3_Hwi_dispatch__I:
         vstmdb  {d0-d7}, r1!    ; push vfp scratch regs on appropriate stack
         vmrs    r2, fpscr       ; push fpscr too
         str     r2, [r1, #-8]!  ; (keep even align)
-    .elseif ti_sysbios_BIOS_mpeEnabled__D
-        it      NE              ; CCs are still valid from tst lr above
-        msrne   psp, r1         ; update appropriate SP
     .endif
 
         mrs     r1, basepri
@@ -110,11 +95,18 @@ ti_sysbios_family_arm_m3_Hwi_dispatch__I:
                                 ; dispatcher returns swi and task keys in r0
 
 ; Here on return from dispatcher, r0 = tskKey, interrupts disabled
-
+    .if ti_sysbios_Build_useIndirectReferences
+        ldr     r2, xdcRomStatePointer
+        ldr     r2, [r2]
+        ldr     r1, [r2, #ti_sysbios_family_arm_m3_Hwi_module_state_swiTaskKeys_offset]
+        and     r0, r1, r0
+        str     r0, [r2, #ti_sysbios_family_arm_m3_Hwi_module_state_swiTaskKeys_offset]
+    .else
         ldr     r2, swiTaskKeyAddr
         ldr     r1, [r2]
         and     r0, r1, r0
         str     r0, [r2]
+    .endif
 
         pop     {lr}            ; restore EXC_RETURN
         tst     lr, #8          ; returning to thread mode?
@@ -164,11 +156,20 @@ $2
 
 ; copy saved swi and task keys into interrupt context
 
+    .if ti_sysbios_Build_useIndirectReferences
+        ldr     r3, xdcRomStatePointer
+        ldr     r3, [r3]
+        ldr     r0, [r3, #ti_sysbios_family_arm_m3_Hwi_module_state_swiTaskKeys_offset]
+        str     r0, [r1]        ; tskkey pops into r0
+        movw.w  r0, #0x00000101
+        str     r0, [r3, #ti_sysbios_family_arm_m3_Hwi_module_state_swiTaskKeys_offset] ; re-init swiTaskKey
+    .else
         ldr     r3, swiTaskKeyAddr
         ldr     r0, [r3]
         str     r0, [r1]        ; tskkey pops into r0
         movw.w  r0, #0x00000101
         str     r0, [r3]        ; re-init swiTaskKey
+    .endif
 
         bx      lr              ; EXC_RETURN to $1 below
 
@@ -189,9 +190,9 @@ $1
         push    {r0}            ; push copy of swiTaskKey
 
         mrs     r1, control     ; on ISR stack already?
-        tst     r1, #2
+        cmp     r1, #0
         itt     NE
-        bicne   r2, r1, #2      ; no,
+        movne   r2, #0          ; no,
         msrne   control, r2     ; switch to ISR stack
 
         push    {r1}            ; push old control reg onto ISR stack (MSP)
@@ -203,9 +204,11 @@ $1
         pop     {r0}            ; pop dummy
         pop     {r0}            ; pop old control register
 
-        tst     r0, #2          ; lowest order ISR?
-        it      NE
-        msrne   control, r0     ; if yes, switch back to Task stack (PSP)
+        cmp     r0, #0          ; lowest order ISR?
+        itt     NE
+        movne   r1, #2          ; if yes
+        msrne   control, r1     ; switch back ti Task stack (PSP)
+
 
         pop     {r0}            ; pop copy of swiTaskKey
         ldr     lr, doTaskRestoreAddr
@@ -256,7 +259,12 @@ nvic_icsr:              .word           0xe000ed04
 dispatchAddr:           .word           ti_sysbios_family_arm_m3_Hwi_dispatchC__I
 doSwiRestoreAddr:       .word           ti_sysbios_family_arm_m3_Hwi_doSwiRestore__I
 doTaskRestoreAddr:      .word           ti_sysbios_family_arm_m3_Hwi_doTaskRestore__I
+    .if ti_sysbios_Build_useIndirectReferences
+                         .global xdcRomStatePtr
+xdcRomStatePointer:     .word           xdcRomStatePtr
+    .else
 swiTaskKeyAddr:         .word           ti_sysbios_family_arm_m3_Hwi_Module__state__V.swiTaskKeys
+    .endif
 $1Addr:                 .word           $1
 
         .sect ".text:ti_sysbios_family_arm_m3_Hwi_pendSV__I"
@@ -272,13 +280,7 @@ ti_sysbios_family_arm_m3_Hwi_pendSV__I:
         vmsr    fpscr, r0       ;
         vldmia  {d0-d7}, r1!    ; pop vfp scratch regs
     .endif
-    .if ti_sysbios_BIOS_mpeEnabled__D
-        ittte   NE              ; Z bit still valid from above tst
-        ldrne   r0, [r1], #8    ; restore control register
-        msrne   control, r0
-    .else
         ite     NE              ; Z bit still valid from above tst
-    .endif
         msrne   psp, r1         ; update appropriate SP
         moveq   sp, r1
 

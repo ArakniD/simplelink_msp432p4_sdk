@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_rts_iar_MultithreadSupport__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_rts_iar_MultithreadSupport___VERS 200
@@ -268,57 +270,57 @@ __extern __FAR__ const CT__ti_sysbios_rts_iar_MultithreadSupport_A_badLockReleas
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_rts_iar_MultithreadSupport_Module__startupDone__S, "ti_sysbios_rts_iar_MultithreadSupport_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_rts_iar_MultithreadSupport_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_rts_iar_MultithreadSupport_Module__startupDone__S( void);
 
 /* perThreadAccess__I */
 #define ti_sysbios_rts_iar_MultithreadSupport_perThreadAccess ti_sysbios_rts_iar_MultithreadSupport_perThreadAccess__I
 xdc__CODESECT(ti_sysbios_rts_iar_MultithreadSupport_perThreadAccess__I, "ti_sysbios_rts_iar_MultithreadSupport_perThreadAccess")
-__extern xdc_Void *ti_sysbios_rts_iar_MultithreadSupport_perThreadAccess__I( xdc_Void *symbp );
+__extern xdc_Void *ti_sysbios_rts_iar_MultithreadSupport_perThreadAccess__I( xdc_Void *symbp);
 
 /* getTlsPtr__I */
 #define ti_sysbios_rts_iar_MultithreadSupport_getTlsPtr ti_sysbios_rts_iar_MultithreadSupport_getTlsPtr__I
 xdc__CODESECT(ti_sysbios_rts_iar_MultithreadSupport_getTlsPtr__I, "ti_sysbios_rts_iar_MultithreadSupport_getTlsPtr")
-__extern xdc_Void *ti_sysbios_rts_iar_MultithreadSupport_getTlsPtr__I( void );
+__extern xdc_Void *ti_sysbios_rts_iar_MultithreadSupport_getTlsPtr__I( void);
 
 /* getTlsAddr__I */
 #define ti_sysbios_rts_iar_MultithreadSupport_getTlsAddr ti_sysbios_rts_iar_MultithreadSupport_getTlsAddr__I
 xdc__CODESECT(ti_sysbios_rts_iar_MultithreadSupport_getTlsAddr__I, "ti_sysbios_rts_iar_MultithreadSupport_getTlsAddr")
-__extern xdc_Void *ti_sysbios_rts_iar_MultithreadSupport_getTlsAddr__I( void );
+__extern xdc_Void *ti_sysbios_rts_iar_MultithreadSupport_getTlsAddr__I( void);
 
 /* initLock__I */
 #define ti_sysbios_rts_iar_MultithreadSupport_initLock ti_sysbios_rts_iar_MultithreadSupport_initLock__I
 xdc__CODESECT(ti_sysbios_rts_iar_MultithreadSupport_initLock__I, "ti_sysbios_rts_iar_MultithreadSupport_initLock")
-__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_initLock__I( xdc_Void **ptr );
+__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_initLock__I( xdc_Void **ptr);
 
 /* destroyLock__I */
 #define ti_sysbios_rts_iar_MultithreadSupport_destroyLock ti_sysbios_rts_iar_MultithreadSupport_destroyLock__I
 xdc__CODESECT(ti_sysbios_rts_iar_MultithreadSupport_destroyLock__I, "ti_sysbios_rts_iar_MultithreadSupport_destroyLock")
-__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_destroyLock__I( xdc_Void **ptr );
+__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_destroyLock__I( xdc_Void **ptr);
 
 /* acquireLock__I */
 #define ti_sysbios_rts_iar_MultithreadSupport_acquireLock ti_sysbios_rts_iar_MultithreadSupport_acquireLock__I
 xdc__CODESECT(ti_sysbios_rts_iar_MultithreadSupport_acquireLock__I, "ti_sysbios_rts_iar_MultithreadSupport_acquireLock")
-__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_acquireLock__I( xdc_Void **ptr );
+__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_acquireLock__I( xdc_Void **ptr);
 
 /* releaseLock__I */
 #define ti_sysbios_rts_iar_MultithreadSupport_releaseLock ti_sysbios_rts_iar_MultithreadSupport_releaseLock__I
 xdc__CODESECT(ti_sysbios_rts_iar_MultithreadSupport_releaseLock__I, "ti_sysbios_rts_iar_MultithreadSupport_releaseLock")
-__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_releaseLock__I( xdc_Void **ptr );
+__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_releaseLock__I( xdc_Void **ptr);
 
 /* taskCreateHook__I */
 #define ti_sysbios_rts_iar_MultithreadSupport_taskCreateHook ti_sysbios_rts_iar_MultithreadSupport_taskCreateHook__I
 xdc__CODESECT(ti_sysbios_rts_iar_MultithreadSupport_taskCreateHook__I, "ti_sysbios_rts_iar_MultithreadSupport_taskCreateHook")
-__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_taskCreateHook__I( ti_sysbios_knl_Task_Handle task, xdc_runtime_Error_Block *eb );
+__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_taskCreateHook__I( ti_sysbios_knl_Task_Handle task, xdc_runtime_Error_Block *eb);
 
 /* taskDeleteHook__I */
 #define ti_sysbios_rts_iar_MultithreadSupport_taskDeleteHook ti_sysbios_rts_iar_MultithreadSupport_taskDeleteHook__I
 xdc__CODESECT(ti_sysbios_rts_iar_MultithreadSupport_taskDeleteHook__I, "ti_sysbios_rts_iar_MultithreadSupport_taskDeleteHook")
-__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_taskDeleteHook__I( ti_sysbios_knl_Task_Handle task );
+__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_taskDeleteHook__I( ti_sysbios_knl_Task_Handle task);
 
 /* taskRegHook__I */
 #define ti_sysbios_rts_iar_MultithreadSupport_taskRegHook ti_sysbios_rts_iar_MultithreadSupport_taskRegHook__I
 xdc__CODESECT(ti_sysbios_rts_iar_MultithreadSupport_taskRegHook__I, "ti_sysbios_rts_iar_MultithreadSupport_taskRegHook")
-__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_taskRegHook__I( xdc_Int id );
+__extern xdc_Void ti_sysbios_rts_iar_MultithreadSupport_taskRegHook__I( xdc_Int id);
 
 
 /*

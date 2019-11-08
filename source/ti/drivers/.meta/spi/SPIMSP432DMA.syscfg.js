@@ -60,8 +60,52 @@ let devSpecific = {
     templates: {
         boardc: "/ti/drivers/spi/SPIMSP432DMA.Board.c.xdt",
         boardh: "/ti/drivers/spi/SPI.Board.h.xdt"
-    }
+    },
+
+    _getPinResources: _getPinResources
 };
+
+/*
+ *  ======== _getPinResources ========
+ */
+function _getPinResources(inst)
+{
+    let pin;
+    let mosi = "Unassigned";
+    let miso = "Unassigned";
+    let sclk;
+    let ss;
+
+    if (inst.spi) {
+        if (inst.spi.mosiPin) {
+            mosi = inst.spi.mosiPin.$solution.devicePinName;
+            mosi = mosi.match(/P\d+\.\d+/)[0];
+        }
+        if (inst.spi.misoPin) {
+            miso = inst.spi.misoPin.$solution.devicePinName;
+            miso = miso.match(/P\d+\.\d+/)[0];
+        }
+
+        pin = "\nMOSI: " + mosi + "\nMISO: " + miso;
+
+        if (inst.spi.sclkPin) {
+            sclk = inst.spi.sclkPin.$solution.devicePinName;
+            sclk = sclk.match(/P\d+\.\d+/)[0];
+            pin += "\nSCLK: " + sclk;
+        }
+        if (inst.spi.ssPin) {
+            ss = inst.spi.ssPin.$solution.devicePinName;
+            ss = ss.match(/P\d+\.\d+/)[0];
+            pin += "\nSS: " + ss;
+        }
+
+        if (inst.$hardware && inst.$hardware.displayName) {
+            pin += "\n" + inst.$hardware.displayName;
+        }
+    }
+
+    return (pin);
+}
 
 /*
  *  ======== pinmuxRequirements ========

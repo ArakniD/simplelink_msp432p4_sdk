@@ -6,7 +6,7 @@
 <body>
 <pre class=src>
      1    <span class="comment">/*
-</span>     2    <span class="comment"> * Copyright (c) 2012-2017, Texas Instruments Incorporated
+</span>     2    <span class="comment"> * Copyright (c) 2012-2014, Texas Instruments Incorporated
 </span>     3    <span class="comment"> * All rights reserved.
 </span>     4    <span class="comment"> *
 </span>     5    <span class="comment"> * Redistribution and use in source and binary forms, with or without
@@ -38,47 +38,47 @@
 </span>    31    <span class="comment"> */</span>
     32    <span class="comment">/*
 </span>    33    <span class="comment"> *  ======== package.xdc ========
-</span>    34    <span class="comment"> */</span>
-    35    
-    36    <span class="xdoc">/*!
-</span>    37    <span class="xdoc"> *  ======== ti.sysbios.interfaces ========
-</span>    38    <span class="xdoc"> *  Contains all interface specifications.
-</span>    39    <span class="xdoc"> *
-</span>    40    <span class="xdoc"> *  For the proxy-delegate mechanism between generic modules and the 
-</span>    41    <span class="xdoc"> *  modules in {<b>@link</b> ti.sysbios.family} to work properly, both the 
-</span>    42    <span class="xdoc"> *  proxy and the delegate modules must be implementations of a common 
-</span>    43    <span class="xdoc"> *  interface specification. The Timer, Hwi, Cache and Seconds interface
-</span>    44    <span class="xdoc"> *  specifications reside in ti.sysbios.interfaces and are 
-</span>    45    <span class="xdoc"> *  {<b>@link</b> ti.sysbios.interfaces.ITimer}, 
-</span>    46    <span class="xdoc"> *  {<b>@link</b> ti.sysbios.interfaces.IHwi},
-</span>    47    <span class="xdoc"> *  {<b>@link</b> ti.sysbios.interfaces.ICache}, and
-</span>    48    <span class="xdoc"> *  {<b>@link</b> ti.sysbios.interfaces.ISeconds} respectively.
-</span>    49    <span class="xdoc"> *
-</span>    50    <span class="xdoc"> *  These interface specifications define a minimum set of general APIs
-</span>    51    <span class="xdoc"> *  that, it is  believed, will satisfy a vast majority of application
-</span>    52    <span class="xdoc"> *  requirements. 
-</span>    53    <span class="xdoc"> *  
-</span>    54    <span class="xdoc"> *  The I&lt;mod&gt;Support interfaces define "internal" interfaces used by the
-</span>    55    <span class="xdoc"> *  &lt;mod&gt; modules in their implementation.  These interfaces simplify the
-</span>    56    <span class="xdoc"> *  process of porting to a new architecture; one only needs to implement
-</span>    57    <span class="xdoc"> *  the I&lt;mod&gt;Support interface to enable the full functionality of the
-</span>    58    <span class="xdoc"> *  ti.sysbios.&lt;mod&gt; module.
-</span>    59    <span class="xdoc"> *
-</span>    60    <span class="xdoc"> */</span>
-    61    <span class=key>package</span> ti.sysbios.interfaces [2,0,0,0] {
-    62        <span class=key>interface</span> ICore;
-    63        <span class=key>interface</span> IHwi;
-    64        <span class=key>interface</span> ITaskSupport;
-    65        <span class=key>interface</span> ITimer;
-    66        <span class=key>interface</span> ITimerSupport;
-    67        <span class=key>interface</span> ITimestamp;
-    68        <span class=key>interface</span> IIntrinsicsSupport;
-    69        <span class=key>interface</span> ICache;
-    70        <span class=key>interface</span> ISettings;
-    71        <span class=key>interface</span> IPower;
-    72        <span class=key>interface</span> IRomDevice;
-    73        <span class=key>interface</span> ISeconds;
-    74        <span class=key>interface</span> ISysCall;
+</span>    34    <span class="comment"> *
+</span>    35    <span class="comment"> */</span>
+    36    
+    37    <span class="xdoc">/*!
+</span>    38    <span class="xdoc"> *  ======== ti.sysbios.interfaces ========
+</span>    39    <span class="xdoc"> *  Contains all interface specifications.
+</span>    40    <span class="xdoc"> *
+</span>    41    <span class="xdoc"> *  For the proxy-delegate mechanism between generic modules and the 
+</span>    42    <span class="xdoc"> *  modules in {<b>@link</b> ti.sysbios.family} to work properly, both the 
+</span>    43    <span class="xdoc"> *  proxy and the delegate modules must be implementations of a common 
+</span>    44    <span class="xdoc"> *  interface specification. The Timer, Hwi, Cache and Seconds interface
+</span>    45    <span class="xdoc"> *  specifications reside in ti.sysbios.interfaces and are 
+</span>    46    <span class="xdoc"> *  {<b>@link</b> ti.sysbios.interfaces.ITimer}, 
+</span>    47    <span class="xdoc"> *  {<b>@link</b> ti.sysbios.interfaces.IHwi},
+</span>    48    <span class="xdoc"> *  {<b>@link</b> ti.sysbios.interfaces.ICache}, and
+</span>    49    <span class="xdoc"> *  {<b>@link</b> ti.sysbios.interfaces.ISeconds} respectively.
+</span>    50    <span class="xdoc"> *
+</span>    51    <span class="xdoc"> *  These interface specifications define a minimum set of general APIs
+</span>    52    <span class="xdoc"> *  that, it is  believed, will satisfy a vast majority of application
+</span>    53    <span class="xdoc"> *  requirements. 
+</span>    54    <span class="xdoc"> *  
+</span>    55    <span class="xdoc"> *  The I&lt;mod&gt;Support interfaces define "internal" interfaces used by the
+</span>    56    <span class="xdoc"> *  &lt;mod&gt; modules in their implementation.  These interfaces simplify the
+</span>    57    <span class="xdoc"> *  process of porting to a new architecture; one only needs to implement
+</span>    58    <span class="xdoc"> *  the I&lt;mod&gt;Support interface to enable the full functionality of the
+</span>    59    <span class="xdoc"> *  ti.sysbios.&lt;mod&gt; module.
+</span>    60    <span class="xdoc"> *
+</span>    61    <span class="xdoc"> */</span>
+    62    <span class=key>package</span> ti.sysbios.interfaces [2,0,0,0] {
+    63        <span class=key>interface</span> ICore;
+    64        <span class=key>interface</span> IHwi;
+    65        <span class=key>interface</span> ITaskSupport;
+    66        <span class=key>interface</span> ITimer;
+    67        <span class=key>interface</span> ITimerSupport;
+    68        <span class=key>interface</span> ITimestamp;
+    69        <span class=key>interface</span> IIntrinsicsSupport;
+    70        <span class=key>interface</span> ICache;
+    71        <span class=key>interface</span> ISettings;
+    72        <span class=key>interface</span> IPower;
+    73        <span class=key>interface</span> IRomDevice;
+    74        <span class=key>interface</span> ISeconds;
     75    }
 </pre>
 </body></html>

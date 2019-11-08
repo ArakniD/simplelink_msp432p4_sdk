@@ -96,9 +96,9 @@ int main(void)
      * DMA transfer to our random data array and the destination to the
      * destination data array. Set as auto mode with no need to retrigger
      * after each arbitration */
-    MAP_DMA_setChannelControl(UDMA_PRI_SELECT,
+    MAP_DMA_setChannelControl(DMA_CH0_RESERVED0 | UDMA_PRI_SELECT,
             UDMA_SIZE_8 | UDMA_SRC_INC_8 | UDMA_DST_INC_8 | UDMA_ARB_1024);
-    MAP_DMA_setChannelTransfer(UDMA_PRI_SELECT, UDMA_MODE_AUTO, data_array,
+    MAP_DMA_setChannelTransfer(DMA_CH0_RESERVED0 | UDMA_PRI_SELECT, UDMA_MODE_AUTO, data_array,
             destinationArray, 1024);
 
     /* Assigning/Enabling Interrupts */

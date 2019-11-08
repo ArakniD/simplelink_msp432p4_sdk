@@ -53,7 +53,9 @@
 #include "npi_task.h"
 #include "captivate_task.h"
 #include "sleep_task.h"
-#include "Board.h"
+/* Driver configuration */
+#include <ti/drivers/Board.h>
+
 
 /* Output display handle that will be used to print out all debug/log
  * statements */
@@ -70,7 +72,7 @@ int main(void)
 #endif
 
     /* Call driver init functions */
-    Board_initGeneral();
+    Board_init();
     GPIO_init();
     I2C_init();
 

@@ -46,8 +46,8 @@
 #include <ti/display/Display.h>
 #include <ti/display/DisplayUart.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Board Header file */
+#include "ti_drivers_config.h"
 
 #define ADCBUFFERSIZE    (5)
 
@@ -146,12 +146,12 @@ void *mainThread(void *arg0)
     adcBufParams.recurrenceMode = ADCBuf_RECURRENCE_MODE_CONTINUOUS;
     adcBufParams.returnMode = ADCBuf_RETURN_MODE_CALLBACK;
     adcBufParams.samplingFrequency = 200;
-    adcBuf = ADCBuf_open(Board_ADCBUF0, &adcBufParams);
+    adcBuf = ADCBuf_open(CONFIG_ADCBUF0, &adcBufParams);
 
 
     /* Configure the conversion struct */
     continuousConversion.arg = NULL;
-    continuousConversion.adcChannel = Board_ADCBUF0CHANNEL3;
+    continuousConversion.adcChannel = CONFIG_ADCBUF0CHANNEL_0;
     continuousConversion.sampleBuffer = sampleBufferOne;
     continuousConversion.sampleBufferTwo = sampleBufferTwo;
     continuousConversion.samplesRequestedCount = ADCBUFFERSIZE;

@@ -1,0 +1,977 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="_button_8h" kind="file" language="C++">
+    <compoundname>Button.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includes local="no">stdbool.h</includes>
+    <includes refid="_g_p_i_o_8h" local="no">ti/drivers/GPIO.h</includes>
+    <includes local="no">ti/drivers/dpl/ClockP.h</includes>
+    <incdepgraph>
+      <node id="39">
+        <label>stdbool.h</label>
+      </node>
+      <node id="38">
+        <label>stdint.h</label>
+      </node>
+      <node id="37">
+        <label>Button.h</label>
+        <link refid="_button_8h"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>ti/drivers/dpl/ClockP.h</label>
+      </node>
+      <node id="40">
+        <label>ti/drivers/GPIO.h</label>
+        <link refid="_g_p_i_o_8h"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <innerclass refid="struct_button___config" prot="public">Button_Config</innerclass>
+    <innerclass refid="struct_button___h_w_attrs" prot="public">Button_HWAttrs</innerclass>
+    <innerclass refid="struct_button___state_variables" prot="private">Button_StateVariables</innerclass>
+    <innerclass refid="struct_button___object" prot="public">Button_Object</innerclass>
+    <innerclass refid="struct_button___params" prot="public">Button_Params</innerclass>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="_button_8h_1a7fd021312aff57a6c6959f0e7990e21f" prot="private" static="no">
+        <name>Button_State</name>
+        <enumvalue id="_button_8h_1a7fd021312aff57a6c6959f0e7990e21fa216eda8b84186b3f48d61c25351e1338" prot="private">
+          <name>Button_PRESSING</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Edge detected, debouncing </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a7fd021312aff57a6c6959f0e7990e21fa249b2f814584bbb317e726271d3ac0e5" prot="private">
+          <name>Button_PRESSED</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Press verified, not detecting longpress </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a7fd021312aff57a6c6959f0e7990e21fae737f84e9be98bf58c2e45f9578493ed" prot="private">
+          <name>Button_LONGPRESSING</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Press verified, waiting for longpress timeout. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a7fd021312aff57a6c6959f0e7990e21fa3fe8d4f5efa701d357806b66033554b3" prot="private">
+          <name>Button_LONGPRESSED</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Longpress verified, waiting for neg-edge </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a7fd021312aff57a6c6959f0e7990e21fae9c9f371af97f878f447f89d79675d42" prot="private">
+          <name>Button_RELEASING</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Neg-edge received, debouncing </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a7fd021312aff57a6c6959f0e7990e21fa07a8d5e92189519c620020cd8bc252e9" prot="private">
+          <name>Button_RELEASING_LONG</name>
+          <initializer>= 6</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Neg-edge received after long-press, debouncing. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a7fd021312aff57a6c6959f0e7990e21fad5c7ee6a06a0b4d34a7ea2cd15c2bbea" prot="private">
+          <name>Button_RELEASED</name>
+          <initializer>= 7</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Button release verified. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a7fd021312aff57a6c6959f0e7990e21fab301de8cefb988a943f6cfbcff7beb75" prot="private">
+          <name>Button_DBLPRESS_DETECTION</name>
+          <initializer>= 8</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>EDGE detected doublepress </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a7fd021312aff57a6c6959f0e7990e21fab9d58b94277ed1468dcf4e46bf4964a2" prot="private">
+          <name>Button_DBLPRESSING</name>
+          <initializer>= 9</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>EDGE detected doublepress </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a7fd021312aff57a6c6959f0e7990e21fa1376aa32739b04cf3dc002a67a648234" prot="private">
+          <name>Button_DBLPRESSED</name>
+          <initializer>= 10</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>DOUBLE PRESS verified, waiting for neg edge </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a7fd021312aff57a6c6959f0e7990e21fa0dda2e17ee26134a81ba84c6f39e0e90" prot="private">
+          <name>Button_RELEASING_DBLPRESSED</name>
+          <initializer>= 11</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>DOUBLE PRESS verified, waiting for neg edge k </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Button State. </para>        </briefdescription>
+        <detaileddescription>
+<para>This enumeration describes whether the button is pressed or released etc. This is for internal state machine handling. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="207" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" bodystart="206" bodyend="230"/>
+      </memberdef>
+      <memberdef kind="enum" id="_button_8h_1a616c2f9898615555ed92b3695ba41b6d" prot="public" static="no">
+        <name>Button_Events</name>
+        <enumvalue id="_button_8h_1a616c2f9898615555ed92b3695ba41b6da5978c7286e0e858bb4cba454638b8287" prot="public">
+          <name>Button_EV_PRESSED</name>
+          <initializer>= 0x01</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Button pressed down, may or may not subsequently have been released </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a616c2f9898615555ed92b3695ba41b6da3dbe9c7f766d60fa266f53c66d53a38d" prot="public">
+          <name>Button_EV_LONGPRESSED</name>
+          <initializer>= 0x02</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Button held down for more than tLongpress (ms) </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a616c2f9898615555ed92b3695ba41b6da9ddcce86c0ecb00a3b3e26b7289e3ee2" prot="public">
+          <name>Button_EV_RELEASED</name>
+          <initializer>= 0x04</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Button released after press or longpress </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a616c2f9898615555ed92b3695ba41b6dadd2b047eb9c60a999dde2f8a924cc4a2" prot="public">
+          <name>Button_EV_CLICKED</name>
+          <initializer>= 0x08</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Button was pressed and released, but was not a long press </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a616c2f9898615555ed92b3695ba41b6dad513d57eeab56a7125f5f09d542167e6" prot="public">
+          <name>Button_EV_LONGCLICKED</name>
+          <initializer>= 0x10</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Button was pressed and released, and held for longer than longPressDuration (ms) </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a616c2f9898615555ed92b3695ba41b6da971ecf310202ddd41308518a34a41a2c" prot="public">
+          <name>Button_EV_DOUBLECLICKED</name>
+          <initializer>= 0x20</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Button was pressed when double click detection was active </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Button event flags. </para>        </briefdescription>
+        <detaileddescription>
+<para>The event flags can be used by the user to subscribe to specific kinds of button actions and by the driver to signal which event caused a callback. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="239" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" bodystart="238" bodyend="255"/>
+      </memberdef>
+      <memberdef kind="enum" id="_button_8h_1a7540f487e4c8d28b980847bb68e708f5" prot="public" static="no">
+        <name>Button_Pull</name>
+        <enumvalue id="_button_8h_1a7540f487e4c8d28b980847bb68e708f5a04b8bbae8d344ee2e20924e09a3415c8" prot="public">
+          <name>Button_PULL_DOWN</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Button is PULLED DOWN. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a7540f487e4c8d28b980847bb68e708f5adca1194f335c13c6410aaf523c7c7c35" prot="public">
+          <name>Button_PULL_UP</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Button is PULLED UP. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_button_8h_1a7540f487e4c8d28b980847bb68e708f5a5f4c3ead6067b22c30648b5c01f55765" prot="public">
+          <name>Button_PULL_NOTSET</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Button pull not set </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Button Pull settings. </para>        </briefdescription>
+        <detaileddescription>
+<para>This enumeration defines whether the GPIO connected to the button is PULL UP or PULL DOWN </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="273" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" bodystart="272" bodyend="278"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_button_8h_1a81b89ce77e3e44e27e47f47c33a762f6" prot="public" static="no">
+        <type>struct <ref refid="struct_button___config" kindref="compound">Button_Config</ref></type>
+        <definition>typedef struct Button_Config Button_Config</definition>
+        <argsstring></argsstring>
+        <name>Button_Config</name>
+        <briefdescription>
+<para>Button configuration. </para>        </briefdescription>
+        <detaileddescription>
+<para>Each <ref refid="struct_button___config" kindref="compound">Button_Config</ref> represents a single physical button. It contains pointers to the button&apos;s <ref refid="struct_button___h_w_attrs" kindref="compound">Button_HWAttrs</ref> and <ref refid="struct_button___object" kindref="compound">Button_Object</ref>. The user must statically allocate all of these structures. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="190" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_button_8h_1a88fb45fbe7adae0d042a5c0236f4c930" prot="public" static="no">
+        <type>struct <ref refid="struct_button___config" kindref="compound">Button_Config</ref> *</type>
+        <definition>typedef struct Button_Config* Button_Handle</definition>
+        <argsstring></argsstring>
+        <name>Button_Handle</name>
+        <briefdescription>
+<para>A handle that is returned from a <ref refid="_button_8h_1aed14971430edf2a69570ed1f8567ed1b" kindref="member">Button_open()</ref> call. </para>        </briefdescription>
+        <detaileddescription>
+<para>User will use this handle to interact with a given button instance. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="197" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" bodystart="197" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_button_8h_1a5a3aa3465c9a4cfbcbd9f5a262c565d0" prot="private" static="no">
+        <type>enum Button_State</type>
+        <definition>typedef enum Button_State  Button_State</definition>
+        <argsstring></argsstring>
+        <name>Button_State</name>
+        <briefdescription>
+<para>Button State. </para>        </briefdescription>
+        <detaileddescription>
+<para>This enumeration describes whether the button is pressed or released etc. This is for internal state machine handling. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="230" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_button_8h_1acdfd319931008644073df247327f93dc" prot="public" static="no">
+        <type>enum <ref refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6d" kindref="member">Button_Events</ref></type>
+        <definition>typedef enum Button_Events  Button_Events</definition>
+        <argsstring></argsstring>
+        <name>Button_Events</name>
+        <briefdescription>
+<para>Button event flags. </para>        </briefdescription>
+        <detaileddescription>
+<para>The event flags can be used by the user to subscribe to specific kinds of button actions and by the driver to signal which event caused a callback. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="255" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_button_8h_1af90bcd722e5b5d5e5855ecb7ad5bbe7a" prot="public" static="no">
+        <type>uint8_t</type>
+        <definition>typedef uint8_t Button_EventMask</definition>
+        <argsstring></argsstring>
+        <name>Button_EventMask</name>
+        <briefdescription>
+<para>Event subscription and notification mask type. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="258" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" bodystart="258" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_button_8h_1a9ea227c0303faf9290cab0f5c5b8e061" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* Button_Callback) (Button_Handle buttonHandle, Button_EventMask buttonEvents)</definition>
+        <argsstring>)(Button_Handle buttonHandle, Button_EventMask buttonEvents)</argsstring>
+        <name>Button_Callback</name>
+        <briefdescription>
+<para>A handler to receive button callbacks. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="263" column="1" bodyfile="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" bodystart="263" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_button_8h_1a6acf77947342cf75769fde0b6cc7536c" prot="public" static="no">
+        <type>enum <ref refid="_button_8h_1a7540f487e4c8d28b980847bb68e708f5" kindref="member">Button_Pull</ref></type>
+        <definition>typedef enum Button_Pull  Button_Pull</definition>
+        <argsstring></argsstring>
+        <name>Button_Pull</name>
+        <briefdescription>
+<para>Button Pull settings. </para>        </briefdescription>
+        <detaileddescription>
+<para>This enumeration defines whether the GPIO connected to the button is PULL UP or PULL DOWN </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="278" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_button_8h_1a09f5b0032b30544686f551dd3bae4cbb" prot="public" static="no">
+        <type>struct <ref refid="struct_button___h_w_attrs" kindref="compound">Button_HWAttrs</ref></type>
+        <definition>typedef struct Button_HWAttrs  Button_HWAttrs</definition>
+        <argsstring></argsstring>
+        <name>Button_HWAttrs</name>
+        <briefdescription>
+<para>Hardware specific settings for a button. </para>        </briefdescription>
+        <detaileddescription>
+<para>This structure should be defined and provided by the application. The index provided should correspond to a gpio pin in a <ref refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" kindref="member">GPIO_PinConfig</ref> array. This gpio pin should be the pin connected to the button and must be configured as <ref refid="group___g_p_i_o___pin_config_settings_1ga874e34de3bef2d9415b4311dd6bed234" kindref="member">GPIO_CFG_INPUT</ref> and <ref refid="group___g_p_i_o___pin_config_settings_1ga7a69ee26049dc2f8b5059b00a24b9f74" kindref="member">GPIO_CFG_IN_INT_FALLING</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="291" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_button_8h_1ad048ddb0aee41bf4292c47a10f5e48fb" prot="private" static="no">
+        <type>struct Button_StateVariables</type>
+        <definition>typedef struct Button_StateVariables Button_StateVariables</definition>
+        <argsstring></argsstring>
+        <name>Button_StateVariables</name>
+        <briefdescription>
+<para>Button State Variables. </para>        </briefdescription>
+        <detaileddescription>
+<para>Each button instance needs set of variables to monitor its state. We group these variables under the structure Button_State.</para><para><simplesect kind="see"><para><ref refid="_button_8h_1ab9d816a81c2c2767aa77be997c57a9d8" kindref="member">Button_Params_init()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="310" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_button_8h_1af429db945680535818f99db254374e92" prot="public" static="no">
+        <type>struct <ref refid="struct_button___object" kindref="compound">Button_Object</ref></type>
+        <definition>typedef struct Button_Object  Button_Object</definition>
+        <argsstring></argsstring>
+        <name>Button_Object</name>
+        <briefdescription>
+<para>Internal to Button module. Members should not be accessed by the application. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="341" column="1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_button_8h_1af849faed7b8830d903b15c57f2433199" prot="public" static="no">
+        <type>struct <ref refid="struct_button___params" kindref="compound">Button_Params</ref></type>
+        <definition>typedef struct Button_Params  Button_Params</definition>
+        <argsstring></argsstring>
+        <name>Button_Params</name>
+        <briefdescription>
+<para>Button Parameters. </para>        </briefdescription>
+        <detaileddescription>
+<para>Button parameters are used with the <ref refid="_button_8h_1aed14971430edf2a69570ed1f8567ed1b" kindref="member">Button_open()</ref> call. Default values for these parameters are set using <ref refid="_button_8h_1ab9d816a81c2c2767aa77be997c57a9d8" kindref="member">Button_Params_init()</ref>.</para><para><simplesect kind="see"><para><ref refid="_button_8h_1ab9d816a81c2c2767aa77be997c57a9d8" kindref="member">Button_Params_init()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="364" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="_button_8h_1aa88510a4a5ebb61453d888916750c098" prot="public" static="no" mutable="no">
+        <type>const uint_least8_t</type>
+        <definition>const uint_least8_t Button_count</definition>
+        <argsstring></argsstring>
+        <name>Button_count</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="174" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_button_8h_1ad3c055a77dbbe47d325bb0340d032594" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Button_close</definition>
+        <argsstring>(Button_Handle handle)</argsstring>
+        <name>Button_close</name>
+        <param>
+          <type><ref refid="_button_8h_1a88fb45fbe7adae0d042a5c0236f4c930" kindref="member">Button_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <briefdescription>
+<para>Function to close a Button specified by the <ref refid="_button_8h_1a88fb45fbe7adae0d042a5c0236f4c930" kindref="member">Button_Handle</ref>. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="pre"><para><ref refid="_button_8h_1aed14971430edf2a69570ed1f8567ed1b" kindref="member">Button_open()</ref> had to be called first.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <ref refid="_button_8h_1a88fb45fbe7adae0d042a5c0236f4c930" kindref="member">Button_Handle</ref> returned from <ref refid="_button_8h_1aed14971430edf2a69570ed1f8567ed1b" kindref="member">Button_open()</ref> call</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True on success or false upon failure. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="375" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_button_8h_1acd126a8ddb116ea8ba1f14b934d82286" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Button_init</definition>
+        <argsstring>()</argsstring>
+        <name>Button_init</name>
+        <briefdescription>
+<para>Function to initialize Button driver. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="380" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_button_8h_1aed14971430edf2a69570ed1f8567ed1b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_button_8h_1a88fb45fbe7adae0d042a5c0236f4c930" kindref="member">Button_Handle</ref></type>
+        <definition>Button_Handle Button_open</definition>
+        <argsstring>(uint_least8_t buttonIndex, Button_Callback buttonCallback, Button_Params *params)</argsstring>
+        <name>Button_open</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>buttonIndex</declname>
+        </param>
+        <param>
+          <type><ref refid="_button_8h_1a9ea227c0303faf9290cab0f5c5b8e061" kindref="member">Button_Callback</ref></type>
+          <declname>buttonCallback</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_button___params" kindref="compound">Button_Params</ref> *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+<para>Function to open a given Button. </para>        </briefdescription>
+        <detaileddescription>
+<para>Function to open a button instance corresponding to a <ref refid="struct_button___config" kindref="compound">Button_Config</ref> in the Button_config array. The GPIO configurations must exist prior to calling this function. The <ref refid="struct_button___params" kindref="compound">Button_Params</ref> may be used to specify runtime parameters.</para><para><simplesect kind="pre"><para><ref refid="_button_8h_1acd126a8ddb116ea8ba1f14b934d82286" kindref="member">Button_init()</ref> has to be called first</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">buttonIndex</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Logical button number indexed into the Button_config table</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">buttonCallback</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <ref refid="_button_8h_1a9ea227c0303faf9290cab0f5c5b8e061" kindref="member">Button_Callback</ref> that is called when a desired event occurs.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">*params</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to <ref refid="struct_button___params" kindref="compound">Button_Params</ref> structure. If NULL, it will use default values.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <ref refid="_button_8h_1a88fb45fbe7adae0d042a5c0236f4c930" kindref="member">Button_Handle</ref> on success, or a NULL on failure.</para></simplesect>
+<simplesect kind="see"><para><ref refid="_button_8h_1acd126a8ddb116ea8ba1f14b934d82286" kindref="member">Button_init()</ref> </para></simplesect>
+<simplesect kind="see"><para><ref refid="_button_8h_1ab9d816a81c2c2767aa77be997c57a9d8" kindref="member">Button_Params_init()</ref> </para></simplesect>
+<simplesect kind="see"><para><ref refid="_button_8h_1ad3c055a77dbbe47d325bb0340d032594" kindref="member">Button_close()</ref> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="406" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_button_8h_1ab9d816a81c2c2767aa77be997c57a9d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Button_Params_init</definition>
+        <argsstring>(Button_Params *params)</argsstring>
+        <name>Button_Params_init</name>
+        <param>
+          <type><ref refid="struct_button___params" kindref="compound">Button_Params</ref> *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+<para>Function to initialize a <ref refid="struct_button___params" kindref="compound">Button_Params</ref> struct to its defaults. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">params</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to a <ref refid="struct_button___params" kindref="compound">Button_Params</ref> structure that will be initialized.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<heading level="2">Default values </heading>
+</para><para><table rows="4" cols="4"><row>
+<entry thead="yes"><para>parameter </para></entry><entry thead="yes"><para>value </para></entry><entry thead="yes"><para>description </para></entry><entry thead="yes"><para>unit  </para></entry></row>
+<row>
+<entry thead="no"><para>debounceDuration </para></entry><entry thead="no"><para>10 </para></entry><entry thead="no"><para>debounce duration </para></entry><entry thead="no"><para>ms </para></entry></row>
+<row>
+<entry thead="no"><para>longPressDuration</para></entry><entry thead="no"><para>2000 </para></entry><entry thead="no"><para>long press duration </para></entry><entry thead="no"><para>ms </para></entry></row>
+<row>
+<entry thead="no"><para>buttonEventMask </para></entry><entry thead="no"><para>0xFF </para></entry><entry thead="no"><para>subscribed to all events </para></entry><entry thead="no"><para>NA </para></entry></row>
+</table>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="424" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_button_8h_1ad0aa5471701cf9004520b01a2b2f73a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t Button_getLastPressedDuration</definition>
+        <argsstring>(Button_Handle handle)</argsstring>
+        <name>Button_getLastPressedDuration</name>
+        <param>
+          <type><ref refid="_button_8h_1a88fb45fbe7adae0d042a5c0236f4c930" kindref="member">Button_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <briefdescription>
+<para>Function to return the lastPressedDuration (valid only for short press, long press) </para>        </briefdescription>
+        <detaileddescription>
+<para>The API returns last pressed duration and it is valid only for shortpress, longpress. If this API is called after receiving an event click or long click then the API returns the press duration which is time delta between the press and release of the button. <simplesect kind="note"><para>This API call is only valid after a click or long click and not after a double click.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the <ref refid="_button_8h_1a88fb45fbe7adae0d042a5c0236f4c930" kindref="member">Button_Handle</ref> of the desired button.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>time duration in milliseconds. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="442" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_button_8h_1aaf06f615b32fb85352e10dca952b97b6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Button_setCallback</definition>
+        <argsstring>(Button_Handle handle, Button_Callback buttonCallback)</argsstring>
+        <name>Button_setCallback</name>
+        <param>
+          <type><ref refid="_button_8h_1a88fb45fbe7adae0d042a5c0236f4c930" kindref="member">Button_Handle</ref></type>
+          <declname>handle</declname>
+        </param>
+        <param>
+          <type><ref refid="_button_8h_1a9ea227c0303faf9290cab0f5c5b8e061" kindref="member">Button_Callback</ref></type>
+          <declname>buttonCallback</declname>
+        </param>
+        <briefdescription>
+<para>Function to set callback function for the button instance. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">handle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <ref refid="_button_8h_1a88fb45fbe7adae0d042a5c0236f4c930" kindref="member">Button_Handle</ref> returned from <ref refid="_button_8h_1aed14971430edf2a69570ed1f8567ed1b" kindref="member">Button_open()</ref></para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">buttonCallback</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>button callback function </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="452" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="_button_8h_1ad2d67d1527b966a2fc27c3bcda2e4924" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Button_gpioCallbackFxn</definition>
+        <argsstring>(uint_least8_t index)</argsstring>
+        <name>Button_gpioCallbackFxn</name>
+        <param>
+          <type>uint_least8_t</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>This is the GPIO interrupt callback function which is called on a button press or release. This is internally used by button module. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function is internally used by button module for receiving the GPIO interrupt callbacks. This is exposed to the application for wake up cases. In some of the MCUs, when in LPDS(Low power deep sleep) the GPIO interrupt is consumed for wake up, and in order to make the button module work the the application has to call this API with the index of the GPIO pin which actually was the reason for the wake up.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the GPIO for which the button press has to be detected. This is an index in <ref refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" kindref="member">GPIO_PinConfig</ref> array. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h" line="469" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Button driver. </para>    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+</para><para><anchor id="_button_8h_1ti_drivers_Button_Synopsis"/><heading level="1">Synopsis</heading>
+</para><para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/apps/Button.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>main(void)</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Button_Params<sp/>params;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Button_Handle<sp/>handle;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Button_Params_init(&amp;params);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>handle<sp/>=<sp/>Button_open(CONFIG_BUTTON0,<sp/>buttonCallbackFxn,<sp/>&amp;params);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>...</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">void<sp/>buttonCallbackFxn(Button_Handle<sp/>handle,<sp/>Button_EventMask<sp/>events)</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(events<sp/>&amp;<sp/>Button_EV_CLICK)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Received<sp/>a<sp/>click,<sp/>handle<sp/>app<sp/>condition<sp/>0<sp/>etc</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>handleAppCond(0);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(events<sp/>&amp;<sp/>Button_EV_LONGCLICKED)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Long<sp/>press,<sp/>handle<sp/>app<sp/>condition<sp/>1<sp/>etc</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>handleAppCond(1);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>...</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para><para><anchor id="_button_8h_1ti_drivers_Button_Examples"/><heading level="2">Examples</heading>
+</para><para><itemizedlist>
+<listitem><para><ref refid="_button_8h_1ti_drivers_Button_Examples_config" kindref="member">Generic Configuration</ref></para></listitem></itemizedlist>
+</para><para><heading level="2">Overview</heading>
+</para><para>The Button driver simplifies interfacing push buttons. For example, push buttons on LaunchPads, BoosterPacks, or custom boards may easily be managed via the Button API. A given button instance may subscribe to one or several <ref refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6d" kindref="member">Button_Events</ref>. When a subscribed event occurs, the user will receive a callback with the handle of the button and the event(s) that occured.</para><para><heading level="2">User requirements</heading>
+</para><para>Buttons use the <ref refid="_g_p_i_o_8h" kindref="compound">GPIO.h</ref> interface for interfacing with hardware, so a <ref refid="_g_p_i_o_8h_1a7f5d979226db633309b3fdc0f4a8aef6" kindref="member">GPIO_PinConfig</ref> array must exist and contain a config for the button pin. The user must statically allocate a <ref refid="struct_button___config" kindref="compound">Button_Config</ref> array called Button_config. Each physical button should map to an index in Button_config.</para><para><heading level="2">Defining <ref refid="struct_button___config" kindref="compound">Button_Config</ref>, <ref refid="struct_button___object" kindref="compound">Button_Object</ref> and <ref refid="struct_button___h_w_attrs" kindref="compound">Button_HWAttrs</ref></heading>
+</para><para>Each structure must be defined by the application. The following example is for a MSP432 in which two buttons are setup. The following declarations are placed in &quot;ti_drivers_config.h&quot; and &quot;ti_drivers_config.c&quot; respectively. How the GPIO configs are defined are detailed in the next example.</para><para><anchor id="_button_8h_1ti_drivers_Button_Examples_config"/> &quot;ti_drivers_config.h&quot; <programlisting><codeline><highlight class="normal">#define<sp/>CONFIG_BUTTON_0<sp/><sp/><sp/><sp/><sp/>0<sp/><sp/>//Button<sp/>number<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>CONFIG_BUTTON_1<sp/><sp/><sp/><sp/><sp/>1<sp/><sp/>//Button<sp/>number<sp/>2</highlight></codeline>
+</programlisting></para><para>&quot;ti_drivers_config.c&quot; <programlisting><codeline><highlight class="normal">#include<sp/>&lt;Button.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Button_Object<sp/>Button_object[2];</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">const<sp/><sp/>Button_HWAttrs<sp/>Button_hwAttrs[2]<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.gpioIndex<sp/>=<sp/>CONFIG_S1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.gpioIndex<sp/>=<sp/>CONFIG_S2,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">const<sp/>Button_Config<sp/>Button_config[2]<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;Button_hwAttrs[0],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/><sp/>&amp;Button_object[0],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;Button_hwAttrs[1],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/><sp/>&amp;Button_object[1],</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting></para><para><heading level="2">Setting up GPIO configurations</heading>
+</para><para>The following example is for a MSP432. We are showing interfacing of two push buttons. Each need a GPIO pin. The following definitions are in &quot;ti_drivers_config.h&quot; and &quot;ti_drivers_config.c&quot; respectively. This example uses GPIO pins 1.1 and 1.4. The other GPIO configuration structures must exist, see <ref refid="_g_p_i_o_8h" kindref="compound">GPIO.h</ref>.</para><para>&quot;ti_drivers_config.h&quot; <programlisting><codeline><highlight class="normal">#define<sp/>CONFIG_S1<sp/><sp/><sp/><sp/><sp/><sp/><sp/>0</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>CONFIG_S2<sp/><sp/><sp/><sp/><sp/><sp/><sp/>1</highlight></codeline>
+</programlisting></para><para>&quot;ti_drivers_config.c&quot; <programlisting><codeline><highlight class="normal">#include<sp/>&lt;gpio.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">GPIO_PinConfig<sp/>gpioPinConfigs[]<sp/>=<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GPIOMSP432_P1_1<sp/>|<sp/>GPIO_CFG_IN_PU<sp/>|<sp/>GPIO_CFG_IN_INT_FALLING,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GPIOMSP432_P1_4<sp/>|<sp/>GPIO_CFG_IN_PU<sp/>|<sp/>GPIO_CFG_IN_INT_FALLING,</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting> </para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2016-2019,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>are<sp/>met:</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>*<sp/><sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>Texas<sp/>Instruments<sp/>Incorporated<sp/>nor<sp/>the<sp/>names<sp/>of</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>its<sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>from<sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>THIS<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>BY<sp/>THE<sp/>COPYRIGHT<sp/>HOLDERS<sp/>AND<sp/>CONTRIBUTORS<sp/>&quot;AS<sp/>IS&quot;</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>AND<sp/>ANY<sp/>EXPRESS<sp/>OR<sp/>IMPLIED<sp/>WARRANTIES,<sp/>INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>THE<sp/>IMPLIED<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY<sp/>AND<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>PURPOSE<sp/>ARE<sp/>DISCLAIMED.<sp/>IN<sp/>NO<sp/>EVENT<sp/>SHALL<sp/>THE<sp/>COPYRIGHT<sp/>OWNER<sp/>OR</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>CONTRIBUTORS<sp/>BE<sp/>LIABLE<sp/>FOR<sp/>ANY<sp/>DIRECT,<sp/>INDIRECT,<sp/>INCIDENTAL,<sp/>SPECIAL,</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>EXEMPLARY,<sp/>OR<sp/>CONSEQUENTIAL<sp/>DAMAGES<sp/>(INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>PROCUREMENT<sp/>OF<sp/>SUBSTITUTE<sp/>GOODS<sp/>OR<sp/>SERVICES;<sp/>LOSS<sp/>OF<sp/>USE,<sp/>DATA,<sp/>OR<sp/>PROFITS;</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>OR<sp/>BUSINESS<sp/>INTERRUPTION)<sp/>HOWEVER<sp/>CAUSED<sp/>AND<sp/>ON<sp/>ANY<sp/>THEORY<sp/>OF<sp/>LIABILITY,</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>WHETHER<sp/>IN<sp/>CONTRACT,<sp/>STRICT<sp/>LIABILITY,<sp/>OR<sp/>TORT<sp/>(INCLUDING<sp/>NEGLIGENCE<sp/>OR</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>OTHERWISE)<sp/>ARISING<sp/>IN<sp/>ANY<sp/>WAY<sp/>OUT<sp/>OF<sp/>THE<sp/>USE<sp/>OF<sp/>THIS<sp/>SOFTWARE,</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>EVEN<sp/>IF<sp/>ADVISED<sp/>OF<sp/>THE<sp/>POSSIBILITY<sp/>OF<sp/>SUCH<sp/>DAMAGE.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/></highlight><highlight class="comment">/*!***************************************************************************</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/><sp/>@file<sp/><sp/><sp/><sp/><sp/><sp/><sp/>Button.h</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/><sp/>@brief<sp/><sp/><sp/><sp/><sp/><sp/>Button<sp/>driver</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/>@anchor<sp/>ti_drivers_Button_Synopsis</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/>#<sp/>Synopsis<sp/>#</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&lt;ti/drivers/apps/Button.h&gt;</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/><sp/>int<sp/>main(void)</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/><sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Button_Params<sp/>params;</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Button_Handle<sp/>handle;</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Button_Params_init(&amp;params);</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>handle<sp/>=<sp/>Button_open(CONFIG_BUTTON0,<sp/>buttonCallbackFxn,<sp/>&amp;params);</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>...</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/><sp/>void<sp/>buttonCallbackFxn(Button_Handle<sp/>handle,<sp/>Button_EventMask<sp/>events)</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/><sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(events<sp/>&amp;<sp/>Button_EV_CLICK)</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Received<sp/>a<sp/>click,<sp/>handle<sp/>app<sp/>condition<sp/>0<sp/>etc</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>handleAppCond(0);</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(events<sp/>&amp;<sp/>Button_EV_LONGCLICKED)</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Long<sp/>press,<sp/>handle<sp/>app<sp/>condition<sp/>1<sp/>etc</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>handleAppCond(1);</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>...</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/><sp/>@anchor<sp/>ti_drivers_Button_Examples</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/><sp/>##<sp/>Examples<sp/>#</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*<sp/><sp/>*<sp/>@ref<sp/>ti_drivers_Button_Examples_config<sp/>&quot;Generic<sp/>Configuration&quot;</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*<sp/><sp/>##<sp/>Overview<sp/>#</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>Button<sp/>driver<sp/>simplifies<sp/>interfacing<sp/>push<sp/>buttons.<sp/>For<sp/>example,<sp/>push</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*<sp/><sp/>buttons<sp/>on<sp/>LaunchPads,<sp/>BoosterPacks,<sp/>or<sp/>custom<sp/>boards<sp/>may<sp/>easily<sp/>be<sp/>managed</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*<sp/><sp/>via<sp/>the<sp/>Button<sp/>API.<sp/>A<sp/>given<sp/>button<sp/>instance<sp/>may<sp/>subscribe<sp/>to<sp/>one<sp/>or<sp/>several</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/>*<sp/><sp/>#Button_Events.<sp/>When<sp/>a<sp/>subscribed<sp/>event<sp/>occurs,<sp/>the<sp/>user<sp/>will<sp/>receive<sp/>a</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/>*<sp/><sp/>callback<sp/>with<sp/>the<sp/>handle<sp/>of<sp/>the<sp/>button<sp/>and<sp/>the<sp/>event(s)<sp/>that<sp/>occured.</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>*<sp/><sp/>##<sp/>User<sp/>requirements<sp/>#</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/>*<sp/><sp/>Buttons<sp/>use<sp/>the<sp/>@ref<sp/>GPIO.h<sp/>interface<sp/>for<sp/>interfacing<sp/>with<sp/>hardware,<sp/>so<sp/>a</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/>*<sp/><sp/>#GPIO_PinConfig<sp/>array<sp/>must<sp/>exist<sp/>and<sp/>contain<sp/>a<sp/>config<sp/>for<sp/>the<sp/>button<sp/>pin.</highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>user<sp/>must<sp/>statically<sp/>allocate<sp/>a<sp/>#Button_Config<sp/>array<sp/>called</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/>*<sp/><sp/>Button_config.<sp/>Each<sp/>physical<sp/>button<sp/>should<sp/>map<sp/>to<sp/>an<sp/>index<sp/>in</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/>*<sp/><sp/>Button_config.</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/>*<sp/><sp/>##<sp/>Defining<sp/>#Button_Config,<sp/>#Button_Object<sp/>and<sp/>#Button_HWAttrs<sp/>#</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/>*<sp/><sp/>Each<sp/>structure<sp/>must<sp/>be<sp/>defined<sp/>by<sp/>the<sp/>application.<sp/>The<sp/>following</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/>*<sp/><sp/>example<sp/>is<sp/>for<sp/>a<sp/>MSP432<sp/>in<sp/>which<sp/>two<sp/>buttons<sp/>are<sp/>setup.</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>following<sp/>declarations<sp/>are<sp/>placed<sp/>in<sp/>&quot;ti_drivers_config.h&quot;</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/>*<sp/><sp/>and<sp/>&quot;ti_drivers_config.c&quot;<sp/>respectively.<sp/>How<sp/>the<sp/>GPIO<sp/>configs<sp/>are<sp/>defined</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*<sp/><sp/>are<sp/>detailed<sp/>in<sp/>the<sp/>next<sp/>example.</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"><sp/>*<sp/><sp/>@anchor<sp/>ti_drivers_Button_Examples_config</highlight></codeline>
+<codeline lineno="100"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/>*<sp/><sp/>&quot;ti_drivers_config.h&quot;</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>CONFIG_BUTTON_0<sp/><sp/><sp/><sp/><sp/>0<sp/><sp/>//Button<sp/>number<sp/>1</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>CONFIG_BUTTON_1<sp/><sp/><sp/><sp/><sp/>1<sp/><sp/>//Button<sp/>number<sp/>2</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="107"><highlight class="comment"><sp/>*<sp/><sp/>&quot;ti_drivers_config.c&quot;</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&lt;Button.h&gt;</highlight></codeline>
+<codeline lineno="110"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="111"><highlight class="comment"><sp/>*<sp/><sp/>Button_Object<sp/>Button_object[2];</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="113"><highlight class="comment"><sp/>*<sp/><sp/>const<sp/><sp/>Button_HWAttrs<sp/>Button_hwAttrs[2]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.gpioIndex<sp/>=<sp/>CONFIG_S1,</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="117"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.gpioIndex<sp/>=<sp/>CONFIG_S2,</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/>*<sp/><sp/>};</highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="122"><highlight class="comment"><sp/>*<sp/><sp/>const<sp/>Button_Config<sp/>Button_config[2]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="124"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;Button_hwAttrs[0],</highlight></codeline>
+<codeline lineno="125"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/><sp/>&amp;Button_object[0],</highlight></codeline>
+<codeline lineno="126"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="128"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.hwAttrs<sp/>=<sp/>&amp;Button_hwAttrs[1],</highlight></codeline>
+<codeline lineno="129"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.object<sp/>=<sp/><sp/>&amp;Button_object[1],</highlight></codeline>
+<codeline lineno="130"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="131"><highlight class="comment"><sp/>*<sp/><sp/>};</highlight></codeline>
+<codeline lineno="132"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="133"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="134"><highlight class="comment"><sp/>*<sp/><sp/>##Setting<sp/>up<sp/>GPIO<sp/>configurations<sp/>#</highlight></codeline>
+<codeline lineno="135"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="136"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>following<sp/>example<sp/>is<sp/>for<sp/>a<sp/>MSP432.</highlight></codeline>
+<codeline lineno="137"><highlight class="comment"><sp/>*<sp/><sp/>We<sp/>are<sp/>showing<sp/>interfacing<sp/>of<sp/>two<sp/>push<sp/>buttons.<sp/><sp/>Each<sp/>need<sp/>a<sp/>GPIO<sp/>pin.<sp/>The</highlight></codeline>
+<codeline lineno="138"><highlight class="comment"><sp/>*<sp/><sp/>following<sp/>definitions<sp/>are<sp/>in<sp/>&quot;ti_drivers_config.h&quot;<sp/>and</highlight></codeline>
+<codeline lineno="139"><highlight class="comment"><sp/>*<sp/><sp/>&quot;ti_drivers_config.c&quot;<sp/>respectively.<sp/>This<sp/>example<sp/>uses<sp/>GPIO<sp/>pins<sp/>1.1<sp/>and</highlight></codeline>
+<codeline lineno="140"><highlight class="comment"><sp/>*<sp/><sp/>1.4.<sp/>The<sp/>other<sp/>GPIO<sp/>configuration<sp/>structures<sp/>must<sp/>exist,<sp/>see<sp/>@ref<sp/>GPIO.h.</highlight></codeline>
+<codeline lineno="141"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="142"><highlight class="comment"><sp/>*<sp/><sp/>&quot;ti_drivers_config.h&quot;</highlight></codeline>
+<codeline lineno="143"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="144"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>CONFIG_S1<sp/><sp/><sp/><sp/><sp/><sp/><sp/>0</highlight></codeline>
+<codeline lineno="145"><highlight class="comment"><sp/>*<sp/><sp/>#define<sp/>CONFIG_S2<sp/><sp/><sp/><sp/><sp/><sp/><sp/>1</highlight></codeline>
+<codeline lineno="146"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="147"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="148"><highlight class="comment"><sp/>*<sp/><sp/>&quot;ti_drivers_config.c&quot;</highlight></codeline>
+<codeline lineno="149"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
+<codeline lineno="150"><highlight class="comment"><sp/>*<sp/><sp/>#include<sp/>&lt;gpio.h&gt;</highlight></codeline>
+<codeline lineno="151"><highlight class="comment"><sp/>*<sp/><sp/>GPIO_PinConfig<sp/>gpioPinConfigs[]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="152"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>GPIOMSP432_P1_1<sp/>|<sp/>GPIO_CFG_IN_PU<sp/>|<sp/>GPIO_CFG_IN_INT_FALLING,</highlight></codeline>
+<codeline lineno="153"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>GPIOMSP432_P1_4<sp/>|<sp/>GPIO_CFG_IN_PU<sp/>|<sp/>GPIO_CFG_IN_INT_FALLING,</highlight></codeline>
+<codeline lineno="154"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
+<codeline lineno="155"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="156"><highlight class="comment"><sp/>*<sp/><sp/>@endcode</highlight></codeline>
+<codeline lineno="157"><highlight class="comment"><sp/>******************************************************************************</highlight></codeline>
+<codeline lineno="158"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ti_drivers_Button__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_drivers_Button__include</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Driver<sp/>Header<sp/>files<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_g_p_i_o_8h" kindref="compound">ti/drivers/GPIO.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/ClockP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Number<sp/>of<sp/>user<sp/>defined<sp/>Button<sp/>configurations<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint_least8_t<sp/><ref refid="_button_8h_1aa88510a4a5ebb61453d888916750c098" kindref="member">Button_count</ref>;</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183" refid="struct_button___config" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_button___config" kindref="compound">Button_Config</ref></highlight></codeline>
+<codeline lineno="184"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="186" refid="struct_button___config_1ad9f1c280c5ba9614dfb230b11b051386" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="struct_button___config_1ad9f1c280c5ba9614dfb230b11b051386" kindref="member">object</ref>;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189" refid="struct_button___config_1a438e4c616319dcf9ecdd9180850127e3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>*<ref refid="struct_button___config_1a438e4c616319dcf9ecdd9180850127e3" kindref="member">hwAttrs</ref>;</highlight></codeline>
+<codeline lineno="190"><highlight class="normal">}<ref refid="_button_8h_1a81b89ce77e3e44e27e47f47c33a762f6" kindref="member">Button_Config</ref>;</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197" refid="_button_8h_1a88fb45fbe7adae0d042a5c0236f4c930" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_button___config" kindref="compound">Button_Config</ref>*<sp/><ref refid="_button_8h_1a88fb45fbe7adae0d042a5c0236f4c930" kindref="member">Button_Handle</ref>;</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>Button_State</highlight></codeline>
+<codeline lineno="207"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_PRESSING<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>1,</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_PRESSED<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>2,</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_LONGPRESSING<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>3,</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_LONGPRESSED<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>4,</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_RELEASING<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>5,</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_RELEASING_LONG<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>6,</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_RELEASED<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>7,</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_DBLPRESS_DETECTION<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>8,</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_DBLPRESSING<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>9,</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_DBLPRESSED<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>10,</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_RELEASING_DBLPRESSED<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>11</highlight></codeline>
+<codeline lineno="230"><highlight class="normal">}<sp/>Button_State;</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight></codeline>
+<codeline lineno="238" refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6d" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6d" kindref="member">Button_Events</ref></highlight></codeline>
+<codeline lineno="239"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="241" refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6da5978c7286e0e858bb4cba454638b8287" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6da5978c7286e0e858bb4cba454638b8287" kindref="member">Button_EV_PRESSED</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x01,</highlight></codeline>
+<codeline lineno="243" refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6da3dbe9c7f766d60fa266f53c66d53a38d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6da3dbe9c7f766d60fa266f53c66d53a38d" kindref="member">Button_EV_LONGPRESSED</ref><sp/><sp/><sp/><sp/>=<sp/>0x02,</highlight></codeline>
+<codeline lineno="245" refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6da9ddcce86c0ecb00a3b3e26b7289e3ee2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6da9ddcce86c0ecb00a3b3e26b7289e3ee2" kindref="member">Button_EV_RELEASED</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x04,</highlight></codeline>
+<codeline lineno="247" refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6dadd2b047eb9c60a999dde2f8a924cc4a2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6dadd2b047eb9c60a999dde2f8a924cc4a2" kindref="member">Button_EV_CLICKED</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x08,</highlight></codeline>
+<codeline lineno="252" refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6dad513d57eeab56a7125f5f09d542167e6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6dad513d57eeab56a7125f5f09d542167e6" kindref="member">Button_EV_LONGCLICKED</ref><sp/><sp/><sp/><sp/>=<sp/>0x10,</highlight></codeline>
+<codeline lineno="254" refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6da971ecf310202ddd41308518a34a41a2c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6da971ecf310202ddd41308518a34a41a2c" kindref="member">Button_EV_DOUBLECLICKED</ref><sp/><sp/>=<sp/>0x20,</highlight></codeline>
+<codeline lineno="255"><highlight class="normal">}<sp/><ref refid="_button_8h_1a616c2f9898615555ed92b3695ba41b6d" kindref="member">Button_Events</ref>;</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"></highlight></codeline>
+<codeline lineno="258" refid="_button_8h_1af90bcd722e5b5d5e5855ecb7ad5bbe7a" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="_button_8h_1af90bcd722e5b5d5e5855ecb7ad5bbe7a" kindref="member">Button_EventMask</ref>;</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"></highlight></codeline>
+<codeline lineno="263" refid="_button_8h_1a9ea227c0303faf9290cab0f5c5b8e061" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="_button_8h_1a9ea227c0303faf9290cab0f5c5b8e061" kindref="member">Button_Callback</ref>)(Button_Handle<sp/>buttonHandle,</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Button_EventMask<sp/>buttonEvents);</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"></highlight></codeline>
+<codeline lineno="272" refid="_button_8h_1a7540f487e4c8d28b980847bb68e708f5" refkind="member"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="_button_8h_1a7540f487e4c8d28b980847bb68e708f5" kindref="member">Button_Pull</ref></highlight></codeline>
+<codeline lineno="273"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>NOTE:<sp/>DO<sp/>NOT<sp/>change<sp/>the<sp/>values<sp/>of<sp/>DOWN/UP<sp/>from<sp/>(0,1)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="275" refid="_button_8h_1a7540f487e4c8d28b980847bb68e708f5a04b8bbae8d344ee2e20924e09a3415c8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_button_8h_1a7540f487e4c8d28b980847bb68e708f5a04b8bbae8d344ee2e20924e09a3415c8" kindref="member">Button_PULL_DOWN</ref><sp/><sp/><sp/>=<sp/>0,<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="276" refid="_button_8h_1a7540f487e4c8d28b980847bb68e708f5adca1194f335c13c6410aaf523c7c7c35" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_button_8h_1a7540f487e4c8d28b980847bb68e708f5adca1194f335c13c6410aaf523c7c7c35" kindref="member">Button_PULL_UP</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>1,<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="277" refid="_button_8h_1a7540f487e4c8d28b980847bb68e708f5a5f4c3ead6067b22c30648b5c01f55765" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_button_8h_1a7540f487e4c8d28b980847bb68e708f5a5f4c3ead6067b22c30648b5c01f55765" kindref="member">Button_PULL_NOTSET</ref><sp/>=<sp/>2<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="278"><highlight class="normal">}<sp/><ref refid="_button_8h_1a7540f487e4c8d28b980847bb68e708f5" kindref="member">Button_Pull</ref>;</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"></highlight></codeline>
+<codeline lineno="288" refid="struct_button___h_w_attrs" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_button___h_w_attrs" kindref="compound">Button_HWAttrs</ref></highlight></codeline>
+<codeline lineno="289"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="290" refid="struct_button___h_w_attrs_1af3acb380f658a2957d0f51aa619f8a94" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint_least8_t<sp/><ref refid="struct_button___h_w_attrs_1af3acb380f658a2957d0f51aa619f8a94" kindref="member">gpioIndex</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="291"><highlight class="normal">}<sp/><ref refid="_button_8h_1a09f5b0032b30544686f551dd3bae4cbb" kindref="member">Button_HWAttrs</ref>;</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"></highlight></codeline>
+<codeline lineno="302"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">Button_StateVariables</highlight></codeline>
+<codeline lineno="303"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_State<sp/><sp/><sp/>state;</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/>pressedStartTime;</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/>lastPressedDuration;</highlight></codeline>
+<codeline lineno="310"><highlight class="normal">}Button_StateVariables;</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"></highlight></codeline>
+<codeline lineno="316" refid="struct_button___object" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_button___object" kindref="compound">Button_Object</ref></highlight></codeline>
+<codeline lineno="317"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="319" refid="struct_button___object_1a9703c569479be47a356e884cc7ff8376" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>ClockP_Handle<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_button___object_1a9703c569479be47a356e884cc7ff8376" kindref="member">clockHandle</ref>;</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"></highlight></codeline>
+<codeline lineno="322" refid="struct_button___object_1a994b8ececb21ded0b1787168f59b43c4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_StateVariables<sp/><sp/>buttonStateVariables;</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"></highlight></codeline>
+<codeline lineno="325" refid="struct_button___object_1acdcc028a39062d39297129783ba1d502" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_EventMask<sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_button___object_1acdcc028a39062d39297129783ba1d502" kindref="member">buttonEventMask</ref>;</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"></highlight></codeline>
+<codeline lineno="328" refid="struct_button___object_1a4828e787b147ac076032a775cd736398" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_button_8h_1a9ea227c0303faf9290cab0f5c5b8e061" kindref="member">Button_Callback</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_button___object_1a4828e787b147ac076032a775cd736398" kindref="member">buttonCallback</ref>;</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"></highlight></codeline>
+<codeline lineno="331" refid="struct_button___object_1a17d27b9d0d2202a194727d8adb1167d4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_button___object_1a17d27b9d0d2202a194727d8adb1167d4" kindref="member">debounceDuration</ref>;</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"></highlight></codeline>
+<codeline lineno="334" refid="struct_button___object_1a4958e829ee1af33cdd3c356204629c04" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_button___object_1a4958e829ee1af33cdd3c356204629c04" kindref="member">longPressDuration</ref>;</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight></codeline>
+<codeline lineno="337" refid="struct_button___object_1a26c91392adad279edf3cbc7fb03fed58" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_button___object_1a26c91392adad279edf3cbc7fb03fed58" kindref="member">doublePressDetectiontimeout</ref>;</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"></highlight></codeline>
+<codeline lineno="340" refid="struct_button___object_1ab83137ae1092c6b566b0194ab2ea5742" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_button_8h_1a7540f487e4c8d28b980847bb68e708f5" kindref="member">Button_Pull</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_button___object_1ab83137ae1092c6b566b0194ab2ea5742" kindref="member">buttonPull</ref>;</highlight></codeline>
+<codeline lineno="341"><highlight class="normal">}<sp/><ref refid="_button_8h_1af429db945680535818f99db254374e92" kindref="member">Button_Object</ref>;</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351" refid="struct_button___params" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_button___params" kindref="compound">Button_Params</ref></highlight></codeline>
+<codeline lineno="352"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="354" refid="struct_button___params_1a12cb92a9710dcd4c1a81c546e9f48ef8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_button___params_1a12cb92a9710dcd4c1a81c546e9f48ef8" kindref="member">debounceDuration</ref>;</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"></highlight></codeline>
+<codeline lineno="357" refid="struct_button___params_1a8145a7ef96400990e033b8124bbbd3c1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_button___params_1a8145a7ef96400990e033b8124bbbd3c1" kindref="member">longPressDuration</ref>;</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"></highlight></codeline>
+<codeline lineno="360" refid="struct_button___params_1a5166d29595293b67eb4b85ba89e3031d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_button___params_1a5166d29595293b67eb4b85ba89e3031d" kindref="member">doublePressDetectiontimeout</ref>;</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"></highlight></codeline>
+<codeline lineno="363" refid="struct_button___params_1ac841ce154ce3799018cb5c6929d8b4b5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Button_EventMask<sp/><sp/><sp/><sp/><ref refid="struct_button___params_1ac841ce154ce3799018cb5c6929d8b4b5" kindref="member">buttonEventMask</ref>;</highlight></codeline>
+<codeline lineno="364"><highlight class="normal">}<sp/><ref refid="_button_8h_1af849faed7b8830d903b15c57f2433199" kindref="member">Button_Params</ref>;</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"></highlight></codeline>
+<codeline lineno="375"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_button_8h_1ad3c055a77dbbe47d325bb0340d032594" kindref="member">Button_close</ref>(Button_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="376"><highlight class="normal"></highlight></codeline>
+<codeline lineno="380"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_button_8h_1acd126a8ddb116ea8ba1f14b934d82286" kindref="member">Button_init</ref>();</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"></highlight></codeline>
+<codeline lineno="406"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>Button_Handle<sp/><ref refid="_button_8h_1aed14971430edf2a69570ed1f8567ed1b" kindref="member">Button_open</ref>(uint_least8_t<sp/>buttonIndex,</highlight></codeline>
+<codeline lineno="407"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_button_8h_1a9ea227c0303faf9290cab0f5c5b8e061" kindref="member">Button_Callback</ref><sp/>buttonCallback,</highlight></codeline>
+<codeline lineno="408"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_button___params" kindref="compound">Button_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="409"><highlight class="normal"></highlight></codeline>
+<codeline lineno="424"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_button_8h_1ab9d816a81c2c2767aa77be997c57a9d8" kindref="member">Button_Params_init</ref>(<ref refid="struct_button___params" kindref="compound">Button_Params</ref><sp/>*params);</highlight></codeline>
+<codeline lineno="425"><highlight class="normal"></highlight></codeline>
+<codeline lineno="442"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="_button_8h_1ad0aa5471701cf9004520b01a2b2f73a3" kindref="member">Button_getLastPressedDuration</ref>(Button_Handle<sp/>handle);</highlight></codeline>
+<codeline lineno="443"><highlight class="normal"></highlight></codeline>
+<codeline lineno="452"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_button_8h_1aaf06f615b32fb85352e10dca952b97b6" kindref="member">Button_setCallback</ref>(Button_Handle<sp/>handle,</highlight></codeline>
+<codeline lineno="453"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_button_8h_1a9ea227c0303faf9290cab0f5c5b8e061" kindref="member">Button_Callback</ref><sp/>buttonCallback);</highlight></codeline>
+<codeline lineno="454"><highlight class="normal"></highlight></codeline>
+<codeline lineno="469"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_button_8h_1ad2d67d1527b966a2fc27c3bcda2e4924" kindref="member">Button_gpioCallbackFxn</ref>(uint_least8_t<sp/>index);</highlight></codeline>
+<codeline lineno="470"><highlight class="normal"></highlight></codeline>
+<codeline lineno="471"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="472"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="473"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="474"><highlight class="normal"></highlight></codeline>
+<codeline lineno="475"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ti_drivers_Button__include<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="exports/tidrivers_msp432/source/ti/drivers/apps/Button.h"/>
+  </compounddef>
+</doxygen>

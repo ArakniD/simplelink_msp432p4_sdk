@@ -76,7 +76,7 @@
  *  params.recurrenceMode = ADCBuf_RECURRENCE_MODE_ONE_SHOT;
  *
  *  // Open ADCBuf driver
- *  adcBuf = ADCBuf_open(Board_ADCBUF0, &params);
+ *  adcBuf = ADCBuf_open(CONFIG_ADCBUF0, &params);
  *
  *  // Setup conversion structure
  *  ADCBuf_Conversion conversion = {0};
@@ -303,7 +303,7 @@ extern "C" {
 /*!
  *  @brief    A handle that is returned from an ADCBuf_open() call.
  */
-typedef struct ADCBuf_Config    *ADCBuf_Handle;
+typedef struct ADCBuf_Config_ *ADCBuf_Handle;
 
 /*!
  *  @brief  Defines a conversion to be used with ADCBuf_convert().
@@ -628,7 +628,7 @@ typedef struct
  *  @sa     ADCBuf_init()
  *  @sa     ADCBuf_open()
  */
-typedef struct ADCBuf_Config
+typedef struct ADCBuf_Config_
 {
     /*! Pointer to a @ref driver_function_table "function pointer table"
      *  with driver-specific implementations of ADC APIs */

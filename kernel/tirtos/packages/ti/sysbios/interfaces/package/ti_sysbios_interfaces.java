@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_interfaces
 {
-    static final String VERS = "@(#) xdc-F14\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -237,17 +237,6 @@ public class ti_sysbios_interfaces
         om.bind("ti.sysbios.interfaces.ISeconds.Time", new Proto.Str(spo, false));
     }
 
-    void ISysCall$$OBJECTS()
-    {
-        Proto.Obj po, spo;
-        Value.Obj vo;
-
-        po = (Proto.Obj)om.bind("ti.sysbios.interfaces.ISysCall.Module", new Proto.Obj());
-        vo = (Value.Obj)om.bind("ti.sysbios.interfaces.ISysCall", new Value.Obj("ti.sysbios.interfaces.ISysCall", po));
-        pkgV.bind("ISysCall", vo);
-        // decls 
-    }
-
     void ICore$$CONSTS()
     {
         // interface ICore
@@ -332,11 +321,6 @@ public class ti_sysbios_interfaces
         // interface ISeconds
     }
 
-    void ISysCall$$CONSTS()
-    {
-        // interface ISysCall
-    }
-
     void ICore$$CREATES()
     {
         Proto.Fxn fxn;
@@ -415,13 +399,6 @@ public class ti_sysbios_interfaces
     }
 
     void ISeconds$$CREATES()
-    {
-        Proto.Fxn fxn;
-        StringBuilder sb;
-
-    }
-
-    void ISysCall$$CREATES()
     {
         Proto.Fxn fxn;
         StringBuilder sb;
@@ -519,8 +496,6 @@ public class ti_sysbios_interfaces
         fxn = (Proto.Fxn)om.bind("ti.sysbios.interfaces.ISettings$$getDefaultPowerDelegate", new Proto.Fxn(om.findStrict("ti.sysbios.interfaces.ISettings.Module", "ti.sysbios.interfaces"), $$T_Str, 0, 0, false));
         // fxn ISettings.getDefaultSecondsDelegate
         fxn = (Proto.Fxn)om.bind("ti.sysbios.interfaces.ISettings$$getDefaultSecondsDelegate", new Proto.Fxn(om.findStrict("ti.sysbios.interfaces.ISettings.Module", "ti.sysbios.interfaces"), $$T_Str, 0, 0, false));
-        // fxn ISettings.getDefaultSysCallDelegate
-        fxn = (Proto.Fxn)om.bind("ti.sysbios.interfaces.ISettings$$getDefaultSysCallDelegate", new Proto.Fxn(om.findStrict("ti.sysbios.interfaces.ISettings.Module", "ti.sysbios.interfaces"), $$T_Str, 0, 0, false));
         // fxn ISettings.getDefaultBootModule
         fxn = (Proto.Fxn)om.bind("ti.sysbios.interfaces.ISettings$$getDefaultBootModule", new Proto.Fxn(om.findStrict("ti.sysbios.interfaces.ISettings.Module", "ti.sysbios.interfaces"), $$T_Str, 0, 0, false));
         // fxn ISettings.getDefaultMmuModule
@@ -546,12 +521,6 @@ public class ti_sysbios_interfaces
     }
 
     void ISeconds$$FUNCTIONS()
-    {
-        Proto.Fxn fxn;
-
-    }
-
-    void ISysCall$$FUNCTIONS()
     {
         Proto.Fxn fxn;
 
@@ -673,13 +642,6 @@ public class ti_sysbios_interfaces
         so.bind("$alignof", fxn);
         fxn = Global.eval("function(fld) { return $$offsetof(xdc.om['ti.sysbios.interfaces.ISeconds.Time'], fld); }");
         so.bind("$offsetof", fxn);
-    }
-
-    void ISysCall$$SIZES()
-    {
-        Proto.Str so;
-        Object fxn;
-
     }
 
     void ICore$$TYPES()
@@ -947,21 +909,6 @@ public class ti_sysbios_interfaces
                 po.addFld("nsecs", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "w");
     }
 
-    void ISysCall$$TYPES()
-    {
-        Scriptable cap;
-        Proto.Obj po;
-        Proto.Str ps;
-        Proto.Typedef pt;
-        Object fxn;
-
-        po = (Proto.Obj)om.findStrict("ti.sysbios.interfaces.ISysCall.Module", "ti.sysbios.interfaces");
-        po.init("ti.sysbios.interfaces.ISysCall.Module", om.findStrict("xdc.runtime.IModule.Module", "ti.sysbios.interfaces"));
-                po.addFld("$hostonly", $$T_Num, 0, "r");
-        if (isCFG) {
-        }//isCFG
-    }
-
     void ICore$$ROV()
     {
         Proto.Obj po;
@@ -1058,14 +1005,6 @@ public class ti_sysbios_interfaces
         vo = (Value.Obj)om.findStrict("ti.sysbios.interfaces.ISeconds", "ti.sysbios.interfaces");
         vo.bind("Time$fetchDesc", Global.newObject("type", "ti.sysbios.interfaces.ISeconds.Time", "isScalar", false));
         po = (Proto.Obj)om.findStrict("ti.sysbios.interfaces.ISeconds$$Time", "ti.sysbios.interfaces");
-    }
-
-    void ISysCall$$ROV()
-    {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.sysbios.interfaces.ISysCall", "ti.sysbios.interfaces");
     }
 
     void $$SINGLETONS()
@@ -1481,34 +1420,6 @@ public class ti_sysbios_interfaces
         }
     }
 
-    void ISysCall$$SINGLETONS()
-    {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.sysbios.interfaces.ISysCall", "ti.sysbios.interfaces");
-        po = (Proto.Obj)om.findStrict("ti.sysbios.interfaces.ISysCall.Module", "ti.sysbios.interfaces");
-        vo.init2(po, "ti.sysbios.interfaces.ISysCall", $$DEFAULT, false);
-        vo.bind("Module", po);
-        vo.bind("$category", "Interface");
-        vo.bind("$capsule", $$UNDEF);
-        vo.bind("$package", om.findStrict("ti.sysbios.interfaces", "ti.sysbios.interfaces"));
-        tdefs.clear();
-        proxies.clear();
-        inherits.clear();
-        vo.bind("$$tdefs", Global.newArray(tdefs.toArray()));
-        vo.bind("$$proxies", Global.newArray(proxies.toArray()));
-        inherits.add("xdc.runtime");
-        vo.bind("$$inherits", Global.newArray(inherits.toArray()));
-        ((Value.Arr)pkgV.getv("$interfaces")).add(vo);
-        pkgV.bind("ISysCall", vo);
-        ((Value.Arr)pkgV.getv("$unitNames")).add("ISysCall");
-        vo.seal(null);
-        if (vo.getProto().lookupFld("$used") != null) {
-            vo.unseal("$used");
-        }
-    }
-
     void $$INITIALIZATION()
     {
         Value.Obj vo;
@@ -1528,7 +1439,6 @@ public class ti_sysbios_interfaces
         ((Value.Obj)om.getv("ti.sysbios.interfaces.IPower")).bless();
         ((Value.Obj)om.getv("ti.sysbios.interfaces.IRomDevice")).bless();
         ((Value.Obj)om.getv("ti.sysbios.interfaces.ISeconds")).bless();
-        ((Value.Obj)om.getv("ti.sysbios.interfaces.ISysCall")).bless();
         ((Value.Arr)om.findStrict("$packages", "ti.sysbios.interfaces")).add(pkgV);
     }
 
@@ -1557,7 +1467,6 @@ public class ti_sysbios_interfaces
         IPower$$OBJECTS();
         IRomDevice$$OBJECTS();
         ISeconds$$OBJECTS();
-        ISysCall$$OBJECTS();
         ICore$$CONSTS();
         IHwi$$CONSTS();
         ITaskSupport$$CONSTS();
@@ -1570,7 +1479,6 @@ public class ti_sysbios_interfaces
         IPower$$CONSTS();
         IRomDevice$$CONSTS();
         ISeconds$$CONSTS();
-        ISysCall$$CONSTS();
         ICore$$CREATES();
         IHwi$$CREATES();
         ITaskSupport$$CREATES();
@@ -1583,7 +1491,6 @@ public class ti_sysbios_interfaces
         IPower$$CREATES();
         IRomDevice$$CREATES();
         ISeconds$$CREATES();
-        ISysCall$$CREATES();
         ICore$$FUNCTIONS();
         IHwi$$FUNCTIONS();
         ITaskSupport$$FUNCTIONS();
@@ -1596,7 +1503,6 @@ public class ti_sysbios_interfaces
         IPower$$FUNCTIONS();
         IRomDevice$$FUNCTIONS();
         ISeconds$$FUNCTIONS();
-        ISysCall$$FUNCTIONS();
         ICore$$SIZES();
         IHwi$$SIZES();
         ITaskSupport$$SIZES();
@@ -1609,7 +1515,6 @@ public class ti_sysbios_interfaces
         IPower$$SIZES();
         IRomDevice$$SIZES();
         ISeconds$$SIZES();
-        ISysCall$$SIZES();
         ICore$$TYPES();
         IHwi$$TYPES();
         ITaskSupport$$TYPES();
@@ -1622,7 +1527,6 @@ public class ti_sysbios_interfaces
         IPower$$TYPES();
         IRomDevice$$TYPES();
         ISeconds$$TYPES();
-        ISysCall$$TYPES();
         if (isROV) {
             ICore$$ROV();
             IHwi$$ROV();
@@ -1636,7 +1540,6 @@ public class ti_sysbios_interfaces
             IPower$$ROV();
             IRomDevice$$ROV();
             ISeconds$$ROV();
-            ISysCall$$ROV();
         }//isROV
         $$SINGLETONS();
         ICore$$SINGLETONS();
@@ -1651,7 +1554,6 @@ public class ti_sysbios_interfaces
         IPower$$SINGLETONS();
         IRomDevice$$SINGLETONS();
         ISeconds$$SINGLETONS();
-        ISysCall$$SINGLETONS();
         $$INITIALIZATION();
     }
 }

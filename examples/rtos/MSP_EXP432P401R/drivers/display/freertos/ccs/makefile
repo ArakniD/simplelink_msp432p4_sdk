@@ -7,11 +7,12 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = main_freertos.obj display.obj splash_image.obj MSP_EXP432P401R.obj
+OBJECTS = display.obj splash_image.obj freertos_main_freertos.obj ti_drivers_config.obj
 
 NAME = display
 
 CFLAGS = -I../.. \
+    -I. \
     -DBOARD_DISPLAY_USE_UART_ANSI=1 \
     -DBOARD_DISPLAY_USE_LCD=1 \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
@@ -57,28 +58,39 @@ $(KERNEL_BUILD)/ccs/freertos.lib:
 	@ echo $@ is not built.
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
-main_freertos.obj: ../../freertos/main_freertos.c
+
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../../freertos/display.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+display.obj: ../../display.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-display.obj: ../../display.c
+splash_image.obj: ../../splash_image.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-splash_image.obj: ../../splash_image.c
+freertos_main_freertos.obj: ../../freertos/main_freertos.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/ccs/freertos.lib
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
+
 
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

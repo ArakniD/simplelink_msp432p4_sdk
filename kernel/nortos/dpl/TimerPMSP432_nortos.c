@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -169,6 +169,8 @@ TimerP_Handle TimerP_construct(TimerP_Struct *handle, TimerP_Fxn timerFxn,
 {
     TimerP_Obj *obj = (TimerP_Obj *)handle;
     uintptr_t   hwiKey;
+    uint32_t    rem;
+    const uint32_t factor = 1000000;
 
     if (handle != NULL) {
         hwiKey = HwiP_disable();
@@ -197,13 +199,18 @@ TimerP_Handle TimerP_construct(TimerP_Struct *handle, TimerP_Fxn timerFxn,
 
         obj->startMode = params->startMode;
         obj->arg = params->arg;
-
-        /*
-         *  Period is in usec.
-         */
-        obj->period = ((TIMER_FREQ_ACLK / 1000) * params->period) / 1000;
         obj->tickFxn = timerFxn;
         obj->savedCurrCount = 0;
+
+        /*
+         *  params->period is in usec. Do some extra work to round the period
+         *  properly to reduce drift from precision loss.
+         */
+        rem = (TIMER_FREQ_ACLK * params->period) % factor;
+        obj->period = (TIMER_FREQ_ACLK * params->period) / factor;
+        if (rem >= factor/2) {
+            obj->period++;
+        }
         obj->prevThreshold = obj->period;
         obj->nextThreshold = obj->period;
 

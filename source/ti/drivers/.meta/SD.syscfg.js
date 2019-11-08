@@ -58,6 +58,24 @@ will be accessible by the application.
 ];
 
 /*
+ *  ========= filterHardware ========
+ *  param component - hardware object describing signals and
+ *                    resources
+ *
+ *  returns Boolean indicating whether or not to allow the component to
+ *           be assigned to an instance's $hardware config
+ */
+function filterHardware(component) {
+    if (component.type) {
+        if (Common.typeMatches(component.type, ["SD_SPI_FLASH"])) {
+            return (true);
+        }
+    }
+
+    return (false);
+}
+
+/*
  *  ======== validate ========
  *  Validate this inst's configuration
  *
@@ -67,6 +85,94 @@ will be accessible by the application.
 function validate(inst, validation)
 {
     Common.validateNames(inst, validation);
+}
+
+/*
+ *  ======== _getPinResources ========
+ */
+function _getPinResources(inst)
+{
+    let pin;
+    let mod = system.getScript("/ti/drivers/SPI.syscfg.js");
+
+    if (inst.spiInstance) {
+        pin = mod._getPinResources(inst.spiInstance);
+    }
+
+    if (inst.slaveSelect) {
+        let mod = system.getScript("/ti/drivers/GPIO.syscfg.js");
+        pin += "\nSS: " + mod._getPinResources(inst.slaveSelect);
+    }
+
+    return (pin);
+}
+
+/*
+ *  ======== sharedModuleInstances ========
+ */
+function sharedModuleInstances(inst)
+{
+    /* Some devices support non SPI modes */
+    if (inst.interfaceType && inst.interfaceType !== "SD SPI") {
+        return ([]);
+    }
+
+    let spiName = "SD SPI";
+    let spiHardware = null;
+
+    /* Speculatively get hardware and displayName */
+    if (inst.$hardware && inst.$hardware.subComponents) {
+        let components = inst.$hardware.subComponents;
+        spiHardware = components.SPI;
+        if (spiHardware && spiHardware.displayName) {
+            spiName = spiHardware.displayName;
+        }
+    }
+
+    return ([
+        {
+            name: "spiInstance",
+            displayName: spiName,
+            moduleName: "/ti/drivers/SPI",
+            hardware: spiHardware
+        }
+    ]);
+}
+
+/*
+ *  ======== moduleInstances ========
+ */
+function moduleInstances(inst)
+{
+    /* Some devices support non SPI modes */
+    if (inst.interfaceType && inst.interfaceType !== "SD SPI") {
+        return ([]);
+    }
+
+    let selectHardware = null;
+    let selectName = "SD Slave Select";
+
+    /* Speculatively get hardware and displayName */
+    if (inst.$hardware && inst.$hardware.subComponents) {
+        let components = inst.$hardware.subComponents;
+
+        selectHardware = components.SELECT;
+        if (selectHardware && selectHardware.displayName) {
+            selectName = selectHardware.displayName;
+        }
+    }
+
+    return ([{
+        name: "slaveSelect",
+        displayName: selectName,
+        moduleName: "/ti/drivers/GPIO",
+        hardware: selectHardware,
+        args: {
+            mode: "Output",
+            outputType: "Standard",
+            initialOutputState:"High"
+        }
+    }]);
 }
 
 /*
@@ -89,11 +195,15 @@ operations on SD cards.
 "C usage examples"
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#SD_Configuration_Options "Configuration options reference"
 `,
-    documentation: "/tidrivers/doxygen/html/_s_d_8h.html",
-    defaultInstanceName: "Board_SD",
-    config: Common.addNameConfig(config, "/ti/drivers/SD", "Board_SD"),
+    defaultInstanceName: "CONFIG_SD_",
+    config: Common.addNameConfig(config, "/ti/drivers/SD", "CONFIG_SD_"),
     validate: validate,
-    modules: Common.autoForceModules(["Board", "Power"])
+    modules: Common.autoForceModules(["Board", "Power"]),
+    sharedModuleInstances: sharedModuleInstances,
+    moduleInstances: moduleInstances,
+    filterHardware: filterHardware,
+
+    _getPinResources: _getPinResources
 };
 
 /* extend the base exports to include family-specific content */

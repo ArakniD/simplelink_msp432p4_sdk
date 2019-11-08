@@ -42,8 +42,8 @@
 /* RTOS Header Files */
 #include <ti/sysbios/BIOS.h>
 
-/* Board Header Files */
-#include "Board.h"
+/* Example/Board Header Files */
+#include <ti/drivers/Board.h>
 
 /* Local Header Files */
 #include "callbacks.h"
@@ -65,7 +65,7 @@ int main(void)
     int                 detachState;
 
     /* Call driver init functions */
-    Board_initGeneral();
+    Board_init();
 
     /*
      *  Message Queue to send messages to LED thread.

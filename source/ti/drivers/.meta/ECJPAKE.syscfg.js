@@ -82,8 +82,8 @@ certificate authorities.
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#ECJPAKE_Configuration_Options "Configuration options reference"
 `,
     validate            : validate,
-    defaultInstanceName : "Board_ECJPAKE",
-    config              : Common.addNameConfig(config, "/ti/drivers/ECJPAKE", "Board_ECJPAKE"),
+    defaultInstanceName : "CONFIG_ECJPAKE_",
+    config              : Common.addNameConfig(config, "/ti/drivers/ECJPAKE", "CONFIG_ECJPAKE_"),
     modules             : Common.autoForceModules(["Board", "Power"])
 };
 

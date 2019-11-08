@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,6 +54,7 @@ int_fast16_t TimerMSP432_control(Timer_Handle handle,
 uint32_t TimerMSP432_getCount(Timer_Handle handle);
 void TimerMSP432_init(Timer_Handle handle);
 Timer_Handle TimerMSP432_open(Timer_Handle handle, Timer_Params *params);
+int32_t TimerMSP432_setPeriod(Timer_Handle handle, Timer_PeriodUnits periodUnits, uint32_t period);
 int32_t TimerMSP432_start(Timer_Handle handle);
 void TimerMSP432_stop(Timer_Handle handle);
 
@@ -70,24 +71,26 @@ static void TimerMSP432_hwiIntFunction(uintptr_t arg);
 
 /* Function table of function to handle Timer_A */
 const Timer_FxnTable TimerMSP432_Timer_A_fxnTable = {
-    .closeFxn    = TimerMSP432_close,
-    .openFxn     = TimerMSP432_open,
-    .startFxn    = TimerMSP432_start,
-    .stopFxn     = TimerMSP432_stop,
-    .initFxn     = TimerMSP432_init,
-    .getCountFxn = TimerMSP432_getCount,
-    .controlFxn  = TimerMSP432_control
+    .closeFxn     = TimerMSP432_close,
+    .openFxn      = TimerMSP432_open,
+    .startFxn     = TimerMSP432_start,
+    .stopFxn      = TimerMSP432_stop,
+    .initFxn      = TimerMSP432_init,
+    .getCountFxn  = TimerMSP432_getCount,
+    .controlFxn   = TimerMSP432_control,
+    .setPeriodFxn = TimerMSP432_setPeriod
 };
 
 /* Function table of function to handle Timer32 */
 const Timer_FxnTable TimerMSP432_Timer32_fxnTable= {
-    .closeFxn    = TimerMSP432_close,
-    .openFxn     = TimerMSP432_open,
-    .startFxn    = TimerMSP432_start,
-    .stopFxn     = TimerMSP432_stop,
-    .initFxn     = TimerMSP432_init,
-    .getCountFxn = TimerMSP432_getCount,
-    .controlFxn  = TimerMSP432_control
+    .closeFxn     = TimerMSP432_close,
+    .openFxn      = TimerMSP432_open,
+    .startFxn     = TimerMSP432_start,
+    .stopFxn      = TimerMSP432_stop,
+    .initFxn      = TimerMSP432_init,
+    .getCountFxn  = TimerMSP432_getCount,
+    .controlFxn   = TimerMSP432_control,
+    .setPeriodFxn = TimerMSP432_setPeriod
 };
 
 /*
@@ -635,6 +638,69 @@ Timer_Handle TimerMSP432_open(Timer_Handle handle, Timer_Params *params)
     initTimerHardware(handle, powerFreqs);
 
     return (handle);
+}
+
+/*
+ *  ======== TimerMSP432_setPeriod ========
+ */
+int32_t TimerMSP432_setPeriod(Timer_Handle handle, Timer_PeriodUnits periodUnits, uint32_t period)
+{
+    TimerMSP432_Object *object = handle->object;
+    TimerMSP432_HWAttrs const *hwAttrs = handle->hwAttrs;
+    PowerMSP432_Freqs powerFreqs;
+    uint32_t oldPeriod;
+    Timer_PeriodUnits oldUnits;
+
+    /* Store previous period and units */
+    oldPeriod = object->rawPeriod;
+    oldUnits = object->units;
+
+    PowerMSP432_getFreqs(Power_getPerformanceLevel(), &powerFreqs);
+    object->rawPeriod = period;
+    object->units = periodUnits;
+
+    if(isTimer32Bit(hwAttrs->timerBaseAddress)) {
+
+        if (object->units == Timer_PERIOD_COUNTS) {
+            MAP_Timer32_initModule(hwAttrs->timerBaseAddress,
+            TIMER32_PRESCALER_1, TIMER32_32BIT, TIMER32_PERIODIC_MODE);
+            MAP_Timer32_setCount(hwAttrs->timerBaseAddress, object->rawPeriod);
+            return (Timer_STATUS_SUCCESS);
+        }
+        else {
+            setT32TickCount(handle, powerFreqs.MCLK);
+            return (Timer_STATUS_SUCCESS);
+        }
+    }
+    else {
+        upConfig.clockSource = hwAttrs->clockSource;
+        upConfig.captureCompareInterruptEnable_CCR0_CCIE =
+        TIMER_A_CCIE_CCR0_INTERRUPT_ENABLE;
+
+        if (object->units == Timer_PERIOD_COUNTS) {
+            if (object->rawPeriod <= UINT16_MAX) {
+                upConfig.timerPeriod = object->rawPeriod;
+                MAP_Timer_A_configureUpMode(hwAttrs->timerBaseAddress, &upConfig);
+                return (Timer_STATUS_SUCCESS);
+            }
+        }
+        else {
+            if (hwAttrs->clockSource == TIMER_A_CLOCKSOURCE_SMCLK) {
+                setTATickCount(handle, powerFreqs.SMCLK);
+                return (Timer_STATUS_SUCCESS);
+            }
+            else {
+                setTATickCount(handle, powerFreqs.ACLK);
+                return (Timer_STATUS_SUCCESS);
+            }
+        }
+    }
+
+    /* Restore previous period and units on failure */
+    object->rawPeriod = oldPeriod;
+    object->units = oldUnits;
+
+    return (Timer_STATUS_ERROR);
 }
 
 /*

@@ -39,28 +39,28 @@
 /* Driver Header files */
 #include <ti/drivers/GPIO.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 /*
  *  ======== gpioButtonFxn0 ========
- *  Callback function for the GPIO interrupt on Board_GPIO_BUTTON0.
+ *  Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON_0.
  */
 void gpioButtonFxn0(uint_least8_t index)
 {
     /* Clear the GPIO interrupt and toggle an LED */
-    GPIO_toggle(Board_GPIO_LED0);
+    GPIO_toggle(CONFIG_GPIO_LED_0);
 }
 
 /*
  *  ======== gpioButtonFxn1 ========
- *  Callback function for the GPIO interrupt on Board_GPIO_BUTTON1.
+ *  Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON_1.
  *  This may not be used for all boards.
  */
 void gpioButtonFxn1(uint_least8_t index)
 {
     /* Clear the GPIO interrupt and toggle an LED */
-    GPIO_toggle(Board_GPIO_LED1);
+    GPIO_toggle(CONFIG_GPIO_LED_1);
 }
 
 /*
@@ -72,30 +72,30 @@ void *mainThread(void *arg0)
     GPIO_init();
 
     /* Configure the LED and button pins */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
-    GPIO_setConfig(Board_GPIO_LED1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
-    GPIO_setConfig(Board_GPIO_BUTTON0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_LED_1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_BUTTON_0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
 
     /* Turn on user LED */
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
     /* install Button callback */
-    GPIO_setCallback(Board_GPIO_BUTTON0, gpioButtonFxn0);
+    GPIO_setCallback(CONFIG_GPIO_BUTTON_0, gpioButtonFxn0);
 
     /* Enable interrupts */
-    GPIO_enableInt(Board_GPIO_BUTTON0);
+    GPIO_enableInt(CONFIG_GPIO_BUTTON_0);
 
     /*
      *  If more than one input pin is available for your device, interrupts
-     *  will be enabled on Board_GPIO_BUTTON1.
+     *  will be enabled on CONFIG_GPIO_BUTTON1.
      */
-    if (Board_GPIO_BUTTON0 != Board_GPIO_BUTTON1) {
+    if (CONFIG_GPIO_BUTTON_0 != CONFIG_GPIO_BUTTON_1) {
         /* Configure BUTTON1 pin */
-        GPIO_setConfig(Board_GPIO_BUTTON1, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
+        GPIO_setConfig(CONFIG_GPIO_BUTTON_1, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
 
         /* Install Button callback */
-        GPIO_setCallback(Board_GPIO_BUTTON1, gpioButtonFxn1);
-        GPIO_enableInt(Board_GPIO_BUTTON1);
+        GPIO_setCallback(CONFIG_GPIO_BUTTON_1, gpioButtonFxn1);
+        GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
     }
 
     return (NULL);

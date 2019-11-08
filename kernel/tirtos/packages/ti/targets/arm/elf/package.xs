@@ -85,7 +85,7 @@ function getLibs()
 }
 
 /*
- *  @(#) ti.targets.arm.elf; 1, 0, 0,1; 2-9-2019 16:22:45; /db/ztree/library/trees/xdctargets/xdctargets-t01/src/ xlibrary
+ *  @(#) ti.targets.arm.elf; 1, 0, 0,0; 8-9-2019 17:15:06; /db/ztree/library/trees/xdctargets/xdctargets-v00/src/ xlibrary
 
  */
 

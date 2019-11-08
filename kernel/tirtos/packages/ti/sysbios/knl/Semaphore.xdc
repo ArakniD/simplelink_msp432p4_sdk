@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2017, Texas Instruments Incorporated
+ * Copyright (c) 2014-2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ import xdc.rov.ViewInfo;
 import xdc.runtime.Diags;
 import xdc.runtime.Log;
 import xdc.runtime.Assert;
-import xdc.runtime.Error;
 
 import ti.sysbios.knl.Queue;
 import ti.sysbios.knl.Task;
@@ -146,7 +145,6 @@ import ti.sysbios.knl.Clock;
  *  @p
  */
 
-@CustomHeader
 @DirectCall
 @InstanceFinalize       /* to destruct queue */
 @InstanceInitStatic     /* Construct/Destruct CAN becalled at runtime */
@@ -279,18 +277,6 @@ module Semaphore
      */
     config Assert.Id A_pendTaskDisabled = {
         msg: "A_pendTaskDisabled: Cannot call Semaphore_pend() while the Task or Swi scheduler is disabled."
-    };
-
-    // Errors
-
-    /*!
-     *  Error raised when BIOS.mpeEnabled is TRUE and Semaphore object passed to
-     *  Semaphore_construct() is not in Kernel address space. This can happen if
-     *  a user Task passes a Semaphore object that resides in unprivileged
-     *  memory to Semaphore_construct().
-     */
-    config Error.Id E_objectNotInKernelSpace = {
-        msg: "E_objectNotInKernelSpace: Semaphore object passed not in Kernel address space."
     };
 
     /*!

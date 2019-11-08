@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 #ifndef ti_uia_loggers__
@@ -20,7 +20,6 @@ typedef struct ti_uia_loggers_LoggerStopMode_Params ti_uia_loggers_LoggerStopMod
 typedef struct ti_uia_loggers_LoggerStopMode_Object ti_uia_loggers_LoggerStopMode_Object;
 typedef struct ti_uia_loggers_LoggerStopMode_Struct ti_uia_loggers_LoggerStopMode_Struct;
 typedef ti_uia_loggers_LoggerStopMode_Object* ti_uia_loggers_LoggerStopMode_Handle;
-typedef struct ti_uia_loggers_LoggerStopMode_Object__ ti_uia_loggers_LoggerStopMode_Instance_State;
 typedef ti_uia_loggers_LoggerStopMode_Object* ti_uia_loggers_LoggerStopMode_Instance;
 
 /*
@@ -34,7 +33,6 @@ typedef struct ti_uia_loggers_LoggerRunMode_Params ti_uia_loggers_LoggerRunMode_
 typedef struct ti_uia_loggers_LoggerRunMode_Object ti_uia_loggers_LoggerRunMode_Object;
 typedef struct ti_uia_loggers_LoggerRunMode_Struct ti_uia_loggers_LoggerRunMode_Struct;
 typedef ti_uia_loggers_LoggerRunMode_Object* ti_uia_loggers_LoggerRunMode_Handle;
-typedef struct ti_uia_loggers_LoggerRunMode_Object__ ti_uia_loggers_LoggerRunMode_Instance_State;
 typedef ti_uia_loggers_LoggerRunMode_Object* ti_uia_loggers_LoggerRunMode_Instance;
 
 /*
@@ -48,7 +46,6 @@ typedef struct ti_uia_loggers_LoggerMin_Params ti_uia_loggers_LoggerMin_Params;
 typedef struct ti_uia_loggers_LoggerMin_Object ti_uia_loggers_LoggerMin_Object;
 typedef struct ti_uia_loggers_LoggerMin_Struct ti_uia_loggers_LoggerMin_Struct;
 typedef ti_uia_loggers_LoggerMin_Object* ti_uia_loggers_LoggerMin_Handle;
-typedef struct ti_uia_loggers_LoggerMin_Object__ ti_uia_loggers_LoggerMin_Instance_State;
 typedef ti_uia_loggers_LoggerMin_Object* ti_uia_loggers_LoggerMin_Instance;
 
 

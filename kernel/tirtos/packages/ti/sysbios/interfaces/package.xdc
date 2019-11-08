@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017, Texas Instruments Incorporated
+ * Copyright (c) 2012-2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,6 +31,7 @@
  */
 /*
  *  ======== package.xdc ========
+ *
  */
 
 /*!
@@ -71,5 +72,4 @@ package ti.sysbios.interfaces [2,0,0,0] {
     interface IPower;
     interface IRomDevice;
     interface ISeconds;
-    interface ISysCall;
 }

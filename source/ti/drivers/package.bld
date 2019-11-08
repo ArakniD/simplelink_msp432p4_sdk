@@ -44,7 +44,10 @@ var genericDriverSrc = [
     "SDFatFS.c",
     "./utils/List.c",
     "./utils/RingBuf.c",
-    "./utils/Random.c"
+    "./utils/Random.c",
+    "./utils/StructRingBuf.c",
+    "./apps/LED.c",
+    "./apps/Button.c"
 ];
 
 var genericDriverHdrs = [
@@ -64,7 +67,10 @@ var genericDriverHdrs = [
     "./dpl/SystemP.h",
     "./utils/List.h",
     "./utils/RingBuf.h",
-    "./utils/Random.h"
+    "./utils/Random.h",
+    "./utils/StructRingBuf.h",
+    "./apps/LED.h",
+    "./apps/Button.h"
 ];
 
 var cc26xxSrcList = genericDriverSrc.concat([
@@ -85,6 +91,7 @@ var cc26xxSrcList = genericDriverSrc.concat([
     "./aesecb/AESECBCC26XX.c",
     "./cryptoutils/cryptokey/CryptoKeyPlaintextCC26XX.c",
     "./cryptoutils/sharedresources/CryptoResourceCC26XX.c",
+    "./cryptoutils/utils/CryptoUtils.c",
     "./dma/UDMACC26XX.c",
     "./gpio/GPIOCC26XX.c",
     "I2C.c",
@@ -102,6 +109,8 @@ var cc26xxSrcList = genericDriverSrc.concat([
     "./pwm/PWMTimerCC26XX.c",
     "SPI.c",
     "./spi/SPICC26XXDMA.c",
+    "Timer.c",
+    "./timer/TimerCC26XX.c",
     "TRNG.c",
     "./trng/TRNGCC26XX.c",
     "./timer/GPTimerCC26XX.c",
@@ -136,6 +145,7 @@ var cc26xxHdrList = genericDriverHdrs.concat([
     "./cryptoutils/cryptokey/CryptoKeyPlaintext.h",
     "./cryptoutils/ecc/ECCParams.h",
     "./cryptoutils/sharedresources/CryptoResourceCC26XX.h",
+    "./cryptoutils/utils/CryptoUtils.h",
     "./crypto/CryptoCC26XX.h",
     "./dma/UDMACC26XX.h",
     "GPIO.h",
@@ -156,6 +166,8 @@ var cc26xxHdrList = genericDriverHdrs.concat([
     "./pwm/PWMTimerCC26XX.h",
     "SPI.h",
     "./spi/SPICC26XXDMA.h",
+    "Timer.h",
+    "./timer/TimerCC26XX.h",
     "TRNG.h",
     "./trng/TRNGCC26XX.h",
     "./timer/GPTimerCC26XX.h",
@@ -186,6 +198,7 @@ var cc26x2SrcList = genericDriverSrc.concat([
     "./cryptoutils/cryptokey/CryptoKeyPlaintextCC26XX.c",
     "./cryptoutils/ecc/ECCParamsCC26X2.c",
     "./cryptoutils/sharedresources/CryptoResourceCC26XX.c",
+    "./cryptoutils/utils/CryptoUtils.c",
     "./cryptoutils/sharedresources/PKAResourceCC26XX.c",
     "./dma/UDMACC26XX.c",
     "ECDH.c",
@@ -213,10 +226,14 @@ var cc26x2SrcList = genericDriverSrc.concat([
     "SPI.c",
     "./spi/SPICC26XXDMA.c",
     "./spi/SPICC26X2DMA.c",
+    "Timer.c",
+    "./timer/TimerCC26XX.c",
     "TRNG.c",
     "./trng/TRNGCC26XX.c",
     "./timer/GPTimerCC26XX.c",
     "UART.c",
+    "UART2.c",
+    "./uart2/UART2CC26X2.c",
     "./uart/UARTCC26XX.c",
     "./uart/UARTCC26X2.c",
     "Watchdog.c",
@@ -250,6 +267,7 @@ var cc26x2HdrList = genericDriverHdrs.concat([
     "./cryptoutils/ecc/ECCParams.h",
     "./cryptoutils/sharedresources/CryptoResourceCC26XX.h",
     "./cryptoutils/sharedresources/PKAResourceCC26XX.h",
+    "./cryptoutils/utils/CryptoUtils.h",
     "./dma/UDMACC26XX.h",
     "ECDH.h",
     "./ecdh/ECDHCC26X2.h",
@@ -278,10 +296,14 @@ var cc26x2HdrList = genericDriverHdrs.concat([
     "SPI.h",
     "./spi/SPICC26XXDMA.h",
     "./spi/SPICC26X2DMA.h",
+    "Timer.h",
+    "./timer/TimerCC26XX.h",
     "TRNG.h",
     "./trng/TRNGCC26XX.h",
     "./timer/GPTimerCC26XX.h",
     "UART.h",
+    "UART2.h",
+    "./uart2/UART2CC26X2.h",
     "./uart/UARTCC26XX.h",
     "./uart/UARTCC26X2.h",
     "Watchdog.h",
@@ -296,6 +318,7 @@ var cc32xxSrcList = genericDriverSrc.concat([
     "Capture.c",
     "./capture/CaptureCC32XX.c",
     "./crypto/CryptoCC32XX.c",
+    "./cryptoutils/utils/CryptoUtils.c",
     "./dma/UDMACC32XX.c",
     "./gpio/GPIOCC32XX.c",
     "I2C.c",
@@ -326,6 +349,7 @@ var cc32xxHdrList = genericDriverHdrs.concat([
     "Capture.h",
     "./capture/CaptureCC32XX.h",
     "./crypto/CryptoCC32XX.h",
+    "./cryptoutils/utils/CryptoUtils.h",
     "./dma/UDMACC32XX.h",
     "GPIO.h",
     "./gpio/GPIOCC32XX.h",
@@ -424,8 +448,11 @@ var msp432e4SrcList = genericDriverSrc.concat([
     "./aesgcm/AESGCMMSP432E4.c",
     "./cryptoutils/cryptokey/CryptoKeyPlaintextMSP432E4.c",
     "./cryptoutils/sharedresources/CryptoResourceMSP432E4.c",
+    "./cryptoutils/utils/CryptoUtils.c",
     "CAN.c",
     "./can/CANMSP432E4.c",
+    "Comparator.c",
+    "./comparator/ComparatorMSP432E4.c",
     "CRC.c",
     "./crc/CRCMSP432E4.c",
     "./dma/UDMAMSP432E4.c",
@@ -445,7 +472,6 @@ var msp432e4SrcList = genericDriverSrc.concat([
     "./timer/TimerMSP432E4.c",
     "UART.c",
     "./uart/UARTMSP432E4.c",
-    "./utils/StructRingBuf.c",
     "Watchdog.c",
     "./watchdog/WatchdogMSP432E4.c"
 ]);
@@ -470,8 +496,11 @@ var msp432e4HdrList = genericDriverHdrs.concat([
     "./cryptoutils/cryptokey/CryptoKey.h",
     "./cryptoutils/cryptokey/CryptoKeyPlaintext.h",
     "./cryptoutils/sharedresources/CryptoResourceMSP432E4.h",
+    "./cryptoutils/utils/CryptoUtils.h",
     "CAN.h",
     "./can/CANMSP432E4.h",
+    "Comparator.h",
+    "./comparator/ComparatorMSP432E4.h",
     "CRC.h",
     "./crc/CRCMSP432E4.h",
     "./can/types.h",
@@ -494,14 +523,40 @@ var msp432e4HdrList = genericDriverHdrs.concat([
     "./timer/TimerMSP432E4.h",
     "UART.h",
     "./uart/UARTMSP432E4.h",
-    "./utils/StructRingBuf.h",
     "Watchdog.h",
     "./watchdog/WatchdogMSP432E4.h"
 ]);
 
 var mtxxSrcList = [
+    "AESCCM.c",
+    "./aesccm/AESCCMMTXX.c",
+    "AESCMAC.c",
+    "./aescmac/AESCMACMTXX.c",
+    "AESECB.c",
+    "./aesecb/AESECBMTXX.c",
+    "Capture.c",
+    "./capture/CaptureTDCMTXX.c",
+    "./cryptoutils/cryptokey/CryptoKeyPlaintextMTXX.c",
+    "./cryptoutils/ecc/ECCParamsMTXX.c",
+    "./cryptoutils/secssjobdriver/SecSSDoorbellMTXX.c",
+    "./cryptoutils/secssjobdriver/SecSSJobDriverMTXX.c",
+    "./cryptoutils/secssjobdriver/SecSSJobListMTXX.c",
+    "Comparator.c",
+    "./comparator/ComparatorMTXX.c",
+    "ECDH.c",
+    "./ecdh/ECDHMTXX.c",
+    "ECDSA.c",
+    "./ecdsa/ECDSAMTXX.c",
+    "ECJPAKE.c",
+    "./ecjpake/ECJPAKEMTXX.c",
+    "./dma/DMAMTXX.c",    "./gpio/GPIOMTXX.c",
+    "./iomux/IOMUXMTXX.c",
+    "./power/PowerMTXX.c",
+    "SHA2.c",
+    "./sha2/SHA2MTXX.c",
     "SPI.c",
     "UART.c",
+    "UART2.c",
     "./uart/UARTMTXX.c",
     "./utils/List.c",
     "./utils/RingBuf.c"
@@ -510,13 +565,45 @@ var mtxxSrcList = [
 var mtxxHdrList = genericDriverHdrs.concat([
     "ADC.h",
     "ADCBuf.h",
+    "AESCCM.h",
+    "./aesccm/AESCCMMTXX.h",
+    "AESCMAC.h",
+    "./aescmac/AESCMACMTXX.h",
+    "AESECB.h",
+    "./aesecb/AESECBMTXX.h",
+    "Capture.h",
+    "./capture/CaptureTDCMTXX.h",
     "Comparator.h",
+    "./comparator/ComparatorMTXX.h",
+    "./cryptoutils/cryptokey/CryptoKey.h",
+    "./cryptoutils/cryptokey/CryptoKeyPlaintext.h",
+    "./cryptoutils/ecc/ECCParams.h",
+    "./cryptoutils/secssjobdriver/SecSSDoorbellMTXX.h",
+    "./cryptoutils/secssjobdriver/SecSSJobDriverCommonMTXX.h",
+    "./cryptoutils/secssjobdriver/SecSSJobDriverMTXX.h",
+    "./cryptoutils/secssjobdriver/SecSSJobListMTXX.h",
+    "ECDH.h",
+    "./ecdh/ECDHMTXX.h",
+    "ECDSA.h",
+    "./ecdsa/ECDSAMTXX.h",
+    "ECJPAKE.h",
+    "./ecjpake/ECJPAKEMTXX.h",
     "DAC.h",
+    "./dma/DMAMTXX.h",
     "GPIO.h",
+    "./gpio/GPIOMTXX.h",
+    "./iomux/IOMUXMTXX.h",
+    "./iomux/MTL1_IOMUX.h",
     "OpAmp.h",
+    "Power.h",
+    "PWM.h",
+    "./power/PowerMTXX.h",
+    "SHA2.h",
+    "./sha2/SHA2MTXX.h",
     "SPI.h",
     "TDC.h",
     "UART.h",
+    "UART2.h",
     "./uart/UARTMTXX.h",
     "VREF.h"
 ]);
@@ -537,24 +624,12 @@ var packageFiles = [
 /* Generate libraries for products which have been defined */
 if (deviceWareOpts.cc26xxware) {
     /* optimize IAR object files for size (not speed) */
-    var iarM3 = xdc.module('iar.targets.arm.M3');
-    iarM3.profiles["release"].compileOpts.copts =
-        iarM3.profiles["release"].compileOpts.copts.replace("Ohs", "Ohz");
-
     var iarM4F = xdc.module('iar.targets.arm.M4F');
     var iarM4FCopts = iarM4F.profiles["release"].compileOpts.copts; /* must restore after use */
     iarM4F.profiles["release"].compileOpts.copts =
         iarM4F.profiles["release"].compileOpts.copts.replace("Ohs", "Ohz");
 
     /* optimize TI object files for size (not speed) & set -O3 */
-    var tiM3 = xdc.module('ti.targets.arm.elf.M3');
-    tiM3.profiles["release"].compileOpts.copts =
-        tiM3.profiles["release"].compileOpts.copts.replace("-O2", "-O3");
-
-    if ((tiM3.profiles["release"].compileOpts.copts).indexOf(" --opt_for_speed=0") < 0) {
-        tiM3.profiles["release"].compileOpts.copts += " --opt_for_speed=0";
-    }
-
     var tiM4F = xdc.module('ti.targets.arm.elf.M4F');
     var tiM4FCopts = tiM4F.profiles["release"].compileOpts.copts; /* must restore after use */
     tiM4F.profiles["release"].compileOpts.copts =
@@ -566,15 +641,6 @@ if (deviceWareOpts.cc26xxware) {
 
     packageFiles = packageFiles.concat(cc26xxHdrList);
     packageFiles = packageFiles.concat(cc26x2HdrList);
-
-    libBuilder.makeLibs("lib/drivers_cc13x0", libBuilder.m3Targets,
-        cc26xxSrcList, " -DDeviceFamily_CC13X0");
-
-    libBuilder.makeLibs("lib/drivers_cc26x0", libBuilder.m3Targets,
-        cc26xxSrcList, " -DDeviceFamily_CC26X0");
-
-    libBuilder.makeLibs("lib/drivers_cc26x0r2", libBuilder.m3Targets,
-        cc26xxSrcList, " -DDeviceFamily_CC26X0R2");
 
     libBuilder.makeLibs("lib/drivers_cc13x2", libBuilder.m4fTargets,
         cc26x2SrcList, " -DDeviceFamily_CC13X2");
@@ -631,7 +697,10 @@ if (deviceWareOpts.hwpi_mtxx) {
 
     libBuilder.makeLibs("lib/drivers_mtxx", libBuilder.m33fTargets,
         mtxxSrcList, copts);
+
+    libBuilder.makeLibs("lib/drivers_mtxx", libBuilder.m33Targets,
+        mtxxSrcList, copts);
 }
 
-Pkg.otherFiles = packageFiles.concat([".meta"]);
+Pkg.otherFiles = packageFiles;
 Pkg.attrs.exportSrc = true;

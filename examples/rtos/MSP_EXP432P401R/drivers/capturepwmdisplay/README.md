@@ -1,33 +1,31 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# capturepwmdisplay
-
----
-
 ## Example Summary
 
 This example will capture the output of a PWM signal and
 periodically print out the captured period in microseconds.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_CAPTURE1` - Capture instance that detects two consecutive edges
-* `Board_PWM0` - Generates a PWM signal to blink a LED.
-* `Board_PWM1` - Generates a PWM signal to be captured.
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
 
-## Resources & Jumper Settings
+* `CONFIG_CAPTURE_0` - Capture instance that detects two consecutive edges
+* `CONFIG_PWM_0` - Generates a PWM signal to blink a LED.
+* `CONFIG_PWM_1` - Generates a PWM signal to be captured.
 
-* `Board_PWM0` pin must be jumpered to see the LED blink.
+## BoosterPacks, Board Resources & Jumper Settings
 
-* Connect the `Board_PWM1` pin to the `Board_CAPTURE1` pin.
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 ## Example Usage
 
@@ -49,6 +47,10 @@ The connection will have the following settings:
     Parity:          None
     Flow Control:    None
 ```
+
+* `CONFIG_PWM_0` pin must be jumpered to see the LED blink.
+
+* Connect the `CONFIG_PWM_1` pin to the `CONFIG_CAPTURE_0` pin.
 
 ## Application Design Details
 

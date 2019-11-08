@@ -46,8 +46,8 @@
 #include <FreeRTOS.h>
 #include <task.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 extern void *mainThread(void *arg0);
 

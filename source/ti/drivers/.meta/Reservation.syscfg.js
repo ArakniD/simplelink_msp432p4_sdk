@@ -240,7 +240,7 @@ function pinmuxRequirements(inst)
  */
 exports = {
     /* prefix of name given to new instances */
-    defaultInstanceName: "Board_Reservation", /* we add our names to Board.h */
+    defaultInstanceName: "CONFIG_Reservation_", /* we add our names to ti_drivers_config.h */
 
     /* instance validation */
     validate: validate,
@@ -248,7 +248,7 @@ exports = {
     /* extend basic /ti/drivers configs with Reservation specifics */
     config: resConfig,
 
-    /* Reservation contributions to Board.[ch] */
+    /* Reservation contributions to ti_drivers_config.[ch] */
     templates: {
 //        boardh: "/ti/drivers/Reservation.Board.h.xdt",
 //        boardc: "/ti/drivers/Reservation.Board.c.xdt"

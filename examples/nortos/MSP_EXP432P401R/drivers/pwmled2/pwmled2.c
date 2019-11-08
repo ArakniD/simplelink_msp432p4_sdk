@@ -40,8 +40,8 @@
 /* Driver Header files */
 #include <ti/drivers/PWM.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 /*
  *  ======== mainThread ========
@@ -68,17 +68,17 @@ void *mainThread(void *arg0)
     params.dutyValue = 0;
     params.periodUnits = PWM_PERIOD_US;
     params.periodValue = pwmPeriod;
-    pwm1 = PWM_open(Board_PWM0, &params);
+    pwm1 = PWM_open(CONFIG_PWM_0, &params);
     if (pwm1 == NULL) {
-        /* Board_PWM0 did not open */
+        /* CONFIG_PWM_0 did not open */
         while (1);
     }
 
     PWM_start(pwm1);
 
-    pwm2 = PWM_open(Board_PWM1, &params);
+    pwm2 = PWM_open(CONFIG_PWM_1, &params);
     if (pwm2 == NULL) {
-        /* Board_PWM0 did not open */
+        /* CONFIG_PWM_0 did not open */
         while (1);
     }
 

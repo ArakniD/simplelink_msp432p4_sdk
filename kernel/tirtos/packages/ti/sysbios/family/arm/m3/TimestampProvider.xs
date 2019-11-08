@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2018, Texas Instruments Incorporated
+ * Copyright (c) 2012-2013, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,35 +40,6 @@ var Startup = null;
 var TimestampProvider = null;
 var Clock = null;
 var BIOS = null;
-
-/*
- * ======== getCFiles ========
- * return the array of C language files associated
- * with targetName (ie Program.build.target.$name)
- */
-function getCFiles(targetName)
-{
-    if (BIOS.mpeEnabled) {
-        return (["TimestampProvider.c", "TimestampProvider_svc.c"]);
-    }
-    else {
-        return (["TimestampProvider.c"]);
-    }
-}
-
-/*
- *  ======== module$meta$init ========
- */
-function module$meta$init()
-{
-    /* Only process during "cfg" phase */
-    if (xdc.om.$name != "cfg") {
-        return;
-    }
-
-    /* provide getCFiles() for Build.getCFiles() */
-    this.$private.getCFiles = getCFiles;
-}
 
 /*
  *  ======== module$use ========

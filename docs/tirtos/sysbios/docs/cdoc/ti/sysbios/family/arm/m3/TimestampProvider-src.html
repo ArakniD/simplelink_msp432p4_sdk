@@ -70,34 +70,33 @@
 </span>    63    <span class="xdoc"> *  <b>@p</b>
 </span>    64    <span class="xdoc"> */</span>
     65    
-    66    @CustomHeader
-    67    @ModuleStartup
-    68    
-    69    <span class=key>module</span> TimestampProvider <span class=key>inherits</span> ti.sysbios.interfaces.ITimestamp
-    70    {
-    71        <span class="comment">/*
-</span>    72    <span class="comment">     *  By default, TimestampProvider assumes the SysTick timer is 
-</span>    73    <span class="comment">     *  configured elsewhere (ie by the Clock module).
-</span>    74    <span class="comment">     *  Set this parameter to true if TimestampProvider is the only user
-</span>    75    <span class="comment">     *  of the SysTick timer.
-</span>    76    <span class="comment">     */</span>
-    77        <span class=key>config</span> Bool configTimer = <span class=key>false</span>;
-    78    
-    79        <span class="xdoc">/*!<b>@_nodoc</b> 
-</span>    80    <span class="xdoc">     *  Internal use. Function that starts timer before main
-</span>    81    <span class="xdoc">     */</span>
-    82        Void startTimer();
-    83    
-    84        <span class="xdoc">/*!<b>@_nodoc</b> 
-</span>    85    <span class="xdoc">     *  Internal use. Timer rollover interrupt handler.
-</span>    86    <span class="xdoc">     */</span>
-    87        Void rolloverFunc(UArg unused);
-    88    
-    89    <span class=key>internal</span>:   <span class="comment">/* not for client use */</span>
-    90        
-    91        <span class=key>struct</span> Module_State {
-    92            Timer.Handle    timer;          <span class="comment">/* timer instance used */</span>
-    93        }
-    94    }
+    66    @ModuleStartup
+    67    
+    68    <span class=key>module</span> TimestampProvider <span class=key>inherits</span> ti.sysbios.interfaces.ITimestamp
+    69    {
+    70        <span class="comment">/*
+</span>    71    <span class="comment">     *  By default, TimestampProvider assumes the SysTick timer is 
+</span>    72    <span class="comment">     *  configured elsewhere (ie by the Clock module).
+</span>    73    <span class="comment">     *  Set this parameter to true if TimestampProvider is the only user
+</span>    74    <span class="comment">     *  of the SysTick timer.
+</span>    75    <span class="comment">     */</span>
+    76        <span class=key>config</span> Bool configTimer = <span class=key>false</span>;
+    77    
+    78        <span class="xdoc">/*!<b>@_nodoc</b> 
+</span>    79    <span class="xdoc">     *  Internal use. Function that starts timer before main
+</span>    80    <span class="xdoc">     */</span>
+    81        Void startTimer();
+    82    
+    83        <span class="xdoc">/*!<b>@_nodoc</b> 
+</span>    84    <span class="xdoc">     *  Internal use. Timer rollover interrupt handler.
+</span>    85    <span class="xdoc">     */</span>
+    86        Void rolloverFunc(UArg unused);
+    87    
+    88    <span class=key>internal</span>:   <span class="comment">/* not for client use */</span>
+    89        
+    90        <span class=key>struct</span> Module_State {
+    91            Timer.Handle    timer;          <span class="comment">/* timer instance used */</span>
+    92        }
+    93    }
 </pre>
 </body></html>

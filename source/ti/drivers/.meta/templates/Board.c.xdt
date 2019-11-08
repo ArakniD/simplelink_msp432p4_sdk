@@ -41,11 +41,12 @@
 
     /* localize the object names with the device ID */
     let devId = system.deviceData.deviceId;
-    let devFamily = Common.device2DeviceFamily(devId);
+    let part = system.deviceData.part;
+    let devFamily = Common.device2DeviceFamily(devId, part);
     let boardName = Common.boardName();
 %%}
 /*
- *  ======== Board.c ========
+ *  ======== ti_drivers_config.c ========
  *  Configured TI-Drivers module definitions
  *
  *  DO NOT EDIT - This file is generated for the `boardName`
@@ -60,29 +61,19 @@
 
 #include <ti/devices/DeviceFamily.h>
 
-#include "Board.h"
-%
-% /*TIDRIVER-3354 - Determine if PIN module is added */
-% var PinConfigured = false;
+#include "ti_drivers_config.h"
 % /* compute a canonical order for the used modules */
 % let keys = Object.keys(system.modules).sort();
 %
 % /* loop over all modules in the current configuration */
 % for (let i = 0; i < keys.length; i++) {
     % let mod = system.modules[keys[i]];
-    % if (mod.displayName.match(/PIN/) && mod.$instances.length != 0) { PinConfigured = true; }
     % if (mod.templates && mod.templates.boardc) {
         % /* load its template and expand it with args */
         % let gen = system.getTemplate(mod.templates.boardc);
 
 `gen(mod)`
         % }
-% }
-% /* TIDRIVER-3354 - Insert a default PIN config if PIN module not added */
-% if (devId.match(/CC[12][36]/) && PinConfigured == false) {
-%       let gen = system.getTemplate("/ti/drivers/pin/PINCC26XX_default.Board.c.xdt");
-
-`gen(0)`
 % }
 
 #include <ti/drivers/Board.h>
@@ -92,14 +83,7 @@
  *  Perform any board-specific initialization needed at startup.  This
  *  function is declared weak to allow applications to override it if needed.
  */
-#if defined(__IAR_SYSTEMS_ICC__)
-__weak void Board_initHook(void)
-#elif defined(__GNUC__) && !defined(__ti__)
 void __attribute__((weak)) Board_initHook(void)
-#else
-#pragma WEAK (Board_initHook)
-void Board_initHook(void)
-#endif
 {
 }
 
@@ -136,11 +120,6 @@ void Board_init(void)
 %     }
 % }
 %
-% /* TIDRIVER-3354 - Insert a default PIN_init() if PIN module not added */
-% if (devId.match(/CC[12][36]/) && PinConfigured == false) {
-%    let genInit = system.getTemplate("/ti/drivers/pin/PINCC26XX_default.Board_init.c.xdt");
-`genInit(0)`
-% }
     Board_initHook();
 }
 % /* Temporary fix for CC32XXSF LaunchPads */

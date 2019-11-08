@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['i2c_5fwait_5fforever',['I2C_WAIT_FOREVER',['../_i2_c_8h.html#a4eb2bf76d4186e8752bcd32b32908b6c',1,'I2C.h']]],
   ['i2cmsp432_5fp10_5f2_5fucb3sda',['I2CMSP432_P10_2_UCB3SDA',['../_i2_c_m_s_p432_8h.html#ae896b0c7ff587f0a26b6e2fbef84a39a',1,'I2CMSP432.h']]],
   ['i2cmsp432_5fp10_5f3_5fucb3scl',['I2CMSP432_P10_3_UCB3SCL',['../_i2_c_m_s_p432_8h.html#a56089976f484fe382d826e0736e0e32d',1,'I2CMSP432.h']]],
   ['i2cmsp432_5fp1_5f6_5fucb0sda',['I2CMSP432_P1_6_UCB0SDA',['../_i2_c_m_s_p432_8h.html#aaaffec609d7e2b5d962763969a1abc41',1,'I2CMSP432.h']]],

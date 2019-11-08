@@ -14,6 +14,7 @@
     <project
         title="BOOSTXL-CAPKEYPAD CapTIvate Demo"
         name="boostxl-capkeypad_captivate_demo_MSP_EXP432P401R_freertos_gcc"
+        configurations="Debug"
         toolChain="GNU"
         connection="TIXDS110_Connection.xml"
         device="MSP432P401R"
@@ -23,6 +24,7 @@
         requiredVariables="FREERTOS_INSTALL_DIR"
         compilerBuildOptions="
             -I${PROJECT_ROOT}
+            -I${PROJECT_ROOT}/${ConfigName}
             -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
             -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include
             -D__MSP432P401R__
@@ -64,12 +66,16 @@
             -static
             -Wl,--gc-sections
             -L${CG_TOOL_ROOT}/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard
-            -L${CG_TOOL_ROOT}/arm-none-eabi/lib
+            -L${CG_TOOL_ROOT}/arm-none-eabi/lib/hard
             -lgcc
             -lc
             -lm
             -lnosys
             --specs=nano.specs
+        "
+        enableSysConfigTool="true"
+        sysConfigBuildOptions="
+            --product ${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/.metadata/product.json
         "
         description="TODO: Write description">
 
@@ -83,6 +89,8 @@
         <file path="../../Board.html" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../../overview.rov.json" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../Board.h" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../../captivate_task.c" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
@@ -104,11 +112,7 @@
         </file>
         <file path="../../sleep_task.h" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
-        <file path="../../MSP_EXP432P401R.c" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../../MSP_EXP432P401R.h" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../../Board.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        <file path="../../capkeypad_captivate_demo.syscfg" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../../boostxl_capkeypad_source/npi_BOOSTXL-CAPKEYPAD-Demo.txt" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="boostxl_capkeypad_source">
         </file>

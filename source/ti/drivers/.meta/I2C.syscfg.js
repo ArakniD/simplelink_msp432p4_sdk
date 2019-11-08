@@ -75,8 +75,9 @@ let config = [
         name        : "maxBitRate",
         displayName : "Maximum Bit Rate",
         description : "Maximum bit rate (Kbps) supported by this bus",
-        longDescription: "This parameter determines the values of a symbol"
-            + " declared in the generated `Board.h` file:"
+        longDescription: "This parameter determines the value of a 'maximum"
+            + " bitrate' symbol declared in the generated"
+            + " `ti_drivers_config.h` file:"
             + " <var>{bus_name}</var>`_MAXBITRATE`, where"
             + " <var>{bus_name}</var> is the name of this bus instance."
             + " This symbol is used to"
@@ -90,9 +91,10 @@ let config = [
             + " this parameter\")\n",
 
         documentation: "For example, if an I2C instance named `SENSORS` is"
-            + " defined in SysConfig, the following snippet opens it at an"
-            + " appropriate speed.\n"
-            + "        #include \"Board.h\" // defines I2C id SENSORS\n"
+            + " defined in SysConfig, the following snippet always opens it"
+            + " at an appropriate speed.\n"
+            + "        #include \"ti_drivers_config.h\" // defines I2C id"
+            + " SENSORS\n"
             + "\n"
             + "        // initialize optional I2C bus parameters\n"
             + "        I2C_Params params;\n"
@@ -198,7 +200,7 @@ let logHandlers = {"Warn": logWarning, "Fail": logError, "Remark": logInfo};
  *                              a bus modules $hardware is an array of such
  *                              components.
  *
- *  @returns {Array} - numeric addresses declared in by the component's
+ *  @returns {Array} - numeric addresses declared by the HW component's
  *                     meta-data specification.  If a component is not an I2C
  *                     component or no addresses are declared in the the
  *                     componnet's meta-data, an empty array is returned.
@@ -280,6 +282,8 @@ function getCompAddress(comp)
  *              name  : "config_option_name",
  *              reason: "short unformated hint"
  *          }
+ *  If component is null or its array of addrs is empty, disable nothing;
+ *  i.e., allow the full range of I2C addresses supported by the I2C device.
  */
 function getDisabledAddrs(component, i2cAddrs)
 {
@@ -307,6 +311,8 @@ function getDisabledAddrs(component, i2cAddrs)
             }
         }
     }
+
+    /* if component is null, or its array of addrs is empty, disable nothing */
     return (result);
 }
 
@@ -978,6 +984,15 @@ function _validateSpeed(inst, components, vo)
 }
 
 /*
+ *  ======== _getPinResources ========
+ */
+/* istanbul ignore next */
+function _getPinResources(inst)
+{
+    return;
+}
+
+/*
  *  ======== base ========
  *  Define the base properties and methods
  */
@@ -1000,11 +1015,11 @@ interface to access peripherals on an I2C bus.
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#I2C_Configuration_Options "Configuration options reference"
 `,
 
-    defaultInstanceName: "Board_I2C",
+    defaultInstanceName: "CONFIG_I2C_",
 
     /* instance properties and methods */
     config:              Common.addNameConfig(
-                             config, "/ti/drivers/I2C", "Board_I2C"),
+                             config, "/ti/drivers/I2C", "CONFIG_I2C_"),
     modules:             Common.autoForceModules(["Board", "Power"]),
     validate:            validate,
 
@@ -1012,6 +1027,8 @@ interface to access peripherals on an I2C bus.
     busModule:           true, /* true => this module's insts are shareable */
     filterHardware:      filterHardware,
     pinmuxRequirements:  pinmuxRequirements,
+
+    _getPinResources: _getPinResources,
 
     /* I2C interface exported for other modules/templates */
     getAddresses:        getAddresses,

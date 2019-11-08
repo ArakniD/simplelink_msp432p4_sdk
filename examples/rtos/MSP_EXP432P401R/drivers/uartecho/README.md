@@ -1,27 +1,29 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# uartecho
-
----
-
 ## Example Summary
 
 Example that uses the UART driver to echo back to the console.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_GPIO_LED0` - Indicates that the board was initialized within `main()`
-* `Board_UART0` - Used to echo characters from host serial session
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
 
-## Resources & Jumper Settings
+* `CONFIG_GPIO_LED_0` - Indicates that the board was initialized within `main()`
+* `CONFIG_UART_0` - Used to echo characters from host serial session
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+## BoosterPacks, Board Resources & Jumper Settings
+
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
+
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 
 ## Example Usage
@@ -40,7 +42,7 @@ The connection should have the following settings
     Flow Control: None
 ```
 
-* Run the example. `Board_GPIO_LED0` turns ON to indicate driver
+* Run the example. `CONFIG_GPIO_LED_0` turns ON to indicate driver
 initialization is complete.
 
 * The target echoes back any character that is typed in the serial session.
@@ -54,7 +56,7 @@ the following is displayed:
 * This example shows how to initialize the UART driver in blocking read
 and write mode with no data processing and echo characters back to a console.
 
-* A single thread, `echo`, reads a character from `Board_UART0` and writes it
+* A single thread, `echo`, reads a character from `CONFIG_UART_0` and writes it
 back.
 
 TI-RTOS:
@@ -73,9 +75,3 @@ FreeRTOS:
 
 * Please view the `FreeRTOSConfig.h` header file for example configuration
 information.
-
-IAR:
-
-* When using any SensorTag(STK) Board, the XDS110 debugger must be
-selected with the 4-wire JTAG connection within your projects' debugger
-configuration.

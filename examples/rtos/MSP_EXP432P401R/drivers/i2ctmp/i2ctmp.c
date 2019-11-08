@@ -42,8 +42,8 @@
 #include <ti/drivers/I2C.h>
 #include <ti/display/Display.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 #define TASKSTACKSIZE       640
 
@@ -78,9 +78,9 @@ void *mainThread(void *arg0)
     I2C_init();
 
     /* Configure the LED and if applicable, the TMP116_EN pin */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
-#ifdef Board_GPIO_TMP116_EN
-    GPIO_setConfig(Board_GPIO_TMP116_EN, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+#ifdef CONFIG_GPIO_TMP116_EN
+    GPIO_setConfig(CONFIG_GPIO_TMP116_EN, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
     /* 1.5 ms reset time for the TMP116 */
     sleep(1);
 #endif
@@ -92,13 +92,13 @@ void *mainThread(void *arg0)
     }
 
     /* Turn on user LED */
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
-    Display_printf(display, 0, 0, "Starting the i2ctmp example.");
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
+    Display_printf(display, 0, 0, "Starting the i2ctmp example\n");
 
     /* Create I2C for usage */
     I2C_Params_init(&i2cParams);
     i2cParams.bitRate = I2C_400kHz;
-    i2c = I2C_open(Board_I2C_TMP, &i2cParams);
+    i2c = I2C_open(CONFIG_I2C_TMP, &i2cParams);
     if (i2c == NULL) {
         Display_printf(display, 0, 0, "Error Initializing I2C\n");
         while (1);

@@ -1,10 +1,11 @@
 var searchData=
 [
-  ['timer_5fcontinuous_5fcallback',['Timer_CONTINUOUS_CALLBACK',['../_timer_8h.html#ab0e86a066b5c68c55183cd680090a9b7ae8bfe2f9b37749ebc20b9905a459843b',1,'Timer.h']]],
-  ['timer_5ffree_5frunning',['Timer_FREE_RUNNING',['../_timer_8h.html#ab0e86a066b5c68c55183cd680090a9b7a90581a353ae32c561dfbc6c60b9ec49e',1,'Timer.h']]],
-  ['timer_5foneshot_5fblocking',['Timer_ONESHOT_BLOCKING',['../_timer_8h.html#ab0e86a066b5c68c55183cd680090a9b7ac93d728c52e809e9c179ff8da526ca00',1,'Timer.h']]],
-  ['timer_5foneshot_5fcallback',['Timer_ONESHOT_CALLBACK',['../_timer_8h.html#ab0e86a066b5c68c55183cd680090a9b7a01f0c06391bb2ea1ec530ba502a795a5',1,'Timer.h']]],
-  ['timer_5fperiod_5fcounts',['Timer_PERIOD_COUNTS',['../_timer_8h.html#ae5b37c2cc77a2a426ba45d2c8544d439ac22836849686dc6b10a6cdf2c689d142',1,'Timer.h']]],
-  ['timer_5fperiod_5fhz',['Timer_PERIOD_HZ',['../_timer_8h.html#ae5b37c2cc77a2a426ba45d2c8544d439afe77ce02e894805812fd4b497b2ba41c',1,'Timer.h']]],
-  ['timer_5fperiod_5fus',['Timer_PERIOD_US',['../_timer_8h.html#ae5b37c2cc77a2a426ba45d2c8544d439a03cfd261fae09a76a370acd8240181b1',1,'Timer.h']]]
+  ['pwm_5fduty_5fcounts',['PWM_DUTY_COUNTS',['../_p_w_m_8h.html#abc7bc5565f2767cf9f06c1572044a8eea4a20018a9620ed669dff0893858a44b2',1,'PWM.h']]],
+  ['pwm_5fduty_5ffraction',['PWM_DUTY_FRACTION',['../_p_w_m_8h.html#abc7bc5565f2767cf9f06c1572044a8eea004d0d56bfc7f629990e7b6b55c3dd4f',1,'PWM.h']]],
+  ['pwm_5fduty_5fus',['PWM_DUTY_US',['../_p_w_m_8h.html#abc7bc5565f2767cf9f06c1572044a8eeaf93cd02d0c2744e2d6a68a8e7070b7a6',1,'PWM.h']]],
+  ['pwm_5fidle_5fhigh',['PWM_IDLE_HIGH',['../_p_w_m_8h.html#a5a40c7014745d15b0c1a604dae5593f9a0b126918629a951139ef9f17d417c50d',1,'PWM.h']]],
+  ['pwm_5fidle_5flow',['PWM_IDLE_LOW',['../_p_w_m_8h.html#a5a40c7014745d15b0c1a604dae5593f9a698cc876a94b3e0629d65fecfec8c8f5',1,'PWM.h']]],
+  ['pwm_5fperiod_5fcounts',['PWM_PERIOD_COUNTS',['../_p_w_m_8h.html#a11aa442e82549992c98729216d64fd63a52a5ee3b990d5edb816d19253bd9a571',1,'PWM.h']]],
+  ['pwm_5fperiod_5fhz',['PWM_PERIOD_HZ',['../_p_w_m_8h.html#a11aa442e82549992c98729216d64fd63a083c3462c199f39afc7a9d0541595b7a',1,'PWM.h']]],
+  ['pwm_5fperiod_5fus',['PWM_PERIOD_US',['../_p_w_m_8h.html#a11aa442e82549992c98729216d64fd63a35d73e8e481d16fd8c3880d9519894cd',1,'PWM.h']]]
 ];

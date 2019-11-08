@@ -1,5 +1,5 @@
 ;
-;  Copyright (c) 2013-2018, Texas Instruments Incorporated
+;  Copyright (c) 2013, Texas Instruments Incorporated
 ;  All rights reserved.
 ;
 ;  Redistribution and use in source and binary forms, with or without
@@ -36,9 +36,99 @@
         PRESERVE8
 
         PUBLIC ti_sysbios_family_arm_m3_TaskSupport_swap__E
+        PUBLIC ti_sysbios_family_arm_m3_TaskSupport_buildTaskStack
         PUBLIC ti_sysbios_family_arm_m3_TaskSupport_glue
-        PUBLIC ti_sysbios_family_arm_m3_TaskSupport_glueUnpriv
         PUBLIC ti_sysbios_knl_Task_swapReturn
+
+;
+;  ======== Task_buildTaskStack ========
+;
+;  Task_buildTaskStack(stack, fxn, exit, enter, arg0, arg1)
+;                         r0,  r1,   r2,    r3,  [0],  [4]
+;
+;  initial stack image:
+;
+;               d8-d15 = 0      if vfp supported
+;               r4 = -1
+;               r5 = -1
+;               r6 = -1
+;               r7 = -1
+;               r8 = -1
+;               r9 = -1
+;               r10 = -1
+;               r11 = -1
+;               glue
+;               arg0
+;               arg1
+;               fxn
+;               exit
+;               enter
+;
+
+; 1st argument, return value
+#define STACK     r0
+; 2nd argument
+#define FXN       r1
+; 3rd argument
+#define EXIT      r2
+; 4th argument
+#define ENTER     r3
+ARG0    DEFINE    0       ; 5th argument (stack offset)
+ARG1    DEFINE    4       ; 6th argument (stack offset)
+
+        SECTION CODE:CODE:NOROOT(2)
+        THUMB
+
+ti_sysbios_family_arm_m3_TaskSupport_buildTaskStack:
+
+        str     ENTER, [STACK,#-4]!
+        str     EXIT, [STACK,#-4]!
+        str     FXN, [STACK,#-4]!
+
+        ldr     r1, [sp, #ARG1]
+        str     r1, [STACK,#-4]!
+        ldr     r1, [sp, #ARG0]
+        str     r1, [STACK,#-4]!
+
+        ldr     r1, glueAddr
+        str     r1, [STACK,#-4]!
+
+        eor     r1, r1, r1
+        sub     r1, r1, #1
+
+        str     r1, [STACK,#-4]!        ; init r4-r11, lr with -1
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+
+#if defined(__ARMVFP__)
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!        ; make room for 8 vfp
+        str     r1, [STACK,#-4]!        ; saved by parent regs
+        str     r1, [STACK,#-4]!        ; d8-d15
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+        str     r1, [STACK,#-4]!
+#endif
+        bx      lr
+
+        DATA
+glueAddr:
+        DC32  ti_sysbios_family_arm_m3_TaskSupport_glue
 
 ;
 ;  ======== TaskSupport_swap ========
@@ -55,27 +145,14 @@
         THUMB
 ti_sysbios_family_arm_m3_TaskSupport_swap__E:
 
-#if defined(ti_sysbios_family_arm_m3_TaskSupport_usesMonitors__D)
-        clrex
-#endif
         push    {r4-r11, lr}
 #if defined(__ARMVFP__)
         vpush   {d8-d15}
-#endif
-#if (__CORE__ == __ARM8M_MAINLINE__)
-        mrs     r2, psplim
-        push    {r2, r3}
-        mov     r2, #0
-        msr     psplim, r2
 #endif
         str     sp, [OLD]
 
 ti_sysbios_knl_Task_swapReturn:
         ldr     sp, [NEW]
-#if (__CORE__ == __ARM8M_MAINLINE__)
-        pop     {r2, r3}
-        msr     psplim, r3
-#endif
 #if defined(__ARMVFP__)
         vpop    {d8-d15}                ; pop vfp caller regs
 #endif
@@ -103,20 +180,5 @@ ti_sysbios_family_arm_m3_TaskSupport_glue:
 
         ldr     lr, [sp, #12]   ; Task exit function
         bx      r2              ; call task fxn,  ("returns" to exit func)
-
-;
-;  ======== TaskSupport_glueUnpriv ========
-;
-;        SECTION CODE:CODE:NOROOT
-;        THUMB
-
-ti_sysbios_family_arm_m3_TaskSupport_glueUnpriv:
-
-; This is an empty stub for targets not supporting
-; memory protection extensions. It is added to
-; resolve code references at build time and will
-; never be invoked.
-
-        bx      lr
 
         END

@@ -134,6 +134,16 @@ function filterHardware(component)
 }
 
 /*
+ *  ======== _getPinResources ========
+ */
+/* istanbul ignore next */
+function _getPinResources(inst)
+{
+    return;
+}
+
+
+/*
  *  ======== base ========
  *  Define the base I2S properties and methods
  */
@@ -151,11 +161,13 @@ peripherals on an I2S bus.
 [2]: /tidrivers/doxygen/html/_i2_s_8h.html#ti_drivers_I2S_Examples "C usage examples"
 [3]: /tidrivers/syscfg/html/ConfigDoc.html#I2S_Configuration_Options "Configuration options reference"
 `,
-    defaultInstanceName: "Board_I2S",
-    config: Common.addNameConfig(config, "/ti/drivers/I2S", "Board_I2S"),
+    defaultInstanceName: "CONFIG_I2S_",
+    config: Common.addNameConfig(config, "/ti/drivers/I2S", "CONFIG_I2S_"),
     validate: validate,
     busModule: true,
-    filterHardware: filterHardware
+    filterHardware: filterHardware,
+
+    _getPinResources: _getPinResources
 };
 
 /* extend the base exports to include family-specific content */

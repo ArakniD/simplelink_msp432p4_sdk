@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 #ifndef ti_uia_family_c66__
@@ -27,7 +27,6 @@ typedef struct ti_uia_family_c66_TimestampC66XGlobal_Params ti_uia_family_c66_Ti
 typedef struct ti_uia_family_c66_TimestampC66XGlobal_Object ti_uia_family_c66_TimestampC66XGlobal_Object;
 typedef struct ti_uia_family_c66_TimestampC66XGlobal_Struct ti_uia_family_c66_TimestampC66XGlobal_Struct;
 typedef ti_uia_family_c66_TimestampC66XGlobal_Object* ti_uia_family_c66_TimestampC66XGlobal_Handle;
-typedef struct ti_uia_family_c66_TimestampC66XGlobal_Object__ ti_uia_family_c66_TimestampC66XGlobal_Instance_State;
 typedef ti_uia_family_c66_TimestampC66XGlobal_Object* ti_uia_family_c66_TimestampC66XGlobal_Instance;
 
 /*
@@ -41,7 +40,6 @@ typedef struct ti_uia_family_c66_TimestampC66XLocal_Params ti_uia_family_c66_Tim
 typedef struct ti_uia_family_c66_TimestampC66XLocal_Object ti_uia_family_c66_TimestampC66XLocal_Object;
 typedef struct ti_uia_family_c66_TimestampC66XLocal_Struct ti_uia_family_c66_TimestampC66XLocal_Struct;
 typedef ti_uia_family_c66_TimestampC66XLocal_Object* ti_uia_family_c66_TimestampC66XLocal_Handle;
-typedef struct ti_uia_family_c66_TimestampC66XLocal_Object__ ti_uia_family_c66_TimestampC66XLocal_Instance_State;
 typedef ti_uia_family_c66_TimestampC66XLocal_Object* ti_uia_family_c66_TimestampC66XLocal_Instance;
 
 /*

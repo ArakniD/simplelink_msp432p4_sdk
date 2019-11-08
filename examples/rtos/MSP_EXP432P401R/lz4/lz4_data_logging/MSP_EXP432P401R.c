@@ -825,13 +825,11 @@ const TimerMSP432_HWAttrs timerMSP432HWAttrs[MSP_EXP432P401R_TIMERCOUNT] = {
     /* Timer32_0 */
     {
         .timerBaseAddress = TIMER32_0_BASE,
-        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,
         .intNum = INT_T32_INT1,
         .intPriority = ~0
     },
     {
         .timerBaseAddress = TIMER32_1_BASE,
-        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,
         .intNum = INT_T32_INT2,
         .intPriority = ~0
     },

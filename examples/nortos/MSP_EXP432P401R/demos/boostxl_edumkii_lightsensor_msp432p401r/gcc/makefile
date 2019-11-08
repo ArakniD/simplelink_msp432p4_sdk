@@ -28,10 +28,10 @@ CFLAGS = -I.. \
     "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include/newlib-nano" \
     "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include"
 
-LFLAGS = -Wl,-T,../gcc/msp432p401r.lds \
-    "-Wl,-Map,$(NAME).map" \
-    "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/grlib/lib/gcc/m4f" \
+LFLAGS = "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/grlib/lib/gcc/m4f" \
     -l:grlib.a \
+    -Wl,-T,../gcc/msp432p401r.lds \
+    "-Wl,-Map,$(NAME).map" \
     "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     -l:ti/display/lib/display.am4fg \
     -l:ti/grlib/lib/gcc/m4f/grlib.a \
@@ -46,7 +46,7 @@ LFLAGS = -Wl,-T,../gcc/msp432p401r.lds \
     -static \
     -Wl,--gc-sections \
     "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib" \
+    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/hard" \
     -lgcc \
     -lc \
     -lm \
@@ -86,6 +86,7 @@ gcc_startup_msp432p401r_gcc.obj: ../gcc/startup_msp432p401r_gcc.c
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
+
 
 clean:
 	@ echo Cleaning...

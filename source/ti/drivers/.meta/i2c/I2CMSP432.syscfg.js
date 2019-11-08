@@ -50,9 +50,6 @@ intPriority.name = "interruptPriority";
  *  Device-specific extensions to be added to base I2C configuration
  */
 let devSpecific = {
-
-    maxInstances: 4,
-
     config: [
         {
             name        : "clockSource",
@@ -74,8 +71,32 @@ per __Power Performance Level__ configured in the __Power Module__.
     templates: {
         boardc : "/ti/drivers/i2c/I2CMSP432.Board.c.xdt",
         boardh : "/ti/drivers/i2c/I2C.Board.h.xdt"
-    }
+    },
+
+    _getPinResources: _getPinResources
 };
+
+/*
+ *  ======== _getPinResources ========
+ */
+function _getPinResources(inst)
+{
+    let pin;
+
+    if (inst.i2c) {
+        let sclPin = "DIO" + inst.i2c.sclPin.$solution.devicePinName;
+        sclPin = sclPin.match(/P\d+\.\d+/)[0];
+        let sdaPin = "DIO" + inst.i2c.sdaPin.$solution.devicePinName;
+        sdaPin = sdaPin.match(/P\d+\.\d+/)[0];
+        pin = "\nSCL: " + sclPin + "\nSDA: " + sdaPin;
+
+        if (inst.$hardware && inst.$hardware.displayName) {
+            pin += "\n" + inst.$hardware.displayName;
+        }
+    }
+
+    return (pin);
+}
 
 /*
  *  ======== extend ========

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_hal__
@@ -47,13 +47,7 @@ typedef struct ti_sysbios_hal_Hwi_Params ti_sysbios_hal_Hwi_Params;
 typedef struct ti_sysbios_hal_Hwi_Object ti_sysbios_hal_Hwi_Object;
 typedef struct ti_sysbios_hal_Hwi_Struct ti_sysbios_hal_Hwi_Struct;
 typedef ti_sysbios_hal_Hwi_Object* ti_sysbios_hal_Hwi_Handle;
-typedef struct ti_sysbios_hal_Hwi_Object__ ti_sysbios_hal_Hwi_Instance_State;
 typedef ti_sysbios_hal_Hwi_Object* ti_sysbios_hal_Hwi_Instance;
-
-/*
- * ======== module ti.sysbios.hal.MemProtect ========
- */
-
 
 /*
  * ======== module ti.sysbios.hal.Power ========
@@ -92,20 +86,6 @@ typedef struct ti_sysbios_hal_SecondsClock_Fxns__ ti_sysbios_hal_SecondsClock_Fx
 typedef const struct ti_sysbios_hal_SecondsClock_Fxns__* ti_sysbios_hal_SecondsClock_Module;
 
 /*
- * ======== module ti.sysbios.hal.SysCall ========
- */
-
-typedef struct ti_sysbios_hal_SysCall_Fxns__ ti_sysbios_hal_SysCall_Fxns__;
-typedef const struct ti_sysbios_hal_SysCall_Fxns__* ti_sysbios_hal_SysCall_Module;
-
-/*
- * ======== module ti.sysbios.hal.SysCallNull ========
- */
-
-typedef struct ti_sysbios_hal_SysCallNull_Fxns__ ti_sysbios_hal_SysCallNull_Fxns__;
-typedef const struct ti_sysbios_hal_SysCallNull_Fxns__* ti_sysbios_hal_SysCallNull_Module;
-
-/*
  * ======== module ti.sysbios.hal.Timer ========
  */
 
@@ -115,7 +95,6 @@ typedef struct ti_sysbios_hal_Timer_Params ti_sysbios_hal_Timer_Params;
 typedef struct ti_sysbios_hal_Timer_Object ti_sysbios_hal_Timer_Object;
 typedef struct ti_sysbios_hal_Timer_Struct ti_sysbios_hal_Timer_Struct;
 typedef ti_sysbios_hal_Timer_Object* ti_sysbios_hal_Timer_Handle;
-typedef struct ti_sysbios_hal_Timer_Object__ ti_sysbios_hal_Timer_Instance_State;
 typedef ti_sysbios_hal_Timer_Object* ti_sysbios_hal_Timer_Instance;
 
 /*
@@ -128,7 +107,6 @@ typedef struct ti_sysbios_hal_TimerNull_Params ti_sysbios_hal_TimerNull_Params;
 typedef struct ti_sysbios_hal_TimerNull_Object ti_sysbios_hal_TimerNull_Object;
 typedef struct ti_sysbios_hal_TimerNull_Struct ti_sysbios_hal_TimerNull_Struct;
 typedef ti_sysbios_hal_TimerNull_Object* ti_sysbios_hal_TimerNull_Handle;
-typedef struct ti_sysbios_hal_TimerNull_Object__ ti_sysbios_hal_TimerNull_Instance_State;
 typedef ti_sysbios_hal_TimerNull_Object* ti_sysbios_hal_TimerNull_Instance;
 
 /*
@@ -167,13 +145,6 @@ typedef const struct ti_sysbios_hal_Power_PowerProxy_Fxns__* ti_sysbios_hal_Powe
 
 typedef struct ti_sysbios_hal_Seconds_SecondsProxy_Fxns__ ti_sysbios_hal_Seconds_SecondsProxy_Fxns__;
 typedef const struct ti_sysbios_hal_Seconds_SecondsProxy_Fxns__* ti_sysbios_hal_Seconds_SecondsProxy_Module;
-
-/*
- * ======== module ti.sysbios.hal.SysCall_SysCallProxy ========
- */
-
-typedef struct ti_sysbios_hal_SysCall_SysCallProxy_Fxns__ ti_sysbios_hal_SysCall_SysCallProxy_Fxns__;
-typedef const struct ti_sysbios_hal_SysCall_SysCallProxy_Fxns__* ti_sysbios_hal_SysCall_SysCallProxy_Module;
 
 /*
  * ======== module ti.sysbios.hal.Timer_TimerProxy ========

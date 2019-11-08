@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_knl_Intrinsics_SupportProxy__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_knl_Intrinsics_SupportProxy___VERS 200
@@ -248,40 +250,40 @@ __extern const ti_sysbios_knl_Intrinsics_SupportProxy_Fxns__ ti_sysbios_knl_Intr
 
 /* Handle__label__S */
 xdc__CODESECT(ti_sysbios_knl_Intrinsics_SupportProxy_Handle__label__S, "ti_sysbios_knl_Intrinsics_SupportProxy_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_sysbios_knl_Intrinsics_SupportProxy_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_sysbios_knl_Intrinsics_SupportProxy_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_knl_Intrinsics_SupportProxy_Module__startupDone__S, "ti_sysbios_knl_Intrinsics_SupportProxy_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_knl_Intrinsics_SupportProxy_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_knl_Intrinsics_SupportProxy_Module__startupDone__S( void);
 
 /* Object__get__S */
 xdc__CODESECT(ti_sysbios_knl_Intrinsics_SupportProxy_Object__get__S, "ti_sysbios_knl_Intrinsics_SupportProxy_Object__get__S")
-__extern xdc_Ptr ti_sysbios_knl_Intrinsics_SupportProxy_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_sysbios_knl_Intrinsics_SupportProxy_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_sysbios_knl_Intrinsics_SupportProxy_Object__first__S, "ti_sysbios_knl_Intrinsics_SupportProxy_Object__first__S")
-__extern xdc_Ptr ti_sysbios_knl_Intrinsics_SupportProxy_Object__first__S( void );
+__extern xdc_Ptr ti_sysbios_knl_Intrinsics_SupportProxy_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_sysbios_knl_Intrinsics_SupportProxy_Object__next__S, "ti_sysbios_knl_Intrinsics_SupportProxy_Object__next__S")
-__extern xdc_Ptr ti_sysbios_knl_Intrinsics_SupportProxy_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_sysbios_knl_Intrinsics_SupportProxy_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_sysbios_knl_Intrinsics_SupportProxy_Params__init__S, "ti_sysbios_knl_Intrinsics_SupportProxy_Params__init__S")
-__extern xdc_Void ti_sysbios_knl_Intrinsics_SupportProxy_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_sysbios_knl_Intrinsics_SupportProxy_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* Proxy__abstract__S */
 xdc__CODESECT(ti_sysbios_knl_Intrinsics_SupportProxy_Proxy__abstract__S, "ti_sysbios_knl_Intrinsics_SupportProxy_Proxy__abstract__S")
-__extern xdc_Bool ti_sysbios_knl_Intrinsics_SupportProxy_Proxy__abstract__S( void );
+__extern xdc_Bool ti_sysbios_knl_Intrinsics_SupportProxy_Proxy__abstract__S( void);
 
 /* Proxy__delegate__S */
 xdc__CODESECT(ti_sysbios_knl_Intrinsics_SupportProxy_Proxy__delegate__S, "ti_sysbios_knl_Intrinsics_SupportProxy_Proxy__delegate__S")
-__extern xdc_CPtr ti_sysbios_knl_Intrinsics_SupportProxy_Proxy__delegate__S( void );
+__extern xdc_CPtr ti_sysbios_knl_Intrinsics_SupportProxy_Proxy__delegate__S( void);
 
 /* maxbit__E */
 #define ti_sysbios_knl_Intrinsics_SupportProxy_maxbit ti_sysbios_knl_Intrinsics_SupportProxy_maxbit__E
 xdc__CODESECT(ti_sysbios_knl_Intrinsics_SupportProxy_maxbit__E, "ti_sysbios_knl_Intrinsics_SupportProxy_maxbit")
-__extern xdc_UInt ti_sysbios_knl_Intrinsics_SupportProxy_maxbit__E( xdc_UInt bits );
+__extern xdc_UInt ti_sysbios_knl_Intrinsics_SupportProxy_maxbit__E( xdc_UInt bits);
 
 
 /*

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['pwm_5fduty_5funits',['PWM_Duty_Units',['../_p_w_m_8h.html#abc7bc5565f2767cf9f06c1572044a8ee',1,'PWM.h']]],
-  ['pwm_5fidlelevel',['PWM_IdleLevel',['../_p_w_m_8h.html#a5a40c7014745d15b0c1a604dae5593f9',1,'PWM.h']]],
-  ['pwm_5fperiod_5funits',['PWM_Period_Units',['../_p_w_m_8h.html#a11aa442e82549992c98729216d64fd63',1,'PWM.h']]]
+  ['i2c_5fbitrate',['I2C_BitRate',['../_i2_c_8h.html#ac954e3197f04c50293db466c4abb6fbe',1,'I2C.h']]],
+  ['i2c_5ftransfermode',['I2C_TransferMode',['../_i2_c_8h.html#a39f3b9340fc4ee241b0d2da9b2841c26',1,'I2C.h']]],
+  ['i2cslave_5ftransfermode',['I2CSlave_TransferMode',['../_i2_c_slave_8h.html#a5e27f9ba25088f9e7071e3e6f806559d',1,'I2CSlave.h']]]
 ];

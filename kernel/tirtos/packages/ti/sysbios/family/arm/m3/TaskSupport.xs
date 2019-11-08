@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2018, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,8 +33,6 @@
 /*
  *  ======== TaskSupport.xs ========
  */
-
-var Build = null;
 
 /*
  * ======== getAsmFiles ========
@@ -84,33 +82,6 @@ function module$meta$init()
 
     /* provide getAsmFiles() for Build.getAsmFiles() */
     this.$private.getAsmFiles = getAsmFiles;
-}
-
-/*
- *  ======== module$use ========
- */
-function module$use()
-{
-    Build = xdc.useModule('ti.sysbios.Build');
-}
-
-/*
- *  ======== module$validate ========
- */
-function module$validate()
-{
-    /*
-     *  Add CLREX instruction in TaskSupport_swap for
-     *  applications that use monitors
-     */
-    if (this.usesMonitors) {
-        Build.ccArgs.$add("-Dti_sysbios_family_arm_m3_TaskSupport_usesMonitors__D");
-    }
-    else {
-        if (!Program.build.target.$name.match(/gnu/)) {
-            Build.ccArgs.$add("-Dti_sysbios_family_arm_m3_TaskSupport_usesMonitors__D=0");
-        }
-    }
 }
 
 /*

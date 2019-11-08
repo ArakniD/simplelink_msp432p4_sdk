@@ -43,6 +43,11 @@
 with a Texas Instruments compiler. You appear to be using a different compiler.
 #endif
 
+/* CODEGEN-6425 work-around; remove when bug is fixed */
+#if defined(__clang__) && defined(__ti_version__)
+#pragma clang system_header
+#endif
+
 #include <stddef.h>
 #include <stdint.h>
 

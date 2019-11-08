@@ -59,7 +59,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -72,12 +71,12 @@ $(function() {
 <h1>Operation</h1>
 <p>This driver implements two independent hardware peripherals on the MSP432: Timer_A and Timer32. The Timer_A implementation supports two clock sources, SMCLK and ACLCK, with multiple clock dividers. The Timer32 implementation supports a single clock source, MCLK, with 3 clock dividers. For each driver instance, the configuration of the clock dividers is determined using the clock source, period, and period units. Note that the SMCLK and MCLK frequencies can change after <a class="el" href="_timer_8h.html#a85fff65681abf4b7d65309aeac73c52c" title="Function to initialize a given timer peripheral specified by the index argument. The Timer_Params spe...">Timer_open()</a>.</p>
 <h3>MPS432 Timer Driver Configuration</h3>
-<p>In order to use the Timer APIs, the application is required to define 4 configuration items in the application Board.c file:</p>
+<p>In order to use the Timer APIs, the application is required to define 4 configuration items in the application ti_drivers_config.c file:</p>
 <ol type="1">
-<li>An array of TimerMSP432_Object elements, which will be used by by the driver to maintain instance state. Below is an example TimerMSP432_Object array appropriate for the MSP432 LaunchPad board: <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_timer_8h.html">ti/drivers/Timer.h</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_timer_m_s_p432_8h.html">ti/drivers/timer/TimerMSP432.h</a>&gt;</span></div><div class="line"></div><div class="line"><a class="code" href="struct_timer_m_s_p432___object__.html">TimerMSP432_Object</a> timerMSP432Objects[3];</div></div><!-- fragment --></li>
-<li>An array of TimerMSP432_HWAttrs elements that defines which</li>
+<li>An array of <a class="el" href="struct_timer_m_s_p432___object.html" title="TimerMSP432 Object. ">TimerMSP432_Object</a> elements, which will be used by by the driver to maintain instance state. Below is an example <a class="el" href="struct_timer_m_s_p432___object.html" title="TimerMSP432 Object. ">TimerMSP432_Object</a> array appropriate for the MSP432 LaunchPad board: <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_timer_8h.html">ti/drivers/Timer.h</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_timer_m_s_p432_8h.html">ti/drivers/timer/TimerMSP432.h</a>&gt;</span></div><div class="line"></div><div class="line"><a class="code" href="struct_timer_m_s_p432___object.html">TimerMSP432_Object</a> timerMSP432Objects[3];</div></div><!-- fragment --></li>
+<li>An array of <a class="el" href="struct_timer_m_s_p432___h_w_attrs.html" title="TimerMSP432 Hardware Attributes. ">TimerMSP432_HWAttrs</a> elements that defines which</li>
 </ol>
-<p>Below is an example TimerMSP432_HWAttrs array appropriate for the MSP432 LaunchPad board: </p><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="struct_timer_m_s_p432___h_w_attr__.html">TimerMSP432_HWAttrs</a> timerMSP432HWAttrs[3] =</div><div class="line">{</div><div class="line">    {</div><div class="line">        .<a class="code" href="struct_timer_m_s_p432___h_w_attr__.html#aee448f9833084c652169ed1986484119">timerBaseAddress</a> = TIMER32_0_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,</div><div class="line">        .intNum = INT_T32_INT1,</div><div class="line">        .intPriority = ~0,</div><div class="line">    },</div><div class="line">    {</div><div class="line">        .timerBaseAddress = TIMER_A1_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,</div><div class="line">        .intNum = INT_TA1_0,</div><div class="line">        .intPriority = ~0,</div><div class="line">    },</div><div class="line">    {</div><div class="line">        .timerBaseAddress = TIMER_A2_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_ACLK,</div><div class="line">        .intNum = INT_TA2_0,</div><div class="line">        .intPriority = ~0,</div><div class="line">    },</div><div class="line">};</div></div><!-- fragment --><ol type="1">
+<p>Below is an example <a class="el" href="struct_timer_m_s_p432___h_w_attrs.html" title="TimerMSP432 Hardware Attributes. ">TimerMSP432_HWAttrs</a> array appropriate for the MSP432 LaunchPad board: </p><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="struct_timer_m_s_p432___h_w_attrs.html">TimerMSP432_HWAttrs</a> timerMSP432HWAttrs[3] =</div><div class="line">{</div><div class="line">    {</div><div class="line">        .<a class="code" href="struct_timer_m_s_p432___h_w_attrs.html#afb2d40717cba65259f404bc32d3cfb7e">timerBaseAddress</a> = TIMER32_0_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,</div><div class="line">        .intNum = INT_T32_INT1,</div><div class="line">        .intPriority = ~0,</div><div class="line">    },</div><div class="line">    {</div><div class="line">        .timerBaseAddress = TIMER_A1_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,</div><div class="line">        .intNum = INT_TA1_0,</div><div class="line">        .intPriority = ~0,</div><div class="line">    },</div><div class="line">    {</div><div class="line">        .timerBaseAddress = TIMER_A2_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_ACLK,</div><div class="line">        .intNum = INT_TA2_0,</div><div class="line">        .intPriority = ~0,</div><div class="line">    },</div><div class="line">};</div></div><!-- fragment --><ol type="1">
 <li>An array of <a class="el" href="_timer_8h.html#a4c61ce326e1836cd5a5f9d9a728c1ac4">Timer_Config</a> elements, one for each Timer instance. Each element of this array identifies the device-specific API function table, the device specific timer object instance, and the device specific Hardware Attributes to be used for each timer instance. Below is an example <a class="el" href="_timer_8h.html#a4c61ce326e1836cd5a5f9d9a728c1ac4">Timer_Config</a> array appropriate for the MSP432 LaunchPad board: <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="struct_timer___config__.html">Timer_Config</a> Timer_config[3] = {</div><div class="line">  {</div><div class="line">      .<a class="code" href="struct_timer___config__.html#ad729580a94414d8dddf43fa91e2a570a">fxnTablePtr</a> = &amp;<a class="code" href="_timer_m_s_p432_8h.html#adfc465b5a2bf4e50e5f30f996313fdf6">TimerMSP432_Timer32_fxnTable</a>,</div><div class="line">      .object = &amp;timerMSP432Objects[0],</div><div class="line">      .hwAttrs = &amp;timerMSP432HWAttrs[0]</div><div class="line">  },</div><div class="line">  {</div><div class="line">      .fxnTablePtr = &amp;<a class="code" href="_timer_m_s_p432_8h.html#ad3b622d4875264bf82f29de28fcc9b9e">TimerMSP432_Timer_A_fxnTable</a>,</div><div class="line">      .object = &amp;timerMSP432Objects[1],</div><div class="line">      .hwAttrs = &amp;timerMSP432HWAttrs[1]</div><div class="line">  }</div><div class="line">  {</div><div class="line">      .fxnTablePtr = &amp;<a class="code" href="_timer_m_s_p432_8h.html#ad3b622d4875264bf82f29de28fcc9b9e">TimerMSP432_Timer_A_fxnTable</a>,</div><div class="line">      .object = &amp;timerMSP432Objects[2],</div><div class="line">      .hwAttrs = &amp;timerMSP432HWAttrs[2]</div><div class="line">  }</div><div class="line">};</div></div><!-- fragment --></li>
 <li>A global variable, Timer_count, that informs the driver how many timer instances are defined: <div class="fragment"><div class="line"><span class="keyword">const</span> uint_least8_t Timer_count = 3;</div></div><!-- fragment --></li>
 </ol>
@@ -122,21 +121,12 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_timer_m_s_p432___h_w_attr__.html">TimerMSP432_HWAttr_</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TimerMSP432 Hardware Attributes.  <a href="struct_timer_m_s_p432___h_w_attr__.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_timer_m_s_p432___h_w_attrs.html">TimerMSP432_HWAttrs</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TimerMSP432 Hardware Attributes.  <a href="struct_timer_m_s_p432___h_w_attrs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_timer_m_s_p432___object__.html">TimerMSP432_Object_</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TimerMSP432 Object.  <a href="struct_timer_m_s_p432___object__.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_timer_m_s_p432___object.html">TimerMSP432_Object</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TimerMSP432 Object.  <a href="struct_timer_m_s_p432___object.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ac3faa216806be0265d6a156e122bfbb3"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_timer_m_s_p432___h_w_attr__.html">TimerMSP432_HWAttr_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_timer_m_s_p432_8h.html#ac3faa216806be0265d6a156e122bfbb3">TimerMSP432_HWAttrs</a></td></tr>
-<tr class="memdesc:ac3faa216806be0265d6a156e122bfbb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">TimerMSP432 Hardware Attributes.  <a href="#ac3faa216806be0265d6a156e122bfbb3">More...</a><br /></td></tr>
-<tr class="separator:ac3faa216806be0265d6a156e122bfbb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acefcbb2fb4596bca2dd9338adddd53bd"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_timer_m_s_p432___object__.html">TimerMSP432_Object_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_timer_m_s_p432_8h.html#acefcbb2fb4596bca2dd9338adddd53bd">TimerMSP432_Object</a></td></tr>
-<tr class="memdesc:acefcbb2fb4596bca2dd9338adddd53bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">TimerMSP432 Object.  <a href="#acefcbb2fb4596bca2dd9338adddd53bd">More...</a><br /></td></tr>
-<tr class="separator:acefcbb2fb4596bca2dd9338adddd53bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -154,42 +144,6 @@ Variables</h2></td></tr>
 <tr class="memitem:adfc465b5a2bf4e50e5f30f996313fdf6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_timer___fxn_table.html">Timer_FxnTable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_timer_m_s_p432_8h.html#adfc465b5a2bf4e50e5f30f996313fdf6">TimerMSP432_Timer32_fxnTable</a></td></tr>
 <tr class="separator:adfc465b5a2bf4e50e5f30f996313fdf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="ac3faa216806be0265d6a156e122bfbb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3faa216806be0265d6a156e122bfbb3">&sect;&nbsp;</a></span>TimerMSP432_HWAttrs</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_timer_m_s_p432___h_w_attr__.html">TimerMSP432_HWAttr_</a>  <a class="el" href="_timer_m_s_p432_8h.html#ac3faa216806be0265d6a156e122bfbb3">TimerMSP432_HWAttrs</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>TimerMSP432 Hardware Attributes. </p>
-<p>Timer hardware attributes that tell the TimerMSP432 driver specific hardware configurations and interrupt priority settings.</p>
-<p>The Timer32 only supports MCLK as a clock source. As a result, the clockSource field has no event for Timer32 instances.</p>
-<p>A sample structure is shown below: </p><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="struct_timer_m_s_p432___h_w_attr__.html">TimerMSP432_HWAttrs</a> timerMSP432HWAttrs[] =</div><div class="line">{</div><div class="line">    {</div><div class="line">        .<a class="code" href="struct_timer_m_s_p432___h_w_attr__.html#aee448f9833084c652169ed1986484119">timerBaseAddress</a> = TIMER32_0_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,</div><div class="line">        .intNum = INT_T32_INT1,</div><div class="line">        .intPriority = ~0,</div><div class="line">    },</div><div class="line">    {</div><div class="line">        .timerBaseAddress = TIMER_A1_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,</div><div class="line">        .intNum = INT_TA1_0,</div><div class="line">        .intPriority = ~0</div><div class="line">    },</div><div class="line">    {</div><div class="line">        .timerBaseAddress = TIMER_A2_BASE,</div><div class="line">        .clockSource = TIMER_A_CLOCKSOURCE_ACLK,</div><div class="line">        .intNum = INT_TA2_0,</div><div class="line">        .intPriority = ~0</div><div class="line">    },</div><div class="line">};</div></div><!-- fragment --> 
-</div>
-</div>
-<a id="acefcbb2fb4596bca2dd9338adddd53bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acefcbb2fb4596bca2dd9338adddd53bd">&sect;&nbsp;</a></span>TimerMSP432_Object</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_timer_m_s_p432___object__.html">TimerMSP432_Object_</a>  <a class="el" href="_timer_m_s_p432_8h.html#acefcbb2fb4596bca2dd9338adddd53bd">TimerMSP432_Object</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>TimerMSP432 Object. </p>
-<p>The application must not access any member variables of this structure! </p>
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a4bfb67ec5f2dbd00d6c0274d42afa38c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4bfb67ec5f2dbd00d6c0274d42afa38c">&sect;&nbsp;</a></span>TimerMSP432_allocateTimerResource()</h2>

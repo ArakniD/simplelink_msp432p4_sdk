@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_sysbios_hal_SecondsCallback__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_hal_SecondsCallback___VERS 200
@@ -285,27 +287,27 @@ __extern const ti_sysbios_hal_SecondsCallback_Fxns__ ti_sysbios_hal_SecondsCallb
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_hal_SecondsCallback_Module__startupDone__S, "ti_sysbios_hal_SecondsCallback_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_hal_SecondsCallback_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_hal_SecondsCallback_Module__startupDone__S( void);
 
 /* get__E */
 #define ti_sysbios_hal_SecondsCallback_get ti_sysbios_hal_SecondsCallback_get__E
 xdc__CODESECT(ti_sysbios_hal_SecondsCallback_get__E, "ti_sysbios_hal_SecondsCallback_get")
-__extern xdc_UInt32 ti_sysbios_hal_SecondsCallback_get__E( void );
+__extern xdc_UInt32 ti_sysbios_hal_SecondsCallback_get__E( void);
 
 /* getTime__E */
 #define ti_sysbios_hal_SecondsCallback_getTime ti_sysbios_hal_SecondsCallback_getTime__E
 xdc__CODESECT(ti_sysbios_hal_SecondsCallback_getTime__E, "ti_sysbios_hal_SecondsCallback_getTime")
-__extern xdc_UInt32 ti_sysbios_hal_SecondsCallback_getTime__E( ti_sysbios_interfaces_ISeconds_Time *ts );
+__extern xdc_UInt32 ti_sysbios_hal_SecondsCallback_getTime__E( ti_sysbios_interfaces_ISeconds_Time *ts);
 
 /* set__E */
 #define ti_sysbios_hal_SecondsCallback_set ti_sysbios_hal_SecondsCallback_set__E
 xdc__CODESECT(ti_sysbios_hal_SecondsCallback_set__E, "ti_sysbios_hal_SecondsCallback_set")
-__extern xdc_Void ti_sysbios_hal_SecondsCallback_set__E( xdc_UInt32 seconds );
+__extern xdc_Void ti_sysbios_hal_SecondsCallback_set__E( xdc_UInt32 seconds);
 
 /* setTime__E */
 #define ti_sysbios_hal_SecondsCallback_setTime ti_sysbios_hal_SecondsCallback_setTime__E
 xdc__CODESECT(ti_sysbios_hal_SecondsCallback_setTime__E, "ti_sysbios_hal_SecondsCallback_setTime")
-__extern xdc_UInt32 ti_sysbios_hal_SecondsCallback_setTime__E( ti_sysbios_interfaces_ISeconds_Time *ts );
+__extern xdc_UInt32 ti_sysbios_hal_SecondsCallback_setTime__E( ti_sysbios_interfaces_ISeconds_Time *ts);
 
 
 /*

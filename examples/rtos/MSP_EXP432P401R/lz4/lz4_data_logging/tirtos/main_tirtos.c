@@ -75,7 +75,7 @@ int main(void)
     }
 
     /* Call driver init functions */
-    Board_initGeneral();
+    Board_init();
 
     /* Set priority and stack size attributes */
     pthread_attr_init(&pAttrs);

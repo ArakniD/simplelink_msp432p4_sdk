@@ -27,7 +27,7 @@ package/gnu.targets.arm.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/gnu_targets_arm.java
 package/gnu_targets_arm.class
 package/package_gnu.targets.arm.c

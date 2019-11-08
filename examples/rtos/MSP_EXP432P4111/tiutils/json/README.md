@@ -1,19 +1,13 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# json
-
----
-
 ## Example Summary
 
 This example demonstrates the APIs available in the ti/utils/json JSON library.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_UART` - Display UART output
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
 
 ## Example Usage
 

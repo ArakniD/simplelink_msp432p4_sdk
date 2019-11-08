@@ -75,8 +75,8 @@ extern "C"
 #define EUSCI_SPI_CLOCKPOLARITY_INACTIVITY_HIGH    EUSCI_B_CTLW0_CKPL
 #define EUSCI_SPI_CLOCKPOLARITY_INACTIVITY_LOW     0x00
 
-#define EUSCI_SPI_TRANSMIT_INTERRUPT    EUSCI_B_IE_TXIE_OFS
-#define EUSCI_SPI_RECEIVE_INTERRUPT     EUSCI_B_IE_RXIE_OFS
+#define EUSCI_SPI_TRANSMIT_INTERRUPT    EUSCI_B_IE_TXIE
+#define EUSCI_SPI_RECEIVE_INTERRUPT     EUSCI_B_IE_RXIE
 
 #define EUSCI_SPI_ENABLE_SIGNAL_FOR_4WIRE_SLAVE           EUSCI_B_CTLW0_STEM
 #define EUSCI_SPI_PREVENT_CONFLICTS_WITH_OTHER_MASTERS    0x00
@@ -522,7 +522,7 @@ extern uint_fast8_t SPI_isBusy(uint32_t moduleInstance);
 //! \return None.
 //
 //*****************************************************************************
-extern void SPI_enableInterrupt(uint32_t moduleInstance, uint_fast8_t mask);
+extern void SPI_enableInterrupt(uint32_t moduleInstance, uint_fast16_t mask);
 
 //*****************************************************************************
 //
@@ -555,7 +555,7 @@ extern void SPI_enableInterrupt(uint32_t moduleInstance, uint_fast8_t mask);
 //! \return None.
 //
 //*****************************************************************************
-extern void SPI_disableInterrupt(uint32_t moduleInstance, uint_fast8_t mask);
+extern void SPI_disableInterrupt(uint32_t moduleInstance, uint_fast16_t mask);
 
 //*****************************************************************************
 //
@@ -639,7 +639,7 @@ extern uint_fast8_t SPI_getEnabledInterruptStatus(uint32_t moduleInstance);
 //! \return None
 //
 //*****************************************************************************
-extern void SPI_clearInterruptFlag(uint32_t moduleInstance, uint_fast8_t mask);
+extern void SPI_clearInterruptFlag(uint32_t moduleInstance, uint_fast16_t mask);
 
 //*****************************************************************************
 //
@@ -763,11 +763,11 @@ extern void EUSCI_A_SPI_changeClockPhasePolarity(uint32_t baseAddress,
 extern void EUSCI_A_SPI_transmitData(uint32_t baseAddress,
         uint8_t transmitData);
 extern uint8_t EUSCI_A_SPI_receiveData(uint32_t baseAddress);
-extern void EUSCI_A_SPI_enableInterrupt(uint32_t baseAddress, uint8_t mask);
-extern void EUSCI_A_SPI_disableInterrupt(uint32_t baseAddress, uint8_t mask);
+extern void EUSCI_A_SPI_enableInterrupt(uint32_t baseAddress, uint16_t mask);
+extern void EUSCI_A_SPI_disableInterrupt(uint32_t baseAddress, uint16_t mask);
 extern uint8_t EUSCI_A_SPI_getInterruptStatus(uint32_t baseAddress,
         uint8_t mask);
-extern void EUSCI_A_SPI_clearInterruptFlag(uint32_t baseAddress, uint8_t mask);
+extern void EUSCI_A_SPI_clearInterruptFlag(uint32_t baseAddress, uint16_t mask);
 extern void EUSCI_A_SPI_enable(uint32_t baseAddress);
 extern void EUSCI_A_SPI_disable(uint32_t baseAddress);
 extern uint32_t EUSCI_A_SPI_getReceiveBufferAddressForDMA(uint32_t baseAddress);
@@ -785,11 +785,11 @@ extern void EUSCI_B_SPI_changeClockPhasePolarity(uint32_t baseAddress,
 extern void EUSCI_B_SPI_transmitData(uint32_t baseAddress,
         uint8_t transmitData);
 extern uint8_t EUSCI_B_SPI_receiveData(uint32_t baseAddress);
-extern void EUSCI_B_SPI_enableInterrupt(uint32_t baseAddress, uint8_t mask);
-extern void EUSCI_B_SPI_disableInterrupt(uint32_t baseAddress, uint8_t mask);
+extern void EUSCI_B_SPI_enableInterrupt(uint32_t baseAddress, uint16_t mask);
+extern void EUSCI_B_SPI_disableInterrupt(uint32_t baseAddress, uint16_t mask);
 extern uint8_t EUSCI_B_SPI_getInterruptStatus(uint32_t baseAddress,
         uint8_t mask);
-extern void EUSCI_B_SPI_clearInterruptFlag(uint32_t baseAddress, uint8_t mask);
+extern void EUSCI_B_SPI_clearInterruptFlag(uint32_t baseAddress, uint16_t mask);
 extern void EUSCI_B_SPI_enable(uint32_t baseAddress);
 extern void EUSCI_B_SPI_disable(uint32_t baseAddress);
 extern uint32_t EUSCI_B_SPI_getReceiveBufferAddressForDMA(uint32_t baseAddress);

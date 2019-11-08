@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2017, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,14 +51,12 @@ var family = {
     "ti.targets.arm.elf.R5F" :                  "arm",
     "ti.targets.arm.elf.R4F" :                  "arm",
     "ti.targets.arm.elf.R4Ft" :                 "arm",
-    "ti.targets.arm.clang.M33F" :               "arm",
     "ti.targets.arm.clang.M3" :                 "arm",
     "ti.targets.arm.clang.M4" :                 "arm",
     "ti.targets.arm.clang.M4F" :                "arm",
     "gnu.targets.arm.M3" :                      "arm",
     "gnu.targets.arm.M4" :                      "arm",
     "gnu.targets.arm.M4F" :                     "arm",
-    "gnu.targets.arm.M33F" :                    "arm",
     "gnu.targets.arm.A8F" :                     "arm",
     "gnu.targets.arm.A9F" :                     "arm",
     "gnu.targets.arm.A15F" :                    "arm",
@@ -66,7 +64,6 @@ var family = {
     "iar.targets.arm.M3" :                      "arm",
     "iar.targets.arm.M4" :                      "arm",
     "iar.targets.arm.M4F" :                     "arm",
-    "iar.targets.arm.M33" :                     "arm",
     "ti.targets.arp32.elf.ARP32" :              "arp32",
     "ti.targets.arp32.elf.ARP32_far" :          "arp32",
 };
@@ -125,7 +122,6 @@ function module$meta$init()
     this.timerDelegate = getDefaultTimerDelegate();
     this.clockTimerDelegate = getDefaultClockTimerDelegate();
     this.secondsDelegate = getDefaultSecondsDelegate();
-    this.syscallDelegate = getDefaultSysCallDelegate();
 }
 
 /*
@@ -235,14 +231,6 @@ function getDefaultPowerDelegate()
 function getDefaultSecondsDelegate()
 {
     return (familySettings.getDefaultSecondsDelegate());
-}
-
-/*
- *  ======== getDefaultSysCallDelegate ========
- */
-function getDefaultSysCallDelegate()
-{
-    return (familySettings.getDefaultSysCallDelegate());
 }
 
 /*

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,10 +51,10 @@
  */
 void SwiP_Params_init(SwiP_Params *params)
 {
-    params->arg0 = NULL;
-    params->arg1 = NULL;
-    params->trigger = 0;
-    params->priority = ~0;
+    params->arg0 = 0U;
+    params->arg1 = 0U;
+    params->trigger = 0U;
+    params->priority = ~0U;
 }
 
 /*

@@ -9,10 +9,10 @@
         </when>
     </applicability>
 
-
     <project
         title="UART Logging"
         name="uartlogging_MSP_EXP432P4111_tirtos_ccs"
+        configurations="Debug"
         toolChain="TI"
         connection="TIXDS110_Connection.xml"
         device="MSP432P4111"
@@ -21,6 +21,7 @@
         products="com.ti.SIMPLELINK_MSP432_SDK"
         compilerBuildOptions="
             -I${PROJECT_ROOT}
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
             -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include
             --advice:power=none
             -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/posix/ccs
@@ -36,49 +37,49 @@
             -I${CG_TOOL_ROOT}/include
         "
         linkerBuildOptions="
-             -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
-             -lti/display/lib/display.aem4f
-             -lti/grlib/lib/ccs/m4f/grlib.a
-             -lthird_party/spiffs/lib/ccs/m4f/spiffs.a
-             -lti/drivers/lib/drivers_msp432p4x1xi.aem4f
-             -lthird_party/fatfs/lib/ccs/m4f/fatfs.a
-             -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages
-             -lti/dpl/lib/dpl_msp432p4x1xi.aem4f
-             -lti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib
-             --warn_sections
-             --display_error_number
-             --diag_wrap=off
-             --rom_model
-             -i${CG_TOOL_ROOT}/lib
-             -llibc.a
-        "
-        preBuildStep="
-        "
-        postBuildStep="
+            -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
+            -lti/display/lib/display.aem4f
+            -lti/grlib/lib/ccs/m4f/grlib.a
+            -lthird_party/spiffs/lib/ccs/m4f/spiffs.a
+            -lti/drivers/lib/drivers_msp432p4x1xi.aem4f
+            -lthird_party/fatfs/lib/ccs/m4f/fatfs.a
+            -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages
+            -lti/dpl/lib/dpl_msp432p4x1xi.aem4f
+            -lti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib
+            --warn_sections
+            --display_error_number
+            --diag_wrap=off
+            --rom_model
+            -i${CG_TOOL_ROOT}/lib
+            -llibc.a
         "
         description="A simple example that sends Log data to the UART">
-
         <property name="type" value="rtsc"/>
-        <property name="xdcToolsVersion" value="3_51_03_28_core"/>
+        <property name="xdcToolsVersion" value="3_60_00_24_core"/>
         <property name="target" value="ti.targets.arm.elf.M4F"/>
         <property name="platform" value="ti.platforms.msp432:MSP432P4111"/>
+
         <property name="buildProfile" value="release"/>
         <property name="isHybrid" value="true"/>
         <property name="configuroOptions" value=" --compileOptions &quot;${COMPILER_FLAGS} &quot;"/>
         <group id="uartlogging.SIMPLELINK_MSP432_SDK.MSP_EXP432P4111.sysbios.TI"/>
+        <file path="../../uartlogging.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
         <file path="../../UARTUtils.c" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../../UARTUtils.h" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../../overview.rov.json" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
-        <file path="../../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../../uartlogging.c" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
         <file path="../../tirtos/uartlogging.cfg" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
-        <file path="../../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
+        <file path="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/boards/MSP_EXP432P4111/Board.html" openOnCreation="false" excludeFromBuild="false" action="link">
+        </file>
+        <file path="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/boards/MSP_EXP432P4111/Board_legacy.html" openOnCreation="false" excludeFromBuild="false" action="link">
         </file>
         <file path="../../Board.h" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
@@ -88,10 +89,7 @@
         </file>
         <file path="../../tirtos/ccs/MSP_EXP432P4111_TIRTOS.cmd" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
-        <file path="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/boards/MSP_EXP432P4111/Board.html" openOnCreation="false" excludeFromBuild="false" action="link">
-        </file>
         <file path="../../tirtos/makefile.defs" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
     </project>
 </projectSpec>
-

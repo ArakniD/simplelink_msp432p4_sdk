@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,7 +65,14 @@ function makeLibs(name, targets, objects, cOpts)
          *  This code assumes that assembly files follow the form xyz_ccs.asm,
          *  xyz_gnu.asm, and xyz_iar.asm.
          */
-        if (!targetName.match('ti.targets')) {
+        if (!targetName.match('clang')) {
+            for (var i = objs.length - 1; i >= 0; i--) {
+                if (objs[i].match('_clang.asm')) {
+                    objs.splice(i, 1);
+                }
+            }
+        }
+        if (!targetName.match('ti.targets') || targetName.match('clang')) {
             for (var i = objs.length - 1; i >= 0; i--) {
                 if (objs[i].match('_ccs.asm')) {
                     objs.splice(i, 1);
@@ -128,6 +135,7 @@ var m4Targets = [
 ];
 
 var m4fTargets = [
+    "ti.targets.arm.clang.M4F",
     "ti.targets.arm.elf.M4F",
     "gnu.targets.arm.M4F",
     "iar.targets.arm.M4F",
@@ -135,4 +143,8 @@ var m4fTargets = [
 
 var m33fTargets = [
     "ti.targets.arm.clang.M33F",
+];
+
+var m33Targets = [
+    "ti.targets.arm.clang.M33",
 ];

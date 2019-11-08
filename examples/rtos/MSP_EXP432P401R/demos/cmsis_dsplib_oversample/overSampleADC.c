@@ -84,8 +84,9 @@
 #include <ti/sysbios/hal/Hwi.h>
 #include <ti/display/Display.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Board Header file */
+#include "ti_drivers_config.h"
+
 #include "overSampleADC.h"
 
 /*
@@ -143,7 +144,7 @@ void adcBufCallback(ADCBuf_Handle handle, ADCBuf_Conversion *conversion,
 
 /*
  *  ======== gpioButtonFxn0 ========
- *  Callback function for the GPIO interrupt on Board_GPIO_BUTTON0.
+ *  Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON0.
  */
 void gpioButtonFxn0(uint_least8_t index)
 {
@@ -188,18 +189,18 @@ void *measurementThread(void *arg0)
 
     /* Configure the conversion struct */
     continuousConversion.arg = arg0;
-    continuousConversion.adcChannel = Board_ADCBUF0CHANNEL3;
+    continuousConversion.adcChannel = CONFIG_ADCBUF0CHANNEL_0;
     continuousConversion.sampleBuffer = pingSampleBuffer;
     continuousConversion.sampleBufferTwo = pongSampleBuffer;
     continuousConversion.samplesRequestedCount = ADCDMA_BUFFERSIZE;
 
-    GPIO_setConfig(Board_GPIO_LED1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_LED1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
     /* install Button callback */
-    GPIO_setCallback(Board_GPIO_BUTTON0, gpioButtonFxn0);
+    GPIO_setCallback(CONFIG_GPIO_BUTTON0, gpioButtonFxn0);
 
     /* Enable interrupts */
-    GPIO_enableInt(Board_GPIO_BUTTON0);
-    adcBuf = ADCBuf_open(Board_ADCBUF0, &adcBufParams);
+    GPIO_enableInt(CONFIG_GPIO_BUTTON0);
+    adcBuf = ADCBuf_open(CONFIG_ADCBUF0, &adcBufParams);
     if (!adcBuf){
         /* AdcBuf did not open correctly. */
         while(1);

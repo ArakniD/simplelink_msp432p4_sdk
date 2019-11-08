@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2017-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,9 +35,9 @@
  */
 
 #include <FreeRTOS.h>
+#include <task.h>
 
 #include "PTLS.h"
-
 
 /*
  *  ======== posix_reent ========
@@ -46,6 +46,8 @@
 typedef struct {
     int     errno;
 } posix_reent;
+
+static posix_reent main_reent; /* used only while in main thread */
 
 
 /*
@@ -60,14 +62,26 @@ volatile int *__aeabi_errno_addr(void)
     posix_reent *reent;
     void *buf;
 
-    /* get thread local storage buffer */
-    reent = (posix_reent *)PTLS_getBuf();
+    /* when running in main thread, use private reent storage */
+    if (xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED) {
+        reent = &main_reent;
+    }
+    else {
+        /* get thread local storage buffer */
+        reent = (posix_reent *)PTLS_getBuf();
 
-    /* allocate buffer if needed */
-    if (reent == NULL) {
-        buf = pvPortMalloc(sizeof(posix_reent));
-        PTLS_setBuf(buf);
-        reent = (posix_reent *)buf;
+        /* allocate buffer if needed */
+        if (reent == NULL) {
+            buf = pvPortMalloc(sizeof(posix_reent));
+            if (buf != NULL) {
+                PTLS_setBuf(buf);
+                reent = (posix_reent *)buf;
+            }
+            else {
+                /* out of memory: fall back to using private storage */
+                reent = &main_reent;
+            }
+        }
     }
 
     return (&reent->errno);

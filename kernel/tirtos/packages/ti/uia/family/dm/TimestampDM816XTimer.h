@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_uia_family_dm_TimestampDM816XTimer__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_family_dm_TimestampDM816XTimer___VERS 200
@@ -452,37 +454,37 @@ __extern xdc_Int ti_uia_family_dm_TimestampDM816XTimer_Module_startup__F( xdc_In
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_family_dm_TimestampDM816XTimer_Module__startupDone__S, "ti_uia_family_dm_TimestampDM816XTimer_Module__startupDone__S")
-__extern xdc_Bool ti_uia_family_dm_TimestampDM816XTimer_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_family_dm_TimestampDM816XTimer_Module__startupDone__S( void);
 
 /* get32__E */
 #define ti_uia_family_dm_TimestampDM816XTimer_get32 ti_uia_family_dm_TimestampDM816XTimer_get32__E
 xdc__CODESECT(ti_uia_family_dm_TimestampDM816XTimer_get32__E, "ti_uia_family_dm_TimestampDM816XTimer_get32")
-__extern xdc_Bits32 ti_uia_family_dm_TimestampDM816XTimer_get32__E( void );
+__extern xdc_Bits32 ti_uia_family_dm_TimestampDM816XTimer_get32__E( void);
 
 /* get64__E */
 #define ti_uia_family_dm_TimestampDM816XTimer_get64 ti_uia_family_dm_TimestampDM816XTimer_get64__E
 xdc__CODESECT(ti_uia_family_dm_TimestampDM816XTimer_get64__E, "ti_uia_family_dm_TimestampDM816XTimer_get64")
-__extern xdc_Void ti_uia_family_dm_TimestampDM816XTimer_get64__E( xdc_runtime_Types_Timestamp64 *result );
+__extern xdc_Void ti_uia_family_dm_TimestampDM816XTimer_get64__E( xdc_runtime_Types_Timestamp64 *result);
 
 /* getFreq__E */
 #define ti_uia_family_dm_TimestampDM816XTimer_getFreq ti_uia_family_dm_TimestampDM816XTimer_getFreq__E
 xdc__CODESECT(ti_uia_family_dm_TimestampDM816XTimer_getFreq__E, "ti_uia_family_dm_TimestampDM816XTimer_getFreq")
-__extern xdc_Void ti_uia_family_dm_TimestampDM816XTimer_getFreq__E( xdc_runtime_Types_FreqHz *freq );
+__extern xdc_Void ti_uia_family_dm_TimestampDM816XTimer_getFreq__E( xdc_runtime_Types_FreqHz *freq);
 
 /* setMSW__E */
 #define ti_uia_family_dm_TimestampDM816XTimer_setMSW ti_uia_family_dm_TimestampDM816XTimer_setMSW__E
 xdc__CODESECT(ti_uia_family_dm_TimestampDM816XTimer_setMSW__E, "ti_uia_family_dm_TimestampDM816XTimer_setMSW")
-__extern xdc_Void ti_uia_family_dm_TimestampDM816XTimer_setMSW__E( xdc_Int value );
+__extern xdc_Void ti_uia_family_dm_TimestampDM816XTimer_setMSW__E( xdc_Int value);
 
 /* start__I */
 #define ti_uia_family_dm_TimestampDM816XTimer_start ti_uia_family_dm_TimestampDM816XTimer_start__I
 xdc__CODESECT(ti_uia_family_dm_TimestampDM816XTimer_start__I, "ti_uia_family_dm_TimestampDM816XTimer_start")
-__extern xdc_Void ti_uia_family_dm_TimestampDM816XTimer_start__I( void );
+__extern xdc_Void ti_uia_family_dm_TimestampDM816XTimer_start__I( void);
 
 /* stop__I */
 #define ti_uia_family_dm_TimestampDM816XTimer_stop ti_uia_family_dm_TimestampDM816XTimer_stop__I
 xdc__CODESECT(ti_uia_family_dm_TimestampDM816XTimer_stop__I, "ti_uia_family_dm_TimestampDM816XTimer_stop")
-__extern xdc_Void ti_uia_family_dm_TimestampDM816XTimer_stop__I( void );
+__extern xdc_Void ti_uia_family_dm_TimestampDM816XTimer_stop__I( void);
 
 
 /*

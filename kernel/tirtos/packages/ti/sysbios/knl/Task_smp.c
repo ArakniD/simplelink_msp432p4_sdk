@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,7 @@
 
 #include "package/internal/Task.xdc.h"
 
-#ifdef __ti__
+#if defined(__ti__) && !defined(__clang__)
 /* disable unused local variable warning during optimized compile */
 #pragma diag_suppress=179
 #endif
@@ -713,9 +713,11 @@ UInt Task_setAffinity(Task_Object *tsk, UInt newAffinity)
 Void Task_blockI(Task_Object *tsk)
 {
     UInt curCoreId;
+    UInt32 *checkValue;
 
     if (Task_objectCheckFlag) {
-        if (Task_objectCheckFxn(tsk, tsk->checkValue) != 0) {
+        checkValue = Task_SupportProxy_getCheckValueAddr(tsk);
+        if (Task_objectCheckFxn(tsk, *checkValue) != 0) {
             Error_raise(NULL, Task_E_objectCheckFailed, tsk, 0);
         }
     }
@@ -755,9 +757,11 @@ Void Task_unblockI(Task_Object *tsk, UInt hwiKey)
     UInt tskAffinity = tsk->affinity;
     volatile UInt *cursetp = &Task_module->smpCurSet[tskAffinity];
     UInt mask = tsk->mask;
+    UInt32 *checkValue;
 
     if (Task_objectCheckFlag) {
-        if (Task_objectCheckFxn(tsk, tsk->checkValue) != 0) {
+        checkValue = Task_SupportProxy_getCheckValueAddr(tsk);
+        if (Task_objectCheckFxn(tsk, *checkValue) != 0) {
             Error_raise(NULL, Task_E_objectCheckFailed, tsk, 0);
         }
     }
@@ -1180,15 +1184,18 @@ Task_Handle Task_self()
  */
 Void Task_checkStacks(Task_Handle oldTask, Task_Handle newTask)
 {
+    UInt32 *checkValue;
     UInt oldTaskStack; /* used to obtain current (oldTask) stack address */
 
     if (Task_objectCheckFlag) {
         if (oldTask != NULL) {
-            if (Task_objectCheckFxn(oldTask, oldTask->checkValue) != 0) {
+            checkValue = Task_SupportProxy_getCheckValueAddr(oldTask);
+            if (Task_objectCheckFxn(oldTask, *checkValue) != 0) {
                 Error_raise(NULL, Task_E_objectCheckFailed, oldTask, 0);
             }
         }
-        if (Task_objectCheckFxn(newTask, newTask->checkValue) != 0) {
+        checkValue = Task_SupportProxy_getCheckValueAddr(newTask);
+        if (Task_objectCheckFxn(newTask, *checkValue) != 0) {
             Error_raise(NULL, Task_E_objectCheckFailed, newTask, 0);
         }
     }
@@ -1212,7 +1219,7 @@ Void Task_checkStacks(Task_Handle oldTask, Task_Handle newTask)
     /* check sp's for being in bounds */
     if (((UArg)&oldTaskStack < (UArg)oldTask->stack) ||
         ((UArg)&oldTaskStack > (UArg)(oldTask->stack+oldTask->stackSize))) {
-        Error_raise(NULL, Task_E_spOutOfBounds, oldTask, &oldTaskStack);
+        Error_raise(NULL, Task_E_spOutOfBounds, oldTask, oldTask->context);
     }
 
     if ((newTask->context < (Ptr)newTask->stack) ||
@@ -1316,7 +1323,7 @@ Void Task_sleepTimeout(UArg arg)
      * No need for Task_disable/restore sandwich since this
      * is called within Swi (or Hwi) thread
      */
-    Task_unblockI(elem->taskHandle, hwiKey);
+    Task_unblockI(elem->task, hwiKey);
 
     Hwi_restore(hwiKey);
 }
@@ -1344,7 +1351,7 @@ Void Task_sleep(UInt32 timeout)
     if (BIOS_clockEnabled) {
         /* add Clock event */
         Clock_addI(Clock_handle(&clockStruct), (Clock_FuncPtr)Task_sleepTimeout, timeout, (UArg)&elem);
-        elem.clockHandle = Clock_handle(&clockStruct);
+        elem.clock = Clock_handle(&clockStruct);
     }
 
     /* MISRA.CAST.FUNC_PTR.2012 MISRA.ETYPE.INAPPR.OPERAND.BINOP.2012 */
@@ -1364,22 +1371,22 @@ Void Task_sleep(UInt32 timeout)
     tskKey = Task_disable();
 
     /* get task handle and block tsk */
-    elem.taskHandle = Task_self();
+    elem.task = Task_self();
 
-    Task_blockI(elem.taskHandle);
+    Task_blockI(elem.task);
 
     /*
      * BIOS_clockEnabled check is here to eliminate Clock module
      * references in the custom library
      */
     if (BIOS_clockEnabled) {
-        Clock_startI(elem.clockHandle);
+        Clock_startI(elem.clock);
     }
 
     /* Only needed for Task_delete() */
     Queue_elemClear(&elem.qElem);
 
-    elem.taskHandle->pendElem = (Ptr)(&elem);
+    elem.task->pendElem = (Ptr)(&elem);
 
     Hwi_restore(hwiKey);
 
@@ -1393,12 +1400,12 @@ Void Task_sleep(UInt32 timeout)
     if (BIOS_clockEnabled) {
         hwiKey = Hwi_disable();
         /* remove Clock object from Clock Q */
-        Clock_removeI(elem.clockHandle);
-        elem.clockHandle = NULL;
+        Clock_removeI(elem.clock);
+        elem.clock = NULL;
         Hwi_restore(hwiKey);
     }
 
-    elem.taskHandle->pendElem = NULL;
+    elem.task->pendElem = NULL;
 }
 
 /*
@@ -1588,6 +1595,7 @@ Int Task_Instance_init(Task_Object *tsk, Task_FuncPtr fxn,
  */
 Int Task_postInit(Task_Object *tsk, Error_Block *eb)
 {
+    UInt32 *checkValue;
     UInt tskKey, hwiKey;
 #ifndef ti_sysbios_knl_Task_DISABLE_ALL_HOOKS
     Int i;
@@ -1609,7 +1617,8 @@ Int Task_postInit(Task_Object *tsk, Error_Block *eb)
     tsk->pendElem = NULL;
 
     if (Task_objectCheckFlag) {
-        tsk->checkValue = Task_objectCheckValueFxn(tsk);
+        checkValue = Task_SupportProxy_getCheckValueAddr(tsk);
+        *checkValue = Task_objectCheckValueFxn(tsk);
     }
 
 #ifndef ti_sysbios_knl_Task_DISABLE_ALL_HOOKS
@@ -1703,8 +1712,8 @@ Void Task_Instance_finalize(Task_Object *tsk, Int status)
              * then its clock object is still on the Clock service Q.
              */
             if (tsk->pendElem != NULL) {
-                if (BIOS_clockEnabled && tsk->pendElem->clockHandle) {
-                    Clock_removeI(tsk->pendElem->clockHandle);
+                if (BIOS_clockEnabled && tsk->pendElem->clock) {
+                    Clock_removeI(tsk->pendElem->clock);
                 }
             }
        }
@@ -1715,8 +1724,8 @@ Void Task_Instance_finalize(Task_Object *tsk, Int status)
             /* Seemingly redundant test in case Asserts are disabled */
             if (tsk->pendElem != NULL) {
                 Queue_remove(&(tsk->pendElem->qElem));
-                if (BIOS_clockEnabled && tsk->pendElem->clockHandle) {
-                    Clock_removeI(tsk->pendElem->clockHandle);
+                if (BIOS_clockEnabled && tsk->pendElem->clock) {
+                    Clock_removeI(tsk->pendElem->clock);
                 }
             }
         }

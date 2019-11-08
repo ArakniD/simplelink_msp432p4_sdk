@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyrighc) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,7 @@
 
 /*
  *  ======== MSP_EXP432P401R.syscfg.json ========
+ *  Board schematics: http://www.ti.com/lit/ug/slau597f/slau597f.pdf
  */
 
 {
@@ -472,32 +473,31 @@
 
     "components": {
         "LED1_RED": {
-            "type": "LED",
-            "displayName": "LaunchPad LED 1 (Red)",
+            "displayName": "LaunchPad LED 1 Red",
             "definition": "/ti/boards/components/led.json",
             "connections": {
-                "output": "4"
+                "OUTPUT": "4"
             }
         },
         "LED2_RED": {
             "displayName": "LaunchPad LED 2 Red",
             "definition": "/ti/boards/components/led_dimmable.json",
             "connections": {
-                "output": "16"
+                "OUTPUT": "16"
             }
         },
         "LED2_GREEN": {
             "displayName": "LaunchPad LED 2 Green",
             "definition": "/ti/boards/components/led_dimmable.json",
             "connections": {
-                "output": "17"
+                "OUTPUT": "17"
             }
         },
         "LED2_BLUE": {
             "displayName": "LaunchPad LED 2 Blue",
             "definition": "/ti/boards/components/led_dimmable.json",
             "connections": {
-                "output": "18"
+                "OUTPUT": "18"
             }
         },
 
@@ -531,25 +531,33 @@
         },
 
         "S1": {
-            "type"        : "BUTTON",
-            "displayName" : "LaunchPad Button S1 (left)",
+            "displayName" : "LaunchPad Button S1 (Left)",
             "definition"  : "/ti/boards/components/button.json",
-            "settings"    : {
-                "pull": "Pull Up"
+            "longDescription" : "S1 (Left) LaunchPad button with no external pull.",
+            /* See schematic linked at top of file */
+            "settings": {
+                "DIN": {
+                    "pull": "Pull Up",
+                    "interruptTrigger": "Falling Edge"
+                }
             },
             "connections" : {
-                "input": "5"
+                "INPUT": "5"
             }
         },
         "S2": {
-            "type"        : "BUTTON",
-            "displayName" : "LaunchPad Button S2 (right)",
+            "displayName" : "LaunchPad Button S2 (Right)",
             "definition"  : "/ti/boards/components/button.json",
-            "settings"    : {
-                "pull": "Pull Up"
+            "longDescription" : "S2 (Right) LaunchPad button with no external pull.",
+            /* See schematic linked at top of file */
+            "settings": {
+                "DIN": {
+                    "pull": "Pull Up",
+                    "interruptTrigger": "Falling Edge"
+                }
             },
             "connections" : {
-                "input": "8"
+                "INPUT": "8"
             }
         },
 
@@ -561,10 +569,8 @@
             "link": "S2"
         },
 
-        "xds110Uart": {
-            "displayName" : "XDS110 UART",
-            "description" : "XDS110 backchannel UART",
-            "definition": "/ti/boards/components/uart.json",
+        "XDS110UART": {
+            "definition": "/ti/boards/components/xds110Uart.json",
             "connections": {
                 "RXD": "6",
                 "TXD": "7"

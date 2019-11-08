@@ -93,9 +93,9 @@ extern const NVS_FxnTable NVSMSP432_fxnTable;
  *  place application content (e.g., code/data) in the flash regions.
  *
  *  For CCS and IAR tools, defining and reserving flash memory regions can
- *  be done entirely within the Board.c file. For GCC, additional content is
- *  required in the application's linker command file to achieve the same
- *  result.
+ *  be done entirely within the ti_drivers_config.c file. For GCC, additional
+ *  content is required in the application's linker command file to achieve
+ *  the same result.
  *
  *  The example below defines a char array 'flashBuf' and uses CCS and IAR
  *  compiler pragmas to place 'flashBuf' at a specific address within the flash

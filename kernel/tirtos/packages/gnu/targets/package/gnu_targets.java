@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class gnu_targets
 {
-    static final String VERS = "@(#) xdc-F14\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -335,7 +335,7 @@ public class gnu_targets
         po.addFld("cc", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "gnu.targets"), Global.newObject("cmd", "$(rootDir)/bin/gcc -c -MD -MF $@.dep", "opts", ""), "rh");
         po.addFld("asm", (Proto)om.findStrict("xdc.bld.ITarget2.Command", "gnu.targets"), Global.newObject("cmd", "$(rootDir)/bin/gcc -c -x assembler", "opts", ""), "rh");
         po.addFld("includeOpts", $$T_Str, "", "wh");
-        po.addFld("binaryParser", $$T_Str, "ti.targets.omf.elf.Elf32", "wh");
+        po.addFld("binaryParser", $$T_Str, "xdc.targets.omf.Elf", "wh");
         po.addFld("bspLib", $$T_Str, null, "wh");
         fxn = Global.get(cap, "module$use");
         if (fxn != null) om.bind("gnu.targets.ITarget$$module$use", true);

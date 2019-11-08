@@ -1,37 +1,40 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# spiloopback
-
----
-
 ## Example Summary
 
 Application to demonstrate use of the SPI driver to create a simple external
 loop-back.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_GPIO_LED0` - Indicator LED
-* `Board_GPIO_LED1` - Indicator LED
-* `Board_SPI0` - SPI peripheral assigned as a Master
-* `Board_SPI1` - SPI peripheral assigned as a Slave
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
 
-## Resources & Jumper Settings
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+* `CONFIG_GPIO_LED_0` - Indicator LED
+* `CONFIG_GPIO_LED_1` - Indicator LED
+* `CONFIG_SPI_0` - SPI peripheral assigned as a Master
+* `CONFIG_SPI_1` - SPI peripheral assigned as a Slave
 
-  |Master Pins|Slave Pins|
-  |---|---|
-  |`Board_SPI0` `CLK`|`Board_SPI1` `CLK`|
-  |`Board_SPI0` `MOSI`|`Board_SPI1` `MOSI`|
-  |`Board_SPI0` `MISO`|`Board_SPI1` `MISO`|
-  |`Board_SPI0` `CS`|`Board_SPI1` `CS`|
+## BoosterPacks, Board Resources & Jumper Settings
+
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
+
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
+
+  |        Master Pins        |        Slave Pins         |
+  |:-------------------------:|:-------------------------:|
+  | __`CONFIG_SPI_0` `CLK`__  | __`CONFIG_SPI_1` `CLK`__  |
+  | __`CONFIG_SPI_0` `MOSI`__ | __`CONFIG_SPI_1` `MOSI`__ |
+  | __`CONFIG_SPI_0` `MISO`__ | __`CONFIG_SPI_1` `MISO`__ |
+  | __`CONFIG_SPI_0` `CS`__   | __`CONFIG_SPI_1` `CS`__   |
 
 * Some devices support SPI in 3 pin mode. These devices may not require a `CS`
 pin.
@@ -55,13 +58,13 @@ The connection will have the following settings:
     Flow Control:    None
 ```
 
-* Run the example. `Board_GPIO_LED0` turns ON to indicate driver
+* Run the example. `CONFIG_GPIO_LED_0` turns ON to indicate driver
 initialization is complete.
 
 * Once initialized, the Slave SPI will send a message to the Master SPI
 in a loop. The Master SPI will also send a message to the Slave SPI in a loop.
 After the transfer is complete, the messages are printed via UART.  While the
-SPI transaction is taking place,`Board_GPIO_LED1` will be turned on, and will
+SPI transaction is taking place,`CONFIG_GPIO_LED_1` will be turned on, and will
 remain on for half a second (so that it appears as a flash). After each SPI
 transaction, the Master will sleep for a few seconds.  The loop is repeated
 MAX_LOOP times.
@@ -106,13 +109,13 @@ The `masterThread` performs the following actions:
 2. Creates a SPI transaction structure and sets txBuffer to `Hello from
 master, msg# n`, where n is the iteration number.
 
-3. Turns on Board_GPIO_LED1.
+3. Turns on CONFIG_GPIO_LED_1.
 
 4. Transfers the message. If the transfer is successful, the message
 received from the Slave SPI is printed. Otherwise, an error message
 is printed.
 
-5. Sleeps for 500 milliseconds before turning off Board_GPIO_LED1.
+5. Sleeps for 500 milliseconds before turning off `CONFIG_GPIO_LED_1`.
 
 6. Sleeps for 3 seconds, then repeats from step 2 for MAX_LOOP iterations.
 

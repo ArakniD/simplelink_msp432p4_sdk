@@ -7,11 +7,12 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
 
-OBJECTS = freertos_main_freertos.obj adcBufTemperature.obj MSP_EXP432P4111.obj
+OBJECTS = adcBufTemperature.obj ti_drivers_config.obj freertos_main_freertos.obj
 
 NAME = adcbuftemperature
 
 CFLAGS = -I../.. \
+    -I. \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
     -D__MSP432P4111__ \
@@ -50,15 +51,23 @@ $(KERNEL_BUILD)/iar/freertos.lib:
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
 
-freertos_main_freertos.obj: ../../freertos/main_freertos.c
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../../adcBufTemperature.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+adcBufTemperature.obj: ../../adcBufTemperature.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
-adcBufTemperature.obj: ../../adcBufTemperature.c
+freertos_main_freertos.obj: ../../freertos/main_freertos.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
-MSP_EXP432P4111.obj: ../../MSP_EXP432P4111.c
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
@@ -66,8 +75,10 @@ $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/iar/freertos.lib
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
+
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

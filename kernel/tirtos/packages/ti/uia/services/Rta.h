@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_uia_services_Rta__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_services_Rta___VERS 200
@@ -324,111 +326,111 @@ __extern __FAR__ const CT__ti_uia_services_Rta_SERVICEID ti_uia_services_Rta_SER
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_services_Rta_Module__startupDone__S, "ti_uia_services_Rta_Module__startupDone__S")
-__extern xdc_Bool ti_uia_services_Rta_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_services_Rta_Module__startupDone__S( void);
 
 /* processCallback__E */
 #define ti_uia_services_Rta_processCallback ti_uia_services_Rta_processCallback__E
 xdc__CODESECT(ti_uia_services_Rta_processCallback__E, "ti_uia_services_Rta_processCallback")
-__extern xdc_Void ti_uia_services_Rta_processCallback__E( ti_uia_runtime_ServiceMgr_Reason reason, ti_uia_runtime_UIAPacket_Hdr *cmd );
+__extern xdc_Void ti_uia_services_Rta_processCallback__E( ti_uia_runtime_ServiceMgr_Reason reason, ti_uia_runtime_UIAPacket_Hdr *cmd);
 xdc__CODESECT(ti_uia_services_Rta_processCallback__F, "ti_uia_services_Rta_processCallback")
-__extern xdc_Void ti_uia_services_Rta_processCallback__F( ti_uia_runtime_ServiceMgr_Reason reason, ti_uia_runtime_UIAPacket_Hdr *cmd );
+__extern xdc_Void ti_uia_services_Rta_processCallback__F( ti_uia_runtime_ServiceMgr_Reason reason, ti_uia_runtime_UIAPacket_Hdr *cmd);
 
 /* disableAllLogs__E */
 #define ti_uia_services_Rta_disableAllLogs ti_uia_services_Rta_disableAllLogs__E
 xdc__CODESECT(ti_uia_services_Rta_disableAllLogs__E, "ti_uia_services_Rta_disableAllLogs")
-__extern xdc_Void ti_uia_services_Rta_disableAllLogs__E( void );
+__extern xdc_Void ti_uia_services_Rta_disableAllLogs__E( void);
 xdc__CODESECT(ti_uia_services_Rta_disableAllLogs__F, "ti_uia_services_Rta_disableAllLogs")
-__extern xdc_Void ti_uia_services_Rta_disableAllLogs__F( void );
+__extern xdc_Void ti_uia_services_Rta_disableAllLogs__F( void);
 
 /* enableAllLogs__E */
 #define ti_uia_services_Rta_enableAllLogs ti_uia_services_Rta_enableAllLogs__E
 xdc__CODESECT(ti_uia_services_Rta_enableAllLogs__E, "ti_uia_services_Rta_enableAllLogs")
-__extern xdc_Void ti_uia_services_Rta_enableAllLogs__E( void );
+__extern xdc_Void ti_uia_services_Rta_enableAllLogs__E( void);
 xdc__CODESECT(ti_uia_services_Rta_enableAllLogs__F, "ti_uia_services_Rta_enableAllLogs")
-__extern xdc_Void ti_uia_services_Rta_enableAllLogs__F( void );
+__extern xdc_Void ti_uia_services_Rta_enableAllLogs__F( void);
 
 /* snapshotAllLogs__E */
 #define ti_uia_services_Rta_snapshotAllLogs ti_uia_services_Rta_snapshotAllLogs__E
 xdc__CODESECT(ti_uia_services_Rta_snapshotAllLogs__E, "ti_uia_services_Rta_snapshotAllLogs")
-__extern xdc_Void ti_uia_services_Rta_snapshotAllLogs__E( xdc_UArg reset, xdc_UArg waitPeriod );
+__extern xdc_Void ti_uia_services_Rta_snapshotAllLogs__E( xdc_UArg reset, xdc_UArg waitPeriod);
 xdc__CODESECT(ti_uia_services_Rta_snapshotAllLogs__F, "ti_uia_services_Rta_snapshotAllLogs")
-__extern xdc_Void ti_uia_services_Rta_snapshotAllLogs__F( xdc_UArg reset, xdc_UArg waitPeriod );
+__extern xdc_Void ti_uia_services_Rta_snapshotAllLogs__F( xdc_UArg reset, xdc_UArg waitPeriod);
 
 /* resetAllLogs__E */
 #define ti_uia_services_Rta_resetAllLogs ti_uia_services_Rta_resetAllLogs__E
 xdc__CODESECT(ti_uia_services_Rta_resetAllLogs__E, "ti_uia_services_Rta_resetAllLogs")
-__extern xdc_Void ti_uia_services_Rta_resetAllLogs__E( void );
+__extern xdc_Void ti_uia_services_Rta_resetAllLogs__E( void);
 xdc__CODESECT(ti_uia_services_Rta_resetAllLogs__F, "ti_uia_services_Rta_resetAllLogs")
-__extern xdc_Void ti_uia_services_Rta_resetAllLogs__F( void );
+__extern xdc_Void ti_uia_services_Rta_resetAllLogs__F( void);
 
 /* startDataTx__E */
 #define ti_uia_services_Rta_startDataTx ti_uia_services_Rta_startDataTx__E
 xdc__CODESECT(ti_uia_services_Rta_startDataTx__E, "ti_uia_services_Rta_startDataTx")
-__extern xdc_Void ti_uia_services_Rta_startDataTx__E( void );
+__extern xdc_Void ti_uia_services_Rta_startDataTx__E( void);
 xdc__CODESECT(ti_uia_services_Rta_startDataTx__F, "ti_uia_services_Rta_startDataTx")
-__extern xdc_Void ti_uia_services_Rta_startDataTx__F( void );
+__extern xdc_Void ti_uia_services_Rta_startDataTx__F( void);
 
 /* stopDataTx__E */
 #define ti_uia_services_Rta_stopDataTx ti_uia_services_Rta_stopDataTx__E
 xdc__CODESECT(ti_uia_services_Rta_stopDataTx__E, "ti_uia_services_Rta_stopDataTx")
-__extern xdc_Void ti_uia_services_Rta_stopDataTx__E( void );
+__extern xdc_Void ti_uia_services_Rta_stopDataTx__E( void);
 xdc__CODESECT(ti_uia_services_Rta_stopDataTx__F, "ti_uia_services_Rta_stopDataTx")
-__extern xdc_Void ti_uia_services_Rta_stopDataTx__F( void );
+__extern xdc_Void ti_uia_services_Rta_stopDataTx__F( void);
 
 /* sendEvents__I */
 #define ti_uia_services_Rta_sendEvents ti_uia_services_Rta_sendEvents__I
 xdc__CODESECT(ti_uia_services_Rta_sendEvents__I, "ti_uia_services_Rta_sendEvents")
-__extern xdc_Void ti_uia_services_Rta_sendEvents__I( void );
+__extern xdc_Void ti_uia_services_Rta_sendEvents__I( void);
 
 /* processMsg__I */
 #define ti_uia_services_Rta_processMsg ti_uia_services_Rta_processMsg__I
 xdc__CODESECT(ti_uia_services_Rta_processMsg__I, "ti_uia_services_Rta_processMsg")
-__extern xdc_Void ti_uia_services_Rta_processMsg__I( ti_uia_runtime_UIAPacket_Hdr *cmd );
+__extern xdc_Void ti_uia_services_Rta_processMsg__I( ti_uia_runtime_UIAPacket_Hdr *cmd);
 
 /* flushLogger__I */
 #define ti_uia_services_Rta_flushLogger ti_uia_services_Rta_flushLogger__I
 xdc__CODESECT(ti_uia_services_Rta_flushLogger__I, "ti_uia_services_Rta_flushLogger")
-__extern xdc_Void ti_uia_services_Rta_flushLogger__I( ti_uia_runtime_IUIATransfer_Handle logger, xdc_UInt loggerNum );
+__extern xdc_Void ti_uia_services_Rta_flushLogger__I( ti_uia_runtime_IUIATransfer_Handle logger, xdc_UInt loggerNum);
 
 /* acknowledgeCmd__I */
 #define ti_uia_services_Rta_acknowledgeCmd ti_uia_services_Rta_acknowledgeCmd__I
 xdc__CODESECT(ti_uia_services_Rta_acknowledgeCmd__I, "ti_uia_services_Rta_acknowledgeCmd")
-__extern xdc_Void ti_uia_services_Rta_acknowledgeCmd__I( ti_uia_services_Rta_Packet *resp );
+__extern xdc_Void ti_uia_services_Rta_acknowledgeCmd__I( ti_uia_services_Rta_Packet *resp);
 
 /* readMask__I */
 #define ti_uia_services_Rta_readMask ti_uia_services_Rta_readMask__I
 xdc__CODESECT(ti_uia_services_Rta_readMask__I, "ti_uia_services_Rta_readMask")
-__extern ti_uia_runtime_UIAPacket_MsgType ti_uia_services_Rta_readMask__I( ti_uia_services_Rta_Packet *resp, xdc_UArg addr );
+__extern ti_uia_runtime_UIAPacket_MsgType ti_uia_services_Rta_readMask__I( ti_uia_services_Rta_Packet *resp, xdc_UArg addr);
 
 /* writeMask__I */
 #define ti_uia_services_Rta_writeMask ti_uia_services_Rta_writeMask__I
 xdc__CODESECT(ti_uia_services_Rta_writeMask__I, "ti_uia_services_Rta_writeMask")
-__extern ti_uia_runtime_UIAPacket_MsgType ti_uia_services_Rta_writeMask__I( ti_uia_services_Rta_Packet *resp, xdc_UArg addr, xdc_UArg val );
+__extern ti_uia_runtime_UIAPacket_MsgType ti_uia_services_Rta_writeMask__I( ti_uia_services_Rta_Packet *resp, xdc_UArg addr, xdc_UArg val);
 
 /* enableLog__I */
 #define ti_uia_services_Rta_enableLog ti_uia_services_Rta_enableLog__I
 xdc__CODESECT(ti_uia_services_Rta_enableLog__I, "ti_uia_services_Rta_enableLog")
-__extern xdc_Void ti_uia_services_Rta_enableLog__I( xdc_UArg log );
+__extern xdc_Void ti_uia_services_Rta_enableLog__I( xdc_UArg log);
 
 /* disableLog__I */
 #define ti_uia_services_Rta_disableLog ti_uia_services_Rta_disableLog__I
 xdc__CODESECT(ti_uia_services_Rta_disableLog__I, "ti_uia_services_Rta_disableLog")
-__extern xdc_Void ti_uia_services_Rta_disableLog__I( xdc_UArg log );
+__extern xdc_Void ti_uia_services_Rta_disableLog__I( xdc_UArg log);
 
 /* getCpuSpeed__I */
 #define ti_uia_services_Rta_getCpuSpeed ti_uia_services_Rta_getCpuSpeed__I
 xdc__CODESECT(ti_uia_services_Rta_getCpuSpeed__I, "ti_uia_services_Rta_getCpuSpeed")
-__extern xdc_Void ti_uia_services_Rta_getCpuSpeed__I( ti_uia_services_Rta_Packet *resp );
+__extern xdc_Void ti_uia_services_Rta_getCpuSpeed__I( ti_uia_services_Rta_Packet *resp);
 
 /* resetLog__I */
 #define ti_uia_services_Rta_resetLog ti_uia_services_Rta_resetLog__I
 xdc__CODESECT(ti_uia_services_Rta_resetLog__I, "ti_uia_services_Rta_resetLog")
-__extern xdc_Void ti_uia_services_Rta_resetLog__I( xdc_UArg log );
+__extern xdc_Void ti_uia_services_Rta_resetLog__I( xdc_UArg log);
 
 /* changePeriod__I */
 #define ti_uia_services_Rta_changePeriod ti_uia_services_Rta_changePeriod__I
 xdc__CODESECT(ti_uia_services_Rta_changePeriod__I, "ti_uia_services_Rta_changePeriod")
-__extern xdc_Void ti_uia_services_Rta_changePeriod__I( xdc_UArg period );
+__extern xdc_Void ti_uia_services_Rta_changePeriod__I( xdc_UArg period);
 
 
 /*

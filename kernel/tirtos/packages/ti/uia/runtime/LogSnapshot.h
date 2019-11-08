@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_uia_runtime_LogSnapshot__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_runtime_LogSnapshot___VERS 200
@@ -339,19 +341,19 @@ __extern const ti_uia_runtime_LogSnapshot_Fxns__ ti_uia_runtime_LogSnapshot_Modu
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_runtime_LogSnapshot_Module__startupDone__S, "ti_uia_runtime_LogSnapshot_Module__startupDone__S")
-__extern xdc_Bool ti_uia_runtime_LogSnapshot_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_runtime_LogSnapshot_Module__startupDone__S( void);
 
 /* getSnapshotId__E */
 #define ti_uia_runtime_LogSnapshot_getSnapshotId ti_uia_runtime_LogSnapshot_getSnapshotId__E
 xdc__CODESECT(ti_uia_runtime_LogSnapshot_getSnapshotId__E, "ti_uia_runtime_LogSnapshot_getSnapshotId")
-__extern xdc_UArg ti_uia_runtime_LogSnapshot_getSnapshotId__E( void );
+__extern xdc_UArg ti_uia_runtime_LogSnapshot_getSnapshotId__E( void);
 
 /* doPrint__E */
 #define ti_uia_runtime_LogSnapshot_doPrint ti_uia_runtime_LogSnapshot_doPrint__E
 xdc__CODESECT(ti_uia_runtime_LogSnapshot_doPrint__E, "ti_uia_runtime_LogSnapshot_doPrint")
-__extern xdc_Void ti_uia_runtime_LogSnapshot_doPrint__E( ti_uia_runtime_LogSnapshot_EventRec *er );
+__extern xdc_Void ti_uia_runtime_LogSnapshot_doPrint__E( ti_uia_runtime_LogSnapshot_EventRec *er);
 xdc__CODESECT(ti_uia_runtime_LogSnapshot_doPrint__F, "ti_uia_runtime_LogSnapshot_doPrint")
-__extern xdc_Void ti_uia_runtime_LogSnapshot_doPrint__F( ti_uia_runtime_LogSnapshot_EventRec *er );
+__extern xdc_Void ti_uia_runtime_LogSnapshot_doPrint__F( ti_uia_runtime_LogSnapshot_EventRec *er);
 
 
 /*

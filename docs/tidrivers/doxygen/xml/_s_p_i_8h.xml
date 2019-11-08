@@ -11,60 +11,60 @@
     <includedby refid="_display_sharp_8h" local="no">DisplaySharp.h</includedby>
     <includedby refid="_sharp_gr_lib_8h" local="no">SharpGrLib.h</includedby>
     <incdepgraph>
-      <node id="248">
+      <node id="264">
         <label>stdbool.h</label>
       </node>
-      <node id="250">
+      <node id="266">
         <label>stdint.h</label>
       </node>
-      <node id="249">
+      <node id="265">
         <label>stddef.h</label>
       </node>
-      <node id="247">
+      <node id="263">
         <label>SPI.h</label>
         <link refid="_s_p_i_8h"/>
-        <childnode refid="248" relation="include">
+        <childnode refid="264" relation="include">
         </childnode>
-        <childnode refid="249" relation="include">
+        <childnode refid="265" relation="include">
         </childnode>
-        <childnode refid="250" relation="include">
+        <childnode refid="266" relation="include">
         </childnode>
       </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="256">
-        <label>SharpGrLib.h</label>
-        <link refid="_sharp_gr_lib_8h"/>
+      <node id="270">
+        <label>SPIMSP432DMA.h</label>
+        <link refid="_s_p_i_m_s_p432_d_m_a_8h"/>
       </node>
-      <node id="255">
+      <node id="271">
         <label>DisplaySharp.h</label>
         <link refid="_display_sharp_8h"/>
       </node>
-      <node id="253">
+      <node id="272">
+        <label>SharpGrLib.h</label>
+        <link refid="_sharp_gr_lib_8h"/>
+      </node>
+      <node id="269">
         <label>SDSPI.h</label>
         <link refid="_s_d_s_p_i_8h"/>
       </node>
-      <node id="252">
+      <node id="268">
         <label>NVSSPI25X.h</label>
         <link refid="_n_v_s_s_p_i25_x_8h"/>
       </node>
-      <node id="251">
+      <node id="267">
         <label>SPI.h</label>
         <link refid="_s_p_i_8h"/>
-        <childnode refid="252" relation="include">
+        <childnode refid="268" relation="include">
         </childnode>
-        <childnode refid="253" relation="include">
+        <childnode refid="269" relation="include">
         </childnode>
-        <childnode refid="254" relation="include">
+        <childnode refid="270" relation="include">
         </childnode>
-        <childnode refid="255" relation="include">
+        <childnode refid="271" relation="include">
         </childnode>
-        <childnode refid="256" relation="include">
+        <childnode refid="272" relation="include">
         </childnode>
-      </node>
-      <node id="254">
-        <label>SPIMSP432DMA.h</label>
-        <link refid="_s_p_i_m_s_p432_d_m_a_8h"/>
       </node>
     </invincdepgraph>
     <innerclass refid="struct_s_p_i___transaction" prot="public">SPI_Transaction</innerclass>
@@ -707,7 +707,7 @@ Defaults values are:<itemizedlist>
 <codeline><highlight class="normal">SPI_Params_init(&amp;spiParams);<sp/><sp/>//<sp/>Initialize<sp/>SPI<sp/>parameters</highlight></codeline>
 <codeline><highlight class="normal">spiParams.dataSize<sp/>=<sp/>8;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>8-bit<sp/>data<sp/>size</highlight></codeline>
 <codeline></codeline>
-<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(CONFIG_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
 <codeline><highlight class="normal">if<sp/>(spi<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>while<sp/>(1);<sp/><sp/>//<sp/>SPI_open()<sp/>failed</highlight></codeline>
 <codeline><highlight class="normal">}</highlight></codeline>
@@ -732,7 +732,7 @@ Defaults values are:<itemizedlist>
 <codeline></codeline>
 <codeline><highlight class="normal">SPI_Params_init(&amp;spiParams);</highlight></codeline>
 <codeline><highlight class="normal">spiParams.transferMode<sp/>=<sp/>SPI_MODE_BLOCKING;</highlight></codeline>
-<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(CONFIG_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">if<sp/>(spi<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>opening<sp/>SPI</highlight></codeline>
@@ -745,7 +745,7 @@ Defaults values are:<itemizedlist>
 <codeline><highlight class="normal">spiParams.transferMode<sp/>=<sp/>SPI_MODE_CALLBACK;</highlight></codeline>
 <codeline><highlight class="normal">spiParams.transferCallbackFxn<sp/>=<sp/>UserCallbackFxn;</highlight></codeline>
 <codeline></codeline>
-<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(CONFIG_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
 <codeline><highlight class="normal">if<sp/>(spi<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>opening<sp/>SPI</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>while<sp/>(1);</highlight></codeline>
@@ -763,7 +763,7 @@ When the SPI is opened, the dataSize value determines the element types of txBuf
 <codeline></codeline>
 <codeline><highlight class="normal">SPI_Params_init(&amp;spiParams);</highlight></codeline>
 <codeline><highlight class="normal">spiParams.dataSize<sp/>=<sp/>6;</highlight></codeline>
-<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(CONFIG_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
 <codeline><highlight class="normal">...</highlight></codeline>
 <codeline><highlight class="normal">spiTransaction.count<sp/>=<sp/>someIntegerValue;</highlight></codeline>
 <codeline><highlight class="normal">spiTransaction.txBuf<sp/>=<sp/>transmitBuffer;</highlight></codeline>
@@ -780,7 +780,7 @@ When the SPI is opened, the dataSize value determines the element types of txBuf
 <codeline></codeline>
 <codeline><highlight class="normal">SPI_Params_init(&amp;spiParams);</highlight></codeline>
 <codeline><highlight class="normal">spiParams.dataSize<sp/>=<sp/>12;</highlight></codeline>
-<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline><highlight class="normal">spi<sp/>=<sp/>SPI_open(CONFIG_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
 <codeline><highlight class="normal">...</highlight></codeline>
 <codeline><highlight class="normal">spiTransaction.count<sp/>=<sp/>someIntegerValue;</highlight></codeline>
 <codeline><highlight class="normal">spiTransaction.txBuf<sp/>=<sp/>transmitBuffer;</highlight></codeline>
@@ -821,12 +821,12 @@ When the SPI is opened, the dataSize value determines the element types of txBuf
 <listitem><para><emphasis>Hardware chip select</emphasis> No additional action by the application is required.</para></listitem><listitem><para><emphasis>Software chip select</emphasis> The application needs to handle the chip select assertion and de-assertion for the proper SPI peripheral.</para></listitem></itemizedlist>
 </para><para><hruler/>
  <anchor id="_s_p_i_8h_1ti_drivers_SPI_Configuration"/><heading level="1">Configuration</heading>
-</para><para>In order to use the SPI APIs, the application is required to provide device-specific SPI configuration in the Board.c file. The SPI driver interface defines a configuration data structure:</para><para><programlisting><codeline><highlight class="normal">typedef<sp/>struct<sp/><sp/>{</highlight></codeline>
+</para><para>In order to use the SPI APIs, the application is required to provide device-specific SPI configuration in the ti_drivers_config.c file. The SPI driver interface defines a configuration data structure:</para><para><programlisting><codeline><highlight class="normal">typedef<sp/>struct<sp/><sp/>{</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>SPI_FxnTable<sp/><sp/>const<sp/><sp/><sp/><sp/>*fxnTablePtr;</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*object;</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/><sp/><sp/><sp/>*hwAttrs;</highlight></codeline>
 <codeline><highlight class="normal">}<sp/>SPI_Config;</highlight></codeline>
-</programlisting></para><para>The application must declare an array of <ref refid="_s_p_i_8h_1a9ce9680cc88c403db466864c02ee4733" kindref="member">SPI_Config</ref> elements, named <computeroutput>SPI_config</computeroutput>[]. Each element of <computeroutput>SPI_config</computeroutput>[] must be populated with pointers to a device specific SPI driver implementation&apos;s function table, driver object, and hardware attributes. The hardware attributes define properties such as the SPI peripheral&apos;s base address, and the MOSI and MISO pins. Each element in <computeroutput>SPI_config</computeroutput>[] corresponds to a SPI instance, and none of the elements should have NULL pointers. There is no correlation between the index and the peripheral designation (such as SPI0 or SPI1). For example, it is possible to use SPI_config[0] for SPI1.</para><para>Because the SPI configuration is very device dependent, you will need to check the doxygen for the device specific SPI implementation. There you will find a description of the SPI hardware attributes. Please also refer to the Board.c file of any of your examples to see the SPI configuration. </para>    </detaileddescription>
+</programlisting></para><para>The application must declare an array of <ref refid="_s_p_i_8h_1a9ce9680cc88c403db466864c02ee4733" kindref="member">SPI_Config</ref> elements, named <computeroutput>SPI_config</computeroutput>[]. Each element of <computeroutput>SPI_config</computeroutput>[] must be populated with pointers to a device specific SPI driver implementation&apos;s function table, driver object, and hardware attributes. The hardware attributes define properties such as the SPI peripheral&apos;s base address, and the MOSI and MISO pins. Each element in <computeroutput>SPI_config</computeroutput>[] corresponds to a SPI instance, and none of the elements should have NULL pointers. There is no correlation between the index and the peripheral designation (such as SPI0 or SPI1). For example, it is possible to use SPI_config[0] for SPI1.</para><para>Because the SPI configuration is very device dependent, you will need to check the doxygen for the device specific SPI implementation. There you will find a description of the SPI hardware attributes. Please also refer to the ti_drivers_config.c file of any of your examples to see the SPI configuration. </para>    </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
 <codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015-2019,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
@@ -925,7 +925,7 @@ When the SPI is opened, the dataSize value determines the element types of txBuf
 <codeline lineno="95"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Params_init(&amp;spiParams);<sp/><sp/>//<sp/>Initialize<sp/>SPI<sp/>parameters</highlight></codeline>
 <codeline lineno="96"><highlight class="comment"><sp/>*<sp/><sp/>spiParams.dataSize<sp/>=<sp/>8;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>8-bit<sp/>data<sp/>size</highlight></codeline>
 <codeline lineno="97"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="98"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(CONFIG_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
 <codeline lineno="99"><highlight class="comment"><sp/>*<sp/><sp/>if<sp/>(spi<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
 <codeline lineno="100"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>while<sp/>(1);<sp/><sp/>//<sp/>SPI_open()<sp/>failed</highlight></codeline>
 <codeline lineno="101"><highlight class="comment"><sp/>*<sp/><sp/>}</highlight></codeline>
@@ -979,7 +979,7 @@ When the SPI is opened, the dataSize value determines the element types of txBuf
 <codeline lineno="149"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="150"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Params_init(&amp;spiParams);</highlight></codeline>
 <codeline lineno="151"><highlight class="comment"><sp/>*<sp/><sp/>spiParams.transferMode<sp/>=<sp/>SPI_MODE_BLOCKING;</highlight></codeline>
-<codeline lineno="152"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline lineno="152"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(CONFIG_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
 <codeline lineno="153"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="154"><highlight class="comment"><sp/>*<sp/><sp/>if<sp/>(spi<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
 <codeline lineno="155"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>opening<sp/>SPI</highlight></codeline>
@@ -997,7 +997,7 @@ When the SPI is opened, the dataSize value determines the element types of txBuf
 <codeline lineno="167"><highlight class="comment"><sp/>*<sp/><sp/>spiParams.transferMode<sp/>=<sp/>SPI_MODE_CALLBACK;</highlight></codeline>
 <codeline lineno="168"><highlight class="comment"><sp/>*<sp/><sp/>spiParams.transferCallbackFxn<sp/>=<sp/>UserCallbackFxn;</highlight></codeline>
 <codeline lineno="169"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="170"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline lineno="170"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(CONFIG_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
 <codeline lineno="171"><highlight class="comment"><sp/>*<sp/><sp/>if<sp/>(spi<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
 <codeline lineno="172"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Error<sp/>opening<sp/>SPI</highlight></codeline>
 <codeline lineno="173"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>while<sp/>(1);</highlight></codeline>
@@ -1114,7 +1114,7 @@ When the SPI is opened, the dataSize value determines the element types of txBuf
 <codeline lineno="284"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="285"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Params_init(&amp;spiParams);</highlight></codeline>
 <codeline lineno="286"><highlight class="comment"><sp/>*<sp/><sp/>spiParams.dataSize<sp/>=<sp/>6;</highlight></codeline>
-<codeline lineno="287"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline lineno="287"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(CONFIG_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
 <codeline lineno="288"><highlight class="comment"><sp/>*<sp/><sp/>...</highlight></codeline>
 <codeline lineno="289"><highlight class="comment"><sp/>*<sp/><sp/>spiTransaction.count<sp/>=<sp/>someIntegerValue;</highlight></codeline>
 <codeline lineno="290"><highlight class="comment"><sp/>*<sp/><sp/>spiTransaction.txBuf<sp/>=<sp/>transmitBuffer;</highlight></codeline>
@@ -1137,7 +1137,7 @@ When the SPI is opened, the dataSize value determines the element types of txBuf
 <codeline lineno="307"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="308"><highlight class="comment"><sp/>*<sp/><sp/>SPI_Params_init(&amp;spiParams);</highlight></codeline>
 <codeline lineno="309"><highlight class="comment"><sp/>*<sp/><sp/>spiParams.dataSize<sp/>=<sp/>12;</highlight></codeline>
-<codeline lineno="310"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(Board_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
+<codeline lineno="310"><highlight class="comment"><sp/>*<sp/><sp/>spi<sp/>=<sp/>SPI_open(CONFIG_SPI0,<sp/>&amp;spiParams);</highlight></codeline>
 <codeline lineno="311"><highlight class="comment"><sp/>*<sp/><sp/>...</highlight></codeline>
 <codeline lineno="312"><highlight class="comment"><sp/>*<sp/><sp/>spiTransaction.count<sp/>=<sp/>someIntegerValue;</highlight></codeline>
 <codeline lineno="313"><highlight class="comment"><sp/>*<sp/><sp/>spiTransaction.txBuf<sp/>=<sp/>transmitBuffer;</highlight></codeline>
@@ -1234,8 +1234,8 @@ When the SPI is opened, the dataSize value determines the element types of txBuf
 <codeline lineno="404"><highlight class="comment"><sp/>*<sp/><sp/>@anchor<sp/>ti_drivers_SPI_Configuration</highlight></codeline>
 <codeline lineno="405"><highlight class="comment"><sp/>*<sp/><sp/>#<sp/>Configuration</highlight></codeline>
 <codeline lineno="406"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="407"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>order<sp/>to<sp/>use<sp/>the<sp/>SPI<sp/>APIs,<sp/>the<sp/>application<sp/>is<sp/>required</highlight></codeline>
-<codeline lineno="408"><highlight class="comment"><sp/>*<sp/><sp/>to<sp/>provide<sp/>device-specific<sp/>SPI<sp/>configuration<sp/>in<sp/>the<sp/>Board.c<sp/>file.</highlight></codeline>
+<codeline lineno="407"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>order<sp/>to<sp/>use<sp/>the<sp/>SPI<sp/>APIs,<sp/>the<sp/>application<sp/>is<sp/>required<sp/>to<sp/>provide</highlight></codeline>
+<codeline lineno="408"><highlight class="comment"><sp/>*<sp/><sp/>device-specific<sp/>SPI<sp/>configuration<sp/>in<sp/>the<sp/>ti_drivers_config.c<sp/>file.</highlight></codeline>
 <codeline lineno="409"><highlight class="comment"><sp/>*<sp/><sp/>The<sp/>SPI<sp/>driver<sp/>interface<sp/>defines<sp/>a<sp/>configuration<sp/>data<sp/>structure:</highlight></codeline>
 <codeline lineno="410"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="411"><highlight class="comment"><sp/>*<sp/><sp/>@code</highlight></codeline>
@@ -1260,8 +1260,8 @@ When the SPI is opened, the dataSize value determines the element types of txBuf
 <codeline lineno="430"><highlight class="comment"><sp/>*<sp/><sp/>Because<sp/>the<sp/>SPI<sp/>configuration<sp/>is<sp/>very<sp/>device<sp/>dependent,<sp/>you<sp/>will<sp/>need<sp/>to</highlight></codeline>
 <codeline lineno="431"><highlight class="comment"><sp/>*<sp/><sp/>check<sp/>the<sp/>doxygen<sp/>for<sp/>the<sp/>device<sp/>specific<sp/>SPI<sp/>implementation.<sp/><sp/>There<sp/>you</highlight></codeline>
 <codeline lineno="432"><highlight class="comment"><sp/>*<sp/><sp/>will<sp/>find<sp/>a<sp/>description<sp/>of<sp/>the<sp/>SPI<sp/>hardware<sp/>attributes.<sp/><sp/>Please<sp/>also</highlight></codeline>
-<codeline lineno="433"><highlight class="comment"><sp/>*<sp/><sp/>refer<sp/>to<sp/>the<sp/>Board.c<sp/>file<sp/>of<sp/>any<sp/>of<sp/>your<sp/>examples<sp/>to<sp/>see<sp/>the<sp/>SPI</highlight></codeline>
-<codeline lineno="434"><highlight class="comment"><sp/>*<sp/><sp/>configuration.</highlight></codeline>
+<codeline lineno="433"><highlight class="comment"><sp/>*<sp/><sp/>refer<sp/>to<sp/>the<sp/>ti_drivers_config.c<sp/>file<sp/>of<sp/>any<sp/>of<sp/>your<sp/>examples<sp/>to<sp/>see<sp/>the</highlight></codeline>
+<codeline lineno="434"><highlight class="comment"><sp/>*<sp/><sp/>SPI<sp/>configuration.</highlight></codeline>
 <codeline lineno="435"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="436"><highlight class="comment"><sp/>*******************************************************************************</highlight></codeline>
 <codeline lineno="437"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
@@ -1269,13 +1269,13 @@ When the SPI is opened, the dataSize value determines the element types of txBuf
 <codeline lineno="439"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ti_drivers_SPI__include</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="440"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_drivers_SPI__include</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="441"><highlight class="normal"></highlight></codeline>
-<codeline lineno="442"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="443"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="444"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="442"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="443"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stddef.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="444"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="445"><highlight class="normal"></highlight></codeline>
-<codeline lineno="446"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="447"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stddef.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="448"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="446"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="447"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="448"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="449"><highlight class="normal"></highlight></codeline>
 <codeline lineno="467" refid="group___s_p_i___c_o_n_t_r_o_l_1ga3d23d16525ee76f77276472d8dea80b0" refkind="member"><highlight class="preprocessor">#define<sp/>SPI_CMD_RESERVED<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(32)</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="468"><highlight class="normal"></highlight></codeline>
@@ -1374,7 +1374,7 @@ When the SPI is opened, the dataSize value determines the element types of txBuf
 <codeline lineno="728" refid="struct_s_p_i___fxn_table_1a50f7f21536780c912dedf32c0918034c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_s_p_i_8h_1a33f5b214451ac89ea462083eeba0bf8c" kindref="member">SPI_TransferCancelFxn</ref><sp/><ref refid="struct_s_p_i___fxn_table_1a50f7f21536780c912dedf32c0918034c" kindref="member">transferCancelFxn</ref>;</highlight></codeline>
 <codeline lineno="729"><highlight class="normal">}<sp/><ref refid="struct_s_p_i___fxn_table" kindref="compound">SPI_FxnTable</ref>;</highlight></codeline>
 <codeline lineno="730"><highlight class="normal"></highlight></codeline>
-<codeline lineno="742" refid="struct_s_p_i___config__" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_s_p_i___config__" kindref="compound">SPI_Config_</ref>{</highlight></codeline>
+<codeline lineno="742" refid="struct_s_p_i___config__" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_s_p_i___config__" kindref="compound">SPI_Config_</ref><sp/>{</highlight></codeline>
 <codeline lineno="744" refid="struct_s_p_i___config___1a422fb4ed4cc7ceb4d8f7d03d9f37639f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_s_p_i___fxn_table" kindref="compound">SPI_FxnTable</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>*<ref refid="struct_s_p_i___config___1a422fb4ed4cc7ceb4d8f7d03d9f37639f" kindref="member">fxnTablePtr</ref>;</highlight></codeline>
 <codeline lineno="745"><highlight class="normal"></highlight></codeline>
 <codeline lineno="747" refid="struct_s_p_i___config___1a99ceb1a7284c7f76c6ce19f599721df3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="struct_s_p_i___config___1a99ceb1a7284c7f76c6ce19f599721df3" kindref="member">object</ref>;</highlight></codeline>

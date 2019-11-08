@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,14 +53,14 @@
 #ifndef ti_drivers_dma_UDMAMSP432__include
 #define ti_drivers_dma_UDMAMSP432__include
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdint.h>
 #include <stdbool.h>
 
 #include <ti/drivers/dpl/HwiP.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*!
  *  @brief      UDMA error function pointer
@@ -108,7 +108,7 @@ typedef void (*UDMAMSP432_ErrorFxn)(uintptr_t arg);
  *  @endcode
  *
  */
-typedef struct UDMAMSP432_HWAttrs {
+typedef struct {
     void           *controlBaseAddr; /*!< uDMA control registers base address */
     UDMAMSP432_ErrorFxn dmaErrorFxn; /*!< uDMA error interrupt handler */
     uint8_t         intNum;          /*!< uDMA error interrupt number */
@@ -124,7 +124,7 @@ typedef struct UDMAMSP432_HWAttrs {
  *  This structure needs to be defined before calling UDMAMSP432_init() and
  *  it must not be changed thereafter.
  */
-typedef struct UDMAMSP432_Config {
+typedef struct {
     void              *object;            /*!< Pointer to UDMAMSP432 object */
     void const        *hwAttrs;           /*!< Pointer to hardware attributes */
 } UDMAMSP432_Config;
@@ -132,14 +132,14 @@ typedef struct UDMAMSP432_Config {
 /*!
  *  @brief      A handle that is returned from a UDMAMSP432_open() call.
  */
-typedef struct UDMAMSP432_Config      *UDMAMSP432_Handle;
+typedef UDMAMSP432_Config *UDMAMSP432_Handle;
 
 /*!
  *  @brief  UDMAMSP432 object
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct UDMAMSP432_Object {
+typedef struct {
     bool unused;
 } UDMAMSP432_Object;
 
@@ -151,7 +151,7 @@ typedef struct UDMAMSP432_Object {
  *
  *  This struct is used in UDMAMSP432_setupTransfer().
  */
-typedef struct UDMAMSP432_Transfer {
+typedef struct {
     uint32_t         dmaChannel;                 /*!< DMA channel */
     uint32_t         structSelect;               /*!< */
     uint32_t         ctlOptions;                 /*!< DMA control options */
@@ -170,7 +170,7 @@ typedef struct UDMAMSP432_Transfer {
  *  This struct is used in UDMAMSP432_setupPingPongTransfer() and
  *  UDMAMSP432_PingPongToggleBuffer().
  */
-typedef struct UDMAMSP432_PingPongTransfer {
+typedef struct {
     uint32_t         dmaChannel;                  /*!< DMA channel */
     uint32_t         ctlOptions;                  /*!< DMA control options */
     uint32_t         transferMode;                /*!< DMA transfer mode. Basic or PingPong */

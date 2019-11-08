@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -37,10 +37,12 @@
 #define ti_uia_loggers_LoggerRunMode__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_loggers_LoggerRunMode___VERS 200
@@ -521,175 +523,175 @@ __extern void ti_uia_loggers_LoggerRunMode_destruct(ti_uia_loggers_LoggerRunMode
 
 /* Handle__label__S */
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_Handle__label__S, "ti_uia_loggers_LoggerRunMode_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_uia_loggers_LoggerRunMode_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_uia_loggers_LoggerRunMode_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_Module__startupDone__S, "ti_uia_loggers_LoggerRunMode_Module__startupDone__S")
-__extern xdc_Bool ti_uia_loggers_LoggerRunMode_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_loggers_LoggerRunMode_Module__startupDone__S( void);
 
 /* Object__create__S */
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_Object__create__S, "ti_uia_loggers_LoggerRunMode_Object__create__S")
-__extern xdc_Ptr ti_uia_loggers_LoggerRunMode_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb );
+__extern xdc_Ptr ti_uia_loggers_LoggerRunMode_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb);
 
 /* Object__delete__S */
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_Object__delete__S, "ti_uia_loggers_LoggerRunMode_Object__delete__S")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_Object__delete__S( xdc_Ptr instp );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_Object__delete__S( xdc_Ptr instp);
 
 /* Object__get__S */
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_Object__get__S, "ti_uia_loggers_LoggerRunMode_Object__get__S")
-__extern xdc_Ptr ti_uia_loggers_LoggerRunMode_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_uia_loggers_LoggerRunMode_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_Object__first__S, "ti_uia_loggers_LoggerRunMode_Object__first__S")
-__extern xdc_Ptr ti_uia_loggers_LoggerRunMode_Object__first__S( void );
+__extern xdc_Ptr ti_uia_loggers_LoggerRunMode_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_Object__next__S, "ti_uia_loggers_LoggerRunMode_Object__next__S")
-__extern xdc_Ptr ti_uia_loggers_LoggerRunMode_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_uia_loggers_LoggerRunMode_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_Params__init__S, "ti_uia_loggers_LoggerRunMode_Params__init__S")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* enable__E */
 #define ti_uia_loggers_LoggerRunMode_enable ti_uia_loggers_LoggerRunMode_enable__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_enable__E, "ti_uia_loggers_LoggerRunMode_enable")
-__extern xdc_Bool ti_uia_loggers_LoggerRunMode_enable__E( ti_uia_loggers_LoggerRunMode_Handle __inst );
+__extern xdc_Bool ti_uia_loggers_LoggerRunMode_enable__E( ti_uia_loggers_LoggerRunMode_Handle instp);
 
 /* disable__E */
 #define ti_uia_loggers_LoggerRunMode_disable ti_uia_loggers_LoggerRunMode_disable__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_disable__E, "ti_uia_loggers_LoggerRunMode_disable")
-__extern xdc_Bool ti_uia_loggers_LoggerRunMode_disable__E( ti_uia_loggers_LoggerRunMode_Handle __inst );
+__extern xdc_Bool ti_uia_loggers_LoggerRunMode_disable__E( ti_uia_loggers_LoggerRunMode_Handle instp);
 
 /* getTransferType__E */
 #define ti_uia_loggers_LoggerRunMode_getTransferType ti_uia_loggers_LoggerRunMode_getTransferType__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_getTransferType__E, "ti_uia_loggers_LoggerRunMode_getTransferType")
-__extern ti_uia_runtime_IUIATransfer_TransferType ti_uia_loggers_LoggerRunMode_getTransferType__E( ti_uia_loggers_LoggerRunMode_Handle __inst );
+__extern ti_uia_runtime_IUIATransfer_TransferType ti_uia_loggers_LoggerRunMode_getTransferType__E( ti_uia_loggers_LoggerRunMode_Handle instp);
 
 /* getContents__E */
 #define ti_uia_loggers_LoggerRunMode_getContents ti_uia_loggers_LoggerRunMode_getContents__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_getContents__E, "ti_uia_loggers_LoggerRunMode_getContents")
-__extern xdc_Bool ti_uia_loggers_LoggerRunMode_getContents__E( ti_uia_loggers_LoggerRunMode_Handle __inst, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT *cpSize );
+__extern xdc_Bool ti_uia_loggers_LoggerRunMode_getContents__E( ti_uia_loggers_LoggerRunMode_Handle instp, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT *cpSize);
 
 /* isEmpty__E */
 #define ti_uia_loggers_LoggerRunMode_isEmpty ti_uia_loggers_LoggerRunMode_isEmpty__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_isEmpty__E, "ti_uia_loggers_LoggerRunMode_isEmpty")
-__extern xdc_Bool ti_uia_loggers_LoggerRunMode_isEmpty__E( ti_uia_loggers_LoggerRunMode_Handle __inst );
+__extern xdc_Bool ti_uia_loggers_LoggerRunMode_isEmpty__E( ti_uia_loggers_LoggerRunMode_Handle instp);
 
 /* getMaxLength__E */
 #define ti_uia_loggers_LoggerRunMode_getMaxLength ti_uia_loggers_LoggerRunMode_getMaxLength__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_getMaxLength__E, "ti_uia_loggers_LoggerRunMode_getMaxLength")
-__extern xdc_SizeT ti_uia_loggers_LoggerRunMode_getMaxLength__E( ti_uia_loggers_LoggerRunMode_Handle __inst );
+__extern xdc_SizeT ti_uia_loggers_LoggerRunMode_getMaxLength__E( ti_uia_loggers_LoggerRunMode_Handle instp);
 
 /* getInstanceId__E */
 #define ti_uia_loggers_LoggerRunMode_getInstanceId ti_uia_loggers_LoggerRunMode_getInstanceId__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_getInstanceId__E, "ti_uia_loggers_LoggerRunMode_getInstanceId")
-__extern xdc_UInt16 ti_uia_loggers_LoggerRunMode_getInstanceId__E( ti_uia_loggers_LoggerRunMode_Handle __inst );
+__extern xdc_UInt16 ti_uia_loggers_LoggerRunMode_getInstanceId__E( ti_uia_loggers_LoggerRunMode_Handle instp);
 
 /* getPriority__E */
 #define ti_uia_loggers_LoggerRunMode_getPriority ti_uia_loggers_LoggerRunMode_getPriority__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_getPriority__E, "ti_uia_loggers_LoggerRunMode_getPriority")
-__extern ti_uia_runtime_IUIATransfer_Priority ti_uia_loggers_LoggerRunMode_getPriority__E( ti_uia_loggers_LoggerRunMode_Handle __inst );
+__extern ti_uia_runtime_IUIATransfer_Priority ti_uia_loggers_LoggerRunMode_getPriority__E( ti_uia_loggers_LoggerRunMode_Handle instp);
 
 /* setPriority__E */
 #define ti_uia_loggers_LoggerRunMode_setPriority ti_uia_loggers_LoggerRunMode_setPriority__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_setPriority__E, "ti_uia_loggers_LoggerRunMode_setPriority")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_setPriority__E( ti_uia_loggers_LoggerRunMode_Handle __inst, ti_uia_runtime_IUIATransfer_Priority priority );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_setPriority__E( ti_uia_loggers_LoggerRunMode_Handle instp, ti_uia_runtime_IUIATransfer_Priority priority);
 
 /* reset__E */
 #define ti_uia_loggers_LoggerRunMode_reset ti_uia_loggers_LoggerRunMode_reset__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_reset__E, "ti_uia_loggers_LoggerRunMode_reset")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_reset__E( ti_uia_loggers_LoggerRunMode_Handle __inst );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_reset__E( ti_uia_loggers_LoggerRunMode_Handle instp);
 
 /* writeMemoryRange__E */
 #define ti_uia_loggers_LoggerRunMode_writeMemoryRange ti_uia_loggers_LoggerRunMode_writeMemoryRange__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_writeMemoryRange__E, "ti_uia_loggers_LoggerRunMode_writeMemoryRange")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_writeMemoryRange__E( ti_uia_loggers_LoggerRunMode_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_writeMemoryRange__E( ti_uia_loggers_LoggerRunMode_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs);
 
 /* isUploadRequired__E */
 #define ti_uia_loggers_LoggerRunMode_isUploadRequired ti_uia_loggers_LoggerRunMode_isUploadRequired__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_isUploadRequired__E, "ti_uia_loggers_LoggerRunMode_isUploadRequired")
-__extern xdc_Bool ti_uia_loggers_LoggerRunMode_isUploadRequired__E( void );
+__extern xdc_Bool ti_uia_loggers_LoggerRunMode_isUploadRequired__E( void);
 
 /* idleHook__E */
 #define ti_uia_loggers_LoggerRunMode_idleHook ti_uia_loggers_LoggerRunMode_idleHook__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_idleHook__E, "ti_uia_loggers_LoggerRunMode_idleHook")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_idleHook__E( void );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_idleHook__E( void);
 
 /* initBuffer__E */
 #define ti_uia_loggers_LoggerRunMode_initBuffer ti_uia_loggers_LoggerRunMode_initBuffer__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_initBuffer__E, "ti_uia_loggers_LoggerRunMode_initBuffer")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_initBuffer__E( ti_uia_loggers_LoggerRunMode_Handle __inst, xdc_Ptr buffer, xdc_UInt16 src );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_initBuffer__E( ti_uia_loggers_LoggerRunMode_Handle instp, xdc_Ptr buffer, xdc_UInt16 src);
 
 /* flush__E */
 #define ti_uia_loggers_LoggerRunMode_flush ti_uia_loggers_LoggerRunMode_flush__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_flush__E, "ti_uia_loggers_LoggerRunMode_flush")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_flush__E( ti_uia_loggers_LoggerRunMode_Handle __inst );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_flush__E( ti_uia_loggers_LoggerRunMode_Handle instp);
 
 /* prime__E */
 #define ti_uia_loggers_LoggerRunMode_prime ti_uia_loggers_LoggerRunMode_prime__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_prime__E, "ti_uia_loggers_LoggerRunMode_prime")
-__extern xdc_Ptr ti_uia_loggers_LoggerRunMode_prime__E( ti_uia_loggers_LoggerRunMode_Handle __inst );
+__extern xdc_Ptr ti_uia_loggers_LoggerRunMode_prime__E( ti_uia_loggers_LoggerRunMode_Handle instp);
 
 /* exchange__E */
 #define ti_uia_loggers_LoggerRunMode_exchange ti_uia_loggers_LoggerRunMode_exchange__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_exchange__E, "ti_uia_loggers_LoggerRunMode_exchange")
-__extern xdc_Ptr ti_uia_loggers_LoggerRunMode_exchange__E( ti_uia_loggers_LoggerRunMode_Handle __inst, xdc_Ptr full, xdc_Ptr lastWritePtr );
+__extern xdc_Ptr ti_uia_loggers_LoggerRunMode_exchange__E( ti_uia_loggers_LoggerRunMode_Handle instp, xdc_Ptr full, xdc_Ptr lastWritePtr);
 
 /* initQueueDescriptor__E */
 #define ti_uia_loggers_LoggerRunMode_initQueueDescriptor ti_uia_loggers_LoggerRunMode_initQueueDescriptor__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_initQueueDescriptor__E, "ti_uia_loggers_LoggerRunMode_initQueueDescriptor")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_initQueueDescriptor__E( ti_uia_loggers_LoggerRunMode_Handle __inst, xdc_runtime_Types_ModuleId mid );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_initQueueDescriptor__E( ti_uia_loggers_LoggerRunMode_Handle instp, xdc_runtime_Types_ModuleId mid);
 
 /* write0__E */
 #define ti_uia_loggers_LoggerRunMode_write0 ti_uia_loggers_LoggerRunMode_write0__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_write0__E, "ti_uia_loggers_LoggerRunMode_write0")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_write0__E( ti_uia_loggers_LoggerRunMode_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_write0__E( ti_uia_loggers_LoggerRunMode_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid);
 
 /* write1__E */
 #define ti_uia_loggers_LoggerRunMode_write1 ti_uia_loggers_LoggerRunMode_write1__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_write1__E, "ti_uia_loggers_LoggerRunMode_write1")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_write1__E( ti_uia_loggers_LoggerRunMode_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1 );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_write1__E( ti_uia_loggers_LoggerRunMode_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1);
 
 /* write2__E */
 #define ti_uia_loggers_LoggerRunMode_write2 ti_uia_loggers_LoggerRunMode_write2__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_write2__E, "ti_uia_loggers_LoggerRunMode_write2")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_write2__E( ti_uia_loggers_LoggerRunMode_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2 );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_write2__E( ti_uia_loggers_LoggerRunMode_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2);
 
 /* write4__E */
 #define ti_uia_loggers_LoggerRunMode_write4 ti_uia_loggers_LoggerRunMode_write4__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_write4__E, "ti_uia_loggers_LoggerRunMode_write4")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_write4__E( ti_uia_loggers_LoggerRunMode_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4 );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_write4__E( ti_uia_loggers_LoggerRunMode_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4);
 
 /* write8__E */
 #define ti_uia_loggers_LoggerRunMode_write8 ti_uia_loggers_LoggerRunMode_write8__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_write8__E, "ti_uia_loggers_LoggerRunMode_write8")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_write8__E( ti_uia_loggers_LoggerRunMode_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8 );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_write8__E( ti_uia_loggers_LoggerRunMode_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
 
 /* setFilterLevel__E */
 #define ti_uia_loggers_LoggerRunMode_setFilterLevel ti_uia_loggers_LoggerRunMode_setFilterLevel__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_setFilterLevel__E, "ti_uia_loggers_LoggerRunMode_setFilterLevel")
-__extern xdc_Void ti_uia_loggers_LoggerRunMode_setFilterLevel__E( ti_uia_loggers_LoggerRunMode_Handle __inst, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel );
+__extern xdc_Void ti_uia_loggers_LoggerRunMode_setFilterLevel__E( ti_uia_loggers_LoggerRunMode_Handle instp, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel);
 
 /* getFilterLevel__E */
 #define ti_uia_loggers_LoggerRunMode_getFilterLevel ti_uia_loggers_LoggerRunMode_getFilterLevel__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_getFilterLevel__E, "ti_uia_loggers_LoggerRunMode_getFilterLevel")
-__extern xdc_runtime_Diags_Mask ti_uia_loggers_LoggerRunMode_getFilterLevel__E( ti_uia_loggers_LoggerRunMode_Handle __inst, xdc_runtime_Diags_EventLevel level );
+__extern xdc_runtime_Diags_Mask ti_uia_loggers_LoggerRunMode_getFilterLevel__E( ti_uia_loggers_LoggerRunMode_Handle instp, xdc_runtime_Diags_EventLevel level);
 
 /* getBufSize__E */
 #define ti_uia_loggers_LoggerRunMode_getBufSize ti_uia_loggers_LoggerRunMode_getBufSize__E
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_getBufSize__E, "ti_uia_loggers_LoggerRunMode_getBufSize")
-__extern xdc_SizeT ti_uia_loggers_LoggerRunMode_getBufSize__E( ti_uia_loggers_LoggerRunMode_Handle __inst );
+__extern xdc_SizeT ti_uia_loggers_LoggerRunMode_getBufSize__E( ti_uia_loggers_LoggerRunMode_Handle instp);
 
 /* filterOutEvent__I */
 #define ti_uia_loggers_LoggerRunMode_filterOutEvent ti_uia_loggers_LoggerRunMode_filterOutEvent__I
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_filterOutEvent__I, "ti_uia_loggers_LoggerRunMode_filterOutEvent")
-__extern xdc_Bool ti_uia_loggers_LoggerRunMode_filterOutEvent__I( xdc_runtime_Diags_Mask mask );
+__extern xdc_Bool ti_uia_loggers_LoggerRunMode_filterOutEvent__I( xdc_runtime_Diags_Mask mask);
 
 /* writeStart__I */
 #define ti_uia_loggers_LoggerRunMode_writeStart ti_uia_loggers_LoggerRunMode_writeStart__I
 xdc__CODESECT(ti_uia_loggers_LoggerRunMode_writeStart__I, "ti_uia_loggers_LoggerRunMode_writeStart")
-__extern xdc_UArg *ti_uia_loggers_LoggerRunMode_writeStart__I( ti_uia_loggers_LoggerRunMode_Object *obj, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt16 numBytes );
+__extern xdc_UArg *ti_uia_loggers_LoggerRunMode_writeStart__I( ti_uia_loggers_LoggerRunMode_Object *obj, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt16 numBytes);
 
 
 /*
@@ -889,8 +891,8 @@ static inline void ti_uia_loggers_LoggerRunMode_Params_copy(ti_uia_loggers_Logge
 #define ti_uia_loggers_LoggerRunMode_Object_sizeof() ti_uia_loggers_LoggerRunMode_Object__sizeof__C
 
 /* Object_get */
-static inline ti_uia_loggers_LoggerRunMode_Handle ti_uia_loggers_LoggerRunMode_Object_get(ti_uia_loggers_LoggerRunMode_Instance_State *oarr, int i);
-static inline ti_uia_loggers_LoggerRunMode_Handle ti_uia_loggers_LoggerRunMode_Object_get(ti_uia_loggers_LoggerRunMode_Instance_State *oarr, int i) 
+static inline ti_uia_loggers_LoggerRunMode_Handle ti_uia_loggers_LoggerRunMode_Object_get(ti_uia_loggers_LoggerRunMode_Object *oarr, int i);
+static inline ti_uia_loggers_LoggerRunMode_Handle ti_uia_loggers_LoggerRunMode_Object_get(ti_uia_loggers_LoggerRunMode_Object *oarr, int i) 
 {
     return (ti_uia_loggers_LoggerRunMode_Handle)ti_uia_loggers_LoggerRunMode_Object__get__S(oarr, i);
 }

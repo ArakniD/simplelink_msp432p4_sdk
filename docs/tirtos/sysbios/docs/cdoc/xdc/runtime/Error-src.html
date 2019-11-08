@@ -6,7 +6,7 @@
 <body>
 <pre class=src>
      1    <span class="comment">/* 
-</span>     2    <span class="comment"> *  Copyright (c) 2008-2017 Texas Instruments Incorporated
+</span>     2    <span class="comment"> *  Copyright (c) 2008-2019 Texas Instruments Incorporated
 </span>     3    <span class="comment"> *  This program and the accompanying materials are made available under the
 </span>     4    <span class="comment"> *  terms of the Eclipse Public License v1.0 and Eclipse Distribution License
 </span>     5    <span class="comment"> *  v. 1.0 which accompanies this distribution. The Eclipse Public License is
@@ -204,11 +204,11 @@
 </span>   197    <span class="xdoc"> *  &lt;hr /&gt;
 </span>   198    <span class="xdoc"> *  <b>@p</b>
 </span>   199    <span class="xdoc"> *
-</span>   200    <span class="xdoc"> *  Example 5: The following C code shows how to write a function that
-</span>   201    <span class="xdoc"> *  is not part of a module and that takes an error block and raises
-</span>   202    <span class="xdoc"> *  the generic error type provided by the Error module. Note, if the
-</span>   203    <span class="xdoc"> *  caller passes `Error_ABORT` for the error block or if the error policy is
-</span>   204    <span class="xdoc"> *  `{<b>@link</b> #Policy TERMINATE}`, then the call to
+</span>   200    <span class="xdoc"> *  Example 5: The following C code shows how to write a function that is not a
+</span>   201    <span class="xdoc"> *  part of a module. The function accepts an error block as a parameter and
+</span>   202    <span class="xdoc"> *  raises an error of the generic error type provided by the Error module.
+</span>   203    <span class="xdoc"> *  Note that if the caller passes `Error_ABORT` for the error block or if the
+</span>   204    <span class="xdoc"> *  error policy is `{<b>@link</b> #Policy TERMINATE}`, then the call to
 </span>   205    <span class="xdoc"> *  `{<b>@link</b> #raise Error_raise()}` will call
 </span>   206    <span class="xdoc"> *  `{<b>@link</b> System#abort xdc_runtime_System_abort()}` and never return.
 </span>   207    <span class="xdoc"> *
@@ -247,538 +247,574 @@
 </span>   240    <span class="xdoc">     *  <b>@field(UNWIND)</b> Errors are returned to the caller. A call to
 </span>   241    <span class="xdoc">     *  `{<b>@link</b> #raise Error_raise}` will return back to the caller.
 </span>   242    <span class="xdoc">     */</span>
-   243        <span class=key>enum</span> Policy {
-   244            TERMINATE,
-   245            UNWIND
-   246        };
-   247    
-   248        <span class="xdoc">/*!
-</span>   249    <span class="xdoc">     *  ======== Desc ========
-</span>   250    <span class="xdoc">     *  Error descriptor
-</span>   251    <span class="xdoc">     *
-</span>   252    <span class="xdoc">     *  Each type of error is defined with an error descriptor. This
-</span>   253    <span class="xdoc">     *  structure groups common information about the errors of this type.
-</span>   254    <span class="xdoc">     *
-</span>   255    <span class="xdoc">     *  <b>@field(msg)</b> The error message using a `printf` style format string, 
-</span>   256    <span class="xdoc">     *              but limited to `{<b>@link</b> #NUMARGS}` arguments.
-</span>   257    <span class="xdoc">     *              This format string together with the two arguments passed
-</span>   258    <span class="xdoc">     *              to `Error_raise`` are used to create a human readable
-</span>   259    <span class="xdoc">     *              error message.
-</span>   260    <span class="xdoc">     *
-</span>   261    <span class="xdoc">     *  <b>@field(code)</b> A user assignable code, 0 by default. The user may
-</span>   262    <span class="xdoc">     *              optionally set this field during config to give the
-</span>   263    <span class="xdoc">     *              error a well-known numeric code. 
-</span>   264    <span class="xdoc">     */</span>
-   265        <span class=key>metaonly</span> <span class=key>struct</span> Desc {
-   266            String msg;
-   267            UInt16 code;
-   268        };
-   269    
-   270        <span class="xdoc">/*!
-</span>   271    <span class="xdoc">     *  ======== Id ========
-</span>   272    <span class="xdoc">     *  Error identifier
-</span>   273    <span class="xdoc">     *
-</span>   274    <span class="xdoc">     *  Each type of error raised is defined with a metaonly
-</span>   275    <span class="xdoc">     *  `{<b>@link</b> Error#Desc}`.  An `Error_Id` is a 32-bit target value that
-</span>   276    <span class="xdoc">     *  encodes the information in the `Desc`.  Target programs use
-</span>   277    <span class="xdoc">     *  `Error_Id` values to "raise" and check for specific errors.
-</span>   278    <span class="xdoc">     *
-</span>   279    <span class="xdoc">     *  <b>@a(Warning)</b> `{<b>@link</b> #Id}` values may vary among different
-</span>   280    <span class="xdoc">     *  configurations of an application.  For example, the addition of a
-</span>   281    <span class="xdoc">     *  new module to a program may result in a different absolute value for
-</span>   282    <span class="xdoc">     *  `{<b>@link</b> #E_generic}`.  If you need error numbers that remain
-</span>   283    <span class="xdoc">     *  invariant, use the user definable `{<b>@link</b> #Desc Desc.code}` field.
-</span>   284    <span class="xdoc">     */</span>
-   285        @Encoded <span class=key>typedef</span> Desc Id;
-   286    
-   287        <span class="xdoc">/*!
-</span>   288    <span class="xdoc">     *  ======== HookFxn ========
-</span>   289    <span class="xdoc">     *  Function called whenever an error is raised
-</span>   290    <span class="xdoc">     *
-</span>   291    <span class="xdoc">     *  The first parameter and only parameter passed to this function is a
-</span>   292    <span class="xdoc">     *  pointer to an `Error_Block`.  Even if the client passes a `NULL` error
-</span>   293    <span class="xdoc">     *  block pointer to `{<b>@link</b> #raise Error_raise}`, this parameter passed 
-</span>   294    <span class="xdoc">     *  to this "hook" function is always `non-NULL`.
-</span>   295    <span class="xdoc">     */</span>
-   296        <span class=key>typedef</span> Void (*HookFxn)(Block *);
-   297    
-   298        <span class="xdoc">/*!
-</span>   299    <span class="xdoc">     *  ======== NUMARGS ========
-</span>   300    <span class="xdoc">     *  Maximum number of arguments supported by an error
-</span>   301    <span class="xdoc">     */</span>
-   302        <span class=key>const</span> Int NUMARGS = 2;
-   303    
-   304        <span class="xdoc">/*!
-</span>   305    <span class="xdoc">     *  ======== Data ========
-</span>   306    <span class="xdoc">     *  Error args
-</span>   307    <span class="xdoc">     *
-</span>   308    <span class="xdoc">     *  The two arguments (arg1, arg2) passed to `{<b>@link</b> #raise}` are 
-</span>   309    <span class="xdoc">     *  stored in one of these arrays within the associated Error_Block.
-</span>   310    <span class="xdoc">     *  To access these arguments use `{<b>@link</b> #getData}` to obtain a 
-</span>   311    <span class="xdoc">     *  pointer to the Error_Block's Data array.
+   243        <span class="comment">/* REQ_TAG(SYSBIOS-859) */</span>
+   244        <span class=key>enum</span> Policy {
+   245            TERMINATE,
+   246            UNWIND
+   247        };
+   248    
+   249        <span class="xdoc">/*!
+</span>   250    <span class="xdoc">     *  ======== Desc ========
+</span>   251    <span class="xdoc">     *  Error descriptor
+</span>   252    <span class="xdoc">     *
+</span>   253    <span class="xdoc">     *  Each type of error is defined with an error descriptor. This
+</span>   254    <span class="xdoc">     *  structure groups common information about the errors of this type.
+</span>   255    <span class="xdoc">     *
+</span>   256    <span class="xdoc">     *  <b>@field(msg)</b> The error message using a `printf` style format string,
+</span>   257    <span class="xdoc">     *              but limited to `{<b>@link</b> #NUMARGS}` arguments.
+</span>   258    <span class="xdoc">     *              This format string together with the two arguments passed
+</span>   259    <span class="xdoc">     *              to `Error_raise`` are used to create a human readable
+</span>   260    <span class="xdoc">     *              error message.
+</span>   261    <span class="xdoc">     *
+</span>   262    <span class="xdoc">     *  <b>@field(code)</b> A user assignable code, 0 by default. The user may
+</span>   263    <span class="xdoc">     *              optionally set this field during config to give the
+</span>   264    <span class="xdoc">     *              error a well-known numeric code.
+</span>   265    <span class="xdoc">     */</span>
+   266        <span class="comment">/* REQ_TAG(SYSBIOS-861) */</span>
+   267        <span class=key>metaonly</span> <span class=key>struct</span> Desc {
+   268            String msg;
+   269            UInt16 code;
+   270        };
+   271    
+   272        <span class="xdoc">/*!
+</span>   273    <span class="xdoc">     *  ======== Id ========
+</span>   274    <span class="xdoc">     *  Error identifier
+</span>   275    <span class="xdoc">     *
+</span>   276    <span class="xdoc">     *  Each type of error raised is defined with a metaonly
+</span>   277    <span class="xdoc">     *  `{<b>@link</b> Error#Desc}`.  An `Error_Id` is a 32-bit target value that
+</span>   278    <span class="xdoc">     *  encodes the information in the `Desc`.  Target programs use
+</span>   279    <span class="xdoc">     *  `Error_Id` values to "raise" and check for specific errors.
+</span>   280    <span class="xdoc">     *
+</span>   281    <span class="xdoc">     *  <b>@a(Warning)</b> `{<b>@link</b> #Id}` values may vary among different
+</span>   282    <span class="xdoc">     *  configurations of an application.  For example, the addition of a
+</span>   283    <span class="xdoc">     *  new module to a program may result in a different absolute value for
+</span>   284    <span class="xdoc">     *  `{<b>@link</b> #E_generic}`.  If you need error numbers that remain
+</span>   285    <span class="xdoc">     *  invariant, use the user definable `{<b>@link</b> #Desc Desc.code}` field.
+</span>   286    <span class="xdoc">     */</span>
+   287        <span class="comment">/* REQ_TAG(SYSBIOS-858) */</span>
+   288        @Encoded <span class=key>typedef</span> Desc Id;
+   289    
+   290        <span class="xdoc">/*!
+</span>   291    <span class="xdoc">     *  ======== HookFxn ========
+</span>   292    <span class="xdoc">     *  Function type for a function called whenever an error is raised
+</span>   293    <span class="xdoc">     *
+</span>   294    <span class="xdoc">     *  The only parameter passed to a function of this type is a  pointer to an
+</span>   295    <span class="xdoc">     *  `Error_Block`.  Even if the client passes a `NULL` error block pointer
+</span>   296    <span class="xdoc">     *  to `{<b>@link</b> #raise Error_raise}`, the function `Error_raise` will
+</span>   297    <span class="xdoc">     *  ensure that the argument passed to this "hook" function is always
+</span>   298    <span class="xdoc">     *  `non-NULL`.
+</span>   299    <span class="xdoc">     */</span>
+   300        <span class=key>typedef</span> Void (*HookFxn)(Block *);
+   301    
+   302        <span class="xdoc">/*!
+</span>   303    <span class="xdoc">     *  ======== NUMARGS ========
+</span>   304    <span class="xdoc">     *  Maximum number of arguments supported by an error
+</span>   305    <span class="xdoc">     */</span>
+   306        <span class="comment">/* REQ_TAG(SYSBIOS-862) */</span>
+   307        <span class=key>const</span> Int NUMARGS = 2;
+   308    
+   309        <span class="xdoc">/*!
+</span>   310    <span class="xdoc">     *  ======== Data ========
+</span>   311    <span class="xdoc">     *  Error args
 </span>   312    <span class="xdoc">     *
-</span>   313    <span class="xdoc">     *  <b>@see</b> #getData
-</span>   314    <span class="xdoc">     */</span>
-   315        <span class=key>struct</span> Data {
-   316            IArg arg[NUMARGS];
-   317        }
-   318    
-   319        <span class="xdoc">/*!
-</span>   320    <span class="xdoc">     *  ======== Block ========
-</span>   321    <span class="xdoc">     *  Error block
-</span>   322    <span class="xdoc">     *
-</span>   323    <span class="xdoc">     *  An opaque structure used to store information about errors once raised.
-</span>   324    <span class="xdoc">     *  This structure must be initialized via `{<b>@link</b> #init Error_init()}`
-</span>   325    <span class="xdoc">     *  before being used for the first time.
-</span>   326    <span class="xdoc">     */</span>
-   327        @Opaque <span class=key>struct</span> Block {
-   328            UInt16      unused;     <span class="comment">/* for backward compatibility (was code) */</span>
-   329            Data        data;       <span class="comment">/* arguments passed to raise() */</span>
-   330            Id          id;         <span class="comment">/* id passed to raise() */</span>
-   331            CString     msg;        <span class="comment">/* msg associated with id */</span>
-   332            Types.Site  site;       <span class="comment">/* info about Error_raise call site */</span>
-   333        };
-   334    
-   335        <span class="xdoc">/*!
-</span>   336    <span class="xdoc">     *  ======== IGNORE ========
-</span>   337    <span class="xdoc">     *  A pointer to a special Error_Block used when the caller does not want to
-</span>   338    <span class="xdoc">     *  check Error_Block
-</span>   339    <span class="xdoc">     *
-</span>   340    <span class="xdoc">     *  This constant should be used when the caller does not plan to check
-</span>   341    <span class="xdoc">     *  `Error_Block` after the call returns, but wants the call to return even
-</span>   342    <span class="xdoc">     *  in the case when an error is raised. `{<b>@link</b> #policy Error_policy}` is
-</span>   343    <span class="xdoc">     *  still in effect and the application will still terminate when an error
-</span>   344    <span class="xdoc">     *  is raised if `Error_policy` is not set to
-</span>   345    <span class="xdoc">     *  `{<b>@link</b> #Policy Error_UNWIND}`.
-</span>   346    <span class="xdoc">     */</span>
-   347        <span class=key>const</span> Block IGNORE;
-   348    
-   349        <span class="xdoc">/*!
-</span>   350    <span class="xdoc">     *  ======== ABORT ========
-</span>   351    <span class="xdoc">     *  A special Error_Block pointer that terminates the application in case of
-</span>   352    <span class="xdoc">     *  an error
-</span>   353    <span class="xdoc">     *
-</span>   354    <span class="xdoc">     *  This constant has the same effect as passing `NULL` in place of an
-</span>   355    <span class="xdoc">     *  `Error_Block`. If an error is raised when `Error_ABORT` is passed, the
-</span>   356    <span class="xdoc">     *  application terminates regardless of `{<b>@link</b> #policy Error_policy}`.
-</span>   357    <span class="xdoc">     */</span>
-   358        <span class=key>const</span> Block ABORT;
-   359    
-   360        <span class="xdoc">/*!
-</span>   361    <span class="xdoc">     *  ======== PolicyFxn ========
-</span>   362    <span class="xdoc">     *  Error policy function signature
-</span>   363    <span class="xdoc">     *
-</span>   364    <span class="xdoc">     *  <b>@a(Parameters)</b>
-</span>   365    <span class="xdoc">     *  A policy function is passed the following parameters:
-</span>   366    <span class="xdoc">     *  <b>@p(dlist)</b>
-</span>   367    <span class="xdoc">     *      - `eb`
-</span>   368    <span class="xdoc">     *        A pointer to an `{<b>@link</b> #Block Error_Block}` structure to be
-</span>   369    <span class="xdoc">     *        initialized using the subsequent arguments.  This pointer may 
-</span>   370    <span class="xdoc">     *        be `NULL`.
-</span>   371    <span class="xdoc">     *      - `modId`
-</span>   372    <span class="xdoc">     *        The module ID of the module calling
-</span>   373    <span class="xdoc">     *        `{<b>@link</b> #raise Error_raise()}`
-</span>   374    <span class="xdoc">     *      - `fileName`
-</span>   375    <span class="xdoc">     *        A string naming the source file which made the call to
-</span>   376    <span class="xdoc">     *        `{<b>@link</b> #raise Error_raise()}`
-</span>   377    <span class="xdoc">     *      - `lineNumber`
-</span>   378    <span class="xdoc">     *        An integer line number within the file named above where
-</span>   379    <span class="xdoc">     *        the call `{<b>@link</b> #raise Error_raise()}` occured
-</span>   380    <span class="xdoc">     *      - `errId`
-</span>   381    <span class="xdoc">     *        The `{<b>@link</b> #Id Error_Id}` of the error being raised
-</span>   382    <span class="xdoc">     *      - `arg1` and `arg2`
-</span>   383    <span class="xdoc">     *        Two `IArg` arguments associated with the error being raised
-</span>   384    <span class="xdoc">     *  <b>@p</b>
-</span>   385    <span class="xdoc">     */</span>
-   386        <span class=key>typedef</span> Void (*PolicyFxn)(Block *, Types.ModuleId, CString, Int, Id,
-   387                                  IArg, IArg);
-   388    
-   389        <span class="xdoc">/*!
-</span>   390    <span class="xdoc">     *  ======== policyFxn ========
-</span>   391    <span class="xdoc">     *  Error handler function
-</span>   392    <span class="xdoc">     *
-</span>   393    <span class="xdoc">     *  This function is called to handle all raised errors but, unlike
-</span>   394    <span class="xdoc">     *  `{<b>@link</b> raiseHook}`, this function is responsible for completely
-</span>   395    <span class="xdoc">     *  handling the error (including calling `{<b>@link</b> #raiseHook raiseHook}`
-</span>   396    <span class="xdoc">     *  with an appropriately initialized `{<b>@link</b> #Block Error_Block}`, if
-</span>   397    <span class="xdoc">     *  `raiseHook` functionality is required).
-</span>   398    <span class="xdoc">     *
-</span>   399    <span class="xdoc">     *  The default value is a function which, in addition to calling
-</span>   400    <span class="xdoc">     *  `raiseHook` with an initialized `Error_Block` structure, logs the
-</span>   401    <span class="xdoc">     *  error using this module's logger.
-</span>   402    <span class="xdoc">     *
-</span>   403    <span class="xdoc">     *  Alternately, `{<b>@link</b> #policySpin}`, which simply loops
-</span>   404    <span class="xdoc">     *  indefinitely, can be used to minimize target footprint.  Note, this
-</span>   405    <span class="xdoc">     *  function does NOT call `raiseHook`, and also ignores
-</span>   406    <span class="xdoc">     *  `{<b>@link</b> Error#policy Error.policy}`.
-</span>   407    <span class="xdoc">     *
-</span>   408    <span class="xdoc">     *  The third implementation, `{<b>@link</b> #policyMin}` finds a middle ground
-</span>   409    <span class="xdoc">     *  between the two implementations above in terms of memory footprint and
-</span>   410    <span class="xdoc">     *  the available error information. Only the `{<b>@link</b> #Id Error_Id}` of the
-</span>   411    <span class="xdoc">     *  error being raised is available in the resulting `Error_Block`,
-</span>   412    <span class="xdoc">     *  `raiseHook` is not invoked, but `{<b>@link</b> Error#policy Error.policy}` is
-</span>   413    <span class="xdoc">     *  observed.
-</span>   414    <span class="xdoc">     */</span>
-   415        <span class=key>config</span> PolicyFxn policyFxn = Error.policyDefault;
-   416    
-   417        <span class="xdoc">/*!
-</span>   418    <span class="xdoc">     *  ======== E_generic ========
-</span>   419    <span class="xdoc">     *  Generic error
+</span>   313    <span class="xdoc">     *  The two arguments (arg1, arg2) passed to `{<b>@link</b> #raise}` are stored
+</span>   314    <span class="xdoc">     *  within the associated Error_Block. To access these arguments use
+</span>   315    <span class="xdoc">     *  `{<b>@link</b> #getData}` to obtain a pointer to the Error_Block's Data array.
+</span>   316    <span class="xdoc">     *
+</span>   317    <span class="xdoc">     *  <b>@see</b> #getData
+</span>   318    <span class="xdoc">     */</span>
+   319        <span class="comment">/* REQ_TAG(SYSBIOS-862) */</span>
+   320        <span class=key>struct</span> Data {
+   321            IArg arg[NUMARGS];
+   322        }
+   323    
+   324        <span class="xdoc">/*!
+</span>   325    <span class="xdoc">     *  ======== Block ========
+</span>   326    <span class="xdoc">     *  Error block
+</span>   327    <span class="xdoc">     *
+</span>   328    <span class="xdoc">     *  An opaque structure used to store information about errors once raised.
+</span>   329    <span class="xdoc">     *  This structure must be initialized via `{<b>@link</b> #init Error_init()}`
+</span>   330    <span class="xdoc">     *  before being used for the first time.
+</span>   331    <span class="xdoc">     */</span>
+   332        @Opaque <span class=key>struct</span> Block {
+   333            UInt16      unused;     <span class="comment">/* for backward compatibility (was code) */</span>
+   334            Data        data;       <span class="comment">/* arguments passed to raise() */</span>
+   335            Id          id;         <span class="comment">/* id passed to raise() */</span>
+   336            CString     msg;        <span class="comment">/* msg associated with id */</span>
+   337            Types.Site  site;       <span class="comment">/* info about Error_raise call site */</span>
+   338        };
+   339    
+   340        <span class="xdoc">/*!
+</span>   341    <span class="xdoc">     *  ======== IGNORE ========
+</span>   342    <span class="xdoc">     *  A pointer to a special Error_Block used when the caller does not want to
+</span>   343    <span class="xdoc">     *  check Error_Block
+</span>   344    <span class="xdoc">     *
+</span>   345    <span class="xdoc">     *  This constant should be used when the caller does not plan to check
+</span>   346    <span class="xdoc">     *  `Error_Block` after the call returns, but wants the call to return even
+</span>   347    <span class="xdoc">     *  in the case when an error is raised. `{<b>@link</b> #policy Error_policy}` is
+</span>   348    <span class="xdoc">     *  still in effect and the application will still terminate when an error
+</span>   349    <span class="xdoc">     *  is raised if `Error_policy` is not set to
+</span>   350    <span class="xdoc">     *  `{<b>@link</b> #Policy Error_UNWIND}`.
+</span>   351    <span class="xdoc">     */</span>
+   352        <span class="comment">/* REQ_TAG(SYSBIOS-860) */</span>
+   353        <span class=key>const</span> Block IGNORE;
+   354    
+   355        <span class="xdoc">/*!
+</span>   356    <span class="xdoc">     *  ======== ABORT ========
+</span>   357    <span class="xdoc">     *  A special Error_Block pointer that terminates the application in case of
+</span>   358    <span class="xdoc">     *  an error
+</span>   359    <span class="xdoc">     *
+</span>   360    <span class="xdoc">     *  This constant has the same effect as passing `NULL` in place of an
+</span>   361    <span class="xdoc">     *  `Error_Block`. If an error is raised when `Error_ABORT` is passed, the
+</span>   362    <span class="xdoc">     *  application terminates regardless of `{<b>@link</b> #policy Error_policy}`.
+</span>   363    <span class="xdoc">     */</span>
+   364        <span class="comment">/* REQ_TAG(SYSBIOS-859) */</span>
+   365        <span class=key>const</span> Block ABORT;
+   366    
+   367        <span class="xdoc">/*!
+</span>   368    <span class="xdoc">     *  ======== PolicyFxn ========
+</span>   369    <span class="xdoc">     *  Error policy function signature
+</span>   370    <span class="xdoc">     *
+</span>   371    <span class="xdoc">     *  <b>@a(Parameters)</b>
+</span>   372    <span class="xdoc">     *  A policy function is passed the following parameters:
+</span>   373    <span class="xdoc">     *  <b>@p(dlist)</b>
+</span>   374    <span class="xdoc">     *      - `eb`
+</span>   375    <span class="xdoc">     *        A pointer to an `{<b>@link</b> #Block Error_Block}` structure to be
+</span>   376    <span class="xdoc">     *        initialized using the subsequent arguments.  This pointer may
+</span>   377    <span class="xdoc">     *        be `NULL`.
+</span>   378    <span class="xdoc">     *      - `modId`
+</span>   379    <span class="xdoc">     *        The module ID of the module calling
+</span>   380    <span class="xdoc">     *        `{<b>@link</b> #raise Error_raise()}`
+</span>   381    <span class="xdoc">     *      - `fileName`
+</span>   382    <span class="xdoc">     *        A string naming the source file which made the call to
+</span>   383    <span class="xdoc">     *        `{<b>@link</b> #raise Error_raise()}`
+</span>   384    <span class="xdoc">     *      - `lineNumber`
+</span>   385    <span class="xdoc">     *        An integer line number within the file named above where
+</span>   386    <span class="xdoc">     *        the call `{<b>@link</b> #raise Error_raise()}` occured
+</span>   387    <span class="xdoc">     *      - `errId`
+</span>   388    <span class="xdoc">     *        The `{<b>@link</b> #Id Error_Id}` of the error being raised
+</span>   389    <span class="xdoc">     *      - `arg1` and `arg2`
+</span>   390    <span class="xdoc">     *        Two `IArg` arguments associated with the error being raised
+</span>   391    <span class="xdoc">     *  <b>@p</b>
+</span>   392    <span class="xdoc">     */</span>
+   393        <span class=key>typedef</span> Void (*PolicyFxn)(Block *, Types.ModuleId, CString, Int, Id,
+   394                                  IArg, IArg);
+   395    
+   396        <span class="xdoc">/*!
+</span>   397    <span class="xdoc">     *  ======== policyFxn ========
+</span>   398    <span class="xdoc">     *  Error handler function
+</span>   399    <span class="xdoc">     *
+</span>   400    <span class="xdoc">     *  This function is called to handle all raised errors but, unlike
+</span>   401    <span class="xdoc">     *  `{<b>@link</b> raiseHook}`, this function is responsible for completely
+</span>   402    <span class="xdoc">     *  handling the error (including calling `{<b>@link</b> #raiseHook raiseHook}`
+</span>   403    <span class="xdoc">     *  with an appropriately initialized `{<b>@link</b> #Block Error_Block}`, if
+</span>   404    <span class="xdoc">     *  `raiseHook` functionality is required).
+</span>   405    <span class="xdoc">     *
+</span>   406    <span class="xdoc">     *  The default value is a function which, in addition to calling
+</span>   407    <span class="xdoc">     *  `raiseHook` with an initialized `Error_Block` structure, logs the
+</span>   408    <span class="xdoc">     *  error using this module's logger.
+</span>   409    <span class="xdoc">     *
+</span>   410    <span class="xdoc">     *  Alternately, `{<b>@link</b> #policySpin}`, which simply loops indefinitely, can
+</span>   411    <span class="xdoc">     *  be used to minimize target footprint.  Note, this function does NOT call
+</span>   412    <span class="xdoc">     *  `raiseHook`, and also ignores `{<b>@link</b> Error#policy Error.policy}`.
+</span>   413    <span class="xdoc">     *
+</span>   414    <span class="xdoc">     *  The third implementation, `{<b>@link</b> #policyMin}` finds a middle ground
+</span>   415    <span class="xdoc">     *  between the two implementations above in terms of memory footprint and
+</span>   416    <span class="xdoc">     *  the available error information. Only the `{<b>@link</b> #Id Error_Id}` of the
+</span>   417    <span class="xdoc">     *  error being raised is available in the resulting `Error_Block`,
+</span>   418    <span class="xdoc">     *  `raiseHook` is not invoked, but `{<b>@link</b> Error#policy Error.policy}` is
+</span>   419    <span class="xdoc">     *  observed.
 </span>   420    <span class="xdoc">     *
-</span>   421    <span class="xdoc">     *  This error takes advantage of the $S specifier to allow for recursive
-</span>   422    <span class="xdoc">     *  formatting of the error message passed to error raise.
-</span>   423    <span class="xdoc">     *
-</span>   424    <span class="xdoc">     *  For example, the following is possible:
-</span>   425    <span class="xdoc">     *  <b>@p(code)</b>
-</span>   426    <span class="xdoc">     *  Error_raise(eb, Error_E_generic, "Error occurred, code: %d", code);
-</span>   427    <span class="xdoc">     *  <b>@p</b>
-</span>   428    <span class="xdoc">     *
-</span>   429    <span class="xdoc">     *  <b>@see</b> System#extendedFormats
-</span>   430    <span class="xdoc">     *  <b>@see</b> System#printf
-</span>   431    <span class="xdoc">     */</span>
-   432        <span class=key>config</span> Id E_generic = {msg: <span class="string">"%$S"</span>};
+</span>   421    <span class="xdoc">     *  Implementations of `policyFxn` are allowed to ignore `Error.policy` and
+</span>   422    <span class="xdoc">     *  the special `Error_Block` constants `{<b>@link</b> #IGNORE}` and
+</span>   423    <span class="xdoc">     *  `{<b>@link</b> #ABORT}`, as well as NULL, passed instead of an initialized
+</span>   424    <span class="xdoc">     *  `Error_Block`. However, it is recommended to observe as much as
+</span>   425    <span class="xdoc">     *  possible these special cases in order to make the code invoking
+</span>   426    <span class="xdoc">     *  `Error_raise` independent from `policyFxn` implementations.
+</span>   427    <span class="xdoc">     *  For example, the SYS/BIOS kernel assumes all `Error_raise` calls with
+</span>   428    <span class="xdoc">     *  NULL `Error_Block` are going to terminate the application.
+</span>   429    <span class="xdoc">     *
+</span>   430    <span class="xdoc">     */</span>
+   431        <span class="comment">/* REQ_TAG(SYSBIOS-959) */</span>
+   432        <span class=key>config</span> PolicyFxn policyFxn = Error.policyDefault;
    433    
    434        <span class="xdoc">/*!
-</span>   435    <span class="xdoc">     *  ======== E_memory ========
-</span>   436    <span class="xdoc">     *  Out of memory error
+</span>   435    <span class="xdoc">     *  ======== E_generic ========
+</span>   436    <span class="xdoc">     *  Generic error
 </span>   437    <span class="xdoc">     *
-</span>   438    <span class="xdoc">     *  The first parameter must be the heap instance handle. The second
-</span>   439    <span class="xdoc">     *  parameter is the size of the object for which the allocation failed.
-</span>   440    <span class="xdoc">     */</span>
-   441        <span class=key>config</span> Id E_memory = {msg: <span class="string">"out of memory: heap=0x%x, size=%u"</span>}; 
-   442    
-   443        <span class="xdoc">/*!
-</span>   444    <span class="xdoc">     *  ======== E_msgCode ========
-</span>   445    <span class="xdoc">     *  Generic error that displays a string and a numeric value
-</span>   446    <span class="xdoc">     */</span>
-   447        <span class=key>config</span> Id E_msgCode = {msg: <span class="string">"%s 0x%x"</span>}; 
-   448    
-   449        <span class="xdoc">/*!
-</span>   450    <span class="xdoc">     *  ======== policy ========
-</span>   451    <span class="xdoc">     *  System-wide error handling policy
-</span>   452    <span class="xdoc">     *
-</span>   453    <span class="xdoc">     *  You can use this parameter to decide at the configuration time what
-</span>   454    <span class="xdoc">     *  happens when an error is raised. The program can either call
-</span>   455    <span class="xdoc">     *  `System_abort()` or return back to the caller. The implementations of
-</span>   456    <span class="xdoc">     *  `{<b>@link</b> Error#policyFxn Error.policyFxn}` should consider this
-</span>   457    <span class="xdoc">     *  parameter, but some implementations may not do so to save the memory
-</span>   458    <span class="xdoc">     *  footprint (`Error_policySpin`, for example).
-</span>   459    <span class="xdoc">     * 
-</span>   460    <span class="xdoc">     */</span>
-   461        <span class=key>config</span> Policy policy = UNWIND;
-   462    
-   463        <span class="xdoc">/*!
-</span>   464    <span class="xdoc">     *  ======== raiseHook ========
-</span>   465    <span class="xdoc">     *  The function to call whenever an error is raised
-</span>   466    <span class="xdoc">     *
-</span>   467    <span class="xdoc">     *  If set to a non-`null` value, the referenced function is always
-</span>   468    <span class="xdoc">     *  called when an error is raised, even if the `Error` policy is
-</span>   469    <span class="xdoc">     *  `{<b>@link</b> #Policy TERMINATE}`.  In rare cases, it is possible that a
-</span>   470    <span class="xdoc">     *  raised error does not trigger a call to `raiseHook`; see
-</span>   471    <span class="xdoc">     *  `{<b>@link</b> #maxDepth}`.
-</span>   472    <span class="xdoc">     *
-</span>   473    <span class="xdoc">     *  Regardless of the current policy in use, raising an error by
-</span>   474    <span class="xdoc">     *  calling `{<b>@link</b> #raise Error_raise}` will always invoke the
-</span>   475    <span class="xdoc">     *  error raise hook function assigned to the
-</span>   476    <span class="xdoc">     *  `{<b>@link</b> #raiseHook Error.raiseHook}` configuration parameter, if the
-</span>   477    <span class="xdoc">     *  default `{<b>@link</b> Error#policyFxn Error.policyFxn}` implementation is
-</span>   478    <span class="xdoc">     *  used.
-</span>   479    <span class="xdoc">     *
-</span>   480    <span class="xdoc">     *
-</span>   481    <span class="xdoc">     *  By default, this function is set to `{<b>@link</b> #print Error_print}`
-</span>   482    <span class="xdoc">     *  which causes the error to be formatted and output via
-</span>   483    <span class="xdoc">     *  `{<b>@link</b> xdc.runtime.System#aprintf System_printf}`.  Setting this
-</span>   484    <span class="xdoc">     *  configuration parameter to `null` indicates that no function hook
-</span>   485    <span class="xdoc">     *  should be called.
-</span>   486    <span class="xdoc">     *
-</span>   487    <span class="xdoc">     *  <b>@see</b> #maxDepth
-</span>   488    <span class="xdoc">     *  <b>@see</b> #HookFxn
-</span>   489    <span class="xdoc">     *  <b>@see</b> #print
-</span>   490    <span class="xdoc">     */</span>
-   491        <span class=key>config</span> HookFxn raiseHook = Error.print;
-   492    
-   493        <span class="xdoc">/*!
-</span>   494    <span class="xdoc">     *  ======== maxDepth ========
-</span>   495    <span class="xdoc">     *  Maximum number of concurrent calls to `{<b>@link</b> #raiseHook}`
-</span>   496    <span class="xdoc">     *
-</span>   497    <span class="xdoc">     *  To prevent errors that occur in the raiseHook function from
-</span>   498    <span class="xdoc">     *  causing an infinite recursion, the maximum number of concurrent
-</span>   499    <span class="xdoc">     *  calls to `{<b>@link</b> #raiseHook}` is limited by `Error_maxDepth`.  If
-</span>   500    <span class="xdoc">     *  the number of concurrent calls exceeds `Error_maxDepth`, the
-</span>   501    <span class="xdoc">     *  `raiseHook` function is not called.
-</span>   502    <span class="xdoc">     *
-</span>   503    <span class="xdoc">     *  In multi-threaded systems, errors raised by separate threads may
-</span>   504    <span class="xdoc">     *  be detected as recursive calls to `raiseHook`.  So, setting
-</span>   505    <span class="xdoc">     *  `Error.maxDepth` to a small value may - in rare instances - result in
-</span>   506    <span class="xdoc">     *  `errorHook` not being called for some raised errors.
-</span>   507    <span class="xdoc">     *
-</span>   508    <span class="xdoc">     *  If it is important that all raised errors trigger a call to the
-</span>   509    <span class="xdoc">     *  `raiseHook` function, set `Error.maxDepth` to an impossibly large
-</span>   510    <span class="xdoc">     *  number (0xffff) and either ensure that the raise hook never calls a
-</span>   511    <span class="xdoc">     *  function that can raise an error or add checks in `raiseHook` to
-</span>   512    <span class="xdoc">     *  protect against "double faults".
-</span>   513    <span class="xdoc">     */</span>
-   514        <span class=key>config</span> UInt16 maxDepth = 16;
-   515    
-   516        <span class="xdoc">/*!
-</span>   517    <span class="xdoc">     *  ======== check ========
-</span>   518    <span class="xdoc">     *  Return TRUE if an error was raised
-</span>   519    <span class="xdoc">     *
-</span>   520    <span class="xdoc">     *  <b>@param(eb)</b> pointer to an `Error_Block`, `Error_ABORT` or `Error_IGNORE`
+</span>   438    <span class="xdoc">     *  This error takes advantage of the $S specifier to allow for recursive
+</span>   439    <span class="xdoc">     *  formatting of the error message passed to error raise.
+</span>   440    <span class="xdoc">     *
+</span>   441    <span class="xdoc">     *  For example, the following is possible:
+</span>   442    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   443    <span class="xdoc">     *  Error_raise(eb, Error_E_generic, "Error occurred, code: %d", code);
+</span>   444    <span class="xdoc">     *  <b>@p</b>
+</span>   445    <span class="xdoc">     *
+</span>   446    <span class="xdoc">     *  <b>@see</b> System#extendedFormats
+</span>   447    <span class="xdoc">     *  <b>@see</b> System#printf
+</span>   448    <span class="xdoc">     */</span>
+   449        <span class="comment">/* REQ_TAG(SYSBIOS-863) */</span>
+   450        <span class=key>config</span> Id E_generic = {msg: <span class="string">"%$S"</span>};
+   451    
+   452        <span class="xdoc">/*!
+</span>   453    <span class="xdoc">     *  ======== E_memory ========
+</span>   454    <span class="xdoc">     *  Out of memory error
+</span>   455    <span class="xdoc">     *
+</span>   456    <span class="xdoc">     *  The first parameter must be the heap instance handle. The second
+</span>   457    <span class="xdoc">     *  parameter is the size of the object for which the allocation failed.
+</span>   458    <span class="xdoc">     */</span>
+   459        <span class=key>config</span> Id E_memory = {msg: <span class="string">"out of memory: heap=0x%x, size=%u"</span>};
+   460    
+   461        <span class="xdoc">/*!
+</span>   462    <span class="xdoc">     *  ======== E_msgCode ========
+</span>   463    <span class="xdoc">     *  Generic error that displays a string and a numeric value
+</span>   464    <span class="xdoc">     */</span>
+   465        <span class=key>config</span> Id E_msgCode = {msg: <span class="string">"%s 0x%x"</span>};
+   466    
+   467        <span class="xdoc">/*!
+</span>   468    <span class="xdoc">     *  ======== policy ========
+</span>   469    <span class="xdoc">     *  System-wide error handling policy
+</span>   470    <span class="xdoc">     *
+</span>   471    <span class="xdoc">     *  You can use this parameter to decide at the configuration time what
+</span>   472    <span class="xdoc">     *  happens when an error is raised. The program can either call
+</span>   473    <span class="xdoc">     *  `System_abort()` or return back to the caller. The implementations of
+</span>   474    <span class="xdoc">     *  `{<b>@link</b> Error#policyFxn Error.policyFxn}` should consider this
+</span>   475    <span class="xdoc">     *  parameter, but some implementations may not do so to save the memory
+</span>   476    <span class="xdoc">     *  footprint (`Error_policySpin`, for example).
+</span>   477    <span class="xdoc">     *
+</span>   478    <span class="xdoc">     */</span>
+   479        <span class="comment">/* REQ_TAG(SYSBIOS-852) */</span>
+   480        <span class=key>config</span> Policy policy = UNWIND;
+   481    
+   482        <span class="xdoc">/*!
+</span>   483    <span class="xdoc">     *  ======== raiseHook ========
+</span>   484    <span class="xdoc">     *  The function to call whenever an error is raised
+</span>   485    <span class="xdoc">     *
+</span>   486    <span class="xdoc">     *  If set to a non-`null` value, the referenced function is always
+</span>   487    <span class="xdoc">     *  called when an error is raised, even if the `Error` policy is
+</span>   488    <span class="xdoc">     *  `{<b>@link</b> #Policy TERMINATE}`.  In rare cases, it is possible that a
+</span>   489    <span class="xdoc">     *  raised error does not trigger a call to `raiseHook`; see
+</span>   490    <span class="xdoc">     *  `{<b>@link</b> #maxDepth}`.
+</span>   491    <span class="xdoc">     *
+</span>   492    <span class="xdoc">     *  Regardless of the current policy in use, raising an error by calling
+</span>   493    <span class="xdoc">     *  `{<b>@link</b> #raise Error_raise}` will always invoke the error raise hook
+</span>   494    <span class="xdoc">     *  function assigned to the `{<b>@link</b> #raiseHook Error.raiseHook}`
+</span>   495    <span class="xdoc">     *  configuration parameter, if the default
+</span>   496    <span class="xdoc">     *  `{<b>@link</b> Error#policyFxn Error.policyFxn}` implementation is used.
+</span>   497    <span class="xdoc">     *
+</span>   498    <span class="xdoc">     *
+</span>   499    <span class="xdoc">     *  By default, this function is set to `{<b>@link</b> #print Error_print}`
+</span>   500    <span class="xdoc">     *  which causes the error to be formatted and output via
+</span>   501    <span class="xdoc">     *  `{<b>@link</b> xdc.runtime.System#aprintf System_printf}`.  Setting this
+</span>   502    <span class="xdoc">     *  configuration parameter to `null` indicates that no function hook
+</span>   503    <span class="xdoc">     *  should be called.
+</span>   504    <span class="xdoc">     *
+</span>   505    <span class="xdoc">     *  <b>@see</b> #maxDepth
+</span>   506    <span class="xdoc">     *  <b>@see</b> #HookFxn
+</span>   507    <span class="xdoc">     *  <b>@see</b> #print
+</span>   508    <span class="xdoc">     */</span>
+   509        <span class="comment">/* REQ_TAG(SYSBIOS-856) */</span>
+   510        <span class=key>config</span> HookFxn raiseHook = Error.print;
+   511    
+   512        <span class="xdoc">/*!
+</span>   513    <span class="xdoc">     *  ======== maxDepth ========
+</span>   514    <span class="xdoc">     *  Maximum number of concurrent calls to `{<b>@link</b> #raiseHook}`
+</span>   515    <span class="xdoc">     *
+</span>   516    <span class="xdoc">     *  To prevent errors that occur in the raiseHook function from
+</span>   517    <span class="xdoc">     *  causing an infinite recursion, the maximum number of concurrent
+</span>   518    <span class="xdoc">     *  calls to `{<b>@link</b> #raiseHook}` is limited by `Error_maxDepth`.  If
+</span>   519    <span class="xdoc">     *  the number of concurrent calls exceeds `Error_maxDepth`, the
+</span>   520    <span class="xdoc">     *  `raiseHook` function is not called.
 </span>   521    <span class="xdoc">     *
-</span>   522    <span class="xdoc">     *  <b>@a(returns)</b>
-</span>   523    <span class="xdoc">     *  If `eb` is non-`NULL` and `{<b>@link</b> #policy Error.policy} == UNWIND` and
-</span>   524    <span class="xdoc">     *  an error was raised on `eb`, this function returns `TRUE`.  Otherwise,
-</span>   525    <span class="xdoc">     *  it returns `FALSE`.
-</span>   526    <span class="xdoc">     */</span>
-   527        Bool check(Block *eb);
-   528    
-   529        <span class="xdoc">/*!
-</span>   530    <span class="xdoc">     *  ======== getData ========
-</span>   531    <span class="xdoc">     *  Get an error's argument list
-</span>   532    <span class="xdoc">     *
-</span>   533    <span class="xdoc">     *  <b>@param(eb)</b>      non-`NULL` pointer to an `Error_Block`
-</span>   534    <span class="xdoc">     *
-</span>   535    <span class="xdoc">     *  <b>@a(returns)</b>
-</span>   536    <span class="xdoc">     *  `getData` returns an array of type `{<b>@link</b> #Data}` with
-</span>   537    <span class="xdoc">     *  `{<b>@link</b> #NUMARGS}` elements containing the arguments provided
-</span>   538    <span class="xdoc">     *  at the time the error was raised.
+</span>   522    <span class="xdoc">     *  In multi-threaded systems, errors raised by separate threads may
+</span>   523    <span class="xdoc">     *  be detected as recursive calls to `raiseHook`.  So, setting
+</span>   524    <span class="xdoc">     *  `Error.maxDepth` to a small value may - in rare instances - result in
+</span>   525    <span class="xdoc">     *  `errorHook` not being called for some raised errors.
+</span>   526    <span class="xdoc">     *
+</span>   527    <span class="xdoc">     *  If it is important that all raised errors trigger a call to the
+</span>   528    <span class="xdoc">     *  `raiseHook` function, set `Error.maxDepth` to an impossibly large
+</span>   529    <span class="xdoc">     *  number (0xffff) and either ensure that the raise hook never calls a
+</span>   530    <span class="xdoc">     *  function that can raise an error or add checks in `raiseHook` to
+</span>   531    <span class="xdoc">     *  protect against "double faults".
+</span>   532    <span class="xdoc">     */</span>
+   533        <span class="comment">/* REQ_TAG(SYSBIOS-857) */</span>
+   534        <span class=key>config</span> UInt16 maxDepth = 16;
+   535    
+   536        <span class="xdoc">/*!
+</span>   537    <span class="xdoc">     *  ======== check ========
+</span>   538    <span class="xdoc">     *  Return TRUE if an error was raised
 </span>   539    <span class="xdoc">     *
-</span>   540    <span class="xdoc">     *  <b>@see</b> #raise
-</span>   541    <span class="xdoc">     */</span>
-   542        Data *getData(Block *eb);
-   543    
-   544        <span class="xdoc">/*!
-</span>   545    <span class="xdoc">     *  ======== getCode ========
-</span>   546    <span class="xdoc">     *  Get an error's code
-</span>   547    <span class="xdoc">     *
-</span>   548    <span class="xdoc">     *  <b>@param(eb)</b> non-`NULL` pointer to an `Error_Block`
-</span>   549    <span class="xdoc">     *
-</span>   550    <span class="xdoc">     *  <b>@a(returns)</b>
-</span>   551    <span class="xdoc">     *  `getCode` returns the error code associated with this error block.
-</span>   552    <span class="xdoc">     *
-</span>   553    <span class="xdoc">     *  <b>@see</b> #raise
-</span>   554    <span class="xdoc">     *  <b>@see</b> #Desc
-</span>   555    <span class="xdoc">     */</span>
-   556        UInt16 getCode(Block *eb);
-   557    
-   558        <span class="xdoc">/*!
-</span>   559    <span class="xdoc">     *  ======== getId ========
-</span>   560    <span class="xdoc">     *  Get an error's id
-</span>   561    <span class="xdoc">     *
-</span>   562    <span class="xdoc">     *  <b>@param(eb)</b> non-`NULL` pointer to an `Error_Block`
-</span>   563    <span class="xdoc">     *
-</span>   564    <span class="xdoc">     *  <b>@a(Warning)</b>
-</span>   565    <span class="xdoc">     *  `Error_Id` values may vary among different configurations
-</span>   566    <span class="xdoc">     *  of an application.  For example, the addition of a new module to a
-</span>   567    <span class="xdoc">     *  program may result in a different absolute value for
-</span>   568    <span class="xdoc">     *  `{<b>@link</b> #E_generic}`.  If you need error numbers that remain
-</span>   569    <span class="xdoc">     *  invariant, use the user definable `{<b>@link</b> #Desc Desc.code}` field.
-</span>   570    <span class="xdoc">     *
-</span>   571    <span class="xdoc">     *  <b>@see</b> #raise
-</span>   572    <span class="xdoc">     *  <b>@see</b> #Desc
-</span>   573    <span class="xdoc">     */</span>
-   574        Id getId(Block *eb);
-   575    
-   576        <span class="xdoc">/*!
-</span>   577    <span class="xdoc">     *  ======== getMsg ========
-</span>   578    <span class="xdoc">     *  Get an error's "printf" format string
-</span>   579    <span class="xdoc">     *
-</span>   580    <span class="xdoc">     *  <b>@param(eb)</b> non-`NULL` pointer to an `Error_Block`
-</span>   581    <span class="xdoc">     *
-</span>   582    <span class="xdoc">     *  <b>@see</b> #raise
-</span>   583    <span class="xdoc">     *  <b>@see</b> #Desc
-</span>   584    <span class="xdoc">     */</span>
-   585        CString getMsg(Block *eb);
-   586    
-   587        <span class="xdoc">/*!
-</span>   588    <span class="xdoc">     *  ======== getSite ========
-</span>   589    <span class="xdoc">     *  Get an error's call site info
-</span>   590    <span class="xdoc">     *
-</span>   591    <span class="xdoc">     *  <b>@param(eb)</b> non-`NULL` pointer to an `Error_Block`
+</span>   540    <span class="xdoc">     *  <b>@param(eb)</b> pointer to an `Error_Block`, `Error_ABORT` or `Error_IGNORE`
+</span>   541    <span class="xdoc">     *
+</span>   542    <span class="xdoc">     *  <b>@a(returns)</b>
+</span>   543    <span class="xdoc">     *  If `eb` is non-`NULL` and `{<b>@link</b> #policy Error.policy} == UNWIND` and
+</span>   544    <span class="xdoc">     *  an error was raised on `eb`, this function returns `TRUE`.  Otherwise,
+</span>   545    <span class="xdoc">     *  it returns `FALSE`.
+</span>   546    <span class="xdoc">     */</span>
+   547        <span class="comment">/* REQ_TAG(SYSBIOS-864) */</span>
+   548        Bool check(Block *eb);
+   549    
+   550        <span class="xdoc">/*!
+</span>   551    <span class="xdoc">     *  ======== getData ========
+</span>   552    <span class="xdoc">     *  Get an error's argument list
+</span>   553    <span class="xdoc">     *
+</span>   554    <span class="xdoc">     *  <b>@param(eb)</b>      non-`NULL` pointer to an `Error_Block`
+</span>   555    <span class="xdoc">     *
+</span>   556    <span class="xdoc">     *  <b>@a(returns)</b>
+</span>   557    <span class="xdoc">     *  `getData` returns an array of type `{<b>@link</b> #Data}` with
+</span>   558    <span class="xdoc">     *  `{<b>@link</b> #NUMARGS}` elements containing the arguments provided
+</span>   559    <span class="xdoc">     *  at the time the error was raised.
+</span>   560    <span class="xdoc">     *
+</span>   561    <span class="xdoc">     *  <b>@see</b> #raise
+</span>   562    <span class="xdoc">     */</span>
+   563        <span class="comment">/* REQ_TAG(SYSBIOS-868) */</span>
+   564        Data *getData(Block *eb);
+   565    
+   566        <span class="xdoc">/*!
+</span>   567    <span class="xdoc">     *  ======== getCode ========
+</span>   568    <span class="xdoc">     *  Get an error's code
+</span>   569    <span class="xdoc">     *
+</span>   570    <span class="xdoc">     *  <b>@param(eb)</b> non-`NULL` pointer to an `Error_Block`
+</span>   571    <span class="xdoc">     *
+</span>   572    <span class="xdoc">     *  <b>@a(returns)</b>
+</span>   573    <span class="xdoc">     *  `getCode` returns the error code associated with this error block.
+</span>   574    <span class="xdoc">     *
+</span>   575    <span class="xdoc">     *  <b>@see</b> #raise
+</span>   576    <span class="xdoc">     *  <b>@see</b> #Desc
+</span>   577    <span class="xdoc">     */</span>
+   578        UInt16 getCode(Block *eb);
+   579    
+   580        <span class="xdoc">/*!
+</span>   581    <span class="xdoc">     *  ======== getId ========
+</span>   582    <span class="xdoc">     *  Get an error's id
+</span>   583    <span class="xdoc">     *
+</span>   584    <span class="xdoc">     *  <b>@param(eb)</b> non-`NULL` pointer to an `Error_Block`
+</span>   585    <span class="xdoc">     *
+</span>   586    <span class="xdoc">     *  <b>@a(Warning)</b>
+</span>   587    <span class="xdoc">     *  `Error_Id` values may vary among different configurations
+</span>   588    <span class="xdoc">     *  of an application.  For example, the addition of a new module to a
+</span>   589    <span class="xdoc">     *  program may result in a different absolute value for
+</span>   590    <span class="xdoc">     *  `{<b>@link</b> #E_generic}`.  If you need error numbers that remain
+</span>   591    <span class="xdoc">     *  invariant, use the user definable `{<b>@link</b> #Desc Desc.code}` field.
 </span>   592    <span class="xdoc">     *
-</span>   593    <span class="xdoc">     *  <b>@a(returns)</b>
-</span>   594    <span class="xdoc">     *  `getSite` returns a pointer to an initialized
-</span>   595    <span class="xdoc">     *  `{<b>@link</b> Types#Site Types.Site}` structure.  However, in the
-</span>   596    <span class="xdoc">     *  event that the call site was compiled with `xdc_FILE` defined to
-</span>   597    <span class="xdoc">     *  be `NULL` (to minimize string space overhead) the `file`
-</span>   598    <span class="xdoc">     *  field may be set to `NULL`.
-</span>   599    <span class="xdoc">     *
-</span>   600    <span class="xdoc">     *  <b>@see</b> #raise
-</span>   601    <span class="xdoc">     *  <b>@see</b> #Desc
-</span>   602    <span class="xdoc">     */</span>
-   603        Types.Site *getSite(Block *eb);
-   604    
-   605        <span class="xdoc">/*!
-</span>   606    <span class="xdoc">     *  ======== idToCode ========
-</span>   607    <span class="xdoc">     *  Extract the user's error code associated with an `Error_Id`
-</span>   608    <span class="xdoc">     *
-</span>   609    <span class="xdoc">     *  <b>@param(id)</b> `Error_Id` from which to extract the user defined
-</span>   610    <span class="xdoc">     *             code 
-</span>   611    <span class="xdoc">     *  <b>@_nodoc</b>
-</span>   612    <span class="xdoc">     */</span>
-   613        @Macro UInt16 idToCode(Id id);
-   614    
-   615        <span class="xdoc">/*!
-</span>   616    <span class="xdoc">     *  ======== idToUid ========
-</span>   617    <span class="xdoc">     *  Extract the unique error id associated with an `Error_Id`
-</span>   618    <span class="xdoc">     *
-</span>   619    <span class="xdoc">     *  <b>@param(id)</b> `Error_Id` from which to extract the system unique
-</span>   620    <span class="xdoc">     *             id associated with the specified `Error_Id`
-</span>   621    <span class="xdoc">     *  <b>@_nodoc</b>
-</span>   622    <span class="xdoc">     */</span>
-   623        @Macro UInt16 idToUid(Id id);
-   624    
-   625        <span class="xdoc">/*!
-</span>   626    <span class="xdoc">     *  ======== init ========
-</span>   627    <span class="xdoc">     *  Put an error block into its initial state
-</span>   628    <span class="xdoc">     *
-</span>   629    <span class="xdoc">     *  To ensure reliable error detection, clients must call `init` for
-</span>   630    <span class="xdoc">     *  an `Error_Block` prior to any use.
-</span>   631    <span class="xdoc">     *
-</span>   632    <span class="xdoc">     *  If the same Error Block is used multiple times, only the last error
-</span>   633    <span class="xdoc">     *  raised is retained.
-</span>   634    <span class="xdoc">     *
-</span>   635    <span class="xdoc">     *  <b>@param(eb)</b> pointer to an `Error_Block`, `Error_ABORT` or `Error_IGNORE`
-</span>   636    <span class="xdoc">     *
-</span>   637    <span class="xdoc">     *      If `eb` is `NULL` this function simply returns.
-</span>   638    <span class="xdoc">     */</span>
-   639        Void init(Block *eb);
-   640    
-   641        <span class="xdoc">/*!
-</span>   642    <span class="xdoc">     *  ======== print ========
-</span>   643    <span class="xdoc">     *  Print error using System.printf()
-</span>   644    <span class="xdoc">     *
-</span>   645    <span class="xdoc">     *  This function prints the error using `System_printf()`.  The output
-</span>   646    <span class="xdoc">     *  is on a single line terminated with a new line character and has the
-</span>   647    <span class="xdoc">     *  following form:
-</span>   648    <span class="xdoc">     *  <b>@p(code)</b>
-</span>   649    <span class="xdoc">     *      &lt;site&gt;: &lt;file&gt;, line &lt;line_num&gt;: &lt;err_msg&gt;
-</span>   650    <span class="xdoc">     *  <b>@p</b>
-</span>   651    <span class="xdoc">     *  where `&lt;site&gt;` is the module that raised the error, `&lt;file&gt;` and
-</span>   652    <span class="xdoc">     *  `&lt;line_num&gt;` are the file and line number of the containing the call
-</span>   653    <span class="xdoc">     *  site of the `Error_raise()`, and `&lt;err_msg&gt;` is the error message
-</span>   654    <span class="xdoc">     *  rendered with the arguments associated with the error.
-</span>   655    <span class="xdoc">     *
-</span>   656    <span class="xdoc">     *  <b>@param(eb)</b> pointer to an `Error_Block`, `Error_ABORT` or `Error_IGNORE`
-</span>   657    <span class="xdoc">     *
-</span>   658    <span class="xdoc">     *      If `eb` is `Error_ABORT` or `Error_IGNORE`, this function simply
-</span>   659    <span class="xdoc">     *      returns with no output.
-</span>   660    <span class="xdoc">     *
-</span>   661    <span class="xdoc">     *  <b>@a(Warning)</b>
-</span>   662    <span class="xdoc">     *  This function is not protected by a gate and, as a result,
-</span>   663    <span class="xdoc">     *  if two threads call this method concurrently, the output of the two
-</span>   664    <span class="xdoc">     *  calls will be intermingled.  To prevent intermingled error output,
-</span>   665    <span class="xdoc">     *  you can either wrap all calls to this method with an appropriate
-</span>   666    <span class="xdoc">     *  `Gate_enter`/`Gate_leave` pair or simply ensure that only one
-</span>   667    <span class="xdoc">     *  thread in the system ever calls this method.
-</span>   668    <span class="xdoc">     */</span>
-   669        Void print(Block *eb);
-   670    
-   671        <span class="xdoc">/*!
-</span>   672    <span class="xdoc">     *  ======== policyDefault ========
-</span>   673    <span class="xdoc">     *  Default implementation of the policyFxn
-</span>   674    <span class="xdoc">     *
-</span>   675    <span class="xdoc">     *  This function is the implementation which is plugged in by default to
-</span>   676    <span class="xdoc">     *  the `{<b>@link</b> #policyFxn}`. It processes the error and logs it before
-</span>   677    <span class="xdoc">     *  returning to the caller or aborting - depending on the error policy
-</span>   678    <span class="xdoc">     *  `{<b>@link</b> #policy}`.
-</span>   679    <span class="xdoc">     */</span>
-   680        Void policyDefault(Block *eb, Types.ModuleId mod, CString file, Int line,
-   681            Id id, IArg arg1, IArg arg2);
-   682    
-   683        <span class="xdoc">/*!
-</span>   684    <span class="xdoc">     *  ======== policyMin ========
-</span>   685    <span class="xdoc">     *  Implementation of the policyFxn with a smaller footprint
-</span>   686    <span class="xdoc">     *
-</span>   687    <span class="xdoc">     *  This function is a compromise between a debug-friendly
-</span>   688    <span class="xdoc">     *  `{<b>@link</b> #policyDefault}`, which offers more details about any raised
-</span>   689    <span class="xdoc">     *  errors, but requires a larger footprint, and `{<b>@link</b> #policySpin}`,
-</span>   690    <span class="xdoc">     *  which is small but does not display any debug information.
-</span>   691    <span class="xdoc">     *
-</span>   692    <span class="xdoc">     *  This function returns to the caller, unless `{<b>@link</b> #policy}` is set to
-</span>   693    <span class="xdoc">     *  `TERMINATE`, or the `Error_Block` passed to it is `NULL`. If it returns,
-</span>   694    <span class="xdoc">     *  the only information available in the returned `Error_Block` is the
-</span>   695    <span class="xdoc">     *  error ID.
-</span>   696    <span class="xdoc">     */</span>
-   697        Void policyMin(Block *eb, Types.ModuleId mod, CString file, Int line,
-   698            Id id, IArg arg1, IArg arg2);
-   699    
-   700        <span class="xdoc">/*!
-</span>   701    <span class="xdoc">     *  ======== policySpin ========
-</span>   702    <span class="xdoc">     *  Lightweight implementation of the policyFxn
-</span>   703    <span class="xdoc">     *
-</span>   704    <span class="xdoc">     *  This function is a lightweight alternative  which can be plugged in to
-</span>   705    <span class="xdoc">     *  the `{<b>@link</b> #policyFxn}`. It just loops infinitely.
-</span>   706    <span class="xdoc">     *
-</span>   707    <span class="xdoc">     *  <b>@a(Warning)</b>
-</span>   708    <span class="xdoc">     *  This function does not call `{<b>@link</b> #raiseHook}` and never returns to
-</span>   709    <span class="xdoc">     *  the caller.  As a result, ANY error raised by the application will cause
-</span>   710    <span class="xdoc">     *  it to indefinitly hang.
-</span>   711    <span class="xdoc">     */</span>
-   712        Void policySpin(Block *eb, Types.ModuleId mod, CString file, Int line,
-   713            Id id, IArg arg1, IArg arg2);
-   714    
-   715        <span class="xdoc">/*!
-</span>   716    <span class="xdoc">     *  ======== raise ========
-</span>   717    <span class="xdoc">     *  Raise an error
+</span>   593    <span class="xdoc">     *  <b>@see</b> #raise
+</span>   594    <span class="xdoc">     *  <b>@see</b> #Desc
+</span>   595    <span class="xdoc">     */</span>
+   596        <span class="comment">/* REQ_TAG(SYSBIOS-869) */</span>
+   597        Id getId(Block *eb);
+   598    
+   599        <span class="xdoc">/*!
+</span>   600    <span class="xdoc">     *  ======== getMsg ========
+</span>   601    <span class="xdoc">     *  Get an error's "printf" format string
+</span>   602    <span class="xdoc">     *
+</span>   603    <span class="xdoc">     *  <b>@param(eb)</b> non-`NULL` pointer to an `Error_Block`
+</span>   604    <span class="xdoc">     *
+</span>   605    <span class="xdoc">     *  <b>@see</b> #raise
+</span>   606    <span class="xdoc">     *  <b>@see</b> #Desc
+</span>   607    <span class="xdoc">     */</span>
+   608        <span class="comment">/* REQ_TAG(SYSBIOS-867) */</span>
+   609        CString getMsg(Block *eb);
+   610    
+   611        <span class="xdoc">/*!
+</span>   612    <span class="xdoc">     *  ======== getSite ========
+</span>   613    <span class="xdoc">     *  Get an error's call site info
+</span>   614    <span class="xdoc">     *
+</span>   615    <span class="xdoc">     *  <b>@param(eb)</b> non-`NULL` pointer to an `Error_Block`
+</span>   616    <span class="xdoc">     *
+</span>   617    <span class="xdoc">     *  <b>@a(returns)</b>
+</span>   618    <span class="xdoc">     *  `getSite` returns a pointer to an initialized
+</span>   619    <span class="xdoc">     *  `{<b>@link</b> Types#Site Types.Site}` structure.  However, in the
+</span>   620    <span class="xdoc">     *  event that the call site was compiled with `xdc_FILE` defined to
+</span>   621    <span class="xdoc">     *  be `NULL` (to minimize string space overhead) the `file`
+</span>   622    <span class="xdoc">     *  field may be set to `NULL`.
+</span>   623    <span class="xdoc">     *
+</span>   624    <span class="xdoc">     *  <b>@see</b> #raise
+</span>   625    <span class="xdoc">     *  <b>@see</b> #Desc
+</span>   626    <span class="xdoc">     */</span>
+   627        <span class="comment">/* REQ_TAG(SYSBIOS-866) */</span>
+   628        Types.Site *getSite(Block *eb);
+   629    
+   630        <span class="xdoc">/*!
+</span>   631    <span class="xdoc">     *  ======== idToCode ========
+</span>   632    <span class="xdoc">     *  Extract the user's error code associated with an `Error_Id`
+</span>   633    <span class="xdoc">     *
+</span>   634    <span class="xdoc">     *  <b>@param(id)</b> `Error_Id` from which to extract the user defined
+</span>   635    <span class="xdoc">     *             code
+</span>   636    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   637    <span class="xdoc">     */</span>
+   638        @Macro UInt16 idToCode(Id id);
+   639    
+   640        <span class="xdoc">/*!
+</span>   641    <span class="xdoc">     *  ======== idToUid ========
+</span>   642    <span class="xdoc">     *  Extract the unique error id associated with an `Error_Id`
+</span>   643    <span class="xdoc">     *
+</span>   644    <span class="xdoc">     *  <b>@param(id)</b> `Error_Id` from which to extract the system unique
+</span>   645    <span class="xdoc">     *             id associated with the specified `Error_Id`
+</span>   646    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   647    <span class="xdoc">     */</span>
+   648        @Macro UInt16 idToUid(Id id);
+   649    
+   650        <span class="xdoc">/*!
+</span>   651    <span class="xdoc">     *  ======== init ========
+</span>   652    <span class="xdoc">     *  Put an error block into its initial state
+</span>   653    <span class="xdoc">     *
+</span>   654    <span class="xdoc">     *  To ensure reliable error detection, clients must call `init` for
+</span>   655    <span class="xdoc">     *  an `Error_Block` prior to any use.
+</span>   656    <span class="xdoc">     *
+</span>   657    <span class="xdoc">     *  If the same Error Block is used multiple times, only the last error
+</span>   658    <span class="xdoc">     *  raised is retained.
+</span>   659    <span class="xdoc">     *
+</span>   660    <span class="xdoc">     *  <b>@param(eb)</b> pointer to an `Error_Block`, `Error_ABORT` or `Error_IGNORE`
+</span>   661    <span class="xdoc">     *
+</span>   662    <span class="xdoc">     *      If `eb` is `NULL` this function simply returns.
+</span>   663    <span class="xdoc">     */</span>
+   664        Void init(Block *eb);
+   665    
+   666        <span class="xdoc">/*!
+</span>   667    <span class="xdoc">     *  ======== print ========
+</span>   668    <span class="xdoc">     *  Print error using System.printf()
+</span>   669    <span class="xdoc">     *
+</span>   670    <span class="xdoc">     *  This function prints the error using `System_printf()`.  The output
+</span>   671    <span class="xdoc">     *  is on a single line terminated with a new line character and has the
+</span>   672    <span class="xdoc">     *  following form:
+</span>   673    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   674    <span class="xdoc">     *      &lt;site&gt;: &lt;file&gt;, line &lt;line_num&gt;: &lt;err_msg&gt;
+</span>   675    <span class="xdoc">     *  <b>@p</b>
+</span>   676    <span class="xdoc">     *  where `&lt;site&gt;` is the module that raised the error, `&lt;file&gt;` and
+</span>   677    <span class="xdoc">     *  `&lt;line_num&gt;` are the file and line number of the containing the call
+</span>   678    <span class="xdoc">     *  site of the `Error_raise()`, and `&lt;err_msg&gt;` is the error message
+</span>   679    <span class="xdoc">     *  rendered with the arguments associated with the error.
+</span>   680    <span class="xdoc">     *
+</span>   681    <span class="xdoc">     *  <b>@param(eb)</b> pointer to an `Error_Block`, `Error_ABORT` or `Error_IGNORE`
+</span>   682    <span class="xdoc">     *
+</span>   683    <span class="xdoc">     *      If `eb` is `Error_ABORT` or `Error_IGNORE`, this function simply
+</span>   684    <span class="xdoc">     *      returns with no output.
+</span>   685    <span class="xdoc">     *
+</span>   686    <span class="xdoc">     *  <b>@a(Warning)</b>
+</span>   687    <span class="xdoc">     *  This function is not protected by a gate and, as a result,
+</span>   688    <span class="xdoc">     *  if two threads call this method concurrently, the output of the two
+</span>   689    <span class="xdoc">     *  calls will be intermingled.  To prevent intermingled error output,
+</span>   690    <span class="xdoc">     *  you can either wrap all calls to this method with an appropriate
+</span>   691    <span class="xdoc">     *  `Gate_enter`/`Gate_leave` pair or simply ensure that only one
+</span>   692    <span class="xdoc">     *  thread in the system ever calls this method.
+</span>   693    <span class="xdoc">     */</span>
+   694        <span class="comment">/* REQ_TAG(SYSBIOS-870) */</span>
+   695        Void print(Block *eb);
+   696    
+   697        <span class="xdoc">/*!
+</span>   698    <span class="xdoc">     *  ======== policyDefault ========
+</span>   699    <span class="xdoc">     *  Default implementation of the policyFxn
+</span>   700    <span class="xdoc">     *
+</span>   701    <span class="xdoc">     *  This function is the implementation which is plugged in by default to
+</span>   702    <span class="xdoc">     *  the `{<b>@link</b> #policyFxn}`. It processes the error and logs it before
+</span>   703    <span class="xdoc">     *  returning to the caller or aborting - depending on the error policy
+</span>   704    <span class="xdoc">     *  `{<b>@link</b> #policy}`.
+</span>   705    <span class="xdoc">     */</span>
+   706        <span class="comment">/* REQ_TAG(SYSBIOS-853), REQ_TAG(SYSBIOS-865) */</span>
+   707        Void policyDefault(Block *eb, Types.ModuleId mod, CString file, Int line,
+   708            Id id, IArg arg1, IArg arg2);
+   709    
+   710        <span class="xdoc">/*!
+</span>   711    <span class="xdoc">     *  ======== policyMin ========
+</span>   712    <span class="xdoc">     *  Implementation of the policyFxn with a smaller footprint
+</span>   713    <span class="xdoc">     *
+</span>   714    <span class="xdoc">     *  This function is a compromise between a debug-friendly
+</span>   715    <span class="xdoc">     *  `{<b>@link</b> #policyDefault}`, which offers more details about any raised
+</span>   716    <span class="xdoc">     *  errors, but requires a larger footprint, and `{<b>@link</b> #policySpin}`,
+</span>   717    <span class="xdoc">     *  which is small but does not display any debug information.
 </span>   718    <span class="xdoc">     *
-</span>   719    <span class="xdoc">     *  This function is used to raise an `Error` by writing call site,
-</span>   720    <span class="xdoc">     *  error ID, and error argument information into the `Error_Block`
-</span>   721    <span class="xdoc">     *  pointed to by `eb`.
-</span>   722    <span class="xdoc">     *
-</span>   723    <span class="xdoc">     *  If `Error_raise` is called more than once on an `Error_Block` object,
-</span>   724    <span class="xdoc">     *  the previous error information is overwritten; only the last error
-</span>   725    <span class="xdoc">     *  is retained in the `Error_Block` object.
-</span>   726    <span class="xdoc">     *
-</span>   727    <span class="xdoc">     *  In all cases, any configured `{<b>@link</b> #raiseHook Error.raiseHook}`
-</span>   728    <span class="xdoc">     *  function is called with a non-`NULL` pointer to a fully
-</span>   729    <span class="xdoc">     *  initialized `Error_Block` object.
-</span>   730    <span class="xdoc">     *
-</span>   731    <span class="xdoc">     *  <b>@param(eb)</b> pointer to an `Error_Block`, `Error_ABORT` or `Error_IGNORE`
-</span>   732    <span class="xdoc">     *
-</span>   733    <span class="xdoc">     *      If `eb` is `Error_ABORT` or
-</span>   734    <span class="xdoc">     *      `{<b>@link</b> #policy Error.policy} == TERMINATE`,
-</span>   735    <span class="xdoc">     *      this function does not return to the caller; after calling any
-</span>   736    <span class="xdoc">     *      configured `{<b>@link</b> #raiseHook}`, `System_abort` is called with the
-</span>   737    <span class="xdoc">     *      string `"xdc.runtime.Error.raise: terminating execution\n"`.
-</span>   738    <span class="xdoc">     *
-</span>   739    <span class="xdoc">     *  <b>@param(id)</b> the error to raise
-</span>   740    <span class="xdoc">     *
-</span>   741    <span class="xdoc">     *      This pointer identifies the class of error being raised; the error
-</span>   742    <span class="xdoc">     *      class indicates how to interpret any subsequent arguments passed to
-</span>   743    <span class="xdoc">     *      `{<b>@link</b> #raise}`.
-</span>   744    <span class="xdoc">     *
-</span>   745    <span class="xdoc">     *  <b>@param(arg1)</b> error's first argument
-</span>   746    <span class="xdoc">     *
-</span>   747    <span class="xdoc">     *      The argument interpreted by the first control character
-</span>   748    <span class="xdoc">     *      in the error message format string. It is ignored if not needed.
-</span>   749    <span class="xdoc">     *
-</span>   750    <span class="xdoc">     *  <b>@param(arg2)</b> error's second argument
+</span>   719    <span class="xdoc">     *  This function returns to the caller, unless `{<b>@link</b> #policy}` is set to
+</span>   720    <span class="xdoc">     *  `TERMINATE`, or the `Error_Block` passed to it is `NULL`. If it returns,
+</span>   721    <span class="xdoc">     *  the only information available in the returned `Error_Block` is the
+</span>   722    <span class="xdoc">     *  error ID.
+</span>   723    <span class="xdoc">     */</span>
+   724        <span class="comment">/* REQ_TAG(SYSBIOS-855) */</span>
+   725        Void policyMin(Block *eb, Types.ModuleId mod, CString file, Int line,
+   726            Id id, IArg arg1, IArg arg2);
+   727    
+   728        <span class="xdoc">/*!
+</span>   729    <span class="xdoc">     *  ======== policySpin ========
+</span>   730    <span class="xdoc">     *  Lightweight implementation of the policyFxn
+</span>   731    <span class="xdoc">     *
+</span>   732    <span class="xdoc">     *  This function is a lightweight alternative  which can be plugged in to
+</span>   733    <span class="xdoc">     *  the `{<b>@link</b> #policyFxn}`. It just loops infinitely.
+</span>   734    <span class="xdoc">     *
+</span>   735    <span class="xdoc">     *  <b>@a(Warning)</b>
+</span>   736    <span class="xdoc">     *  This function does not call `{<b>@link</b> #raiseHook}` and never returns to
+</span>   737    <span class="xdoc">     *  the caller.  As a result, ANY error raised by the application will cause
+</span>   738    <span class="xdoc">     *  it to indefinitly hang.
+</span>   739    <span class="xdoc">     */</span>
+   740        <span class="comment">/* REQ_TAG(SYSBIOS-854) */</span>
+   741        Void policySpin(Block *eb, Types.ModuleId mod, CString file, Int line,
+   742            Id id, IArg arg1, IArg arg2);
+   743    
+   744        <span class="xdoc">/*!
+</span>   745    <span class="xdoc">     *  ======== raise ========
+</span>   746    <span class="xdoc">     *  Raise an error
+</span>   747    <span class="xdoc">     *
+</span>   748    <span class="xdoc">     *  This function is used to raise an `Error` by writing call site,
+</span>   749    <span class="xdoc">     *  error ID, and error argument information into the `Error_Block`
+</span>   750    <span class="xdoc">     *  pointed to by `eb`.
 </span>   751    <span class="xdoc">     *
-</span>   752    <span class="xdoc">     *      The argument interpreted by the second control character
-</span>   753    <span class="xdoc">     *      in the error message format string. It is ignored if not needed.
-</span>   754    <span class="xdoc">     */</span>
-   755        @Macro Void raise(Block *eb, Id id, IArg arg1, IArg arg2);
-   756    
-   757        <span class="xdoc">/*! <b>@_nodoc</b> */</span>
-   758        Void raiseX(Block *eb, Types.ModuleId mod, CString file, Int line,
-   759            Id id, IArg arg1, IArg arg2);
-   760    
-   761        <span class="xdoc">/*! <b>@_nodoc</b> EXPERIMENTAL */</span>
-   762        Void setX(Block *eb, Types.ModuleId mod, CString file, Int line,
-   763            Id id, IArg arg1, IArg arg2);
-   764    
-   765    <span class=key>internal</span>:
-   766    
-   767        <span class=key>struct</span> Module_State {
-   768            UInt16      count;
-   769        };
-   770    
-   771    }
-   772    <span class="comment">/*
-</span>   773    <span class="comment"> *  @(#) xdc.runtime; 2, 1, 0,0; 2-16-2019 22:17:03; /db/ztree/library/trees/xdc/xdc-G10/src/packages/
-</span>   774    <span class="comment"> */</span>
-   775    
+</span>   752    <span class="xdoc">     *  If `Error_raise` is called more than once on an `Error_Block` object,
+</span>   753    <span class="xdoc">     *  the previous error information is overwritten; only the last error
+</span>   754    <span class="xdoc">     *  is retained in the `Error_Block` object.
+</span>   755    <span class="xdoc">     *
+</span>   756    <span class="xdoc">     *  In all cases, any configured `{<b>@link</b> #raiseHook Error.raiseHook}`
+</span>   757    <span class="xdoc">     *  function is called with a non-`NULL` pointer to a fully
+</span>   758    <span class="xdoc">     *  initialized `Error_Block` object.
+</span>   759    <span class="xdoc">     *
+</span>   760    <span class="xdoc">     *  <b>@param(eb)</b> pointer to an `Error_Block`, `Error_ABORT` or `Error_IGNORE`
+</span>   761    <span class="xdoc">     *
+</span>   762    <span class="xdoc">     *      If `eb` is `Error_ABORT` or
+</span>   763    <span class="xdoc">     *      `{<b>@link</b> #policy Error.policy} == TERMINATE`,
+</span>   764    <span class="xdoc">     *      this function does not return to the caller; after calling any
+</span>   765    <span class="xdoc">     *      configured `{<b>@link</b> #raiseHook}`, `System_abort` is called with the
+</span>   766    <span class="xdoc">     *      string `"xdc.runtime.Error.raise: terminating execution\n"`.
+</span>   767    <span class="xdoc">     *
+</span>   768    <span class="xdoc">     *  <b>@param(id)</b> the error to raise
+</span>   769    <span class="xdoc">     *
+</span>   770    <span class="xdoc">     *      This pointer identifies the class of error being raised; the error
+</span>   771    <span class="xdoc">     *      class indicates how to interpret any subsequent arguments passed to
+</span>   772    <span class="xdoc">     *      `{<b>@link</b> #raise}`.
+</span>   773    <span class="xdoc">     *
+</span>   774    <span class="xdoc">     *  <b>@param(arg1)</b> error's first argument
+</span>   775    <span class="xdoc">     *
+</span>   776    <span class="xdoc">     *      The argument interpreted by the first control character
+</span>   777    <span class="xdoc">     *      in the error message format string. It is ignored if not needed.
+</span>   778    <span class="xdoc">     *
+</span>   779    <span class="xdoc">     *  <b>@param(arg2)</b> error's second argument
+</span>   780    <span class="xdoc">     *
+</span>   781    <span class="xdoc">     *      The argument interpreted by the second control character
+</span>   782    <span class="xdoc">     *      in the error message format string. It is ignored if not needed.
+</span>   783    <span class="xdoc">     */</span>
+   784        @Macro Void raise(Block *eb, Id id, IArg arg1, IArg arg2);
+   785    
+   786        <span class="xdoc">/*! <b>@_nodoc</b> */</span>
+   787        Void raiseX(Block *eb, Types.ModuleId mod, CString file, Int line,
+   788            Id id, IArg arg1, IArg arg2);
+   789    
+   790        <span class="xdoc">/*! <b>@_nodoc</b> EXPERIMENTAL */</span>
+   791        Void setX(Block *eb, Types.ModuleId mod, CString file, Int line,
+   792            Id id, IArg arg1, IArg arg2);
+   793    
+   794    <span class=key>internal</span>:
+   795    
+   796        <span class="xdoc">/*!
+</span>   797    <span class="xdoc">     *  ======== policyLog ========
+</span>   798    <span class="xdoc">     *  <b>@_nodoc</b>
+</span>   799    <span class="xdoc">     */</span>
+   800        Void policyLog(Types.ModuleId mod, CString file, Int line, CString msg,
+   801            IArg arg1, IArg arg2);
+   802    
+   803        <span class=key>struct</span> Module_State {
+   804            UInt16      count;
+   805        };
+   806    
+   807    }
+   808    <span class="comment">/*
+</span>   809    <span class="comment"> *  @(#) xdc.runtime; 2, 1, 0,0; 8-21-2019 13:22:46; /db/ztree/library/trees/xdc/xdc-H25/src/packages/
+</span>   810    <span class="comment"> */</span>
+   811    
 </pre>
 </body></html>

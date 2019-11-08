@@ -81,8 +81,8 @@ length and not only multiples of the block cipher block size.
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#AESGCM_Configuration_Options "Configuration options reference"
 `,
     validate            : validate,
-    defaultInstanceName : "Board_AESGCM",
-    config              : Common.addNameConfig(config, "/ti/drivers/AESGCM", "Board_AESGCM"),
+    defaultInstanceName : "CONFIG_AESGCM_",
+    config              : Common.addNameConfig(config, "/ti/drivers/AESGCM", "CONFIG_AESGCM_"),
     modules             : Common.autoForceModules(["Board", "Power", "DMA"])
 };
 

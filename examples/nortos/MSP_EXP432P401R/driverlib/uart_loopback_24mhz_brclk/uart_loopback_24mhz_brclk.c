@@ -42,10 +42,10 @@
  *               MSP432P401
  *             -----------------
  *            |                 |
- *       RST -|     P1.3/UCA0TXD|----|
+ *       RST -|     P3.3/UCA0TXD|----|
  *            |                 |    |
  *           -|                 |    |
- *            |     P1.2/UCA0RXD|----|
+ *            |     P3.2/UCA0RXD|----|
  *            |                 |
  *            |             P1.0|---> LED
  *            |                 |
@@ -67,7 +67,7 @@ uint8_t RXData = 0;
  * at:
  * http://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSP430BaudRateConverter/index.html
  */
-const eUSCI_UART_Config uartConfig =
+const eUSCI_UART_ConfigV1 uartConfig =
 {
         EUSCI_A_UART_CLOCKSOURCE_SMCLK,          // SMCLK Clock Source
         13,                                      // BRDIV = 13
@@ -77,7 +77,8 @@ const eUSCI_UART_Config uartConfig =
         EUSCI_A_UART_MSB_FIRST,                  // MSB First
         EUSCI_A_UART_ONE_STOP_BIT,               // One stop bit
         EUSCI_A_UART_MODE,                       // UART mode
-        EUSCI_A_UART_OVERSAMPLING_BAUDRATE_GENERATION  // Oversampling
+        EUSCI_A_UART_OVERSAMPLING_BAUDRATE_GENERATION,  // Oversampling
+        EUSCI_A_UART_8_BIT_LEN                  // 8 bit data length
 };
 
 int main(void)
@@ -86,7 +87,7 @@ int main(void)
     MAP_WDT_A_holdTimer();
 
     /* Selecting P1.2 and P1.3 in UART mode and P1.0 as output (LED) */
-    MAP_GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P1,
+    MAP_GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P3,
              GPIO_PIN2 | GPIO_PIN3, GPIO_PRIMARY_MODULE_FUNCTION);
     MAP_GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
     MAP_GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
@@ -98,19 +99,19 @@ int main(void)
     CS_setDCOCenteredFrequency(CS_DCO_FREQUENCY_24);
 
     /* Configuring UART Module */
-    MAP_UART_initModule(EUSCI_A0_BASE, &uartConfig);
+    MAP_UART_initModule(EUSCI_A2_BASE, &uartConfig);
 
     /* Enable UART module */
-    MAP_UART_enableModule(EUSCI_A0_BASE);
+    MAP_UART_enableModule(EUSCI_A2_BASE);
 
     /* Enabling interrupts */
-    MAP_UART_enableInterrupt(EUSCI_A0_BASE, EUSCI_A_UART_RECEIVE_INTERRUPT);
-    MAP_Interrupt_enableInterrupt(INT_EUSCIA0);
+    MAP_UART_enableInterrupt(EUSCI_A2_BASE, EUSCI_A_UART_RECEIVE_INTERRUPT);
+    MAP_Interrupt_enableInterrupt(INT_EUSCIA2);
     MAP_Interrupt_enableSleepOnIsrExit();
 
     while(1)
     {
-        MAP_UART_transmitData(EUSCI_A0_BASE, TXData);
+        MAP_UART_transmitData(EUSCI_A2_BASE, TXData);
 
         MAP_Interrupt_enableSleepOnIsrExit();
         MAP_PCM_gotoLPM0InterruptSafe();
@@ -118,15 +119,13 @@ int main(void)
 }
 
 /* EUSCI A0 UART ISR - Echos data back to PC host */
-void EUSCIA0_IRQHandler(void)
+void EUSCIA2_IRQHandler(void)
 {
-    uint32_t status = MAP_UART_getEnabledInterruptStatus(EUSCI_A0_BASE);
-
-    MAP_UART_clearInterruptFlag(EUSCI_A0_BASE, status);
+    uint32_t status = MAP_UART_getEnabledInterruptStatus(EUSCI_A2_BASE);
 
     if(status & EUSCI_A_UART_RECEIVE_INTERRUPT_FLAG)
     {
-        RXData = MAP_UART_receiveData(EUSCI_A0_BASE);
+        RXData = MAP_UART_receiveData(EUSCI_A2_BASE);
 
         if(RXData != TXData)              // Check value
         {

@@ -79,8 +79,8 @@ entire message when the message is larger than one block.
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#AESCTR_Configuration_Options "Configuration options reference"
 `,
     validate            : validate,
-    defaultInstanceName : "Board_AESCTR",
-    config              : Common.addNameConfig(config, "/ti/drivers/AESCTR", "Board_AESCTR"),
+    defaultInstanceName : "CONFIG_AESCTR_",
+    config              : Common.addNameConfig(config, "/ti/drivers/AESCTR", "CONFIG_AESCTR_"),
     modules: Common.autoForceModules(["Board", "Power", "DMA"])
 };
 

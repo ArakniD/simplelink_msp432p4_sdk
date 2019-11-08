@@ -7,11 +7,12 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = freertos_main_freertos.obj commonComms.obj vibrationCapture.obj MSP_EXP432P4111.obj
+OBJECTS = freertos_main_freertos.obj commonComms.obj vibrationCapture.obj ti_drivers_config.obj
 
 NAME = tida_01575_serial
 
 CFLAGS = -I../.. \
+    -I. \
     -DARM_MATH_CM4 \
     -D__FPU_PRESENT=1 \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
@@ -63,19 +64,27 @@ $(KERNEL_BUILD)/ccs/freertos.lib:
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
 
-freertos_main_freertos.obj: ../../freertos/main_freertos.c
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../../tida_01575_serial.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+freertos_main_freertos.obj: ../../freertos/main_freertos.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-commonComms.obj: ../../commonComms.c
+commonComms.obj: ../../commonComms.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-vibrationCapture.obj: ../../vibrationCapture.c
+vibrationCapture.obj: ../../vibrationCapture.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
-MSP_EXP432P4111.obj: ../../MSP_EXP432P4111.c
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --output_file=$@
 
@@ -83,8 +92,10 @@ $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/ccs/freertos.lib
 	@ echo linking $@
 	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
+
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

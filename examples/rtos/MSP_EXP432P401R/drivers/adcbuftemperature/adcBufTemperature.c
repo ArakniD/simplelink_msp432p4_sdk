@@ -48,8 +48,8 @@
 /* For sleep() */
 #include <unistd.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Board Header file */
+#include "ti_drivers_config.h"
 
 #define ADCBUFFERSIZE    (20)
 
@@ -98,7 +98,7 @@ void adcBufCallback(ADCBuf_Handle handle, ADCBuf_Conversion *conversion,
 
 /*
  *  ======== gpioButtonFxn0 ========
- *  Callback function for the GPIO interrupt on Board_GPIO_BUTTON0.
+ *  Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON0.
  */
 void gpioButtonFxn0(uint_least8_t index)
 {
@@ -117,7 +117,7 @@ void *mainThread(void *arg0)
 {
     ADCBuf_Params adcBufParams;
     Display_Params displayParams;
-    struct ADCBufMSP432_ParamsExtension adcBufParamsEx;
+    ADCBufMSP432_ParamsExtension adcBufParamsEx;
 
     /* Call driver init functions */
     ADCBuf_init();
@@ -134,9 +134,9 @@ void *mainThread(void *arg0)
     }
 
     /* Configure button pins and install Button callback */
-    GPIO_setConfig(Board_GPIO_BUTTON0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
-    GPIO_setCallback(Board_GPIO_BUTTON0, gpioButtonFxn0);
-    GPIO_enableInt(Board_GPIO_BUTTON0);
+    GPIO_setConfig(CONFIG_GPIO_BUTTON0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
+    GPIO_setCallback(CONFIG_GPIO_BUTTON0, gpioButtonFxn0);
+    GPIO_enableInt(CONFIG_GPIO_BUTTON0);
 
     status = sem_init(&adcbufSem, 0, 0);
     if (status != 0) {
@@ -157,7 +157,7 @@ void *mainThread(void *arg0)
     adcBufParamsEx.samplingDuration = ADCBufMSP432_SamplingDuration_PULSE_WIDTH_192;
     adcBufParams.custom = &adcBufParamsEx;
 
-    adcBuf = ADCBuf_open(Board_ADCBUF0, &adcBufParams);
+    adcBuf = ADCBuf_open(CONFIG_ADCBUF0, &adcBufParams);
 
     if (!adcBuf){
         /* AdcBuf did not open correctly. */
@@ -166,7 +166,7 @@ void *mainThread(void *arg0)
 
     /* Configure the conversion struct */
     continuousConversion.arg = NULL;
-    continuousConversion.adcChannel = Board_ADCBUF0CHANNEL2;
+    continuousConversion.adcChannel = CONFIG_ADCBUF0CHANNEL_0;
     continuousConversion.sampleBuffer = sampleBufferOne;
     continuousConversion.sampleBufferTwo = sampleBufferOne;
     continuousConversion.samplesRequestedCount = ADCBUFFERSIZE;

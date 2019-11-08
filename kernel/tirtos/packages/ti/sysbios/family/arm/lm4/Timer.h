@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -38,10 +38,12 @@
 #define ti_sysbios_family_arm_lm4_Timer__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_family_arm_lm4_Timer___VERS 200
@@ -543,215 +545,215 @@ __extern void ti_sysbios_family_arm_lm4_Timer_destruct(ti_sysbios_family_arm_lm4
 
 /* Handle__label__S */
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_Handle__label__S, "ti_sysbios_family_arm_lm4_Timer_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_sysbios_family_arm_lm4_Timer_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_sysbios_family_arm_lm4_Timer_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_Module__startupDone__S, "ti_sysbios_family_arm_lm4_Timer_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_family_arm_lm4_Timer_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_family_arm_lm4_Timer_Module__startupDone__S( void);
 
 /* Object__create__S */
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_Object__create__S, "ti_sysbios_family_arm_lm4_Timer_Object__create__S")
-__extern xdc_Ptr ti_sysbios_family_arm_lm4_Timer_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb );
+__extern xdc_Ptr ti_sysbios_family_arm_lm4_Timer_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb);
 
 /* Object__delete__S */
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_Object__delete__S, "ti_sysbios_family_arm_lm4_Timer_Object__delete__S")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_Object__delete__S( xdc_Ptr instp );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_Object__delete__S( xdc_Ptr instp);
 
 /* Object__get__S */
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_Object__get__S, "ti_sysbios_family_arm_lm4_Timer_Object__get__S")
-__extern xdc_Ptr ti_sysbios_family_arm_lm4_Timer_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_sysbios_family_arm_lm4_Timer_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_Object__first__S, "ti_sysbios_family_arm_lm4_Timer_Object__first__S")
-__extern xdc_Ptr ti_sysbios_family_arm_lm4_Timer_Object__first__S( void );
+__extern xdc_Ptr ti_sysbios_family_arm_lm4_Timer_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_Object__next__S, "ti_sysbios_family_arm_lm4_Timer_Object__next__S")
-__extern xdc_Ptr ti_sysbios_family_arm_lm4_Timer_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_sysbios_family_arm_lm4_Timer_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_Params__init__S, "ti_sysbios_family_arm_lm4_Timer_Params__init__S")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* getNumTimers__E */
 #define ti_sysbios_family_arm_lm4_Timer_getNumTimers ti_sysbios_family_arm_lm4_Timer_getNumTimers__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_getNumTimers__E, "ti_sysbios_family_arm_lm4_Timer_getNumTimers")
-__extern xdc_UInt ti_sysbios_family_arm_lm4_Timer_getNumTimers__E( void );
+__extern xdc_UInt ti_sysbios_family_arm_lm4_Timer_getNumTimers__E( void);
 
 /* getStatus__E */
 #define ti_sysbios_family_arm_lm4_Timer_getStatus ti_sysbios_family_arm_lm4_Timer_getStatus__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_getStatus__E, "ti_sysbios_family_arm_lm4_Timer_getStatus")
-__extern ti_sysbios_interfaces_ITimer_Status ti_sysbios_family_arm_lm4_Timer_getStatus__E( xdc_UInt id );
+__extern ti_sysbios_interfaces_ITimer_Status ti_sysbios_family_arm_lm4_Timer_getStatus__E( xdc_UInt id);
 
 /* startup__E */
 #define ti_sysbios_family_arm_lm4_Timer_startup ti_sysbios_family_arm_lm4_Timer_startup__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_startup__E, "ti_sysbios_family_arm_lm4_Timer_startup")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_startup__E( void );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_startup__E( void);
 
 /* getMaxTicks__E */
 #define ti_sysbios_family_arm_lm4_Timer_getMaxTicks ti_sysbios_family_arm_lm4_Timer_getMaxTicks__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_getMaxTicks__E, "ti_sysbios_family_arm_lm4_Timer_getMaxTicks")
-__extern xdc_UInt32 ti_sysbios_family_arm_lm4_Timer_getMaxTicks__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst );
+__extern xdc_UInt32 ti_sysbios_family_arm_lm4_Timer_getMaxTicks__E( ti_sysbios_family_arm_lm4_Timer_Handle instp);
 
 /* setNextTick__E */
 #define ti_sysbios_family_arm_lm4_Timer_setNextTick ti_sysbios_family_arm_lm4_Timer_setNextTick__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_setNextTick__E, "ti_sysbios_family_arm_lm4_Timer_setNextTick")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_setNextTick__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst, xdc_UInt32 ticks );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_setNextTick__E( ti_sysbios_family_arm_lm4_Timer_Handle instp, xdc_UInt32 ticks);
 
 /* start__E */
 #define ti_sysbios_family_arm_lm4_Timer_start ti_sysbios_family_arm_lm4_Timer_start__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_start__E, "ti_sysbios_family_arm_lm4_Timer_start")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_start__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_start__E( ti_sysbios_family_arm_lm4_Timer_Handle instp);
 
 /* stop__E */
 #define ti_sysbios_family_arm_lm4_Timer_stop ti_sysbios_family_arm_lm4_Timer_stop__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_stop__E, "ti_sysbios_family_arm_lm4_Timer_stop")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_stop__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_stop__E( ti_sysbios_family_arm_lm4_Timer_Handle instp);
 
 /* setPeriod__E */
 #define ti_sysbios_family_arm_lm4_Timer_setPeriod ti_sysbios_family_arm_lm4_Timer_setPeriod__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_setPeriod__E, "ti_sysbios_family_arm_lm4_Timer_setPeriod")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_setPeriod__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst, xdc_UInt32 period );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_setPeriod__E( ti_sysbios_family_arm_lm4_Timer_Handle instp, xdc_UInt32 period);
 
 /* setPeriodMicroSecs__E */
 #define ti_sysbios_family_arm_lm4_Timer_setPeriodMicroSecs ti_sysbios_family_arm_lm4_Timer_setPeriodMicroSecs__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_setPeriodMicroSecs__E, "ti_sysbios_family_arm_lm4_Timer_setPeriodMicroSecs")
-__extern xdc_Bool ti_sysbios_family_arm_lm4_Timer_setPeriodMicroSecs__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst, xdc_UInt32 microsecs );
+__extern xdc_Bool ti_sysbios_family_arm_lm4_Timer_setPeriodMicroSecs__E( ti_sysbios_family_arm_lm4_Timer_Handle instp, xdc_UInt32 microsecs);
 
 /* getPeriod__E */
 #define ti_sysbios_family_arm_lm4_Timer_getPeriod ti_sysbios_family_arm_lm4_Timer_getPeriod__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_getPeriod__E, "ti_sysbios_family_arm_lm4_Timer_getPeriod")
-__extern xdc_UInt32 ti_sysbios_family_arm_lm4_Timer_getPeriod__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst );
+__extern xdc_UInt32 ti_sysbios_family_arm_lm4_Timer_getPeriod__E( ti_sysbios_family_arm_lm4_Timer_Handle instp);
 
 /* getCount__E */
 #define ti_sysbios_family_arm_lm4_Timer_getCount ti_sysbios_family_arm_lm4_Timer_getCount__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_getCount__E, "ti_sysbios_family_arm_lm4_Timer_getCount")
-__extern xdc_UInt32 ti_sysbios_family_arm_lm4_Timer_getCount__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst );
+__extern xdc_UInt32 ti_sysbios_family_arm_lm4_Timer_getCount__E( ti_sysbios_family_arm_lm4_Timer_Handle instp);
 
 /* getFreq__E */
 #define ti_sysbios_family_arm_lm4_Timer_getFreq ti_sysbios_family_arm_lm4_Timer_getFreq__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_getFreq__E, "ti_sysbios_family_arm_lm4_Timer_getFreq")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_getFreq__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst, xdc_runtime_Types_FreqHz *freq );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_getFreq__E( ti_sysbios_family_arm_lm4_Timer_Handle instp, xdc_runtime_Types_FreqHz *freq);
 
 /* getFunc__E */
 #define ti_sysbios_family_arm_lm4_Timer_getFunc ti_sysbios_family_arm_lm4_Timer_getFunc__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_getFunc__E, "ti_sysbios_family_arm_lm4_Timer_getFunc")
-__extern ti_sysbios_interfaces_ITimer_FuncPtr ti_sysbios_family_arm_lm4_Timer_getFunc__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst, xdc_UArg *arg );
+__extern ti_sysbios_interfaces_ITimer_FuncPtr ti_sysbios_family_arm_lm4_Timer_getFunc__E( ti_sysbios_family_arm_lm4_Timer_Handle instp, xdc_UArg *arg);
 
 /* setFunc__E */
 #define ti_sysbios_family_arm_lm4_Timer_setFunc ti_sysbios_family_arm_lm4_Timer_setFunc__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_setFunc__E, "ti_sysbios_family_arm_lm4_Timer_setFunc")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_setFunc__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_setFunc__E( ti_sysbios_family_arm_lm4_Timer_Handle instp, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg);
 
 /* trigger__E */
 #define ti_sysbios_family_arm_lm4_Timer_trigger ti_sysbios_family_arm_lm4_Timer_trigger__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_trigger__E, "ti_sysbios_family_arm_lm4_Timer_trigger")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_trigger__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst, xdc_UInt32 cycles );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_trigger__E( ti_sysbios_family_arm_lm4_Timer_Handle instp, xdc_UInt32 cycles);
 
 /* getExpiredCounts__E */
 #define ti_sysbios_family_arm_lm4_Timer_getExpiredCounts ti_sysbios_family_arm_lm4_Timer_getExpiredCounts__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_getExpiredCounts__E, "ti_sysbios_family_arm_lm4_Timer_getExpiredCounts")
-__extern xdc_UInt32 ti_sysbios_family_arm_lm4_Timer_getExpiredCounts__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst );
+__extern xdc_UInt32 ti_sysbios_family_arm_lm4_Timer_getExpiredCounts__E( ti_sysbios_family_arm_lm4_Timer_Handle instp);
 
 /* getExpiredTicks__E */
 #define ti_sysbios_family_arm_lm4_Timer_getExpiredTicks ti_sysbios_family_arm_lm4_Timer_getExpiredTicks__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_getExpiredTicks__E, "ti_sysbios_family_arm_lm4_Timer_getExpiredTicks")
-__extern xdc_UInt32 ti_sysbios_family_arm_lm4_Timer_getExpiredTicks__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst, xdc_UInt32 tickPeriod );
+__extern xdc_UInt32 ti_sysbios_family_arm_lm4_Timer_getExpiredTicks__E( ti_sysbios_family_arm_lm4_Timer_Handle instp, xdc_UInt32 tickPeriod);
 
 /* getCurrentTick__E */
 #define ti_sysbios_family_arm_lm4_Timer_getCurrentTick ti_sysbios_family_arm_lm4_Timer_getCurrentTick__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_getCurrentTick__E, "ti_sysbios_family_arm_lm4_Timer_getCurrentTick")
-__extern xdc_UInt32 ti_sysbios_family_arm_lm4_Timer_getCurrentTick__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst, xdc_Bool save );
+__extern xdc_UInt32 ti_sysbios_family_arm_lm4_Timer_getCurrentTick__E( ti_sysbios_family_arm_lm4_Timer_Handle instp, xdc_Bool save);
 
 /* getHandle__E */
 #define ti_sysbios_family_arm_lm4_Timer_getHandle ti_sysbios_family_arm_lm4_Timer_getHandle__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_getHandle__E, "ti_sysbios_family_arm_lm4_Timer_getHandle")
-__extern ti_sysbios_family_arm_lm4_Timer_Handle ti_sysbios_family_arm_lm4_Timer_getHandle__E( xdc_UInt id );
+__extern ti_sysbios_family_arm_lm4_Timer_Handle ti_sysbios_family_arm_lm4_Timer_getHandle__E( xdc_UInt id);
 
 /* getAvailMask__E */
 #define ti_sysbios_family_arm_lm4_Timer_getAvailMask ti_sysbios_family_arm_lm4_Timer_getAvailMask__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_getAvailMask__E, "ti_sysbios_family_arm_lm4_Timer_getAvailMask")
-__extern xdc_UInt ti_sysbios_family_arm_lm4_Timer_getAvailMask__E( void );
+__extern xdc_UInt ti_sysbios_family_arm_lm4_Timer_getAvailMask__E( void);
 
 /* setAvailMask__E */
 #define ti_sysbios_family_arm_lm4_Timer_setAvailMask ti_sysbios_family_arm_lm4_Timer_setAvailMask__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_setAvailMask__E, "ti_sysbios_family_arm_lm4_Timer_setAvailMask")
-__extern xdc_Bool ti_sysbios_family_arm_lm4_Timer_setAvailMask__E( xdc_UInt mask );
+__extern xdc_Bool ti_sysbios_family_arm_lm4_Timer_setAvailMask__E( xdc_UInt mask);
 
 /* isrStub__E */
 #define ti_sysbios_family_arm_lm4_Timer_isrStub ti_sysbios_family_arm_lm4_Timer_isrStub__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_isrStub__E, "ti_sysbios_family_arm_lm4_Timer_isrStub")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_isrStub__E( xdc_UArg arg );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_isrStub__E( xdc_UArg arg);
 
 /* reconfig__E */
 #define ti_sysbios_family_arm_lm4_Timer_reconfig ti_sysbios_family_arm_lm4_Timer_reconfig__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_reconfig__E, "ti_sysbios_family_arm_lm4_Timer_reconfig")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_reconfig__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst, ti_sysbios_family_arm_lm4_Timer_FuncPtr tickFxn, const ti_sysbios_family_arm_lm4_Timer_Params *timerParams, xdc_runtime_Error_Block *eb );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_reconfig__E( ti_sysbios_family_arm_lm4_Timer_Handle instp, ti_sysbios_family_arm_lm4_Timer_FuncPtr tickFxn, const ti_sysbios_family_arm_lm4_Timer_Params *timerParams, xdc_runtime_Error_Block *eb);
 
 /* getExpiredCounts64__E */
 #define ti_sysbios_family_arm_lm4_Timer_getExpiredCounts64 ti_sysbios_family_arm_lm4_Timer_getExpiredCounts64__E
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_getExpiredCounts64__E, "ti_sysbios_family_arm_lm4_Timer_getExpiredCounts64")
-__extern xdc_UInt64 ti_sysbios_family_arm_lm4_Timer_getExpiredCounts64__E( ti_sysbios_family_arm_lm4_Timer_Handle __inst );
+__extern xdc_UInt64 ti_sysbios_family_arm_lm4_Timer_getExpiredCounts64__E( ti_sysbios_family_arm_lm4_Timer_Handle instp);
 
 /* enableCC26xx__I */
 #define ti_sysbios_family_arm_lm4_Timer_enableCC26xx ti_sysbios_family_arm_lm4_Timer_enableCC26xx__I
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_enableCC26xx__I, "ti_sysbios_family_arm_lm4_Timer_enableCC26xx")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_enableCC26xx__I( xdc_Int id );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_enableCC26xx__I( xdc_Int id);
 
 /* enableCC3200__I */
 #define ti_sysbios_family_arm_lm4_Timer_enableCC3200 ti_sysbios_family_arm_lm4_Timer_enableCC3200__I
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_enableCC3200__I, "ti_sysbios_family_arm_lm4_Timer_enableCC3200")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_enableCC3200__I( xdc_Int id );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_enableCC3200__I( xdc_Int id);
 
 /* disableCC26xx__I */
 #define ti_sysbios_family_arm_lm4_Timer_disableCC26xx ti_sysbios_family_arm_lm4_Timer_disableCC26xx__I
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_disableCC26xx__I, "ti_sysbios_family_arm_lm4_Timer_disableCC26xx")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_disableCC26xx__I( xdc_Int id );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_disableCC26xx__I( xdc_Int id);
 
 /* disableCC3200__I */
 #define ti_sysbios_family_arm_lm4_Timer_disableCC3200 ti_sysbios_family_arm_lm4_Timer_disableCC3200__I
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_disableCC3200__I, "ti_sysbios_family_arm_lm4_Timer_disableCC3200")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_disableCC3200__I( xdc_Int id );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_disableCC3200__I( xdc_Int id);
 
 /* enableTiva__I */
 #define ti_sysbios_family_arm_lm4_Timer_enableTiva ti_sysbios_family_arm_lm4_Timer_enableTiva__I
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_enableTiva__I, "ti_sysbios_family_arm_lm4_Timer_enableTiva")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_enableTiva__I( xdc_Int id );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_enableTiva__I( xdc_Int id);
 
 /* disableTiva__I */
 #define ti_sysbios_family_arm_lm4_Timer_disableTiva ti_sysbios_family_arm_lm4_Timer_disableTiva__I
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_disableTiva__I, "ti_sysbios_family_arm_lm4_Timer_disableTiva")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_disableTiva__I( xdc_Int id );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_disableTiva__I( xdc_Int id);
 
 /* initDevice__I */
 #define ti_sysbios_family_arm_lm4_Timer_initDevice ti_sysbios_family_arm_lm4_Timer_initDevice__I
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_initDevice__I, "ti_sysbios_family_arm_lm4_Timer_initDevice")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_initDevice__I( ti_sysbios_family_arm_lm4_Timer_Object *timer );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_initDevice__I( ti_sysbios_family_arm_lm4_Timer_Object *timer);
 
 /* postInit__I */
 #define ti_sysbios_family_arm_lm4_Timer_postInit ti_sysbios_family_arm_lm4_Timer_postInit__I
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_postInit__I, "ti_sysbios_family_arm_lm4_Timer_postInit")
-__extern xdc_Int ti_sysbios_family_arm_lm4_Timer_postInit__I( ti_sysbios_family_arm_lm4_Timer_Object *timer, xdc_runtime_Error_Block *eb );
+__extern xdc_Int ti_sysbios_family_arm_lm4_Timer_postInit__I( ti_sysbios_family_arm_lm4_Timer_Object *timer, xdc_runtime_Error_Block *eb);
 
 /* enableTimers__I */
 #define ti_sysbios_family_arm_lm4_Timer_enableTimers ti_sysbios_family_arm_lm4_Timer_enableTimers__I
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_enableTimers__I, "ti_sysbios_family_arm_lm4_Timer_enableTimers")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_enableTimers__I( void );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_enableTimers__I( void);
 
 /* masterDisable__I */
 #define ti_sysbios_family_arm_lm4_Timer_masterDisable ti_sysbios_family_arm_lm4_Timer_masterDisable__I
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_masterDisable__I, "ti_sysbios_family_arm_lm4_Timer_masterDisable")
-__extern xdc_Bool ti_sysbios_family_arm_lm4_Timer_masterDisable__I( void );
+__extern xdc_Bool ti_sysbios_family_arm_lm4_Timer_masterDisable__I( void);
 
 /* masterEnable__I */
 #define ti_sysbios_family_arm_lm4_Timer_masterEnable ti_sysbios_family_arm_lm4_Timer_masterEnable__I
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_masterEnable__I, "ti_sysbios_family_arm_lm4_Timer_masterEnable")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_masterEnable__I( void );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_masterEnable__I( void);
 
 /* write__I */
 #define ti_sysbios_family_arm_lm4_Timer_write ti_sysbios_family_arm_lm4_Timer_write__I
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_write__I, "ti_sysbios_family_arm_lm4_Timer_write")
-__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_write__I( xdc_Bool altclk, volatile xdc_UInt32 *pReg, xdc_UInt32 val );
+__extern xdc_Void ti_sysbios_family_arm_lm4_Timer_write__I( xdc_Bool altclk, volatile xdc_UInt32 *pReg, xdc_UInt32 val);
 
 
 /*
@@ -858,8 +860,8 @@ static inline void ti_sysbios_family_arm_lm4_Timer_Params_copy(ti_sysbios_family
 #define ti_sysbios_family_arm_lm4_Timer_Object_sizeof() ti_sysbios_family_arm_lm4_Timer_Object__sizeof__C
 
 /* Object_get */
-static inline ti_sysbios_family_arm_lm4_Timer_Handle ti_sysbios_family_arm_lm4_Timer_Object_get(ti_sysbios_family_arm_lm4_Timer_Instance_State *oarr, int i);
-static inline ti_sysbios_family_arm_lm4_Timer_Handle ti_sysbios_family_arm_lm4_Timer_Object_get(ti_sysbios_family_arm_lm4_Timer_Instance_State *oarr, int i) 
+static inline ti_sysbios_family_arm_lm4_Timer_Handle ti_sysbios_family_arm_lm4_Timer_Object_get(ti_sysbios_family_arm_lm4_Timer_Object *oarr, int i);
+static inline ti_sysbios_family_arm_lm4_Timer_Handle ti_sysbios_family_arm_lm4_Timer_Object_get(ti_sysbios_family_arm_lm4_Timer_Object *oarr, int i) 
 {
     return (ti_sysbios_family_arm_lm4_Timer_Handle)ti_sysbios_family_arm_lm4_Timer_Object__get__S(oarr, i);
 }

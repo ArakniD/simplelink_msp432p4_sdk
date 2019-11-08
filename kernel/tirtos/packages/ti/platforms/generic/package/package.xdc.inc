@@ -6,7 +6,7 @@ package/ti.platforms.generic.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_platforms_generic.java
 package/ti_platforms_generic.class
 package/package_ti.platforms.generic.c

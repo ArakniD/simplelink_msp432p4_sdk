@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_uia_runtime_CtxFilter__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_runtime_CtxFilter___VERS 200
@@ -247,47 +249,47 @@ __extern __FAR__ const CT__ti_uia_runtime_CtxFilter_Object__table ti_uia_runtime
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_runtime_CtxFilter_Module__startupDone__S, "ti_uia_runtime_CtxFilter_Module__startupDone__S")
-__extern xdc_Bool ti_uia_runtime_CtxFilter_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_runtime_CtxFilter_Module__startupDone__S( void);
 
 /* isCtxEnabled__E */
 #define ti_uia_runtime_CtxFilter_isCtxEnabled ti_uia_runtime_CtxFilter_isCtxEnabled__E
 xdc__CODESECT(ti_uia_runtime_CtxFilter_isCtxEnabled__E, "ti_uia_runtime_CtxFilter_isCtxEnabled")
-__extern xdc_Bool ti_uia_runtime_CtxFilter_isCtxEnabled__E( void );
+__extern xdc_Bool ti_uia_runtime_CtxFilter_isCtxEnabled__E( void);
 
 /* setCtxEnabled__E */
 #define ti_uia_runtime_CtxFilter_setCtxEnabled ti_uia_runtime_CtxFilter_setCtxEnabled__E
 xdc__CODESECT(ti_uia_runtime_CtxFilter_setCtxEnabled__E, "ti_uia_runtime_CtxFilter_setCtxEnabled")
-__extern xdc_Bool ti_uia_runtime_CtxFilter_setCtxEnabled__E( xdc_Bool value );
+__extern xdc_Bool ti_uia_runtime_CtxFilter_setCtxEnabled__E( xdc_Bool value);
 
 /* setContextFilterFlags__E */
 #define ti_uia_runtime_CtxFilter_setContextFilterFlags ti_uia_runtime_CtxFilter_setContextFilterFlags__E
 xdc__CODESECT(ti_uia_runtime_CtxFilter_setContextFilterFlags__E, "ti_uia_runtime_CtxFilter_setContextFilterFlags")
-__extern xdc_Void ti_uia_runtime_CtxFilter_setContextFilterFlags__E( xdc_Bits16 flags );
+__extern xdc_Void ti_uia_runtime_CtxFilter_setContextFilterFlags__E( xdc_Bits16 flags);
 
 /* isLoggingEnabledForAppCtx__E */
 #define ti_uia_runtime_CtxFilter_isLoggingEnabledForAppCtx ti_uia_runtime_CtxFilter_isLoggingEnabledForAppCtx__E
 xdc__CODESECT(ti_uia_runtime_CtxFilter_isLoggingEnabledForAppCtx__E, "ti_uia_runtime_CtxFilter_isLoggingEnabledForAppCtx")
-__extern xdc_Bool ti_uia_runtime_CtxFilter_isLoggingEnabledForAppCtx__E( xdc_Int newAppCtx );
+__extern xdc_Bool ti_uia_runtime_CtxFilter_isLoggingEnabledForAppCtx__E( xdc_Int newAppCtx);
 
 /* isLoggingEnabledForChanCtx__E */
 #define ti_uia_runtime_CtxFilter_isLoggingEnabledForChanCtx ti_uia_runtime_CtxFilter_isLoggingEnabledForChanCtx__E
 xdc__CODESECT(ti_uia_runtime_CtxFilter_isLoggingEnabledForChanCtx__E, "ti_uia_runtime_CtxFilter_isLoggingEnabledForChanCtx")
-__extern xdc_Bool ti_uia_runtime_CtxFilter_isLoggingEnabledForChanCtx__E( xdc_Int newChanId );
+__extern xdc_Bool ti_uia_runtime_CtxFilter_isLoggingEnabledForChanCtx__E( xdc_Int newChanId);
 
 /* isLoggingEnabledForFrameCtx__E */
 #define ti_uia_runtime_CtxFilter_isLoggingEnabledForFrameCtx ti_uia_runtime_CtxFilter_isLoggingEnabledForFrameCtx__E
 xdc__CODESECT(ti_uia_runtime_CtxFilter_isLoggingEnabledForFrameCtx__E, "ti_uia_runtime_CtxFilter_isLoggingEnabledForFrameCtx")
-__extern xdc_Bool ti_uia_runtime_CtxFilter_isLoggingEnabledForFrameCtx__E( xdc_Int newFrameId );
+__extern xdc_Bool ti_uia_runtime_CtxFilter_isLoggingEnabledForFrameCtx__E( xdc_Int newFrameId);
 
 /* isLoggingEnabledForThreadCtx__E */
 #define ti_uia_runtime_CtxFilter_isLoggingEnabledForThreadCtx ti_uia_runtime_CtxFilter_isLoggingEnabledForThreadCtx__E
 xdc__CODESECT(ti_uia_runtime_CtxFilter_isLoggingEnabledForThreadCtx__E, "ti_uia_runtime_CtxFilter_isLoggingEnabledForThreadCtx")
-__extern xdc_Bool ti_uia_runtime_CtxFilter_isLoggingEnabledForThreadCtx__E( xdc_Int newThreadId );
+__extern xdc_Bool ti_uia_runtime_CtxFilter_isLoggingEnabledForThreadCtx__E( xdc_Int newThreadId);
 
 /* isLoggingEnabledForUserCtx__E */
 #define ti_uia_runtime_CtxFilter_isLoggingEnabledForUserCtx ti_uia_runtime_CtxFilter_isLoggingEnabledForUserCtx__E
 xdc__CODESECT(ti_uia_runtime_CtxFilter_isLoggingEnabledForUserCtx__E, "ti_uia_runtime_CtxFilter_isLoggingEnabledForUserCtx")
-__extern xdc_Bool ti_uia_runtime_CtxFilter_isLoggingEnabledForUserCtx__E( xdc_Int newUserCtx );
+__extern xdc_Bool ti_uia_runtime_CtxFilter_isLoggingEnabledForUserCtx__E( xdc_Int newUserCtx);
 
 
 /*

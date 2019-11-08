@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_rts_ti_ReentSupport__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_rts_ti_ReentSupport___VERS 200
@@ -244,24 +246,24 @@ __extern __FAR__ const CT__ti_sysbios_rts_ti_ReentSupport_A_badThreadType ti_sys
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_rts_ti_ReentSupport_Module__startupDone__S, "ti_sysbios_rts_ti_ReentSupport_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_rts_ti_ReentSupport_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_rts_ti_ReentSupport_Module__startupDone__S( void);
 
 /* getReent__E */
 #define ti_sysbios_rts_ti_ReentSupport_getReent ti_sysbios_rts_ti_ReentSupport_getReent__E
 xdc__CODESECT(ti_sysbios_rts_ti_ReentSupport_getReent__E, "ti_sysbios_rts_ti_ReentSupport_getReent")
-__extern xdc_Int *ti_sysbios_rts_ti_ReentSupport_getReent__E( void );
+__extern xdc_Int *ti_sysbios_rts_ti_ReentSupport_getReent__E( void);
 xdc__CODESECT(ti_sysbios_rts_ti_ReentSupport_getReent__F, "ti_sysbios_rts_ti_ReentSupport_getReent")
-__extern xdc_Int *ti_sysbios_rts_ti_ReentSupport_getReent__F( void );
+__extern xdc_Int *ti_sysbios_rts_ti_ReentSupport_getReent__F( void);
 
 /* taskRegHook__I */
 #define ti_sysbios_rts_ti_ReentSupport_taskRegHook ti_sysbios_rts_ti_ReentSupport_taskRegHook__I
 xdc__CODESECT(ti_sysbios_rts_ti_ReentSupport_taskRegHook__I, "ti_sysbios_rts_ti_ReentSupport_taskRegHook")
-__extern xdc_Void ti_sysbios_rts_ti_ReentSupport_taskRegHook__I( xdc_Int id );
+__extern xdc_Void ti_sysbios_rts_ti_ReentSupport_taskRegHook__I( xdc_Int id);
 
 /* getTlsAddr__I */
 #define ti_sysbios_rts_ti_ReentSupport_getTlsAddr ti_sysbios_rts_ti_ReentSupport_getTlsAddr__I
 xdc__CODESECT(ti_sysbios_rts_ti_ReentSupport_getTlsAddr__I, "ti_sysbios_rts_ti_ReentSupport_getTlsAddr")
-__extern xdc_Int *ti_sysbios_rts_ti_ReentSupport_getTlsAddr__I( void );
+__extern xdc_Int *ti_sysbios_rts_ti_ReentSupport_getTlsAddr__I( void);
 
 
 /*

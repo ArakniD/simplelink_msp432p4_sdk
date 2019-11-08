@@ -1,12 +1,3 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# powerdeepsleep
-
----
-
 ## Example Summary
 
 This example demonstrates usage of a Power policy to put the device into a deep
@@ -16,26 +7,37 @@ then the deep sleep Power policy will be selected.  When the button ISR finishes
 and the CPU idle loop runs again, the Power policy puts the device into deep
 sleep.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_GPIO_LED1` - Indicates that the board was initialized within
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
+
+* `CONFIG_GPIO_LED_1` - Indicates that the board was initialized within
 `mainThread()`. It is turned OFF when the button is pressed.
-* `Board_GPIO_BUTTON0` - Enables the deep sleep power policy
+* `CONFIG_GPIO_BUTTON_0` - Enables the deep sleep power policy
 
-## Resources & Jumper Settings
+## BoosterPacks, Board Resources & Jumper Settings
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
+
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 
 ## Example Usage
 
-* Run the example. `Board_GPIO_LED1` turns ON to indicate driver
+* Run the example. `CONFIG_GPIO_LED_1` turns ON to indicate driver
 initialization is complete.
 
-* Press `Board_GPIO_BUTTON0`.  `Board_GPIO_LED1` will be turned OFF, and the
+* Press `CONFIG_GPIO_BUTTON_0`.  `CONFIG_GPIO_LED_1` will be turned OFF, and the
 device will enter deep sleep.
 
 

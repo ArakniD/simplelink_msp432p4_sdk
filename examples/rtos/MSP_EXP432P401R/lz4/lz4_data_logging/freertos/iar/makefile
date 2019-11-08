@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
 
-OBJECTS = freertos_main_freertos.obj compress_thread.obj sensor_thread.obj MSP_EXP432P401R.obj
+OBJECTS = compress_thread.obj sensor_thread.obj MSP_EXP432P401R.obj freertos_main_freertos.obj
 
 NAME = lz4_data_logging
 
@@ -51,10 +51,6 @@ $(KERNEL_BUILD)/iar/freertos.lib:
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
 
-freertos_main_freertos.obj: ../../freertos/main_freertos.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -o $@
-
 compress_thread.obj: ../../compress_thread.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
@@ -67,9 +63,14 @@ MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
+freertos_main_freertos.obj: ../../freertos/main_freertos.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -o $@
+
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/iar/freertos.lib
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
+
 
 clean:
 	@ echo Cleaning...

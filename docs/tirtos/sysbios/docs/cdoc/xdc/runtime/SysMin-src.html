@@ -6,7 +6,7 @@
 <body>
 <pre class=src>
      1    <span class="comment">/* 
-</span>     2    <span class="comment"> *  Copyright (c) 2008 Texas Instruments. All rights reserved.
+</span>     2    <span class="comment"> *  Copyright (c) 2008-2019 Texas Instruments Incorporated
 </span>     3    <span class="comment"> *  This program and the accompanying materials are made available under the
 </span>     4    <span class="comment"> *  terms of the Eclipse Public License v1.0 and Eclipse Distribution License
 </span>     5    <span class="comment"> *  v. 1.0 which accompanies this distribution. The Eclipse Public License is
@@ -27,7 +27,7 @@
 </span>    20    <span class="xdoc"> *  Minimal implementation of `{<b>@link</b> ISystemSupport}`
 </span>    21    <span class="xdoc"> *
 </span>    22    <span class="xdoc"> *  This implementation provides a fully functional implementation of
-</span>    23    <span class="xdoc"> *  all methods specified by `ISystemSupport`. 
+</span>    23    <span class="xdoc"> *  all methods specified by `ISystemSupport`.
 </span>    24    <span class="xdoc"> *
 </span>    25    <span class="xdoc"> *  The module maintains an internal buffer (with a configurable size)
 </span>    26    <span class="xdoc"> *  that stores on the "output". When full, the data is over-written.  When
@@ -82,185 +82,189 @@
 </span>    75    <span class="xdoc">     *  ======== bufSize ========
 </span>    76    <span class="xdoc">     *  Size (in MAUs) of the output.
 </span>    77    <span class="xdoc">     *
-</span>    78    <span class="xdoc">     *  An internal buffer of this size is allocated. All output is stored 
-</span>    79    <span class="xdoc">     *  in this internal buffer. 
+</span>    78    <span class="xdoc">     *  An internal buffer of this size is allocated. All output is stored
+</span>    79    <span class="xdoc">     *  in this internal buffer.
 </span>    80    <span class="xdoc">     *
 </span>    81    <span class="xdoc">     *  If 0 is specified for the size, no buffer is created, all output
 </span>    82    <span class="xdoc">     *  is dropped, and `{<b>@link</b> SysMin#ready()}` always returns `FALSE`.
 </span>    83    <span class="xdoc">     */</span>
-    84        <span class=key>config</span> SizeT bufSize = 1024;
-    85    
-    86        <span class="xdoc">/*!
-</span>    87    <span class="xdoc">     *  ======== flushAtExit ========
-</span>    88    <span class="xdoc">     *  Flush the internal buffer during `{<b>@link</b> #exit}` or `{<b>@link</b> #abort}`.
-</span>    89    <span class="xdoc">     *
-</span>    90    <span class="xdoc">     *  If the application's target is a TI target, the internal buffer is
-</span>    91    <span class="xdoc">     *  flushed via the `HOSTwrite` function in the TI C Run Time Support
-</span>    92    <span class="xdoc">     *  (RTS) library.
-</span>    93    <span class="xdoc">     *
-</span>    94    <span class="xdoc">     *  If the application's target is not a TI target, the internal buffer
-</span>    95    <span class="xdoc">     *  is flushed to `stdout` via `fwrite(..., stdout)`.
-</span>    96    <span class="xdoc">     *
-</span>    97    <span class="xdoc">     *  Setting this parameter to `false` reduces the footprint of the 
-</span>    98    <span class="xdoc">     *  application at the expense of not getting output when the application
-</span>    99    <span class="xdoc">     *  ends via a `System_exit()`, `System_abort()`, `exit()` or `abort()`.  
-</span>   100    <span class="xdoc">     */</span>
-   101        <span class=key>config</span> Bool flushAtExit = <span class=key>true</span>;
-   102    
-   103        <span class="xdoc">/*!
-</span>   104    <span class="xdoc">     *  ======== sectionName ========
-</span>   105    <span class="xdoc">     *  Section where the internal character output buffer is placed
-</span>   106    <span class="xdoc">     *
-</span>   107    <span class="xdoc">     *  The default is to have no explicit placement; i.e., the linker is
-</span>   108    <span class="xdoc">     *  free to place it anywhere in the memory map.
-</span>   109    <span class="xdoc">     */</span>
-   110        <span class=key>metaonly</span> <span class=key>config</span> String sectionName = <span class=key>null</span>;
-   111    
-   112        <span class="xdoc">/*!
-</span>   113    <span class="xdoc">     *  ======== OutputFxn ========
-</span>   114    <span class="xdoc">     *  Output characters in the specified buffer
-</span>   115    <span class="xdoc">     *
-</span>   116    <span class="xdoc">     *  The first parameter is a pointer to a buffer of characters to be
-</span>   117    <span class="xdoc">     *  output.  The second parameter is the number of characters in the
-</span>   118    <span class="xdoc">     *  buffer to output.
-</span>   119    <span class="xdoc">     *
-</span>   120    <span class="xdoc">     *  This function may be called with 0 as the second parameter.  In this
-</span>   121    <span class="xdoc">     *  case, the function should simply return.
-</span>   122    <span class="xdoc">     *  
-</span>   123    <span class="xdoc">     */</span>
-   124        <span class=key>typedef</span> Void (*OutputFxn)(Char *, UInt);
-   125    
-   126        <span class="xdoc">/*!
-</span>   127    <span class="xdoc">     *  ======== outputFxn ========
-</span>   128    <span class="xdoc">     *  User supplied character output function
-</span>   129    <span class="xdoc">     *
-</span>   130    <span class="xdoc">     *  If this parameter is set to a non-`null` value, the specified
-</span>   131    <span class="xdoc">     *  function will be called by `{<b>@link</b> System#flush()}` to output
-</span>   132    <span class="xdoc">     *  any characters buffered within `SysMin`.
-</span>   133    <span class="xdoc">     *
-</span>   134    <span class="xdoc">     *  For example, if you define a function named `myOutputFxn`, the
-</span>   135    <span class="xdoc">     *  following configuration fragment will cause `SysMin` to call
-</span>   136    <span class="xdoc">     *  `myOutputFxn` whenever the character buffer is flushed.
-</span>   137    <span class="xdoc">     *  <b>@p(code)</b>
-</span>   138    <span class="xdoc">     *      var SysMin = xdc.useModule("xdc.runtime.SysMin");
-</span>   139    <span class="xdoc">     *      SysMin.outputFxn = "&amp;myOutputFxn";
-</span>   140    <span class="xdoc">     *  <b>@p</b>
-</span>   141    <span class="xdoc">     *
-</span>   142    <span class="xdoc">     *  If this parameter is not set, a default function will be used which
-</span>   143    <span class="xdoc">     *  uses the ANSI C Standard Library function `fwrite()` (or `HOSTwrite` 
-</span>   144    <span class="xdoc">     *  in the TI C Run Time Support library) to output
-</span>   145    <span class="xdoc">     *  accumulated output characters.
-</span>   146    <span class="xdoc">     *
-</span>   147    <span class="xdoc">     *  <b>@see</b> #OutputFxn
-</span>   148    <span class="xdoc">     */</span>
-   149        <span class=key>config</span> OutputFxn outputFxn = <span class=key>null</span>;
-   150    
-   151        <span class="xdoc">/*!
-</span>   152    <span class="xdoc">     *  ======== abort ========
-</span>   153    <span class="xdoc">     *  Backend for `{<b>@link</b> System#abort()}`
-</span>   154    <span class="xdoc">     *
-</span>   155    <span class="xdoc">     *  This abort function writes the string to the internal
-</span>   156    <span class="xdoc">     *  output buffer and then gives all internal output to the 
-</span>   157    <span class="xdoc">     *  `{<b>@link</b> #outputFxn}` function if the `{<b>@link</b> #flushAtExit}` 
-</span>   158    <span class="xdoc">     *  configuration parameter is true.
-</span>   159    <span class="xdoc">     *
-</span>   160    <span class="xdoc">     *  <b>@param(str)</b>  message to output just prior to aborting
-</span>   161    <span class="xdoc">     *
-</span>   162    <span class="xdoc">     *      If non-`NULL`, this string should be output just prior to
-</span>   163    <span class="xdoc">     *      terminating. 
-</span>   164    <span class="xdoc">     *
-</span>   165    <span class="xdoc">     *  <b>@see</b> ISystemSupport#abort
-</span>   166    <span class="xdoc">     */</span>
-   167        <span class=key>override</span> Void abort(CString str);
-   168    
-   169        <span class="xdoc">/*!
-</span>   170    <span class="xdoc">     *  ======== exit ========
-</span>   171    <span class="xdoc">     *  Backend for `{<b>@link</b> System#exit()}`
-</span>   172    <span class="xdoc">     *
-</span>   173    <span class="xdoc">     *  This exit function gives all internal output to the 
-</span>   174    <span class="xdoc">     *  `{<b>@link</b> #outputFxn}` function if the `{<b>@link</b> #flushAtExit}` 
-</span>   175    <span class="xdoc">     *  configuration parameter is true.
-</span>   176    <span class="xdoc">     *
-</span>   177    <span class="xdoc">     *  <b>@see</b> ISystemSupport#exit
-</span>   178    <span class="xdoc">     */</span>
-   179        <span class=key>override</span> Void exit(Int stat);
-   180    
-   181        <span class="xdoc">/*!
-</span>   182    <span class="xdoc">     *  ======== flush ========
-</span>   183    <span class="xdoc">     *  Backend for `{<b>@link</b> System#flush()}`
-</span>   184    <span class="xdoc">     *
-</span>   185    <span class="xdoc">     *  The `flush` writes the contents of the internal character buffer
-</span>   186    <span class="xdoc">     *  via the `{<b>@link</b> #outputFxn}` function.
-</span>   187    <span class="xdoc">     *
-</span>   188    <span class="xdoc">     *  <b>@a(Warning)</b>
-</span>   189    <span class="xdoc">     *  The `{<b>@link</b> System}` gate is used for thread safety during the
-</span>   190    <span class="xdoc">     *  entire flush operation, so care must be taken when flushing with
-</span>   191    <span class="xdoc">     *  this `ISystemSupport` module.  Depending on the nature of the
-</span>   192    <span class="xdoc">     *  `System` gate, your application's interrupt latency
-</span>   193    <span class="xdoc">     *  may become a function of the `bufSize` parameter!
-</span>   194    <span class="xdoc">     *
-</span>   195    <span class="xdoc">     *  <b>@see</b> ISystemSupport#flush
-</span>   196    <span class="xdoc">     */</span>
-   197        <span class=key>override</span> Void flush();
-   198    
-   199        <span class="xdoc">/*!
-</span>   200    <span class="xdoc">     *  ======== putch ========
-</span>   201    <span class="xdoc">     *  Backend for `{<b>@link</b> System#printf()}` and `{<b>@link</b> System#putch()}`
-</span>   202    <span class="xdoc">     *
-</span>   203    <span class="xdoc">     *  This function appends the character to an internal circular buffer.
-</span>   204    <span class="xdoc">     *  In the event that this buffer is not "flushed" (via `{<b>@link</b> #flush}`)
-</span>   205    <span class="xdoc">     *  before the output pointer wraps, the oldest previously put character
-</span>   206    <span class="xdoc">     *  will be overwritten.
-</span>   207    <span class="xdoc">     *
-</span>   208    <span class="xdoc">     *  `SysMin_flush` passes the internal buffer to the
-</span>   209    <span class="xdoc">     *  `{<b>@link</b> #outputFxn}` function and resets the internal buffer.
-</span>   210    <span class="xdoc">     *
-</span>   211    <span class="xdoc">     *  If the `{<b>@link</b> #flushAtExit}` configuration parameter is true, 
-</span>   212    <span class="xdoc">     *  `SysMin_flush` is implicitly called by `{<b>@link</b> #exit}` and
-</span>   213    <span class="xdoc">     *  `{<b>@link</b> #abort}`.
-</span>   214    <span class="xdoc">     *
-</span>   215    <span class="xdoc">     *  <b>@see</b> ISystemSupport#putch
-</span>   216    <span class="xdoc">     */</span>
-   217        <span class=key>override</span> Void putch(Char ch);
-   218    
-   219        <span class="xdoc">/*!
-</span>   220    <span class="xdoc">     *  ======== ready ========
-</span>   221    <span class="xdoc">     *  Test if character output can proceed
-</span>   222    <span class="xdoc">     *
-</span>   223    <span class="xdoc">     *  This function returns true if the internal buffer is non-zero.
-</span>   224    <span class="xdoc">     *
-</span>   225    <span class="xdoc">     *  <b>@see</b> ISystemSupport#ready
-</span>   226    <span class="xdoc">     */</span>
-   227        <span class=key>override</span> Bool ready();
-   228    
-   229    <span class=key>internal</span>:
-   230    
-   231        <span class="comment">/*
-</span>   232    <span class="comment">     * ======== output ======== 
-</span>   233    <span class="comment">     *  SysMin_output__I is generated based on bufSize.
-</span>   234    <span class="comment">     *
-</span>   235    <span class="comment">     *  This function is generated so that the code does not contain a call to
-</span>   236    <span class="comment">     *  HOSTwrite if bufSize is 0. Otherwise, if bufSize is 0, the compiler
-</span>   237    <span class="comment">     *  would optimize out the HOSTwrite function, leaving a 0-length symbol.
-</span>   238    <span class="comment">     *  If the a client later tried to pull in HOSTwrite, there would be a
-</span>   239    <span class="comment">     *  symbol error.
-</span>   240    <span class="comment">     *
-</span>   241    <span class="comment">     *  This generated function is accessed through an internal config so
-</span>   242    <span class="comment">     *  that it is an indirect call in the ROM case, but optimized to a direct
-</span>   243    <span class="comment">     *  call in the RAM case.
-</span>   244    <span class="comment">     */</span>
-   245        Void output(Char *buf, UInt size);
-   246        <span class=key>readonly</span> <span class=key>config</span> OutputFxn outputFunc = <span class="string">'&amp;xdc_runtime_SysMin_output__I'</span>;
-   247    
-   248        <span class=key>struct</span> Module_State {
-   249            Char outbuf[];  <span class="comment">/* the output buffer */</span>
-   250            UInt outidx;    <span class="comment">/* index within outbuf to next Char to write */</span>
-   251            Bool wrapped;   <span class="comment">/* has the index (outidx) wrapped */</span>  
-   252        }
-   253    }
-   254    <span class="comment">/*
-</span>   255    <span class="comment"> *  @(#) xdc.runtime; 2, 1, 0,0; 2-16-2019 22:17:03; /db/ztree/library/trees/xdc/xdc-G10/src/packages/
-</span>   256    <span class="comment"> */</span>
-   257    
+    84        <span class="comment">/* REQ_TAG(SYSBIOS-913), REQ_TAG(SYSBIOS-919) */</span>
+    85        <span class=key>config</span> SizeT bufSize = 1024;
+    86    
+    87        <span class="xdoc">/*!
+</span>    88    <span class="xdoc">     *  ======== flushAtExit ========
+</span>    89    <span class="xdoc">     *  Flush the internal buffer during `{<b>@link</b> #exit}` or `{<b>@link</b> #abort}`.
+</span>    90    <span class="xdoc">     *
+</span>    91    <span class="xdoc">     *  If the application's target is a TI target, the internal buffer is
+</span>    92    <span class="xdoc">     *  flushed via the `HOSTwrite` function in the TI C Run Time Support
+</span>    93    <span class="xdoc">     *  (RTS) library.
+</span>    94    <span class="xdoc">     *
+</span>    95    <span class="xdoc">     *  If the application's target is not a TI target, the internal buffer
+</span>    96    <span class="xdoc">     *  is flushed to `stdout` via `fwrite(..., stdout)`.
+</span>    97    <span class="xdoc">     *
+</span>    98    <span class="xdoc">     *  Setting this parameter to `false` reduces the footprint of the
+</span>    99    <span class="xdoc">     *  application at the expense of not getting output when the application
+</span>   100    <span class="xdoc">     *  ends via a `System_exit()`, `System_abort()`, `exit()` or `abort()`.
+</span>   101    <span class="xdoc">     */</span>
+   102        <span class="comment">/* REQ_TAG(SYSBIOS-920) */</span>
+   103        <span class=key>config</span> Bool flushAtExit = <span class=key>true</span>;
+   104    
+   105        <span class="xdoc">/*!
+</span>   106    <span class="xdoc">     *  ======== sectionName ========
+</span>   107    <span class="xdoc">     *  Section where the internal character output buffer is placed
+</span>   108    <span class="xdoc">     *
+</span>   109    <span class="xdoc">     *  The default is to have no explicit placement; i.e., the linker is
+</span>   110    <span class="xdoc">     *  free to place it anywhere in the memory map.
+</span>   111    <span class="xdoc">     */</span>
+   112        <span class=key>metaonly</span> <span class=key>config</span> String sectionName = <span class=key>null</span>;
+   113    
+   114        <span class="xdoc">/*!
+</span>   115    <span class="xdoc">     *  ======== OutputFxn ========
+</span>   116    <span class="xdoc">     *  Output characters in the specified buffer
+</span>   117    <span class="xdoc">     *
+</span>   118    <span class="xdoc">     *  The first parameter is a pointer to a buffer of characters to be
+</span>   119    <span class="xdoc">     *  output.  The second parameter is the number of characters in the
+</span>   120    <span class="xdoc">     *  buffer to output.
+</span>   121    <span class="xdoc">     *
+</span>   122    <span class="xdoc">     *  This function may be called with 0 as the second parameter.  In this
+</span>   123    <span class="xdoc">     *  case, the function should simply return.
+</span>   124    <span class="xdoc">     *
+</span>   125    <span class="xdoc">     */</span>
+   126        <span class=key>typedef</span> Void (*OutputFxn)(Char *, UInt);
+   127    
+   128        <span class="xdoc">/*!
+</span>   129    <span class="xdoc">     *  ======== outputFxn ========
+</span>   130    <span class="xdoc">     *  User supplied character output function
+</span>   131    <span class="xdoc">     *
+</span>   132    <span class="xdoc">     *  If this parameter is set to a non-`null` value, the specified
+</span>   133    <span class="xdoc">     *  function will be called by `{<b>@link</b> System#flush()}` to output
+</span>   134    <span class="xdoc">     *  any characters buffered within `SysMin`.
+</span>   135    <span class="xdoc">     *
+</span>   136    <span class="xdoc">     *  For example, if you define a function named `myOutputFxn`, the
+</span>   137    <span class="xdoc">     *  following configuration fragment will cause `SysMin` to call
+</span>   138    <span class="xdoc">     *  `myOutputFxn` whenever the character buffer is flushed.
+</span>   139    <span class="xdoc">     *  <b>@p(code)</b>
+</span>   140    <span class="xdoc">     *      var SysMin = xdc.useModule("xdc.runtime.SysMin");
+</span>   141    <span class="xdoc">     *      SysMin.outputFxn = "&amp;myOutputFxn";
+</span>   142    <span class="xdoc">     *  <b>@p</b>
+</span>   143    <span class="xdoc">     *
+</span>   144    <span class="xdoc">     *  If this parameter is not set, a default function will be used which uses
+</span>   145    <span class="xdoc">     *  the ANSI C Standard Library function `fwrite()` (or `HOSTwrite` in the
+</span>   146    <span class="xdoc">     *  TI C Run Time Support library) to output accumulated output characters.
+</span>   147    <span class="xdoc">     *
+</span>   148    <span class="xdoc">     *  <b>@see</b> #OutputFxn
+</span>   149    <span class="xdoc">     */</span>
+   150        <span class="comment">/* REQ_TAG(SYSBIOS-914) */</span>
+   151        <span class=key>config</span> OutputFxn outputFxn = <span class=key>null</span>;
+   152    
+   153        <span class="xdoc">/*!
+</span>   154    <span class="xdoc">     *  ======== abort ========
+</span>   155    <span class="xdoc">     *  Backend for `{<b>@link</b> System#abort()}`
+</span>   156    <span class="xdoc">     *
+</span>   157    <span class="xdoc">     *  This abort function writes the string to the internal output buffer and
+</span>   158    <span class="xdoc">     *  then gives all internal output to the `{<b>@link</b> #outputFxn}` function if
+</span>   159    <span class="xdoc">     *  the `{<b>@link</b> #flushAtExit}` configuration parameter is true.
+</span>   160    <span class="xdoc">     *
+</span>   161    <span class="xdoc">     *  <b>@param(str)</b>  message to output just prior to aborting
+</span>   162    <span class="xdoc">     *
+</span>   163    <span class="xdoc">     *      If non-`NULL`, this string should be output just prior to
+</span>   164    <span class="xdoc">     *      terminating.
+</span>   165    <span class="xdoc">     *
+</span>   166    <span class="xdoc">     *  <b>@see</b> ISystemSupport#abort
+</span>   167    <span class="xdoc">     */</span>
+   168        <span class="comment">/* REQ_TAG(SYSBIOS-915) */</span>
+   169        <span class=key>override</span> Void abort(CString str);
+   170    
+   171        <span class="xdoc">/*!
+</span>   172    <span class="xdoc">     *  ======== exit ========
+</span>   173    <span class="xdoc">     *  Backend for `{<b>@link</b> System#exit()}`
+</span>   174    <span class="xdoc">     *
+</span>   175    <span class="xdoc">     *  This exit function gives all internal output to the `{<b>@link</b> #outputFxn}`
+</span>   176    <span class="xdoc">     *  function if the `{<b>@link</b> #flushAtExit}` configuration parameter is true.
+</span>   177    <span class="xdoc">     *
+</span>   178    <span class="xdoc">     *  <b>@see</b> ISystemSupport#exit
+</span>   179    <span class="xdoc">     */</span>
+   180        <span class="comment">/* REQ_TAG(SYSBIOS-916) */</span>
+   181        <span class=key>override</span> Void exit(Int stat);
+   182    
+   183        <span class="xdoc">/*!
+</span>   184    <span class="xdoc">     *  ======== flush ========
+</span>   185    <span class="xdoc">     *  Backend for `{<b>@link</b> System#flush()}`
+</span>   186    <span class="xdoc">     *
+</span>   187    <span class="xdoc">     *  The `flush` writes the contents of the internal character buffer
+</span>   188    <span class="xdoc">     *  via the `{<b>@link</b> #outputFxn}` function.
+</span>   189    <span class="xdoc">     *
+</span>   190    <span class="xdoc">     *  <b>@a(Warning)</b>
+</span>   191    <span class="xdoc">     *  The `{<b>@link</b> System}` gate is used for thread safety during the
+</span>   192    <span class="xdoc">     *  entire flush operation, so care must be taken when flushing with
+</span>   193    <span class="xdoc">     *  this `ISystemSupport` module.  Depending on the nature of the
+</span>   194    <span class="xdoc">     *  `System` gate, your application's interrupt latency
+</span>   195    <span class="xdoc">     *  may become a function of the `bufSize` parameter!
+</span>   196    <span class="xdoc">     *
+</span>   197    <span class="xdoc">     *  <b>@see</b> ISystemSupport#flush
+</span>   198    <span class="xdoc">     */</span>
+   199        <span class=key>override</span> Void flush();
+   200    
+   201        <span class="xdoc">/*!
+</span>   202    <span class="xdoc">     *  ======== putch ========
+</span>   203    <span class="xdoc">     *  Backend for `{<b>@link</b> System#printf()}` and `{<b>@link</b> System#putch()}`
+</span>   204    <span class="xdoc">     *
+</span>   205    <span class="xdoc">     *  This function appends the character to an internal circular buffer.
+</span>   206    <span class="xdoc">     *  In the event that this buffer is not "flushed" (via `{<b>@link</b> #flush}`)
+</span>   207    <span class="xdoc">     *  before the output pointer wraps, the oldest previously put character
+</span>   208    <span class="xdoc">     *  will be overwritten.
+</span>   209    <span class="xdoc">     *
+</span>   210    <span class="xdoc">     *  `SysMin_flush` passes the internal buffer to the
+</span>   211    <span class="xdoc">     *  `{<b>@link</b> #outputFxn}` function and resets the internal buffer.
+</span>   212    <span class="xdoc">     *
+</span>   213    <span class="xdoc">     *  If the `{<b>@link</b> #flushAtExit}` configuration parameter is true,
+</span>   214    <span class="xdoc">     *  `SysMin_flush` is implicitly called by `{<b>@link</b> #exit}` and
+</span>   215    <span class="xdoc">     *  `{<b>@link</b> #abort}`.
+</span>   216    <span class="xdoc">     *
+</span>   217    <span class="xdoc">     *  <b>@see</b> ISystemSupport#putch
+</span>   218    <span class="xdoc">     */</span>
+   219        <span class="comment">/* REQ_TAG(SYSBIOS-917) */</span>
+   220        <span class=key>override</span> Void putch(Char ch);
+   221    
+   222        <span class="xdoc">/*!
+</span>   223    <span class="xdoc">     *  ======== ready ========
+</span>   224    <span class="xdoc">     *  Test if character output can proceed
+</span>   225    <span class="xdoc">     *
+</span>   226    <span class="xdoc">     *  This function returns true if the internal buffer is non-zero.
+</span>   227    <span class="xdoc">     *
+</span>   228    <span class="xdoc">     *  <b>@see</b> ISystemSupport#ready
+</span>   229    <span class="xdoc">     */</span>
+   230        <span class="comment">/* REQ_TAG(SYSBIOS-918) */</span>
+   231        <span class=key>override</span> Bool ready();
+   232    
+   233    <span class=key>internal</span>:
+   234    
+   235        <span class="comment">/*
+</span>   236    <span class="comment">     * ======== output ======== 
+</span>   237    <span class="comment">     *  SysMin_output__I is generated based on bufSize.
+</span>   238    <span class="comment">     *
+</span>   239    <span class="comment">     *  This function is generated so that the code does not contain a call to
+</span>   240    <span class="comment">     *  HOSTwrite if bufSize is 0. Otherwise, if bufSize is 0, the compiler
+</span>   241    <span class="comment">     *  would optimize out the HOSTwrite function, leaving a 0-length symbol.
+</span>   242    <span class="comment">     *  If the a client later tried to pull in HOSTwrite, there would be a
+</span>   243    <span class="comment">     *  symbol error.
+</span>   244    <span class="comment">     *
+</span>   245    <span class="comment">     *  This generated function is accessed through an internal config so
+</span>   246    <span class="comment">     *  that it is an indirect call in the ROM case, but optimized to a direct
+</span>   247    <span class="comment">     *  call in the RAM case.
+</span>   248    <span class="comment">     */</span>
+   249        Void output(Char *buf, UInt size);
+   250        <span class=key>readonly</span> <span class=key>config</span> OutputFxn outputFunc = <span class="string">'&amp;xdc_runtime_SysMin_output__I'</span>;
+   251    
+   252        <span class=key>struct</span> Module_State {
+   253            Char outbuf[];  <span class="comment">/* the output buffer */</span>
+   254            UInt outidx;    <span class="comment">/* index within outbuf to next Char to write */</span>
+   255            Bool wrapped;   <span class="comment">/* has the index (outidx) wrapped */</span>  
+   256        }
+   257    }
+   258    <span class="comment">/*
+</span>   259    <span class="comment"> *  @(#) xdc.runtime; 2, 1, 0,0; 8-21-2019 13:22:47; /db/ztree/library/trees/xdc/xdc-H25/src/packages/
+</span>   260    <span class="comment"> */</span>
+   261    
 </pre>
 </body></html>

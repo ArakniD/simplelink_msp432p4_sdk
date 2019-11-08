@@ -3,20 +3,21 @@ SIMPLELINK_MSP432_SDK_INSTALL_DIR ?= $(abspath ../../../../../../..)
 include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 
 XDCPATH = $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source;$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/packages;
+XDCTARGET = gnu.targets.arm.M4F
+PLATFORM = ti.platforms.msp432:MSP432P401R
+.PRECIOUS: $(CONFIGPKG)/compiler.opt $(CONFIGPKG)/linker.cmd
 
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-XDCTARGET = gnu.targets.arm.M4F
-PLATFORM = ti.platforms.msp432:MSP432P401R
-
-OBJECTS = bigtime.obj MSP_EXP432P401R.obj
+OBJECTS = bigtime.obj ti_drivers_config.obj
 
 CONFIGPKG = bigtime
 
 NAME = bigtime
 
 CFLAGS = -I../.. \
+    -I. \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/posix/gcc" \
@@ -36,6 +37,7 @@ CFLAGS = -I../.. \
     "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include"
 
 CPPFLAGS = -I../.. \
+    -I. \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/posix/gcc" \
@@ -74,34 +76,44 @@ LFLAGS = -Wl,-T,../../tirtos/gcc/MSP_EXP432P401R_TIRTOS.lds \
     -static \
     -Wl,--gc-sections \
     "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib" \
+    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/hard" \
     -lgcc \
     -lc \
     -lm \
     -lnosys \
     --specs=nano.specs
 
-.PRECIOUS: $(CONFIGPKG)/compiler.opt $(CONFIGPKG)/linker.cmd
-
 all: $(NAME).out
+
+cflags.opt: makefile $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
+	@ echo --compileOptions $(CFLAGS) > $@
 
 $(CONFIGPKG)/compiler.opt: $(CONFIGPKG)/linker.cmd
 
-$(CONFIGPKG)/linker.cmd: ../../tirtos/bigtime.cfg
+$(CONFIGPKG)/linker.cmd: ../../tirtos/bigtime.cfg cflags.opt
 	@ echo Running Configuro...
-	@ $(XDC_INSTALL_DIR)/xs --xdcpath="$(XDCPATH)" xdc.tools.configuro -c "$(GCC_ARMCOMPILER)" -t $(XDCTARGET) -p $(PLATFORM) --compileOptions "$(CFLAGS)" -o "$(CONFIGPKG)" ../../tirtos/bigtime.cfg
+	@ $(XDC_INSTALL_DIR)/xs --xdcpath="$(XDCPATH)" xdc.tools.configuro -c "$(GCC_ARMCOMPILER)" -t $(XDCTARGET) -p $(PLATFORM) -@cflags.opt -o "$(CONFIGPKG)" ../../tirtos/bigtime.cfg
 
-bigtime.obj: ../../bigtime.cpp $(CONFIGPKG)/compiler.opt
-	@ echo Building $@
-	@ $(CC) $(CPPFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
 
-MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c $(CONFIGPKG)/compiler.opt
+syscfg: ../../bigtime.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
+
+bigtime.obj: ../../bigtime.cpp ti_drivers_config.h $(CONFIGPKG)/compiler.opt
+	@ echo Building $@
+	@ $(CC) $(CPPFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
 $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
+
 
 clean:
 	@ echo Cleaning...
@@ -109,3 +121,5 @@ clean:
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
 	@ $(RMDIR) $(NAME) > $(DEVNULL) 2>&1
+	@ $(RM) cflags.opt > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

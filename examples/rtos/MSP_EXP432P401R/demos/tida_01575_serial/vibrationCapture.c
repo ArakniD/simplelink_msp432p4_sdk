@@ -51,8 +51,8 @@
 /* Driverlib Header files */
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Board Header file */
+#include "ti_drivers_config.h"
 #include "vibrationCapture.h"
 #include "commonComms.h"
 #ifdef BLE_COMMS
@@ -172,8 +172,8 @@ void adcBufCallback(ADCBuf_Handle handle, ADCBuf_Conversion *conversion,
     if(avgLoop == (AVG_LOOP_COUNT-1))
     {
         /* Power Down the Sensor and Power Down the Switch for the AFE */
-        GPIO_write(Board_GPIO_SENSOREN, Board_GPIO_LED_OFF);
-        GPIO_write(Board_GPIO_SENSORPWREN, Board_GPIO_LED_OFF);
+        GPIO_write(CONFIG_GPIO_SENSOREN, CONFIG_GPIO_LED_OFF);
+        GPIO_write(CONFIG_GPIO_SENSORPWREN, CONFIG_GPIO_LED_OFF);
     }
 
     /* Adjust raw adc values and convert them to microvolts */
@@ -477,7 +477,7 @@ uint8_t notifyDeepSleepFxn(uint8_t eventType, uint8_t eventArg, uint8_t clientAr
     else
     {
 #ifdef BLE_COMMS
-        if(GPIO_read(Board_SRDY) == 0)
+        if(GPIO_read(CONFIG_SRDY) == 0)
         {
             Power_setConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
         }
@@ -574,23 +574,23 @@ void *vibrationThread(void *arg0)
     adcBufParams.samplingFrequency = ADC_CH_SAMPLING_FREQ*ADC_NO_OF_CH;
     adcBufParamsEx.samplingDuration = ADCBufMSP432_SamplingDuration_PULSE_WIDTH_16;
     adcBufParams.custom = &adcBufParamsEx;
-    adcBuf = ADCBuf_open(Board_ADCBUF0, &adcBufParams);
+    adcBuf = ADCBuf_open(CONFIG_ADCBUF0, &adcBufParams);
 
     /* Configure the conversion struct */
     oneshotVibChannels[0].arg = NULL;
-    oneshotVibChannels[0].adcChannel = Board_ADCBUF0CHANNEL_0;
+    oneshotVibChannels[0].adcChannel = CONFIG_ADCBUF0CHANNEL_0;
     oneshotVibChannels[0].sampleBuffer = sampleBufferX;
     oneshotVibChannels[0].sampleBufferTwo = NULL;
     oneshotVibChannels[0].samplesRequestedCount = ADCBUFFERSIZE;
 
     oneshotVibChannels[1].arg = NULL;
-    oneshotVibChannels[1].adcChannel = Board_ADCBUF0CHANNEL_1;
+    oneshotVibChannels[1].adcChannel = CONFIG_ADCBUF0CHANNEL_1;
     oneshotVibChannels[1].sampleBuffer = sampleBufferY;
     oneshotVibChannels[1].sampleBufferTwo = NULL;
     oneshotVibChannels[1].samplesRequestedCount = ADCBUFFERSIZE;
 
     oneshotVibChannels[2].arg = NULL;
-    oneshotVibChannels[2].adcChannel = Board_ADCBUF0CHANNEL_2;
+    oneshotVibChannels[2].adcChannel = CONFIG_ADCBUF0CHANNEL_2;
     oneshotVibChannels[2].sampleBuffer = sampleBufferZ;
     oneshotVibChannels[2].sampleBufferTwo = NULL;
     oneshotVibChannels[2].samplesRequestedCount = ADCBUFFERSIZE;
@@ -613,8 +613,8 @@ void *vibrationThread(void *arg0)
 
 #ifdef GPIO_WAKEUP
     /* Initialize interrupts for all ports that need them */
-    GPIO_setCallback(Board_GPIO_BUTTON0, gpioButtonFxn0);
-    GPIO_enableInt(Board_GPIO_BUTTON0);
+    GPIO_setCallback(CONFIG_GPIO_BUTTON0, gpioButtonFxn0);
+    GPIO_enableInt(CONFIG_GPIO_BUTTON0);
 #endif
 
     Power_setPolicy((Power_PolicyFxn)PowerMSP432_deepSleepPolicy);
@@ -667,13 +667,13 @@ void *vibrationThread(void *arg0)
 #endif
 
         /* Power Up the Switch for the AFE */
-        GPIO_write(Board_GPIO_SENSORPWREN, Board_GPIO_LED_ON);
+        GPIO_write(CONFIG_GPIO_SENSORPWREN, CONFIG_GPIO_LED_ON);
 
         params.period = 40000;
         params.periodUnits = Timer_PERIOD_US;
         params.timerMode = Timer_ONESHOT_CALLBACK;
         params.timerCallback = timerCallback;
-        timer0 = Timer_open(Board_TIMER0, &params);
+        timer0 = Timer_open(CONFIG_TIMER0, &params);
 
         if (timer0 == NULL) {
             /* Failed to initialized timer */
@@ -687,13 +687,13 @@ void *vibrationThread(void *arg0)
         Timer_close(timer0);
 
         /* Power Up the Sensor */
-        GPIO_write(Board_GPIO_SENSOREN, Board_GPIO_LED_ON);
+        GPIO_write(CONFIG_GPIO_SENSOREN, CONFIG_GPIO_LED_ON);
 
         params.period = 10000;
         params.periodUnits = Timer_PERIOD_US;
         params.timerMode = Timer_ONESHOT_CALLBACK;
         params.timerCallback = timerCallback;
-        timer0 = Timer_open(Board_TIMER0, &params);
+        timer0 = Timer_open(CONFIG_TIMER0, &params);
 
         if (timer0 == NULL) {
             /* Failed to initialized timer */

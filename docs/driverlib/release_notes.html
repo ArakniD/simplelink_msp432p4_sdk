@@ -1,12 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
+
+
+
+
+
 <meta content="HTML Tidy for Windows (vers 15 August 2007), see www.w3.org" name="generator">
-<meta http-equiv="Content-Type" content="text/html; charset=us-ascii"><!-- /* * Copyright 2007 by Texas Instruments Incorporated. * All rights reserved. Property of Texas Instruments Incorporated. * Restricted rights to use, duplicate or disclose this code are * granted through contract. * * */ -->
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii"><!-- /* * Copyright 2007 by Texas Instruments Incorporated. * All rights reserved. Property of Texas Instruments Incorporated. * Restricted rights to use, duplicate or disclose this code are * granted through contract. * * */ --><title>MSP432P4xx DriverLib Release Notes</title><!-- For now, we use the doxygen style sheet -->
 
 
 
-<title>MSP432P4xx DriverLib Release Notes</title><!-- For now, we use the doxygen style sheet --><link href="msp432p4xx/html/doxygen.css" rel="stylesheet" type="text/css"></head>
-<body>
+<link href="msp432p4xx/html/doxygen.css" rel="stylesheet" type="text/css"></head><body>
 <table width="100%">
 <tbody>
 <tr>
@@ -15,9 +19,9 @@
 </tr>
 </tbody>
 </table>
-<h1>MSP432 DriverLib &nbsp;4.30.01.01</h1>
+<h1>MSP432 DriverLib &nbsp;4.40.00.03</h1>
 <h2>Release Notes&nbsp;</h2>
-Document Revision: Thu Oct 25 12:56:12 2018<br>
+Document Revision: Wed Aug 14 17:01:05 2019<br>
 <h2><a name="Introduction" id="Introduction">Introduction</a></h2>
 <p>Set of development tools used for programming, configuring,
 and utilizing MSP432 devices.</p>
@@ -41,12 +45,106 @@ Driver
 Library API
 Guide</a></li>
 <h2><a name="Whats_New" id="Whats_New">What's New</a></h2>
-<p><span style="font-weight: bold;">Release</span><b> (4_30_01_01)</b></p>
+
+<ul></ul>
+<p><span style="font-weight: bold;">Release</span><b> (4_40_00_03)</b></p>
 <ul>
-    <li>Updated IAR startup files to correctly set the stack pointer based on the linker file</li>
-    <li>TI linker command file now features a way to generate CRC table</li>
+  <li>Added Channel Parameter to DMA example when setting control
+indexes for user clarity in the case of using an alternative channel. </li>
+  <ul>
+    <li>dma_Array_transfer_software_trigger_c() </li>
+  </ul>
+  <li>Updated TimerA example so that it does not manually clear the IFG</li>
+  <ul>
+    <li>timer_A_continous_vlo_period_capture.c</li>
+  </ul>
+  <li>Updated UART examples so that it does not manually clear the IFG</li>
+  <ul>
+    <li>uart_loopback_24mhz_brclk.c</li>
+    <li>uart_loopback_12mhz_brclk.c</li>
+  </ul>
+  <li>Updated Interrupt examples so that values to be used for prioritization are made clearer</li>
+  <ul>
+    <li>interrupt_changing_priorities.c</li>
+    <li>interrupt_priority_masking.c</li>
+  </ul>
+  <li>Fixed ADC14_getMultipleSequenceResult() API that was not working as expected due to use of a bit-band macro. </li>
+  <li>Updated I2C_masterReceiveSingleByte so that it disables rx interrupt similar to I2C_masterSendSingleByte. </li>
+  <li>Fixed Klocwork Issues, mainly pertaining to bitwise operations with different size operands:</li>
+  <ul>
+    <li>RTC_C_getEnabledInterruptStatus()</li>
+    <li>EUSCI_B_SPI_enableInterrupt()</li>
+    <li>EUSCI_B_SPI_disableInterrupt()</li>
+    <li>EUSCI_B_SPI_clearInterruptFlag()</li>
+    <li>EUSCI_A_SPI_enableInterrupt()</li>
+    <li>EUSCI_A_SPI_disableInterrupt()</li>
+    <li>EUSCI_A_SPI_clearInterruptFlag()</li>
+    <li>UART_getEnabledInterruptStatus()</li>
+  </ul>
+  <li>Added support for using 7-Bit data length for UART driver</li>
+  <ul>
+    <li>Added option to UART_initModule()</li>
+    <li>eUSCI_UART_Config struct in UART_initModule has been updated to
+include configuring 7-bit/8-bit data length and renamed to eUSCI_UART_ConfigV1. This breaks compatibility
+with previous UART_initModule usage</li>
+
+  </ul>
+  <li>Added support for Transmit-Complete Interrupt to uart.c</li>
+  <ul>
+    <li>UART_getEnabledInterruptStatus()</li>
+  </ul>
+  <li>Updated SPI_isBusy() APIs:</li>
+  <ul>
+    <li>Fixed EUSCI_B_SPI_isBusy() so that it checks the correct bit. </li>
+    <li>Updated status variable name in EUSCI_A_SPI_isBusy() . </li>
+  </ul>
+  <li>Fixed polarity of PSS_clearInterruptFlag()</li>
+  <li>Fixed Interrupt_setPriorityGrouping() so that it uses key instead of mask</li>
+  <li>Fixed Invalid Directory Reference in API Guide. </li>
+  <li>Updated documentation on Interrupt_setPriority() so that it expresses more clearly which bits are to be used. </li>
+  <li>Fixed defines in spi.h to reflect correct values </li>
+  <ul>
+    <li>EUSCI_SPI_RECEIVE_INTERRUPT</li>
+    <li>EUSCI_SPI_TRANSMIT_INTERRUPT</li>
+  </ul>
+  <li>Updated examples to implement recommended usage of EUSCI_SPI_RECEIVE_INTERRUPT and EUSCI_SPI_TRANSMIT_INTERRUPT</li>
+  <ul>
+    <li>spi_3wire_incrementing_data-slave</li>
+    <li>spi_3wire_incrementing_data-master</li>
+  </ul>
+  <li>Fixed documentation for I2C_masterIsStartSent() so that it represents proper behavior.</li>
+  <ul>
+    <li>EUSCI_B_I2C_BUS_BUSY</li>
+    <li>EUSCI_B_I2C_SENDING_STOP</li>
+    <li>EUSCI_B_I2C_SENDING_START</li>
+  </ul>
+  <li>Examples
+have been updated because The RXIFG and TXIFG bits are automatically
+cleared when the RX buffer is read from and the TX buffer is loaded,
+respectively. Thus there is no need for examples to manually clear the
+flags. <ul>
+    <li>i2c_master_rw_repeated_start-master_code</li>
+    <li>i2c_master_rw_repeated_start_singlebyte-master_code</li>
+    <li>i2c_master_rw_repeated_start_singlebyte-slave_code</li>
+    <li>i2c_master_rw_timeout-master_code</li>
+    <li>i2c_master_rw_timeout-slave_code</li>
+    <li>i2c_master_w_multibyte-master_code</li>
+    <li>i2c_master_w_multibyte-slave_code</li>
+    <li>i2c_master_w_multibyte_multislave-master_code</li>
+    <li>i2c_master_w_multibyte_multislave-slave_code</li>
+    <li>i2c_slave_initiated_read-master_code</li>
+    <li>i2c_slave_initiated_read-slave_code</li>
+    <li>spi_3wire_incrementing_data-master</li>
+    <li>spi_3wire_incrementing_data-slave</li>
+  </ul></li>
+  <li>Updated rom.h removing reference to APIs that have been modified as described in these release notes.</li>
+</ul><span style="font-weight: bold;">Release</span><b> (4_30_01_01)</b>
+
+<ul>
+<li>Updated IAR startup files to correctly set the stack pointer based on the linker file</li><li>TI linker command file now features a way to generate CRC table</li>
 </ul>
 <p><span style="font-weight: bold;">Release</span><b> (4_30_00_00)</b></p>
+
 <ul>
   <li>Fixed issue with DMA_disableModule() API, in some scenarios DMA would still prevent entering LPM3 after being disabled.</li>
   <li>Corrected license header for rom.h and rom_map.h.</li>
@@ -327,7 +425,7 @@ silicon</li>
 <p><b>Major ES2 Release (01.03.00.17 )</b></p>
 <ul>
 <li>Changed over register accesses to use CMSIS register
-accesses instead of legacy MSP430&nbsp;<span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;,&quot;serif&quot;;">accesses</span></li>
+accesses instead of legacy MSP430 <span style="font-family: &quot;Times New Roman&quot;,&quot;serif&quot;;">accesses</span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;,&quot;serif&quot;;"></span></li>
 <li>Rewrote a couple of MSP430 modules to be more efficient
 with ARM by using bitbanding</li>
 <li>Changed offsets of bitbanding functions to use define in
@@ -577,11 +675,14 @@ peripheral driver library&nbsp; please
 refer to the DriverLib
 API Guide. </p>
 <h2><a name="Upgrade_Info" id="Host_Support">Upgrade
-Information</a></h2>
-To upgrade from previous versions of MSP432 Driver Library,
-simply delete all old instances of components used and replace with the
-new components
-<h2><a name="Device_Support" id="Device_Support">Device
+and Compatibility Information</a></h2>
+<ul>
+  <li>eUSCI_UART_Config struct in UART_initModule has been updated to
+include configuring 7-bit/8-bit data length and renamed to eUSCI_UART_ConfigV1. This breaks compatibility
+with previous UART_initModule usage.</li>
+</ul><ul>
+</ul><br>
+<h2> <a name="Device_Support" id="Device_Support">Device
 Support</a></h2>
 This release supports the Texas Instruments MSP432P4xx
 &nbsp;device family. <br>
@@ -605,7 +706,7 @@ Issues</a></h2>
 <li>Code examples have not been verified in this beta release</li>
 </ul>
 <h2><a name="Versioning" id="Versioning">Versioning</a></h2>
-<p>This is build 4.30.01.01 of MSP432 DriverLib</p>
+<p>This is build 4.40.00.03 of MSP432 DriverLib</p>
 <h2><a name="Technical_Support" id="Technical_Support">Technical
 Support and Product Updates</a></h2>
 <h2>Support</h2>

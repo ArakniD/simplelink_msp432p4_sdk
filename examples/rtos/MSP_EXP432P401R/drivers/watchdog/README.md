@@ -1,29 +1,30 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# watchdog
-
----
-
 ## Example Summary
 
 This application demonstrates how to use the Watchdog driver.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_GPIO_LED0`      - Indicator LED
-* `Board_GPIO_BUTTON0`   - Used to control the application
-* `Board_WATCHDOG0`      - Watchdog driver instance.
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
 
-## Resources & Jumper Settings
+* `CONFIG_GPIO_LED_0`      - Indicator LED
+* `CONFIG_GPIO_BUTTON_0`   - Used to control the application
+* `CONFIG_WATCHDOG_0`      - Watchdog driver instance.
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+## BoosterPacks, Board Resources & Jumper Settings
 
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
+
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 ## Example Usage
 
@@ -31,14 +32,14 @@ Otherwise, you can find Board.html in the directory
 from the debug session. Then physically disconnect the device from power for 5
 seconds. Reconnect the device and the application should run automatically.
 
-2. The application turns on `Board_GPIO_LED0` to indicate watchdog driver
+2. The application turns on `CONFIG_GPIO_LED_0` to indicate watchdog driver
 initialization is complete.
 
-3. `Board_GPIO_LED0` is toggled periodically. With each toggle, the watchdog
+3. `CONFIG_GPIO_LED_0` is toggled periodically. With each toggle, the watchdog
 timer is cleared.
 
-4. Pressing `Board_GPIO_BUTTON0` will enter an interrupt service routine which
-turns `Board_GPIO_LED0` on and enters an infinite loop.
+4. Pressing `CONFIG_GPIO_BUTTON_0` will enter an interrupt service routine which
+turns `CONFIG_GPIO_LED_0` on and enters an infinite loop.
 
 5. The watchdog expires and the device is reset. For some devices,
 the application will restart.
@@ -58,7 +59,7 @@ configures the reload value to be the same value used in the board file.
 
 * The application's `mainThread` enters an infinite loop which periodically
 clears the watchdog timer using `Watchdog_clear()`. Each time the watchdog is
-cleared, `Board_GPIO_LED0` is toggled.
+cleared, `CONFIG_GPIO_LED_0` is toggled.
 
 * `Power_disablePolicy()` and `Power_enablePolicy()` are used to disable and
 enable the power driver respectively. Doing so affects how the device behaves
@@ -67,16 +68,18 @@ low power state when the CPU is idle. Otherwise, the device will stay awake
 when the CPU is idle. This demonstrates the watchdog driver's flexibility in an
 application regardless of power driver usage.
 
-* Pressing `Board_GPIO_BUTTON0` will cause the application to get stuck in the
+* Pressing `CONFIG_GPIO_BUTTON_0` will cause the application to get stuck in the
 GPIO callback interrupt service routine (ISR), `gpioButtonIsr()`. This is
 intended to simulate the application getting stuck unintentionally.
 
 * The `watchdogCallback()` is called by some watchdog drivers upon a watchdog
-timeout event. User's should refer to the device specific watchdog driver
-documentation for their device's behavior. The watchdog interrupt is a
-non-maskable interrupt (NMI) and therefore will preempt the `gpioButtonIsr()`.
-This application's `watchdogCallback()` will loop infinitely until the watchdog
-peripheral issues a device reset.
+timeout event. The watchdog interrupt is a non-maskable interrupt (NMI) on
+some watchdog drivers and therefore will preempt the `gpioButtonIsr()`. The
+other watchdog drivers configure the watchdog interrupt as the highest priority
+interrupt and will still preempt the `gpioButtonIsr()`. User's should refer
+to the device specific watchdog driver documentation for their device's
+behavior. This application's `watchdogCallback()` will loop infinitely until
+the watchdog peripheral issues a device reset.
 
 * When the watchdog peripheral issues a device reset, the behavior is
 equivalent to the user manually pressing the LaunchPad reset button. Therefore,

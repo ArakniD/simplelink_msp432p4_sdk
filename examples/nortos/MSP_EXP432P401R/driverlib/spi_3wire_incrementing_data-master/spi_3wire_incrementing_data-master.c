@@ -100,14 +100,14 @@ int main(void)
     SPI_enableModule(EUSCI_B0_BASE);
 
     /* Enabling interrupts */
-    SPI_enableInterrupt(EUSCI_B0_BASE, EUSCI_B_SPI_RECEIVE_INTERRUPT);
+    SPI_enableInterrupt(EUSCI_B0_BASE, EUSCI_SPI_RECEIVE_INTERRUPT);
     Interrupt_enableInterrupt(INT_EUSCIB0);
     Interrupt_enableSleepOnIsrExit();
     //![Simple SPI Example]
     TXData = 0x01;
 
     /* Polling to see if the TX buffer is ready */
-    while (!(SPI_getInterruptStatus(EUSCI_B0_BASE,EUSCI_B_SPI_TRANSMIT_INTERRUPT)));
+    while (!(SPI_getInterruptStatus(EUSCI_B0_BASE,EUSCI_SPI_TRANSMIT_INTERRUPT)));
 
     /* Transmitting data to slave */
     SPI_transmitData(EUSCI_B0_BASE, TXData);
@@ -126,12 +126,11 @@ void EUSCIB0_IRQHandler(void)
     uint32_t status = SPI_getEnabledInterruptStatus(EUSCI_B0_BASE);
     uint32_t jj;
 
-    SPI_clearInterruptFlag(EUSCI_B0_BASE, status);
 
-    if(status & EUSCI_B_SPI_RECEIVE_INTERRUPT)
+    if(status & EUSCI_SPI_RECEIVE_INTERRUPT)
     {
         /* USCI_B0 TX buffer ready? */
-        while (!(SPI_getInterruptStatus(EUSCI_B0_BASE, EUSCI_B_SPI_TRANSMIT_INTERRUPT)));
+        while (!(SPI_getInterruptStatus(EUSCI_B0_BASE, EUSCI_SPI_TRANSMIT_INTERRUPT)));
 
         RXData = SPI_receiveData(EUSCI_B0_BASE);
 

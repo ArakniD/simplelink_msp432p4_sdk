@@ -68,6 +68,15 @@
     </linkerExtraOptions>
 
     <customBuildTools>
+        <customBuildTool atRoot="true" name="SysConfig"> <!-- Custom build tool for entire project-->
+            <fileExtensions>.syscfg</fileExtensions>
+            <command>$SYSCONFIG_ROOT$/sysconfig_cli.bat -o $PROJ_DIR$ -s "$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/.metadata/product.json" --compiler iar $FILE_PATH$
+            </command>
+            <output>
+                <path>SysConfig_Generated_Files.ipcf</path>
+            </output>
+            <hasPrio>true</hasPrio> <!-- true: run this tool before all other tools-->
+        </customBuildTool>
     </customBuildTools>
 
     <heaps>
@@ -103,9 +112,7 @@
         <path copyTo="$PROJ_DIR$/temperature_thread.h">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/demos/outofbox_msp432p4111/temperature_thread.h</path>
         <path copyTo="$PROJ_DIR$/uart_thread.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/demos/outofbox_msp432p4111/uart_thread.c</path>
         <path copyTo="$PROJ_DIR$/uart_thread.h">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/demos/outofbox_msp432p4111/uart_thread.h</path>
-        <path copyTo="$PROJ_DIR$/Board.h">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/demos/outofbox_msp432p4111/Board.h</path>
-        <path copyTo="$PROJ_DIR$/MSP_EXP432P4111.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/demos/outofbox_msp432p4111/MSP_EXP432P4111.c</path>
-        <path copyTo="$PROJ_DIR$/MSP_EXP432P4111.h">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/demos/outofbox_msp432p4111/MSP_EXP432P4111.h</path>
+        <path copyTo="$PROJ_DIR$/outOfBox_msp432p4111.syscfg">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/demos/outofbox_msp432p4111/outOfBox_msp432p4111.syscfg</path>
         <path copyTo="$PROJ_DIR$/main_freertos.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/demos/outofbox_msp432p4111/freertos/main_freertos.c</path>
         <path copyTo="$PROJ_DIR$/MSP_EXP432P4111_FREERTOS.icf">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P4111/demos/outofbox_msp432p4111/freertos/iar/MSP_EXP432P4111_FREERTOS.icf</path>
         <group name="LCD_HAL" build="true">

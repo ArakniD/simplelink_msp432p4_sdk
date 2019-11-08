@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['adc_5fconfig',['ADC_Config',['../struct_a_d_c___config.html',1,'']]],
+  ['adc_5fconfig_5f',['ADC_Config_',['../struct_a_d_c___config__.html',1,'']]],
   ['adc_5ffxntable',['ADC_FxnTable',['../struct_a_d_c___fxn_table.html',1,'']]],
   ['adc_5fparams',['ADC_Params',['../struct_a_d_c___params.html',1,'']]],
-  ['adcbuf_5fconfig',['ADCBuf_Config',['../struct_a_d_c_buf___config.html',1,'']]],
+  ['adcbuf_5fconfig_5f',['ADCBuf_Config_',['../struct_a_d_c_buf___config__.html',1,'']]],
   ['adcbuf_5fconversion',['ADCBuf_Conversion',['../struct_a_d_c_buf___conversion.html',1,'']]],
   ['adcbuf_5ffxntable',['ADCBuf_FxnTable',['../struct_a_d_c_buf___fxn_table.html',1,'']]],
   ['adcbuf_5fparams',['ADCBuf_Params',['../struct_a_d_c_buf___params.html',1,'']]],

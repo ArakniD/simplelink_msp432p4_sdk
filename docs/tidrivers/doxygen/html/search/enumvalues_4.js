@@ -1,11 +1,12 @@
 var searchData=
 [
-  ['pwm_5fduty_5fcounts',['PWM_DUTY_COUNTS',['../_p_w_m_8h.html#abc7bc5565f2767cf9f06c1572044a8eea4a20018a9620ed669dff0893858a44b2',1,'PWM.h']]],
-  ['pwm_5fduty_5ffraction',['PWM_DUTY_FRACTION',['../_p_w_m_8h.html#abc7bc5565f2767cf9f06c1572044a8eea004d0d56bfc7f629990e7b6b55c3dd4f',1,'PWM.h']]],
-  ['pwm_5fduty_5fus',['PWM_DUTY_US',['../_p_w_m_8h.html#abc7bc5565f2767cf9f06c1572044a8eeaf93cd02d0c2744e2d6a68a8e7070b7a6',1,'PWM.h']]],
-  ['pwm_5fidle_5fhigh',['PWM_IDLE_HIGH',['../_p_w_m_8h.html#a5a40c7014745d15b0c1a604dae5593f9a0b126918629a951139ef9f17d417c50d',1,'PWM.h']]],
-  ['pwm_5fidle_5flow',['PWM_IDLE_LOW',['../_p_w_m_8h.html#a5a40c7014745d15b0c1a604dae5593f9a698cc876a94b3e0629d65fecfec8c8f5',1,'PWM.h']]],
-  ['pwm_5fperiod_5fcounts',['PWM_PERIOD_COUNTS',['../_p_w_m_8h.html#a11aa442e82549992c98729216d64fd63a52a5ee3b990d5edb816d19253bd9a571',1,'PWM.h']]],
-  ['pwm_5fperiod_5fhz',['PWM_PERIOD_HZ',['../_p_w_m_8h.html#a11aa442e82549992c98729216d64fd63a083c3462c199f39afc7a9d0541595b7a',1,'PWM.h']]],
-  ['pwm_5fperiod_5fus',['PWM_PERIOD_US',['../_p_w_m_8h.html#a11aa442e82549992c98729216d64fd63a35d73e8e481d16fd8c3880d9519894cd',1,'PWM.h']]]
+  ['i2c_5f1000khz',['I2C_1000kHz',['../_i2_c_8h.html#ac954e3197f04c50293db466c4abb6fbea38a2e32ba65eb0f67b928d181242befa',1,'I2C.h']]],
+  ['i2c_5f100khz',['I2C_100kHz',['../_i2_c_8h.html#ac954e3197f04c50293db466c4abb6fbea966fd2df13b3a9825615c50335cf1987',1,'I2C.h']]],
+  ['i2c_5f3330khz',['I2C_3330kHz',['../_i2_c_8h.html#ac954e3197f04c50293db466c4abb6fbea37abd9be14a25ed731f14694922ee7d4',1,'I2C.h']]],
+  ['i2c_5f3400khz',['I2C_3400kHz',['../_i2_c_8h.html#ac954e3197f04c50293db466c4abb6fbea0c1376dab54ab817b76de1513b5707fb',1,'I2C.h']]],
+  ['i2c_5f400khz',['I2C_400kHz',['../_i2_c_8h.html#ac954e3197f04c50293db466c4abb6fbea83cc3750242e6ae9194cd7ed94f764d9',1,'I2C.h']]],
+  ['i2c_5fmode_5fblocking',['I2C_MODE_BLOCKING',['../_i2_c_8h.html#a39f3b9340fc4ee241b0d2da9b2841c26abe065350be2a0ae5c9beb24624626c75',1,'I2C.h']]],
+  ['i2c_5fmode_5fcallback',['I2C_MODE_CALLBACK',['../_i2_c_8h.html#a39f3b9340fc4ee241b0d2da9b2841c26a129731a7edeb285f43a54b2cf9f5ac72',1,'I2C.h']]],
+  ['i2cslave_5fmode_5fblocking',['I2CSLAVE_MODE_BLOCKING',['../_i2_c_slave_8h.html#a5e27f9ba25088f9e7071e3e6f806559dac85f5a1e6bca3d9402b2e5704387fa8f',1,'I2CSlave.h']]],
+  ['i2cslave_5fmode_5fcallback',['I2CSLAVE_MODE_CALLBACK',['../_i2_c_slave_8h.html#a5e27f9ba25088f9e7071e3e6f806559da1dda6ae35d8aa92739d2714a4eaa4107',1,'I2CSlave.h']]]
 ];

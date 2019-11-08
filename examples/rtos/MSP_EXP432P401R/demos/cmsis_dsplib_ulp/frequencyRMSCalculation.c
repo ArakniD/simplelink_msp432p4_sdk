@@ -65,9 +65,6 @@
 /* Driverlib Header files */
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 
-/* Board Header files */
-#include "Board.h"
-
 #include "ulpMeasure.h"
 
 /* Global Variables */

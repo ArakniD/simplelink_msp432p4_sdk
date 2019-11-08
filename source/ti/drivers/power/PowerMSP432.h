@@ -349,7 +349,7 @@ extern "C" {
  *  };
  *  @endcode
  */
-typedef struct PowerMSP432_PerfLevel {
+typedef struct {
     /*!
      *  @brief The active state for the device.
      *
@@ -535,7 +535,7 @@ typedef struct PowerMSP432_PerfLevel {
 } PowerMSP432_PerfLevel;
 
 /*! @brief  Structure holding device frequencies (in Hz) */
-typedef struct PowerMSP432_Freqs {
+typedef struct {
     unsigned int MCLK;                 /*!< MCLK frequency (in Hz) */
     unsigned int HSMCLK;               /*!< HSMCLK frequency (in Hz) */
     unsigned int SMCLK;                /*!< SMCLK frequency (in Hz) */
@@ -544,7 +544,7 @@ typedef struct PowerMSP432_Freqs {
 } PowerMSP432_Freqs;
 
 /*! @brief  Power global configuration (MSP432-specific) */
-typedef struct PowerMSP432_ConfigV1 {
+typedef struct {
     /*!
      *  @brief The Power Policy's initialization function
      *
@@ -801,7 +801,7 @@ typedef struct PowerMSP432_ConfigV1 {
  *  @cond NODOC
  *  Internal structure defining Power module state.
  */
-typedef struct PowerMSP432_ModuleState {
+typedef struct {
     List_List notifyList;
     uint32_t constraintMask;
     unsigned int state;

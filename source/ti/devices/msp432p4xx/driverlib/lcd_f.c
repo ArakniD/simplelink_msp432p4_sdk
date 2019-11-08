@@ -234,7 +234,8 @@ uint32_t LCD_F_getInterruptStatus(void)
 
 uint32_t LCD_F_getEnabledInterruptStatus(void)
 {
-    return (LCD_F->IFG & LCD_F->IE);
+    uint32_t tempIE = LCD_F->IE;
+    return (LCD_F->IFG & tempIE);
 }
 
 void LCD_F_enableInterrupt(uint32_t mask)

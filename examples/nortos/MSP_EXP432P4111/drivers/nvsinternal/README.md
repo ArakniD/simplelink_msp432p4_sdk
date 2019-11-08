@@ -1,28 +1,29 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# nvsinternal
-
----
-
 ## Example Summary
 
 This example shows how to use the Non-Volatile Storage (NVS) driver
 to read and write data to on-chip flash memory.
 
-##Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_UART0` - Used for console output.
-* `Board_NVSINTERNAL` - Non-volatile storage used by a NVS driver instance.
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
 
-## Resources & Jumper Settings
+* `CONFIG_NVSINTERNAL` - Non-volatile storage used by a NVS driver instance.
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
- your project directory for resources used and board-specific jumper settings.
- Otherwise, you can find Board.html in the directory
- &lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+## BoosterPacks, Board Resources & Jumper Settings
+
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
+
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 ## Example Usage
 
@@ -45,7 +46,7 @@ The connection will have the following settings:
 
 * Run the example.
 
-* The example will output the region attributes as defined by `Board_NVSINTERNAL`.
+* The example will output the region attributes as defined by `CONFIG_NVSINTERNAL`.
 
 * The example checks if the string, "SimpleLink SDK Non-Volatile Storage
  (NVS) Example" is present in non-volatile storage.
@@ -60,6 +61,25 @@ The connection will have the following settings:
 
  * The region base address, sector size and region size will vary depending on
  the device specific definitions in the board file.
+
+ * NOTE FOR GCC: Sysconfig is not yet able to place the NVS region in the
+ specified region base. The linker script must be manually modified with the
+ desired start address for the .nvs section. For example to place the .nvs
+ section at 0x10000, the .nvs section should look as follows:
+
+```
+    SECTIONS: {
+
+    ...
+
+        .nvs 0x10000 (NOLOAD) : ALIGN(0x2000) {
+            *(.nvs)
+        } > REGION_TEXT
+
+    ...
+
+    }
+```
 
 The following is example output assuming the string was not present in non-volatile
 storage:
@@ -88,12 +108,12 @@ storage:
 ## Application Design Details
 
 * The application utilizes a single thread to demonstrate using the
- non-volatile storage region defined by `Board_NVSINTERNAL`.
+ non-volatile storage region defined by `CONFIG_NVSINTERNAL`.
 
- * `Board_NVSINTERNAL` defines a non-volatile storage located on the device's on-chip
+ * `CONFIG_NVSINTERNAL` defines a non-volatile storage located on the device's on-chip
  internal flash memory. The memory definitions may be found in the board file.
  After `NVS_open()`, the `nvsHandle` is associated with the memory region
- defined by `Board_NVSINTERNAL`.
+ defined by `CONFIG_NVSINTERNAL`.
 
 * A block of memory the size of `signature` bytes is read from flash and
 copied into RAM (`buffer`). An offset of 0 is used with the `NVS_read()` call.

@@ -63,7 +63,6 @@ package ti.sysbios.family.arm.m3;
  *  @p
  */
 
-@CustomHeader
 @ModuleStartup
 
 module TimestampProvider inherits ti.sysbios.interfaces.ITimestamp

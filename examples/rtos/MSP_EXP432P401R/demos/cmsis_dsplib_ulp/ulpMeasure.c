@@ -91,7 +91,7 @@
 #include <ti/sysbios/hal/Hwi.h>
 #include <ti/display/Display.h>
 
-/* Example/Board Header files */
+/* Board Header file */
 #include "Board.h"
 #include "ulpMeasure.h"
 
@@ -269,7 +269,7 @@ unsigned int notifyDeepSleepFxn(unsigned int eventType, unsigned int eventArg,
         /* Turn off PSS high-side supervisors to consume lower power after deep sleep */
         MAP_PSS_disableHighSide();
     }
-    return NULL;
+    return 0;
 }
 
 void RTC_C_Init(void)

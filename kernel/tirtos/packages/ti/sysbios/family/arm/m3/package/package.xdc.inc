@@ -19,14 +19,12 @@ Power.xs
 Hwi.xdt
 Hwi__prologue.h
 Hwi__epilogue.h
-TimestampProvider__prologue.h
-TimestampProvider__epilogue.h
 Power.xdt
 package/ti.sysbios.family.arm.m3.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_sysbios_family_arm_m3.java
 package/ti_sysbios_family_arm_m3.class
 package/package_ti.sysbios.family.arm.m3.c

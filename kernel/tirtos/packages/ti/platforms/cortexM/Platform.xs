@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -192,7 +192,7 @@ function instance$meta$init(name)
             this.CPU.deviceName = "CortexM";
             this.CPU.clockRate = 200;
         }
-        else if (this.deviceName.match(/^MTL1_VSOC/)) {
+        else if (this.deviceName.match("MTL1")) {
             this.CPU.catalogName = "ti.catalog.arm.cortexm33";
             this.CPU.deviceName = "CortexM";
             this.CPU.clockRate = 120;
@@ -200,7 +200,7 @@ function instance$meta$init(name)
         else if (this.deviceName.match(/^TMS320F2838X/)) {
             this.CPU.catalogName = "ti.catalog.arm.cortexm4";
             this.CPU.deviceName = "CortexM";
-            this.CPU.clockRate = 125;
+            this.CPU.clockRate = 95;
         }
     }
 }

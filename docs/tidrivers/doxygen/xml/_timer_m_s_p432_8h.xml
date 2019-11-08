@@ -10,123 +10,74 @@
     <includes local="no">ti/drivers/dpl/SemaphoreP.h</includes>
     <includedby refid="_capture_m_s_p432_8h" local="no">CaptureMSP432.h</includedby>
     <incdepgraph>
-      <node id="288">
+      <node id="310">
         <label>stdbool.h</label>
       </node>
-      <node id="291">
-        <label>ti/drivers/utils/List.h</label>
-        <link refid="_list_8h"/>
-        <childnode refid="289" relation="include">
-        </childnode>
-        <childnode refid="288" relation="include">
-        </childnode>
-        <childnode refid="292" relation="include">
-        </childnode>
-      </node>
-      <node id="289">
+      <node id="311">
         <label>stdint.h</label>
       </node>
-      <node id="295">
+      <node id="317">
         <label>ti/drivers/dpl/SemaphoreP.h</label>
       </node>
-      <node id="292">
-        <label>stddef.h</label>
-      </node>
-      <node id="290">
-        <label>ti/drivers/Power.h</label>
-        <link refid="_power_8h"/>
-        <childnode refid="291" relation="include">
-        </childnode>
-      </node>
-      <node id="294">
-        <label>ti/drivers/dpl/HwiP.h</label>
-      </node>
-      <node id="287">
-        <label>TimerMSP432.h</label>
-        <link refid="_timer_m_s_p432_8h"/>
-        <childnode refid="288" relation="include">
-        </childnode>
-        <childnode refid="289" relation="include">
-        </childnode>
-        <childnode refid="290" relation="include">
-        </childnode>
-        <childnode refid="293" relation="include">
-        </childnode>
-        <childnode refid="294" relation="include">
-        </childnode>
-        <childnode refid="295" relation="include">
-        </childnode>
-      </node>
-      <node id="293">
+      <node id="315">
         <label>ti/drivers/Timer.h</label>
         <link refid="_timer_8h"/>
-        <childnode refid="289" relation="include">
+        <childnode refid="311" relation="include">
+        </childnode>
+      </node>
+      <node id="314">
+        <label>stddef.h</label>
+      </node>
+      <node id="316">
+        <label>ti/drivers/dpl/HwiP.h</label>
+      </node>
+      <node id="313">
+        <label>ti/drivers/utils/List.h</label>
+        <link refid="_list_8h"/>
+        <childnode refid="311" relation="include">
+        </childnode>
+        <childnode refid="310" relation="include">
+        </childnode>
+        <childnode refid="314" relation="include">
+        </childnode>
+      </node>
+      <node id="312">
+        <label>ti/drivers/Power.h</label>
+        <link refid="_power_8h"/>
+        <childnode refid="313" relation="include">
+        </childnode>
+      </node>
+      <node id="309">
+        <label>TimerMSP432.h</label>
+        <link refid="_timer_m_s_p432_8h"/>
+        <childnode refid="310" relation="include">
+        </childnode>
+        <childnode refid="311" relation="include">
+        </childnode>
+        <childnode refid="312" relation="include">
+        </childnode>
+        <childnode refid="315" relation="include">
+        </childnode>
+        <childnode refid="316" relation="include">
+        </childnode>
+        <childnode refid="317" relation="include">
         </childnode>
       </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="297">
+      <node id="319">
         <label>CaptureMSP432.h</label>
         <link refid="_capture_m_s_p432_8h"/>
       </node>
-      <node id="296">
+      <node id="318">
         <label>TimerMSP432.h</label>
         <link refid="_timer_m_s_p432_8h"/>
-        <childnode refid="297" relation="include">
+        <childnode refid="319" relation="include">
         </childnode>
       </node>
     </invincdepgraph>
-    <innerclass refid="struct_timer_m_s_p432___h_w_attr__" prot="public">TimerMSP432_HWAttr_</innerclass>
-    <innerclass refid="struct_timer_m_s_p432___object__" prot="public">TimerMSP432_Object_</innerclass>
-      <sectiondef kind="typedef">
-      <memberdef kind="typedef" id="_timer_m_s_p432_8h_1ac3faa216806be0265d6a156e122bfbb3" prot="public" static="no">
-        <type>struct <ref refid="struct_timer_m_s_p432___h_w_attr__" kindref="compound">TimerMSP432_HWAttr_</ref></type>
-        <definition>typedef struct TimerMSP432_HWAttr_  TimerMSP432_HWAttrs</definition>
-        <argsstring></argsstring>
-        <name>TimerMSP432_HWAttrs</name>
-        <briefdescription>
-<para>TimerMSP432 Hardware Attributes. </para>        </briefdescription>
-        <detaileddescription>
-<para>Timer hardware attributes that tell the TimerMSP432 driver specific hardware configurations and interrupt priority settings.</para><para>The Timer32 only supports MCLK as a clock source. As a result, the clockSource field has no event for Timer32 instances.</para><para>A sample structure is shown below: <programlisting><codeline><highlight class="normal">const<sp/>TimerMSP432_HWAttrs<sp/>timerMSP432HWAttrs[]<sp/>=</highlight></codeline>
-<codeline><highlight class="normal">{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.timerBaseAddress<sp/>=<sp/>TIMER32_0_BASE,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>TIMER_A_CLOCKSOURCE_SMCLK,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_T32_INT1,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>~0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.timerBaseAddress<sp/>=<sp/>TIMER_A1_BASE,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>TIMER_A_CLOCKSOURCE_SMCLK,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_TA1_0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>~0</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.timerBaseAddress<sp/>=<sp/>TIMER_A2_BASE,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.clockSource<sp/>=<sp/>TIMER_A_CLOCKSOURCE_ACLK,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intNum<sp/>=<sp/>INT_TA2_0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.intPriority<sp/>=<sp/>~0</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
-<codeline><highlight class="normal">};</highlight></codeline>
-</programlisting> </para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" line="220" column="1"/>
-      </memberdef>
-      <memberdef kind="typedef" id="_timer_m_s_p432_8h_1acefcbb2fb4596bca2dd9338adddd53bd" prot="public" static="no">
-        <type>struct <ref refid="struct_timer_m_s_p432___object__" kindref="compound">TimerMSP432_Object_</ref></type>
-        <definition>typedef struct TimerMSP432_Object_  TimerMSP432_Object</definition>
-        <argsstring></argsstring>
-        <name>TimerMSP432_Object</name>
-        <briefdescription>
-<para>TimerMSP432 Object. </para>        </briefdescription>
-        <detaileddescription>
-<para>The application must not access any member variables of this structure! </para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/timer/TimerMSP432.h" line="238" column="1"/>
-      </memberdef>
-      </sectiondef>
+    <innerclass refid="struct_timer_m_s_p432___h_w_attrs" prot="public">TimerMSP432_HWAttrs</innerclass>
+    <innerclass refid="struct_timer_m_s_p432___object" prot="public">TimerMSP432_Object</innerclass>
       <sectiondef kind="var">
       <memberdef kind="variable" id="_timer_m_s_p432_8h_1ad3b622d4875264bf82f29de28fcc9b9e" prot="public" static="no" mutable="no">
         <type>const <ref refid="struct_timer___fxn_table" kindref="compound">Timer_FxnTable</ref></type>
@@ -217,13 +168,13 @@
 <para><hruler/>
 </para><para><heading level="1">Operation</heading>
 </para><para>This driver implements two independent hardware peripherals on the MSP432: Timer_A and Timer32. The Timer_A implementation supports two clock sources, SMCLK and ACLCK, with multiple clock dividers. The Timer32 implementation supports a single clock source, MCLK, with 3 clock dividers. For each driver instance, the configuration of the clock dividers is determined using the clock source, period, and period units. Note that the SMCLK and MCLK frequencies can change after <ref refid="_timer_8h_1a85fff65681abf4b7d65309aeac73c52c" kindref="member">Timer_open()</ref>.</para><para><heading level="3">MPS432 Timer Driver Configuration</heading>
-</para><para>In order to use the Timer APIs, the application is required to define 4 configuration items in the application Board.c file:</para><para><orderedlist>
-<listitem><para>An array of TimerMSP432_Object elements, which will be used by by the driver to maintain instance state. Below is an example TimerMSP432_Object array appropriate for the MSP432 LaunchPad board: <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/Timer.h&gt;</highlight></codeline>
+</para><para>In order to use the Timer APIs, the application is required to define 4 configuration items in the application ti_drivers_config.c file:</para><para><orderedlist>
+<listitem><para>An array of <ref refid="struct_timer_m_s_p432___object" kindref="compound">TimerMSP432_Object</ref> elements, which will be used by by the driver to maintain instance state. Below is an example <ref refid="struct_timer_m_s_p432___object" kindref="compound">TimerMSP432_Object</ref> array appropriate for the MSP432 LaunchPad board: <programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/Timer.h&gt;</highlight></codeline>
 <codeline><highlight class="normal">#include<sp/>&lt;ti/drivers/timer/TimerMSP432.h&gt;</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">TimerMSP432_Object<sp/>timerMSP432Objects[3];</highlight></codeline>
-</programlisting></para></listitem><listitem><para>An array of TimerMSP432_HWAttrs elements that defines which</para></listitem></orderedlist>
-</para><para>Below is an example TimerMSP432_HWAttrs array appropriate for the MSP432 LaunchPad board: <programlisting><codeline><highlight class="normal">const<sp/>TimerMSP432_HWAttrs<sp/>timerMSP432HWAttrs[3]<sp/>=</highlight></codeline>
+</programlisting></para></listitem><listitem><para>An array of <ref refid="struct_timer_m_s_p432___h_w_attrs" kindref="compound">TimerMSP432_HWAttrs</ref> elements that defines which</para></listitem></orderedlist>
+</para><para>Below is an example <ref refid="struct_timer_m_s_p432___h_w_attrs" kindref="compound">TimerMSP432_HWAttrs</ref> array appropriate for the MSP432 LaunchPad board: <programlisting><codeline><highlight class="normal">const<sp/>TimerMSP432_HWAttrs<sp/>timerMSP432HWAttrs[3]<sp/>=</highlight></codeline>
 <codeline><highlight class="normal">{</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.timerBaseAddress<sp/>=<sp/>TIMER32_0_BASE,</highlight></codeline>
@@ -271,7 +222,7 @@
 </para>    </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2016-2018,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2016-2019,<sp/>Texas<sp/>Instruments<sp/>Incorporated</highlight></codeline>
 <codeline lineno="3"><highlight class="comment"><sp/>*<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
 <codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
@@ -316,8 +267,8 @@
 <codeline lineno="44"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="45"><highlight class="comment"><sp/>*<sp/><sp/>###<sp/>MPS432<sp/>Timer<sp/>Driver<sp/>Configuration<sp/>#</highlight></codeline>
 <codeline lineno="46"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="47"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>order<sp/>to<sp/>use<sp/>the<sp/>Timer<sp/>APIs,<sp/>the<sp/>application<sp/>is<sp/>required</highlight></codeline>
-<codeline lineno="48"><highlight class="comment"><sp/>*<sp/><sp/>to<sp/>define<sp/>4<sp/>configuration<sp/>items<sp/>in<sp/>the<sp/>application<sp/>Board.c<sp/>file:</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/><sp/>In<sp/>order<sp/>to<sp/>use<sp/>the<sp/>Timer<sp/>APIs,<sp/>the<sp/>application<sp/>is<sp/>required<sp/>to<sp/>define</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/><sp/>4<sp/>configuration<sp/>items<sp/>in<sp/>the<sp/>application<sp/>ti_drivers_config.c<sp/>file:</highlight></codeline>
 <codeline lineno="49"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="50"><highlight class="comment"><sp/>*<sp/><sp/>1.<sp/><sp/>An<sp/>array<sp/>of<sp/>TimerMSP432_Object<sp/>elements,<sp/>which<sp/>will<sp/>be<sp/>used<sp/>by</highlight></codeline>
 <codeline lineno="51"><highlight class="comment"><sp/>*<sp/><sp/>by<sp/>the<sp/>driver<sp/>to<sp/>maintain<sp/>instance<sp/>state.</highlight></codeline>
@@ -427,44 +378,44 @@
 <codeline lineno="155"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ti_drivers_timer_TimerMSP432__include</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="156"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ti_drivers_timer_TimerMSP432__include</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="157"><highlight class="normal"></highlight></codeline>
-<codeline lineno="158"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="159"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="160"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="161"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="162"><highlight class="normal"></highlight></codeline>
-<codeline lineno="163"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="164"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_power_8h" kindref="compound">ti/drivers/Power.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_timer_8h" kindref="compound">ti/drivers/Timer.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/HwiP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/SemaphoreP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="165"><highlight class="normal"></highlight></codeline>
-<codeline lineno="166"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_power_8h" kindref="compound">ti/drivers/Power.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="167"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_timer_8h" kindref="compound">ti/drivers/Timer.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="168"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/HwiP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="169"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ti/drivers/dpl/SemaphoreP.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="170"><highlight class="normal"></highlight></codeline>
 <codeline lineno="171"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_timer___fxn_table" kindref="compound">Timer_FxnTable</ref><sp/><ref refid="_timer_m_s_p432_8h_1ad3b622d4875264bf82f29de28fcc9b9e" kindref="member">TimerMSP432_Timer_A_fxnTable</ref>;</highlight></codeline>
 <codeline lineno="172"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_timer___fxn_table" kindref="compound">Timer_FxnTable</ref><sp/><ref refid="_timer_m_s_p432_8h_1adfc465b5a2bf4e50e5f30f996313fdf6" kindref="member">TimerMSP432_Timer32_fxnTable</ref>;</highlight></codeline>
 <codeline lineno="173"><highlight class="normal"></highlight></codeline>
-<codeline lineno="208" refid="struct_timer_m_s_p432___h_w_attr__" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_timer_m_s_p432___h_w_attr__" kindref="compound">TimerMSP432_HWAttr_</ref><sp/>{</highlight></codeline>
-<codeline lineno="210" refid="struct_timer_m_s_p432___h_w_attr___1aee448f9833084c652169ed1986484119" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_timer_m_s_p432___h_w_attr___1aee448f9833084c652169ed1986484119" kindref="member">timerBaseAddress</ref>;</highlight></codeline>
+<codeline lineno="208" refid="struct_timer_m_s_p432___h_w_attrs" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="210" refid="struct_timer_m_s_p432___h_w_attrs_1afb2d40717cba65259f404bc32d3cfb7e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_timer_m_s_p432___h_w_attrs_1afb2d40717cba65259f404bc32d3cfb7e" kindref="member">timerBaseAddress</ref>;</highlight></codeline>
 <codeline lineno="211"><highlight class="normal"></highlight></codeline>
-<codeline lineno="213" refid="struct_timer_m_s_p432___h_w_attr___1ab46fd843a42e5fc7267089c4812c6b0a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_timer_m_s_p432___h_w_attr___1ab46fd843a42e5fc7267089c4812c6b0a" kindref="member">clockSource</ref>;</highlight></codeline>
+<codeline lineno="213" refid="struct_timer_m_s_p432___h_w_attrs_1ae8b079d0966e05e4e153f3124b830488" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_timer_m_s_p432___h_w_attrs_1ae8b079d0966e05e4e153f3124b830488" kindref="member">clockSource</ref>;</highlight></codeline>
 <codeline lineno="214"><highlight class="normal"></highlight></codeline>
-<codeline lineno="216" refid="struct_timer_m_s_p432___h_w_attr___1ab8b197409f94d23c41b461891b32d159" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_timer_m_s_p432___h_w_attr___1ab8b197409f94d23c41b461891b32d159" kindref="member">intNum</ref>;</highlight></codeline>
+<codeline lineno="216" refid="struct_timer_m_s_p432___h_w_attrs_1a77f0b7db5632989d3a9b42fc5eb22c34" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_timer_m_s_p432___h_w_attrs_1a77f0b7db5632989d3a9b42fc5eb22c34" kindref="member">intNum</ref>;</highlight></codeline>
 <codeline lineno="217"><highlight class="normal"></highlight></codeline>
-<codeline lineno="219" refid="struct_timer_m_s_p432___h_w_attr___1aea785ef3eed536a6170037d4bd2e08c0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_timer_m_s_p432___h_w_attr___1aea785ef3eed536a6170037d4bd2e08c0" kindref="member">intPriority</ref>;</highlight></codeline>
-<codeline lineno="220"><highlight class="normal">}<sp/><ref refid="_timer_m_s_p432_8h_1ac3faa216806be0265d6a156e122bfbb3" kindref="member">TimerMSP432_HWAttrs</ref>;</highlight></codeline>
+<codeline lineno="219" refid="struct_timer_m_s_p432___h_w_attrs_1aaf8b7134479203cd6a7fc137f26896d0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="struct_timer_m_s_p432___h_w_attrs_1aaf8b7134479203cd6a7fc137f26896d0" kindref="member">intPriority</ref>;</highlight></codeline>
+<codeline lineno="220"><highlight class="normal">}<sp/><ref refid="struct_timer_m_s_p432___h_w_attrs" kindref="compound">TimerMSP432_HWAttrs</ref>;</highlight></codeline>
 <codeline lineno="221"><highlight class="normal"></highlight></codeline>
-<codeline lineno="227" refid="struct_timer_m_s_p432___object__" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_timer_m_s_p432___object__" kindref="compound">TimerMSP432_Object_</ref><sp/>{</highlight></codeline>
-<codeline lineno="228" refid="struct_timer_m_s_p432___object___1ada34d2eb0847e7827d5fafa8b0efa634" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>HwiP_Handle<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1ada34d2eb0847e7827d5fafa8b0efa634" kindref="member">hwiHandle</ref>;</highlight></codeline>
-<codeline lineno="229" refid="struct_timer_m_s_p432___object___1ac4d1b2ea5e78abff9faf53ba4110997d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>SemaphoreP_Handle<sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1ac4d1b2ea5e78abff9faf53ba4110997d" kindref="member">timerSem</ref>;</highlight></codeline>
-<codeline lineno="230" refid="struct_timer_m_s_p432___object___1a47d6a131be95f91b27d096e67a36eaa4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_power___notify_obj" kindref="compound">Power_NotifyObj</ref><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1a47d6a131be95f91b27d096e67a36eaa4" kindref="member">perfChangeNotify</ref>;</highlight></codeline>
-<codeline lineno="231" refid="struct_timer_m_s_p432___object___1a68833cda93892f577e26d202f0bb8d99" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1a68833cda93892f577e26d202f0bb8d99" kindref="member">perfConstraintMask</ref>;</highlight></codeline>
-<codeline lineno="232" refid="struct_timer_m_s_p432___object___1a0b2c9ff444379b9ca433b3ab62b3235b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a051eb2c54ff6e078655c8bf575384cc4" kindref="member">Timer_CallBackFxn</ref><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1a0b2c9ff444379b9ca433b3ab62b3235b" kindref="member">callBack</ref>;</highlight></codeline>
-<codeline lineno="233" refid="struct_timer_m_s_p432___object___1a61a6690b329fc51b01f5e34e474a73d2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1ab0e86a066b5c68c55183cd680090a9b7" kindref="member">Timer_Mode</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1a61a6690b329fc51b01f5e34e474a73d2" kindref="member">mode</ref>;</highlight></codeline>
-<codeline lineno="234" refid="struct_timer_m_s_p432___object___1a4cad75b8c909fa23b79722b25e9af2d6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1ae5b37c2cc77a2a426ba45d2c8544d439" kindref="member">Timer_PeriodUnits</ref><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1a4cad75b8c909fa23b79722b25e9af2d6" kindref="member">units</ref>;</highlight></codeline>
-<codeline lineno="235" refid="struct_timer_m_s_p432___object___1ace79babd8d57d374dc7da7318114047d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1ace79babd8d57d374dc7da7318114047d" kindref="member">rawPeriod</ref>;</highlight></codeline>
-<codeline lineno="236" refid="struct_timer_m_s_p432___object___1aa15ef8485abf3b51a9018646cd2005b6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1aa15ef8485abf3b51a9018646cd2005b6" kindref="member">period</ref>;</highlight></codeline>
-<codeline lineno="237" refid="struct_timer_m_s_p432___object___1a91e0838fe8b0e40abaa2d2601bdb4444" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object___1a91e0838fe8b0e40abaa2d2601bdb4444" kindref="member">isRunning</ref>;</highlight></codeline>
-<codeline lineno="238"><highlight class="normal">}<sp/><ref refid="_timer_m_s_p432_8h_1acefcbb2fb4596bca2dd9338adddd53bd" kindref="member">TimerMSP432_Object</ref>;</highlight></codeline>
+<codeline lineno="227" refid="struct_timer_m_s_p432___object" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="228" refid="struct_timer_m_s_p432___object_1a9e28986d3bbace270a3263a3c25797e5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>HwiP_Handle<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object_1a9e28986d3bbace270a3263a3c25797e5" kindref="member">hwiHandle</ref>;</highlight></codeline>
+<codeline lineno="229" refid="struct_timer_m_s_p432___object_1a700d69ee397f578ed1ae35d8245e072b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>SemaphoreP_Handle<sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object_1a700d69ee397f578ed1ae35d8245e072b" kindref="member">timerSem</ref>;</highlight></codeline>
+<codeline lineno="230" refid="struct_timer_m_s_p432___object_1af858525c7dcb39965fa046b428d2cd39" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_power___notify_obj" kindref="compound">Power_NotifyObj</ref><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object_1af858525c7dcb39965fa046b428d2cd39" kindref="member">perfChangeNotify</ref>;</highlight></codeline>
+<codeline lineno="231" refid="struct_timer_m_s_p432___object_1a49eccbd1c2278b2424637f611b83552d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object_1a49eccbd1c2278b2424637f611b83552d" kindref="member">perfConstraintMask</ref>;</highlight></codeline>
+<codeline lineno="232" refid="struct_timer_m_s_p432___object_1a973da1b7e264b0ab55c5a353a48bf9e3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1a051eb2c54ff6e078655c8bf575384cc4" kindref="member">Timer_CallBackFxn</ref><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object_1a973da1b7e264b0ab55c5a353a48bf9e3" kindref="member">callBack</ref>;</highlight></codeline>
+<codeline lineno="233" refid="struct_timer_m_s_p432___object_1a7c4d9e090104bdb2f81128ad1bf4097e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1ab0e86a066b5c68c55183cd680090a9b7" kindref="member">Timer_Mode</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object_1a7c4d9e090104bdb2f81128ad1bf4097e" kindref="member">mode</ref>;</highlight></codeline>
+<codeline lineno="234" refid="struct_timer_m_s_p432___object_1a9aa0e2cb9a2c092424bf90c0782b73d9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_timer_8h_1ae5b37c2cc77a2a426ba45d2c8544d439" kindref="member">Timer_PeriodUnits</ref><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object_1a9aa0e2cb9a2c092424bf90c0782b73d9" kindref="member">units</ref>;</highlight></codeline>
+<codeline lineno="235" refid="struct_timer_m_s_p432___object_1a96a4f70807b6608954bc9c03285aa16e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object_1a96a4f70807b6608954bc9c03285aa16e" kindref="member">rawPeriod</ref>;</highlight></codeline>
+<codeline lineno="236" refid="struct_timer_m_s_p432___object_1a1b0e8b0b8d8391c7e735d5dde2ef0b7a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object_1a1b0e8b0b8d8391c7e735d5dde2ef0b7a" kindref="member">period</ref>;</highlight></codeline>
+<codeline lineno="237" refid="struct_timer_m_s_p432___object_1a9af607ac8e570cfac210060518bf4edb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_timer_m_s_p432___object_1a9af607ac8e570cfac210060518bf4edb" kindref="member">isRunning</ref>;</highlight></codeline>
+<codeline lineno="238"><highlight class="normal">}<sp/><ref refid="struct_timer_m_s_p432___object" kindref="compound">TimerMSP432_Object</ref>;</highlight></codeline>
 <codeline lineno="239"><highlight class="normal"></highlight></codeline>
 <codeline lineno="254"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_timer_m_s_p432_8h_1a4bfb67ec5f2dbd00d6c0274d42afa38c" kindref="member">TimerMSP432_allocateTimerResource</ref>(uint32_t<sp/>baseAddress);</highlight></codeline>
 <codeline lineno="255"><highlight class="normal"></highlight></codeline>

@@ -68,10 +68,7 @@
  *  params.timerMode  = Timer_CONTINUOUS_CALLBACK;
  *  params.timerCallback = UserCallbackFunction;
  *
- *  handle = Timer_open(Board_TIMER0, &params);
-
-
-
+ *  handle = Timer_open(CONFIG_TIMER0, &params);
  *
  *  @code
  *  // Import Timer Driver definitions
@@ -88,7 +85,7 @@
  *  params.timerCallback = UserCallbackFunction;
  *
  *  // Open Timer instance
- *  handle = Timer_open(Board_TIMER0, &params);
+ *  handle = Timer_open(CONFIG_TIMER0, &params);
  *
  *  sleep(10000);
  *
@@ -110,7 +107,7 @@
  *  Timer_Params    params;
  *
  *  Timer_Params_init(&params);
- *  handle = Timer_open(Board_TIMER0, &params);
+ *  handle = Timer_open(CONFIG_TIMER0, &params);
  *
  *  if (handle == NULL) {
  *      // Timer_open() failed
@@ -134,7 +131,7 @@
  *  params.timerMode  = Timer_CONTINUOUS_CALLBACK;
  *  params.timerCallback = UserCallbackFunction;
  *
- *  handle = Timer_open(Board_TIMER0, &params);
+ *  handle = Timer_open(CONFIG_TIMER0, &params);
  *
  *  if (handle == NULL) {
  *      // Timer_open() failed
@@ -357,6 +354,13 @@ typedef Timer_Handle (*Timer_OpenFxn)(Timer_Handle handle,
 
 /*!
  *  @brief      A function pointer to a driver specific implementation of
+ *              Timer_setPeriod().
+ */
+typedef int32_t (*Timer_SetPeriodFxn)(Timer_Handle handle,
+    Timer_PeriodUnits periodUnits, uint32_t period);
+
+/*!
+ *  @brief      A function pointer to a driver specific implementation of
  *              Timer_start().
  */
 typedef int32_t (*Timer_StartFxn)(Timer_Handle handle);
@@ -387,6 +391,9 @@ typedef struct {
 
     /*! Function to open the specified peripheral. */
     Timer_OpenFxn openFxn;
+
+    /*! Function to set the period of the specified peripheral. */
+    Timer_SetPeriodFxn setPeriodFxn;
 
     /*! Function to start the specified peripheral. */
     Timer_StartFxn startFxn;
@@ -507,6 +514,28 @@ extern void Timer_init(void);
  *  @sa     Timer_close()
  */
 extern Timer_Handle Timer_open(uint_least8_t index, Timer_Params *params);
+
+/*!
+ *  @brief  Function to set the period of the timer module after it has been
+ *          opened.
+ *
+ *  @pre    Timer_open() has been called. It is also recommended Timer_stop() has
+ *          been called on an already running timer before calling this API as the
+            period is updated asynchronously.
+ *
+ *  @param[in]  handle       A Timer_Handle returned from Timer_open().
+ *
+ *  @param[in]  periodUnits  #Timer_PeriodUnits of the desired period value.
+ *
+ *  @param[in]  period       Period value to set.
+ *
+ *  @retval #Timer_STATUS_SUCCESS  The setPeriod call was successful.
+ *  @retval #Timer_STATUS_ERROR    The setPeriod call failed
+ *
+ *  @sa     Timer_open()
+ *  @sa     Timer_stop()
+ */
+extern int32_t Timer_setPeriod(Timer_Handle handle, Timer_PeriodUnits periodUnits, uint32_t period);
 
 /*!
  *  @brief  Function to initialize the Timer_Params struct to its defaults.

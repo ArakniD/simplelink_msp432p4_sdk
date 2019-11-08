@@ -41,6 +41,7 @@
 let Common     = system.getScript("/ti/drivers/Common.js");
 let logError   = Common.logError;
 let logWarning = Common.logWarning;
+let logInfo = Common.logInfo;
 
 /* compute /ti/drivers family name from device object */
 let family = Common.device2Family(system.deviceData, "GPIO");
@@ -97,6 +98,7 @@ let config = [
     {
         name: "outputType",
         displayName: "Output Type",
+        description: "Specifies the output type",
         hidden: true,
         default: "Standard",
         options: [
@@ -107,6 +109,7 @@ let config = [
     {
         name: "outputStrength",
         displayName: "Output Strength",
+        description: "Specifies the output strength",
         hidden: true,
         default: "Medium",
         options: [
@@ -118,6 +121,9 @@ let config = [
     {
         name: "initialOutputState",
         displayName: "Initial Output State",
+        description: "Specifies the initial output state",
+        longDescription: "This specifies if an output will be driven high or"
+            + " low after __GPIO_init()__.",
         hidden: true,
         default: "Low",
         options: [
@@ -142,6 +148,9 @@ let config = [
         name: "interruptTrigger",
         displayName: "Interrupt Trigger",
         description: "Specifies when or if interrupts are triggered",
+        longDescription: `
+This parameter configures when the GPIO pin interrupt will trigger. Even when this config is set, interrupts are not enabled until
+[\`GPIO_enableInt()\`](/tidrivers/doxygen/html/_g_p_i_o_8h.html#a31c4e65b3855424418262e35521c7051) is called at runtime`,
         hidden: false,
         default: "None",
         options: [
@@ -178,8 +187,8 @@ a single parameter: the index of the GPIO that triggered the interrupt.
 Example: [Creating an input callback](/tidrivers/doxygen/html/_g_p_i_o_8h.html#ti_drivers_GPIO_Example_callback "C/C++ source").
 `,
 
-        placeholder: "<no callback is needed>",
-        default: "",
+        placeholder: "<a callback is never needed>",
+        default: "NULL", /* a callback may be set at runtime */
 
         onChange: updateConfigs
     },
@@ -238,7 +247,7 @@ function filterHardware(component)
 function sort(instances, addCallback)
 {
     if (instances.length == 0
-        || instances[0].$module.$static.enableSort == false) {
+        || instances[0].$module.$static.optimizeCallbackTableSize == false) {
         return (instances);
     }
 
@@ -312,7 +321,7 @@ function updateNullEntry(inst, ui)
 {
     if (inst.nullEntry == true) {
         inst.interruptTrigger = "None";
-        inst.callbackFunction = "";
+        inst.callbackFunction = "NULL"; /* ensure there's a callback entry */
     }
 }
 
@@ -361,6 +370,34 @@ function validate(inst, validation)
         && (inst.callbackFunction.toLowerCase() === "null")) {
         logWarning(validation, inst, "callbackFunction",
             "Did you mean \"NULL\"?");
+    }
+
+
+    if (inst.$hardware) {
+
+        /*
+         * This hardware only supports outputs at runtime.
+         */
+        if (Common.findSignalTypes(inst.$hardware, ["DOUT"]) &&
+            !Common.findSignalTypes(inst.$hardware, ["DIN"])) {
+
+            if (inst.mode === "Input") {
+                logInfo(validation, inst, "mode", inst.$hardware.displayName +
+                    " only supports digital outputs.");
+            }
+        }
+
+        /*
+         * This hardware only supports inputs at runtime.
+         */
+        if (!Common.findSignalTypes(inst.$hardware, ["DOUT"]) &&
+            Common.findSignalTypes(inst.$hardware, ["DIN"])) {
+
+            if (inst.mode === "Output") {
+                logInfo(validation, inst, "mode", inst.$hardware.displayName +
+                    " only supports digital inputs.");
+            }
+        }
     }
 }
 
@@ -441,6 +478,14 @@ function onHardwareChanged(inst, ui)
             Common.setDefaults(inst, signal, "DIN");
             compatible = true;
         }
+    }
+    else {
+        /* Return to default settings */
+        inst.mode = "Input";
+        inst.pull = "None";
+        inst.interruptTrigger = "None";
+        inst.callbackFunction = "NULL";
+        compatible = true;
     }
 
     if (compatible) {
@@ -559,21 +604,18 @@ function collectCallbacks(instances, externs, addCallback)
 {
     let callbacks = {};
     let callbackCount = 0;
-    let sortDisabled = system.getScript("/ti/drivers/GPIO").$static.enableSort == false;
+    let sortEnabled = system.modules["/ti/drivers/GPIO"].$static.optimizeCallbackTableSize;
 
     for (let i = 0; i < instances.length; i++) {
         let inst = instances[i];
 
-        if (sortDisabled ||
-            (inst.callbackFunction != "") ||
-            (inst.interruptTrigger != "None") ||
-            (inst.mode === "Dynamic") ||
-            (inst.nullEntry == true)) {
-                addCallback[inst.$name] = true;
-                callbackCount++;
+        if (sortEnabled
+            && (inst.mode == "Output" || (inst.callbackFunction == ""))) {
+            addCallback[inst.$name] = false;
         }
         else {
-            addCallback[inst.$name] = false;
+                addCallback[inst.$name] = true;
+                callbackCount++;
         }
 
         if (inst.callbackFunction != "" && inst.callbackFunction !== "NULL") {
@@ -653,6 +695,15 @@ function addComment(line, inst, index, pin)
 }
 
 /*
+ *  ======== _getPinResources ========
+ */
+/* istanbul ignore next */
+function _getPinResources(inst)
+{
+    return;
+}
+
+/*
  *  ======== base ========
  *  Define the base/common GPIO property and method exports
  */
@@ -679,8 +730,8 @@ configured statically, but can also be [reconfigured at runtime][2].
     pinmuxRequirements: pinmuxRequirements,
     validate: validate,
 
-    defaultInstanceName: "Board_GPIO",
-    config: Common.addNameConfig(config, "/ti/drivers/GPIO", "Board_GPIO"),
+    defaultInstanceName: "CONFIG_GPIO_",
+    config: Common.addNameConfig(config, "/ti/drivers/GPIO", "CONFIG_GPIO_"),
 
     moduleStatic: {
         name: "gpioGlobal",
@@ -706,7 +757,7 @@ configured statically, but can also be [reconfigured at runtime][2].
                     + "However, this also means that calls to"
                     + " `GPIO_setCallback()` must **never** be made to GPIOs"
                     + " whose callbacks are configured as the empty string"
-                    + " (which is shown as '&lt;no callback is"
+                    + " (which is shown as '&lt;a callback is never"
                     + " needed&gt;' in the GUI).",
 
                 hidden: false,
@@ -725,7 +776,9 @@ configured statically, but can also be [reconfigured at runtime][2].
     /* common sort for GPIO tables to minimize GPIO ISR table size */
     sort: sort,
     filterHardware: filterHardware,
-    onHardwareChanged: onHardwareChanged
+    onHardwareChanged: onHardwareChanged,
+
+    _getPinResources: _getPinResources
 };
 
 /* extend our common exports to include the family-specific content */

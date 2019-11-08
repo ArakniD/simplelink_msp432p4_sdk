@@ -58,6 +58,15 @@ function validate(inst, validation)
 }
 
 /*
+ *  ======== _getADCPinResources ========
+ */
+/* istanbul ignore next */
+function _getADCPinResources(inst)
+{
+    return;
+}
+
+/*
  *  ======== base ========
  *  Define the base ADCBuf properties and methods
  */
@@ -80,10 +89,12 @@ by the application.
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#ADCBuf_Configuration_Options "Configuration options reference"
 `,
 
-    defaultInstanceName: "Board_ADCBUF",
-    config: Common.addNameConfig(config, "/ti/drivers/ADC", "Board_ADCBUF"),
+    defaultInstanceName: "CONFIG_ADCBUF_",
+    config: Common.addNameConfig(config, "/ti/drivers/ADC", "CONFIG_ADCBUF_"),
     validate: validate,
-    modules: Common.autoForceModules(["Board", "Power", "DMA"])
+    modules: Common.autoForceModules(["Board", "Power", "DMA"]),
+
+    _getADCPinResources: _getADCPinResources
 };
 
 /* extend the base exports to include family-specific content */

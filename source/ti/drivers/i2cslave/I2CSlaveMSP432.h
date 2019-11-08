@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,10 +49,6 @@
 #ifndef ti_drivers_i2cslave_I2CSlaveMSP432__include
 #define ti_drivers_i2cslave_I2CSlaveMSP432__include
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -61,6 +57,10 @@ extern "C" {
 #include <ti/drivers/dpl/HwiP.h>
 #include <ti/drivers/dpl/SemaphoreP.h>
 #include <ti/drivers/Power.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  *  I2CSlave port/pin defines for pin configuration.  Ports P2, P3, and P7 are
@@ -319,7 +319,7 @@ extern const I2CSlave_FxnTable I2CSlaveMSP432_fxnTable;
  *  @endcode
  */
 
- typedef struct I2CSlaveMSP432_HWAttrs {
+ typedef struct {
     uint32_t baseAddr;       /*!< EUSCI_B_I2C Peripheral's base address */
     uint32_t intNum;         /*!< EUSCI_B_I2C Peripheral's interrupt vector */
     uint32_t intPriority;    /*!< EUSCI_B_I2C Peripheral's interrupt priority */
@@ -334,7 +334,7 @@ extern const I2CSlave_FxnTable I2CSlaveMSP432_fxnTable;
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct I2CSlaveMSP432_Object {
+typedef struct {
     SemaphoreP_Handle       mutex;               /* Grants exclusive access */
      /* Notify finished I2C transfer */
     SemaphoreP_Handle       transferComplete;

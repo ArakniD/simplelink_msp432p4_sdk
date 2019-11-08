@@ -36,14 +36,14 @@
 #include <stdbool.h>
 
 /* Board Header file */
-#include "Board.h"
+#include "ti_drivers_config.h"
 
 /* Required when including driverlib header files*/
-#ifdef Board_MSP_EXP432P401R
+#ifdef CONFIG_MSP_EXP432P401R
 #ifndef __MSP432P401R__
 #define __MSP432P401R__
 #endif
-#elif defined(Board_MSP_EXP432P4111)
+#elif defined(CONFIG_MSP_EXP432P4111)
 #ifndef __MSP432P4111__
 #define __MSP432P4111__
 #endif
@@ -66,7 +66,7 @@ Power_NotifyObj notifyObj;
 
 /*
  *  ======== gpioButtonFxn0 ========
- *  Callback function for the GPIO interrupt on Board_GPIO_BUTTON0.
+ *  Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON_0.
  */
 
 void gpioButtonFxn0(uint_least8_t x)
@@ -75,7 +75,7 @@ void gpioButtonFxn0(uint_least8_t x)
         /* Prevent device from going into sleep(LPM0)  */
         /* Other options for power constraints are available in PowerMSP432.h*/
         Power_setConstraint(PowerMSP432_DISALLOW_SLEEP);
-        GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+        GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
         sleeping = false;
     }
     else {
@@ -94,13 +94,13 @@ void *mainThread(void *arg0)
     GPIO_init();
 
     /* Configure the LED and button pins */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
-    GPIO_setConfig(Board_GPIO_BUTTON0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_BUTTON_0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
 
-    GPIO_setCallback(Board_GPIO_BUTTON0, gpioButtonFxn0);
-    GPIO_enableInt(Board_GPIO_BUTTON0);
+    GPIO_setCallback(CONFIG_GPIO_BUTTON_0, gpioButtonFxn0);
+    GPIO_enableInt(CONFIG_GPIO_BUTTON_0);
 
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
     /*
      * Register for sleep notifications
@@ -131,7 +131,7 @@ void *mainThread(void *arg0)
     MAP_GPIO_setAsOutputPin(GPIO_PORT_PD, PIN_ALL16);
     MAP_GPIO_setAsOutputPin(GPIO_PORT_PE, PIN_ALL16);
 
-#ifdef Board_MSP_EXP432P4111
+#ifdef CONFIG_MSP_EXP432P4111
     /*
      * Set P5.3 as analog input (connected to Temp Sensor on MSP_EXP432P4111
      * LaunchPad)
@@ -150,6 +150,6 @@ void *mainThread(void *arg0)
 unsigned int notifyFxn(unsigned int eventType, unsigned int eventArg,
     unsigned int clientArg)
 {
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_OFF);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_OFF);
     return(Power_NOTIFYDONE);
 }

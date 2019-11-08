@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,7 @@ SECTIONS
     .app_1_startup : > APP_1_STARTUP
 
     .vtable :   > APP_0_SRAM
-    .data   :   > APP_0_SRAM
+    .data*  :   > APP_0_SRAM
     .bss    :   > APP_0_SRAM
     .sysmem :   > APP_0_SRAM
     .args   :   > APP_0_SRAM

@@ -21,6 +21,9 @@ SDFatFS.h
 ./utils/List.h
 ./utils/RingBuf.h
 ./utils/Random.h
+./utils/StructRingBuf.h
+./apps/LED.h
+./apps/Button.h
 ADC.h
 ./adc/ADCMSP432.h
 ADCBuf.h
@@ -47,7 +50,6 @@ UART.h
 ./uart/UARTMSP432.h
 Watchdog.h
 ./watchdog/WatchdogMSP432.h
-.meta
 package/package.cfg.xdc.inc
 lib/drivers_msp432p4xx.aem4f
 package/package_ti.drivers.c
@@ -60,6 +62,9 @@ SDFatFS.c
 ./utils/List.c
 ./utils/RingBuf.c
 ./utils/Random.c
+./utils/StructRingBuf.c
+./apps/LED.c
+./apps/Button.c
 ADC.c
 ./adc/ADCMSP432.c
 ADCBuf.c

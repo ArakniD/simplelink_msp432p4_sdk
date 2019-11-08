@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -37,10 +37,12 @@
 #define ti_sysbios_gates_GateSpinlock__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_gates_GateSpinlock___VERS 200
@@ -327,60 +329,60 @@ __extern void ti_sysbios_gates_GateSpinlock_destruct(ti_sysbios_gates_GateSpinlo
 
 /* Handle__label__S */
 xdc__CODESECT(ti_sysbios_gates_GateSpinlock_Handle__label__S, "ti_sysbios_gates_GateSpinlock_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_sysbios_gates_GateSpinlock_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_sysbios_gates_GateSpinlock_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_gates_GateSpinlock_Module__startupDone__S, "ti_sysbios_gates_GateSpinlock_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_gates_GateSpinlock_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_gates_GateSpinlock_Module__startupDone__S( void);
 
 /* Object__create__S */
 xdc__CODESECT(ti_sysbios_gates_GateSpinlock_Object__create__S, "ti_sysbios_gates_GateSpinlock_Object__create__S")
-__extern xdc_Ptr ti_sysbios_gates_GateSpinlock_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb );
+__extern xdc_Ptr ti_sysbios_gates_GateSpinlock_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb);
 
 /* Object__delete__S */
 xdc__CODESECT(ti_sysbios_gates_GateSpinlock_Object__delete__S, "ti_sysbios_gates_GateSpinlock_Object__delete__S")
-__extern xdc_Void ti_sysbios_gates_GateSpinlock_Object__delete__S( xdc_Ptr instp );
+__extern xdc_Void ti_sysbios_gates_GateSpinlock_Object__delete__S( xdc_Ptr instp);
 
 /* Object__get__S */
 xdc__CODESECT(ti_sysbios_gates_GateSpinlock_Object__get__S, "ti_sysbios_gates_GateSpinlock_Object__get__S")
-__extern xdc_Ptr ti_sysbios_gates_GateSpinlock_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_sysbios_gates_GateSpinlock_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_sysbios_gates_GateSpinlock_Object__first__S, "ti_sysbios_gates_GateSpinlock_Object__first__S")
-__extern xdc_Ptr ti_sysbios_gates_GateSpinlock_Object__first__S( void );
+__extern xdc_Ptr ti_sysbios_gates_GateSpinlock_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_sysbios_gates_GateSpinlock_Object__next__S, "ti_sysbios_gates_GateSpinlock_Object__next__S")
-__extern xdc_Ptr ti_sysbios_gates_GateSpinlock_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_sysbios_gates_GateSpinlock_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_sysbios_gates_GateSpinlock_Params__init__S, "ti_sysbios_gates_GateSpinlock_Params__init__S")
-__extern xdc_Void ti_sysbios_gates_GateSpinlock_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_sysbios_gates_GateSpinlock_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* query__E */
 #define ti_sysbios_gates_GateSpinlock_query ti_sysbios_gates_GateSpinlock_query__E
 xdc__CODESECT(ti_sysbios_gates_GateSpinlock_query__E, "ti_sysbios_gates_GateSpinlock_query")
-__extern xdc_Bool ti_sysbios_gates_GateSpinlock_query__E( xdc_Int qual );
+__extern xdc_Bool ti_sysbios_gates_GateSpinlock_query__E( xdc_Int qual);
 
 /* enter__E */
 #define ti_sysbios_gates_GateSpinlock_enter ti_sysbios_gates_GateSpinlock_enter__E
 xdc__CODESECT(ti_sysbios_gates_GateSpinlock_enter__E, "ti_sysbios_gates_GateSpinlock_enter")
-__extern xdc_IArg ti_sysbios_gates_GateSpinlock_enter__E( ti_sysbios_gates_GateSpinlock_Handle __inst );
+__extern xdc_IArg ti_sysbios_gates_GateSpinlock_enter__E( ti_sysbios_gates_GateSpinlock_Handle instp);
 
 /* enterHwi__E */
 #define ti_sysbios_gates_GateSpinlock_enterHwi ti_sysbios_gates_GateSpinlock_enterHwi__E
 xdc__CODESECT(ti_sysbios_gates_GateSpinlock_enterHwi__E, "ti_sysbios_gates_GateSpinlock_enterHwi")
-__extern xdc_IArg ti_sysbios_gates_GateSpinlock_enterHwi__E( ti_sysbios_gates_GateSpinlock_Handle __inst );
+__extern xdc_IArg ti_sysbios_gates_GateSpinlock_enterHwi__E( ti_sysbios_gates_GateSpinlock_Handle instp);
 
 /* leave__E */
 #define ti_sysbios_gates_GateSpinlock_leave ti_sysbios_gates_GateSpinlock_leave__E
 xdc__CODESECT(ti_sysbios_gates_GateSpinlock_leave__E, "ti_sysbios_gates_GateSpinlock_leave")
-__extern xdc_Void ti_sysbios_gates_GateSpinlock_leave__E( ti_sysbios_gates_GateSpinlock_Handle __inst, xdc_IArg key );
+__extern xdc_Void ti_sysbios_gates_GateSpinlock_leave__E( ti_sysbios_gates_GateSpinlock_Handle instp, xdc_IArg key);
 
 /* leaveHwi__E */
 #define ti_sysbios_gates_GateSpinlock_leaveHwi ti_sysbios_gates_GateSpinlock_leaveHwi__E
 xdc__CODESECT(ti_sysbios_gates_GateSpinlock_leaveHwi__E, "ti_sysbios_gates_GateSpinlock_leaveHwi")
-__extern xdc_Void ti_sysbios_gates_GateSpinlock_leaveHwi__E( ti_sysbios_gates_GateSpinlock_Handle __inst, xdc_IArg key );
+__extern xdc_Void ti_sysbios_gates_GateSpinlock_leaveHwi__E( ti_sysbios_gates_GateSpinlock_Handle instp, xdc_IArg key);
 
 
 /*
@@ -487,8 +489,8 @@ static inline void ti_sysbios_gates_GateSpinlock_Params_copy(ti_sysbios_gates_Ga
 #define ti_sysbios_gates_GateSpinlock_Object_sizeof() ti_sysbios_gates_GateSpinlock_Object__sizeof__C
 
 /* Object_get */
-static inline ti_sysbios_gates_GateSpinlock_Handle ti_sysbios_gates_GateSpinlock_Object_get(ti_sysbios_gates_GateSpinlock_Instance_State *oarr, int i);
-static inline ti_sysbios_gates_GateSpinlock_Handle ti_sysbios_gates_GateSpinlock_Object_get(ti_sysbios_gates_GateSpinlock_Instance_State *oarr, int i) 
+static inline ti_sysbios_gates_GateSpinlock_Handle ti_sysbios_gates_GateSpinlock_Object_get(ti_sysbios_gates_GateSpinlock_Object *oarr, int i);
+static inline ti_sysbios_gates_GateSpinlock_Handle ti_sysbios_gates_GateSpinlock_Object_get(ti_sysbios_gates_GateSpinlock_Object *oarr, int i) 
 {
     return (ti_sysbios_gates_GateSpinlock_Handle)ti_sysbios_gates_GateSpinlock_Object__get__S(oarr, i);
 }

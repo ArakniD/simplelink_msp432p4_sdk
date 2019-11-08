@@ -121,13 +121,6 @@
 #endif
 #if defined(TARGET_IS_MSP432P4XX) ||                                          \
     defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_ADC14_configureMultiSequenceMode                                  \
-        ((bool (*)(uint32_t memoryStart,                                      \
-                   uint32_t memoryEnd,                                        \
-                   bool repeatMode))ROM_ADC14TABLE[7])
-#endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
 #define ROM_ADC14_configureSingleSampleMode                                   \
         ((bool (*)(uint32_t memoryDestination,                                \
                    bool repeatMode))ROM_ADC14TABLE[8])
@@ -149,20 +142,6 @@
 #endif
 #if defined(TARGET_IS_MSP432P4XX) ||                                          \
     defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_ADC14_configureConversionMemory                                   \
-        ((bool (*)(uint32_t memorySelect,                                     \
-                   uint32_t refSelect,                                        \
-                   uint32_t channelSelect,                                    \
-                   bool differntialMode))ROM_ADC14TABLE[12])
-#endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_ADC14_enableComparatorWindow                                      \
-        ((bool (*)(uint32_t memorySelect,                                     \
-                   uint32_t windowSelect))ROM_ADC14TABLE[13])
-#endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
 #define ROM_ADC14_disableComparatorWindow                                     \
         ((bool (*)(uint32_t memorySelect))ROM_ADC14TABLE[14])
 #endif
@@ -177,18 +156,6 @@
     defined(TARGET_IS_MSP432P4XX_NEXT)
 #define ROM_ADC14_setResultFormat                                             \
         ((bool (*)(uint32_t resultFormat))ROM_ADC14TABLE[16])
-#endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_ADC14_getResult                                                   \
-        ((uint_fast16_t (*)(uint32_t memorySelect))ROM_ADC14TABLE[17])
-#endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_ADC14_getResultArray                                              \
-        ((void (*)(uint32_t memoryStart,                                      \
-                   uint32_t memoryEnd,                                        \
-                   uint16_t* res))ROM_ADC14TABLE[19])
 #endif
 #if defined(TARGET_IS_MSP432P4XX) ||                                          \
     defined(TARGET_IS_MSP432P4XX_NEXT)
@@ -508,16 +475,6 @@
 #define ROM_CRC32_set32BitDataReversed                                        \
         ((void (*)(uint32_t dataIn))ROM_CRC32TABLE[6])
 #endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_CRC32_getResult                                                   \
-        ((uint32_t (*)(uint_fast8_t crcType))ROM_CRC32TABLE[7])
-#endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_CRC32_getResultReversed                                           \
-        ((uint32_t (*)(uint_fast8_t crcType))ROM_CRC32TABLE[8])
-#endif
 
 //*****************************************************************************
 //
@@ -781,11 +738,6 @@
 #define ROM_FlashCtl_unprotectSector                                          \
         ((bool (*)(uint_fast8_t memorySpace,                                  \
                    uint32_t sectorMask))ROM_FLASHCTLTABLE[4])
-#endif
-#if defined(TARGET_IS_MSP432P4XX)
-#define ROM_FlashCtl_protectSector                                            \
-        ((bool (*)(uint_fast8_t memorySpace,                                  \
-                   uint32_t sectorMask))ROM_FLASHCTLTABLE[5])
 #endif
 #if defined(TARGET_IS_MSP432P4XX)
 #define ROM_FlashCtl_isSectorProtected                                        \
@@ -1192,11 +1144,6 @@
 #endif
 #if defined(TARGET_IS_MSP432P4XX) ||                                          \
     defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_I2C_masterReceiveSingleByte                                       \
-        ((uint8_t (*)(uint32_t moduleInstance))ROM_I2CTABLE[24])
-#endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
 #define ROM_I2C_masterReceiveSingle                                           \
         ((uint8_t (*)(uint32_t moduleInstance))ROM_I2CTABLE[25])
 #endif
@@ -1288,11 +1235,6 @@
     defined(TARGET_IS_MSP432P4XX_NEXT)
 #define ROM_Interrupt_disableMaster                                           \
         ((bool (*)(void))ROM_INTTABLE[1])
-#endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_Interrupt_setPriorityGrouping                                     \
-        ((void (*)(uint32_t bits))ROM_INTTABLE[2])
 #endif
 #if defined(TARGET_IS_MSP432P4XX) ||                                          \
     defined(TARGET_IS_MSP432P4XX_NEXT)
@@ -1630,11 +1572,6 @@
 #endif
 #if defined(TARGET_IS_MSP432P4XX) ||                                          \
     defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_PSS_clearInterruptFlag                                            \
-        ((void (*)(void))ROM_PSSTABLE[17])
-#endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
 #define ROM_PSS_enableForcedDCDCOperation                                     \
         ((void (*)(void))ROM_PSSTABLE[20])
 #endif
@@ -1870,11 +1807,6 @@
 #endif
 #if defined(TARGET_IS_MSP432P4XX) ||                                          \
     defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_RTC_C_getEnabledInterruptStatus                                   \
-        ((uint_fast8_t (*)(void))ROM_RTCTABLE[17])
-#endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
 #define ROM_RTC_C_clearInterruptFlag                                          \
         ((void (*)(uint_fast8_t interruptFlagMask))ROM_RTCTABLE[18])
 #endif
@@ -1963,11 +1895,6 @@
 #define ROM_SPI_getInterruptStatus                                            \
         ((uint_fast8_t (*)(uint32_t moduleInstance,                           \
                            uint16_t mask))ROM_SPITABLE[14])
-#endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_SPI_getEnabledInterruptStatus                                     \
-        ((uint_fast8_t (*)(uint32_t moduleInstance))ROM_SPITABLE[15])
 #endif
 #if defined(TARGET_IS_MSP432P4XX) ||                                          \
     defined(TARGET_IS_MSP432P4XX_NEXT)
@@ -2315,12 +2242,6 @@
 //*****************************************************************************
 #if defined(TARGET_IS_MSP432P4XX) ||                                          \
     defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_UART_initModule                                                   \
-        ((bool (*)(uint32_t moduleInstance,                                   \
-                   const eUSCI_UART_Config *config))ROM_UARTTABLE[0])
-#endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
 #define ROM_UART_transmitData                                                 \
         ((void (*)(uint32_t moduleInstance,                                   \
                    uint_fast8_t transmitData))ROM_UARTTABLE[1])
@@ -2406,11 +2327,6 @@
     defined(TARGET_IS_MSP432P4XX_NEXT)
 #define ROM_UART_receiveData                                                  \
         ((uint8_t (*)(uint32_t moduleInstance))ROM_UARTTABLE[16])
-#endif
-#if defined(TARGET_IS_MSP432P4XX) ||                                          \
-    defined(TARGET_IS_MSP432P4XX_NEXT)
-#define ROM_UART_getEnabledInterruptStatus                                    \
-        ((uint_fast8_t (*)(uint32_t moduleInstance))ROM_UARTTABLE[17])
 #endif
 
 //*****************************************************************************

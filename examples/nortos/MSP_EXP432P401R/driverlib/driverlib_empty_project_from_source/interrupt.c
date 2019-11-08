@@ -228,7 +228,14 @@ void Interrupt_setPriorityGrouping(uint32_t bits)
     //
     // Set the priority grouping.
     //
-    SCB->AIRCR = SCB_AIRCR_VECTKEY_Msk | g_pulPriority[bits];
+    uint32_t reg_value;
+    uint32_t PriorityGroupTmp = g_pulPriority[bits];                            
+    reg_value  =  SCB->AIRCR;                                                   /* read old register configuration     */
+    reg_value &= ~((uint32_t)(SCB_AIRCR_VECTKEY_Msk | SCB_AIRCR_PRIGROUP_Msk)); /* clear bits to change                */
+    reg_value  =  (reg_value                                   |
+                  ((uint32_t)0x5FAUL << SCB_AIRCR_VECTKEY_Pos) |
+                  (PriorityGroupTmp << 8U)                      );              /* Insert write key and priority group */
+    SCB->AIRCR =  reg_value;
 }
 
 uint32_t Interrupt_getPriorityGrouping(void)

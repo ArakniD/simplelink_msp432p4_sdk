@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2018, Texas Instruments Incorporated
+ * Copyright (c) 2013-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -95,7 +95,7 @@ Void Event_pendTimeout(UArg arg)
          *  No need for Task_disable/restore sandwich since this
          *  is called within Swi (or Hwi) thread
          */
-        Task_unblockI(elem->tpElem.taskHandle, hwiKey);
+        Task_unblockI(elem->tpElem.task, hwiKey);
     }
 
     Hwi_restore(hwiKey);
@@ -154,11 +154,11 @@ UInt Event_pend(Event_Object *event, UInt andMask, UInt orMask, UInt32 timeout)
             && (timeout != BIOS_WAIT_FOREVER)
             && (timeout != BIOS_NO_WAIT)) {
         Clock_addI(Clock_handle(&clockStruct), (Clock_FuncPtr)Event_pendTimeout, timeout, (UArg)&elem);
-        elem.tpElem.clockHandle = Clock_handle(&clockStruct);
+        elem.tpElem.clock = Clock_handle(&clockStruct);
         elem.pendState = Event_PendState_CLOCK_WAIT;
     }
     else {
-        elem.tpElem.clockHandle = NULL;
+        elem.tpElem.clock = NULL;
         elem.pendState = Event_PendState_WAIT_FOREVER;
     }
 
@@ -170,7 +170,7 @@ UInt Event_pend(Event_Object *event, UInt andMask, UInt orMask, UInt32 timeout)
     pendQ = Event_Instance_State_pendQ(event);
 
     /* get task handle */
-    elem.tpElem.taskHandle = Task_self();
+    elem.tpElem.task = Task_self();
 
     /* Atomically check for a match and block if none */
     hwiKey = Hwi_disable();
@@ -180,9 +180,9 @@ UInt Event_pend(Event_Object *event, UInt andMask, UInt orMask, UInt32 timeout)
 
     if (matchingEvents != 0U) {
         /* remove Clock object from Clock Q */
-        if ((BIOS_clockEnabled != FALSE) && (elem.tpElem.clockHandle != (Clock_Handle)NULL)) {
-            Clock_removeI(elem.tpElem.clockHandle);
-            elem.tpElem.clockHandle = NULL;
+        if (BIOS_clockEnabled && (elem.tpElem.clock != NULL)) {
+            Clock_removeI(elem.tpElem.clock);
+            elem.tpElem.clock = NULL;
         }
 
         Hwi_restore(hwiKey);
@@ -211,16 +211,17 @@ UInt Event_pend(Event_Object *event, UInt andMask, UInt orMask, UInt32 timeout)
     Assert_isTrue(Queue_empty(pendQ) != FALSE, Event_A_eventInUse);
 
     /* leave a pointer for Task_delete() */
-    elem.tpElem.taskHandle->pendElem = (Task_PendElem *)&(elem.tpElem);
+    elem.tpElem.task->pendElem = (Task_PendElem *)&(elem);
 
     /* add it to Event_PendElem queue */
     Queue_enqueue(pendQ, &(elem.tpElem.qElem));
 
-    Task_blockI(elem.tpElem.taskHandle);
+    Task_blockI(elem.tpElem.task);
 
     if ((BIOS_clockEnabled != FALSE) &&
-            (elem.tpElem.clockHandle != (Clock_Handle)NULL)) {
-        Clock_startI(elem.tpElem.clockHandle);
+            (elem.tpElem.clock != NULL) &&
+            (elem.pendState == Event_PendState_CLOCK_WAIT)) {
+        Clock_startI(elem.tpElem.clock);
     }
 
     Hwi_restore(hwiKey);
@@ -233,12 +234,12 @@ UInt Event_pend(Event_Object *event, UInt andMask, UInt orMask, UInt32 timeout)
     hwiKey = Hwi_disable();
 
     /* remove Clock object from Clock Q */
-    if ((BIOS_clockEnabled != FALSE) && (elem.tpElem.clockHandle != (Clock_Handle)NULL)) {
-        Clock_removeI(elem.tpElem.clockHandle);
-        elem.tpElem.clockHandle = NULL;
+    if (BIOS_clockEnabled && (elem.tpElem.clock != NULL)) {
+        Clock_removeI(elem.tpElem.clock);
+        elem.tpElem.clock = NULL;
     }
         
-    elem.tpElem.taskHandle->pendElem = NULL;
+    elem.tpElem.task->pendElem = NULL;
 
     Hwi_restore(hwiKey);
     
@@ -296,12 +297,12 @@ Void Event_post(Event_Object *event, UInt eventId)
         elem->pendState = Event_PendState_POSTED;
 
         /* disable Clock object */
-        if ((BIOS_clockEnabled != FALSE) && (elem->tpElem.clockHandle != NULL)) {
-            Clock_stop(elem->tpElem.clockHandle);
+        if (BIOS_clockEnabled && (elem->tpElem.clock != NULL)) {
+            Clock_stop(elem->tpElem.clock);
         }
 
         /* put task back into readyQ */
-        Task_unblockI(elem->tpElem.taskHandle, hwiKey);
+        Task_unblockI(elem->tpElem.task, hwiKey);
     }
 
     Hwi_restore(hwiKey);

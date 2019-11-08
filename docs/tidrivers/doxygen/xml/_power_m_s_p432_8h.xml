@@ -6,39 +6,39 @@
     <includes refid="_list_8h" local="no">ti/drivers/utils/List.h</includes>
     <includes refid="_power_8h" local="no">ti/drivers/Power.h</includes>
     <incdepgraph>
-      <node id="192">
+      <node id="207">
         <label>stdbool.h</label>
       </node>
-      <node id="189">
-        <label>PowerMSP432.h</label>
-        <link refid="_power_m_s_p432_8h"/>
-        <childnode refid="190" relation="include">
-        </childnode>
-        <childnode refid="191" relation="include">
-        </childnode>
-        <childnode refid="194" relation="include">
-        </childnode>
-      </node>
-      <node id="191">
-        <label>ti/drivers/utils/List.h</label>
-        <link refid="_list_8h"/>
-        <childnode refid="190" relation="include">
-        </childnode>
-        <childnode refid="192" relation="include">
-        </childnode>
-        <childnode refid="193" relation="include">
-        </childnode>
-      </node>
-      <node id="190">
+      <node id="205">
         <label>stdint.h</label>
       </node>
-      <node id="193">
+      <node id="208">
         <label>stddef.h</label>
       </node>
-      <node id="194">
+      <node id="206">
+        <label>ti/drivers/utils/List.h</label>
+        <link refid="_list_8h"/>
+        <childnode refid="205" relation="include">
+        </childnode>
+        <childnode refid="207" relation="include">
+        </childnode>
+        <childnode refid="208" relation="include">
+        </childnode>
+      </node>
+      <node id="204">
+        <label>PowerMSP432.h</label>
+        <link refid="_power_m_s_p432_8h"/>
+        <childnode refid="205" relation="include">
+        </childnode>
+        <childnode refid="206" relation="include">
+        </childnode>
+        <childnode refid="209" relation="include">
+        </childnode>
+      </node>
+      <node id="209">
         <label>ti/drivers/Power.h</label>
         <link refid="_power_8h"/>
-        <childnode refid="191" relation="include">
+        <childnode refid="206" relation="include">
         </childnode>
       </node>
     </incdepgraph>
@@ -575,119 +575,6 @@
         <location file="exports/tidrivers_msp432/source/ti/drivers/power/PowerMSP432.h" line="213" column="9" bodyfile="exports/tidrivers_msp432/source/ti/drivers/power/PowerMSP432.h" bodystart="213" bodyend="-1"/>
       </memberdef>
       </sectiondef>
-      <sectiondef kind="typedef">
-      <memberdef kind="typedef" id="_power_m_s_p432_8h_1a7c8efba6213cd9c57b705d503c916cb8" prot="public" static="no">
-        <type>struct <ref refid="struct_power_m_s_p432___perf_level" kindref="compound">PowerMSP432_PerfLevel</ref></type>
-        <definition>typedef struct PowerMSP432_PerfLevel  PowerMSP432_PerfLevel</definition>
-        <argsstring></argsstring>
-        <name>PowerMSP432_PerfLevel</name>
-        <briefdescription>
-<para>Structure defining a performance level. </para>        </briefdescription>
-        <detaileddescription>
-<para>The MCU performance level can be set with <ref refid="_power_8h_1ae40483e9ed7c626a02399996d3a7878a" kindref="member">Power_setPerformanceLevel()</ref>. A performance level is defined by this <ref refid="struct_power_m_s_p432___perf_level" kindref="compound">PowerMSP432_PerfLevel</ref> structure.</para><para>The Power driver currently supports four pre-defined performance levels: <programlisting><codeline><highlight class="normal">Level<sp/><sp/><sp/><sp/>MCLK<sp/>(MHz)<sp/><sp/><sp/><sp/>HSMCLK<sp/>(MHz)<sp/><sp/><sp/><sp/>SMCLK<sp/>(MHz)<sp/><sp/><sp/><sp/>ACLK<sp/>(Hz)</highlight></codeline>
-<codeline><highlight class="normal">-----<sp/><sp/><sp/><sp/>----------<sp/><sp/><sp/><sp/>------------<sp/><sp/><sp/><sp/>-----------<sp/><sp/><sp/><sp/>---------</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/>0<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>12<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>3<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>3<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>32768</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/>1<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>24<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>6<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>6<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>32768</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/>2<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>48<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>24<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>12<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>32768</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/>3<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>48<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>48<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>24<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>32768</highlight></codeline>
-</programlisting></para><para>Up to four optional &apos;custom&apos; performance levels can be defined by the user. Performance levels are designated by an index, starting with zero. Any custom performance levels will be indexed following the last pre-defined level. For example, if there are 4 pre-defined levels, they will have indices from &apos;0&apos; to &apos;3&apos;. If there are custom levels defined, they will be indexed starting with &apos;4&apos;.</para><para>Eight performance level constraints are supported, one for each of the four pre-defined levels: <programlisting><codeline><highlight class="normal">PowerMSP432_DISALLOW_PERFLEVEL_0</highlight></codeline>
-<codeline><highlight class="normal">PowerMSP432_DISALLOW_PERFLEVEL_1</highlight></codeline>
-<codeline><highlight class="normal">PowerMSP432_DISALLOW_PERFLEVEL_2</highlight></codeline>
-<codeline><highlight class="normal">PowerMSP432_DISALLOW_PERFLEVEL_3</highlight></codeline>
-</programlisting> plus four for the optional custom performance levels: <programlisting><codeline><highlight class="normal">PowerMSP432_DISALLOW_PERFLEVEL_4</highlight></codeline>
-<codeline><highlight class="normal">PowerMSP432_DISALLOW_PERFLEVEL_5</highlight></codeline>
-<codeline><highlight class="normal">PowerMSP432_DISALLOW_PERFLEVEL_6</highlight></codeline>
-<codeline><highlight class="normal">PowerMSP432_DISALLOW_PERFLEVEL_7</highlight></codeline>
-</programlisting></para><para>The parameters that are used to define a performance level are shown below.</para><para><simplesect kind="warning"><para>There is very limited runtime error checking of the different parameters, and no checking that the ratios and parameter combinations do not result in an invalid device configuration (which could overclock or damage the device). It is therefore critical that the user ensures the values specified for a custom performance level are correct.</para></simplesect>
-To define custom performance levels the user must add an array of <ref refid="struct_power_m_s_p432___perf_level" kindref="compound">PowerMSP432_PerfLevel</ref> structures to their board file, and then reference this array in the PowerMSP432_config structure. An example is shown below.</para><para>First, if not already included in the board file, add the includes of cs.h and pcm.h</para><para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;ti/devices/msp432p4xx/driverlib/cs.h&gt;</highlight></codeline>
-<codeline><highlight class="normal">#include<sp/>&lt;ti/devices/msp432p4xx/driverlib/pcm.h&gt;</highlight></codeline>
-</programlisting></para><para>Next, add an array with two new performance levels:</para><para><programlisting><codeline><highlight class="normal">PowerMSP432_PerfLevel<sp/>myPerfLevels[]<sp/>=<sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>.activeState<sp/>=<sp/>PCM_AM_DCDC_VCORE0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.VCORE<sp/>=<sp/>0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.DCORESEL<sp/>=<sp/>CS_DCO_FREQUENCY_12,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.SELM<sp/>=<sp/>CS_HFXTCLK_SELECT,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.DIVM<sp/>=<sp/>CS_CLOCK_DIVIDER_4,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.SELS<sp/>=<sp/>CS_HFXTCLK_SELECT,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.DIVHS<sp/>=<sp/>CS_CLOCK_DIVIDER_16,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.DIVS<sp/>=<sp/>CS_CLOCK_DIVIDER_16,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.SELB<sp/>=<sp/>CS_LFXTCLK_SELECT,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.SELA<sp/>=<sp/>CS_LFXTCLK_SELECT,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.DIVA<sp/>=<sp/>CS_CLOCK_DIVIDER_1,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.flashWaitStates<sp/>=<sp/>0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.enableFlashBuffer<sp/>=<sp/>false,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.MCLK<sp/>=<sp/>12000000,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.HSMCLK<sp/>=<sp/>3000000,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.SMCLK<sp/>=<sp/>3000000,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.BCLK<sp/>=<sp/>32768,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.ACLK<sp/>=<sp/>32768</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/>.activeState<sp/>=<sp/>PCM_AM_DCDC_VCORE0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.VCORE<sp/>=<sp/>0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.DCORESEL<sp/>=<sp/>CS_DCO_FREQUENCY_24,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.SELM<sp/>=<sp/>CS_DCOCLK_SELECT,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.DIVM<sp/>=<sp/>CS_CLOCK_DIVIDER_1,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.SELS<sp/>=<sp/>CS_DCOCLK_SELECT,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.DIVHS<sp/>=<sp/>CS_CLOCK_DIVIDER_4,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.DIVS<sp/>=<sp/>CS_CLOCK_DIVIDER_4,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.SELB<sp/>=<sp/>CS_REFOCLK_SELECT,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.SELA<sp/>=<sp/>CS_REFOCLK_SELECT,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.DIVA<sp/>=<sp/>CS_CLOCK_DIVIDER_1,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.flashWaitStates<sp/>=<sp/>1,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.enableFlashBuffer<sp/>=<sp/>true,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.MCLK<sp/>=<sp/>24000000,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.HSMCLK<sp/>=<sp/>6000000,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.SMCLK<sp/>=<sp/>6000000,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.BCLK<sp/>=<sp/>32768,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.ACLK<sp/>=<sp/>32768</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
-<codeline><highlight class="normal">};</highlight></codeline>
-</programlisting></para><para>Then, update the PowerMSP432_config structure to 1) reference the new custom levels, and 2) as appropriate, enable extended performance scaling support, and define the relevant extended configuration parameters. In the first custom perf level shown above the HFXT and LFXT crystals are used as clock sources, so for this example the extended support parameters need to be specfied.</para><para>The code below shows additions to the PowerMSP432_config structure for this example. The first two additions to PowerMSP432_config reference the array of custom perf levels, and indicate the number of custom levels. The third addition enables extended support for crystals. The remaining parameters define crystal settings, plus an application-provided ISR function for handling any Clock System fault interrupts.</para><para><programlisting><codeline><highlight class="normal">const<sp/>PowerMSP432_ConfigV1<sp/>PowerMSP432_config<sp/>=<sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>...</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.customPerfLevels<sp/>=<sp/>myPerfLevels,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.numCustom<sp/>=<sp/>sizeof(myPerfLevels)<sp/>/<sp/>sizeof(PowerMSP432_PerfLevel),</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.useExtendedPerf<sp/>=<sp/>true,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.HFXTFREQ<sp/>=<sp/>CS_48MHZ,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.configurePinHFXT<sp/>=<sp/>true,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.bypassHFXT<sp/>=<sp/>false,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.configurePinLFXT<sp/>=<sp/>true,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.bypassLFXT<sp/>=<sp/>false,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.LFXTDRIVE<sp/>=<sp/>CS_LFXT_DRIVE3,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.enableInterruptsCS<sp/>=<sp/>true,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.priorityInterruptsCS<sp/>=<sp/>~0,</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>.isrCS<sp/>=<sp/>&amp;isrCS</highlight></codeline>
-<codeline><highlight class="normal">};</highlight></codeline>
-</programlisting> </para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/power/PowerMSP432.h" line="535" column="1"/>
-      </memberdef>
-      <memberdef kind="typedef" id="_power_m_s_p432_8h_1abe39fc5c741e4aa48057c69eba33c7f4" prot="public" static="no">
-        <type>struct <ref refid="struct_power_m_s_p432___freqs" kindref="compound">PowerMSP432_Freqs</ref></type>
-        <definition>typedef struct PowerMSP432_Freqs  PowerMSP432_Freqs</definition>
-        <argsstring></argsstring>
-        <name>PowerMSP432_Freqs</name>
-        <briefdescription>
-<para>Structure holding device frequencies (in Hz) </para>        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/power/PowerMSP432.h" line="544" column="1"/>
-      </memberdef>
-      <memberdef kind="typedef" id="_power_m_s_p432_8h_1a5bfb081eaaded43da0a9dee0192dfb1c" prot="public" static="no">
-        <type>struct <ref refid="struct_power_m_s_p432___config_v1" kindref="compound">PowerMSP432_ConfigV1</ref></type>
-        <definition>typedef struct PowerMSP432_ConfigV1  PowerMSP432_ConfigV1</definition>
-        <argsstring></argsstring>
-        <name>PowerMSP432_ConfigV1</name>
-        <briefdescription>
-<para>Power global configuration (MSP432-specific) </para>        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="exports/tidrivers_msp432/source/ti/drivers/power/PowerMSP432.h" line="798" column="1"/>
-      </memberdef>
-      </sectiondef>
       <sectiondef kind="func">
       <memberdef kind="function" id="_power_m_s_p432_8h_1a87e7587ff02d31c91e9ca5745e64d614" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -914,7 +801,7 @@ To define custom performance levels the user must add an array of <ref refid="st
 <codeline lineno="210" refid="_power_m_s_p432_8h_1a845c92d66fb0ec1bc650add796e8ae91" refkind="member"><highlight class="preprocessor">#define<sp/>PowerMSP432_SHUTDOWN_1<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0x1<sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="212"><highlight class="preprocessor"></highlight><highlight class="comment">/*<sp/>Flag<sp/>to<sp/>indicate<sp/>a<sp/>custom,<sp/>tuned<sp/>DCO<sp/>frequency<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="213" refid="_power_m_s_p432_8h_1a7d16b96b9c24eb74a8def648de83a236" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CS_DCO_TUNE_FREQ<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0x7<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="352" refid="struct_power_m_s_p432___perf_level" refkind="compound"><highlight class="preprocessor">typedef<sp/>struct<sp/>PowerMSP432_PerfLevel<sp/>{</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="352" refid="struct_power_m_s_p432___perf_level" refkind="compound"><highlight class="preprocessor">typedef<sp/>struct<sp/>{</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="353"><highlight class="normal"></highlight></codeline>
 <codeline lineno="369" refid="struct_power_m_s_p432___perf_level_1a82d4c23546e9735b7314836e6cdf4717" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_power_m_s_p432___perf_level_1a82d4c23546e9735b7314836e6cdf4717" kindref="member">activeState</ref>;</highlight></codeline>
 <codeline lineno="386" refid="struct_power_m_s_p432___perf_level_1a6c0084d8e2d45959783590ce98074b3b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_power_m_s_p432___perf_level_1a6c0084d8e2d45959783590ce98074b3b" kindref="member">VCORE</ref>;</highlight></codeline>
@@ -936,17 +823,17 @@ To define custom performance levels the user must add an array of <ref refid="st
 <codeline lineno="523" refid="struct_power_m_s_p432___perf_level_1ac29bd5ce6de5c90acbcf535780dd94bc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_power_m_s_p432___perf_level_1ac29bd5ce6de5c90acbcf535780dd94bc" kindref="member">BCLK</ref>;</highlight></codeline>
 <codeline lineno="528" refid="struct_power_m_s_p432___perf_level_1afca031b655668dbed6ad8bfbbb918cd5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_power_m_s_p432___perf_level_1afca031b655668dbed6ad8bfbbb918cd5" kindref="member">ACLK</ref>;</highlight></codeline>
 <codeline lineno="534" refid="struct_power_m_s_p432___perf_level_1a2404b7d8870a764f17a35bc8701bf827" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_power_m_s_p432___perf_level_1a2404b7d8870a764f17a35bc8701bf827" kindref="member">tuneFreqDCO</ref>;</highlight></codeline>
-<codeline lineno="535"><highlight class="normal">}<sp/><ref refid="_power_m_s_p432_8h_1a7c8efba6213cd9c57b705d503c916cb8" kindref="member">PowerMSP432_PerfLevel</ref>;</highlight></codeline>
+<codeline lineno="535"><highlight class="normal">}<sp/><ref refid="struct_power_m_s_p432___perf_level" kindref="compound">PowerMSP432_PerfLevel</ref>;</highlight></codeline>
 <codeline lineno="536"><highlight class="normal"></highlight></codeline>
-<codeline lineno="538" refid="struct_power_m_s_p432___freqs" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_power_m_s_p432___freqs" kindref="compound">PowerMSP432_Freqs</ref><sp/>{</highlight></codeline>
+<codeline lineno="538" refid="struct_power_m_s_p432___freqs" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
 <codeline lineno="539" refid="struct_power_m_s_p432___freqs_1ac0d0f8363174dfc6acc8fe5509156a13" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_power_m_s_p432___freqs_1ac0d0f8363174dfc6acc8fe5509156a13" kindref="member">MCLK</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="540" refid="struct_power_m_s_p432___freqs_1ae390f1cabbfb7383e55655457d6ac74a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_power_m_s_p432___freqs_1ae390f1cabbfb7383e55655457d6ac74a" kindref="member">HSMCLK</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="541" refid="struct_power_m_s_p432___freqs_1aacb0ccad74d7029f8678b1b61fa682ed" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_power_m_s_p432___freqs_1aacb0ccad74d7029f8678b1b61fa682ed" kindref="member">SMCLK</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="542" refid="struct_power_m_s_p432___freqs_1ac71ae44d602a67c9c20d6e4e9eaa5bbd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_power_m_s_p432___freqs_1ac71ae44d602a67c9c20d6e4e9eaa5bbd" kindref="member">BCLK</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="543" refid="struct_power_m_s_p432___freqs_1acb3ced6dd64c0010d6745cd11ae6d166" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_power_m_s_p432___freqs_1acb3ced6dd64c0010d6745cd11ae6d166" kindref="member">ACLK</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="544"><highlight class="normal">}<sp/><ref refid="_power_m_s_p432_8h_1abe39fc5c741e4aa48057c69eba33c7f4" kindref="member">PowerMSP432_Freqs</ref>;</highlight></codeline>
+<codeline lineno="544"><highlight class="normal">}<sp/><ref refid="struct_power_m_s_p432___freqs" kindref="compound">PowerMSP432_Freqs</ref>;</highlight></codeline>
 <codeline lineno="545"><highlight class="normal"></highlight></codeline>
-<codeline lineno="547" refid="struct_power_m_s_p432___config_v1" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_power_m_s_p432___config_v1" kindref="compound">PowerMSP432_ConfigV1</ref><sp/>{</highlight></codeline>
+<codeline lineno="547" refid="struct_power_m_s_p432___config_v1" refkind="compound"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
 <codeline lineno="554" refid="struct_power_m_s_p432___config_v1_1a63f02b72038cd340fd3e3bd634c11035" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_power_8h_1a435fdeb71d13ea6be86f599c9b6a0d78" kindref="member">Power_PolicyInitFxn</ref><sp/><ref refid="struct_power_m_s_p432___config_v1_1a63f02b72038cd340fd3e3bd634c11035" kindref="member">policyInitFxn</ref>;</highlight></codeline>
 <codeline lineno="577" refid="struct_power_m_s_p432___config_v1_1a1e2c8cb5a370da047f71df03b57675ca" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_power_8h_1a333038d1e9cd5f93dda7b83f8a1afa8b" kindref="member">Power_PolicyFxn</ref><sp/><ref refid="struct_power_m_s_p432___config_v1_1a1e2c8cb5a370da047f71df03b57675ca" kindref="member">policyFxn</ref>;</highlight></codeline>
 <codeline lineno="589" refid="struct_power_m_s_p432___config_v1_1aaab800db7539de6ba4453f8446ae373a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_power_m_s_p432___config_v1_1aaab800db7539de6ba4453f8446ae373a" kindref="member">initialPerfLevel</ref>;</highlight></codeline>
@@ -966,9 +853,9 @@ To define custom performance levels the user must add an array of <ref refid="st
 <codeline lineno="788" refid="struct_power_m_s_p432___config_v1_1aeb6e54d58c9f297e9dcef1b666dd8df3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_power_m_s_p432___config_v1_1aeb6e54d58c9f297e9dcef1b666dd8df3" kindref="member">enableInterruptsCS</ref>;</highlight></codeline>
 <codeline lineno="792" refid="struct_power_m_s_p432___config_v1_1a0a9f17e1e6b344e08c057870cc363c42" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_power_m_s_p432___config_v1_1a0a9f17e1e6b344e08c057870cc363c42" kindref="member">priorityInterruptsCS</ref>;</highlight></codeline>
 <codeline lineno="797" refid="struct_power_m_s_p432___config_v1_1a8e983faf2c1d8bd65bba5320c3a03019" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/>(*isrCS)(void);</highlight></codeline>
-<codeline lineno="798"><highlight class="normal">}<sp/><ref refid="_power_m_s_p432_8h_1a5bfb081eaaded43da0a9dee0192dfb1c" kindref="member">PowerMSP432_ConfigV1</ref>;</highlight></codeline>
+<codeline lineno="798"><highlight class="normal">}<sp/><ref refid="struct_power_m_s_p432___config_v1" kindref="compound">PowerMSP432_ConfigV1</ref>;</highlight></codeline>
 <codeline lineno="799"><highlight class="normal"></highlight></codeline>
-<codeline lineno="804"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">PowerMSP432_ModuleState<sp/>{</highlight></codeline>
+<codeline lineno="804"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
 <codeline lineno="805"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_list___list" kindref="compound">List_List</ref><sp/>notifyList;</highlight></codeline>
 <codeline lineno="806"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>constraintMask;</highlight></codeline>
 <codeline lineno="807"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>state;</highlight></codeline>

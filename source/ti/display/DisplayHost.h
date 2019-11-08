@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -81,12 +81,12 @@
 #ifndef ti_display_DisplayHost__include
 #define ti_display_DisplayHost__include
 
+#include <ti/display/Display.h>
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-#include <ti/display/Display.h>
 
 /*!
  *  @brief DisplayHost Attributes

@@ -7,7 +7,7 @@ package/ti.catalog.arm.cortexm4.tiva.ce.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_catalog_arm_cortexm4_tiva_ce.java
 package/ti_catalog_arm_cortexm4_tiva_ce.class
 package/package_ti.catalog.arm.cortexm4.tiva.ce.c

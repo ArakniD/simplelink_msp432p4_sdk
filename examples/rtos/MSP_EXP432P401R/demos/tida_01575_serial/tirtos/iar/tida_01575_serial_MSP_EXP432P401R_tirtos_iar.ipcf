@@ -70,6 +70,15 @@
     </linkerExtraOptions>
 
     <customBuildTools>
+        <customBuildTool atRoot="true" name="SysConfig"> <!-- Custom build tool for entire project-->
+            <fileExtensions>.syscfg</fileExtensions>
+            <command>$SYSCONFIG_ROOT$/sysconfig_cli.bat -o $PROJ_DIR$ -s "$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/.metadata/product.json" --compiler iar $FILE_PATH$
+            </command>
+            <output>
+                <path>SysConfig_Generated_Files.ipcf</path>
+            </output>
+            <hasPrio>true</hasPrio> <!-- true: run this tool before all other tools-->
+        </customBuildTool>
     </customBuildTools>
 
     <heaps>
@@ -91,6 +100,8 @@
     </preBuild>
 
     <files>
+        <path copyTo="$PROJ_DIR$/main_tirtos.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/tirtos/main_tirtos.c</path>
+        <path copyTo="$PROJ_DIR$/MSP_EXP432P401R_TIRTOS.icf">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/tirtos/iar/MSP_EXP432P401R_TIRTOS.icf</path>
         <path copyTo="$PROJ_DIR$/README.md">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/README.md</path>
         <path copyTo="$PROJ_DIR$/README.html">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/README.html</path>
         <path copyTo="$PROJ_DIR$/Board.html">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/Board.html</path>
@@ -99,10 +110,6 @@
         <path copyTo="$PROJ_DIR$/commonComms.h">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/commonComms.h</path>
         <path copyTo="$PROJ_DIR$/vibrationCapture.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/vibrationCapture.c</path>
         <path copyTo="$PROJ_DIR$/vibrationCapture.h">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/vibrationCapture.h</path>
-        <path copyTo="$PROJ_DIR$/MSP_EXP432P401R.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/MSP_EXP432P401R.c</path>
-        <path copyTo="$PROJ_DIR$/MSP_EXP432P401R.h">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/MSP_EXP432P401R.h</path>
-        <path copyTo="$PROJ_DIR$/Board.h">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/Board.h</path>
-        <path copyTo="$PROJ_DIR$/main_tirtos.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/tirtos/main_tirtos.c</path>
-        <path copyTo="$PROJ_DIR$/MSP_EXP432P401R_TIRTOS.icf">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/tirtos/iar/MSP_EXP432P401R_TIRTOS.icf</path>
+        <path copyTo="$PROJ_DIR$/tida_01575_serial.syscfg">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/demos/tida_01575_serial/tida_01575_serial.syscfg</path>
     </files>
 </iarProjectConnection>

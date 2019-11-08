@@ -5,198 +5,224 @@
 </head>
 <body>
 <pre class=src>
-     1    <span class="comment">/* 
-</span>     2    <span class="comment"> *  Copyright (c) 2013 Texas Instruments and others.
-</span>     3    <span class="comment"> *  All rights reserved. This program and the accompanying materials
-</span>     4    <span class="comment"> *  are made available under the terms of the Eclipse Public License v1.0
-</span>     5    <span class="comment"> *  which accompanies this distribution, and is available at
-</span>     6    <span class="comment"> *  http://www.eclipse.org/legal/epl-v10.html
-</span>     7    <span class="comment"> *
-</span>     8    <span class="comment"> *  Contributors:
-</span>     9    <span class="comment"> *      Texas Instruments - initial implementation
-</span>    10    <span class="comment"> *
-</span>    11    <span class="comment"> * */</span>
-    12    <span class="xdoc">/*!
-</span>    13    <span class="xdoc"> *  ======== ITarget ========
-</span>    14    <span class="xdoc"> *  IAR ARM extension to the base `xdc.bld.ITarget3` interface.
-</span>    15    <span class="xdoc"> */</span>
-    16    @TargetHeader(<span class="string">"xdc/bld/stddefs.xdt"</span>)
-    17    <span class=key>metaonly</span> <span class=key>interface</span> ITarget <span class=key>inherits</span> xdc.bld.ITarget3 {
-    18    
-    19        <span class=key>override</span> <span class=key>readonly</span> <span class=key>config</span> String rts = <span class="string">"iar.targets.arm.rts"</span>;
-    20    
-    21        <span class=key>override</span> <span class=key>config</span> string stdInclude = <span class="string">"iar/targets/arm/std.h"</span>;
-    22    
-    23        <span class="comment">/*
-</span>    24    <span class="comment">     *  ======== binDir ========
-</span>    25    <span class="comment">     *  Code gen tools bin directory path
-</span>    26    <span class="comment">     */</span>
-    27        <span class=key>config</span> string binDir = <span class="string">"$(rootDir)/bin/"</span>;
-    28    
-    29        <span class="xdoc">/*!
-</span>    30    <span class="xdoc">     *  ======== model ========
-</span>    31    <span class="xdoc">     *  Little endian, thumb2 model
-</span>    32    <span class="xdoc">     */</span>
-    33        <span class=key>override</span> <span class=key>readonly</span> <span class=key>config</span> xdc.bld.ITarget.Model model = {
-    34            endian: <span class="string">"little"</span>,
-    35            codeModel: <span class="string">"thumb2"</span>,
-    36            shortEnums: <span class=key>true</span>
-    37        };
-    38    
-    39        <span class="xdoc">/*!
-</span>    40    <span class="xdoc">     *  ======== ccOpts ========
-</span>    41    <span class="xdoc">     *  User configurable compiler options.
-</span>    42    <span class="xdoc">     */</span>
-    43        <span class=key>override</span> <span class=key>config</span> Options ccOpts = {
-    44            prefix: <span class="string">"--silent"</span>,
-    45            suffix: <span class="string">""</span>
-    46        };
-    47    
-    48        <span class="xdoc">/*!
-</span>    49    <span class="xdoc">     *  ======== asmOpts ========
-</span>    50    <span class="xdoc">     *  User configurable assembler options.
-</span>    51    <span class="xdoc">     */</span>
-    52        <span class=key>override</span> <span class=key>config</span> Options asmOpts = {
-    53            prefix: <span class="string">"-S"</span>,
-    54            suffix: <span class="string">""</span>
-    55        };
-    56    
-    57        <span class="xdoc">/*!
-</span>    58    <span class="xdoc">     *  ======== ar ========
-</span>    59    <span class="xdoc">     *  The command used to create an archive
-</span>    60    <span class="xdoc">     */</span>
-    61        <span class=key>override</span> <span class=key>readonly</span> <span class=key>config</span> Command ar = {
-    62            cmd: <span class="string">"iarchive"</span>,
-    63            opts: <span class="string">""</span>
-    64        };
-    65    
-    66        <span class="xdoc">/*!
-</span>    67    <span class="xdoc">     *  ======== arOpts ========
-</span>    68    <span class="xdoc">     *  User configurable archiver options.
-</span>    69    <span class="xdoc">     */</span>
-    70        <span class=key>override</span> <span class=key>config</span> Options arOpts = {
-    71            prefix: <span class="string">"--silent"</span>,
-    72            suffix: <span class="string">""</span>
-    73        };
-    74    
-    75        <span class="xdoc">/*!
-</span>    76    <span class="xdoc">     *  ======== lnkOpts ========
-</span>    77    <span class="xdoc">     *  User configurable linker options.
-</span>    78    <span class="xdoc">     */</span>
-    79        <span class=key>override</span> <span class=key>config</span> xdc.bld.ITarget2.Options lnkOpts = {
-    80            prefix: <span class="string">"--silent"</span>,
-    81            suffix: <span class="string">"--map $(XDCCFGDIR)/$@.map  --redirect _Printf=_PrintfSmall --redirect _Scanf=_ScanfSmall "</span>,
-    82        };
-    83    
-    84        <span class="xdoc">/*!
-</span>    85    <span class="xdoc">     *  ======== vers ========
-</span>    86    <span class="xdoc">     *  The command used to get the tool-chain to return a version number.
-</span>    87    <span class="xdoc">     */</span>
-    88        <span class=key>readonly</span> <span class=key>config</span> Command vers = {
-    89            cmd: <span class="string">"iccarm"</span>,
-    90            opts: <span class="string">"-v"</span>
-    91        };
-    92    
-    93        <span class="xdoc">/*!
-</span>    94    <span class="xdoc">     *  ======== extension ========
-</span>    95    <span class="xdoc">     *  The IAR assembly file extension recognised by this target.
-</span>    96    <span class="xdoc">     */</span>
-    97        <span class=key>override</span> <span class=key>config</span> Extension extensions[string] = [
-    98            [<span class="string">".asm"</span>,  {suf: <span class="string">".asm"</span>, typ: <span class="string">"asm"</span>}],
-    99            [<span class="string">".c"</span>,    {suf: <span class="string">".c"</span>,   typ: <span class="string">"c"</span>  }],
-   100            [<span class="string">".cpp"</span>,  {suf: <span class="string">".cpp"</span>, typ: <span class="string">"cpp"</span>}],
-   101            [<span class="string">".cxx"</span>,  {suf: <span class="string">".cxx"</span>, typ: <span class="string">"cpp"</span>}],
-   102            [<span class="string">".C"</span>,    {suf: <span class="string">".C"</span>,   typ: <span class="string">"cpp"</span>}],
-   103            [<span class="string">".cc"</span>,   {suf: <span class="string">".cc"</span>,  typ: <span class="string">"cpp"</span>}],
-   104            [<span class="string">".s"</span>,    {suf: <span class="string">".s"</span>,   typ: <span class="string">"asm"</span>}],
-   105            [<span class="string">".sv7M"</span>, {suf: <span class="string">".sv7M"</span>,typ: <span class="string">"asm"</span>}],
-   106            [<span class="string">".sv8M"</span>, {suf: <span class="string">".sv8M"</span>,typ: <span class="string">"asm"</span>}],
-   107        ];
-   108    
-   109        <span class="xdoc">/*!
-</span>   110    <span class="xdoc">     *  ======== includeOpts ========
-</span>   111    <span class="xdoc">     *  Additional user configurable target-specific include path options
-</span>   112    <span class="xdoc">     */</span>
-   113        <span class=key>override</span> <span class=key>config</span> String includeOpts = <span class="string">""</span>;
-   114    
-   115        <span class="xdoc">/*!
-</span>   116    <span class="xdoc">     *  ======== cmdPrefix ========
-</span>   117    <span class="xdoc">     *  Prefix to put in front of each command
-</span>   118    <span class="xdoc">     *
-</span>   119    <span class="xdoc">     *  This string is put in front of every Command before being passed to
-</span>   120    <span class="xdoc">     *  the shell for execution.  This string can be used to run the compiler
-</span>   121    <span class="xdoc">     *  in emulation environments. 
-</span>   122    <span class="xdoc">     *
-</span>   123    <span class="xdoc">     *  LC_ALL=C must be set for code gen to run on SUSE
-</span>   124    <span class="xdoc">     */</span>
-   125        <span class=key>config</span> String cmdPrefix = <span class="string">"LC_ALL=C "</span>;
-   126    
-   127        <span class="xdoc">/*!
-</span>   128    <span class="xdoc">     *  ======== alignDirectiveSupported ========
-</span>   129    <span class="xdoc">     *  The compiler supports an align directive.
-</span>   130    <span class="xdoc">     */</span>
-   131        <span class=key>override</span> <span class=key>readonly</span> <span class=key>config</span> Bool alignDirectiveSupported = <span class=key>true</span>;
-   132    
-   133        <span class="xdoc">/*!
-</span>   134    <span class="xdoc">     *  ======== stdTypes  ========
-</span>   135    <span class="xdoc">     *  Size and alignment for standard base types
-</span>   136    <span class="xdoc">     */</span>
-   137        <span class=key>override</span> <span class=key>readonly</span> <span class=key>config</span> xdc.bld.ITarget.StdTypes stdTypes = {
-   138            t_IArg          : { size: 4, align: 4 },
-   139            t_Char          : { size: 1, align: 1 },
-   140            t_Double        : { size: 8, align: 8 },
-   141            t_Float         : { size: 4, align: 4 },
-   142            t_Fxn           : { size: 4, align: 4 },
-   143            t_Int           : { size: 4, align: 4 },
-   144            t_Int8          : { size: 1, align: 1 },
-   145            t_Int16         : { size: 2, align: 2 },
-   146            t_Int32         : { size: 4, align: 4 },
-   147            t_Long          : { size: 4, align: 4 },
-   148            t_LDouble       : { size: 8, align: 8 },
-   149            t_LLong         : { size: 8, align: 8 },
-   150            t_Ptr           : { size: 4, align: 4 },
-   151            t_Short         : { size: 2, align: 2 },
-   152            t_Size          : { size: 4, align: 4 },
-   153            t_Int64         : { size: 8, align: 8 },
-   154        };
-   155    
-   156        <span class="xdoc">/*!
-</span>   157    <span class="xdoc">     *  ======== profiles ========
-</span>   158    <span class="xdoc">     *  Standard options profiles.
-</span>   159    <span class="xdoc">     */</span>
-   160        <span class=key>override</span> <span class=key>config</span> xdc.bld.ITarget.OptionSet profiles[string] = [
-   161            [<span class="string">"debug"</span>, {
-   162                compileOpts: {
-   163                    copts: <span class="string">"--debug --dlib_config $(rootDir)/inc/c/DLib_Config_Normal.h"</span>,
-   164                },
-   165                linkOpts: <span class="string">"--semihosting=iar_breakpoint"</span>,
-   166            }],
-   167            [<span class="string">"release"</span>, {
-   168                compileOpts: {
-   169                    copts: <span class="string">"-Ohs --dlib_config $(rootDir)/inc/c/DLib_Config_Normal.h"</span>,
-   170                },
-   171                linkOpts: <span class="string">"--semihosting=iar_breakpoint"</span>,
-   172            }],
-   173            [<span class="string">"debug_full"</span>, {
-   174                compileOpts: {
-   175                    copts: <span class="string">"--debug --dlib_config $(rootDir)/inc/c/DLib_Config_Full.h"</span>,
-   176                },
-   177                linkOpts: <span class="string">"--semihosting=iar_breakpoint"</span>,
-   178            }],
-   179            [<span class="string">"release_full"</span>, {
-   180                compileOpts: {
-   181                    copts: <span class="string">"-Ohs --dlib_config $(rootDir)/inc/c/DLib_Config_Full.h"</span>,
-   182                },
-   183                linkOpts: <span class="string">"--semihosting=iar_breakpoint"</span>,
-   184            }],
-   185        ];
-   186    
-   187        <span class=key>override</span> <span class=key>config</span> String binaryParser = <span class="string">"ti.targets.omf.elf.Elf32"</span>;
-   188    }
-   189    <span class="comment">/*
-</span>   190    <span class="comment"> *  @(#) iar.targets.arm; 1, 0, 0,1; 2-9-2019 16:22:37; /db/ztree/library/trees/xdctargets/xdctargets-t01/src/ xlibrary
-</span>   191    <span class="comment">
-</span>   192    <span class="comment"> */</span>
-   193    
+     1    <span class="comment">/*
+</span>     2    <span class="comment"> *  Copyright 2019 by Texas Instruments Incorporated.
+</span>     3    <span class="comment"> *
+</span>     4    <span class="comment"> */</span>
+     5    
+     6    <span class="comment">/*
+</span>     7    <span class="comment"> * Copyright (c) 2013-2019 Texas Instruments Incorporated
+</span>     8    <span class="comment"> * All rights reserved.
+</span>     9    <span class="comment"> *
+</span>    10    <span class="comment"> * Redistribution and use in source and binary forms, with or without
+</span>    11    <span class="comment"> * modification, are permitted provided that the following conditions
+</span>    12    <span class="comment"> * are met:
+</span>    13    <span class="comment"> *
+</span>    14    <span class="comment"> * *  Redistributions of source code must retain the above copyright
+</span>    15    <span class="comment"> *    notice, this list of conditions and the following disclaimer.
+</span>    16    <span class="comment"> *
+</span>    17    <span class="comment"> * *  Redistributions in binary form must reproduce the above copyright
+</span>    18    <span class="comment"> *    notice, this list of conditions and the following disclaimer in the
+</span>    19    <span class="comment"> *    documentation and/or other materials provided with the distribution.
+</span>    20    <span class="comment"> *
+</span>    21    <span class="comment"> * *  Neither the name of Texas Instruments Incorporated nor the names of
+</span>    22    <span class="comment"> *    its contributors may be used to endorse or promote products derived
+</span>    23    <span class="comment"> *    from this software without specific prior written permission.
+</span>    24    <span class="comment"> *
+</span>    25    <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+</span>    26    <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+</span>    27    <span class="comment"> * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+</span>    28    <span class="comment"> * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span>    29    <span class="comment"> * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+</span>    30    <span class="comment"> * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+</span>    31    <span class="comment"> * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+</span>    32    <span class="comment"> * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+</span>    33    <span class="comment"> * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+</span>    34    <span class="comment"> * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+</span>    35    <span class="comment"> * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</span>    36    <span class="comment"> */</span>
+    37    
+    38    <span class="xdoc">/*!
+</span>    39    <span class="xdoc"> *  ======== ITarget ========
+</span>    40    <span class="xdoc"> *  IAR ARM extension to the base `xdc.bld.ITarget3` interface.
+</span>    41    <span class="xdoc"> */</span>
+    42    @TargetHeader(<span class="string">"xdc/bld/stddefs.xdt"</span>)
+    43    <span class=key>metaonly</span> <span class=key>interface</span> ITarget <span class=key>inherits</span> xdc.bld.ITarget3 {
+    44    
+    45        <span class=key>override</span> <span class=key>readonly</span> <span class=key>config</span> String rts = <span class="string">"iar.targets.arm.rts"</span>;
+    46    
+    47        <span class=key>override</span> <span class=key>config</span> string stdInclude = <span class="string">"iar/targets/arm/std.h"</span>;
+    48    
+    49        <span class="comment">/*
+</span>    50    <span class="comment">     *  ======== binDir ========
+</span>    51    <span class="comment">     *  Code gen tools bin directory path
+</span>    52    <span class="comment">     */</span>
+    53        <span class=key>config</span> string binDir = <span class="string">"$(rootDir)/bin/"</span>;
+    54    
+    55        <span class="xdoc">/*!
+</span>    56    <span class="xdoc">     *  ======== model ========
+</span>    57    <span class="xdoc">     *  Little endian, thumb2 model
+</span>    58    <span class="xdoc">     */</span>
+    59        <span class=key>override</span> <span class=key>readonly</span> <span class=key>config</span> xdc.bld.ITarget.Model model = {
+    60            endian: <span class="string">"little"</span>,
+    61            codeModel: <span class="string">"thumb2"</span>,
+    62            shortEnums: <span class=key>true</span>
+    63        };
+    64    
+    65        <span class="xdoc">/*!
+</span>    66    <span class="xdoc">     *  ======== ccOpts ========
+</span>    67    <span class="xdoc">     *  User configurable compiler options.
+</span>    68    <span class="xdoc">     */</span>
+    69        <span class=key>override</span> <span class=key>config</span> Options ccOpts = {
+    70            prefix: <span class="string">"--silent"</span>,
+    71            suffix: <span class="string">""</span>
+    72        };
+    73    
+    74        <span class="xdoc">/*!
+</span>    75    <span class="xdoc">     *  ======== asmOpts ========
+</span>    76    <span class="xdoc">     *  User configurable assembler options.
+</span>    77    <span class="xdoc">     */</span>
+    78        <span class=key>override</span> <span class=key>config</span> Options asmOpts = {
+    79            prefix: <span class="string">"-S"</span>,
+    80            suffix: <span class="string">""</span>
+    81        };
+    82    
+    83        <span class="xdoc">/*!
+</span>    84    <span class="xdoc">     *  ======== ar ========
+</span>    85    <span class="xdoc">     *  The command used to create an archive
+</span>    86    <span class="xdoc">     */</span>
+    87        <span class=key>override</span> <span class=key>readonly</span> <span class=key>config</span> Command ar = {
+    88            cmd: <span class="string">"iarchive"</span>,
+    89            opts: <span class="string">""</span>
+    90        };
+    91    
+    92        <span class="xdoc">/*!
+</span>    93    <span class="xdoc">     *  ======== arOpts ========
+</span>    94    <span class="xdoc">     *  User configurable archiver options.
+</span>    95    <span class="xdoc">     */</span>
+    96        <span class=key>override</span> <span class=key>config</span> Options arOpts = {
+    97            prefix: <span class="string">"--silent"</span>,
+    98            suffix: <span class="string">""</span>
+    99        };
+   100    
+   101        <span class="xdoc">/*!
+</span>   102    <span class="xdoc">     *  ======== lnkOpts ========
+</span>   103    <span class="xdoc">     *  User configurable linker options.
+</span>   104    <span class="xdoc">     */</span>
+   105        <span class=key>override</span> <span class=key>config</span> xdc.bld.ITarget2.Options lnkOpts = {
+   106            prefix: <span class="string">"--silent"</span>,
+   107            suffix: <span class="string">"--map $(XDCCFGDIR)/$@.map  --redirect _Printf=_PrintfSmall --redirect _Scanf=_ScanfSmall "</span>,
+   108        };
+   109    
+   110        <span class="xdoc">/*!
+</span>   111    <span class="xdoc">     *  ======== vers ========
+</span>   112    <span class="xdoc">     *  The command used to get the tool-chain to return a version number.
+</span>   113    <span class="xdoc">     */</span>
+   114        <span class=key>readonly</span> <span class=key>config</span> Command vers = {
+   115            cmd: <span class="string">"iccarm"</span>,
+   116            opts: <span class="string">"-v"</span>
+   117        };
+   118    
+   119        <span class="xdoc">/*!
+</span>   120    <span class="xdoc">     *  ======== extension ========
+</span>   121    <span class="xdoc">     *  The IAR assembly file extension recognised by this target.
+</span>   122    <span class="xdoc">     */</span>
+   123        <span class=key>override</span> <span class=key>config</span> Extension extensions[string] = [
+   124            [<span class="string">".asm"</span>,  {suf: <span class="string">".asm"</span>, typ: <span class="string">"asm"</span>}],
+   125            [<span class="string">".c"</span>,    {suf: <span class="string">".c"</span>,   typ: <span class="string">"c"</span>  }],
+   126            [<span class="string">".cpp"</span>,  {suf: <span class="string">".cpp"</span>, typ: <span class="string">"cpp"</span>}],
+   127            [<span class="string">".cxx"</span>,  {suf: <span class="string">".cxx"</span>, typ: <span class="string">"cpp"</span>}],
+   128            [<span class="string">".C"</span>,    {suf: <span class="string">".C"</span>,   typ: <span class="string">"cpp"</span>}],
+   129            [<span class="string">".cc"</span>,   {suf: <span class="string">".cc"</span>,  typ: <span class="string">"cpp"</span>}],
+   130            [<span class="string">".s"</span>,    {suf: <span class="string">".s"</span>,   typ: <span class="string">"asm"</span>}],
+   131            [<span class="string">".sv7M"</span>, {suf: <span class="string">".sv7M"</span>,typ: <span class="string">"asm"</span>}],
+   132            [<span class="string">".sv8M"</span>, {suf: <span class="string">".sv8M"</span>,typ: <span class="string">"asm"</span>}],
+   133        ];
+   134    
+   135        <span class="xdoc">/*!
+</span>   136    <span class="xdoc">     *  ======== includeOpts ========
+</span>   137    <span class="xdoc">     *  Additional user configurable target-specific include path options
+</span>   138    <span class="xdoc">     */</span>
+   139        <span class=key>override</span> <span class=key>config</span> String includeOpts = <span class="string">""</span>;
+   140    
+   141        <span class="xdoc">/*!
+</span>   142    <span class="xdoc">     *  ======== cmdPrefix ========
+</span>   143    <span class="xdoc">     *  Prefix to put in front of each command
+</span>   144    <span class="xdoc">     *
+</span>   145    <span class="xdoc">     *  This string is put in front of every Command before being passed to
+</span>   146    <span class="xdoc">     *  the shell for execution.  This string can be used to run the compiler
+</span>   147    <span class="xdoc">     *  in emulation environments.
+</span>   148    <span class="xdoc">     *
+</span>   149    <span class="xdoc">     *  LC_ALL=C must be set for code gen to run on SUSE
+</span>   150    <span class="xdoc">     */</span>
+   151        <span class=key>config</span> String cmdPrefix = <span class="string">"LC_ALL=C "</span>;
+   152    
+   153        <span class="xdoc">/*!
+</span>   154    <span class="xdoc">     *  ======== alignDirectiveSupported ========
+</span>   155    <span class="xdoc">     *  The compiler supports an align directive.
+</span>   156    <span class="xdoc">     */</span>
+   157        <span class=key>override</span> <span class=key>readonly</span> <span class=key>config</span> Bool alignDirectiveSupported = <span class=key>true</span>;
+   158    
+   159        <span class="xdoc">/*!
+</span>   160    <span class="xdoc">     *  ======== stdTypes  ========
+</span>   161    <span class="xdoc">     *  Size and alignment for standard base types
+</span>   162    <span class="xdoc">     */</span>
+   163        <span class=key>override</span> <span class=key>readonly</span> <span class=key>config</span> xdc.bld.ITarget.StdTypes stdTypes = {
+   164            t_IArg          : { size: 4, align: 4 },
+   165            t_Char          : { size: 1, align: 1 },
+   166            t_Double        : { size: 8, align: 8 },
+   167            t_Float         : { size: 4, align: 4 },
+   168            t_Fxn           : { size: 4, align: 4 },
+   169            t_Int           : { size: 4, align: 4 },
+   170            t_Int8          : { size: 1, align: 1 },
+   171            t_Int16         : { size: 2, align: 2 },
+   172            t_Int32         : { size: 4, align: 4 },
+   173            t_Long          : { size: 4, align: 4 },
+   174            t_LDouble       : { size: 8, align: 8 },
+   175            t_LLong         : { size: 8, align: 8 },
+   176            t_Ptr           : { size: 4, align: 4 },
+   177            t_Short         : { size: 2, align: 2 },
+   178            t_Size          : { size: 4, align: 4 },
+   179            t_Int64         : { size: 8, align: 8 },
+   180        };
+   181    
+   182        <span class="xdoc">/*!
+</span>   183    <span class="xdoc">     *  ======== profiles ========
+</span>   184    <span class="xdoc">     *  Standard options profiles.
+</span>   185    <span class="xdoc">     */</span>
+   186        <span class=key>override</span> <span class=key>config</span> xdc.bld.ITarget.OptionSet profiles[string] = [
+   187            [<span class="string">"debug"</span>, {
+   188                compileOpts: {
+   189                    copts: <span class="string">"--debug --dlib_config $(rootDir)/inc/c/DLib_Config_Normal.h"</span>,
+   190                },
+   191                linkOpts: <span class="string">"--semihosting=iar_breakpoint"</span>,
+   192            }],
+   193            [<span class="string">"release"</span>, {
+   194                compileOpts: {
+   195                    copts: <span class="string">"-Ohs --dlib_config $(rootDir)/inc/c/DLib_Config_Normal.h"</span>,
+   196                },
+   197                linkOpts: <span class="string">"--semihosting=iar_breakpoint"</span>,
+   198            }],
+   199            [<span class="string">"debug_full"</span>, {
+   200                compileOpts: {
+   201                    copts: <span class="string">"--debug --dlib_config $(rootDir)/inc/c/DLib_Config_Full.h"</span>,
+   202                },
+   203                linkOpts: <span class="string">"--semihosting=iar_breakpoint"</span>,
+   204            }],
+   205            [<span class="string">"release_full"</span>, {
+   206                compileOpts: {
+   207                    copts: <span class="string">"-Ohs --dlib_config $(rootDir)/inc/c/DLib_Config_Full.h"</span>,
+   208                },
+   209                linkOpts: <span class="string">"--semihosting=iar_breakpoint"</span>,
+   210            }],
+   211        ];
+   212    
+   213        <span class=key>override</span> <span class=key>config</span> String binaryParser = <span class="string">"xdc.targets.omf.Elf"</span>;
+   214    }
+   215    <span class="comment">/*
+</span>   216    <span class="comment"> *  @(#) iar.targets.arm; 1, 0, 0,0; 8-9-2019 17:14:57; /db/ztree/library/trees/xdctargets/xdctargets-v00/src/ xlibrary
+</span>   217    <span class="comment">
+</span>   218    <span class="comment"> */</span>
+   219    
 </pre>
 </body></html>

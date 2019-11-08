@@ -188,7 +188,7 @@ uint32_t PSS_getInterruptStatus(void)
 void PSS_clearInterruptFlag(void)
 {
     __PSSUnlock();
-    BITBAND_PERI(PSS->CLRIFG,PSS_CLRIFG_CLRSVSMHIFG_OFS) = 0;
+    BITBAND_PERI(PSS->CLRIFG,PSS_CLRIFG_CLRSVSMHIFG_OFS) = 1;
     __PSSLock();
 }
 

@@ -94,15 +94,16 @@ function validate(inst, validation)
 let base = {
     displayName         : "Watchdog",
     description         : "Watchdog Timer Driver",
-    defaultInstanceName : "Board_WATCHDOG",
+    defaultInstanceName : "CONFIG_WATCHDOG_",
     longDescription     : `
 The [__Watchdog driver__][1] allows you to configure the system watchdog.
 A watchdog timer is used to reset the system if it has become unresponsive.
-Parameters such as reset behavior and timeout can be configured[2].
+Parameters such as reset behavior and the callback function can be
+[configured][2] at runtime.
 * [Usage Synopsis][3]
 * [Examples][4]
 * [Configuration][5]
-[1]: /tidrivers/doxygen/html/_watchdog_8h.html "C API reference"
+[1]: /tidrivers/doxygen/html/_watchdog_8h.html#details "C API reference"
 [2]:
 /tidrivers/doxygen/html/_watchdog_8h.html#ti_drivers_Watchdog_example_callback
 "Example: Configure the watchdog"
@@ -112,9 +113,8 @@ Parameters such as reset behavior and timeout can be configured[2].
 "C usage examples"
 [5]: /tidrivers/syscfg/html/ConfigDoc.html#Watchdog_Configuration_Options "Configuration options reference"
 `,
-    documentation: "/tidrivers/doxygen/html/_watchdog_8h.html",
     modules             : Common.autoForceModules(["Board", "Power"]),
-    config              : Common.addNameConfig(config, "/ti/drivers/Watchdog", "Board_WATCHDOG"),
+    config              : Common.addNameConfig(config, "/ti/drivers/Watchdog", "CONFIG_WATCHDOG_"),
     pinmuxRequirements  : pinmuxRequirements,
     validate            : validate
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Texas Instruments Incorporated
+ * Copyright (c) 2018-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
  *
  */
 /*!
- *  ======== ti.net.utils.json ========
+ *  ======== ti.utils.json ========
  *  JSON-related Modules
  *
  *  This package provides JSON-related Modules.

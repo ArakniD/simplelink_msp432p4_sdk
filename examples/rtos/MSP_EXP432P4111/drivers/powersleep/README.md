@@ -1,12 +1,3 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# powersleep
-
----
-
 ## Example Summary
 
 This example demonstrates usage of Power driver constraints, along with a
@@ -15,28 +6,38 @@ The application sets a constraint so the Power policy does not choose sleep,
 and then later releases the constraint to allow the policy to choose to enter
 sleep.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_GPIO_LED0` - Indicates that the board was initialized within
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
+
+* `CONFIG_GPIO_LED_0` - Indicates that the board was initialized within
 `mainThread()`, and later to indicate the state of the sleep constraint
-* `Board_GPIO_BUTTON0` - Alternately sets/releases the sleep constraint
+* `CONFIG_GPIO_BUTTON_0` - Alternately sets/releases the sleep constraint
 
-## Resources & Jumper Settings
+## BoosterPacks, Board Resources & Jumper Settings
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
 
+* If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+* The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 ## Example Usage
 
-* Run the example. `Board_GPIO_LED0` turns ON to indicate driver
+* Run the example. `CONFIG_GPIO_LED_0` turns ON to indicate driver
 initialization is complete.
 
-* Press the `Board_GPIO_BUTTON0` button.  Each button press will alternately set or release the `PowerMSP432_DISALLOW_SLEEP` constraint.
+* Press the `CONFIG_GPIO_BUTTON_0` button.  Each button press will alternately set or release the `PowerMSP432_DISALLOW_SLEEP` constraint.
 
-* When the constraint is set `Board_GPIO_LED0` will be lit and the CPU will remain active.  When the constraint is released the LED will be turned OFF, and the CPU will transition to sleep until the next interrupt occurs.
+* When the constraint is set `CONFIG_GPIO_LED_0` will be lit and the CPU will remain active.  When the constraint is released the LED will be turned OFF, and the CPU will transition to sleep until the next interrupt occurs.
 
 ## Application Design Details
 

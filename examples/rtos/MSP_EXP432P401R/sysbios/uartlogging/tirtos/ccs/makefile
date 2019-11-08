@@ -3,14 +3,14 @@ SIMPLELINK_MSP432_SDK_INSTALL_DIR ?= $(abspath ../../../../../../..)
 include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 
 XDCPATH = $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source;$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/packages;
+XDCTARGET = ti.targets.arm.elf.M4F
+PLATFORM = ti.platforms.msp432:MSP432P401R
+.PRECIOUS: $(CONFIGPKG)/compiler.opt $(CONFIGPKG)/linker.cmd
 
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-XDCTARGET = ti.targets.arm.elf.M4F
-PLATFORM = ti.platforms.msp432:MSP432P401R
-
-OBJECTS = UARTUtils.obj uartlogging.obj MSP_EXP432P401R.obj
+OBJECTS = uartlogging.obj UARTUtils.obj MSP_EXP432P401R.obj
 
 CONFIGPKG = uartlogging
 
@@ -50,21 +50,22 @@ LFLAGS = "-i$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     "-i$(CCS_ARMCOMPILER)/lib" \
     -llibc.a
 
-.PRECIOUS: $(CONFIGPKG)/compiler.opt $(CONFIGPKG)/linker.cmd
-
 all: $(NAME).out
+
+cflags.opt: makefile $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
+	@ echo --compileOptions $(CFLAGS) > $@
 
 $(CONFIGPKG)/compiler.opt: $(CONFIGPKG)/linker.cmd
 
-$(CONFIGPKG)/linker.cmd: ../../tirtos/uartlogging.cfg
+$(CONFIGPKG)/linker.cmd: ../../tirtos/uartlogging.cfg cflags.opt
 	@ echo Running Configuro...
-	@ $(XDC_INSTALL_DIR)/xs --xdcpath="$(XDCPATH)" xdc.tools.configuro -c "$(CCS_ARMCOMPILER)" -t $(XDCTARGET) -p $(PLATFORM) --compileOptions "$(CFLAGS)" -o "$(CONFIGPKG)" ../../tirtos/uartlogging.cfg
+	@ $(XDC_INSTALL_DIR)/xs --xdcpath="$(XDCPATH)" xdc.tools.configuro -c "$(CCS_ARMCOMPILER)" -t $(XDCTARGET) -p $(PLATFORM) -@cflags.opt -o "$(CONFIGPKG)" ../../tirtos/uartlogging.cfg
 
-UARTUtils.obj: ../../UARTUtils.c $(CONFIGPKG)/compiler.opt
+uartlogging.obj: ../../uartlogging.c $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
-uartlogging.obj: ../../uartlogging.c $(CONFIGPKG)/compiler.opt
+UARTUtils.obj: ../../UARTUtils.c $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
@@ -74,7 +75,8 @@ MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c $(CONFIGPKG)/compiler.opt
 
 $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
-	@ $(LNK) $(CFLAGS) -z $(OBJECTS) -l$(CONFIGPKG)/linker.cmd $(LFLAGS) -o $(NAME).out
+	@ $(LNK) -z $(OBJECTS) -l$(CONFIGPKG)/linker.cmd $(LFLAGS) -o $(NAME).out
+
 
 clean:
 	@ echo Cleaning...
@@ -82,3 +84,4 @@ clean:
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
 	@ $(RMDIR) $(NAME) > $(DEVNULL) 2>&1
+	@ $(RM) cflags.opt > $(DEVNULL) 2>&1

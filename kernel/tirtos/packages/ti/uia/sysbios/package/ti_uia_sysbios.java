@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_uia_sysbios
 {
-    static final String VERS = "@(#) xdc-F14\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -1978,10 +1978,10 @@ public class ti_uia_sysbios
         vo.bind("$$errorDescCfgs", Global.newArray("E_badLevel"));
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./LoggerStreamer.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.uia.sysbios.LoggerStreamer.Object", "ti.uia.sysbios"));
         vo.bind("MODULE_STARTUP$", 1);
@@ -2124,10 +2124,10 @@ public class ti_uia_sysbios
         vo.bind("$$errorDescCfgs", Global.newArray("E_badLevel"));
         vo.bind("$$assertDescCfgs", Global.newArray("A_invalidBuffer"));
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./LoggerStreamer2.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.uia.sysbios.LoggerStreamer2.Object", "ti.uia.sysbios"));
         vo.bind("MODULE_STARTUP$", 1);
@@ -2247,8 +2247,8 @@ public class ti_uia_sysbios
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.setElem("", "./LoggerIdle.xdt");
         atmap.setElem("", true);
+        atmap.setElem("", "./LoggerIdle.xdt");
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.uia.sysbios.LoggerIdle.Object", "ti.uia.sysbios"));
         vo.bind("MODULE_STARTUP$", 0);

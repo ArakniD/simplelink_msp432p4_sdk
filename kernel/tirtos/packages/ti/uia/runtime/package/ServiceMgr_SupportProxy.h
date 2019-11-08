@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_uia_runtime_ServiceMgr_SupportProxy__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_runtime_ServiceMgr_SupportProxy___VERS 200
@@ -252,60 +254,60 @@ __extern const ti_uia_runtime_ServiceMgr_SupportProxy_Fxns__ ti_uia_runtime_Serv
 
 /* Handle__label__S */
 xdc__CODESECT(ti_uia_runtime_ServiceMgr_SupportProxy_Handle__label__S, "ti_uia_runtime_ServiceMgr_SupportProxy_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_uia_runtime_ServiceMgr_SupportProxy_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_uia_runtime_ServiceMgr_SupportProxy_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_runtime_ServiceMgr_SupportProxy_Module__startupDone__S, "ti_uia_runtime_ServiceMgr_SupportProxy_Module__startupDone__S")
-__extern xdc_Bool ti_uia_runtime_ServiceMgr_SupportProxy_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_runtime_ServiceMgr_SupportProxy_Module__startupDone__S( void);
 
 /* Object__get__S */
 xdc__CODESECT(ti_uia_runtime_ServiceMgr_SupportProxy_Object__get__S, "ti_uia_runtime_ServiceMgr_SupportProxy_Object__get__S")
-__extern xdc_Ptr ti_uia_runtime_ServiceMgr_SupportProxy_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_uia_runtime_ServiceMgr_SupportProxy_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_uia_runtime_ServiceMgr_SupportProxy_Object__first__S, "ti_uia_runtime_ServiceMgr_SupportProxy_Object__first__S")
-__extern xdc_Ptr ti_uia_runtime_ServiceMgr_SupportProxy_Object__first__S( void );
+__extern xdc_Ptr ti_uia_runtime_ServiceMgr_SupportProxy_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_uia_runtime_ServiceMgr_SupportProxy_Object__next__S, "ti_uia_runtime_ServiceMgr_SupportProxy_Object__next__S")
-__extern xdc_Ptr ti_uia_runtime_ServiceMgr_SupportProxy_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_uia_runtime_ServiceMgr_SupportProxy_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_uia_runtime_ServiceMgr_SupportProxy_Params__init__S, "ti_uia_runtime_ServiceMgr_SupportProxy_Params__init__S")
-__extern xdc_Void ti_uia_runtime_ServiceMgr_SupportProxy_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_uia_runtime_ServiceMgr_SupportProxy_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* Proxy__abstract__S */
 xdc__CODESECT(ti_uia_runtime_ServiceMgr_SupportProxy_Proxy__abstract__S, "ti_uia_runtime_ServiceMgr_SupportProxy_Proxy__abstract__S")
-__extern xdc_Bool ti_uia_runtime_ServiceMgr_SupportProxy_Proxy__abstract__S( void );
+__extern xdc_Bool ti_uia_runtime_ServiceMgr_SupportProxy_Proxy__abstract__S( void);
 
 /* Proxy__delegate__S */
 xdc__CODESECT(ti_uia_runtime_ServiceMgr_SupportProxy_Proxy__delegate__S, "ti_uia_runtime_ServiceMgr_SupportProxy_Proxy__delegate__S")
-__extern xdc_CPtr ti_uia_runtime_ServiceMgr_SupportProxy_Proxy__delegate__S( void );
+__extern xdc_CPtr ti_uia_runtime_ServiceMgr_SupportProxy_Proxy__delegate__S( void);
 
 /* freePacket__E */
 #define ti_uia_runtime_ServiceMgr_SupportProxy_freePacket ti_uia_runtime_ServiceMgr_SupportProxy_freePacket__E
 xdc__CODESECT(ti_uia_runtime_ServiceMgr_SupportProxy_freePacket__E, "ti_uia_runtime_ServiceMgr_SupportProxy_freePacket")
-__extern xdc_Void ti_uia_runtime_ServiceMgr_SupportProxy_freePacket__E( ti_uia_runtime_UIAPacket_Hdr *packet );
+__extern xdc_Void ti_uia_runtime_ServiceMgr_SupportProxy_freePacket__E( ti_uia_runtime_UIAPacket_Hdr *packet);
 
 /* getFreePacket__E */
 #define ti_uia_runtime_ServiceMgr_SupportProxy_getFreePacket ti_uia_runtime_ServiceMgr_SupportProxy_getFreePacket__E
 xdc__CODESECT(ti_uia_runtime_ServiceMgr_SupportProxy_getFreePacket__E, "ti_uia_runtime_ServiceMgr_SupportProxy_getFreePacket")
-__extern ti_uia_runtime_UIAPacket_Hdr *ti_uia_runtime_ServiceMgr_SupportProxy_getFreePacket__E( ti_uia_runtime_UIAPacket_HdrType type, xdc_UInt timeout );
+__extern ti_uia_runtime_UIAPacket_Hdr *ti_uia_runtime_ServiceMgr_SupportProxy_getFreePacket__E( ti_uia_runtime_UIAPacket_HdrType type, xdc_UInt timeout);
 
 /* requestEnergy__E */
 #define ti_uia_runtime_ServiceMgr_SupportProxy_requestEnergy ti_uia_runtime_ServiceMgr_SupportProxy_requestEnergy__E
 xdc__CODESECT(ti_uia_runtime_ServiceMgr_SupportProxy_requestEnergy__E, "ti_uia_runtime_ServiceMgr_SupportProxy_requestEnergy")
-__extern xdc_Void ti_uia_runtime_ServiceMgr_SupportProxy_requestEnergy__E( xdc_Int id );
+__extern xdc_Void ti_uia_runtime_ServiceMgr_SupportProxy_requestEnergy__E( xdc_Int id);
 
 /* sendPacket__E */
 #define ti_uia_runtime_ServiceMgr_SupportProxy_sendPacket ti_uia_runtime_ServiceMgr_SupportProxy_sendPacket__E
 xdc__CODESECT(ti_uia_runtime_ServiceMgr_SupportProxy_sendPacket__E, "ti_uia_runtime_ServiceMgr_SupportProxy_sendPacket")
-__extern xdc_Bool ti_uia_runtime_ServiceMgr_SupportProxy_sendPacket__E( ti_uia_runtime_UIAPacket_Hdr *packet );
+__extern xdc_Bool ti_uia_runtime_ServiceMgr_SupportProxy_sendPacket__E( ti_uia_runtime_UIAPacket_Hdr *packet);
 
 /* setPeriod__E */
 #define ti_uia_runtime_ServiceMgr_SupportProxy_setPeriod ti_uia_runtime_ServiceMgr_SupportProxy_setPeriod__E
 xdc__CODESECT(ti_uia_runtime_ServiceMgr_SupportProxy_setPeriod__E, "ti_uia_runtime_ServiceMgr_SupportProxy_setPeriod")
-__extern xdc_Void ti_uia_runtime_ServiceMgr_SupportProxy_setPeriod__E( xdc_Int id, xdc_UInt32 periodInMs );
+__extern xdc_Void ti_uia_runtime_ServiceMgr_SupportProxy_setPeriod__E( xdc_Int id, xdc_UInt32 periodInMs);
 
 
 /*

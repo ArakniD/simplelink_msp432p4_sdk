@@ -1,6 +1,6 @@
 %%{
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,7 @@
 % * TI compiler, but not sure what to do for GCC and IAR.
 % */
 
-#if defined(__ti__)
+#if defined(__ti__) && !defined(__clang__)
 
 #pragma FUNC_EXT_CALLED(malloc);
 #pragma FUNC_EXT_CALLED(memalign);
@@ -91,10 +91,6 @@
 
 #endif
 
-%if (BIOS.mpeEnabled) {
-#include <ti/sysbios/hal/SysCall.h>
-%}
-
 /*
  * Header is a union to make sure that the size is a power of 2.
  */
@@ -107,105 +103,6 @@ typedef union Header {
 } Header;
 
 %if (genStubFunctions == false) {
-
-%    if (BIOS.mpeEnabled) {
-
-Void *ti_sysbios_rts_MemAlloc_malloc(SizeT size);
-Void *ti_sysbios_rts_MemAlloc_memalign(SizeT alignment, SizeT size);
-Void *ti_sysbios_rts_MemAlloc_calloc(SizeT nmemb, SizeT size);
-Void ti_sysbios_rts_MemAlloc_free(Void *ptr);
-Void *ti_sysbios_rts_MemAlloc_realloc(Void *ptr, SizeT size);
-Void *ti_sysbios_rts_MemAlloc_aligned_alloc(SizeT alignment, SizeT size);
-
-/*
- *  ======== malloc ========
- */
-Void ATTRIBUTE *malloc(SizeT size)
-{
-    Void *ret;
-
-    ti_sysbios_hal_SysCall_enterPrivMode();
-    ret = ti_sysbios_rts_MemAlloc_malloc(size);
-    ti_sysbios_hal_SysCall_restorePrivMode();
-
-    return (ret);
-}
-
-/*
- *  ======== memalign ========
- */
-Void ATTRIBUTE *memalign(SizeT alignment, SizeT size)
-{
-    Void *ret;
-
-    ti_sysbios_hal_SysCall_enterPrivMode();
-    ret = ti_sysbios_rts_MemAlloc_memalign(alignment, size);
-    ti_sysbios_hal_SysCall_restorePrivMode();
-
-    return (ret);
-}
-
-/*
- *  ======== calloc ========
- */
-Void ATTRIBUTE *calloc(SizeT nmemb, SizeT size)
-{
-    Void *ret;
-
-    ti_sysbios_hal_SysCall_enterPrivMode();
-    ret = ti_sysbios_rts_MemAlloc_calloc(nmemb, size);
-    ti_sysbios_hal_SysCall_restorePrivMode();
-
-    return (ret);
-}
-
-/*
- *  ======== free ========
- */
-Void ATTRIBUTE free(Void *ptr)
-{
-    ti_sysbios_hal_SysCall_enterPrivMode();
-    ti_sysbios_rts_MemAlloc_free(ptr);
-    ti_sysbios_hal_SysCall_restorePrivMode();
-}
-
-/*
- *  ======== realloc ========
- */
-Void ATTRIBUTE *realloc(Void *ptr, SizeT size)
-{
-    Void *ret;
-
-    ti_sysbios_hal_SysCall_enterPrivMode();
-    ret = ti_sysbios_rts_MemAlloc_realloc(ptr, size);
-    ti_sysbios_hal_SysCall_restorePrivMode();
-
-    return (ret);
-}
-
-/*
- *  ======== aligned_alloc ========
- */
-Void ATTRIBUTE *aligned_alloc(SizeT alignment, SizeT size)
-{
-    Void *ret;
-
-    ti_sysbios_hal_SysCall_enterPrivMode();
-    ret = ti_sysbios_rts_MemAlloc_memalign(alignment, size);
-    ti_sysbios_hal_SysCall_restorePrivMode();
-
-    return (ret);
-}
-
-#define memalign        ti_sysbios_rts_MemAlloc_memalign
-#define malloc          ti_sysbios_rts_MemAlloc_malloc
-#define calloc          ti_sysbios_rts_MemAlloc_calloc
-#define free            ti_sysbios_rts_MemAlloc_free
-#define realloc        	ti_sysbios_rts_MemAlloc_realloc
-#define aligned_alloc   ti_sysbios_rts_MemAlloc_aligned_alloc
-
-%    }
-
 /*
  *  ======== ti_sysbios_rts_MemAlloc_alloc ========
  */

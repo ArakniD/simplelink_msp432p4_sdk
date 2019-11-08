@@ -70,13 +70,13 @@ $(function() {
 <p>============================================================================</p>
 <p>This module provides simple doubly-link list implementation. There are two main structures:</p><ul>
 <li><a class="el" href="struct_list___list.html">List_List</a>: The structure that holds the start of a linked list. There is no API to create one. It is up to the driver to provide the structure itself.</li>
-<li><a class="el" href="struct_list___elem.html">List_Elem</a>: The structure that must be in the structure that is placed onto a linked list. Generally it is the first field in the structure. For example: <div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>MyStruct {</div><div class="line">    <a class="code" href="struct_list___elem.html">List_Elem</a> elem;</div><div class="line">    <span class="keywordtype">void</span> *buffer;</div><div class="line">} MyStruct;</div></div><!-- fragment --></li>
+<li><a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a>: The structure that must be in the structure that is placed onto a linked list. Generally it is the first field in the structure. For example: <div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div><div class="line">    <a class="code" href="struct_list___elem__.html">List_Elem</a> elem;</div><div class="line">    <span class="keywordtype">void</span> *buffer;</div><div class="line">} MyStruct;</div></div><!-- fragment --></li>
 </ul>
 <p>The following shows how to create a linked list with three elements.</p>
 <div class="fragment"><div class="line">+ denotes null-terminated</div><div class="line">        _______        _______        _______      _______</div><div class="line">       |_______|-----&gt;|_______|-----&gt;|_______|---&gt;|_______|--<span class="comment">//---,</span></div><div class="line">  ,----|_______|    ,-|_______|&lt;-----|_______|&lt;---|_______|&lt;-<span class="comment">//-, +</span></div><div class="line">  |      List       +   elem           elem          elem       |</div><div class="line">  |_____________________________________________________________|</div></div><!-- fragment --><p>The APIs <a class="el" href="_list_8h.html#ac8c9babb4481314e3f0cce444f7fbade" title="Function to atomically get the first elem in a linked list. ">List_get</a>, <a class="el" href="_list_8h.html#a1608b5d7dc712fcf01dc5d837e22078a" title="Function to atomically put an elem onto the end of a linked list. ">List_put</a>, and <a class="el" href="_list_8h.html#a1194d8eead79730c5da10e36b60f7044" title="Function to atomically put an elem onto the head of a linked list. ">List_putHead</a> are atomic. The other APIs are not necessarily atomic. In other words, when traversing a linked list, it is up to the application to provide thread-safety (e.g. HwiP_disable/restore or MutexP_pend/post).</p>
-<p>Initializing and adding an element to the tail and removing it </p><div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>MyStruct {</div><div class="line">    <a class="code" href="struct_list___elem.html">List_Elem</a> elem;</div><div class="line">    <span class="keywordtype">void</span> *buffer;</div><div class="line">} MyStruct;</div><div class="line"></div><div class="line"><a class="code" href="struct_list___list.html">List_List</a> list;</div><div class="line">MyStruct foo;</div><div class="line">MyStruct *bar;</div><div class="line"></div><div class="line"><a class="code" href="_list_8h.html#a32d4e53da70142cec310cfa0006f146a">List_clearList</a>(&amp;list);</div><div class="line"><a class="code" href="_list_8h.html#a1608b5d7dc712fcf01dc5d837e22078a">List_put</a>(&amp;list, (<a class="code" href="struct_list___elem.html">List_Elem</a> *)&amp;foo);</div><div class="line">bar = (MyStruct *)<a class="code" href="_list_8h.html#ac8c9babb4481314e3f0cce444f7fbade">List_get</a>(&amp;list);</div></div><!-- fragment --><p>The <a class="el" href="_list_8h.html#a1608b5d7dc712fcf01dc5d837e22078a" title="Function to atomically put an elem onto the end of a linked list. ">List_put</a> and <a class="el" href="_list_8h.html#ac8c9babb4481314e3f0cce444f7fbade" title="Function to atomically get the first elem in a linked list. ">List_get</a> APIs are used to maintain a first-in first-out (FIFO) linked list.</p>
+<p>Initializing and adding an element to the tail and removing it </p><div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div><div class="line">    <a class="code" href="struct_list___elem__.html">List_Elem</a> elem;</div><div class="line">    <span class="keywordtype">void</span> *buffer;</div><div class="line">} MyStruct;</div><div class="line"></div><div class="line"><a class="code" href="struct_list___list.html">List_List</a> list;</div><div class="line">MyStruct foo;</div><div class="line">MyStruct *bar;</div><div class="line"></div><div class="line"><a class="code" href="_list_8h.html#a32d4e53da70142cec310cfa0006f146a">List_clearList</a>(&amp;list);</div><div class="line"><a class="code" href="_list_8h.html#a1608b5d7dc712fcf01dc5d837e22078a">List_put</a>(&amp;list, (<a class="code" href="struct_list___elem__.html">List_Elem</a> *)&amp;foo);</div><div class="line">bar = (MyStruct *)<a class="code" href="_list_8h.html#ac8c9babb4481314e3f0cce444f7fbade">List_get</a>(&amp;list);</div></div><!-- fragment --><p>The <a class="el" href="_list_8h.html#a1608b5d7dc712fcf01dc5d837e22078a" title="Function to atomically put an elem onto the end of a linked list. ">List_put</a> and <a class="el" href="_list_8h.html#ac8c9babb4481314e3f0cce444f7fbade" title="Function to atomically get the first elem in a linked list. ">List_get</a> APIs are used to maintain a first-in first-out (FIFO) linked list.</p>
 <p>The <a class="el" href="_list_8h.html#a1194d8eead79730c5da10e36b60f7044" title="Function to atomically put an elem onto the head of a linked list. ">List_putHead</a> and <a class="el" href="_list_8h.html#ac8c9babb4481314e3f0cce444f7fbade" title="Function to atomically get the first elem in a linked list. ">List_get</a> APIs are used to maintain a last-in first-out (LIFO) linked list.</p>
-<p>Traversing a list from head to tail. Note: thread-safety calls are not shown here. </p><div class="fragment"><div class="line"><a class="code" href="struct_list___list.html">List_List</a> list;</div><div class="line"><a class="code" href="struct_list___elem.html">List_Elem</a> *temp;</div><div class="line"></div><div class="line"><span class="keywordflow">for</span> (temp = <a class="code" href="_list_8h.html#a7eeb8ffe91673aa56fdd1c552c6435b6">List_head</a>(&amp;list); temp != NULL; temp = <a class="code" href="_list_8h.html#a1683e4f9d2462f12dd60d0f810075ab5">List_next</a>(temp)) {</div><div class="line">     printf(<span class="stringliteral">&quot;address = 0x%x\n&quot;</span>, temp);</div><div class="line">}</div></div><!-- fragment --><p>Traversing a list from tail to head. Note: thread-safety calls are not shown here. </p><div class="fragment"><div class="line"><a class="code" href="struct_list___list.html">List_List</a> list;</div><div class="line"><a class="code" href="struct_list___elem.html">List_Elem</a> *temp;</div><div class="line"></div><div class="line"><span class="keywordflow">for</span> (temp = <a class="code" href="_list_8h.html#a04432014c20d52c680076e3613aa68da">List_tail</a>(&amp;list); temp != NULL; temp = <a class="code" href="_list_8h.html#af0834d0f68b1adcf8c1d4f2fb10276fc">List_prev</a>(temp)) {</div><div class="line">     printf(<span class="stringliteral">&quot;address = 0x%x\n&quot;</span>, temp);</div><div class="line">}</div></div><!-- fragment --> <hr/>
+<p>Traversing a list from head to tail. Note: thread-safety calls are not shown here. </p><div class="fragment"><div class="line"><a class="code" href="struct_list___list.html">List_List</a> list;</div><div class="line"><a class="code" href="struct_list___elem__.html">List_Elem</a> *temp;</div><div class="line"></div><div class="line"><span class="keywordflow">for</span> (temp = <a class="code" href="_list_8h.html#a7eeb8ffe91673aa56fdd1c552c6435b6">List_head</a>(&amp;list); temp != NULL; temp = <a class="code" href="_list_8h.html#a1683e4f9d2462f12dd60d0f810075ab5">List_next</a>(temp)) {</div><div class="line">     printf(<span class="stringliteral">&quot;address = 0x%x\n&quot;</span>, temp);</div><div class="line">}</div></div><!-- fragment --><p>Traversing a list from tail to head. Note: thread-safety calls are not shown here. </p><div class="fragment"><div class="line"><a class="code" href="struct_list___list.html">List_List</a> list;</div><div class="line"><a class="code" href="struct_list___elem__.html">List_Elem</a> *temp;</div><div class="line"></div><div class="line"><span class="keywordflow">for</span> (temp = <a class="code" href="_list_8h.html#a04432014c20d52c680076e3613aa68da">List_tail</a>(&amp;list); temp != NULL; temp = <a class="code" href="_list_8h.html#af0834d0f68b1adcf8c1d4f2fb10276fc">List_prev</a>(temp)) {</div><div class="line">     printf(<span class="stringliteral">&quot;address = 0x%x\n&quot;</span>, temp);</div><div class="line">}</div></div><!-- fragment --> <hr/>
 </div><div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;stddef.h&gt;</code><br />
@@ -110,17 +110,15 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_list___elem.html">List_Elem</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_list___elem__.html">List_Elem_</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_list___list.html">List_List</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a952d8bdbb969ea99ef3cae1808fa851b"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_list___elem.html">List_Elem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a952d8bdbb969ea99ef3cae1808fa851b">List_Elem</a></td></tr>
-<tr class="separator:a952d8bdbb969ea99ef3cae1808fa851b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c84bcdfd05e5108ff99148408f985ab"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_list___list.html">List_List</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a2c84bcdfd05e5108ff99148408f985ab">List_List</a></td></tr>
-<tr class="separator:a2c84bcdfd05e5108ff99148408f985ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec4cbba21ef101a3efe07001550f9ebd"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_list___elem__.html">List_Elem_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a></td></tr>
+<tr class="separator:aec4cbba21ef101a3efe07001550f9ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -130,57 +128,43 @@ Functions</h2></td></tr>
 <tr class="memitem:ae60fe07328af331a850bd6bb25ecafee"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#ae60fe07328af331a850bd6bb25ecafee">List_empty</a> (<a class="el" href="struct_list___list.html">List_List</a> *list)</td></tr>
 <tr class="memdesc:ae60fe07328af331a850bd6bb25ecafee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to test whether a linked list is empty.  <a href="#ae60fe07328af331a850bd6bb25ecafee">More...</a><br /></td></tr>
 <tr class="separator:ae60fe07328af331a850bd6bb25ecafee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8c9babb4481314e3f0cce444f7fbade"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_list___elem.html">List_Elem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#ac8c9babb4481314e3f0cce444f7fbade">List_get</a> (<a class="el" href="struct_list___list.html">List_List</a> *list)</td></tr>
+<tr class="memitem:ac8c9babb4481314e3f0cce444f7fbade"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#ac8c9babb4481314e3f0cce444f7fbade">List_get</a> (<a class="el" href="struct_list___list.html">List_List</a> *list)</td></tr>
 <tr class="memdesc:ac8c9babb4481314e3f0cce444f7fbade"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to atomically get the first elem in a linked list.  <a href="#ac8c9babb4481314e3f0cce444f7fbade">More...</a><br /></td></tr>
 <tr class="separator:ac8c9babb4481314e3f0cce444f7fbade"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7eeb8ffe91673aa56fdd1c552c6435b6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_list___elem.html">List_Elem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a7eeb8ffe91673aa56fdd1c552c6435b6">List_head</a> (<a class="el" href="struct_list___list.html">List_List</a> *list)</td></tr>
+<tr class="memitem:a7eeb8ffe91673aa56fdd1c552c6435b6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a7eeb8ffe91673aa56fdd1c552c6435b6">List_head</a> (<a class="el" href="struct_list___list.html">List_List</a> *list)</td></tr>
 <tr class="memdesc:a7eeb8ffe91673aa56fdd1c552c6435b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to return the head of a linked list.  <a href="#a7eeb8ffe91673aa56fdd1c552c6435b6">More...</a><br /></td></tr>
 <tr class="separator:a7eeb8ffe91673aa56fdd1c552c6435b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0725acc51893e377f5ee9225dd6fcd26"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a0725acc51893e377f5ee9225dd6fcd26">List_insert</a> (<a class="el" href="struct_list___list.html">List_List</a> *list, <a class="el" href="struct_list___elem.html">List_Elem</a> *newElem, <a class="el" href="struct_list___elem.html">List_Elem</a> *curElem)</td></tr>
+<tr class="memitem:a0725acc51893e377f5ee9225dd6fcd26"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a0725acc51893e377f5ee9225dd6fcd26">List_insert</a> (<a class="el" href="struct_list___list.html">List_List</a> *list, <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *newElem, <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *curElem)</td></tr>
 <tr class="memdesc:a0725acc51893e377f5ee9225dd6fcd26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to insert an elem into a linked list.  <a href="#a0725acc51893e377f5ee9225dd6fcd26">More...</a><br /></td></tr>
 <tr class="separator:a0725acc51893e377f5ee9225dd6fcd26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1683e4f9d2462f12dd60d0f810075ab5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_list___elem.html">List_Elem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a1683e4f9d2462f12dd60d0f810075ab5">List_next</a> (<a class="el" href="struct_list___elem.html">List_Elem</a> *elem)</td></tr>
+<tr class="memitem:a1683e4f9d2462f12dd60d0f810075ab5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a1683e4f9d2462f12dd60d0f810075ab5">List_next</a> (<a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *elem)</td></tr>
 <tr class="memdesc:a1683e4f9d2462f12dd60d0f810075ab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to return the next elem in a linked list.  <a href="#a1683e4f9d2462f12dd60d0f810075ab5">More...</a><br /></td></tr>
 <tr class="separator:a1683e4f9d2462f12dd60d0f810075ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0834d0f68b1adcf8c1d4f2fb10276fc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_list___elem.html">List_Elem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#af0834d0f68b1adcf8c1d4f2fb10276fc">List_prev</a> (<a class="el" href="struct_list___elem.html">List_Elem</a> *elem)</td></tr>
+<tr class="memitem:af0834d0f68b1adcf8c1d4f2fb10276fc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#af0834d0f68b1adcf8c1d4f2fb10276fc">List_prev</a> (<a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *elem)</td></tr>
 <tr class="memdesc:af0834d0f68b1adcf8c1d4f2fb10276fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to return the prev elem in a linked list.  <a href="#af0834d0f68b1adcf8c1d4f2fb10276fc">More...</a><br /></td></tr>
 <tr class="separator:af0834d0f68b1adcf8c1d4f2fb10276fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1608b5d7dc712fcf01dc5d837e22078a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a1608b5d7dc712fcf01dc5d837e22078a">List_put</a> (<a class="el" href="struct_list___list.html">List_List</a> *list, <a class="el" href="struct_list___elem.html">List_Elem</a> *elem)</td></tr>
+<tr class="memitem:a1608b5d7dc712fcf01dc5d837e22078a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a1608b5d7dc712fcf01dc5d837e22078a">List_put</a> (<a class="el" href="struct_list___list.html">List_List</a> *list, <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *elem)</td></tr>
 <tr class="memdesc:a1608b5d7dc712fcf01dc5d837e22078a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to atomically put an elem onto the end of a linked list.  <a href="#a1608b5d7dc712fcf01dc5d837e22078a">More...</a><br /></td></tr>
 <tr class="separator:a1608b5d7dc712fcf01dc5d837e22078a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1194d8eead79730c5da10e36b60f7044"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a1194d8eead79730c5da10e36b60f7044">List_putHead</a> (<a class="el" href="struct_list___list.html">List_List</a> *list, <a class="el" href="struct_list___elem.html">List_Elem</a> *elem)</td></tr>
+<tr class="memitem:a1194d8eead79730c5da10e36b60f7044"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a1194d8eead79730c5da10e36b60f7044">List_putHead</a> (<a class="el" href="struct_list___list.html">List_List</a> *list, <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *elem)</td></tr>
 <tr class="memdesc:a1194d8eead79730c5da10e36b60f7044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to atomically put an elem onto the head of a linked list.  <a href="#a1194d8eead79730c5da10e36b60f7044">More...</a><br /></td></tr>
 <tr class="separator:a1194d8eead79730c5da10e36b60f7044"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a480146af207e00199372c66edb4d9960"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a480146af207e00199372c66edb4d9960">List_remove</a> (<a class="el" href="struct_list___list.html">List_List</a> *list, <a class="el" href="struct_list___elem.html">List_Elem</a> *elem)</td></tr>
+<tr class="memitem:a480146af207e00199372c66edb4d9960"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a480146af207e00199372c66edb4d9960">List_remove</a> (<a class="el" href="struct_list___list.html">List_List</a> *list, <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *elem)</td></tr>
 <tr class="memdesc:a480146af207e00199372c66edb4d9960"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to remove an elem from a linked list.  <a href="#a480146af207e00199372c66edb4d9960">More...</a><br /></td></tr>
 <tr class="separator:a480146af207e00199372c66edb4d9960"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04432014c20d52c680076e3613aa68da"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_list___elem.html">List_Elem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a04432014c20d52c680076e3613aa68da">List_tail</a> (<a class="el" href="struct_list___list.html">List_List</a> *list)</td></tr>
+<tr class="memitem:a04432014c20d52c680076e3613aa68da"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_list_8h.html#a04432014c20d52c680076e3613aa68da">List_tail</a> (<a class="el" href="struct_list___list.html">List_List</a> *list)</td></tr>
 <tr class="memdesc:a04432014c20d52c680076e3613aa68da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to return the tail of a linked list.  <a href="#a04432014c20d52c680076e3613aa68da">More...</a><br /></td></tr>
 <tr class="separator:a04432014c20d52c680076e3613aa68da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="a952d8bdbb969ea99ef3cae1808fa851b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a952d8bdbb969ea99ef3cae1808fa851b">&sect;&nbsp;</a></span>List_Elem</h2>
+<a id="aec4cbba21ef101a3efe07001550f9ebd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec4cbba21ef101a3efe07001550f9ebd">&sect;&nbsp;</a></span>List_Elem</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_list___elem.html">List_Elem</a>  <a class="el" href="struct_list___elem.html">List_Elem</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a2c84bcdfd05e5108ff99148408f985ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c84bcdfd05e5108ff99148408f985ab">&sect;&nbsp;</a></span>List_List</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_list___list.html">List_List</a>  <a class="el" href="struct_list___list.html">List_List</a></td>
+          <td class="memname">typedef struct <a class="el" href="struct_list___elem__.html">List_Elem_</a>  <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -258,7 +242,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_list___elem.html">List_Elem</a>* List_get </td>
+          <td class="memname"><a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a>* List_get </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_list___list.html">List_List</a> *&#160;</td>
           <td class="paramname"><em>list</em></td><td>)</td>
@@ -290,7 +274,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="struct_list___elem.html">List_Elem</a>* List_head </td>
+          <td class="memname">static <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a>* List_head </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_list___list.html">List_List</a> *&#160;</td>
           <td class="paramname"><em>list</em></td><td>)</td>
@@ -333,13 +317,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_list___elem.html">List_Elem</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *&#160;</td>
           <td class="paramname"><em>newElem</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_list___elem.html">List_Elem</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *&#160;</td>
           <td class="paramname"><em>curElem</em>&#160;</td>
         </tr>
         <tr>
@@ -374,9 +358,9 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="struct_list___elem.html">List_Elem</a>* List_next </td>
+          <td class="memname">static <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a>* List_next </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_list___elem.html">List_Elem</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *&#160;</td>
           <td class="paramname"><em>elem</em></td><td>)</td>
           <td></td>
         </tr>
@@ -398,7 +382,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the next elem in linked list or NULL if at the end </dd></dl>
 
-<p>References <a class="el" href="struct_list___elem.html#a0f1336247f6538e230d2c23b3ce4c92e">List_Elem::next</a>.</p>
+<p>References <a class="el" href="struct_list___elem__.html#a3472db6d50d5191700bdf1670fdef9c5">List_Elem_::next</a>.</p>
 
 </div>
 </div>
@@ -412,9 +396,9 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="struct_list___elem.html">List_Elem</a>* List_prev </td>
+          <td class="memname">static <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a>* List_prev </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_list___elem.html">List_Elem</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *&#160;</td>
           <td class="paramname"><em>elem</em></td><td>)</td>
           <td></td>
         </tr>
@@ -436,7 +420,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the prev elem in linked list or NULL if at the beginning </dd></dl>
 
-<p>References <a class="el" href="_list_8h.html#a1608b5d7dc712fcf01dc5d837e22078a">List_put()</a>, <a class="el" href="_list_8h.html#a1194d8eead79730c5da10e36b60f7044">List_putHead()</a>, <a class="el" href="_list_8h.html#a480146af207e00199372c66edb4d9960">List_remove()</a>, and <a class="el" href="struct_list___elem.html#aaf7affa6c4bd1d22a7b4beaf716be863">List_Elem::prev</a>.</p>
+<p>References <a class="el" href="_list_8h.html#a1608b5d7dc712fcf01dc5d837e22078a">List_put()</a>, <a class="el" href="_list_8h.html#a1194d8eead79730c5da10e36b60f7044">List_putHead()</a>, <a class="el" href="_list_8h.html#a480146af207e00199372c66edb4d9960">List_remove()</a>, and <a class="el" href="struct_list___elem__.html#ae18320a0fdbf1d4044518fde458c0c3e">List_Elem_::prev</a>.</p>
 
 </div>
 </div>
@@ -455,7 +439,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_list___elem.html">List_Elem</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *&#160;</td>
           <td class="paramname"><em>elem</em>&#160;</td>
         </tr>
         <tr>
@@ -494,7 +478,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_list___elem.html">List_Elem</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *&#160;</td>
           <td class="paramname"><em>elem</em>&#160;</td>
         </tr>
         <tr>
@@ -533,7 +517,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_list___elem.html">List_Elem</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a> *&#160;</td>
           <td class="paramname"><em>elem</em>&#160;</td>
         </tr>
         <tr>
@@ -567,7 +551,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="struct_list___elem.html">List_Elem</a>* List_tail </td>
+          <td class="memname">static <a class="el" href="_list_8h.html#aec4cbba21ef101a3efe07001550f9ebd">List_Elem</a>* List_tail </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_list___list.html">List_List</a> *&#160;</td>
           <td class="paramname"><em>list</em></td><td>)</td>

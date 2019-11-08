@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2018, Texas Instruments Incorporated
+ * Copyright (c) 2012, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -148,7 +148,7 @@ function viewInitDetailed(view, obj)
         var pendElem = Program.fetchStruct(Task.PendElem$fetchDesc, pendElemAddr);
 
         // element 'i' of the pendQ contains the current Task handle
-        var currTaskHandle = pendElem.taskHandle;
+        var currTaskHandle = pendElem.task;
 
         // scan the curr Task handle to get its view
         try {

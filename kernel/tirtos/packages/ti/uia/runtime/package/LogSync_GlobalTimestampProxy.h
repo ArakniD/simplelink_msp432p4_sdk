@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_uia_runtime_LogSync_GlobalTimestampProxy__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_runtime_LogSync_GlobalTimestampProxy___VERS 200
@@ -250,50 +252,50 @@ __extern const ti_uia_runtime_LogSync_GlobalTimestampProxy_Fxns__ ti_uia_runtime
 
 /* Handle__label__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_GlobalTimestampProxy_Handle__label__S, "ti_uia_runtime_LogSync_GlobalTimestampProxy_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_uia_runtime_LogSync_GlobalTimestampProxy_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_uia_runtime_LogSync_GlobalTimestampProxy_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_GlobalTimestampProxy_Module__startupDone__S, "ti_uia_runtime_LogSync_GlobalTimestampProxy_Module__startupDone__S")
-__extern xdc_Bool ti_uia_runtime_LogSync_GlobalTimestampProxy_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_runtime_LogSync_GlobalTimestampProxy_Module__startupDone__S( void);
 
 /* Object__get__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_GlobalTimestampProxy_Object__get__S, "ti_uia_runtime_LogSync_GlobalTimestampProxy_Object__get__S")
-__extern xdc_Ptr ti_uia_runtime_LogSync_GlobalTimestampProxy_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_uia_runtime_LogSync_GlobalTimestampProxy_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_GlobalTimestampProxy_Object__first__S, "ti_uia_runtime_LogSync_GlobalTimestampProxy_Object__first__S")
-__extern xdc_Ptr ti_uia_runtime_LogSync_GlobalTimestampProxy_Object__first__S( void );
+__extern xdc_Ptr ti_uia_runtime_LogSync_GlobalTimestampProxy_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_GlobalTimestampProxy_Object__next__S, "ti_uia_runtime_LogSync_GlobalTimestampProxy_Object__next__S")
-__extern xdc_Ptr ti_uia_runtime_LogSync_GlobalTimestampProxy_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_uia_runtime_LogSync_GlobalTimestampProxy_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_GlobalTimestampProxy_Params__init__S, "ti_uia_runtime_LogSync_GlobalTimestampProxy_Params__init__S")
-__extern xdc_Void ti_uia_runtime_LogSync_GlobalTimestampProxy_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_uia_runtime_LogSync_GlobalTimestampProxy_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* Proxy__abstract__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_GlobalTimestampProxy_Proxy__abstract__S, "ti_uia_runtime_LogSync_GlobalTimestampProxy_Proxy__abstract__S")
-__extern xdc_Bool ti_uia_runtime_LogSync_GlobalTimestampProxy_Proxy__abstract__S( void );
+__extern xdc_Bool ti_uia_runtime_LogSync_GlobalTimestampProxy_Proxy__abstract__S( void);
 
 /* Proxy__delegate__S */
 xdc__CODESECT(ti_uia_runtime_LogSync_GlobalTimestampProxy_Proxy__delegate__S, "ti_uia_runtime_LogSync_GlobalTimestampProxy_Proxy__delegate__S")
-__extern xdc_CPtr ti_uia_runtime_LogSync_GlobalTimestampProxy_Proxy__delegate__S( void );
+__extern xdc_CPtr ti_uia_runtime_LogSync_GlobalTimestampProxy_Proxy__delegate__S( void);
 
 /* get32__E */
 #define ti_uia_runtime_LogSync_GlobalTimestampProxy_get32 ti_uia_runtime_LogSync_GlobalTimestampProxy_get32__E
 xdc__CODESECT(ti_uia_runtime_LogSync_GlobalTimestampProxy_get32__E, "ti_uia_runtime_LogSync_GlobalTimestampProxy_get32")
-__extern xdc_Bits32 ti_uia_runtime_LogSync_GlobalTimestampProxy_get32__E( void );
+__extern xdc_Bits32 ti_uia_runtime_LogSync_GlobalTimestampProxy_get32__E( void);
 
 /* get64__E */
 #define ti_uia_runtime_LogSync_GlobalTimestampProxy_get64 ti_uia_runtime_LogSync_GlobalTimestampProxy_get64__E
 xdc__CODESECT(ti_uia_runtime_LogSync_GlobalTimestampProxy_get64__E, "ti_uia_runtime_LogSync_GlobalTimestampProxy_get64")
-__extern xdc_Void ti_uia_runtime_LogSync_GlobalTimestampProxy_get64__E( xdc_runtime_Types_Timestamp64 *result );
+__extern xdc_Void ti_uia_runtime_LogSync_GlobalTimestampProxy_get64__E( xdc_runtime_Types_Timestamp64 *result);
 
 /* getFreq__E */
 #define ti_uia_runtime_LogSync_GlobalTimestampProxy_getFreq ti_uia_runtime_LogSync_GlobalTimestampProxy_getFreq__E
 xdc__CODESECT(ti_uia_runtime_LogSync_GlobalTimestampProxy_getFreq__E, "ti_uia_runtime_LogSync_GlobalTimestampProxy_getFreq")
-__extern xdc_Void ti_uia_runtime_LogSync_GlobalTimestampProxy_getFreq__E( xdc_runtime_Types_FreqHz *freq );
+__extern xdc_Void ti_uia_runtime_LogSync_GlobalTimestampProxy_getFreq__E( xdc_runtime_Types_FreqHz *freq);
 
 
 /*

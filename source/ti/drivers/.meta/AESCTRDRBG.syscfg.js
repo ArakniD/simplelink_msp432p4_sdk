@@ -77,10 +77,9 @@ related purposes.
 [2]: /tidrivers/doxygen/html/_a_e_s_c_t_r_d_r_b_g_8h.html#ti_drivers_AESCTRDRBG_Synopsis "Basic C usage summary"
 [3]: /tidrivers/doxygen/html/_a_e_s_c_t_r_d_r_b_g_8h.html#ti_drivers_AESCTRDRBG_Examples "C usage examples"
 `,
-    documentation: "/tidrivers/doxygen/html/_a_e_s_c_t_r_d_r_b_g_8h.html",
     validate            : validate,
-    config              : Common.addNameConfig(config, "/ti/drivers/aesctrdrbg", "Board_AESCTRDRBG"),
-    defaultInstanceName : "Board_AESCTRDRBG"
+    config              : Common.addNameConfig(config, "/ti/drivers/aesctrdrbg", "CONFIG_AESCTRDRBG_"),
+    defaultInstanceName : "CONFIG_AESCTRDRBG_"
 };
 
 /* extend the base exports to include family-specific content */

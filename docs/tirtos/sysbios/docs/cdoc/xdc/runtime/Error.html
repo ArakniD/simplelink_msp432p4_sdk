@@ -86,7 +86,7 @@ The <tt>Error</tt> module provides mechanisms for raising, checking, and
 
 <tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Block"><span class="xdoc-id">Error_Block</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Error block</span></span></a> <span class="xdoc-id">Error_Block</span>;</div></td></tr>
 <tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">struct</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Data"><span class="xdoc-id">Error_Data</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Error args</span></span></a> ...</div></td></tr>
-<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl">(*<a class="xdocSynGo" href="#.Hook.Fxn"><span class="xdoc-id">Error_HookFxn</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Function called whenever an error is raised</span></span></a>)(<a class="xdoc-link" href="../../xdc/runtime/Error.html#.Block" title="xdc.runtime.Error.Block">Error_Block</a>*);</div></td></tr>
+<tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl">(*<a class="xdocSynGo" href="#.Hook.Fxn"><span class="xdoc-id">Error_HookFxn</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Function type for a function called whenever an error is raised</span></span></a>)(<a class="xdoc-link" href="../../xdc/runtime/Error.html#.Block" title="xdc.runtime.Error.Block">Error_Block</a>*);</div></td></tr>
 <tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <i>opaque</i> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Id"><span class="xdoc-id">Error_Id</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Error identifier</span></span></a>;</div></td></tr>
 <tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw1">enum</span> </div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl"><a class="xdocSynGo" href="#.Policy"><span class="xdoc-id">Error_Policy</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Error handling policies</span></span></a> ...</div></td></tr>
 <tr valign="top"><td class="xdocSynDecl" nowrap><div class="xdocSynTblType"><tt></tt><span class="xdoc-kw1">typedef</span> <span class="xdoc-kw2">Void</span>&nbsp;</div></td><td class="xdocSynDecl"><div class="xdocSynTblDecl">(*<a class="xdocSynGo" href="#.Policy.Fxn"><span class="xdoc-id">Error_PolicyFxn</span><span class="xdocSynHoverShadow"><span class="xdocSynHover">//&nbsp;Error policy function signature</span></span></a>)(<a class="xdoc-link" href="../../xdc/runtime/Error.html#.Block" title="xdc.runtime.Error.Block">Error_Block</a>*,<a class="xdoc-link" href="../../xdc/runtime/Types.html#.Module.Id" title="xdc.runtime.Types.ModuleId">Types_ModuleId</a>,<span class="xdoc-kw2">CString</span>,<span class="xdoc-kw2">Int</span>,<a class="xdoc-link" href="../../xdc/runtime/Error.html#.Id" title="xdc.runtime.Error.Id">Error_Id</a>,<span class="xdoc-kw2">IArg</span>,<span class="xdoc-kw2">IArg</span>);</div></td></tr>
@@ -245,11 +245,11 @@ The <tt>Error</tt> module provides mechanisms for raising, checking, and
   }
 </PRE></div>
 <div class="xdocText"><hr /></div>
-<div class="xdocText">Example 5: The following C code shows how to write a function that
-  is not part of a module and that takes an error block and raises
-  the generic error type provided by the Error module. Note, if the
-  caller passes <tt>Error_ABORT</tt> for the error block or if the error policy is
-  <tt><a class="xdoc-link" href="Error.html#.Policy" title="Policy">TERMINATE</a></tt>, then the call to
+<div class="xdocText">Example 5: The following C code shows how to write a function that is not a
+  part of a module. The function accepts an error block as a parameter and
+  raises an error of the generic error type provided by the Error module.
+  Note that if the caller passes <tt>Error_ABORT</tt> for the error block or if the
+  error policy is <tt><a class="xdoc-link" href="Error.html#.Policy" title="Policy">TERMINATE</a></tt>, then the call to
   <tt><a class="xdoc-link" href="Error.html#raise" title="raise">Error_raise()</a></tt> will call
   <tt><a class="xdoc-link" href="System.html#abort" title="System.abort">xdc_runtime_System_abort()</a></tt> and never return.</div>
 <div class="xdocText"><PRE class="Example">  #include &lt;xdc/runtime/Error.h&gt;
@@ -398,7 +398,7 @@ The <tt>Error</tt> module provides mechanisms for raising, checking, and
 <a class="xdocHdrLink" href="../../xdc/runtime/Error.html" title="module Error"><img class="xdocHdrArrow" src="../../Arrow_up.png"/></a></td>
 </table>
 <div class=xdocHdrIndex><a class=xdocHdrIndex title="right-click to capture" href="../../index.html#xdc/runtime/Error.html#.Hook.Fxn">index URL</a></div>
-<p class="xdocHdrSummaryDcl">Function called whenever an error is raised</p>
+<p class="xdocHdrSummaryDcl">Function type for a function called whenever an error is raised</p>
 <span id='targ-synop'></span>
 <table class="xdocLabel"><tr>
 <td class="xdocLabelLeft"><tt><span class="xdoc-id-targ2dcl">C</span></tt> synopsis</td>
@@ -412,10 +412,11 @@ The <tt>Error</tt> module provides mechanisms for raising, checking, and
 <div class="xdocSynSpacer">&nbsp;</div>
 <span id="xdoc-sect-1"></span>
 <div class="xdocSect">DETAILS</div>
-<div class="xdocText">The first parameter and only parameter passed to this function is a
-  pointer to an <tt>Error_Block</tt>.  Even if the client passes a <tt>NULL</tt> error
-  block pointer to <tt><a class="xdoc-link" href="Error.html#raise" title="raise">Error_raise</a></tt>, this parameter passed 
-  to this "hook" function is always <tt>non-NULL</tt>.</div>
+<div class="xdocText">The only parameter passed to a function of this type is a  pointer to an
+  <tt>Error_Block</tt>.  Even if the client passes a <tt>NULL</tt> error block pointer
+  to <tt><a class="xdoc-link" href="Error.html#raise" title="raise">Error_raise</a></tt>, the function <tt>Error_raise</tt> will
+  ensure that the argument passed to this "hook" function is always
+  <tt>non-NULL</tt>.</div>
 <div class="xdocSynSpacer">&nbsp;</div>
 <a class="xdocAnchor" id=".Id"></a>
 <table class="xdocHdr"><tr>
@@ -474,7 +475,7 @@ The <tt>Error</tt> module provides mechanisms for raising, checking, and
 <div class="xdocText">A policy function is passed the following parameters:</div>
 <div class="xdocText"><DL><DT> <tt>eb</tt></DT><DD>
         A pointer to an <tt><a class="xdoc-link" href="Error.html#.Block" title="Block">Error_Block</a></tt> structure to be
-        initialized using the subsequent arguments.  This pointer may 
+        initialized using the subsequent arguments.  This pointer may
         be <tt>NULL</tt>.
 </DD><DT> <tt>modId</tt></DT><DD>
         The module ID of the module calling
@@ -543,10 +544,9 @@ The <tt>Error</tt> module provides mechanisms for raising, checking, and
 <div class="xdocSynSpacer">&nbsp;</div>
 <span id="xdoc-sect-1"></span>
 <div class="xdocSect">DETAILS</div>
-<div class="xdocText">The two arguments (arg1, arg2) passed to <tt><a class="xdoc-link" href="Error.html#raise" title="raise">raise</a></tt> are 
-  stored in one of these arrays within the associated Error_Block.
-  To access these arguments use <tt><a class="xdoc-link" href="Error.html#get.Data" title="getData">getData</a></tt> to obtain a 
-  pointer to the Error_Block's Data array.</div>
+<div class="xdocText">The two arguments (arg1, arg2) passed to <tt><a class="xdoc-link" href="Error.html#raise" title="raise">raise</a></tt> are stored
+  within the associated Error_Block. To access these arguments use
+  <tt><a class="xdoc-link" href="Error.html#get.Data" title="getData">getData</a></tt> to obtain a pointer to the Error_Block's Data array.</div>
 <span id="xdoc-sect-2"></span>
 <div class="xdocSect">SEE</div>
 <div class="xdocText"><a class="xdoc-link" href="Error.html#get.Data" title="getData">getData</a></div>
@@ -718,16 +718,23 @@ The <tt>Error</tt> module provides mechanisms for raising, checking, and
 <div class="xdocText">The default value is a function which, in addition to calling
   <tt>raiseHook</tt> with an initialized <tt>Error_Block</tt> structure, logs the
   error using this module's logger.</div>
-<div class="xdocText">Alternately, <tt><a class="xdoc-link" href="Error.html#policy.Spin" title="policySpin">policySpin</a></tt>, which simply loops
-  indefinitely, can be used to minimize target footprint.  Note, this
-  function does NOT call <tt>raiseHook</tt>, and also ignores
-  <tt><a class="xdoc-link" href="Error.html#policy" title="Error.policy">Error.policy</a></tt>.</div>
+<div class="xdocText">Alternately, <tt><a class="xdoc-link" href="Error.html#policy.Spin" title="policySpin">policySpin</a></tt>, which simply loops indefinitely, can
+  be used to minimize target footprint.  Note, this function does NOT call
+  <tt>raiseHook</tt>, and also ignores <tt><a class="xdoc-link" href="Error.html#policy" title="Error.policy">Error.policy</a></tt>.</div>
 <div class="xdocText">The third implementation, <tt><a class="xdoc-link" href="Error.html#policy.Min" title="policyMin">policyMin</a></tt> finds a middle ground
   between the two implementations above in terms of memory footprint and
   the available error information. Only the <tt><a class="xdoc-link" href="Error.html#.Id" title="Id">Error_Id</a></tt> of the
   error being raised is available in the resulting <tt>Error_Block</tt>,
   <tt>raiseHook</tt> is not invoked, but <tt><a class="xdoc-link" href="Error.html#policy" title="Error.policy">Error.policy</a></tt> is
   observed.</div>
+<div class="xdocText">Implementations of <tt>policyFxn</tt> are allowed to ignore <tt>Error.policy</tt> and
+  the special <tt>Error_Block</tt> constants <tt><a class="xdoc-link" href="Error.html#.I.G.N.O.R.E" title="IGNORE">IGNORE</a></tt> and
+  <tt><a class="xdoc-link" href="Error.html#.A.B.O.R.T" title="ABORT">ABORT</a></tt>, as well as NULL, passed instead of an initialized
+  <tt>Error_Block</tt>. However, it is recommended to observe as much as
+  possible these special cases in order to make the code invoking
+  <tt>Error_raise</tt> independent from <tt>policyFxn</tt> implementations.
+  For example, the SYS/BIOS kernel assumes all <tt>Error_raise</tt> calls with
+  NULL <tt>Error_Block</tt> are going to terminate the application.</div>
 <div class="xdocSynSpacer">&nbsp;</div>
 <a class="xdocAnchor" id="raise.Hook"></a>
 <table class="xdocHdr"><tr>
@@ -755,12 +762,11 @@ The <tt>Error</tt> module provides mechanisms for raising, checking, and
   <tt><a class="xdoc-link" href="Error.html#.Policy" title="Policy">TERMINATE</a></tt>.  In rare cases, it is possible that a
   raised error does not trigger a call to <tt>raiseHook</tt>; see
   <tt><a class="xdoc-link" href="Error.html#max.Depth" title="maxDepth">maxDepth</a></tt>.</div>
-<div class="xdocText">Regardless of the current policy in use, raising an error by
-  calling <tt><a class="xdoc-link" href="Error.html#raise" title="raise">Error_raise</a></tt> will always invoke the
-  error raise hook function assigned to the
-  <tt><a class="xdoc-link" href="Error.html#raise.Hook" title="raiseHook">Error.raiseHook</a></tt> configuration parameter, if the
-  default <tt><a class="xdoc-link" href="Error.html#policy.Fxn" title="Error.policyFxn">Error.policyFxn</a></tt> implementation is
-  used.</div>
+<div class="xdocText">Regardless of the current policy in use, raising an error by calling
+  <tt><a class="xdoc-link" href="Error.html#raise" title="raise">Error_raise</a></tt> will always invoke the error raise hook
+  function assigned to the <tt><a class="xdoc-link" href="Error.html#raise.Hook" title="raiseHook">Error.raiseHook</a></tt>
+  configuration parameter, if the default
+  <tt><a class="xdoc-link" href="Error.html#policy.Fxn" title="Error.policyFxn">Error.policyFxn</a></tt> implementation is used.</div>
 <div class="xdocText">By default, this function is set to <tt><a class="xdoc-link" href="Error.html#print" title="print">Error_print</a></tt>
   which causes the error to be formatted and output via
   <tt><a class="xdoc-link" href="../../xdc/runtime/System.html#aprintf" title="xdc.runtime.System.aprintf">System_printf</a></tt>.  Setting this
@@ -1478,10 +1484,9 @@ The <tt>Error</tt> module provides mechanisms for raising, checking, and
 <div class="xdocSynSpacer">&nbsp;</div>
 <span id="xdoc-sect-1"></span>
 <div class="xdocSect">DETAILS</div>
-<div class="xdocText">The two arguments (arg1, arg2) passed to <tt><a class="xdoc-link" href="Error.html#raise" title="raise">raise</a></tt> are 
-  stored in one of these arrays within the associated Error_Block.
-  To access these arguments use <tt><a class="xdoc-link" href="Error.html#get.Data" title="getData">getData</a></tt> to obtain a 
-  pointer to the Error_Block's Data array.</div>
+<div class="xdocText">The two arguments (arg1, arg2) passed to <tt><a class="xdoc-link" href="Error.html#raise" title="raise">raise</a></tt> are stored
+  within the associated Error_Block. To access these arguments use
+  <tt><a class="xdoc-link" href="Error.html#get.Data" title="getData">getData</a></tt> to obtain a pointer to the Error_Block's Data array.</div>
 <span id="xdoc-sect-2"></span>
 <div class="xdocSect">SEE</div>
 <div class="xdocText"><a class="xdoc-link" href="Error.html#get.Data" title="getData">getData</a></div>
@@ -1517,7 +1522,7 @@ The <tt>Error</tt> module provides mechanisms for raising, checking, and
 <span id="xdoc-sect-1"></span>
 <div class="xdocSect">FIELDS</div>
 <div class="xdocChild"><span class="xdocChildId">msg</span>
-<span class="xdocChildSum">&#151;&nbsp;The error message using a <tt>printf</tt> style format string, 
+<span class="xdocChildSum">&#151;&nbsp;The error message using a <tt>printf</tt> style format string,
               but limited to <tt><a class="xdoc-link" href="Error.html#.N.U.M.A.R.G.S" title="NUMARGS">NUMARGS</a></tt> arguments.
               This format string together with the two arguments passed
               to <tt>Error_raise</tt>` are used to create a human readable
@@ -1728,16 +1733,23 @@ The <tt>Error</tt> module provides mechanisms for raising, checking, and
 <div class="xdocText">The default value is a function which, in addition to calling
   <tt>raiseHook</tt> with an initialized <tt>Error_Block</tt> structure, logs the
   error using this module's logger.</div>
-<div class="xdocText">Alternately, <tt><a class="xdoc-link" href="Error.html#policy.Spin" title="policySpin">policySpin</a></tt>, which simply loops
-  indefinitely, can be used to minimize target footprint.  Note, this
-  function does NOT call <tt>raiseHook</tt>, and also ignores
-  <tt><a class="xdoc-link" href="Error.html#policy" title="Error.policy">Error.policy</a></tt>.</div>
+<div class="xdocText">Alternately, <tt><a class="xdoc-link" href="Error.html#policy.Spin" title="policySpin">policySpin</a></tt>, which simply loops indefinitely, can
+  be used to minimize target footprint.  Note, this function does NOT call
+  <tt>raiseHook</tt>, and also ignores <tt><a class="xdoc-link" href="Error.html#policy" title="Error.policy">Error.policy</a></tt>.</div>
 <div class="xdocText">The third implementation, <tt><a class="xdoc-link" href="Error.html#policy.Min" title="policyMin">policyMin</a></tt> finds a middle ground
   between the two implementations above in terms of memory footprint and
   the available error information. Only the <tt><a class="xdoc-link" href="Error.html#.Id" title="Id">Error_Id</a></tt> of the
   error being raised is available in the resulting <tt>Error_Block</tt>,
   <tt>raiseHook</tt> is not invoked, but <tt><a class="xdoc-link" href="Error.html#policy" title="Error.policy">Error.policy</a></tt> is
   observed.</div>
+<div class="xdocText">Implementations of <tt>policyFxn</tt> are allowed to ignore <tt>Error.policy</tt> and
+  the special <tt>Error_Block</tt> constants <tt><a class="xdoc-link" href="Error.html#.I.G.N.O.R.E" title="IGNORE">IGNORE</a></tt> and
+  <tt><a class="xdoc-link" href="Error.html#.A.B.O.R.T" title="ABORT">ABORT</a></tt>, as well as NULL, passed instead of an initialized
+  <tt>Error_Block</tt>. However, it is recommended to observe as much as
+  possible these special cases in order to make the code invoking
+  <tt>Error_raise</tt> independent from <tt>policyFxn</tt> implementations.
+  For example, the SYS/BIOS kernel assumes all <tt>Error_raise</tt> calls with
+  NULL <tt>Error_Block</tt> are going to terminate the application.</div>
 <div class="xdocSect">C SYNOPSIS</div>
 <div class="xdocText"><a class="xdoc-link" href="#policy.Fxn" title="Error_policyFxn">Error_policyFxn</a></div>
 <div class="xdocSynSpacer">&nbsp;</div>
@@ -1767,12 +1779,11 @@ The <tt>Error</tt> module provides mechanisms for raising, checking, and
   <tt><a class="xdoc-link" href="Error.html#.Policy" title="Policy">TERMINATE</a></tt>.  In rare cases, it is possible that a
   raised error does not trigger a call to <tt>raiseHook</tt>; see
   <tt><a class="xdoc-link" href="Error.html#max.Depth" title="maxDepth">maxDepth</a></tt>.</div>
-<div class="xdocText">Regardless of the current policy in use, raising an error by
-  calling <tt><a class="xdoc-link" href="Error.html#raise" title="raise">Error_raise</a></tt> will always invoke the
-  error raise hook function assigned to the
-  <tt><a class="xdoc-link" href="Error.html#raise.Hook" title="raiseHook">Error.raiseHook</a></tt> configuration parameter, if the
-  default <tt><a class="xdoc-link" href="Error.html#policy.Fxn" title="Error.policyFxn">Error.policyFxn</a></tt> implementation is
-  used.</div>
+<div class="xdocText">Regardless of the current policy in use, raising an error by calling
+  <tt><a class="xdoc-link" href="Error.html#raise" title="raise">Error_raise</a></tt> will always invoke the error raise hook
+  function assigned to the <tt><a class="xdoc-link" href="Error.html#raise.Hook" title="raiseHook">Error.raiseHook</a></tt>
+  configuration parameter, if the default
+  <tt><a class="xdoc-link" href="Error.html#policy.Fxn" title="Error.policyFxn">Error.policyFxn</a></tt> implementation is used.</div>
 <div class="xdocText">By default, this function is set to <tt><a class="xdoc-link" href="Error.html#print" title="print">Error_print</a></tt>
   which causes the error to be formatted and output via
   <tt><a class="xdoc-link" href="../../xdc/runtime/System.html#aprintf" title="xdc.runtime.System.aprintf">System_printf</a></tt>.  Setting this
@@ -1805,12 +1816,11 @@ The <tt>Error</tt> module provides mechanisms for raising, checking, and
 <div class="xdocSynSpacer">&nbsp;</div>
 <span id="xdoc-sect-1"></span>
 <div class="xdocSect">DETAILS</div>
-<div class="xdocText">All modules have this configuration parameter.  Its name
-  contains the '$' character to ensure it does not conflict with
-  configuration parameters declared by the module.  This allows
-  new configuration parameters to be added in the future without
-  any chance of breaking existing modules.</div>
+<div class="xdocText">All modules have this configuration parameter. Its name contains the '$'
+  character to ensure it does not conflict with configuration parameters
+  declared by the module. This allows new configuration parameters to be 
+  added in the future without any chance of breaking existing modules.</div>
 </div>
-<div id="xdocDate">generated on Sat, 23 Feb 2019 02:50:21 GMT</div>
+<div id="xdocDate">generated on Wed, 28 Aug 2019 17:00:48 GMT</div>
 </div></div></body>
 </html>

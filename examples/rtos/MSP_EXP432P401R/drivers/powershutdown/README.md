@@ -1,28 +1,31 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# powershutdown
-
----
-
 ## Example Summary
 
 Application that demonstrates power shutdown following a GPIO pin interrupt.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_GPIO_LED0` - Indicates that the board was initialized within
-`mainThread()`, also turned off by `Board_GPIO_BUTTON0`
-* `Board_GPIO_BUTTON0` - Triggers shutdown
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
 
-## Resources & Jumper Settings
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+* `CONFIG_GPIO_LED_0` - Indicates that the board was initialized within
+`mainThread()`, also turned off by `CONFIG_GPIO_BUTTON_0`
+* `CONFIG_GPIO_BUTTON_0` - Triggers shutdown
+
+## BoosterPacks, Board Resources & Jumper Settings
+
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
+
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 ## Example Usage
 
@@ -32,21 +35,21 @@ Otherwise, you can find Board.html in the directory
 
 * Disconnect and reconnect the board power, to start the program running.
 
-* `Board_GPIO_LED0` turns ON to indicate driver initialization is complete.
+* `CONFIG_GPIO_LED_0` turns ON to indicate driver initialization is complete.
 
-* Pressing `Board_GPIO_BUTTON0` will turn off `Board_GPIO_LED0` and the device
+* Pressing `CONFIG_GPIO_BUTTON_0` will turn off `CONFIG_GPIO_LED_0` and the device
 will shutdown.
 
-* Pressing `Board_GPIO_BUTTON0` again will wake the device from shutdown and
-`Board_GPIO_LED0` will turn ON as the program restarts.
+* Pressing `CONFIG_GPIO_BUTTON_0` again will wake the device from shutdown and
+`CONFIG_GPIO_LED_0` will turn ON as the program restarts.
 
 
 ## Application Design Details
 
-* On button press of Board_GPIO_BUTTON0 the application requests shutdown by
+* On button press of `CONFIG_GPIO_BUTTON_0` the application requests shutdown by
 the Power driver. As the application enters shutdown, a registered notification
 function, `notifyFxn`, is invoked that puts all GPIOs (except for
- Board_GPIO_BUTTON0) in their lowest power configuration.
+ `CONFIG_GPIO_BUTTON_0`) in their lowest power configuration.
 
 TI-RTOS:
 

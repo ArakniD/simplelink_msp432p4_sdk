@@ -59,7 +59,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">WatchdogMSP432.h File Reference</div>  </div>
@@ -71,11 +70,12 @@ $(function() {
 <p>The Watchdog header file for MSP432 should be included in an application as follows: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_watchdog_8h.html">ti/drivers/Watchdog.h</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_watchdog_m_s_p432_8h.html">ti/drivers/watchdog/WatchdogMSP432.h</a>&gt;</span></div></div><!-- fragment --><p>Refer to <a class="el" href="_watchdog_8h.html">Watchdog.h</a> for a complete description of APIs &amp; example of use.</p>
 <h2>Overview</h2>
 <p>The MSP432 Watchdog Timer will cause resets at an interval based on the count calculated from the clock source and clock divider specified in the <a class="el" href="struct_watchdog_m_s_p432___h_w_attrs.html" title="Watchdog hardware attributes for MSP432 These fields are used by driverlib APIs and therefore must be...">WatchdogMSP432_HWAttrs</a>. By default the Watchdog driver has resets turned on. This means that if <a class="el" href="_watchdog_8h.html#a396decd6b1807db10c636f9987c3be4c" title="Clears the Watchdog. ">Watchdog_clear()</a> is not called to reset the Watchdog timer before it times out, a reset will be generated. <a class="el" href="_watchdog_8h.html#a1c0dfea7011b06f303d01afb631ffbdd" title="Function to close a Watchdog peripheral specified by the Watchdog handle.It stops (holds) the Watchdo...">Watchdog_close()</a> will stop the Watchdog timer. To restart it again, <a class="el" href="_watchdog_8h.html#a26795f67f599b74de830ca7bf36bdced" title="Opens a Watchdog. ">Watchdog_open()</a> must be called.</p>
-<p>Opening the Watchdog driver with resets turned off (Using the <a class="el" href="struct_watchdog___params__.html#ac695f58c6e582d98c9171bf02a760c12">Watchdog_Params.resetMode</a> parameter) allows the Watchdog Timer to be used like another timer interrupt. The callback fxn provided in the params will be executed when the timer expires.</p>
+<p>Opening the Watchdog driver with resets turned off (Using the <a class="el" href="struct_watchdog___params.html#a94b5d650f8beb7dce719360404039ccf">Watchdog_Params.resetMode</a> parameter) allows the Watchdog Timer to be used like another timer interrupt. The callback fxn provided in the params will be executed when the timer expires.</p>
+<dl class="section warning"><dt>Warning</dt><dd>The watchdog peripheral does not support a Non-Maskable Interrupt (NMI).</dd></dl>
 <h2>Unsupported Functionality</h2>
 <ol type="1">
-<li><a class="el" href="struct_watchdog___params__.html#adfd763090a1a67a2cb8069c5c5ba135a">Watchdog_Params.debugStallMode</a> is not supported by this implementation.</li>
-<li><a class="el" href="struct_watchdog___params__.html#a26a219dd0a8c1972a721a40aca0b52e6">Watchdog_Params.callbackFxn</a> is not supported when using <a class="el" href="_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546faafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a> mode.</li>
+<li><a class="el" href="struct_watchdog___params.html#abe7792eef8afa2972a4625f428b7241b">Watchdog_Params.debugStallMode</a> is not supported by this implementation.</li>
+<li><a class="el" href="struct_watchdog___params.html#a710aaa2504356ab3d3f9a27ac19ddb85">Watchdog_Params.callbackFxn</a> is not supported when using <a class="el" href="_watchdog_8h.html#ada0db7216129d7dad494bb0cd0169f88aafccd6330c396d9ffc2786524625bf1f">Watchdog_RESET_ON</a> mode.</li>
 <li><a class="el" href="_watchdog_8h.html#a63ea82dda83e42e236578b9810e56880" title="Sets the Watchdog reload value. ">Watchdog_setReload()</a> and <a class="el" href="_watchdog_8h.html#a7b93cd0bd3a6f11aa28b0c7219755979" title="Converts milliseconds to Watchdog clock ticks. ">Watchdog_convertMsToTicks()</a> APIs are not supported by this implementation. </li>
 </ol>
 </div><div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
@@ -102,59 +102,12 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog Object for MSP432.  <a href="struct_watchdog_m_s_p432___object.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:aa84a69b45dcb9d42a077d1bdfad211da"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_watchdog_m_s_p432___h_w_attrs.html">WatchdogMSP432_HWAttrs</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_m_s_p432_8h.html#aa84a69b45dcb9d42a077d1bdfad211da">WatchdogMSP432_HWAttrs</a></td></tr>
-<tr class="memdesc:aa84a69b45dcb9d42a077d1bdfad211da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog hardware attributes for MSP432 These fields are used by driverlib APIs and therefore must be populated by driverlib macro definitions. For MSP432Ware these definitions are found in:  <a href="#aa84a69b45dcb9d42a077d1bdfad211da">More...</a><br /></td></tr>
-<tr class="separator:aa84a69b45dcb9d42a077d1bdfad211da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adda7dce88065097cb75156432dbfbede"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_watchdog_m_s_p432___object.html">WatchdogMSP432_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_m_s_p432_8h.html#adda7dce88065097cb75156432dbfbede">WatchdogMSP432_Object</a></td></tr>
-<tr class="memdesc:adda7dce88065097cb75156432dbfbede"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog Object for MSP432.  <a href="#adda7dce88065097cb75156432dbfbede">More...</a><br /></td></tr>
-<tr class="separator:adda7dce88065097cb75156432dbfbede"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a7ccdf8f14ade7da8949b94ef66ec8a4f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="_watchdog_8h.html#aa8370f2ff642b6a253e37c0b7b44fbed">Watchdog_FxnTable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_m_s_p432_8h.html#a7ccdf8f14ade7da8949b94ef66ec8a4f">WatchdogMSP432_fxnTable</a></td></tr>
+<tr class="memitem:a7ccdf8f14ade7da8949b94ef66ec8a4f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_watchdog___fxn_table.html">Watchdog_FxnTable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_watchdog_m_s_p432_8h.html#a7ccdf8f14ade7da8949b94ef66ec8a4f">WatchdogMSP432_fxnTable</a></td></tr>
 <tr class="memdesc:a7ccdf8f14ade7da8949b94ef66ec8a4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Watchdog function table for MSP432.  <a href="#a7ccdf8f14ade7da8949b94ef66ec8a4f">More...</a><br /></td></tr>
 <tr class="separator:a7ccdf8f14ade7da8949b94ef66ec8a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="aa84a69b45dcb9d42a077d1bdfad211da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa84a69b45dcb9d42a077d1bdfad211da">&sect;&nbsp;</a></span>WatchdogMSP432_HWAttrs</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_watchdog_m_s_p432___h_w_attrs.html">WatchdogMSP432_HWAttrs</a>  <a class="el" href="struct_watchdog_m_s_p432___h_w_attrs.html">WatchdogMSP432_HWAttrs</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Watchdog hardware attributes for MSP432 These fields are used by driverlib APIs and therefore must be populated by driverlib macro definitions. For MSP432Ware these definitions are found in: </p>
-<ul>
-<li>wdt_a.h</li>
-</ul>
-<p>intPriority is the Watchdog timer's interrupt priority, as defined by the underlying OS. It is passed unmodified to the underlying OS's interrupt handler creation code, so you need to refer to the OS documentation for usage. For example, for SYS/BIOS applications, refer to the ti.sysbios.family.arm.m3.Hwi documentation for SYS/BIOS usage of interrupt priorities. If the driver uses the ti.dpl interface instead of making OS calls directly, then the HwiP port handles the interrupt priority in an OS specific way. In the case of the SYS/BIOS port, intPriority is passed unmodified to Hwi_create().</p>
-<p>A sample structure is shown below: </p><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="struct_watchdog_m_s_p432___h_w_attrs.html">WatchdogMSP432_HWAttrs</a> watchdogMSP432HWAttrs[MSP_EXP432P401R_WATCHDOGCOUNT] = {</div><div class="line">    {</div><div class="line">        .<a class="code" href="struct_watchdog_m_s_p432___h_w_attrs.html#a176998d12aea7a88091a774d2808c812">baseAddr</a> = WDT_A_BASE,</div><div class="line">        .intNum = INT_WDT_A,</div><div class="line">        .intPriority = ~0,</div><div class="line">        .clockSource = WDT_A_CLOCKSOURCE_SMCLK,</div><div class="line">        .clockDivider = WDT_A_CLOCKDIVIDER_8192K</div><div class="line">    },</div><div class="line">};</div></div><!-- fragment --> 
-</div>
-</div>
-<a id="adda7dce88065097cb75156432dbfbede"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adda7dce88065097cb75156432dbfbede">&sect;&nbsp;</a></span>WatchdogMSP432_Object</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_watchdog_m_s_p432___object.html">WatchdogMSP432_Object</a>  <a class="el" href="struct_watchdog_m_s_p432___object.html">WatchdogMSP432_Object</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Watchdog Object for MSP432. </p>
-<p>Not to be accessed by the user. </p>
-
-</div>
-</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="a7ccdf8f14ade7da8949b94ef66ec8a4f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ccdf8f14ade7da8949b94ef66ec8a4f">&sect;&nbsp;</a></span>WatchdogMSP432_fxnTable</h2>
@@ -163,7 +116,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="_watchdog_8h.html#aa8370f2ff642b6a253e37c0b7b44fbed">Watchdog_FxnTable</a> WatchdogMSP432_fxnTable</td>
+          <td class="memname">const <a class="el" href="struct_watchdog___fxn_table.html">Watchdog_FxnTable</a> WatchdogMSP432_fxnTable</td>
         </tr>
       </table>
 </div><div class="memdoc">

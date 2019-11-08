@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['watchdog_5fdebugmode_5f',['Watchdog_DebugMode_',['../_watchdog_8h.html#ab7cc980c0ab934800cf77f768c2ac5d6',1,'Watchdog.h']]],
-  ['watchdog_5fresetmode_5f',['Watchdog_ResetMode_',['../_watchdog_8h.html#a14a5aaacb2ab91f555ec55e349d9546f',1,'Watchdog.h']]]
+  ['timer_5fmode',['Timer_Mode',['../_timer_8h.html#ab0e86a066b5c68c55183cd680090a9b7',1,'Timer.h']]],
+  ['timer_5fperiodunits',['Timer_PeriodUnits',['../_timer_8h.html#ae5b37c2cc77a2a426ba45d2c8544d439',1,'Timer.h']]]
 ];

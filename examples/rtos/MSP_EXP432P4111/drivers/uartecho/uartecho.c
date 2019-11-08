@@ -40,8 +40,8 @@
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/UART.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 /*
  *  ======== mainThread ========
@@ -58,10 +58,10 @@ void *mainThread(void *arg0)
     UART_init();
 
     /* Configure the LED pin */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 
     /* Turn on user LED */
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
     /* Create a UART with data processing off. */
     UART_Params_init(&uartParams);
@@ -71,7 +71,7 @@ void *mainThread(void *arg0)
     uartParams.readEcho = UART_ECHO_OFF;
     uartParams.baudRate = 115200;
 
-    uart = UART_open(Board_UART0, &uartParams);
+    uart = UART_open(CONFIG_UART_0, &uartParams);
 
     if (uart == NULL) {
         /* UART_open() failed */

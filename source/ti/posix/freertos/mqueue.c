@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2016-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -370,7 +370,9 @@ int mq_send(mqd_t mqdes, const char *msg_ptr, size_t msg_len,
     TickType_t  timeout;
 
     if (msg_len > (size_t)(msgQueue->attrs.mq_msgsize)) {
-        errno = EMSGSIZE;
+        if (!HwiP_inISR()) {
+            errno = EMSGSIZE;
+        }
         return (-1);
     }
 
@@ -393,7 +395,9 @@ int mq_send(mqd_t mqdes, const char *msg_ptr, size_t msg_len,
     }
 
     if (status != pdTRUE) {
-        errno = EAGAIN;
+        if (!HwiP_inISR()) {
+            errno = EAGAIN;
+        }
         return (-1);
     }
 

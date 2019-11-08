@@ -10,7 +10,7 @@ package/ti.sysbios.syncs.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_sysbios_syncs.java
 package/ti_sysbios_syncs.class
 package/package_ti.sysbios.syncs.c

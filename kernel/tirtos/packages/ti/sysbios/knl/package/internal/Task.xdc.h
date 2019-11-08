@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_knl_Task__INTERNAL__
@@ -157,18 +157,11 @@
 #undef ti_sysbios_knl_Task_unblockI
 #define ti_sysbios_knl_Task_unblockI ti_sysbios_knl_Task_unblockI__E
 
-/* getPrivileged */
-#undef ti_sysbios_knl_Task_getPrivileged
-#define ti_sysbios_knl_Task_getPrivileged ti_sysbios_knl_Task_getPrivileged__E
-
 /* schedule */
 #define Task_schedule ti_sysbios_knl_Task_schedule__I
 
 /* enter */
 #define Task_enter ti_sysbios_knl_Task_enter__I
-
-/* enterUnpriv */
-#define Task_enterUnpriv ti_sysbios_knl_Task_enterUnpriv__I
 
 /* sleepTimeout */
 #define Task_sleepTimeout ti_sysbios_knl_Task_sleepTimeout__I
@@ -196,9 +189,6 @@
 
 /* getObjectCheckValue */
 #define Task_getObjectCheckValue ti_sysbios_knl_Task_getObjectCheckValue__I
-
-/* enableOtherCores */
-#define Task_enableOtherCores ti_sysbios_knl_Task_enableOtherCores__I
 
 /* Module_startup */
 #undef ti_sysbios_knl_Task_Module_startup

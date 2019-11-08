@@ -7,11 +7,12 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
 
-OBJECTS = freertos_main_freertos.obj callbacks.obj led_thread.obj uart_thread.obj MSP_EXP432P401R.obj
+OBJECTS = callbacks.obj led_thread.obj uart_thread.obj ti_drivers_config.obj freertos_main_freertos.obj
 
 NAME = outofbox_msp432p401r
 
 CFLAGS = -I../.. \
+    -I. \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
     -D__MSP432P401R__ \
@@ -50,23 +51,31 @@ $(KERNEL_BUILD)/iar/freertos.lib:
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
 
-freertos_main_freertos.obj: ../../freertos/main_freertos.c
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../../outofbox_msp432p401r.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+callbacks.obj: ../../callbacks.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
-callbacks.obj: ../../callbacks.c
+led_thread.obj: ../../led_thread.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
-led_thread.obj: ../../led_thread.c
+uart_thread.obj: ../../uart_thread.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
-uart_thread.obj: ../../uart_thread.c
+freertos_main_freertos.obj: ../../freertos/main_freertos.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
-MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -o $@
 
@@ -74,8 +83,10 @@ $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/iar/freertos.lib
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
+
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

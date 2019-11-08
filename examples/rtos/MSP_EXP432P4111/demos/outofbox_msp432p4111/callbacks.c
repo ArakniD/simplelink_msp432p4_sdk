@@ -45,8 +45,8 @@
 #include <ti/drivers/PWM.h>
 #include <ti/drivers/Timer.h>
 
-/* Board Header files */
-#include "Board.h"
+/* Board Header file */
+#include "ti_drivers_config.h"
 
 /* Local Header Files */
 #include "callbacks.h"
@@ -123,21 +123,21 @@ void blinkTimer_Callback(Timer_Handle myHandle)
  */
 void debounceTimer_Callback(Timer_Handle myHandle)
 {
-    if(GPIO_read(Board_GPIO_BUTTON0))
+    if(GPIO_read(CONFIG_GPIO_BUTTON0))
     {
-        GPIO_clearInt(Board_GPIO_BUTTON0);
-        GPIO_enableInt(Board_GPIO_BUTTON0);
+        GPIO_clearInt(CONFIG_GPIO_BUTTON0);
+        GPIO_enableInt(CONFIG_GPIO_BUTTON0);
         S1buttonDebounce = 0;
     }
-    if(GPIO_read(Board_GPIO_BUTTON1))
+    if(GPIO_read(CONFIG_GPIO_BUTTON1))
     {
-        GPIO_clearInt(Board_GPIO_BUTTON1);
-        GPIO_enableInt(Board_GPIO_BUTTON1);
+        GPIO_clearInt(CONFIG_GPIO_BUTTON1);
+        GPIO_enableInt(CONFIG_GPIO_BUTTON1);
         S2buttonDebounce = 0;
     }
-    if (GPIO_read(Board_GPIO_BUTTON0) && GPIO_read(Board_GPIO_BUTTON1))
+    if (GPIO_read(CONFIG_GPIO_BUTTON0) && GPIO_read(CONFIG_GPIO_BUTTON1))
     {
-        GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_OFF);
+        GPIO_write(CONFIG_GPIO_LED0, CONFIG_GPIO_LED_OFF);
         Timer_stop(debounceTimer);
 
         int rc;
@@ -185,7 +185,7 @@ void debounceTimer_Callback(Timer_Handle myHandle)
             }
         }
     }
-    if (!(GPIO_read(Board_GPIO_BUTTON0) || GPIO_read(Board_GPIO_BUTTON1)))
+    if (!(GPIO_read(CONFIG_GPIO_BUTTON0) || GPIO_read(CONFIG_GPIO_BUTTON1)))
     {
         // Enter temperature mode
         if (!enteringTempMode)
@@ -250,7 +250,7 @@ void debounceTimer_Callback(Timer_Handle myHandle)
  */
 void debounceGPIO(uint_least8_t index)
 {
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED0, CONFIG_GPIO_LED_ON);
 
     /* Stop/Close the DebounceTimer.
      * Ensure timer_params are set correctly (could have changed).
@@ -261,7 +261,7 @@ void debounceGPIO(uint_least8_t index)
     timer_params.periodUnits = Timer_PERIOD_US;
     timer_params.timerMode = Timer_CONTINUOUS_CALLBACK;
     timer_params.timerCallback = debounceTimer_Callback;
-    debounceTimer = Timer_open(Board_TIMER3, &timer_params);
+    debounceTimer = Timer_open(CONFIG_TIMER3, &timer_params);
     if (debounceTimer == NULL) {
         /* Failed to initialized Timer */
         while(1);
@@ -271,7 +271,7 @@ void debounceGPIO(uint_least8_t index)
 
 /*
  *  ======== gpioButton0_Callback ========
- *  Callback function for the GPIO interrupt on Board_GPIO_BUTTON0.
+ *  Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON0.
  *  When S1 is pressed, this function updates the blinkRate controlled by
  *  the period of the timer32.
  */
@@ -319,7 +319,7 @@ void gpioButton0_Callback(uint_least8_t index)
             timer_params.periodUnits = Timer_PERIOD_US;
             timer_params.timerMode = Timer_CONTINUOUS_CALLBACK;
             timer_params.timerCallback = intervalTimer_Callback;
-            intervalTimer = Timer_open(Board_TIMER0, &timer_params);
+            intervalTimer = Timer_open(CONFIG_TIMER0, &timer_params);
             if (intervalTimer == NULL) {
                 /* Failed to initialized Timer */
                 while(1);
@@ -328,13 +328,13 @@ void gpioButton0_Callback(uint_least8_t index)
         }
 
         /* Debounce Function */
-        debounceGPIO(Board_GPIO_BUTTON0);
+        debounceGPIO(CONFIG_GPIO_BUTTON0);
     }
 }
 
 /*
  *  ======== gpioButton1_Callback ========
- *  Callback function for the GPIO interrupt on Board_GPIO_BUTTON1.
+ *  Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON1.
  *  When S2 is pressed, change current color selection
  *  Post to semaphore that PWM should be updated.
  */
@@ -368,6 +368,6 @@ void gpioButton1_Callback(uint_least8_t index)
         }
 
         /* Debounce Function */
-        debounceGPIO(Board_GPIO_BUTTON1);
+        debounceGPIO(CONFIG_GPIO_BUTTON1);
     }
 }

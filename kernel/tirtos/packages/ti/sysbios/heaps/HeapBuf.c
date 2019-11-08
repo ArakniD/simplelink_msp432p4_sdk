@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -279,7 +279,7 @@ Void HeapBuf_free(HeapBuf_Object *obj, Ptr block, SizeT size)
     freeList = HeapBuf_Instance_State_freeList(obj);
 
     /* Make sure the entire buffer is not NULL. */
-    Assert_isTrue(((UArg)block != NULL), HeapBuf_A_invalidFree);
+    Assert_isTrue(((UArg)block != 0U), HeapBuf_A_invalidFree);
 
     /* Make sure the entire buffer is in the range of the heap. */
     Assert_isTrue((((UArg)block >= (UArg)(obj->buf)) &&

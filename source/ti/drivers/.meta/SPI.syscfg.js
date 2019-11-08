@@ -51,6 +51,9 @@ let config = [
         displayName: "Mode",
         default: "Three Pin",
         description: "In three pin mode the SS signal is not used.",
+        longDescription: "In __Three Pin__ mode, the user is responsible for"
+            + " controlling the slave select line.",
+        getDisabledOptions: disabledModeOptions,
         options: [
             { name: "Three Pin" },
             { name: "Four Pin SS Active Low" },
@@ -62,8 +65,8 @@ let config = [
         displayName: "Default TX Buffer Value",
         description: "Specifies the default transmit buffer value.",
         longDescription: "Value sent when a TX buffer is not specified."
-            + "This value must be provided in hexadecimal format;"
-            + "0 and ~0 also acceptable inputs.",
+            + " This value must be provided in hexadecimal format;"
+            + " 0 and ~0 also acceptable inputs.",
         default: "~0"
     },
     {
@@ -96,6 +99,72 @@ let config = [
         ]
     }
 ];
+
+/*
+ *  ========= disabledModeOptions ========
+ *  Selectively disables "mode" options if there is hardware. This
+ *  is used instead of "onHardwareChanged()" so that we can give
+ *  the user flexibility to select between the available Four Pin modes.
+ */
+function disabledModeOptions(inst)
+{
+    if (inst.$hardware) {
+
+        /*
+         * 3 Pin hardware can be used in 4 Pin mode; however, the user
+         * would be responsible for manually selecting the SS pin.
+         */
+        if (!Common.findSignalTypes(inst.$hardware, ["SPI_SS"])) {
+            return ([
+                {
+                    name: "Four Pin SS Active Low",
+                    reason: "Disabled by " + inst.$hardware.displayName +
+                    ". See: " + system.getReference(inst, "$hardware")
+                },
+                {
+                    name: "Four Pin SS Active High",
+                    reason: "Disabled by " + inst.$hardware.displayName +
+                    ". See: " + system.getReference(inst, "$hardware")
+                }
+            ]);
+        }
+        else {
+            return ([
+                {
+                    name: "Three Pin",
+                    reason: "Disabled by " + inst.$hardware.displayName +
+                    ". See: " + system.getReference(inst, "$hardware")
+                }
+            ]);
+        }
+    }
+
+    return ([]);
+}
+
+/*
+ *  ========= onHardwareChanged ========
+ */
+function onHardwareChanged(inst, ui)
+{
+    if (inst.$hardware) {
+
+        /* If the hardware has a slave select line */
+        if (Common.findSignalTypes(inst.$hardware, ["SPI_SS"])) {
+            inst.mode = "Four Pin SS Active Low";
+            ui.mode.readOnly = false;
+        }
+        else {
+            inst.mode = "Three Pin";
+            ui.mode.readOnly = true;
+        }
+    }
+    else {
+        /* If hardware removed, set default */
+        inst.mode = "Three Pin";
+        ui.mode.readOnly = false;
+    }
+}
 
 /*
  *  ========= filterHardware ========
@@ -134,6 +203,22 @@ function validate(inst, validation)
         logError(validation, inst, 'defaultTxBufferValue',
             'Must be in hex format.');
     }
+
+    if (inst.$hardware && Common.findSignalTypes(inst.$hardware, ["SPI_SS"])) {
+        if (inst.mode === "Three Pin") {
+            logError(validation, inst, 'mode', "Using 'Three Pin' mode with "
+                + " hardware requiring a 'Four Pin' mode.");
+        }
+    }
+}
+
+/*
+ *  ======== _getPinResources ========
+ */
+/* istanbul ignore next */
+function _getPinResources(inst)
+{
+    return;
 }
 
 /*
@@ -156,14 +241,16 @@ interface to control onboard Serial Peripheral Interfaces (SPI).
 [3]: /tidrivers/doxygen/html/_s_p_i_8h.html#ti_drivers_SPI_Examples "C usage examples"
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#SPI_Configuration_Options "Configuration options reference"
 `,
-    documentation: "/tidrivers/doxygen/html/_s_p_i_8h.html",
-    defaultInstanceName: "Board_SPI",
-    config: Common.addNameConfig(config, "/ti/drivers/SPI", "Board_SPI"),
+    defaultInstanceName: "CONFIG_SPI_",
+    config: Common.addNameConfig(config, "/ti/drivers/SPI", "CONFIG_SPI_"),
     filterHardware: filterHardware,
     validate: validate,
     busModule: true,
     allowStaticOnly: true,
-    modules: Common.autoForceModules(["Board", "Power", "DMA"])
+    modules: Common.autoForceModules(["Board", "Power", "DMA"]),
+    onHardwareChanged: onHardwareChanged,
+
+    _getPinResources: _getPinResources
 };
 
 /* extend the base exports to include family-specific content */

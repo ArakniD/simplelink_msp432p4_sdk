@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2018, Texas Instruments Incorporated
+ * Copyright (c) 2013-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,9 +45,13 @@
 
 /*!
  *  ======== BIOS_linkedWithIncorrectBootLibrary ========
+ *  Need to exclude the function declaration from LCOV due to following bug:
+ *  https://github.com/bp-lang/oplex/commit/585571667c01b182c0fe7b7c90b75be7fd9e91a6
  */
+/* LCOV_EXCL_START */
 Void BIOS_linkedWithIncorrectBootLibrary(Void)
 {
+/* LCOV_EXCL_STOP */
     /*
      *  If execution reaches this function, it indicates that the wrong
      *  boot library was linked with and the XDC runtime startup functions
@@ -120,16 +124,22 @@ Void BIOS_getCpuFreq(Types_FreqHz *freq)
 
 /*
  *  ======== BIOS_start ========
+ *  Exclude the exit of this function from LCOV because it will never be reached.
  */
 Void BIOS_start(void)
 {
     BIOS_module->startFunc();
+/* LCOV_EXCL_START */
 }
+/* LCOV_EXCL_STOP */
 
 /*
  *  ======== BIOS_exit ========
+ *  Exclude the exit of this function from LCOV because it will never be reached.
  */
 Void BIOS_exit(Int stat)
 {
     BIOS_module->exitFunc(stat);
+/* LCOV_EXCL_START */
 }
+/* LCOV_EXCL_STOP */

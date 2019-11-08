@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = freertos_main_freertos.obj compress_thread.obj sensor_thread.obj MSP_EXP432P401R.obj
+OBJECTS = compress_thread.obj sensor_thread.obj MSP_EXP432P401R.obj freertos_main_freertos.obj
 
 NAME = lz4_data_logging
 
@@ -34,10 +34,10 @@ CFLAGS = -I../.. \
     "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include/newlib-nano" \
     "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include"
 
-LFLAGS = -Wl,-T,../../freertos/gcc/MSP_EXP432P401R_FREERTOS.lds \
-    "-Wl,-Map,$(NAME).map" \
-    "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/compression/lz4/lib/gcc/m4f" \
+LFLAGS = "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/compression/lz4/lib/gcc/m4f" \
     -l:lz4.a \
+    -Wl,-T,../../freertos/gcc/MSP_EXP432P401R_FREERTOS.lds \
+    "-Wl,-Map,$(NAME).map" \
     "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     -l:ti/display/lib/display.am4fg \
     -l:ti/grlib/lib/gcc/m4f/grlib.a \
@@ -55,7 +55,7 @@ LFLAGS = -Wl,-T,../../freertos/gcc/MSP_EXP432P401R_FREERTOS.lds \
     -static \
     -Wl,--gc-sections \
     "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib" \
+    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/hard" \
     -lgcc \
     -lc \
     -lm \
@@ -70,10 +70,6 @@ $(KERNEL_BUILD)/gcc/freertos.lib:
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
 
-freertos_main_freertos.obj: ../../freertos/main_freertos.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
 compress_thread.obj: ../../compress_thread.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
@@ -86,9 +82,14 @@ MSP_EXP432P401R.obj: ../../MSP_EXP432P401R.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
+freertos_main_freertos.obj: ../../freertos/main_freertos.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/gcc/freertos.lib
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
+
 
 clean:
 	@ echo Cleaning...

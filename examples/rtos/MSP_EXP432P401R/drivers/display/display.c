@@ -45,8 +45,8 @@
 #include <ti/display/DisplayExt.h>
 #include <ti/display/AnsiColor.h>
 
-/* Board Header files */
-#include "Board.h"
+/* Driver Configuration */
+#include "ti_drivers_config.h"
 
 /* Example GrLib image */
 #include "splash_image.h"
@@ -62,7 +62,7 @@ void *mainThread(void *arg0)
     GPIO_init();
     Display_init();
 
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
     /* Initialize display and try to open both UART and LCD types of display. */
     Display_Params params;
@@ -71,7 +71,7 @@ void *mainThread(void *arg0)
 
     /* Open both an available LCD display and an UART display.
      * Whether the open call is successful depends on what is present in the
-     * Display_config[] array of the board file.
+     * Display_config[] array of the driver configuration file.
      */
     Display_Handle hLcd = Display_open(Display_Type_LCD, &params);
     Display_Handle hSerial = Display_open(Display_Type_UART, &params);
@@ -156,28 +156,28 @@ void *mainThread(void *arg0)
 
     /* Loop forever, alternating LED state and Display output. */
     while (1) {
-        ledPinValue = GPIO_read(Board_GPIO_LED0);
+        ledPinValue = GPIO_read(CONFIG_GPIO_LED_0);
 
         /* Print to LCD and clear alternate lines if the LED is on or not. */
         Display_clearLine(hLcd, ledPinValue ? 1 : 0);
         Display_printf(hLcd, ledPinValue ? 0 : 1, 0, "LED: %s",
-                (ledPinValue == Board_GPIO_LED_ON) ? "On!":"Off!");
+                (ledPinValue == CONFIG_GPIO_LED_ON) ? "On!":"Off!");
 
         /* Print to UART */
         Display_clearLine(hSerial, ledPinValue ? 1 : 0);
         Display_printf(hSerial, ledPinValue ? 0 : 1, 0, "LED: %s",
-                (ledPinValue == Board_GPIO_LED_ON) ? serialLedOn : serialLedOff);
+                (ledPinValue == CONFIG_GPIO_LED_ON) ? serialLedOn : serialLedOff);
 
         /* If ANSI is supported, print a "log" in the scrolling region */
         if (Display_getType(hSerial) & Display_Type_ANSI)
         {
-            char *currLedState = (ledPinValue == Board_GPIO_LED_ON) ? serialLedOn : serialLedOff;
+            char *currLedState = (ledPinValue == CONFIG_GPIO_LED_ON) ? serialLedOn : serialLedOff;
             Display_printf(hSerial, DisplayUart_SCROLLING, 0, "[ %d ] LED: %s", loopCount++, currLedState);
         }
 
         sleep(1);
 
         /* Toggle LED */
-        GPIO_toggle(Board_GPIO_LED0);
+        GPIO_toggle(CONFIG_GPIO_LED_0);
     }
 }

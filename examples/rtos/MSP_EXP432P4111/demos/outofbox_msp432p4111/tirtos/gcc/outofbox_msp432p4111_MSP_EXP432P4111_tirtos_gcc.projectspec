@@ -14,6 +14,7 @@
     <project
         title="outOfBox_msp432p4111"
         name="outofbox_msp432p4111_MSP_EXP432P4111_tirtos_gcc"
+        configurations="Debug"
         toolChain="GNU"
         connection="TIXDS110_Connection.xml"
         device="MSP432P4111"
@@ -22,6 +23,7 @@
         references="tirtos_builds_MSP_EXP432P4111_release_gcc"
         compilerBuildOptions="
             -I${PROJECT_ROOT}
+            -I${PROJECT_ROOT}/${ConfigName}
             -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
             -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include
             -D__MSP432P4111__
@@ -62,18 +64,26 @@
             -static
             -Wl,--gc-sections
             -L${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard
-            -L${CG_TOOL_ROOT}/arm-none-eabi/lib
+            -L${CG_TOOL_ROOT}/arm-none-eabi/lib/hard
             -lgcc
             -lc
             -lm
             -lnosys
             --specs=nano.specs
         "
+        enableSysConfigTool="true"
+        sysConfigBuildOptions="
+            --product ${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/.metadata/product.json
+        "
         description="TODO: Write description">
 
         <property name="buildProfile" value="release"/>
         <property name="isHybrid" value="true"/>
         <group id="outofbox_msp432p4111.SIMPLELINK_MSP432_SDK.MSP_EXP432P4111.demos.GCC"/>
+        <file path="../../tirtos/main_tirtos.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../tirtos/gcc/MSP_EXP432P4111_TIRTOS.lds" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
         <file path="../../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
@@ -102,11 +112,7 @@
         </file>
         <file path="../../uart_thread.h" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
-        <file path="../../Board.h" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../../MSP_EXP432P4111.c" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../../MSP_EXP432P4111.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        <file path="../../outOfBox_msp432p4111.syscfg" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../../cJSON/cJSON.c" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="cJSON">
         </file>
@@ -115,10 +121,6 @@
         <file path="../../LCD_HAL/lcd_hal.c" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="LCD_HAL">
         </file>
         <file path="../../LCD_HAL/lcd_hal.h" openOnCreation="false" excludeFromBuild="false" action="copy" targetDirectory="LCD_HAL">
-        </file>
-        <file path="../../tirtos/main_tirtos.c" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../../tirtos/gcc/MSP_EXP432P4111_TIRTOS.lds" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
     </project>
 </projectSpec>

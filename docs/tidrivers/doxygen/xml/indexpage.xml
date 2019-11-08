@@ -4,11 +4,39 @@
     <compoundname>index</compoundname>
     <title>SimpleLink MCU SDK Driver API Reference</title>
     <detaileddescription>
+<sect1 id="index_1tableofcontents">
+<title>Table of Contents</title>
+<para><itemizedlist>
+<listitem><para><ref refid="index_1drivers_common_overview" kindref="member">TI-Drivers Overview</ref> </para></listitem>
+<listitem><para><ref refid="index_1drivers" kindref="member">Drivers and Documentation</ref> </para></listitem>
+<listitem><para><ref refid="index_1display" kindref="member">Display Driver</ref> </para></listitem>
+<listitem><para><ref refid="index_1apps" kindref="member">Driver Apps</ref> </para></listitem>
+<listitem><para><ref refid="index_1utilities" kindref="member">Driver Utilities</ref> </para></listitem>
+<listitem><para><ref refid="index_1driver_configuration" kindref="member">Driver Configuration</ref><itemizedlist>
+<listitem><para><ref refid="index_1driver_configuration_files" kindref="member">Driver Configuration Files</ref></para></listitem><listitem><para><ref refid="index_1driver_objects" kindref="member">Driver Objects</ref></para></listitem><listitem><para><ref refid="index_1driver_hardware_attributes" kindref="member">Driver Hardware Attributes</ref></para></listitem><listitem><para><ref refid="index_1driver_function_table" kindref="member">Driver Function Table</ref> </para></listitem></itemizedlist>
+</para></listitem>
+<listitem><para><ref refid="index_1nortos" kindref="member">NoRTOS Framework Module</ref></para></listitem>
+</itemizedlist>
+<hruler/>
+</para></sect1>
+<sect1 id="index_1drivers_common_overview">
+<title>TI-Drivers Overview</title>
+<para><para>TI-Drivers is a collective of peripheral drivers for TI&apos;s SimpleLink portfolio. The drivers are centered around a portable application programming interface (API) which enables seamless migration across the SimpleLink SDK portfolio. Unless specifically stated otherwise, TI-Drivers are designed to be thread safe and work seamlessly inside of a real time operating system (RTOS) application. All TI-Driver implementations utilize the Power driver APIs to ensure low power consumption at all times. The drivers support TI-RTOS (SYS/BIOS) and NoRTOS with examples provided for each variant. Lastly, the drivers are supported by SysConfig to enable easy re-configuration of the drivers.</para><para><simplesect kind="par"><title>Features:</title><para><itemizedlist>
+<listitem><para><bold> Portable APIs </bold> </para></listitem>
+<listitem><para><bold> Native support for TI-RTOS and NoRTOS usage </bold> </para></listitem>
+<listitem><para><bold> Thread safe APIs </bold> </para></listitem>
+<listitem><para><bold> SysConfig support </bold> </para></listitem>
+<listitem><para><bold> Example usage </bold> </para></listitem>
+<listitem><para><bold> Power driver support </bold></para></listitem>
+</itemizedlist>
+</para></simplesect>
+</para><hruler/>
+</para></sect1>
 <sect1 id="index_1drivers">
-<title>Drivers</title>
-<para>Shown below is a matrix of available links to driver documentation.</para><para><simplesect kind="note"><para>Please view the <bold>Device Specific</bold> driver implementations as they may contain or exclude certain features that are defined in the top level interfaces.</para></simplesect>
+<title>Drivers and Documentation</title>
+<para>Shown below is a matrix of available drivers and documentation.</para><para><simplesect kind="note"><para>Please view the <bold>Device Specific</bold> driver implementations as they may contain or exclude certain features that are defined in the top level interfaces.</para></simplesect>
 <table rows="16" cols="2"><row>
-<entry thead="yes"><para>Driver Interfaces </para></entry><entry thead="yes"><para>MSP432<linebreak/>
+<entry thead="yes"><para>Driver Interfaces </para></entry><entry thead="yes"><para>MSP432P4<linebreak/>
  Implementations  </para></entry></row>
 <row>
 <entry thead="no"><para><ref refid="_a_d_c_8h" kindref="compound">ADC.h</ref> </para></entry><entry thead="no"><para><ref refid="_a_d_c_m_s_p432_8h" kindref="compound">ADCMSP432.h</ref>  </para></entry></row>
@@ -62,6 +90,17 @@
 </table>
 </para><hruler/>
 </para></sect1>
+<sect1 id="index_1apps">
+<title>Driver Apps</title>
+<para><para>These helper apps utilize TI drivers and are available to user applications.</para><para><table rows="3" cols="2"><row>
+<entry thead="yes"><para>Module </para></entry><entry thead="yes"><para>Description </para></entry></row>
+<row>
+<entry thead="no"><para><ref refid="_button_8h" kindref="compound">Button.h</ref> </para></entry><entry thead="no"><para>Provides an API for button like hardware attached to a GPIO line. </para></entry></row>
+<row>
+<entry thead="no"><para><ref refid="_l_e_d_8h" kindref="compound">LED.h</ref> </para></entry><entry thead="no"><para>Provides an API for LEDs attached to GPIO lines.  </para></entry></row>
+</table>
+</para><hruler/>
+</para></sect1>
 <sect1 id="index_1utilities">
 <title>Driver Utilities</title>
 <para><para>These utilities are helper modules available to drivers.</para><para><table rows="6" cols="2"><row>
@@ -84,13 +123,21 @@
 <para><para>The generic driver interface defines a configuration structure using the <computeroutput>typedef</computeroutput> keyword. The name of this declared type follows the naming pattern <computeroutput>&lt;driver&gt;_Config</computeroutput>. A driver is configured by declaring an array of this configuration data structure. Each <computeroutput>config</computeroutput> array index contains pointers to other data objects necessary for the driver to function at runtime. These data objects may include a <ref refid="index_1driver_hardware_attributes" kindref="member">hardware attributes</ref>, a <ref refid="index_1driver_function_table" kindref="member">function table</ref>, and <ref refid="index_1driver_objects" kindref="member">object memory</ref>. Multiple indexes of the <computeroutput>config</computeroutput> array should not share these data objects--with the exception of the <ref refid="index_1driver_function_table" kindref="member">function table</ref>. Each index of the <computeroutput>config</computeroutput> array supports an independent instance of the driver.</para><para><simplesect kind="warning"><para>The declared array, <computeroutput>&lt;driver&gt;_Config</computeroutput>, must have a specific C identifier. This identifies follows the case-sensitive pattern <computeroutput>&lt;driver&gt;_config</computeroutput>.</para></simplesect>
 <simplesect kind="warning"><para>The configuration must also contain a count of indexes in the <computeroutput>&lt;driver&gt;_config</computeroutput>. This must also have a specific C identifier following the case-sensitive pattern <computeroutput>&lt;driver&gt;_count</computeroutput>. The data type must be a <computeroutput>uint_least8_t</computeroutput>.</para></simplesect>
 The driver interface is joined together during the link process at build time. The <computeroutput>&lt;driver&gt;_config</computeroutput> and <computeroutput>&lt;driver&gt;_count</computeroutput> symbols are resolved. </para><hruler/>
-</para><sect2 id="index_1driver_objects">
+</para><sect2 id="index_1driver_configuration_files">
+<title>Driver Configuration Files</title>
+<para><para>The driver configuration files contain all <ref refid="index_1driver_configuration" kindref="member">driver configurations</ref> needed by TI-Drivers at runtime. The SysConfig tool is used to automatically generate the TI-Driver&apos;s configuration files. Two files are presently generated for TI-Drivers:</para><para><itemizedlist>
+<listitem><para><bold>ti_drivers_config.c</bold> </para></listitem>
+<listitem><para><bold>ti_drivers_config.h</bold> </para></listitem>
+</itemizedlist>
+</para><hruler/>
+</para></sect2>
+<sect2 id="index_1driver_objects">
 <title>Driver Objects</title>
 <para><para>The driver objects are device specific structures that hold data for an instance of a driver. The driver objects are used exclusively by the driver and should never be accessed by the application. Device specific drivers define an object structure as a new type using the <computeroutput>typedef</computeroutput> keyword. Each index in a driver&apos;s <ref refid="index_1driver_configuration" kindref="member">configuration</ref> will contain a pointer to a driver object. </para><hruler/>
 </para></sect2>
 <sect2 id="index_1driver_hardware_attributes">
 <title>Driver Hardware Attributes</title>
-<para><para>The hardware attributes, also commonly referred to as <computeroutput>HWAttrs</computeroutput>, are device specific settings that typically do not change during runtime operation of a driver. The hardware attributes aid in abstracting the generic driver interface from the hardware. Device specific drivers define a hardware attribute structure as a new type using the <computeroutput>typedef</computeroutput> keyword. Each index in a driver&apos;s <ref refid="index_1driver_configuration" kindref="member">configuration</ref> will contain a pointer to a hardware attribute structure. </para><hruler/>
+<para><para>The hardware attributes, also commonly referred to as <computeroutput>HWAttrs</computeroutput>, are device specific settings that typically do not change during runtime operation of a driver. The hardware attributes also aid in abstracting the generic driver interface from the device specific hardware. Device specific drivers define a hardware attribute structure as a new type using the <computeroutput>typedef</computeroutput> keyword. Each index in a driver&apos;s <ref refid="index_1driver_configuration" kindref="member">configuration</ref> will contain a pointer to a hardware attribute structure. </para><hruler/>
 </para></sect2>
 <sect2 id="index_1driver_function_table">
 <title>Driver Function Table</title>
@@ -99,8 +146,9 @@ The driver interface is joined together during the link process at build time. T
 </sect1>
 <sect1 id="index_1nortos">
 <title>NoRTOS Framework Module</title>
-<para><para>The NoRTOS framework module is provided to enable use of drivers without an underlying operating system. The module provides interfaces used by drivers to perform delays, block execution, register interrupts and more. NoRTOS module documentation and usage can be found:<itemizedlist>
-<listitem><para><ref refid="_no_r_t_o_s_8h" kindref="compound">NoRTOS.h</ref> </para></listitem></itemizedlist>
+<para><para>The NoRTOS framework module is provided to enable use of drivers without an underlying operating system. The module provides interfaces used by drivers to perform delays, block execution, register interrupts and more. <itemizedlist>
+<listitem><para><ref refid="_no_r_t_o_s_8h" kindref="compound">NoRTOS.h</ref> </para></listitem>
+</itemizedlist>
 </para></para></sect1>
     </detaileddescription>
   </compounddef>

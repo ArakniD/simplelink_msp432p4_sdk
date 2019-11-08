@@ -686,8 +686,8 @@ uint32_t CS_getDCOFrequency(void)
             calVal = csInfo->rDCOIR_FCAL_RSEL04;
         }
     }
-    retVal = (uint32_t) (centeredFreq)
-            / (1 - ((dcoConst * dcoTune) / ((1 + dcoConst * (768 - calVal)))));
+    retVal = (uint32_t) ((centeredFreq)
+            / (1 - ((dcoConst * dcoTune) / ((1 + dcoConst * (768 - calVal))))));
 
     return retVal;
 }

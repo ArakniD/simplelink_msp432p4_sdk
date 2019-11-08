@@ -136,10 +136,6 @@
 #ifndef ti_drivers_spi_SPIMSP432DMA__include
 #define ti_drivers_spi_SPIMSP432DMA__include
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdint.h>
 
 #include <ti/devices/DeviceFamily.h>
@@ -149,6 +145,10 @@ extern "C" {
 #include <ti/drivers/Power.h>
 #include <ti/drivers/SPI.h>
 #include <ti/drivers/dma/UDMAMSP432.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  *  SPI port/pin defines for pin configuration.  Ports P2, P3, and P7 are
@@ -841,7 +841,7 @@ extern const SPI_FxnTable SPIMSP432DMA_fxnTable;
  *  };
  *  @endcode
  */
-typedef struct SPIMSP432DMA_HWAttrsV1 {
+typedef struct {
     uint32_t baseAddr;           /*!< EUSCI_B_SPI Peripheral's base address */
     uint16_t bitOrder;           /*!< EUSCI_B_SPI Bit order */
     uint8_t  clockSource;        /*!< EUSCI_B_SPI Clock source */
@@ -867,7 +867,7 @@ typedef struct SPIMSP432DMA_HWAttrsV1 {
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct SPIMSP432DMA_Object {
+typedef struct {
     HwiP_Handle        hwiHandle;
     Power_NotifyObj    perfChangeNotify;
     SemaphoreP_Handle  transferComplete;

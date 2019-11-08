@@ -5,7 +5,7 @@ package/gnu.targets.arm.rtsv7M.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/gnu_targets_arm_rtsv7M.java
 package/gnu_targets_arm_rtsv7M.class
 package/package_gnu.targets.arm.rtsv7M.c

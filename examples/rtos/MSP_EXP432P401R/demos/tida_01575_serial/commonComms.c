@@ -49,8 +49,6 @@
 /* Driverlib Header files */
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 
-/* Example/Board Header files */
-#include "Board.h"
 #include "vibrationCapture.h"
 #include "commonComms.h"
 

@@ -116,14 +116,14 @@ Gates are used within the <tt>xdc.runtime</tt> package to serialize access
   long during periods of high fragmentation.  Searching such a list with
   interrupts disabled would cause system latencies to also become unbounded.
   In this case, the best solution is to provide a gate that suspends the
-  execution of  threads that try to enter a gate that has already been
-  entered; i.e., the gate "blocks" the thread until the thread already in the
-  gate leaves.  The time required to enter and leave the gate is greater than
-  simply enabling and restoring interrupts, but since the time spent within
-  the gate is relatively large, the overhead caused by entering and leaving
-  gates will not become a significant percentage of overall system time.  More
-  importantly, threads that do not need to access the shared data structure
-  are completely unaffected by threads that do access it.</div>
+  execution of threads that try to enter a gate that has already been entered;
+  i.e., the gate "blocks" the thread until the thread already in the gate
+  leaves.  The time required to enter and leave the gate is greater than simply 
+  enabling and restoring interrupts, but since the time spent within the gate is
+  relatively large, the overhead caused by entering and leaving gates will not
+  become a significant percentage of overall system time.  More importantly,
+  threads that do not need to access the shared data structure are completely
+  unaffected by threads that do access it.</div>
 <span id="xdoc-sect-2"></span>
 <div class="xdocSect">NOTES</div>
 <div class="xdocText">Modules inheriting this interface should treat all names beginning with
@@ -156,7 +156,7 @@ Gates are used within the <tt>xdc.runtime</tt> package to serialize access
 <div class="xdocSynSpacer">&nbsp;</div>
 <span id="xdoc-sect-1"></span>
 <div class="xdocSect">DETAILS</div>
-<div class="xdocText">Gates with this "quality" may cause the calling thread to block; 
+<div class="xdocText">Gates with this "quality" may cause the calling thread to block;
   i.e., suspend execution until another thread leaves the gate.</div>
 <div class="xdocSynSpacer">&nbsp;</div>
 <a class="xdocAnchor" id=".Q_.P.R.E.E.M.P.T.I.N.G"></a>
@@ -204,11 +204,10 @@ Gates are used within the <tt>xdc.runtime</tt> package to serialize access
 <div class="xdocSynSpacer">&nbsp;</div>
 <span id="xdoc-sect-1"></span>
 <div class="xdocSect">DETAILS</div>
-<div class="xdocText">All modules have this configuration parameter.  Its name
-  contains the '$' character to ensure it does not conflict with
-  configuration parameters declared by the module.  This allows
-  new configuration parameters to be added in the future without
-  any chance of breaking existing modules.</div>
+<div class="xdocText">All modules have this configuration parameter. Its name contains the '$'
+  character to ensure it does not conflict with configuration parameters
+  declared by the module. This allows new configuration parameters to be 
+  added in the future without any chance of breaking existing modules.</div>
 <div class="xdocSynSpacer">&nbsp;</div>
 <a class="xdocAnchor" id="query"></a>
 <table class="xdocHdr"><tr>
@@ -312,17 +311,17 @@ Gates are used within the <tt>xdc.runtime</tt> package to serialize access
 <div class="xdocSect">DETAILS</div>
 <div class="xdocText">Each gate provider can implement mutual exclusion using different
   algorithms; e.g., disabling all scheduling, disabling the scheduling
-  of all threads below a specified "priority level", suspending the
-  caller when the gate has been entered by another thread and
-  re-enabling it when the the other thread leaves the gate.  However,
-  in all cases, after this method returns that caller has exclusive
-  access to the data protected by this gate.</div>
+  of all threads below a specified "priority level", suspending the caller
+  when the gate has been entered by another thread and re-enabling it when
+  the the other thread leaves the gate.  However, in all cases, after this
+  method returns that caller has exclusive access to the data protected by
+  this gate.</div>
 <div class="xdocText">A thread may reenter a gate without blocking or failing.</div>
 <span id="xdoc-sect-2"></span>
 <div class="xdocSect">RETURNS</div>
-<div class="xdocText">Returns a "key" that is used to <tt><a class="xdoc-link" href="IGateProvider.html#leave" title="leave">leave</a></tt> this gate; this 
-  value is used to restore thread preemption to the state that
-  existed just prior to entering this gate.</div>
+<div class="xdocText">Returns a "key" that is used to <tt><a class="xdoc-link" href="IGateProvider.html#leave" title="leave">leave</a></tt> this gate; this value
+  is used to restore thread preemption to the state that existed just
+  prior to entering this gate.</div>
 <div class="xdocSynSpacer">&nbsp;</div>
 <a class="xdocAnchor" id="leave"></a>
 <table class="xdocHdr"><tr>
@@ -346,18 +345,16 @@ Gates are used within the <tt>xdc.runtime</tt> package to serialize access
 <span id="xdoc-sect-1"></span>
 <div class="xdocSect">ARGUMENTS</div>
 <div class="xdocChild"><span class="xdocChildId">key</span>
-<span class="xdocChildSum">&#151;&nbsp;the value returned by a matching call to
-              <tt><a class="xdoc-link" href="IGateProvider.html#enter" title="enter">enter</a></tt></span>
+<span class="xdocChildSum">&#151;&nbsp;the value returned by a matching call to <tt><a class="xdoc-link" href="IGateProvider.html#enter" title="enter">enter</a></tt></span>
 </div>
 <span id="xdoc-sect-2"></span>
 <div class="xdocSect">DETAILS</div>
-<div class="xdocText">This method is only called by threads that have previously entered 
-  this gate via <tt><a class="xdoc-link" href="IGateProvider.html#enter" title="enter">enter</a></tt>.  After this method returns, the
-  caller must not access the data structure protected by this gate
-  (unless the caller has entered the gate more than once and other
-  calls to <tt>leave</tt> remain to balance the number of previous
-  calls to <tt>enter</tt>).</div>
+<div class="xdocText">This method is only called by threads that have previously entered this
+  gate via <tt><a class="xdoc-link" href="IGateProvider.html#enter" title="enter">enter</a></tt>.  After this method returns, the caller must
+  not access the data structure protected by this gate (unless the caller
+  has entered the gate more than once and other calls to <tt>leave</tt> remain
+  to balance the number of previous calls to <tt>enter</tt>).</div>
 </div>
-<div id="xdocDate">generated on Sat, 23 Feb 2019 02:50:21 GMT</div>
+<div id="xdocDate">generated on Wed, 28 Aug 2019 17:00:48 GMT</div>
 </div></div></body>
 </html>

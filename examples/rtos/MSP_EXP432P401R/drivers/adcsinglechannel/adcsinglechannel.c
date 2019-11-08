@@ -43,8 +43,8 @@
 #include <ti/drivers/ADC.h>
 #include <ti/display/Display.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 /* ADC sample count */
 #define ADC_SAMPLE_COUNT  (10)
@@ -70,7 +70,7 @@ void *threadFxn0(void *arg0)
     int_fast16_t res;
 
     ADC_Params_init(&params);
-    adc = ADC_open(Board_ADC0, &params);
+    adc = ADC_open(CONFIG_ADC_0, &params);
 
     if (adc == NULL) {
         Display_printf(display, 0, 0, "Error initializing ADC0\n");
@@ -110,7 +110,7 @@ void *threadFxn1(void *arg0)
     int_fast16_t res;
 
     ADC_Params_init(&params);
-    adc = ADC_open(Board_ADC1, &params);
+    adc = ADC_open(CONFIG_ADC_1, &params);
 
     if (adc == NULL) {
         Display_printf(display, 0, 0, "Error initializing ADC1\n");

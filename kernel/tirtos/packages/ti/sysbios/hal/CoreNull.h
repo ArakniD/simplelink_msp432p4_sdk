@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_sysbios_hal_CoreNull__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_hal_CoreNull___VERS 200
@@ -287,42 +289,42 @@ __extern const ti_sysbios_hal_CoreNull_Fxns__ ti_sysbios_hal_CoreNull_Module__FX
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_hal_CoreNull_Module__startupDone__S, "ti_sysbios_hal_CoreNull_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_hal_CoreNull_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_hal_CoreNull_Module__startupDone__S( void);
 
 /* getId__E */
 #define ti_sysbios_hal_CoreNull_getId ti_sysbios_hal_CoreNull_getId__E
 xdc__CODESECT(ti_sysbios_hal_CoreNull_getId__E, "ti_sysbios_hal_CoreNull_getId")
-__extern xdc_UInt ti_sysbios_hal_CoreNull_getId__E( void );
+__extern xdc_UInt ti_sysbios_hal_CoreNull_getId__E( void);
 
 /* interruptCore__E */
 #define ti_sysbios_hal_CoreNull_interruptCore ti_sysbios_hal_CoreNull_interruptCore__E
 xdc__CODESECT(ti_sysbios_hal_CoreNull_interruptCore__E, "ti_sysbios_hal_CoreNull_interruptCore")
-__extern xdc_Void ti_sysbios_hal_CoreNull_interruptCore__E( xdc_UInt coreId );
+__extern xdc_Void ti_sysbios_hal_CoreNull_interruptCore__E( xdc_UInt coreId);
 
 /* lock__E */
 #define ti_sysbios_hal_CoreNull_lock ti_sysbios_hal_CoreNull_lock__E
 xdc__CODESECT(ti_sysbios_hal_CoreNull_lock__E, "ti_sysbios_hal_CoreNull_lock")
-__extern xdc_IArg ti_sysbios_hal_CoreNull_lock__E( void );
+__extern xdc_IArg ti_sysbios_hal_CoreNull_lock__E( void);
 
 /* unlock__E */
 #define ti_sysbios_hal_CoreNull_unlock ti_sysbios_hal_CoreNull_unlock__E
 xdc__CODESECT(ti_sysbios_hal_CoreNull_unlock__E, "ti_sysbios_hal_CoreNull_unlock")
-__extern xdc_Void ti_sysbios_hal_CoreNull_unlock__E( void );
+__extern xdc_Void ti_sysbios_hal_CoreNull_unlock__E( void);
 
 /* hwiDisable__E */
 #define ti_sysbios_hal_CoreNull_hwiDisable ti_sysbios_hal_CoreNull_hwiDisable__E
 xdc__CODESECT(ti_sysbios_hal_CoreNull_hwiDisable__E, "ti_sysbios_hal_CoreNull_hwiDisable")
-__extern xdc_UInt ti_sysbios_hal_CoreNull_hwiDisable__E( void );
+__extern xdc_UInt ti_sysbios_hal_CoreNull_hwiDisable__E( void);
 
 /* hwiEnable__E */
 #define ti_sysbios_hal_CoreNull_hwiEnable ti_sysbios_hal_CoreNull_hwiEnable__E
 xdc__CODESECT(ti_sysbios_hal_CoreNull_hwiEnable__E, "ti_sysbios_hal_CoreNull_hwiEnable")
-__extern xdc_UInt ti_sysbios_hal_CoreNull_hwiEnable__E( void );
+__extern xdc_UInt ti_sysbios_hal_CoreNull_hwiEnable__E( void);
 
 /* hwiRestore__E */
 #define ti_sysbios_hal_CoreNull_hwiRestore ti_sysbios_hal_CoreNull_hwiRestore__E
 xdc__CODESECT(ti_sysbios_hal_CoreNull_hwiRestore__E, "ti_sysbios_hal_CoreNull_hwiRestore")
-__extern xdc_Void ti_sysbios_hal_CoreNull_hwiRestore__E( xdc_UInt key );
+__extern xdc_Void ti_sysbios_hal_CoreNull_hwiRestore__E( xdc_UInt key);
 
 
 /*

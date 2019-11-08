@@ -1,7 +1,3 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
 ---
 # adcbufdifferential
 
@@ -16,7 +12,7 @@ ADCBuf driver in continuous mode using the differential mode.
 ## Peripherals Exercised
 
 * `Board_ADCBUF0` - Buffer instance used to manage samples from ADCBuf channel.
-* `Board_ADCBUF0CHANNEL3` - ADCBuf channel 3.
+* `Board_ADCBUF0CHANNEL0` - ADCBuf channel 0.
 * `Board_UART0` - Used to echo samples to host serial session.
 
 ## Resources & Jumper Settings
@@ -29,7 +25,7 @@ Otherwise, you can find Board.html in the directory
 ## Example Usage
 
 * Connect the  ADC pins, adcPin (PE3) and adcDifferentialPin (PE2), to a sampling source.
-    * For quick testing, connect `Board_ADCBUF0CHANNEL3` to `GND` or `3V3`.
+    * For quick testing, connect `Board_ADCBUF0CHANNEL0` to `GND` or `3V3`.
 
 >__Important:__ Caution should be used when connecting the pins to analog inputs greater than 3VDC.
 

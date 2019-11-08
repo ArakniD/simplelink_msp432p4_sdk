@@ -71,7 +71,8 @@ void I2CMSP432_close(I2C_Handle handle);
 int_fast16_t I2CMSP432_control(I2C_Handle handle, uint_fast16_t cmd, void *arg);
 void I2CMSP432_init(I2C_Handle handle);
 I2C_Handle I2CMSP432_open(I2C_Handle handle, I2C_Params *params);
-bool I2CMSP432_transfer(I2C_Handle handle, I2C_Transaction *transaction);
+int_fast16_t I2CMSP432_transfer(I2C_Handle handle,
+                                I2C_Transaction *transaction, uint32_t timeout);
 static void blockingTransferCallback(I2C_Handle handle, I2C_Transaction *msg,
     bool transferStatus);
 static void completeTransfer(I2C_Handle handle);
@@ -104,7 +105,9 @@ static const uint32_t bitRates[] = {
     EUSCI_B_I2C_ARBITRATIONLOST_INTERRUPT)
 
 #define ALL_INTERRUPTS (EUSCI_B_I2C_RECEIVE_INTERRUPT0  | \
-    EUSCI_B_I2C_TRANSMIT_INTERRUPT0 | ERROR_INTERRUPTS)
+    EUSCI_B_I2C_TRANSMIT_INTERRUPT0 | \
+    EUSCI_B_I2C_STOP_INTERRUPT | \
+    ERROR_INTERRUPTS)
 
 /*
  *  ======== blockingTransferCallback ========
@@ -207,8 +210,8 @@ static void initHw(I2CMSP432_Object *object,
 
     /* Clear any pending interrupts & enable I2C module */
     MAP_I2C_clearInterruptFlag(hwAttrs->baseAddr, ALL_INTERRUPTS);
-    MAP_I2C_enableModule(hwAttrs->baseAddr);
     MAP_I2C_enableInterrupt(hwAttrs->baseAddr, ALL_INTERRUPTS);
+    MAP_I2C_enableModule(hwAttrs->baseAddr);
 
     DebugP_log3("I2C:(%p) CPU freq: %d; I2C freq to %d", hwAttrs->baseAddr,
         inputClkFreq, object->bitRate);
@@ -250,6 +253,29 @@ static int perfChangeNotifyFxn(unsigned int eventType, uintptr_t eventArg,
 static void primeTransfer(I2CMSP432_Object *object,
     I2CMSP432_HWAttrsV1 const *hwAttrs, I2C_Transaction *transaction)
 {
+    PowerMSP432_Freqs          powerFreqs;
+    uint32_t                   clockFreq;
+
+    /* If the last transfer timed-out, reset the peripheral */
+    if(object->mode == I2CMSP432_TIMEOUT) {
+        /* disable interrupts, send STOP to try to complete all transfers */
+        MAP_I2C_disableInterrupt(hwAttrs->baseAddr, ALL_INTERRUPTS);
+        MAP_I2C_masterReceiveMultiByteStop(hwAttrs->baseAddr);
+
+        /* remove Power constraints set for I2C_transfer() */
+    #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
+        Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+    #endif
+        Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
+
+        /* re-initialize the I2C peripheral */
+        PowerMSP432_getFreqs(Power_getPerformanceLevel(), &powerFreqs);
+        clockFreq = (hwAttrs->clockSource == EUSCI_B_I2C_CLOCKSOURCE_SMCLK) ?
+            powerFreqs.SMCLK : powerFreqs.ACLK;
+        MAP_I2C_disableModule(hwAttrs->baseAddr);
+        initHw(object, hwAttrs, clockFreq);
+    }
+
     /* Store the new internal counters and pointers */
     object->currentTransaction = transaction;
 
@@ -264,6 +290,11 @@ static void primeTransfer(I2CMSP432_Object *object,
 
     MAP_I2C_setSlaveAddress(hwAttrs->baseAddr,
         object->currentTransaction->slaveAddress);
+
+    /* Clear the STOP condition and enable the STOP interrupt */
+    BITBAND_PERI(EUSCI_B_CMSIS(hwAttrs->baseAddr)->CTLW0, EUSCI_B_CTLW0_TXSTP_OFS) = 0;
+    MAP_I2C_clearInterruptFlag(hwAttrs->baseAddr, EUSCI_B_I2C_STOP_INTERRUPT);
+    MAP_I2C_enableInterrupt(hwAttrs->baseAddr, EUSCI_B_I2C_STOP_INTERRUPT);
 
     /* Start transfer in Transmit mode */
     if (object->writeCountIdx) {
@@ -415,12 +446,11 @@ int_fast16_t I2CMSP432_control(I2C_Handle handle, uint_fast16_t cmd, void *arg)
  */
 void I2CMSP432_hwiIntFxn(uintptr_t arg)
 {
-    uint8_t                    intStatus;
+    uint_fast16_t              intStatus;
     unsigned int               key;
     I2CMSP432_Object          *object = ((I2C_Handle) arg)->object;
     I2CMSP432_HWAttrsV1 const *hwAttrs = ((I2C_Handle) arg)->hwAttrs;
     bool status = true;
-
 
     /* Get the interrupt status of the I2C controller */
     intStatus = MAP_I2C_getEnabledInterruptStatus(hwAttrs->baseAddr);
@@ -431,18 +461,22 @@ void I2CMSP432_hwiIntFxn(uintptr_t arg)
         return;
     }
 
-
-    /* Check for I2C Errors */
-    if ((intStatus & ERROR_INTERRUPTS) || (object->mode == I2CMSP432_ERROR)) {
+    /* Check for I2C Errors or timeout */
+    if ((intStatus & ERROR_INTERRUPTS) || object->mode == I2CMSP432_TIMEOUT) {
 
         /* Some sort of error occurred */
         object->mode = I2CMSP432_ERROR;
 
-        /* Try to send a STOP bit to end all I2C communications immediately. */
-        MAP_I2C_masterReceiveMultiByteStop(hwAttrs->baseAddr);
+        /* If we haven't seen the stop interrupt, send a stop bit */
+        if(!(intStatus & EUSCI_B_I2C_STOP_INTERRUPT)) {
+            /* Try to send a STOP bit to end all I2C communications immediately. */
+            MAP_I2C_masterReceiveMultiByteStop(hwAttrs->baseAddr);
+        }
 
         DebugP_log2("I2C:(%p) ISR I2C Bus fault (Status Reg: 0x%x)",
             hwAttrs->baseAddr, intStatus);
+
+        return;
     }
 
     /* No errors, now check what we need to do next */
@@ -454,6 +488,7 @@ void I2CMSP432_hwiIntFxn(uintptr_t arg)
          * I2C_transfer function
          */
         case I2CMSP432_ERROR:
+        case I2CMSP432_TIMEOUT:
         case I2CMSP432_IDLE_MODE:
             completeTransfer((I2C_Handle) arg);
             break;
@@ -471,20 +506,14 @@ void I2CMSP432_hwiIntFxn(uintptr_t arg)
 
                     if (status == false) {
                         object->mode = I2CMSP432_ERROR;
-                        EUSCI_B_CMSIS(hwAttrs->baseAddr)->IFG &= ~(EUSCI_B_IFG_NACKIFG);
                     }
 
-                    //Clear transmit interrupt flag before enabling interrupt again
-                    EUSCI_B_CMSIS(hwAttrs->baseAddr)->IFG &= ~(EUSCI_B_IFG_TXIFG);
-
                     MAP_I2C_clearInterruptFlag(hwAttrs->baseAddr,
-                        EUSCI_B_I2C_TRANSMIT_INTERRUPT0);
+                                               EUSCI_B_I2C_TRANSMIT_INTERRUPT0);
 
                     DebugP_log2("I2C:(%p) ISR I2CMSP432_WRITE_MODE:"
                         "Data to write: 0x%x; Writing w/ STOP bit",
                         hwAttrs->baseAddr, *(object->writeBufIdx));
-
-                    completeTransfer((I2C_Handle) arg);
                 }
                 else {
                     /* Write data contents into data register */
@@ -567,7 +596,22 @@ void I2CMSP432_hwiIntFxn(uintptr_t arg)
                 else {
                     /* Next state: Idle mode */
                     object->mode = I2CMSP432_IDLE_MODE;
-                    completeTransfer((I2C_Handle) arg);
+
+                    /* If we have sent the stop bit, complete the transfer */
+                    if(MAP_I2C_masterIsStopSent(hwAttrs->baseAddr) == EUSCI_B_I2C_STOP_SEND_COMPLETE) {
+
+                        /*
+                         * At this point, we have sent the STOP condition on the I2C Bus.
+                         * Disable the STOP interrupt from occurring
+                         */
+                        MAP_I2C_disableInterrupt(hwAttrs->baseAddr, EUSCI_B_I2C_STOP_INTERRUPT);
+
+                        /* Complete the transfer */
+                        completeTransfer((I2C_Handle) arg);
+                    }
+                    else {
+                        MAP_I2C_masterReceiveMultiByteStop(hwAttrs->baseAddr);
+                    }
                 }
             }
             break; /* I2CMSP432_READ_MODE */
@@ -735,7 +779,7 @@ I2C_Handle I2CMSP432_open(I2C_Handle handle, I2C_Params *params)
     portsParams.hwiParams.priority = hwAttrs->intPriority;
     object->hwiHandle = HwiP_create(hwAttrs->intNum, I2CMSP432_hwiIntFxn,
         &(portsParams.hwiParams));
-    if (!object->hwiHandle) {
+    if (object->hwiHandle == NULL) {
         DebugP_log1("I2C:(%p) HwiP_create() failed.", hwAttrs->baseAddr);
         Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
         I2CMSP432_close(handle);
@@ -749,7 +793,7 @@ I2C_Handle I2CMSP432_open(I2C_Handle handle, I2C_Params *params)
     SemaphoreP_Params_init(&(portsParams.semParams));
     (portsParams.semParams).mode = SemaphoreP_Mode_BINARY;
     object->mutex = SemaphoreP_create(1, &(portsParams.semParams));
-    if (!object->mutex) {
+    if (object->mutex == NULL) {
         DebugP_log1("I2C:(%p) mutex Semaphore_create() failed: %d.",
             hwAttrs->baseAddr);
         Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
@@ -765,7 +809,7 @@ I2C_Handle I2CMSP432_open(I2C_Handle handle, I2C_Params *params)
     else {
         /* Semaphore to block task for the duration of the I2C transfer */
         object->transferComplete = SemaphoreP_create(0, &(portsParams.semParams));
-        if (!object->transferComplete) {
+        if (object->transferComplete == NULL) {
             DebugP_log1("I2C:(%p) transfer SemaphoreP_create() failed: %d.",
                 hwAttrs->baseAddr);
             Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
@@ -797,10 +841,10 @@ I2C_Handle I2CMSP432_open(I2C_Handle handle, I2C_Params *params)
 /*
  *  ======== I2CMSP432_transfer ========
  */
-bool I2CMSP432_transfer(I2C_Handle handle, I2C_Transaction *transaction)
+int_fast16_t I2CMSP432_transfer(I2C_Handle handle, I2C_Transaction *transaction, uint32_t timeout)
 {
     uintptr_t                  key;
-    bool                       ret = false;
+    int_fast16_t               ret = I2C_STATUS_ERROR;
     I2CMSP432_Object          *object = handle->object;
     I2CMSP432_HWAttrsV1 const *hwAttrs = handle->hwAttrs;
 
@@ -824,7 +868,7 @@ bool I2CMSP432_transfer(I2C_Handle handle, I2C_Transaction *transaction)
             object->tailPtr = transaction;
 
             HwiP_restore(key);
-            return (true);
+            return (I2C_STATUS_SUCCESS);
         }
     }
 
@@ -840,10 +884,22 @@ bool I2CMSP432_transfer(I2C_Handle handle, I2C_Transaction *transaction)
         /* An I2C_transfer() may complete before the calling thread post the
          * mutex due to preemption. We must not block in this case. */
         if (object->transferMode == I2C_MODE_CALLBACK) {
-            return (false);
+            return (I2C_STATUS_ERROR);
         }
 
-        SemaphoreP_pend(object->mutex, SemaphoreP_WAIT_FOREVER);
+        if(SemaphoreP_pend(object->mutex, timeout) == SemaphoreP_TIMEOUT){
+            return (I2C_STATUS_TIMEOUT);
+        }
+    }
+
+    if (object->transferMode == I2C_MODE_BLOCKING) {
+       /*
+        * In the case of a timeout, It is possible for the timed-out transaction
+        * to call the hwi function and post the object->transferComplete Semaphore
+        * To clear this, we simply do a NO_WAIT pend on (binary)
+        * object->transferComplete, so that it resets the Semaphore count.
+        */
+        SemaphoreP_pend(object->transferComplete, SemaphoreP_NO_WAIT);
     }
 
     /*
@@ -859,9 +915,11 @@ bool I2CMSP432_transfer(I2C_Handle handle, I2C_Transaction *transaction)
      * I2CMSP432_primeTransfer is a longer process and
      * protection is needed from the I2C interrupt
      */
+    key = HwiP_disable();
     MAP_I2C_disableInterrupt(hwAttrs->baseAddr, ALL_INTERRUPTS);
     primeTransfer(object, hwAttrs, transaction);
     MAP_I2C_enableInterrupt(hwAttrs->baseAddr, ALL_INTERRUPTS);
+    HwiP_restore(key);
 
     if (object->transferMode == I2C_MODE_BLOCKING) {
         DebugP_log1("I2C:(%p) Pending on transferComplete semaphore",
@@ -871,19 +929,27 @@ bool I2CMSP432_transfer(I2C_Handle handle, I2C_Transaction *transaction)
          * It's OK to block from here because the I2C's Hwi will unblock
          * upon errors
          */
-        SemaphoreP_pend(object->transferComplete, SemaphoreP_WAIT_FOREVER);
+        if(SemaphoreP_pend(object->transferComplete, timeout) == SemaphoreP_TIMEOUT) {
+            /*
+             * Timeout occurred, set current state to TIMEOUT and
+             * return false to indicate failure. When the next transaction occurs,
+             * primeTransfer will re-initialize the peripheral.
+             */
+            object->mode = I2CMSP432_TIMEOUT;
+            ret = I2C_STATUS_TIMEOUT;
+        }
 
         DebugP_log1("I2C:(%p) Transaction completed", hwAttrs->baseAddr);
 
         /* Hwi handle has posted a 'transferComplete' check for Errors */
         if (object->mode == I2CMSP432_IDLE_MODE) {
             DebugP_log1("I2C:(%p) Transfer OK", hwAttrs->baseAddr);
-            ret = true;
+            ret = I2C_STATUS_SUCCESS;
         }
     }
     else {
         /* Always return true if in Asynchronous mode */
-        ret = true;
+        ret = I2C_STATUS_SUCCESS;
     }
 
     /* Release the lock for this particular I2C handle */

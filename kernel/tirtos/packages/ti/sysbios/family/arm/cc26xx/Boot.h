@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_family_arm_cc26xx_Boot__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_family_arm_cc26xx_Boot___VERS 200
@@ -233,12 +235,12 @@ __extern __FAR__ const CT__ti_sysbios_family_arm_cc26xx_Boot_Object__table ti_sy
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_family_arm_cc26xx_Boot_Module__startupDone__S, "ti_sysbios_family_arm_cc26xx_Boot_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_family_arm_cc26xx_Boot_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_family_arm_cc26xx_Boot_Module__startupDone__S( void);
 
 /* getBootReason__E */
 #define ti_sysbios_family_arm_cc26xx_Boot_getBootReason ti_sysbios_family_arm_cc26xx_Boot_getBootReason__E
 xdc__CODESECT(ti_sysbios_family_arm_cc26xx_Boot_getBootReason__E, "ti_sysbios_family_arm_cc26xx_Boot_getBootReason")
-__extern xdc_UInt32 ti_sysbios_family_arm_cc26xx_Boot_getBootReason__E( void );
+__extern xdc_UInt32 ti_sysbios_family_arm_cc26xx_Boot_getBootReason__E( void);
 
 
 /*

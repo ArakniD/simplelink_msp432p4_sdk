@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -85,10 +85,6 @@
 #ifndef ti_drivers_uart_UARTMSP432__include
 #define ti_drivers_uart_UARTMSP432__include
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -102,6 +98,10 @@ extern "C" {
 #include <ti/drivers/utils/RingBuf.h>
 
 #include <ti/devices/msp432p4xx/inc/msp.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define UARTMSP432_P1_2_UCA0RXD  0x00000112  /* Primary, port 1, pin 2 */
 #define UARTMSP432_P1_3_UCA0TXD  0x00000113  /* Primary, port 1, pin 3 */
@@ -367,7 +367,7 @@ typedef void (*UARTMSP432_ErrorCallback) (UART_Handle handle,  uint32_t error);
  *
  *  readIsrFxn:     The required ISR counterpart to readTaskFxn
  */
-typedef struct UARTMSP432_FxnSet {
+typedef struct {
     bool (*readIsrFxn)  (UART_Handle handle);
     int  (*readTaskFxn) (UART_Handle handle);
 } UARTMSP432_FxnSet;
@@ -402,7 +402,7 @@ typedef struct UARTMSP432_FxnSet {
  *  };
  *  @endcode
  */
-typedef struct UARTMSP432_BaudrateConfig {
+typedef struct {
     uint32_t  outputBaudrate; /*!< Search criteria: desired baudrate */
     uint32_t  inputClockFreq; /*!< Search criteria: given this input clock frequency */
 
@@ -464,7 +464,7 @@ typedef struct UARTMSP432_BaudrateConfig {
  *  };
  *  @endcode
  */
-typedef struct UARTMSP432_HWAttrsV1 {
+typedef struct {
     /*! UART Peripheral's base address */
     unsigned int    baseAddr;
     /*! UART Peripheral's interrupt vector */
@@ -495,7 +495,7 @@ typedef struct UARTMSP432_HWAttrsV1 {
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct UARTMSP432_Object {
+typedef struct {
     /* UART state variable */
     struct {
         bool             opened:1;         /* Has the obj been opened */

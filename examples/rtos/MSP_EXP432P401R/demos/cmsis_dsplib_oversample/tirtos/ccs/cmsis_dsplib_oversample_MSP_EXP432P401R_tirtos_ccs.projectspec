@@ -14,6 +14,7 @@
     <project
         title="cmsis_dsplib_overSample"
         name="cmsis_dsplib_oversample_MSP_EXP432P401R_tirtos_ccs"
+        configurations="Debug"
         toolChain="TI"
         connection="TIXDS110_Connection.xml"
         device="MSP432P401R"
@@ -22,6 +23,7 @@
         references="tirtos_builds_MSP_EXP432P401R_release_ccs"
         compilerBuildOptions="
             -I${PROJECT_ROOT}
+            -I${PROJECT_ROOT}/${ConfigName}
             -DARM_MATH_CM4
             -D__FPU_PRESENT=1
             -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include
@@ -60,15 +62,15 @@
             -i${CG_TOOL_ROOT}/lib
             -llibc.a
         "
+        enableSysConfigTool="true"
+        sysConfigBuildOptions="
+            --product ${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/.metadata/product.json
+        "
         description="TODO: Write description">
 
         <property name="buildProfile" value="release"/>
         <property name="isHybrid" value="true"/>
         <group id="cmsis_dsplib_oversample.SIMPLELINK_MSP432_SDK.MSP_EXP432P401R.demos.TI"/>
-        <file path="../../tirtos/main_tirtos.c" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../../tirtos/ccs/MSP_EXP432P401R_TIRTOS.cmd" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
         <file path="../../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
@@ -83,11 +85,11 @@
         </file>
         <file path="../../overSampleADC.h" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
-        <file path="../../Board.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        <file path="../../cmsis_dsplib_oversample.syscfg" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
-        <file path="../../MSP_EXP432P401R.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        <file path="../../tirtos/main_tirtos.c" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
-        <file path="../../MSP_EXP432P401R.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        <file path="../../tirtos/ccs/MSP_EXP432P401R_TIRTOS.cmd" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
     </project>
 </projectSpec>

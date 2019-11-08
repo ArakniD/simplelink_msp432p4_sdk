@@ -17,7 +17,7 @@ package/ti.sysbios.family.arm.cc26xx.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_sysbios_family_arm_cc26xx.java
 package/ti_sysbios_family_arm_cc26xx.class
 package/package_ti.sysbios.family.arm.cc26xx.c

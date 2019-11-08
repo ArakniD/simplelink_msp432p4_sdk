@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2018-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,8 +64,32 @@ let devSpecific = {
     templates: {
         boardc : "/ti/drivers/i2cslave/I2CSlaveMSP432.Board.c.xdt",
         boardh : "/ti/drivers/i2cslave/I2CSlaveMSP432.Board.h.xdt"
-    }
+    },
+
+    _getPinResources: _getPinResources
 };
+
+/*
+ *  ======== _getPinResources ========
+ */
+function _getPinResources(inst)
+{
+    let pin;
+
+    if (inst.i2c) {
+        let sclPin = "DIO" + inst.i2c.sclPin.$solution.devicePinName;
+        sclPin = sclPin.match(/P\d+\.\d+/)[0];
+        let sdaPin = "\nDIO" + inst.i2c.sdaPin.$solution.devicePinName;
+        sdaPin = sdaPin.match(/P\d+\.\d+/)[0];
+        pin = "\nSCL: " + sclPin + "\nSDA: " + sdaPin;
+
+        if (inst.$hardware && inst.$hardware.displayName) {
+            pin += "\n" + inst.$hardware.displayName;
+        }
+    }
+
+    return (pin);
+}
 
 /*
  *  ======== extend ========

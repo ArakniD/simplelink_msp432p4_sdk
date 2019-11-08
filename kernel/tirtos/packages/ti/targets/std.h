@@ -220,7 +220,7 @@ static inline xdc_Fxn xdc_uargToFxn(xdc_UArg a) { return ((xdc_Fxn)(int)a); }
 
 #endif /* ti_targets_STD_ */
 /*
- *  @(#) ti.targets; 1, 0, 3,1; 2-9-2019 16:22:43; /db/ztree/library/trees/xdctargets/xdctargets-t01/src/ xlibrary
+ *  @(#) ti.targets; 1, 0, 3,0; 8-9-2019 17:15:03; /db/ztree/library/trees/xdctargets/xdctargets-v00/src/ xlibrary
 
  */
 

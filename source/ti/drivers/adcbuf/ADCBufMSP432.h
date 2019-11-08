@@ -64,11 +64,13 @@ extern "C" {
 /*!
  *  @brief  This control function enters ADC in low power mode
  *
- *  This function changes the ADC clock source to ADC Clock, enables the reference to burst mode,
- *  sets the ADC resolution to 8 bits and enables Ultra Low Power Mode of ADC.
+ *  This function changes the ADC clock source to ADC Clock, enables the
+ *  reference to burst mode, sets the ADC resolution to 8 bits and enables
+ *  Ultra Low Power Mode of ADC.
  *
- *  @note ADCBuf_convertToMicrovolts should not be used with Ultra Low Power Mode because the
- *        voltage calculations are based off of a 14 bit resolution and will return incorrect values.
+ *  @note ADCBuf_convertToMicrovolts should not be used with Ultra Low Power
+ *        Mode because the voltage calculations are based off of a 14 bit
+ *        resolution and will return incorrect values.
  *
  *  @note This function returns an error if a conversion is in progress
  */
@@ -77,8 +79,9 @@ extern "C" {
 /*!
  *  @brief  This control function exits ADC from low power mode
  *
- *  This function changes the ADC clock source to default set by hwAttrib, disables the reference burst mode,
- *  sets the ADC resolution to 14 bits and enables Unrestricted Power Mode of ADC.
+ *  This function changes the ADC clock source to default set by hwAttrib,
+ *  disables the reference burst mode, sets the ADC resolution to 14 bits and
+ *  enables Unrestricted Power Mode of ADC.
  *
  *  @note This function returns an error if a conversion is in progress
  */
@@ -168,7 +171,7 @@ extern const ADCBuf_FxnTable ADCBufMSP432_fxnTable;
  *  for each channel.
  *
  */
-typedef enum ADCBufMSP432_ReferenceSource {
+typedef enum {
     ADCBufMSP432_VREFPOS_AVCC_VREFNEG_VSS = ADC_VREFPOS_AVCC_VREFNEG_VSS,
     ADCBufMSP432_VREFPOS_INTBUF_VREFNEG_VSS = ADC_VREFPOS_INTBUF_VREFNEG_VSS,
     ADCBufMSP432_VREFPOS_EXTPOS_VREFNEG_EXTNEG = ADC_VREFPOS_EXTPOS_VREFNEG_EXTNEG,
@@ -178,11 +181,11 @@ typedef enum ADCBufMSP432_ReferenceSource {
 /*!
  *  @brief  ADCMSP432 sampling duration
  *  These fields define the MSP432 ADC sampling duration (sample and hold time)
- *  in the pulse width unit. User can specify the differnt sampling duration
+ *  in the pulse width unit. User can specify the different sampling duration
  *  in the ADCBufMSP432_ParamsExtension when opening the ADC.
  *
  */
-typedef enum ADCBufMSP432_SamplingDuration {
+typedef enum {
     ADCBufMSP432_SamplingDuration_PULSE_WIDTH_4 = ADC_PULSE_WIDTH_4,
     ADCBufMSP432_SamplingDuration_PULSE_WIDTH_8 = ADC_PULSE_WIDTH_8,
     ADCBufMSP432_SamplingDuration_PULSE_WIDTH_16 = ADC_PULSE_WIDTH_16,
@@ -199,7 +202,7 @@ typedef enum ADCBufMSP432_SamplingDuration {
  *  for each channel.
  *
  */
-typedef enum ADCBufMSP432_TimerReferenceSource {
+typedef enum {
     ADCBufMSP432_TIMERA0_CAPTURECOMPARE1 = 0,
     ADCBufMSP432_TIMERA0_CAPTURECOMPARE2 = 1,
     ADCBufMSP432_TIMERA1_CAPTURECOMPARE1 = 2,
@@ -214,7 +217,7 @@ typedef enum ADCBufMSP432_TimerReferenceSource {
  *  These fields are used by ADCBufMSP432_HWAttrs to specify the clock source
  *  for the ADC module.
  */
-typedef enum ADCBufMSP432_ClockSource {
+typedef enum {
    ADCBufMSP432_ADC_CLOCK = ADC_CLOCKSOURCE_ADCOSC,
    ADCBufMSP432_SYSOSC_CLOCK = ADC_CLOCKSOURCE_SYSOSC,
    ADCBufMSP432_ACLK_CLOCK = ADC_CLOCKSOURCE_ACLK,
@@ -225,10 +228,11 @@ typedef enum ADCBufMSP432_ClockSource {
 
 /*!
  *  @brief  ADCMSP432 trigger source
- *  These fields are used by ADCBufMSP432_HWAttrs to specify the trigger source for the ADC
+ *  These fields are used by ADCBufMSP432_HWAttrs to specify the trigger source
+ *  for the ADC
  *
  */
-typedef enum ADCBufMSP432_TriggerSource {
+typedef enum {
     ADCBufMSP432_TIMER_TRIGGER = ADC_MANUAL_ITERATION,
     ADCBufMSP432_SOFTWARE_AUTOMATIC_TRIGGER = ADC_AUTOMATIC_ITERATION,
 }ADCBufMSP432_TriggerSource;
@@ -238,7 +242,7 @@ typedef enum ADCBufMSP432_TriggerSource {
  *  These fields are used by ADCBufMSP432_HWAttrs to specify if ADC
  *  differential sampling mode is selected
  */
-typedef enum ADCBufMSP432_DifferentialMode {
+typedef enum {
     ADCBufMSP432_SINGLE_ENDED = ADC_NONDIFFERENTIAL_INPUTS,
     ADCBufMSP432_DIFFERENTIAL = ADC_DIFFERENTIAL_INPUTS
 }ADCBufMSP432_DifferentialMode;
@@ -246,46 +250,47 @@ typedef enum ADCBufMSP432_DifferentialMode {
 /*!
  *  @brief  ADCMSP432 Internal Source Mode
  *  These fields are used by ADCBufMSP432_HWAttrs to specify if a internal
- *  source mode is selected, i.e. temperature sensore or battery monitor modes
+ *  source mode is selected, i.e. temperature sensor or battery monitor modes
  */
-typedef enum ADCBufMSP432_InternalSourceMode {
+typedef enum {
     ADCBufMSP432_INTERNAL_SOURCE_MODE_OFF = 0,
     ADCBufMSP432_TEMPERATURE_MODE = ADC_TEMPSENSEMAP,
     ADCBufMSP432_BATTERY_MONITOR_MODE = ADC_BATTMAP
 } ADCBufMSP432_InternalSourceMode;
 
 /*!
- *  @brief      MSP432 specfic extension to ADCBuf_Params
+ *  @brief      MSP432 specific extension to ADCBuf_Params
  *
- *  To use non-default MSP432 specific parameters when calling ADCBuf_open(), a pointer
- *  to an instance of this struct must be specified in ADCBuf_Params::custom. Alternatively,
- *  these values can be set using the control function after calling ADCBuf_open().
+ *  To use non-default MSP432 specific parameters when calling ADCBuf_open(), a
+ *  pointer to an instance of this struct must be specified in ADCBuf_Params::custom.
+ *  Alternatively, these values can be set using the control function after
+ *  calling ADCBuf_open().
  */
-typedef struct ADCBufMSP432_ParamsExtension{
-    ADCBufMSP432_SamplingDuration samplingDuration;   /*!< ADC sampling duration (sample&hold time), unit is pulse width */
+typedef struct{
+    /*!< ADC sampling duration (sample&hold time), unit is pulse width */
+    ADCBufMSP432_SamplingDuration samplingDuration;
 } ADCBufMSP432_ParamsExtension;
 
 /*!
  *  @brief  ADCMSP432 Channel setting
- *  These fields define channel-specific settings: GPIO and reference voltage. These settings
- *  happen when ADCBuf_convert() is called.
+ *  These fields define channel-specific settings: GPIO and reference voltage.
+ *  These settings happen when ADCBuf_convert() is called.
  *
  */
-typedef struct ADCBufMSP432_Channels {
-    uint_fast16_t  adcPin;                             /*!< ADC pin, port channel */
-    ADCBufMSP432_ReferenceSource refSource;            /*!< ADC reference source */
-    uint32_t refVoltage;                               /*!< ADC reference voltage
-                                                            in microVolts (if
-                                                            it is internal, the
-                                                            value should be 1.5
-                                                            or 2.5) */
-    ADCBufMSP432_DifferentialMode adcInputMode;        /*!< ADC differential
-                                                            mode option */
-    uint_fast16_t adcDifferentialPin;                  /*!< ADC differential pin,
-                                                            if adcInputMode = 1,
-                                                            specify pin */
-    ADCBufMSP432_InternalSourceMode adcInternalSource; /*!< ADC internal source
-                                                            mode select */
+typedef struct {
+    /*!< ADC pin, port channel */
+    uint_fast16_t                   adcPin;
+    /*!< ADC reference source */
+    ADCBufMSP432_ReferenceSource    refSource;
+    /*!< ADC reference voltage in microVolts (if it is internal, the value
+     * should be 1.5 or 2.5) */
+    uint32_t                        refVoltage;
+    /*!< ADC differential mode option */
+    ADCBufMSP432_DifferentialMode   adcInputMode;
+    /*!< ADC differential pin, if adcInputMode = 1, specify pin */
+    uint_fast16_t                   adcDifferentialPin;
+    /*!< ADC internal source mode select */
+    ADCBufMSP432_InternalSourceMode adcInternalSource;
 } ADCBufMSP432_Channels;
 
 /*!
@@ -320,15 +325,23 @@ typedef struct ADCBufMSP432_Channels {
 };
  *  @endcode
  */
-typedef struct ADCBufMSP432_HWAttrs {
-    uint32_t intPriority;                 /*!< ADC interrupt priority */
-    ADCBufMSP432_Channels *channelSetting; /*!< ADC channel specific setting */
-    ADCBufMSP432_TimerReferenceSource adcTimerTriggerSource;    /*!< ADC Timer Trigger Source */
-    uint8_t useDMA; /*!< Select if ADC uses DMA */
-    uint8_t dmaIntNum;          /*!< DMA interrupt number */
-    ADCBufMSP432_TriggerSource adcTriggerSource; /*!< ADC Trigger Source */
-    uint32_t timerDutyCycle; /*!< ADC Timer Duty Cycle */
-    ADCBufMSP432_ClockSource clockSource;    /*!< ADC Clock Source */
+typedef struct {
+    /*!< ADC interrupt priority */
+    uint32_t                    intPriority;
+    /*!< ADC channel specific setting */
+    ADCBufMSP432_Channels       *channelSetting;
+    /*!< ADC Timer Trigger Source */
+    ADCBufMSP432_TimerReferenceSource   adcTimerTriggerSource;
+    /*!< Select if ADC uses DMA */
+    uint8_t                     useDMA;
+    /*!< DMA interrupt number */
+    uint8_t                     dmaIntNum;
+    /*!< ADC Trigger Source */
+    ADCBufMSP432_TriggerSource  adcTriggerSource;
+    /*!< ADC Timer Duty Cycle */
+    uint32_t                    timerDutyCycle;
+    /*!< ADC Clock Source */
+    ADCBufMSP432_ClockSource    clockSource;
 } ADCBufMSP432_HWAttrs;
 
 /*!
@@ -336,36 +349,60 @@ typedef struct ADCBufMSP432_HWAttrs {
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct ADCBufMSP432_Object {
-    SemaphoreP_Handle convertComplete;      /* Notify finished ADC convert */
-    HwiP_Handle       hwiHandle;            /* Hardware interrupt handle */
+typedef struct {
+    /* Notify finished ADC convert */
+    SemaphoreP_Handle       convertComplete;
+    /* Hardware interrupt handle */
+    HwiP_Handle             hwiHandle;
 
-    uint_fast8_t        pingpongFlag;          /* PingPong flag indicates which sample buffer is active in the conversion */
-    uint_fast8_t        channelCount;          /* Count of sampling channels */
-    ADCBuf_Conversion   *conversions;          /* Ptr to ADC conversion struct array passed by user */
-    ADCBuf_Callback     callBackFxn;           /* Callback function pointer */
-    uint_fast16_t       *intlResultBuf;        /* Internal result buffer */
+    /* PingPong flag indicates which sample buffer is active in the conversion */
+    uint_fast8_t            pingpongFlag;
+    /* Count of sampling channels */
+    uint_fast8_t            channelCount;
+    /* Ptr to ADC conversion struct array passed by user */
+    ADCBuf_Conversion       *conversions;
+    /* Callback function pointer */
+    ADCBuf_Callback         callBackFxn;
+    /* Internal result buffer */
+    uint_fast16_t           *intlResultBuf;
 
-    uint16_t            *conversionSampleBuf;       /* Ptr to current active sampling buffer */
-    uint_fast16_t        conversionSampleIdx;        /* Internal dec. conversion buffer counter */
-    uint_fast16_t        conversionSampleCount;      /* Total sampling count per channel */
+    /* Ptr to current active sampling buffer */
+    uint16_t                *conversionSampleBuf;
+    /* Internal dec. conversion buffer counter */
+    uint_fast16_t           conversionSampleIdx;
+    /* Total sampling count per channel */
+    uint_fast16_t           conversionSampleCount;
 
-    uint32_t                        semaphoreTimeout;           /*!< Timeout for read semaphore in ::ADCBuf_RETURN_MODE_BLOCKING */
-    uint32_t                        samplingFrequency;          /*!< Frequency in Hz at which the ADC is triggered */
-    ADCBuf_Recurrence_Mode          recurrenceMode;             /*!< Should we convert continuously or one-shot */
-    ADCBuf_Return_Mode              returnMode;                 /*!< Mode for all conversions */
-    ADCBufMSP432_SamplingDuration  samplingDuration;           /*!< ADC sampling duration */
+    /*!< Timeout for read semaphore in ::ADCBuf_RETURN_MODE_BLOCKING */
+    uint32_t                        semaphoreTimeout;
+    /*!< Frequency in Hz at which the ADC is triggered */
+    uint32_t                        samplingFrequency;
+    /*!< Should we convert continuously or one-shot */
+    ADCBuf_Recurrence_Mode          recurrenceMode;
+    /*!< Mode for all conversions */
+    ADCBuf_Return_Mode              returnMode;
+    /*!< ADC sampling duration */
+    ADCBufMSP432_SamplingDuration   samplingDuration;
 
-    uint32_t             timerAddr;            /* Timer base address for trigger source */
+    /* Timer base address for trigger source */
+    uint32_t                        timerAddr;
 
-    bool                 isOpen;               /* To determine if the ADC is open */
-    uint32_t             internalSourceMask;        /* Channel mask used to initialize and track which internal sources are being used */
-    uint32_t             tempCal30;                 /*Temperature calibration for 30C*/
-    uint32_t             tempCal85;                 /*Temperature calibration for 80C*/
-    float                tempCalDifference;         /*Temperature calibration conversion constant*/
-    UDMAMSP432_Handle    dmaHandle;                 /* DMA interrupt handle */
-    UDMAMSP432_PingPongTransfer    pingpongDMATransfer;           /* Struct holding params for DMA ping pong transfers */
-    UDMAMSP432_Transfer    dmaTransfer;           /* Struct holding params for DMA transfers */
+    /* To determine if the ADC is open */
+    bool                            isOpen;
+    /* Channel mask used to initialize and track which internal sources are being used */
+    uint32_t                        internalSourceMask;
+    /*Temperature calibration for 30C*/
+    uint32_t                        tempCal30;
+    /*Temperature calibration for 80C*/
+    uint32_t                        tempCal85;
+    /*Temperature calibration conversion constant*/
+    float                           tempCalDifference;
+    /* DMA interrupt handle */
+    UDMAMSP432_Handle               dmaHandle;
+    /* Struct holding params for DMA ping pong transfers */
+    UDMAMSP432_PingPongTransfer     pingpongDMATransfer;
+    /* Struct holding params for DMA transfers */
+    UDMAMSP432_Transfer             dmaTransfer;
 } ADCBufMSP432_Object;
 
 #ifdef __cplusplus

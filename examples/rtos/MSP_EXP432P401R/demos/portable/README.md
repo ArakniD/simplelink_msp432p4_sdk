@@ -1,12 +1,3 @@
-### SysConfig Notice
-
-All examples will soon be supported by SysConfig, a tool that will help you graphically configure your software components. A preview is available today in the examples/syscfg_preview directory. Starting in 3Q 2019, with SDK version 3.30, only SysConfig-enabled versions of examples will be provided. For more information, click [here](http://www.ti.com/sysconfignotice).
-
----
-# portable
-
----
-
 ## Example Summary
 
 This example is a multi-threaded application that uses multiple drivers.
@@ -15,31 +6,42 @@ kernels, and compilers. This is accomplished by using TI Drivers and
 POSIX APIs. This example is described in more detail in the _SDK User's Guide_
 at &lt;SDK_INSTALL_DIR&gt;/docs/simplelink_mcu_sdk/Users_Guide.html.
 
-## Peripherals Exercised
+## Peripherals & Pin Assignments
 
-* `Board_GPIO_LED0` - Indicates that temperature has exceeded the alert
+SysConfig generates the driver configurations into the __ti_drivers_config.c__
+and __ti_drivers_config.h__ files. Information on pins and resources used
+is present in both generated files. The SysConfig user interface can also be
+utilized to determine pins and resources used.
+
+* `CONFIG_GPIO_LED_0` - Indicates that temperature has exceeded the alert
 threshold
-* `Board_GPIO_BUTTON1` - Used to restart the UART console
-* `Board_UART0` - Used for a simple console
-* `Board_I2C_TMP` - Used to read temperature
+* `CONFIG_GPIO_BUTTON_1` - Used to restart the UART console
+* `CONFIG_UART_0` - Used for a simple console
+* `CONFIG_I2C_TMP` - Used to read temperature
 
-If using the Building Automation Sensors BoosterPack, `Board_GPIO_TMP116_EN` is
-used to power on the TMP116 temperature sensor.
+If using the Building Automation Sensors BoosterPack, `CONFIG_GPIO_TMP116_EN`
+is used to power on the TMP116 temperature sensor.
 
-## Resources & Jumper Settings
+## BoosterPacks, Board Resources & Jumper Settings
 
-* For boards with an on-board TMP sensor (e.g. CC32XX LaunchPads), that
-sensor is used.
-* For boards without an on-board TMP sensor, the [Building Automation Sensors
-BoosterPack](http://www.ti.com/tool/BOOSTXL-BASSENSORS "BOOSTXL-BASSENSORS")
-is needed. It has the TMP116 sensor along with several other nifty sensors.
-Note that CC32XX LaunchPads will default to the BoosterPack TMP sensor if
-present.
+* For boards with an on-board TMP sensor (e.g. CC32XX LaunchPads), the on-board
+TMP sensor is used.
 
-> If you're using an IDE (such as CCS or IAR), please refer to Board.html in
-your project directory for resources used and board-specific jumper settings.
-Otherwise, you can find Board.html in the directory
-&lt;SDK_INSTALL_DIR&gt;/source/ti/boards/&lt;BOARD&gt;.
+* For boards without an on-board TMP sensor, This example requires a
+[__BOOSTXL-BASSENSORS BoosterPack__][boostxl-bassensors]. It has the TMP116
+sensor along with several I2C sensors. CC32XX LaunchPads will default to the
+BoosterPack's TMP116 sensor if present.
+
+For board specific jumper settings, resources and BoosterPack modifications,
+refer to the __Board.html__ file.
+
+> If you're using an IDE such as Code Composer Studio (CCS) or IAR, please
+refer to Board.html in your project directory for resources used and
+board-specific jumper settings.
+
+The Board.html can also be found in your SDK installation:
+
+        <SDK_INSTALL_DIR>/source/ti/boards/<BOARD>
 
 ## Example Usage
 
@@ -74,7 +76,7 @@ the actual TMP sensor to see a change. Please note to keep the example short
 and sweet, the TMP sensor was not calibrated.
 
 * If you quit the console, the device will go into a lower power mode.
-To start the console back up, hit `Board_GPIO_BUTTON1`.
+To start the console back up, hit `CONFIG_GPIO_BUTTON_1`.
 
 ## Application Design Details
 
@@ -113,15 +115,10 @@ FreeRTOS:
 * Please view the `FreeRTOSConfig.h` header file for example configuration
 information.
 
-Code Composer Studio:
-
-* When using in CCS for the CC32XX devices, it's recommended you do
-a  "Free Run" instead of "Run". This is because when the CC32XX device goes
-into low power mode, emulation is lost.
-
 SimpleLink Sensor and Actuator Plugin:
 
 * This example uses a TMP006 or TMP116 sensor. It interfaces via the
 I2C Driver. For a richer API set for the TMP sensors, please refer the SimpleLink
-Sensor and Actuator Plugin. This plugin also offers a Button module to handle
-debounce also.
+Sensor and Actuator Plugin.
+
+[boostxl-bassensors]: http://www.ti.com/tool/BOOSTXL-BASSENSORS

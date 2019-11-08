@@ -44,7 +44,7 @@
 /* Driver header files */
 #include <ti/drivers/GPIO.h>
 
-/* Example/Board Header files */
+/* Driver configuration */
 #include <ti/drivers/Board.h>
 
 /* Stack size in bytes. Large enough in case debug kernel is used. */

@@ -38,10 +38,14 @@
 {
     "name"        : "CC3200AUDBOOST",
     "displayName" : "CC3200 Audio BoosterPack",
+    "description" : "SimpleLink Wi-Fi CC3200 Audio BoosterPack",
+    "longDescription": "The [__CC3200AUDBOOST__](http://www.ti.com/tool/CC3200AUDBOOST) contains a Class-D power amplifier to drive the speakers and an ultra-low power audio codec, [__TLV320AIC3254__](http://www.ti.com/product/TLV320AIC3254), which supports programmable audio processing. Speakers, headsets, and microphones are sold separately.",
     "headerType"  : "BoosterPack 40 pin",
     "components"  : {
-        "AUDIO_I2S" : {
-            "displayName" : "Audio I2S",
+        "CC3200AUDBOOST_I2S" : {
+            "displayName" : "CC3200 Audio BoosterPack I2S",
+            "description": "CC3200 Audio BoosterPack I2S bus",
+            "longDescription": "CC3200 Audio BoosterPack I2S bus",
             "type": "I2S",
             "signals" : {
                 "SD0"  : {"type": "I2S_SD0",  "connection" : 29},
@@ -50,13 +54,32 @@
                 "WS"   : {"type": "I2S_WS",   "connection" : 27}
             }
         },
-        "AUDIO_I2C": {
-            "displayName": "Audio BoosterPack I2C",
-            "isBus": true,
-            "type": "I2C",
-            "signals": {
-                "SDA": {"type": "I2C_SDA", "connection": 10},
-                "SCL": {"type": "I2C_SCL", "connection":  9}
+        "CC3200AUDBOOST_I2C": {
+            "displayName": "CC3200 Audio BoosterPack I2C",
+            "description": "CC3200 Audio BoosterPack I2C bus",
+            "longDescription": "CC3200 Audio BoosterPack I2C bus",
+            "definition"  : "/ti/boards/components/i2c.json",
+            "connections": {
+                "SDA": 10,
+                "SCL":  9
+            }
+        },
+        "TLV320AIC3254" : {
+            "type": "I2C_SENSOR",
+            "displayName": "TLV320AIC3254 Audio Codec",
+            "description": "TLV320AIC3254 very low-power stereo audio Codec with programmable miniDSP",
+            "longDescription": "The [__TLV320AIC3254__](http://www.ti.com/product/TLV320AIC3254) (sometimes referred to as the AIC3254) is a flexible, low-power, low-voltage stereo audio codec with programmable inputs and outputs, PowerTune capabilities, fully-programmable miniDSP, fixed predefined and parameterizable signal processing blocks, integrated PLL, integrated LDOs and flexible digital interfaces.",
+            "settings": {
+                "address":  48,   /* 0x30 = 48 */
+                "maxSpeed": "400" /* 400 Kbps (fast-mode) */
+            },
+            "subComponents": {
+                "I2C": {
+                    "link": "CC3200AUDBOOST_I2C"
+                },
+                "I2S" : {
+                    "link": "CC3200AUDBOOST_I2S"
+                }
             }
         }
     }

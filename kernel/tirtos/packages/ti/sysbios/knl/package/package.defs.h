@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_knl__
@@ -18,7 +18,6 @@ typedef struct ti_sysbios_knl_Clock_Params ti_sysbios_knl_Clock_Params;
 typedef struct ti_sysbios_knl_Clock_Object ti_sysbios_knl_Clock_Object;
 typedef struct ti_sysbios_knl_Clock_Struct ti_sysbios_knl_Clock_Struct;
 typedef ti_sysbios_knl_Clock_Object* ti_sysbios_knl_Clock_Handle;
-typedef struct ti_sysbios_knl_Clock_Object__ ti_sysbios_knl_Clock_Instance_State;
 typedef ti_sysbios_knl_Clock_Object* ti_sysbios_knl_Clock_Instance;
 
 /*
@@ -42,7 +41,6 @@ typedef struct ti_sysbios_knl_Event_Params ti_sysbios_knl_Event_Params;
 typedef struct ti_sysbios_knl_Event_Object ti_sysbios_knl_Event_Object;
 typedef struct ti_sysbios_knl_Event_Struct ti_sysbios_knl_Event_Struct;
 typedef ti_sysbios_knl_Event_Object* ti_sysbios_knl_Event_Handle;
-typedef struct ti_sysbios_knl_Event_Object__ ti_sysbios_knl_Event_Instance_State;
 typedef ti_sysbios_knl_Event_Object* ti_sysbios_knl_Event_Instance;
 
 /*
@@ -54,7 +52,6 @@ typedef struct ti_sysbios_knl_Mailbox_Params ti_sysbios_knl_Mailbox_Params;
 typedef struct ti_sysbios_knl_Mailbox_Object ti_sysbios_knl_Mailbox_Object;
 typedef struct ti_sysbios_knl_Mailbox_Struct ti_sysbios_knl_Mailbox_Struct;
 typedef ti_sysbios_knl_Mailbox_Object* ti_sysbios_knl_Mailbox_Handle;
-typedef struct ti_sysbios_knl_Mailbox_Object__ ti_sysbios_knl_Mailbox_Instance_State;
 typedef ti_sysbios_knl_Mailbox_Object* ti_sysbios_knl_Mailbox_Instance;
 
 /*
@@ -66,7 +63,6 @@ typedef struct ti_sysbios_knl_Queue_Params ti_sysbios_knl_Queue_Params;
 typedef struct ti_sysbios_knl_Queue_Object ti_sysbios_knl_Queue_Object;
 typedef struct ti_sysbios_knl_Queue_Struct ti_sysbios_knl_Queue_Struct;
 typedef ti_sysbios_knl_Queue_Object* ti_sysbios_knl_Queue_Handle;
-typedef struct ti_sysbios_knl_Queue_Object__ ti_sysbios_knl_Queue_Instance_State;
 typedef ti_sysbios_knl_Queue_Object* ti_sysbios_knl_Queue_Instance;
 
 /*
@@ -78,7 +74,6 @@ typedef struct ti_sysbios_knl_Semaphore_Params ti_sysbios_knl_Semaphore_Params;
 typedef struct ti_sysbios_knl_Semaphore_Object ti_sysbios_knl_Semaphore_Object;
 typedef struct ti_sysbios_knl_Semaphore_Struct ti_sysbios_knl_Semaphore_Struct;
 typedef ti_sysbios_knl_Semaphore_Object* ti_sysbios_knl_Semaphore_Handle;
-typedef struct ti_sysbios_knl_Semaphore_Object__ ti_sysbios_knl_Semaphore_Instance_State;
 typedef ti_sysbios_knl_Semaphore_Object* ti_sysbios_knl_Semaphore_Instance;
 
 /*
@@ -92,7 +87,6 @@ typedef struct ti_sysbios_knl_Swi_Params ti_sysbios_knl_Swi_Params;
 typedef struct ti_sysbios_knl_Swi_Object ti_sysbios_knl_Swi_Object;
 typedef struct ti_sysbios_knl_Swi_Struct ti_sysbios_knl_Swi_Struct;
 typedef ti_sysbios_knl_Swi_Object* ti_sysbios_knl_Swi_Handle;
-typedef struct ti_sysbios_knl_Swi_Object__ ti_sysbios_knl_Swi_Instance_State;
 typedef ti_sysbios_knl_Swi_Object* ti_sysbios_knl_Swi_Instance;
 
 /*
@@ -109,7 +103,6 @@ typedef struct ti_sysbios_knl_Task_Params ti_sysbios_knl_Task_Params;
 typedef struct ti_sysbios_knl_Task_Object ti_sysbios_knl_Task_Object;
 typedef struct ti_sysbios_knl_Task_Struct ti_sysbios_knl_Task_Struct;
 typedef ti_sysbios_knl_Task_Object* ti_sysbios_knl_Task_Handle;
-typedef struct ti_sysbios_knl_Task_Object__ ti_sysbios_knl_Task_Instance_State;
 typedef ti_sysbios_knl_Task_Object* ti_sysbios_knl_Task_Instance;
 
 /*

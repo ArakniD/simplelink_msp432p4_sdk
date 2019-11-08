@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -115,12 +115,12 @@
 #ifndef ti_display_DisplayExt__include
 #define ti_display_DisplayExt__include
 
+#include <ti/display/Display.h>
+#include <ti/grlib/grlib.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <ti/display/Display.h>
-#include <ti/grlib/grlib.h>
 
 /* -----------------------------------------------------------------------------
  *                                          Constants

@@ -371,7 +371,7 @@ uint_fast8_t SPI_isBusy(uint32_t moduleInstance)
 
 }
 
-void SPI_enableInterrupt(uint32_t moduleInstance, uint_fast8_t mask)
+void SPI_enableInterrupt(uint32_t moduleInstance, uint_fast16_t mask)
 {
     if (is_A_Module(moduleInstance))
     {
@@ -383,7 +383,7 @@ void SPI_enableInterrupt(uint32_t moduleInstance, uint_fast8_t mask)
 
 }
 
-void SPI_disableInterrupt(uint32_t moduleInstance, uint_fast8_t mask)
+void SPI_disableInterrupt(uint32_t moduleInstance, uint_fast16_t mask)
 {
     if (is_A_Module(moduleInstance))
     {
@@ -412,19 +412,19 @@ uint_fast8_t SPI_getEnabledInterruptStatus(uint32_t moduleInstance)
     if (is_A_Module(moduleInstance))
     {
         return SPI_getInterruptStatus(moduleInstance,
-                EUSCI_SPI_TRANSMIT_INTERRUPT | EUSCI_SPI_RECEIVE_INTERRUPT)
+                EUSCI_A_SPI_TRANSMIT_INTERRUPT | EUSCI_A_SPI_RECEIVE_INTERRUPT)
                 & EUSCI_A_CMSIS(moduleInstance)->IE;
 
     } else
     {
         return SPI_getInterruptStatus(moduleInstance,
-                EUSCI_SPI_TRANSMIT_INTERRUPT | EUSCI_SPI_RECEIVE_INTERRUPT)
+                EUSCI_B_SPI_TRANSMIT_INTERRUPT | EUSCI_B_SPI_RECEIVE_INTERRUPT)
                 & EUSCI_B_CMSIS(moduleInstance)->IE;
 
     }
 }
 
-void SPI_clearInterruptFlag(uint32_t moduleInstance, uint_fast8_t mask)
+void SPI_clearInterruptFlag(uint32_t moduleInstance, uint_fast16_t mask)
 {
     if (is_A_Module(moduleInstance))
     {
@@ -765,7 +765,7 @@ uint8_t EUSCI_B_SPI_receiveData(uint32_t baseAddress)
 //! \return None
 //
 //*****************************************************************************
-void EUSCI_B_SPI_enableInterrupt(uint32_t baseAddress, uint8_t mask)
+void EUSCI_B_SPI_enableInterrupt(uint32_t baseAddress, uint16_t mask)
 {
     ASSERT(
             !(mask
@@ -794,7 +794,7 @@ void EUSCI_B_SPI_enableInterrupt(uint32_t baseAddress, uint8_t mask)
 //! \return None
 //
 //*****************************************************************************
-void EUSCI_B_SPI_disableInterrupt(uint32_t baseAddress, uint8_t mask)
+void EUSCI_B_SPI_disableInterrupt(uint32_t baseAddress, uint16_t mask)
 {
     ASSERT(
             !(mask
@@ -848,7 +848,7 @@ uint8_t EUSCI_B_SPI_getInterruptStatus(uint32_t baseAddress, uint8_t mask)
 //! \return None
 //
 //*****************************************************************************
-void EUSCI_B_SPI_clearInterruptFlag(uint32_t baseAddress, uint8_t mask)
+void EUSCI_B_SPI_clearInterruptFlag(uint32_t baseAddress, uint16_t mask)
 {
     ASSERT(
             !(mask
@@ -935,7 +935,7 @@ uint32_t EUSCI_B_SPI_getTransmitBufferAddressForDMA(uint32_t baseAddress)
 //! \brief Indicates whether or not the SPI bus is busy.
 //!
 //! This function returns an indication of whether or not the SPI bus is
-//! busy.This function checks the status of the bus via UCBBUSY bit
+//! busy.This function checks the status of the bus via UCBUSY bit
 //!
 //! \param baseAddress is the base address of the EUSCI_B_SPI module.
 //!
@@ -945,7 +945,7 @@ uint32_t EUSCI_B_SPI_getTransmitBufferAddressForDMA(uint32_t baseAddress)
 bool EUSCI_B_SPI_isBusy(uint32_t baseAddress)
 {
     //Return the bus busy status.
-    return BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->STATW, EUSCI_B_STATW_BBUSY_OFS);
+    return BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->STATW, EUSCI_B_STATW_SPI_BUSY_OFS );
 }
 
 //*****************************************************************************
@@ -1176,7 +1176,7 @@ uint8_t EUSCI_A_SPI_receiveData(uint32_t baseAddress)
 //! \return None
 //
 //*****************************************************************************
-void EUSCI_A_SPI_enableInterrupt(uint32_t baseAddress, uint8_t mask)
+void EUSCI_A_SPI_enableInterrupt(uint32_t baseAddress, uint16_t mask)
 {
     ASSERT(
             !(mask
@@ -1205,7 +1205,7 @@ void EUSCI_A_SPI_enableInterrupt(uint32_t baseAddress, uint8_t mask)
 //! \return None
 //
 //*****************************************************************************
-void EUSCI_A_SPI_disableInterrupt(uint32_t baseAddress, uint8_t mask)
+void EUSCI_A_SPI_disableInterrupt(uint32_t baseAddress, uint16_t mask)
 {
     ASSERT(
             !(mask
@@ -1259,7 +1259,7 @@ uint8_t EUSCI_A_SPI_getInterruptStatus(uint32_t baseAddress, uint8_t mask)
 //! \return None
 //
 //*****************************************************************************
-void EUSCI_A_SPI_clearInterruptFlag(uint32_t baseAddress, uint8_t mask)
+void EUSCI_A_SPI_clearInterruptFlag(uint32_t baseAddress, uint16_t mask)
 {
     ASSERT(
             !(mask
@@ -1346,7 +1346,7 @@ uint32_t EUSCI_A_SPI_getTransmitBufferAddressForDMA(uint32_t baseAddress)
 //! \brief Indicates whether or not the SPI bus is busy.
 //!
 //! This function returns an indication of whether or not the SPI bus is
-//! busy.This function checks the status of the bus via UCBBUSY bit
+//! busy.This function checks the status of the bus via UCBUSY bit
 //!
 //! \param baseAddress is the base address of the EUSCI_A_SPI module.
 //!
@@ -1355,5 +1355,5 @@ uint32_t EUSCI_A_SPI_getTransmitBufferAddressForDMA(uint32_t baseAddress)
 bool EUSCI_A_SPI_isBusy(uint32_t baseAddress)
 {
     //Return the bus busy status.
-    return BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->STATW, EUSCI_B_STATW_BBUSY_OFS);
+    return BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->STATW, EUSCI_A_STATW_SPI_BUSY_OFS);
 }

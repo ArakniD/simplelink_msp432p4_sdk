@@ -940,7 +940,8 @@ void FlashCtl_A_initiateMassErase(void)
 bool FlashCtl_A_performMassErase(void)
 {
     uint32_t flashSize, ii, intStatus, jj;
-    uint32_t mTries, tlvLength;
+    uint32_t mTries;
+    uint_fast8_t tlvLength;
     SysCtl_A_FlashTLV_Info *flInfo;
     __FlashCtl_ProtectionRegister protectRegs;
     bool res, needAnotherPulse;
@@ -1693,8 +1694,9 @@ void __FlashCtl_A_remaskBurstDataPre(uint32_t addr, uint32_t size)
     size = (size / 4);
     for (ii = 0; ii < size; ii++)
     {
-        HWREG32(__getBurstProgramRegs[ii]) |=
-                ~(HWREG32(__getBurstProgramRegs[ii]) | HWREG32(addr));
+        uint32_t temp1 = HWREG32(__getBurstProgramRegs[ii]);
+        uint32_t temp2 = HWREG32(addr);
+        HWREG32(__getBurstProgramRegs[ii]) |= ~(temp1 | temp2);
         addr += 4;
     }
 
@@ -1756,8 +1758,9 @@ void __FlashCtl_A_remaskBurstDataPost(uint32_t addr, uint32_t size)
     size = (size / 4);
     for (ii = 0; ii < size; ii++)
     {
-        HWREG32(__getBurstProgramRegs[ii]) = ~(~(HWREG32(
-                __getBurstProgramRegs[ii])) & HWREG32(addr));
+        uint32_t temp1 = (HWREG32(__getBurstProgramRegs[ii]));
+        uint32_t temp2 = HWREG32(addr);
+        HWREG32(__getBurstProgramRegs[ii]) = ~(~temp1 & temp2);
 
         addr += 4;
     }

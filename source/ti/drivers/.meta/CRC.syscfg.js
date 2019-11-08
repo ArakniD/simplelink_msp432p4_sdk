@@ -79,8 +79,8 @@ supported on each platform. Common CRC pre- and post-processing options are also
 [3]: /tidrivers/doxygen/html/_c_r_c_8h.html#ti_drivers_CRC_Examples "C usage examples"
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#CRC_Configuration_Options "Configuration options reference"
 `,
-    defaultInstanceName : "Board_CRC",
-    config: Common.addNameConfig(config, "/ti/drivers/CRC", "Board_CRC"),
+    defaultInstanceName : "CONFIG_CRC_",
+    config: Common.addNameConfig(config, "/ti/drivers/CRC", "CONFIG_CRC_"),
     validate : validate,
     modules: Common.autoForceModules(["Board", "Power"])
 };

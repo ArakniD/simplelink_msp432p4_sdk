@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -79,6 +79,10 @@ var msp432e4SrcList = [
 
 var tiFiles = [
     "startup/startup_cc13xx_cc26xx_ccs.c"
+];
+
+var ticlangFiles = [
+    "startup/startup_cc13xx_cc26xx_ticlang.c"
 ];
 
 var gccFiles = [
@@ -181,7 +185,10 @@ if (deviceWareOpts.cc26xxware) {
     for each (var target in targets) {
         var srcs;
 
-        if (target.match(/ti/)) {
+        if (target.match(/clang/)) {
+            srcs = ticlangFiles;
+        }
+        else if (target.match(/ti/)) {
             srcs = tiFiles;
         }
         else if (target.match(/gnu/)) {
@@ -260,6 +267,11 @@ if (deviceWareOpts.msp432DriverLib) {
     /* loop through each target and add right target src file list */
     for each (var target in targets) {
         var srcs = sources;
+
+        if (target.match(/clang/)) {
+            // Don't build nortos for ticlang yet
+            continue;
+        }
 
         if (target.match(/ti/)) {
             srcs = srcs.concat(tiFilesMSP432);

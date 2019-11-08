@@ -43,6 +43,11 @@
 with a Texas Instruments compiler. You appear to be using a different compiler.
 #endif
 
+/* CODEGEN-6425 work-around; remove when bug is fixed */
+#if defined(__clang__) && defined(__ti_version__)
+#pragma clang system_header
+#endif
+
 /*  Determine which TI toolchain is in use (ARM, C6x, ...) because
  *  each one has different errno support.
  *

@@ -1,5 +1,5 @@
 ;
-;  Copyright (c) 2013-2017, Texas Instruments Incorporated
+;  Copyright (c) 2013-2014, Texas Instruments Incorporated
 ;  All rights reserved.
 ;
 ;  Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,6 @@
         .global ti_sysbios_family_xxx_Hwi_switchAndRunFunc
         .global ti_sysbios_family_arm_m3_Hwi_initStacks__E
         .global ti_sysbios_family_arm_m3_Hwi_getTaskSP__E
-        .global ti_sysbios_family_arm_m3_Hwi_setStackLimit__I
 
 
         .align  4
@@ -182,18 +181,5 @@ $1Addr
 fpccr:
         .word   0xe000ef34
     .endif
-        .endasmfunc
-
-
-        .sect ".text:ti_sysbios_family_arm_m3_Hwi_setStackLimit__I"
-
-;
-;  ======== ti_sysbios_family_arm_m3_Hwi_setStackLimit__I ========
-;
-
-ti_sysbios_family_arm_m3_Hwi_setStackLimit__I:
-        .asmfunc
-        ;msr    msplim, r0
-        bx     lr
         .endasmfunc
         .end

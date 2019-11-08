@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_utils_Load__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_utils_Load___VERS 200
@@ -396,147 +398,147 @@ __extern __FAR__ const CT__ti_sysbios_utils_Load_autoAddTasks ti_sysbios_utils_L
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_utils_Load_Module__startupDone__S, "ti_sysbios_utils_Load_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_utils_Load_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_utils_Load_Module__startupDone__S( void);
 
 /* getTaskLoad__E */
 #define ti_sysbios_utils_Load_getTaskLoad ti_sysbios_utils_Load_getTaskLoad__E
 xdc__CODESECT(ti_sysbios_utils_Load_getTaskLoad__E, "ti_sysbios_utils_Load_getTaskLoad")
-__extern xdc_Bool ti_sysbios_utils_Load_getTaskLoad__E( ti_sysbios_knl_Task_Handle task, ti_sysbios_utils_Load_Stat *stat );
+__extern xdc_Bool ti_sysbios_utils_Load_getTaskLoad__E( ti_sysbios_knl_Task_Handle task, ti_sysbios_utils_Load_Stat *stat);
 
 /* update__E */
 #define ti_sysbios_utils_Load_update ti_sysbios_utils_Load_update__E
 xdc__CODESECT(ti_sysbios_utils_Load_update__E, "ti_sysbios_utils_Load_update")
-__extern xdc_Void ti_sysbios_utils_Load_update__E( void );
+__extern xdc_Void ti_sysbios_utils_Load_update__E( void);
 
 /* updateCPULoad__E */
 #define ti_sysbios_utils_Load_updateCPULoad ti_sysbios_utils_Load_updateCPULoad__E
 xdc__CODESECT(ti_sysbios_utils_Load_updateCPULoad__E, "ti_sysbios_utils_Load_updateCPULoad")
-__extern xdc_Void ti_sysbios_utils_Load_updateCPULoad__E( void );
+__extern xdc_Void ti_sysbios_utils_Load_updateCPULoad__E( void);
 
 /* updateLoads__E */
 #define ti_sysbios_utils_Load_updateLoads ti_sysbios_utils_Load_updateLoads__E
 xdc__CODESECT(ti_sysbios_utils_Load_updateLoads__E, "ti_sysbios_utils_Load_updateLoads")
-__extern xdc_Void ti_sysbios_utils_Load_updateLoads__E( void );
+__extern xdc_Void ti_sysbios_utils_Load_updateLoads__E( void);
 
 /* updateContextsAndPost__E */
 #define ti_sysbios_utils_Load_updateContextsAndPost ti_sysbios_utils_Load_updateContextsAndPost__E
 xdc__CODESECT(ti_sysbios_utils_Load_updateContextsAndPost__E, "ti_sysbios_utils_Load_updateContextsAndPost")
-__extern xdc_Void ti_sysbios_utils_Load_updateContextsAndPost__E( void );
+__extern xdc_Void ti_sysbios_utils_Load_updateContextsAndPost__E( void);
 
 /* updateCurrentThreadTime__E */
 #define ti_sysbios_utils_Load_updateCurrentThreadTime ti_sysbios_utils_Load_updateCurrentThreadTime__E
 xdc__CODESECT(ti_sysbios_utils_Load_updateCurrentThreadTime__E, "ti_sysbios_utils_Load_updateCurrentThreadTime")
-__extern xdc_Void ti_sysbios_utils_Load_updateCurrentThreadTime__E( void );
+__extern xdc_Void ti_sysbios_utils_Load_updateCurrentThreadTime__E( void);
 
 /* updateThreadContexts__E */
 #define ti_sysbios_utils_Load_updateThreadContexts ti_sysbios_utils_Load_updateThreadContexts__E
 xdc__CODESECT(ti_sysbios_utils_Load_updateThreadContexts__E, "ti_sysbios_utils_Load_updateThreadContexts")
-__extern xdc_Void ti_sysbios_utils_Load_updateThreadContexts__E( void );
+__extern xdc_Void ti_sysbios_utils_Load_updateThreadContexts__E( void);
 
 /* reset__E */
 #define ti_sysbios_utils_Load_reset ti_sysbios_utils_Load_reset__E
 xdc__CODESECT(ti_sysbios_utils_Load_reset__E, "ti_sysbios_utils_Load_reset")
-__extern xdc_Void ti_sysbios_utils_Load_reset__E( void );
+__extern xdc_Void ti_sysbios_utils_Load_reset__E( void);
 
 /* getGlobalSwiLoad__E */
 #define ti_sysbios_utils_Load_getGlobalSwiLoad ti_sysbios_utils_Load_getGlobalSwiLoad__E
 xdc__CODESECT(ti_sysbios_utils_Load_getGlobalSwiLoad__E, "ti_sysbios_utils_Load_getGlobalSwiLoad")
-__extern xdc_Bool ti_sysbios_utils_Load_getGlobalSwiLoad__E( ti_sysbios_utils_Load_Stat *stat );
+__extern xdc_Bool ti_sysbios_utils_Load_getGlobalSwiLoad__E( ti_sysbios_utils_Load_Stat *stat);
 
 /* getGlobalHwiLoad__E */
 #define ti_sysbios_utils_Load_getGlobalHwiLoad ti_sysbios_utils_Load_getGlobalHwiLoad__E
 xdc__CODESECT(ti_sysbios_utils_Load_getGlobalHwiLoad__E, "ti_sysbios_utils_Load_getGlobalHwiLoad")
-__extern xdc_Bool ti_sysbios_utils_Load_getGlobalHwiLoad__E( ti_sysbios_utils_Load_Stat *stat );
+__extern xdc_Bool ti_sysbios_utils_Load_getGlobalHwiLoad__E( ti_sysbios_utils_Load_Stat *stat);
 
 /* getCPULoad__E */
 #define ti_sysbios_utils_Load_getCPULoad ti_sysbios_utils_Load_getCPULoad__E
 xdc__CODESECT(ti_sysbios_utils_Load_getCPULoad__E, "ti_sysbios_utils_Load_getCPULoad")
-__extern xdc_UInt32 ti_sysbios_utils_Load_getCPULoad__E( void );
+__extern xdc_UInt32 ti_sysbios_utils_Load_getCPULoad__E( void);
 
 /* calculateLoad__E */
 #define ti_sysbios_utils_Load_calculateLoad ti_sysbios_utils_Load_calculateLoad__E
 xdc__CODESECT(ti_sysbios_utils_Load_calculateLoad__E, "ti_sysbios_utils_Load_calculateLoad")
-__extern xdc_UInt32 ti_sysbios_utils_Load_calculateLoad__E( ti_sysbios_utils_Load_Stat *stat );
+__extern xdc_UInt32 ti_sysbios_utils_Load_calculateLoad__E( ti_sysbios_utils_Load_Stat *stat);
 
 /* setMinIdle__E */
 #define ti_sysbios_utils_Load_setMinIdle ti_sysbios_utils_Load_setMinIdle__E
 xdc__CODESECT(ti_sysbios_utils_Load_setMinIdle__E, "ti_sysbios_utils_Load_setMinIdle")
-__extern xdc_UInt32 ti_sysbios_utils_Load_setMinIdle__E( xdc_UInt32 newMinIdleTime );
+__extern xdc_UInt32 ti_sysbios_utils_Load_setMinIdle__E( xdc_UInt32 newMinIdleTime);
 
 /* addTask__E */
 #define ti_sysbios_utils_Load_addTask ti_sysbios_utils_Load_addTask__E
 xdc__CODESECT(ti_sysbios_utils_Load_addTask__E, "ti_sysbios_utils_Load_addTask")
-__extern xdc_Void ti_sysbios_utils_Load_addTask__E( ti_sysbios_knl_Task_Handle task, ti_sysbios_utils_Load_HookContext *env );
+__extern xdc_Void ti_sysbios_utils_Load_addTask__E( ti_sysbios_knl_Task_Handle task, ti_sysbios_utils_Load_HookContext *env);
 
 /* removeTask__E */
 #define ti_sysbios_utils_Load_removeTask ti_sysbios_utils_Load_removeTask__E
 xdc__CODESECT(ti_sysbios_utils_Load_removeTask__E, "ti_sysbios_utils_Load_removeTask")
-__extern xdc_Bool ti_sysbios_utils_Load_removeTask__E( ti_sysbios_knl_Task_Handle task );
+__extern xdc_Bool ti_sysbios_utils_Load_removeTask__E( ti_sysbios_knl_Task_Handle task);
 
 /* idleFxn__E */
 #define ti_sysbios_utils_Load_idleFxn ti_sysbios_utils_Load_idleFxn__E
 xdc__CODESECT(ti_sysbios_utils_Load_idleFxn__E, "ti_sysbios_utils_Load_idleFxn")
-__extern xdc_Void ti_sysbios_utils_Load_idleFxn__E( void );
+__extern xdc_Void ti_sysbios_utils_Load_idleFxn__E( void);
 
 /* idleFxnPwr__E */
 #define ti_sysbios_utils_Load_idleFxnPwr ti_sysbios_utils_Load_idleFxnPwr__E
 xdc__CODESECT(ti_sysbios_utils_Load_idleFxnPwr__E, "ti_sysbios_utils_Load_idleFxnPwr")
-__extern xdc_Void ti_sysbios_utils_Load_idleFxnPwr__E( void );
+__extern xdc_Void ti_sysbios_utils_Load_idleFxnPwr__E( void);
 
 /* startup__E */
 #define ti_sysbios_utils_Load_startup ti_sysbios_utils_Load_startup__E
 xdc__CODESECT(ti_sysbios_utils_Load_startup__E, "ti_sysbios_utils_Load_startup")
-__extern xdc_Void ti_sysbios_utils_Load_startup__E( void );
+__extern xdc_Void ti_sysbios_utils_Load_startup__E( void);
 
 /* taskCreateHook__E */
 #define ti_sysbios_utils_Load_taskCreateHook ti_sysbios_utils_Load_taskCreateHook__E
 xdc__CODESECT(ti_sysbios_utils_Load_taskCreateHook__E, "ti_sysbios_utils_Load_taskCreateHook")
-__extern xdc_Void ti_sysbios_utils_Load_taskCreateHook__E( ti_sysbios_knl_Task_Handle task, xdc_runtime_Error_Block *eb );
+__extern xdc_Void ti_sysbios_utils_Load_taskCreateHook__E( ti_sysbios_knl_Task_Handle task, xdc_runtime_Error_Block *eb);
 
 /* taskDeleteHook__E */
 #define ti_sysbios_utils_Load_taskDeleteHook ti_sysbios_utils_Load_taskDeleteHook__E
 xdc__CODESECT(ti_sysbios_utils_Load_taskDeleteHook__E, "ti_sysbios_utils_Load_taskDeleteHook")
-__extern xdc_Void ti_sysbios_utils_Load_taskDeleteHook__E( ti_sysbios_knl_Task_Handle task );
+__extern xdc_Void ti_sysbios_utils_Load_taskDeleteHook__E( ti_sysbios_knl_Task_Handle task);
 
 /* taskSwitchHook__E */
 #define ti_sysbios_utils_Load_taskSwitchHook ti_sysbios_utils_Load_taskSwitchHook__E
 xdc__CODESECT(ti_sysbios_utils_Load_taskSwitchHook__E, "ti_sysbios_utils_Load_taskSwitchHook")
-__extern xdc_Void ti_sysbios_utils_Load_taskSwitchHook__E( ti_sysbios_knl_Task_Handle curTask, ti_sysbios_knl_Task_Handle nextTask );
+__extern xdc_Void ti_sysbios_utils_Load_taskSwitchHook__E( ti_sysbios_knl_Task_Handle curTask, ti_sysbios_knl_Task_Handle nextTask);
 
 /* swiBeginHook__E */
 #define ti_sysbios_utils_Load_swiBeginHook ti_sysbios_utils_Load_swiBeginHook__E
 xdc__CODESECT(ti_sysbios_utils_Load_swiBeginHook__E, "ti_sysbios_utils_Load_swiBeginHook")
-__extern xdc_Void ti_sysbios_utils_Load_swiBeginHook__E( ti_sysbios_knl_Swi_Handle swi );
+__extern xdc_Void ti_sysbios_utils_Load_swiBeginHook__E( ti_sysbios_knl_Swi_Handle swi);
 
 /* swiEndHook__E */
 #define ti_sysbios_utils_Load_swiEndHook ti_sysbios_utils_Load_swiEndHook__E
 xdc__CODESECT(ti_sysbios_utils_Load_swiEndHook__E, "ti_sysbios_utils_Load_swiEndHook")
-__extern xdc_Void ti_sysbios_utils_Load_swiEndHook__E( ti_sysbios_knl_Swi_Handle swi );
+__extern xdc_Void ti_sysbios_utils_Load_swiEndHook__E( ti_sysbios_knl_Swi_Handle swi);
 
 /* hwiBeginHook__E */
 #define ti_sysbios_utils_Load_hwiBeginHook ti_sysbios_utils_Load_hwiBeginHook__E
 xdc__CODESECT(ti_sysbios_utils_Load_hwiBeginHook__E, "ti_sysbios_utils_Load_hwiBeginHook")
-__extern xdc_Void ti_sysbios_utils_Load_hwiBeginHook__E( ti_sysbios_interfaces_IHwi_Handle hwi );
+__extern xdc_Void ti_sysbios_utils_Load_hwiBeginHook__E( ti_sysbios_interfaces_IHwi_Handle hwi);
 
 /* hwiEndHook__E */
 #define ti_sysbios_utils_Load_hwiEndHook ti_sysbios_utils_Load_hwiEndHook__E
 xdc__CODESECT(ti_sysbios_utils_Load_hwiEndHook__E, "ti_sysbios_utils_Load_hwiEndHook")
-__extern xdc_Void ti_sysbios_utils_Load_hwiEndHook__E( ti_sysbios_interfaces_IHwi_Handle hwi );
+__extern xdc_Void ti_sysbios_utils_Load_hwiEndHook__E( ti_sysbios_interfaces_IHwi_Handle hwi);
 
 /* taskRegHook__E */
 #define ti_sysbios_utils_Load_taskRegHook ti_sysbios_utils_Load_taskRegHook__E
 xdc__CODESECT(ti_sysbios_utils_Load_taskRegHook__E, "ti_sysbios_utils_Load_taskRegHook")
-__extern xdc_Void ti_sysbios_utils_Load_taskRegHook__E( xdc_Int id );
+__extern xdc_Void ti_sysbios_utils_Load_taskRegHook__E( xdc_Int id);
 
 /* logLoads__I */
 #define ti_sysbios_utils_Load_logLoads ti_sysbios_utils_Load_logLoads__I
 xdc__CODESECT(ti_sysbios_utils_Load_logLoads__I, "ti_sysbios_utils_Load_logLoads")
-__extern xdc_Void ti_sysbios_utils_Load_logLoads__I( void );
+__extern xdc_Void ti_sysbios_utils_Load_logLoads__I( void);
 
 /* logCPULoad__I */
 #define ti_sysbios_utils_Load_logCPULoad ti_sysbios_utils_Load_logCPULoad__I
 xdc__CODESECT(ti_sysbios_utils_Load_logCPULoad__I, "ti_sysbios_utils_Load_logCPULoad")
-__extern xdc_Void ti_sysbios_utils_Load_logCPULoad__I( void );
+__extern xdc_Void ti_sysbios_utils_Load_logCPULoad__I( void);
 
 
 /*

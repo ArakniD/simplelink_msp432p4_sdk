@@ -68,7 +68,7 @@
  * at:
  *http://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSP430BaudRateConverter/index.html
  */
-const eUSCI_UART_Config uartConfig =
+const eUSCI_UART_ConfigV1 uartConfig =
 {
         EUSCI_A_UART_CLOCKSOURCE_ACLK,           // ACLK Clock Source = 32768Hz
         3,                                       // BRDIV = 3
@@ -78,7 +78,8 @@ const eUSCI_UART_Config uartConfig =
         EUSCI_A_UART_LSB_FIRST,                  // LSB First
         EUSCI_A_UART_ONE_STOP_BIT,               // One stop bit
         EUSCI_A_UART_MODE,                       // UART mode
-        EUSCI_A_UART_LOW_FREQUENCY_BAUDRATE_GENERATION  // Low-Freq Baud Rate Generation
+        EUSCI_A_UART_LOW_FREQUENCY_BAUDRATE_GENERATION,  // Low-Freq Baud Rate Generation
+        EUSCI_A_UART_8_BIT_LEN                  // 8 bit data length
 };
 //![Simple UART Config]
 

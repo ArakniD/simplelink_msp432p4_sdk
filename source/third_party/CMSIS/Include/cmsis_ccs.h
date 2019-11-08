@@ -135,6 +135,12 @@
 #define __ISB                               _isb
 
 /**
+  \brief   Data Memory Barrier
+  \details Ensures the apparent order of the explicit memory operations before
+           and after the instruction, without ensuring their completion.
+ */
+#define __DMB                               _dmb
+/**
  * \brief   Rotate Right in unsigned value (32 bit)
  * \details Rotate Right (immediate) provides the value of the contents of a register rotated by a variable number of bits.
  * \param [in]  VAL     Value to rotate
@@ -229,7 +235,7 @@
 #define __SMLAWT                            _smlawt
 #define __SMULBB                            _smulbb
 #define __SMULBT                            _smulbt
-#define __SMULTB	                        _smultb
+#define __SMULTB                            _smultb
 #define __SMULTT                            _smultt
 #define __SMULWB                            _smulwb
 #define __SMULWT                            _smulwt

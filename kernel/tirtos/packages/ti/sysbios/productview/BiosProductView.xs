@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2017, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -337,6 +337,26 @@ function module$meta$init()
     this.ti_sysbios_family_c674_Power.moduleName = "ti.sysbios.family.c674.Power";
     this.ti_sysbios_family_c674_Power.iconFileName = "icons/pwr.ico";
 
+    this.ti_sysbios_family_msp430_ClockFreqs.elemName = "ClockFreqs";
+    this.ti_sysbios_family_msp430_ClockFreqs.moduleName = "ti.sysbios.family.msp430.ClockFreqs";
+    this.ti_sysbios_family_msp430_ClockFreqs.iconFileName = "icons/clk.ico";
+
+    this.ti_sysbios_family_msp430_Hwi.elemName = "Hwi";
+    this.ti_sysbios_family_msp430_Hwi.moduleName = "ti.sysbios.family.msp430.Hwi";
+    this.ti_sysbios_family_msp430_Hwi.iconFileName = "icons/hwi.ico";
+
+    this.ti_sysbios_family_msp430_Power.elemName = "Power";
+    this.ti_sysbios_family_msp430_Power.moduleName = "ti.sysbios.family.msp430.Power";
+    this.ti_sysbios_family_msp430_Power.iconFileName = "icons/pwr.ico";
+
+    this.ti_sysbios_family_msp430_Timer.elemName = "Timer";
+    this.ti_sysbios_family_msp430_Timer.moduleName = "ti.sysbios.family.msp430.Timer";
+    this.ti_sysbios_family_msp430_Timer.iconFileName = "icons/rtc.ico";
+
+    this.ti_sysbios_family_msp430_TimestampProvider.elemName = "TimestampProvider";
+    this.ti_sysbios_family_msp430_TimestampProvider.moduleName = "ti.sysbios.family.msp430.TimestampProvider";
+    this.ti_sysbios_family_msp430_TimestampProvider.iconFileName = "icons/clk.ico";
+
     this.ti_sysbios_family_arm_arm9_Cache.elemName = "Cache";
     this.ti_sysbios_family_arm_arm9_Cache.moduleName = "ti.sysbios.family.arm.arm9.Cache";
     this.ti_sysbios_family_arm_arm9_Cache.iconFileName = "icons/mem.ico";
@@ -670,6 +690,17 @@ function module$meta$init()
         this.ti_sysbios_family_c674_Power
     ];
 
+    this.msp430Group.elemName = "MSP430";
+    this.msp430Group.moduleName = null;
+    this.msp430Group.iconFileName = "icons/csl_fldr.ico";
+    this.msp430Group.elemArray = [
+        this.ti_sysbios_family_msp430_Hwi,
+        this.ti_sysbios_family_msp430_Power,
+        this.ti_sysbios_family_msp430_Timer,
+        this.ti_sysbios_family_msp430_TimestampProvider,
+        this.ti_sysbios_family_msp430_ClockFreqs
+    ];
+
     this.arm9davinciGroup.elemName = "Arm9 (daVinci)";
     this.arm9davinciGroup.moduleName = null;
     this.arm9davinciGroup.iconFileName = "icons/csl_fldr.ico";
@@ -808,6 +839,7 @@ function module$meta$init()
         this.c66Group,
         this.c674Group,
         this.c64tGroup,
+        this.msp430Group
     ];
 
 /* product */
@@ -856,7 +888,7 @@ function getProductDescriptor()
     }
 
     /* add Cache unless we are an MSP or a C28 */
-    if (groupName != "c28Group") {
+    if (groupName != "msp430Group" && groupName != "c28Group") {
         // print("adding Cache to this view ...");
         this.memoryGroup.elemArray.$add(this.ti_sysbios_hal_Cache);
     }

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_rts_ti_ThreadLocalStorage__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_rts_ti_ThreadLocalStorage___VERS 200
@@ -277,27 +279,27 @@ __extern __FAR__ const CT__ti_sysbios_rts_ti_ThreadLocalStorage_TItls_initSectMe
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_rts_ti_ThreadLocalStorage_Module__startupDone__S, "ti_sysbios_rts_ti_ThreadLocalStorage_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_rts_ti_ThreadLocalStorage_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_rts_ti_ThreadLocalStorage_Module__startupDone__S( void);
 
 /* createFxn__I */
 #define ti_sysbios_rts_ti_ThreadLocalStorage_createFxn ti_sysbios_rts_ti_ThreadLocalStorage_createFxn__I
 xdc__CODESECT(ti_sysbios_rts_ti_ThreadLocalStorage_createFxn__I, "ti_sysbios_rts_ti_ThreadLocalStorage_createFxn")
-__extern xdc_Void ti_sysbios_rts_ti_ThreadLocalStorage_createFxn__I( ti_sysbios_knl_Task_Handle tsk, xdc_runtime_Error_Block *eb );
+__extern xdc_Void ti_sysbios_rts_ti_ThreadLocalStorage_createFxn__I( ti_sysbios_knl_Task_Handle tsk, xdc_runtime_Error_Block *eb);
 
 /* switchFxn__I */
 #define ti_sysbios_rts_ti_ThreadLocalStorage_switchFxn ti_sysbios_rts_ti_ThreadLocalStorage_switchFxn__I
 xdc__CODESECT(ti_sysbios_rts_ti_ThreadLocalStorage_switchFxn__I, "ti_sysbios_rts_ti_ThreadLocalStorage_switchFxn")
-__extern xdc_Void ti_sysbios_rts_ti_ThreadLocalStorage_switchFxn__I( ti_sysbios_knl_Task_Handle from, ti_sysbios_knl_Task_Handle to );
+__extern xdc_Void ti_sysbios_rts_ti_ThreadLocalStorage_switchFxn__I( ti_sysbios_knl_Task_Handle from, ti_sysbios_knl_Task_Handle to);
 
 /* deleteFxn__I */
 #define ti_sysbios_rts_ti_ThreadLocalStorage_deleteFxn ti_sysbios_rts_ti_ThreadLocalStorage_deleteFxn__I
 xdc__CODESECT(ti_sysbios_rts_ti_ThreadLocalStorage_deleteFxn__I, "ti_sysbios_rts_ti_ThreadLocalStorage_deleteFxn")
-__extern xdc_Void ti_sysbios_rts_ti_ThreadLocalStorage_deleteFxn__I( ti_sysbios_knl_Task_Handle tsk );
+__extern xdc_Void ti_sysbios_rts_ti_ThreadLocalStorage_deleteFxn__I( ti_sysbios_knl_Task_Handle tsk);
 
 /* registerFxn__I */
 #define ti_sysbios_rts_ti_ThreadLocalStorage_registerFxn ti_sysbios_rts_ti_ThreadLocalStorage_registerFxn__I
 xdc__CODESECT(ti_sysbios_rts_ti_ThreadLocalStorage_registerFxn__I, "ti_sysbios_rts_ti_ThreadLocalStorage_registerFxn")
-__extern xdc_Void ti_sysbios_rts_ti_ThreadLocalStorage_registerFxn__I( xdc_Int id );
+__extern xdc_Void ti_sysbios_rts_ti_ThreadLocalStorage_registerFxn__I( xdc_Int id);
 
 
 /*

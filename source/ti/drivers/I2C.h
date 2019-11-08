@@ -322,33 +322,29 @@ extern "C" {
 
 /**
  *  @defgroup I2C_STATUS Status Codes
- *  I2C_STATUS_* macros are general status codes returned by I2C_control()
+ *  I2C_STATUS_* macros are general status codes returned by the I2C API
  *  @{
  *  @ingroup I2C_CONTROL
  */
 
 /*!
- * @brief   Successful status code returned by I2C_control().
- *
- * I2C_control() returns #I2C_STATUS_SUCCESS if the control code was executed
- * successfully.
+ * @brief   Successful status code returned by I2C API.
  */
 #define I2C_STATUS_SUCCESS         (0)
 
 /*!
- * @brief   Generic error status code returned by I2C_control().
- *
- * I2C_control() returns #I2C_STATUS_ERROR if the control code was not executed
- * successfully.
+ * @brief   Generic error status code returned by I2C API.
  */
 #define I2C_STATUS_ERROR           (-1)
+
+ /*!
+  * @brief   Timeout status code returned by I2C API.
+  */
+ #define I2C_STATUS_TIMEOUT         (-2)
 
 /*!
  * @brief   An error status code returned by I2C_control() for undefined
  * command codes.
- *
- * I2C_control() returns #I2C_STATUS_UNDEFINEDCMD if the control code is not
- * recognized by the driver implementation.
  */
 #define I2C_STATUS_UNDEFINEDCMD    (-2)
 /** @}*/
@@ -366,6 +362,11 @@ extern "C" {
 /** @} end I2C commands */
 
 /** @} end I2C_CONTROL group */
+
+/*!
+ *  @brief      Wait forever define used to specify timeouts.
+ */
+#define I2C_WAIT_FOREVER           (~(0U))
 
 /*!
  *  @brief      A handle that is returned from an I2C_open() call.
@@ -592,15 +593,15 @@ typedef I2C_Handle (*I2C_OpenFxn) (I2C_Handle handle, I2C_Params *params);
  *  @brief      A function pointer to a driver-specific implementation of
  *              I2C_transfer().
  */
-typedef bool (*I2C_TransferFxn) (I2C_Handle handle,
-    I2C_Transaction *transaction);
+typedef int_fast16_t (*I2C_TransferFxn) (I2C_Handle handle,
+                      I2C_Transaction *transaction, uint32_t timeout);
 
 /*!
  *  @brief      The definition of an I2C function table that contains the
  *              required set of functions to control a specific I2C driver
  *              implementation.
  */
-typedef struct I2C_FxnTable_ {
+typedef struct {
     I2C_CancelFxn   cancelFxn;
     I2C_CloseFxn    closeFxn;
     I2C_ControlFxn  controlFxn;
@@ -755,6 +756,48 @@ extern void I2C_Params_init(I2C_Params *params);
  *  @sa  I2C_Transaction
  */
 extern bool I2C_transfer(I2C_Handle handle, I2C_Transaction *transaction);
+
+/*!
+ *  @brief  Perform an I2C transaction with an I2C slave peripheral.
+ *
+ *  This function will perform an I2C transfer, as specified by an
+ *  #I2C_Transaction structure. If timeout is exceeded, then the transaction
+ *  will come to a halt.
+ *
+ *  @note When using #I2C_MODE_BLOCKING, this must be called from a thread
+ *  context.
+ *
+ *  @note The timeout restriction is only applied when using #I2C_MODE_BLOCKING.
+ *
+ *  @param[in]  handle      An #I2C_Handle returned from I2C_open()
+ *
+ *  @param[in]  transaction  A pointer to an #I2C_Transaction. The application
+ *  is responsible for allocating and initializing an #I2C_Transaction
+ *  structure prior to passing it to I2C_TransferTimeout(). This
+ *  structure must persist in memory unmodified until the transfer is complete.
+ *
+ *  @param[in]  timeout    The time in system ticks to wait for the transaction
+ *                         to complete. Passing I2C_WAIT_FOREVER into this parameter
+ *                         will cause I2C_transferTimeout() to behave the same as
+ *                         I2C_transfer() but with a more detailed return status
+ *
+ *  @note #I2C_Transaction structures cannot be re-used until the previous
+ *  transaction has completed.
+ *
+ *  @return In #I2C_MODE_BLOCKING: @p I2C_STATUS_SUCCESS for a successful transfer;
+ *          @p I2C_STATUS_ERROR for an error (for example, an I2C bus fault (NACK));
+ *          @p I2C_STATUS_TIMEOUT for a timeout
+ *
+ *  @return In #I2C_MODE_CALLBACK: always @p I2C_STATUS_SUCCESS.
+ *          The #I2C_CallbackFxn @p transferStatus argument will be @p true to indicate
+ *          success, and @p false to indicate an error.
+ *
+ *  @pre I2C_open() has been called.
+ *
+ *  @sa  I2C_open()
+ *  @sa  I2C_Transaction
+ */
+extern int_fast16_t I2C_transferTimeout(I2C_Handle handle, I2C_Transaction *transaction, uint32_t timeout);
 
 #ifdef __cplusplus
 }

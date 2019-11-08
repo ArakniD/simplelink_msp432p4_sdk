@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_knl_Task_SupportProxy__INTERNAL__
@@ -44,6 +44,10 @@
 /* getDefaultStackSize */
 #undef ti_sysbios_knl_Task_SupportProxy_getDefaultStackSize
 #define ti_sysbios_knl_Task_SupportProxy_getDefaultStackSize ti_sysbios_knl_Task_SupportProxy_getDefaultStackSize__E
+
+/* getCheckValueAddr */
+#undef ti_sysbios_knl_Task_SupportProxy_getCheckValueAddr
+#define ti_sysbios_knl_Task_SupportProxy_getCheckValueAddr ti_sysbios_knl_Task_SupportProxy_getCheckValueAddr__E
 
 /* Module_startup */
 #undef ti_sysbios_knl_Task_SupportProxy_Module_startup

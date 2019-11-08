@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IAR Project Connection File -->
+
+<iarProjectConnection version="1.2" name="NVS Example" oneShot="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="IarProjectConnection_1.2.xsd">
+
+    <device>
+        <name>MSP432P401R</name>
+    </device>
+
+    <asmIncludePath>
+        <path>$PROJ_DIR$</path>
+        <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/freertos/builds/MSP_EXP432P401R/release</path>
+    </asmIncludePath>
+
+    <includePath>
+        <path>$PROJ_DIR$</path>
+        <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source</path>
+        <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/CMSIS/Include</path>
+        <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/posix/iar</path>
+        <path>$FREERTOS_INSTALL_DIR$/FreeRTOS/Source/include</path>
+        <path>$FREERTOS_INSTALL_DIR$/FreeRTOS/Source/portable/IAR/ARM_CM4F</path>
+        <path>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/freertos/builds/MSP_EXP432P401R/release</path>
+    </includePath>
+
+    <extraOptions>
+        <args>
+            <arg>--debug</arg>
+            <arg>--silent</arg>
+            <arg>-e</arg>
+            <arg>--aeabi</arg>
+            <arg>--thumb</arg>
+            <arg>--diag_suppress=Pa050</arg>
+        </args>
+    </extraOptions>
+
+    <linkerFile>
+        <override>true</override>
+        <path>$PROJ_DIR$/MSP_EXP432P401R_FREERTOS.icf</path>
+    </linkerFile>
+
+    <linkerExtraOptions>
+        <args>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/display/lib/display.arm4f</arg>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/grlib/lib/iar/m4f/grlib.a</arg>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/spiffs/lib/iar/m4f/spiffs.a</arg>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/drivers/lib/drivers_msp432p401x.arm4f</arg>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/third_party/fatfs/lib/iar/m4f/fatfs.a</arg>
+            <arg>--threaded_lib</arg>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/freertos/builds/MSP_EXP432P401R/release/iar/freertos.lib</arg>
+            <arg>$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/devices/msp432p4xx/driverlib/iar/msp432p4xx_driverlib.a</arg>
+            <arg>--silent</arg>
+            <arg>--cpu=Cortex-M4F</arg>
+        </args>
+    </linkerExtraOptions>
+
+    <customBuildTools>
+        <customBuildTool atRoot="true" name="SysConfig"> <!-- Custom build tool for entire project-->
+            <fileExtensions>.syscfg</fileExtensions>
+            <command>$SYSCONFIG_ROOT$/sysconfig_cli.bat -o $PROJ_DIR$ -s "$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/.metadata/product.json" --compiler iar $FILE_PATH$
+            </command>
+            <output>
+                <path>SysConfig_Generated_Files.ipcf</path>
+            </output>
+            <hasPrio>true</hasPrio> <!-- true: run this tool before all other tools-->
+        </customBuildTool>
+    </customBuildTools>
+
+    <heaps>
+        <heap> <!-- If omitted, id="0" -->
+            <size>0</size>
+        </heap>
+        <heap id="1">
+            <size>0</size>
+        </heap>
+    </heaps>
+    <stacks>
+        <stack> <!-- If omitted, id="0" -->
+            <size>512</size>
+        </stack>
+    </stacks>
+
+    <preBuild>
+        <command>iarbuild.exe $SIMPLELINK_MSP432_SDK_INSTALL_DIR$/kernel/freertos/builds/MSP_EXP432P401R/release/iar/freertos_builds_MSP_EXP432P401R_release.ewp Debug</command>
+    </preBuild>
+
+    <files>
+        <path copyTo="$PROJ_DIR$/nvsinternal.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/drivers/nvsinternal/nvsinternal.c</path>
+        <path copyTo="$PROJ_DIR$/README.md">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/drivers/nvsinternal/README.md</path>
+        <path copyTo="$PROJ_DIR$/README.html">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/drivers/nvsinternal/README.html</path>
+        <path copyTo="$PROJ_DIR$/main_freertos.c">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/drivers/nvsinternal/freertos/main_freertos.c</path>
+        <path copyTo="$PROJ_DIR$/nvsinternal.syscfg">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/drivers/nvsinternal/freertos/nvsinternal.syscfg</path>
+        <path reference="$PROJ_DIR$/Board.html">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/source/ti/boards/MSP_EXP432P401R/Board.html</path>
+        <path copyTo="$PROJ_DIR$/MSP_EXP432P401R_FREERTOS.icf">$SIMPLELINK_MSP432_SDK_INSTALL_DIR$/examples/rtos/MSP_EXP432P401R/drivers/nvsinternal/freertos/iar/MSP_EXP432P401R_FREERTOS.icf</path>
+    </files>
+</iarProjectConnection>

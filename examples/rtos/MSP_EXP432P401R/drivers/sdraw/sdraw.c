@@ -43,8 +43,8 @@
 #include <ti/drivers/SD.h>
 #include <ti/display/Display.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 /* Buffer size used for the file copy process */
 #define BUFFSIZE 1024
@@ -88,7 +88,7 @@ void *mainThread(void *arg0)
     SD_init();
 
     /* Configure the LED pin */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 
     /* Open the display for output */
     display = Display_open(Display_Type_UART, NULL);
@@ -98,7 +98,7 @@ void *mainThread(void *arg0)
     }
 
     /* Turn on user LED */
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
     Display_printf(display, 0, 0, "Starting the SD example\n");
 
@@ -108,7 +108,7 @@ void *mainThread(void *arg0)
     }
 
     /* Mount and register the SD Card */
-    sdHandle = SD_open(Board_SD0, NULL);
+    sdHandle = SD_open(CONFIG_SD_0, NULL);
     if (sdHandle == NULL) {
         Display_printf(display, 0, 0, "Error starting the SD card\n");
         while (1);

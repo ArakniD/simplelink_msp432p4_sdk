@@ -46,8 +46,8 @@
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/UART.h>
 
-/* Board Header Files */
-#include "Board.h"
+/* Board Header file */
+#include "ti_drivers_config.h"
 
 /* Local Header Files */
 #include "callbacks.h"
@@ -87,7 +87,7 @@ void *uartThread(void *arg0)
     uartParams.readEcho = UART_ECHO_OFF;
     uartParams.baudRate = 115200;
 
-    uart_handle = UART_open(Board_UART0, &uartParams);
+    uart_handle = UART_open(CONFIG_UART0, &uartParams);
 
     if (uart_handle == NULL) {
         /* UART_open() failed */

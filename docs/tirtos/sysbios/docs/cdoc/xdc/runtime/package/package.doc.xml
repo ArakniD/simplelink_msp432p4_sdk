@@ -155,7 +155,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Emetaonly+%3C%2Fspan%3E%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
                 </synopSpec>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.IFilterLogger.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -352,7 +352,7 @@
         <docSect name='details'>
             <docPara content='Gates+are+used+within+the+%3Ctt%3Exdc.runtime%3C%2Ftt%3E+package+to+serialize+access%0A++to+data+structures+that+are+used+by+more+than+one+thread.'/>
             <docPara content='Gates+are+responsible+for+ensuring+that+only+one+out+of+multiple+threads%0A++can+access+a+data+structure+at+a+time.++There+are+important+scheduling%0A++latency+and+performance+considerations+that+affect+the+%22type%22+of+gate+used%0A++to+protect+each+data+structure.++For+example%2C+the+best+way+to+protect+a%0A++shared+counter+is+to+simply+disable+all+interrupts+before+the+update+and%0A++restore+the+interrupt+state+after+the+update%3B+disabling+all+interrupts%0A++prevents+all+thread+switching%2C+so+the+update+is+guaranteed+to+be+%22atomic%22.%0A++Although+highly+efficient%2C+this++method+of+creating+atomic+sections+causes%0A++serious+system+latencies+when+the+time+required+to+update+the+data+structure%0A++can%27t+be+bounded.'/>
-            <docPara content='For+example%2C+a+memory+manager%27s+list+of+free+blocks+can+grow+indefinitely%0A++long+during+periods+of+high+fragmentation.++Searching+such+a+list+with%0A++interrupts+disabled+would+cause+system+latencies+to+also+become+unbounded.%0A++In+this+case%2C+the+best+solution+is+to+provide+a+gate+that+suspends+the%0A++execution+of++threads+that+try+to+enter+a+gate+that+has+already+been%0A++entered%3B+i.e.%2C+the+gate+%22blocks%22+the+thread+until+the+thread+already+in+the%0A++gate+leaves.++The+time+required+to+enter+and+leave+the+gate+is+greater+than%0A++simply+enabling+and+restoring+interrupts%2C+but+since+the+time+spent+within%0A++the+gate+is+relatively+large%2C+the+overhead+caused+by+entering+and+leaving%0A++gates+will+not+become+a+significant+percentage+of+overall+system+time.++More%0A++importantly%2C+threads+that+do+not+need+to+access+the+shared+data+structure%0A++are+completely+unaffected+by+threads+that+do+access+it.'/>
+            <docPara content='For+example%2C+a+memory+manager%27s+list+of+free+blocks+can+grow+indefinitely%0A++long+during+periods+of+high+fragmentation.++Searching+such+a+list+with%0A++interrupts+disabled+would+cause+system+latencies+to+also+become+unbounded.%0A++In+this+case%2C+the+best+solution+is+to+provide+a+gate+that+suspends+the%0A++execution+of+threads+that+try+to+enter+a+gate+that+has+already+been+entered%3B%0A++i.e.%2C+the+gate+%22blocks%22+the+thread+until+the+thread+already+in+the+gate%0A++leaves.++The+time+required+to+enter+and+leave+the+gate+is+greater+than+simply+%0A++enabling+and+restoring+interrupts%2C+but+since+the+time+spent+within+the+gate+is%0A++relatively+large%2C+the+overhead+caused+by+entering+and+leaving+gates+will+not%0A++become+a+significant+percentage+of+overall+system+time.++More+importantly%2C%0A++threads+that+do+not+need+to+access+the+shared+data+structure+are+completely%0A++unaffected+by+threads+that+do+access+it.'/>
         </docSect>
         <docSect name='Notes'>
             <docPara content='Modules+inheriting+this+interface+should+treat+all+names+beginning+with%0A++%3Ctt%3EQ_%3C%2Ftt%3E+as+reserved+words%2C+i.e.+the+names+from+that+namespace+should+not%0A++be+used.++This+will+allow+future+version+of+this+interface+to+define+new%0A++constants+%28%22qualities%22+%29+similar+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22IGateProvider.html%23.Q_.B.L.O.C.K.I.N.G%22+title%3D%22Q_BLOCKING%22%3EQ_BLOCKING%3C%2Fa%3E%3C%2Ftt%3E+and%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22IGateProvider.html%23.Q_.P.R.E.E.M.P.T.I.N.G%22+title%3D%22Q_PREEMPTING%22%3EQ_PREEMPTING%3C%2Fa%3E%3C%2Ftt%3E+without+breaking+any+existing+modules.'/>
@@ -365,7 +365,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Econst%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EInt%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EQ_BLOCKING%3C%2Fspan%3E%3C%2Fgo%3E+%3D+1%3B'/>
                 </synopSpec>
                 <docSect name='details'>
-                    <docPara content='Gates+with+this+%22quality%22+may+cause+the+calling+thread+to+block%3B+%0A++i.e.%2C+suspend+execution+until+another+thread+leaves+the+gate.'/>
+                    <docPara content='Gates+with+this+%22quality%22+may+cause+the+calling+thread+to+block%3B%0A++i.e.%2C+suspend+execution+until+another+thread+leaves+the+gate.'/>
                 </docSect>
             </decl>
             <decl kind='const' name='Q_PREEMPTING' anchor='.Q_.P.R.E.E.M.P.T.I.N.G' altext='xdc.runtime.IGateProvider.Q_PREEMPTING' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Preempting+quality'>
@@ -495,7 +495,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Emetaonly+%3C%2Fspan%3E%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
                 </synopSpec>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.IGateProvider.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -571,11 +571,11 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EIArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eenter%3C%2Fspan%3E%3C%2Fgo%3E%28++%29%3B'/>
                 </synopSpec>
                 <docSect name='details'>
-                    <docPara content='Each+gate+provider+can+implement+mutual+exclusion+using+different%0A++algorithms%3B+e.g.%2C+disabling+all+scheduling%2C+disabling+the+scheduling%0A++of+all+threads+below+a+specified+%22priority+level%22%2C+suspending+the%0A++caller+when+the+gate+has+been+entered+by+another+thread+and%0A++re-enabling+it+when+the+the+other+thread+leaves+the+gate.++However%2C%0A++in+all+cases%2C+after+this+method+returns+that+caller+has+exclusive%0A++access+to+the+data+protected+by+this+gate.'/>
+                    <docPara content='Each+gate+provider+can+implement+mutual+exclusion+using+different%0A++algorithms%3B+e.g.%2C+disabling+all+scheduling%2C+disabling+the+scheduling%0A++of+all+threads+below+a+specified+%22priority+level%22%2C+suspending+the+caller%0A++when+the+gate+has+been+entered+by+another+thread+and+re-enabling+it+when%0A++the+the+other+thread+leaves+the+gate.++However%2C+in+all+cases%2C+after+this%0A++method+returns+that+caller+has+exclusive+access+to+the+data+protected+by%0A++this+gate.'/>
                     <docPara content='A+thread+may+reenter+a+gate+without+blocking+or+failing.'/>
                 </docSect>
                 <docSect name='returns'>
-                    <docPara content='Returns+a+%22key%22+that+is+used+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22IGateProvider.html%23leave%22+title%3D%22leave%22%3Eleave%3C%2Fa%3E%3C%2Ftt%3E+this+gate%3B+this+%0A++value+is+used+to+restore+thread+preemption+to+the+state+that%0A++existed+just+prior+to+entering+this+gate.'/>
+                    <docPara content='Returns+a+%22key%22+that+is+used+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22IGateProvider.html%23leave%22+title%3D%22leave%22%3Eleave%3C%2Fa%3E%3C%2Ftt%3E+this+gate%3B+this+value%0A++is+used+to+restore+thread+preemption+to+the+state+that+existed+just%0A++prior+to+entering+this+gate.'/>
                 </docSect>
             </decl>
             <decl kind='fxn' name='leave' anchor='leave' altext='xdc.runtime.IGateProvider.leave' nodoc='0' external='1' overrides='0' readonly='0' instance='1' summary='Leave+this+gate'>
@@ -583,11 +583,11 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eleave%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Cspan+class%3D%22xdoc-kw2%22%3EIArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Ekey%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
                 </synopSpec>
                 <docSect name='ARGUMENTS'>
-                    <docChild name='key' summary='the+value+returned+by+a+matching+call+to%0A++++++++++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22IGateProvider.html%23enter%22+title%3D%22enter%22%3Eenter%3C%2Fa%3E%3C%2Ftt%3E'>
+                    <docChild name='key' summary='the+value+returned+by+a+matching+call+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22IGateProvider.html%23enter%22+title%3D%22enter%22%3Eenter%3C%2Fa%3E%3C%2Ftt%3E'>
                     </docChild>
                 </docSect>
                 <docSect name='details'>
-                    <docPara content='This+method+is+only+called+by+threads+that+have+previously+entered+%0A++this+gate+via+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22IGateProvider.html%23enter%22+title%3D%22enter%22%3Eenter%3C%2Fa%3E%3C%2Ftt%3E.++After+this+method+returns%2C+the%0A++caller+must+not+access+the+data+structure+protected+by+this+gate%0A++%28unless+the+caller+has+entered+the+gate+more+than+once+and+other%0A++calls+to+%3Ctt%3Eleave%3C%2Ftt%3E+remain+to+balance+the+number+of+previous%0A++calls+to+%3Ctt%3Eenter%3C%2Ftt%3E%29.'/>
+                    <docPara content='This+method+is+only+called+by+threads+that+have+previously+entered+this%0A++gate+via+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22IGateProvider.html%23enter%22+title%3D%22enter%22%3Eenter%3C%2Fa%3E%3C%2Ftt%3E.++After+this+method+returns%2C+the+caller+must%0A++not+access+the+data+structure+protected+by+this+gate+%28unless+the+caller%0A++has+entered+the+gate+more+than+once+and+other+calls+to+%3Ctt%3Eleave%3C%2Ftt%3E+remain%0A++to+balance+the+number+of+previous+calls+to+%3Ctt%3Eenter%3C%2Ftt%3E%29.'/>
                 </docSect>
             </decl>
             <decl spacer='1'/>
@@ -733,7 +733,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Emetaonly+%3C%2Fspan%3E%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
                 </synopSpec>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.IHeap.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -1060,7 +1060,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Emetaonly+%3C%2Fspan%3E%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
                 </synopSpec>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.ILogger.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -1355,7 +1355,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Emetaonly+%3C%2Fspan%3E%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
                 </synopSpec>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.IModule.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' metaonly='1'>
@@ -1511,7 +1511,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Emetaonly+%3C%2Fspan%3E%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
                 </synopSpec>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.ISystemSupport.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -1726,7 +1726,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Emetaonly+%3C%2Fspan%3E%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
                 </synopSpec>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.ITimestampClient.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -1748,7 +1748,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EBits32%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eget32%3C%2Fspan%3E%3C%2Fgo%3E%28++%29%3B'/>
                 </synopSpec>
                 <docSect name='returns'>
-                    <docPara content='Returns+a+32-bit+timestamp+value.++%0A++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22ITimestampClient.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+time.'/>
+                    <docPara content='Returns+a+32-bit+timestamp+value.%0A++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22ITimestampClient.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+time.'/>
                 </docSect>
                 <docSect name='see'>
                     <docPara content='%3Ca+class%3D%22xdoc-link%22+href%3D%22ITimestampClient.html%23get64%22+title%3D%22get64%22%3Eget64%3C%2Fa%3E'/>
@@ -1761,7 +1761,7 @@
                 <docSect name='ARGUMENTS'>
                     <docChild name='result' summary='pointer+to+64-bit+result'>
                         <docPara content='This+parameter+is+a+pointer+to+a+structure+representing+a+64-bit%0A++++++wide+timestamp+value+where+the+current+timestamp+is+written.'/>
-                        <docPara content='If+the+underlying+hardware+does+not+support+64-bit+resolution%2C+the%0A++++++%3Ctt%3Ehi%3C%2Ftt%3E+field+of+%3Ctt%3Eresult%3C%2Ftt%3E+is+always+set+to+0%3B+see%0A++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Timestamp64%22+title%3D%22xdc.runtime.Types.Timestamp64%22%3Exdc.runtime.Types.Timestamp64%3C%2Fa%3E%3C%2Ftt%3E.++So%2C+it+is+possible+for+%0A++++++the+%3Ctt%3Elo%3C%2Ftt%3E+field+to+wrap+around+without+any+change+to+the+%3Ctt%3Ehi%3C%2Ftt%3E+field.%0A++++++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22ITimestampClient.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+%0A++++++time.'/>
+                        <docPara content='If+the+underlying+hardware+does+not+support+64-bit+resolution%2C+the%0A++++++%3Ctt%3Ehi%3C%2Ftt%3E+field+of+%3Ctt%3Eresult%3C%2Ftt%3E+is+always+set+to+0%3B+see%0A++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Timestamp64%22+title%3D%22xdc.runtime.Types.Timestamp64%22%3Exdc.runtime.Types.Timestamp64%3C%2Fa%3E%3C%2Ftt%3E.++So%2C+it+is+possible+for%0A++++++the+%3Ctt%3Elo%3C%2Ftt%3E+field+to+wrap+around+without+any+change+to+the+%3Ctt%3Ehi%3C%2Ftt%3E+field.%0A++++++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22ITimestampClient.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real%0A++++++time.'/>
                     </docChild>
                 </docSect>
                 <docSect name='see'>
@@ -1925,7 +1925,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Emetaonly+%3C%2Fspan%3E%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
                 </synopSpec>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.ITimestampProvider.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -1947,7 +1947,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EBits32%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eget32%3C%2Fspan%3E%3C%2Fgo%3E%28++%29%3B'/>
                 </synopSpec>
                 <docSect name='returns'>
-                    <docPara content='Returns+a+32-bit+timestamp+value.++%0A++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22ITimestampProvider.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+time.'/>
+                    <docPara content='Returns+a+32-bit+timestamp+value.%0A++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22ITimestampProvider.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+time.'/>
                 </docSect>
                 <docSect name='see'>
                     <docPara content='%3Ca+class%3D%22xdoc-link%22+href%3D%22ITimestampProvider.html%23get64%22+title%3D%22get64%22%3Eget64%3C%2Fa%3E'/>
@@ -1960,7 +1960,7 @@
                 <docSect name='ARGUMENTS'>
                     <docChild name='result' summary='pointer+to+64-bit+result'>
                         <docPara content='This+parameter+is+a+pointer+to+a+structure+representing+a+64-bit%0A++++++wide+timestamp+value+where+the+current+timestamp+is+written.'/>
-                        <docPara content='If+the+underlying+hardware+does+not+support+64-bit+resolution%2C+the%0A++++++%3Ctt%3Ehi%3C%2Ftt%3E+field+of+%3Ctt%3Eresult%3C%2Ftt%3E+is+always+set+to+0%3B+see%0A++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Timestamp64%22+title%3D%22xdc.runtime.Types.Timestamp64%22%3Exdc.runtime.Types.Timestamp64%3C%2Fa%3E%3C%2Ftt%3E.++So%2C+it+is+possible+for+%0A++++++the+%3Ctt%3Elo%3C%2Ftt%3E+field+to+wrap+around+without+any+change+to+the+%3Ctt%3Ehi%3C%2Ftt%3E+field.%0A++++++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22ITimestampProvider.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+%0A++++++time.'/>
+                        <docPara content='If+the+underlying+hardware+does+not+support+64-bit+resolution%2C+the%0A++++++%3Ctt%3Ehi%3C%2Ftt%3E+field+of+%3Ctt%3Eresult%3C%2Ftt%3E+is+always+set+to+0%3B+see%0A++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Timestamp64%22+title%3D%22xdc.runtime.Types.Timestamp64%22%3Exdc.runtime.Types.Timestamp64%3C%2Fa%3E%3C%2Ftt%3E.++So%2C+it+is+possible+for%0A++++++the+%3Ctt%3Elo%3C%2Ftt%3E+field+to+wrap+around+without+any+change+to+the+%3Ctt%3Ehi%3C%2Ftt%3E+field.%0A++++++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22ITimestampProvider.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real%0A++++++time.'/>
                     </docChild>
                 </docSect>
                 <docSect name='see'>
@@ -2314,7 +2314,7 @@
                     <line tab='0' content='%3Cgo%3EAssert.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.Assert.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -2686,8 +2686,16 @@
                     <line tab='0' content='%3Cgo%3ECore.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
+            </decl>
+            <decl kind='config' name='noAsserts' anchor='no.Asserts' altext='xdc.runtime.Core.noAsserts' nodoc='0' external='0' overrides='0' readonly='0' instance='0' summary='' metaonly='1'>
+                <synopSpec>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Emetaonly+%3C%2Fspan%3E%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EBool%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EnoAsserts%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%253Cspan%2Bclass%253D%2522xdoc-kw2%2522%253Efalse%253C%252Fspan%253E%3B'/>
+                </synopSpec>
+                <synopMeta>
+                    <line tab='0' content='%3Cgo%3ECore.%3Cspan+class%3D%22xdoc-id%22%3EnoAsserts%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3EBool%3C%2Fspan%3E%3C%2Fi%3E+%253Cspan%2Bclass%253D%2522xdoc-kw2%2522%253Efalse%253C%252Fspan%253E%3B'/>
+                </synopMeta>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.Core.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
                 <synopSpec>
@@ -2745,7 +2753,7 @@
             <line tab='0' content='%3Cspan+class%3D%22xdoc-kw3%22%3E%23include%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-id%22%3E%26lt%3Bxdc%2Fruntime%2FDefaults.h%26gt%3B%3C%2Fspan%3E'/>
         </synopTarg>
         <docSect name='details'>
-            <docPara content='This+module+defines+default+values+for+%3Ctt%3Ecommon%24%3C%2Ftt%3E+structure.+If+other+%0A++modules+do+not+set+%3Ctt%3Ecommon%24%3C%2Ftt%3E+properties+explicitly%2C+these+values+will+be%0A++used.'/>
+            <docPara content='This+module+defines+default+values+for+%3Ctt%3Ecommon%24%3C%2Ftt%3E+structure.+If+other%0A++modules+do+not+set+%3Ctt%3Ecommon%24%3C%2Ftt%3E+properties+explicitly%2C+these+values+will+be%0A++used.'/>
         </docSect>
         <group name='local proxy modules'>
         </group>
@@ -3101,7 +3109,7 @@
                     <line tab='0' content='%257D%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                     <docPara content='This+structure+defines+the+default+values+for+the+configuration%0A++parameters+shared+by+all+modules+in+a+system.++Unless+otherwise%0A++noted%2C+setting+one+of+the+fields+defined+below+will+set+the%0A++corresponding+value+for+all+modules+in+the+system+which+have+not%0A++been+explicitly+set%3B+i.e.%2C+it+will+establish+a+default+value+for%0A++the+parameter.'/>
                     <docPara content='However%2C+the+modules+from+this+package+%28%3Ctt%3Exdc.runtime%3C%2Ftt%3E%29+are+an%0A++exception.+The+values+from+%3Ctt%3EDefault.common%24%3C%2Ftt%3E+are+not+copied+to%0A++%3Ctt%3Elogger%3C%2Ftt%3E+and+%3Ctt%3Ediags_%3C%2Ftt%3E+properties+of+%3Ctt%3Ecommon%24%3C%2Ftt%3E+in+%3Ctt%3Exdc.runtime%3C%2Ftt%3E%0A++modules.+The+property+%3Ctt%3Ediags_ASSERT%3C%2Ftt%3E+is+an+exception+to+that+exception.%0A++Its+value+from+%3Ctt%3EDefault.common%24%3C%2Ftt%3E+is+copied+to+all+modules+for+which%0A++%3Ctt%3Ediags_ASSERT%3C%2Ftt%3E+has+not+been+explicitly+set.'/>
                 </docSect>
@@ -3124,10 +3132,10 @@
                     <docPara content='Enables+logging+of+status+events%2C+such+as+error+and+warning+events.+%0A++Default+is+%3Ctt%3EALWAYS_ON%3C%2Ftt%3E.+Note+that+this+does+not+mean+that+logging+will%0A++occur+by+default--a+logger+instance+must+also+be+configured+for+the+%0A++module+in+order+for+events+to+be+logged.'/>
                 </docSect>
                 <docSect name='diags_INFO'>
-                    <docPara content='Enables+logging+of+generic+informational+events.+Default+is+%0A++%3Ctt%3EALWAYS_OFF%3C%2Ftt%3E.'/>
+                    <docPara content='Enables+logging+of+generic+informational+events.+Default+is%0A++%3Ctt%3EALWAYS_OFF%3C%2Ftt%3E.'/>
                 </docSect>
                 <docSect name='diags_ANALYSIS'>
-                    <docPara content='Enables+logging+of+analysis+events%2C+such+as+benchmarking+events.+%0A++Default+is+%3Ctt%3EALWAYS_OFF%3C%2Ftt%3E.'/>
+                    <docPara content='Enables+logging+of+analysis+events%2C+such+as+benchmarking+events.%0A++Default+is+%3Ctt%3EALWAYS_OFF%3C%2Ftt%3E.'/>
                 </docSect>
                 <docSect name='diags_USER'>
                     <docPara content='Each+%3Ctt%3Ediags_USER%3C%2Ftt%3E+field+controls+a+separate+user-defined%0A++logging+level.+Default+is+%3Ctt%3EALWAYS_OFF%3C%2Ftt%3E+for+all+%3Ctt%3Ediags_USER%3C%2Ftt%3E+fileds.'/>
@@ -3142,13 +3150,13 @@
                     <docPara content='Specify+heap+to+be+used+for+module+instances.+Default+is+%3Ctt%3Enull%3C%2Ftt%3E.%0A++If+%3Ctt%3EinstanceHeap%3C%2Ftt%3E+is+%3Ctt%3Enull%3C%2Ftt%3E%2C+instances+will+be+allocated+from%0A++the+heap+specified+by+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Memory.html%23default.Heap.Instance%22+title%3D%22Memory.defaultHeapInstance%22%3EMemory.defaultHeapInstance%3C%2Fa%3E%3C%2Ftt%3E.'/>
                 </docSect>
                 <docSect name='instanceSection'>
-                    <docPara content='Specify+section+to+be+used+to+place+module+instances.+Default+is%0A++%3Ctt%3Enull%3C%2Ftt%3E.'/>
+                    <docPara content='Specify+section+to+be+used+to+place+module+instances.+Default+is+%3Ctt%3Enull%3C%2Ftt%3E.'/>
                 </docSect>
                 <docSect name='logger'>
-                    <docPara content='Default+logger+used+by+modules+to+write+logs.+By+default+there+is+%0A++no+logger.'/>
+                    <docPara content='Default+logger+used+by+modules+to+write+logs.+By+default+there+is%0A++no+logger.'/>
                 </docSect>
                 <docSect name='memoryPolicy'>
-                    <docPara content='Used+to+specify+type+of+application.+%3Ctt%3ETypes.STATIC_POLICY%3C%2Ftt%3E+is+used+when%0A++all+objects+are+created+statically.+%3Ctt%3ETypes.CREATE_POLICY%3C%2Ftt%3E+is+used+when+%0A++the+application+creates+objects+at+runtime.+%3Ctt%3ETypes.DELETE_POLICY%3C%2Ftt%3E+is%0A++used+when+the+application+creates+and+deletes+objects+at+runtime.+This%0A++helps+eliminate+unwanted+create+and+delete+code.'/>
+                    <docPara content='Used+to+specify+type+of+application.+%3Ctt%3ETypes.STATIC_POLICY%3C%2Ftt%3E+is+used+when%0A++all+objects+are+created+statically.+%3Ctt%3ETypes.CREATE_POLICY%3C%2Ftt%3E+is+used+when%0A++the+application+creates+objects+at+runtime.+%3Ctt%3ETypes.DELETE_POLICY%3C%2Ftt%3E+is%0A++used+when+the+application+creates+and+deletes+objects+at+runtime.+This%0A++helps+eliminate+unwanted+create+and+delete+code.'/>
                 </docSect>
                 <docSect name='namedInstance'>
                     <docPara content='This+parameter+should+be+set+to+%3Ctt%3Etrue%3C%2Ftt%3E+if+space+needs+to+be+allocated+in%0A++instance+objects+for+instance+names.+Allocating+space+for+a+name%0A++allows+object+view+tools+to+display+the+names.+The+runtime+functions%0A++%3Ctt%3EMod_Handle_name%28%29%3C%2Ftt%3E+and+%3Ctt%3EMod_Handle_label%28%29%3C%2Ftt%3E+defined+for+each+module%0A++%3Ctt%3EMod%3C%2Ftt%3E+can+be+used+to+retrieve+the+name+at+runtime.'/>
@@ -3928,7 +3936,7 @@
                     <line tab='0' content='%3Cgo%3EDiags.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.Diags.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -4149,7 +4157,7 @@
             <docPara content='Example+4%3A+The+following+C+code+shows+that+you+may+pass+a+special+constant%0A++%3Ctt%3EError_IGNORE%3C%2Ftt%3E+in+place+of+an+error+block+to+a+function+requiring+an+error%0A++block.+The+purpose+of+this+constant+is+to+avoid+allocating+an+error+block+on%0A++stack+in+the+use+case+where+the+caller+is+not+checking+the+error+block+after%0A++the+call+returns.%0A++In+this+example%2C+the+caller+only+checks+the+returned+value+but+not+the+error%0A++block.+If+the+function+raises+an+error%2C+the+program+will+return+to+the%0A++caller%2C+assuming+%3Ctt%3EError_policy%3C%2Ftt%3E+is+set+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.Policy%22+title%3D%22Policy%22%3EUNWIND%3C%2Fa%3E%3C%2Ftt%3E.'/>
             <docPara content='%3CPRE+class%3D%22Example%22%3E++%23include+%26lt%3Bxdc%2Fruntime%2FError.h%26gt%3B%0A++%23include+%26lt%3Bti%2Fsysbios%2Fknl%2FTask.h%26gt%3B%0A%0A++tsk+%3D+Task_create%28...%2C+Error_IGNORE%29%3B%0A++if+%28tsk+%21%3D+NULL%29+%7B%0A++++++...%0A++%7D%0A%3C%2FPRE%3E'/>
             <docPara content='%3Chr+%2F%3E'/>
-            <docPara content='Example+5%3A+The+following+C+code+shows+how+to+write+a+function+that%0A++is+not+part+of+a+module+and+that+takes+an+error+block+and+raises%0A++the+generic+error+type+provided+by+the+Error+module.+Note%2C+if+the%0A++caller+passes+%3Ctt%3EError_ABORT%3C%2Ftt%3E+for+the+error+block+or+if+the+error+policy+is%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.Policy%22+title%3D%22Policy%22%3ETERMINATE%3C%2Fa%3E%3C%2Ftt%3E%2C+then+the+call+to%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3EError_raise%28%29%3C%2Fa%3E%3C%2Ftt%3E+will+call%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23abort%22+title%3D%22System.abort%22%3Exdc_runtime_System_abort%28%29%3C%2Fa%3E%3C%2Ftt%3E+and+never+return.'/>
+            <docPara content='Example+5%3A+The+following+C+code+shows+how+to+write+a+function+that+is+not+a%0A++part+of+a+module.+The+function+accepts+an+error+block+as+a+parameter+and%0A++raises+an+error+of+the+generic+error+type+provided+by+the+Error+module.%0A++Note+that+if+the+caller+passes+%3Ctt%3EError_ABORT%3C%2Ftt%3E+for+the+error+block+or+if+the%0A++error+policy+is+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.Policy%22+title%3D%22Policy%22%3ETERMINATE%3C%2Fa%3E%3C%2Ftt%3E%2C+then+the+call+to%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3EError_raise%28%29%3C%2Fa%3E%3C%2Ftt%3E+will+call%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23abort%22+title%3D%22System.abort%22%3Exdc_runtime_System_abort%28%29%3C%2Fa%3E%3C%2Ftt%3E+and+never+return.'/>
             <docPara content='%3CPRE+class%3D%22Example%22%3E++%23include+%26lt%3Bxdc%2Fruntime%2FError.h%26gt%3B%0A%0A++Void+myFunc%28...%2C+Error_Block+*eb%29%0A++%7B%0A++++++...%0A%0A++++++if+%28...error+condition+detected...%29+%7B%0A++++++++++String++myErrorMsg+%3D+%22my+custom+error+message%22%3B%0A++++++++++Error_raise%28eb%2C+Error_E_generic%2C+myErrorMsg%2C+0%29%3B%0A++++++++++...add+error+handling+code+here...%0A++++++++++return%3B%0A++++++%7D%0A++%7D%0A%3C%2FPRE%3E'/>
         </docSect>
         <group name='local proxy modules'>
@@ -4226,7 +4234,7 @@
                 </docSect>
             </decl>
             <decl spacer='1'/>
-            <decl kind='typedef' name='HookFxn' anchor='.Hook.Fxn' altext='xdc.runtime.Error.HookFxn' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Function+called+whenever+an+error+is+raised'>
+            <decl kind='typedef' name='HookFxn' anchor='.Hook.Fxn' altext='xdc.runtime.Error.HookFxn' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Function+type+for+a+function+called+whenever+an+error+is+raised'>
                 <synopSpec>
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Etypedef%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%28*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EHookFxn%3C%2Fspan%3E%3C%2Fgo%3E%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FError.html%23.Block%22+title%3D%22xdc.runtime.Error.Block%22%3EError.Block%3C%2Fa%3E*%29%3B'/>
                 </synopSpec>
@@ -4234,7 +4242,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Etypedef%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%28*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EError_HookFxn%3C%2Fspan%3E%3C%2Fgo%3E%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FError.html%23.Block%22+title%3D%22xdc.runtime.Error.Block%22%3EError_Block%3C%2Fa%3E*%29%3B'/>
                 </synopTarg>
                 <docSect name='details'>
-                    <docPara content='The+first+parameter+and+only+parameter+passed+to+this+function+is+a%0A++pointer+to+an+%3Ctt%3EError_Block%3C%2Ftt%3E.++Even+if+the+client+passes+a+%3Ctt%3ENULL%3C%2Ftt%3E+error%0A++block+pointer+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3EError_raise%3C%2Fa%3E%3C%2Ftt%3E%2C+this+parameter+passed+%0A++to+this+%22hook%22+function+is+always+%3Ctt%3Enon-NULL%3C%2Ftt%3E.'/>
+                    <docPara content='The+only+parameter+passed+to+a+function+of+this+type+is+a++pointer+to+an%0A++%3Ctt%3EError_Block%3C%2Ftt%3E.++Even+if+the+client+passes+a+%3Ctt%3ENULL%3C%2Ftt%3E+error+block+pointer%0A++to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3EError_raise%3C%2Fa%3E%3C%2Ftt%3E%2C+the+function+%3Ctt%3EError_raise%3C%2Ftt%3E+will%0A++ensure+that+the+argument+passed+to+this+%22hook%22+function+is+always%0A++%3Ctt%3Enon-NULL%3C%2Ftt%3E.'/>
                 </docSect>
             </decl>
             <decl kind='typedef' name='Id' anchor='.Id' altext='xdc.runtime.Error.Id' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Error+identifier'>
@@ -4260,7 +4268,7 @@
                 </synopTarg>
                 <docSect name='Parameters'>
                     <docPara content='A+policy+function+is+passed+the+following+parameters%3A'/>
-                    <docPara content='%3CDL%3E%3CDT%3E+%3Ctt%3Eeb%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++A+pointer+to+an+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.Block%22+title%3D%22Block%22%3EError_Block%3C%2Fa%3E%3C%2Ftt%3E+structure+to+be%0A++++++++initialized+using+the+subsequent+arguments.++This+pointer+may+%0A++++++++be+%3Ctt%3ENULL%3C%2Ftt%3E.%0A%3C%2FDD%3E%3CDT%3E+%3Ctt%3EmodId%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++The+module+ID+of+the+module+calling%0A++++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3EError_raise%28%29%3C%2Fa%3E%3C%2Ftt%3E%0A%3C%2FDD%3E%3CDT%3E+%3Ctt%3EfileName%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++A+string+naming+the+source+file+which+made+the+call+to%0A++++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3EError_raise%28%29%3C%2Fa%3E%3C%2Ftt%3E%0A%3C%2FDD%3E%3CDT%3E+%3Ctt%3ElineNumber%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++An+integer+line+number+within+the+file+named+above+where%0A++++++++the+call+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3EError_raise%28%29%3C%2Fa%3E%3C%2Ftt%3E+occured%0A%3C%2FDD%3E%3CDT%3E+%3Ctt%3EerrId%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++The+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.Id%22+title%3D%22Id%22%3EError_Id%3C%2Fa%3E%3C%2Ftt%3E+of+the+error+being+raised%0A%3C%2FDD%3E%3CDT%3E+%3Ctt%3Earg1%3C%2Ftt%3E+and+%3Ctt%3Earg2%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++Two+%3Ctt%3EIArg%3C%2Ftt%3E+arguments+associated+with+the+error+being+raised%0A%3C%2FDD%3E%3C%2FDL%3E'/>
+                    <docPara content='%3CDL%3E%3CDT%3E+%3Ctt%3Eeb%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++A+pointer+to+an+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.Block%22+title%3D%22Block%22%3EError_Block%3C%2Fa%3E%3C%2Ftt%3E+structure+to+be%0A++++++++initialized+using+the+subsequent+arguments.++This+pointer+may%0A++++++++be+%3Ctt%3ENULL%3C%2Ftt%3E.%0A%3C%2FDD%3E%3CDT%3E+%3Ctt%3EmodId%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++The+module+ID+of+the+module+calling%0A++++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3EError_raise%28%29%3C%2Fa%3E%3C%2Ftt%3E%0A%3C%2FDD%3E%3CDT%3E+%3Ctt%3EfileName%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++A+string+naming+the+source+file+which+made+the+call+to%0A++++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3EError_raise%28%29%3C%2Fa%3E%3C%2Ftt%3E%0A%3C%2FDD%3E%3CDT%3E+%3Ctt%3ElineNumber%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++An+integer+line+number+within+the+file+named+above+where%0A++++++++the+call+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3EError_raise%28%29%3C%2Fa%3E%3C%2Ftt%3E+occured%0A%3C%2FDD%3E%3CDT%3E+%3Ctt%3EerrId%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++The+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.Id%22+title%3D%22Id%22%3EError_Id%3C%2Fa%3E%3C%2Ftt%3E+of+the+error+being+raised%0A%3C%2FDD%3E%3CDT%3E+%3Ctt%3Earg1%3C%2Ftt%3E+and+%3Ctt%3Earg2%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++Two+%3Ctt%3EIArg%3C%2Ftt%3E+arguments+associated+with+the+error+being+raised%0A%3C%2FDD%3E%3C%2FDL%3E'/>
                 </docSect>
             </decl>
             <decl spacer='1'/>
@@ -4293,7 +4301,7 @@
                     <line tab='0' content='%7D+%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EError_Data%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
                 </synopTarg>
                 <docSect name='details'>
-                    <docPara content='The+two+arguments+%28arg1%2C+arg2%29+passed+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3Eraise%3C%2Fa%3E%3C%2Ftt%3E+are+%0A++stored+in+one+of+these+arrays+within+the+associated+Error_Block.%0A++To+access+these+arguments+use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23get.Data%22+title%3D%22getData%22%3EgetData%3C%2Fa%3E%3C%2Ftt%3E+to+obtain+a+%0A++pointer+to+the+Error_Block%27s+Data+array.'/>
+                    <docPara content='The+two+arguments+%28arg1%2C+arg2%29+passed+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3Eraise%3C%2Fa%3E%3C%2Ftt%3E+are+stored%0A++within+the+associated+Error_Block.+To+access+these+arguments+use%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23get.Data%22+title%3D%22getData%22%3EgetData%3C%2Fa%3E%3C%2Ftt%3E+to+obtain+a+pointer+to+the+Error_Block%27s+Data+array.'/>
                 </docSect>
                 <docSect name='see'>
                     <docPara content='%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23get.Data%22+title%3D%22getData%22%3EgetData%3C%2Fa%3E'/>
@@ -4314,7 +4322,7 @@
                     <line tab='1' content='%3Ci%3Eobj%3C%2Fi%3E.%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Ecode%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3EUInt16%3C%2Fspan%3E%3C%2Fi%3E%3Cb%3E%26nbsp%3B%26nbsp%3B...%3C%2Fb%3E'/>
                 </synopMeta>
                 <docSect name='FIELDS'>
-                    <docChild name='msg' summary='The+error+message+using+a+%3Ctt%3Eprintf%3C%2Ftt%3E+style+format+string%2C+%0A++++++++++++++but+limited+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.N.U.M.A.R.G.S%22+title%3D%22NUMARGS%22%3ENUMARGS%3C%2Fa%3E%3C%2Ftt%3E+arguments.%0A++++++++++++++This+format+string+together+with+the+two+arguments+passed%0A++++++++++++++to+%3Ctt%3EError_raise%3C%2Ftt%3E%60+are+used+to+create+a+human+readable%0A++++++++++++++error+message.'>
+                    <docChild name='msg' summary='The+error+message+using+a+%3Ctt%3Eprintf%3C%2Ftt%3E+style+format+string%2C%0A++++++++++++++but+limited+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.N.U.M.A.R.G.S%22+title%3D%22NUMARGS%22%3ENUMARGS%3C%2Fa%3E%3C%2Ftt%3E+arguments.%0A++++++++++++++This+format+string+together+with+the+two+arguments+passed%0A++++++++++++++to+%3Ctt%3EError_raise%3C%2Ftt%3E%60+are+used+to+create+a+human+readable%0A++++++++++++++error+message.'>
                     </docChild>
                     <docChild name='code' summary='A+user+assignable+code%2C+0+by+default.+The+user+may%0A++++++++++++++optionally+set+this+field+during+config+to+give+the%0A++++++++++++++error+a+well-known+numeric+code.'>
                     </docChild>
@@ -4658,8 +4666,9 @@
                 <docSect name='details'>
                     <docPara content='This+function+is+called+to+handle+all+raised+errors+but%2C+unlike%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2FraiseHook%2Fpackage.html%22+title%3D%22raiseHook%22%3EraiseHook%3C%2Fa%3E%3C%2Ftt%3E%2C+this+function+is+responsible+for+completely%0A++handling+the+error+%28including+calling+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise.Hook%22+title%3D%22raiseHook%22%3EraiseHook%3C%2Fa%3E%3C%2Ftt%3E%0A++with+an+appropriately+initialized+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.Block%22+title%3D%22Block%22%3EError_Block%3C%2Fa%3E%3C%2Ftt%3E%2C+if%0A++%3Ctt%3EraiseHook%3C%2Ftt%3E+functionality+is+required%29.'/>
                     <docPara content='The+default+value+is+a+function+which%2C+in+addition+to+calling%0A++%3Ctt%3EraiseHook%3C%2Ftt%3E+with+an+initialized+%3Ctt%3EError_Block%3C%2Ftt%3E+structure%2C+logs+the%0A++error+using+this+module%27s+logger.'/>
-                    <docPara content='Alternately%2C+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23policy.Spin%22+title%3D%22policySpin%22%3EpolicySpin%3C%2Fa%3E%3C%2Ftt%3E%2C+which+simply+loops%0A++indefinitely%2C+can+be+used+to+minimize+target+footprint.++Note%2C+this%0A++function+does+NOT+call+%3Ctt%3EraiseHook%3C%2Ftt%3E%2C+and+also+ignores%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23policy%22+title%3D%22Error.policy%22%3EError.policy%3C%2Fa%3E%3C%2Ftt%3E.'/>
+                    <docPara content='Alternately%2C+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23policy.Spin%22+title%3D%22policySpin%22%3EpolicySpin%3C%2Fa%3E%3C%2Ftt%3E%2C+which+simply+loops+indefinitely%2C+can%0A++be+used+to+minimize+target+footprint.++Note%2C+this+function+does+NOT+call%0A++%3Ctt%3EraiseHook%3C%2Ftt%3E%2C+and+also+ignores+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23policy%22+title%3D%22Error.policy%22%3EError.policy%3C%2Fa%3E%3C%2Ftt%3E.'/>
                     <docPara content='The+third+implementation%2C+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23policy.Min%22+title%3D%22policyMin%22%3EpolicyMin%3C%2Fa%3E%3C%2Ftt%3E+finds+a+middle+ground%0A++between+the+two+implementations+above+in+terms+of+memory+footprint+and%0A++the+available+error+information.+Only+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.Id%22+title%3D%22Id%22%3EError_Id%3C%2Fa%3E%3C%2Ftt%3E+of+the%0A++error+being+raised+is+available+in+the+resulting+%3Ctt%3EError_Block%3C%2Ftt%3E%2C%0A++%3Ctt%3EraiseHook%3C%2Ftt%3E+is+not+invoked%2C+but+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23policy%22+title%3D%22Error.policy%22%3EError.policy%3C%2Fa%3E%3C%2Ftt%3E+is%0A++observed.'/>
+                    <docPara content='Implementations+of+%3Ctt%3EpolicyFxn%3C%2Ftt%3E+are+allowed+to+ignore+%3Ctt%3EError.policy%3C%2Ftt%3E+and%0A++the+special+%3Ctt%3EError_Block%3C%2Ftt%3E+constants+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.I.G.N.O.R.E%22+title%3D%22IGNORE%22%3EIGNORE%3C%2Fa%3E%3C%2Ftt%3E+and%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.A.B.O.R.T%22+title%3D%22ABORT%22%3EABORT%3C%2Fa%3E%3C%2Ftt%3E%2C+as+well+as+NULL%2C+passed+instead+of+an+initialized%0A++%3Ctt%3EError_Block%3C%2Ftt%3E.+However%2C+it+is+recommended+to+observe+as+much+as%0A++possible+these+special+cases+in+order+to+make+the+code+invoking%0A++%3Ctt%3EError_raise%3C%2Ftt%3E+independent+from+%3Ctt%3EpolicyFxn%3C%2Ftt%3E+implementations.%0A++For+example%2C+the+SYS%2FBIOS+kernel+assumes+all+%3Ctt%3EError_raise%3C%2Ftt%3E+calls+with%0A++NULL+%3Ctt%3EError_Block%3C%2Ftt%3E+are+going+to+terminate+the+application.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='raiseHook' anchor='raise.Hook' altext='xdc.runtime.Error.raiseHook' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='The+function+to+call+whenever+an+error+is+raised'>
@@ -4674,7 +4683,7 @@
                 </synopTarg>
                 <docSect name='details'>
                     <docPara content='If+set+to+a+non-%3Ctt%3Enull%3C%2Ftt%3E+value%2C+the+referenced+function+is+always%0A++called+when+an+error+is+raised%2C+even+if+the+%3Ctt%3EError%3C%2Ftt%3E+policy+is%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23.Policy%22+title%3D%22Policy%22%3ETERMINATE%3C%2Fa%3E%3C%2Ftt%3E.++In+rare+cases%2C+it+is+possible+that+a%0A++raised+error+does+not+trigger+a+call+to+%3Ctt%3EraiseHook%3C%2Ftt%3E%3B+see%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23max.Depth%22+title%3D%22maxDepth%22%3EmaxDepth%3C%2Fa%3E%3C%2Ftt%3E.'/>
-                    <docPara content='Regardless+of+the+current+policy+in+use%2C+raising+an+error+by%0A++calling+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3EError_raise%3C%2Fa%3E%3C%2Ftt%3E+will+always+invoke+the%0A++error+raise+hook+function+assigned+to+the%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise.Hook%22+title%3D%22raiseHook%22%3EError.raiseHook%3C%2Fa%3E%3C%2Ftt%3E+configuration+parameter%2C+if+the%0A++default+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23policy.Fxn%22+title%3D%22Error.policyFxn%22%3EError.policyFxn%3C%2Fa%3E%3C%2Ftt%3E+implementation+is%0A++used.'/>
+                    <docPara content='Regardless+of+the+current+policy+in+use%2C+raising+an+error+by+calling%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise%22+title%3D%22raise%22%3EError_raise%3C%2Fa%3E%3C%2Ftt%3E+will+always+invoke+the+error+raise+hook%0A++function+assigned+to+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23raise.Hook%22+title%3D%22raiseHook%22%3EError.raiseHook%3C%2Fa%3E%3C%2Ftt%3E%0A++configuration+parameter%2C+if+the+default%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23policy.Fxn%22+title%3D%22Error.policyFxn%22%3EError.policyFxn%3C%2Fa%3E%3C%2Ftt%3E+implementation+is+used.'/>
                     <docPara content='By+default%2C+this+function+is+set+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%23print%22+title%3D%22print%22%3EError_print%3C%2Fa%3E%3C%2Ftt%3E%0A++which+causes+the+error+to+be+formatted+and+output+via%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FSystem.html%23aprintf%22+title%3D%22xdc.runtime.System.aprintf%22%3ESystem_printf%3C%2Fa%3E%3C%2Ftt%3E.++Setting+this%0A++configuration+parameter+to+%3Ctt%3Enull%3C%2Ftt%3E+indicates+that+no+function+hook%0A++should+be+called.'/>
                 </docSect>
                 <docSect name='see'>
@@ -4690,7 +4699,7 @@
                     <line tab='0' content='%3Cgo%3EError.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.Error.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -4993,13 +5002,13 @@
             <line tab='0' content='%3Cspan+class%3D%22xdoc-kw3%22%3E%23include%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-id%22%3E%26lt%3Bxdc%2Fruntime%2FGate.h%26gt%3B%3C%2Fspan%3E'/>
         </synopTarg>
         <docSect name='details'>
-            <docPara content='Gates+are+used+by+clients+to+protect+concurrent+access+to+critical%0A++data+structures.++Critical+data+structures+are+those+that+must+be%0A++updated+by+at+most+one+thread+at+a+time.++All+code+that+needs+access%0A++to+a+critical+data+structure+%22enters%22+a+gate+%28that%27s+associated+with+the%0A++data+structure%29+prior+to+accessing+the+data%2C+modifies+the+data+structure%2C%0A++then+%22leaves%22+the+gate.'/>
-            <docPara content='A+gate+is+responsible+for+ensuring+that+at+most+one+thread+at+a+time%0A++can+enter+and+execute+%22inside%22+the+gate.++There+are+several%0A++implementations+of+gates%2C+with+different+system+executation+times+and%0A++latency+tradoffs.++In+addition%2C+some+gates+must+not+be+entered+by+certain%0A++thread+types%3B+e.g.%2C+a+gate+that+is+implemented+via+a+%22blocking%22+semaphore%0A++must+not+be+called+by+an+interrupt+service+routine+%28ISR%29.'/>
+            <docPara content='Gates+are+used+by+clients+to+protect+concurrent+access+to+critical+data%0A++structures.++Critical+data+structures+are+those+that+must+be+updated+by+at%0A++most+one+thread+at+a+time.++All+code+that+needs+access+to+a+critical+data%0A++structure+%22enters%22+a+gate+%28that%27s+associated+with+the+data+structure%29+prior%0A++to+accessing+the+data%2C+modifies+the+data+structure%2C+then+%22leaves%22+the+gate.'/>
+            <docPara content='A+gate+is+responsible+for+ensuring+that+at+most+one+thread+at+a+time+can%0A++enter+and+execute+%22inside%22+the+gate.++There+are+several+implementations+of%0A++gates%2C+with+different+system+execution+times+and+latency+tradoffs.%0A++In+addition%2C+some+gates+must+not+be+entered+by+certain+thread+types%3B+e.g.%2C%0A++a+gate+that+is+implemented+via+a+%22blocking%22+semaphore++must+not+be+called+by%0A++an+interrupt+service+routine+%28ISR%29.'/>
             <docPara content='A+module+can+be+declared+%22gated%22+by+adding+the+%3Ctt%3E%40Gated%3C%2Ftt%3E+attribute+to+the%0A++module%27s+XDC+spec+file.++A+%22gated%22+module+is+assigned+a+module-level+gate%0A++at+the+configuration+time%2C+and+that+gate+is+then+used+to+protect+critical%0A++sections+in+the+module%27s+target+code.+A+module-level+gate+is+an+instance+of%0A++a+module+implementing+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22IGateProvider.html%22+title%3D%22IGateProvider%22%3EIGateProvider%3C%2Fa%3E%3C%2Ftt%3E+interface.+However%2C+gated%0A++modules+do+not+access+their+module-level+gates+directly.+They+use+this%0A++module+to+access+transparently+their+module-level+gate.'/>
             <docPara content='Application+code+that+is+not+a+part+of+any+module+also+has+a%0A++module-level+gate%2C+configured+through+the+module+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Main.html%22+title%3D%22Main%22%3EMain%3C%2Fa%3E%3C%2Ftt%3E.'/>
-            <docPara content='Each+gated+module+can+optionally+create+gates+on+an+adhoc+basis+at%0A++runtime+using+the+same+gate+module+that+was+used+to+create+the+module%0A++level+gate.'/>
-            <docPara content='Gates+that+work+by+disabling+all+preemption+while+inside+a+gate+can+be%0A++used+to+protect+data+structures+accessed+by+ISRs+and+other%0A++threads.++But%2C+if+the+time+required+to+update+the+data+structure+is+not%0A++a+small+constant%2C+this+type+of+gate+may+violate+a+system%27s+real-time%0A++requirements.'/>
-            <docPara content='Gates+have+two+orthogonal+attributes%3A+%22blocking%22+and+%22preemptible%22.%0A++In+general%2C+gates+that+are+%22blocking%22+can+not+be+use+by+code+that+is%0A++called+by+ISRs+and+gates+that+are+not+%22preemptible%22+should+only+be+used+to%0A++to+protect+data+manipulated+by+code+that+has+small+constant+execution%0A++time.'/>
+            <docPara content='Each+gated+module+can+optionally+create+gates+on+an+adhoc+basis+at+runtime%0A++using+the+same+gate+module+that+was+used+to+create+the+module+level+gate.'/>
+            <docPara content='Gates+that+work+by+disabling+all+preemption+while+inside+a+gate+can+be%0A++used+to+protect+data+structures+accessed+by+ISRs+and+other+threads.%0A++But%2C+if+the+time+required+to+update+the+data+structure+is+not+a+small%0A++constant%2C+this+type+of+gate+may+violate+a+system%27s+real-time+requirements.'/>
+            <docPara content='Gates+have+two+orthogonal+attributes%3A+%22blocking%22+and+%22preemptible%22.%0A++In+general%2C+gates+that+are+%22blocking%22+can+not+be+used+by+code+that+is+called%0A++by+ISRs+and+gates+that+are+not+%22preemptible%22+should+only+be+used+to+protect%0A++data+manipulated+by+code+that+has+small+constant+execution+time.'/>
         </docSect>
         <group name='local proxy modules'>
         </group>
@@ -5240,7 +5249,7 @@
                     <line tab='0' content='%3Cgo%3EGate.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.Gate.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -5276,7 +5285,7 @@
                     </docChild>
                 </docSect>
                 <docSect name='details'>
-                    <docPara content='This+method+is+used+by+modules+to+create+gates+at+runtime+using%0A++the+same+%3Ctt%3EIGateProvider%3C%2Ftt%3E+that+was+used+to+create+the+module%0A++level+gate.++The+parameters+passed+to+the+%3Ctt%3EIGateProvider%3C%2Ftt%3E+are%0A++specified+at+configuration+time+via+the%0A+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Types.html%23.Common%24%22+title%3D%22Types.Common%24%22%3ETypes.Common%24.gateParams%3C%2Fa%3E%3C%2Ftt%3E%0A++configuration+parameter.'/>
+                    <docPara content='This+method+is+used+by+modules+to+create+gates+at+runtime+using+the+same%0A++%3Ctt%3EIGateProvider%3C%2Ftt%3E+that+was+used+to+create+the+module+level+gate.%0A++The+parameters+passed+to+the+%3Ctt%3EIGateProvider%3C%2Ftt%3E+are+specified+at+the%0A++configuration+time+via+the%0A+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Types.html%23.Common%24%22+title%3D%22Types.Common%24%22%3ETypes.Common%24.gateParams%3C%2Fa%3E%3C%2Ftt%3E+configuration+parameter.'/>
                 </docSect>
                 <docSect name='returns'>
                     <docPara content='Non-%3Ctt%3ENULL%3C%2Ftt%3E+instance+handle+is+returned+if+no+error+occurs%3B+otherwise%0A++an+error+is+raised+in+%3Ctt%3Eeb%3C%2Ftt%3E+and+%3Ctt%3ENULL%3C%2Ftt%3E+is+returned.'/>
@@ -5293,7 +5302,7 @@
                     <line tab='0' content='%3Ci%3Emacro%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EBool%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EGate_canBePreempted%3C%2Fspan%3E%3C%2Fgo%3E%28++%29%3B'/>
                 </synopTarg>
                 <docSect name='details'>
-                    <docPara content='This+type+of+gate+should+always+be+used+by+clients+that+protect%0A++a+data+structure+whose+updates+require+more+than+a+small%0A++constant+amount+of+time%3B+e.g.%2C+update+of+a+memory+allocator%27s+free%0A++list.'/>
+                    <docPara content='This+type+of+gate+should+always+be+used+by+clients+that+protect+a+data%0A++structure+whose+updates+require+more+than+a+small+constant+amount+of%0A++time%3B+e.g.%2C+update+of+a+memory+allocator%27s+free+list.'/>
                 </docSect>
                 <docSect name='returns'>
                     <docPara content='Returns+%3Ctt%3ETRUE%3C%2Ftt%3E+if+the+underlying+gate+does+not+disable%0A++++++++++++++thread+preemption.'/>
@@ -5307,7 +5316,7 @@
                     <line tab='0' content='%3Ci%3Emacro%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EBool%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EGate_canBlock%3C%2Fspan%3E%3C%2Fgo%3E%28++%29%3B'/>
                 </synopTarg>
                 <docSect name='details'>
-                    <docPara content='This+type+of+gate+should+never+be+called+by+clients+that+must+never%0A++call+a+%22blocking%22+RTOS+operation%3B+e.g.%2C+interrupt+service%0A++routines'/>
+                    <docPara content='This+type+of+gate+should+never+be+called+by+clients+that+must+never+call%0A++a+%22blocking%22+RTOS+operation%3B+e.g.%2C+interrupt+service+routines'/>
                 </docSect>
                 <docSect name='returns'>
                     <docPara content='Returns+%3Ctt%3ETRUE%3C%2Ftt%3E+if+the+underlying+gatekeeper%27s+gate+can%0A++++++++++++++block'/>
@@ -5430,7 +5439,7 @@
                     <docChild name='stateObj' summary='the+state+object+for+the+instance+being+created'>
                     </docChild>
                     <docChild name='fldName' summary='a+name+of+a+field+within+the+state+object'>
-                        <docPara content='This+parameter+names+a+field+that+will+point+to+the+created+gate%0A++++++instance+to+be+created.+It+is+a+caller%27s+responsibility%0A++++++to+ensure+that+the+type+of+%3Ctt%3EfldName%3C%2Ftt%3E+is+a+handle+to+an+%0A++++++%3Ctt%3EIGateProvider%3C%2Ftt%3E+instance.'/>
+                        <docPara content='This+parameter+names+a+field+that+will+point+to+the+created+gate%0A++++++instance+to+be+created.+It+is+a+caller%27s+responsibility+to+ensure%0A++++++that+the+type+of+%3Ctt%3EfldName%3C%2Ftt%3E+is+a+handle+to+an+%3Ctt%3EIGateProvider%3C%2Ftt%3E%0A++++++instance.'/>
                     </docChild>
                 </docSect>
                 <docSect name='details'>
@@ -5490,7 +5499,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw3%22%3E%23define%3C%2Fspan%3E+%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EGateNull_Q_BLOCKING%3C%2Fspan%3E%3C%2Fgo%3E++%28%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3EInt%3C%2Fspan%3E%3C%2Fi%3E%291'/>
                 </synopTarg>
                 <docSect name='details'>
-                    <docPara content='Gates+with+this+%22quality%22+may+cause+the+calling+thread+to+block%3B+%0A++i.e.%2C+suspend+execution+until+another+thread+leaves+the+gate.'/>
+                    <docPara content='Gates+with+this+%22quality%22+may+cause+the+calling+thread+to+block%3B%0A++i.e.%2C+suspend+execution+until+another+thread+leaves+the+gate.'/>
                 </docSect>
             </decl>
             <decl kind='const' name='Q_PREEMPTING' anchor='.Q_.P.R.E.E.M.P.T.I.N.G' altext='xdc.runtime.GateNull.Q_PREEMPTING' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Preempting+quality' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIGateProvider.html%23.Q_.P.R.E.E.M.P.T.I.N.G%22+title%3D%22xdc.runtime.IGateProvider.Q_PREEMPTING%22%3EIGateProvider%3C%2Fa%3E'>
@@ -5746,7 +5755,7 @@
                     <line tab='0' content='%3Cgo%3EGateNull.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.GateNull.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -5892,11 +5901,11 @@
                     </docChild>
                 </docSect>
                 <docSect name='details'>
-                    <docPara content='Each+gate+provider+can+implement+mutual+exclusion+using+different%0A++algorithms%3B+e.g.%2C+disabling+all+scheduling%2C+disabling+the+scheduling%0A++of+all+threads+below+a+specified+%22priority+level%22%2C+suspending+the%0A++caller+when+the+gate+has+been+entered+by+another+thread+and%0A++re-enabling+it+when+the+the+other+thread+leaves+the+gate.++However%2C%0A++in+all+cases%2C+after+this+method+returns+that+caller+has+exclusive%0A++access+to+the+data+protected+by+this+gate.'/>
+                    <docPara content='Each+gate+provider+can+implement+mutual+exclusion+using+different%0A++algorithms%3B+e.g.%2C+disabling+all+scheduling%2C+disabling+the+scheduling%0A++of+all+threads+below+a+specified+%22priority+level%22%2C+suspending+the+caller%0A++when+the+gate+has+been+entered+by+another+thread+and+re-enabling+it+when%0A++the+the+other+thread+leaves+the+gate.++However%2C+in+all+cases%2C+after+this%0A++method+returns+that+caller+has+exclusive+access+to+the+data+protected+by%0A++this+gate.'/>
                     <docPara content='A+thread+may+reenter+a+gate+without+blocking+or+failing.'/>
                 </docSect>
                 <docSect name='returns'>
-                    <docPara content='Returns+a+%22key%22+that+is+used+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22GateNull.html%23leave%22+title%3D%22leave%22%3Eleave%3C%2Fa%3E%3C%2Ftt%3E+this+gate%3B+this+%0A++value+is+used+to+restore+thread+preemption+to+the+state+that%0A++existed+just+prior+to+entering+this+gate.'/>
+                    <docPara content='Returns+a+%22key%22+that+is+used+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22GateNull.html%23leave%22+title%3D%22leave%22%3Eleave%3C%2Fa%3E%3C%2Ftt%3E+this+gate%3B+this+value%0A++is+used+to+restore+thread+preemption+to+the+state+that+existed+just%0A++prior+to+entering+this+gate.'/>
                 </docSect>
             </decl>
             <decl kind='fxn' name='leave' anchor='leave' altext='xdc.runtime.GateNull.leave' nodoc='0' external='1' overrides='0' readonly='0' instance='1' summary='Leave+this+gate' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIGateProvider.html%23leave%22+title%3D%22xdc.runtime.IGateProvider.leave%22%3EIGateProvider%3C%2Fa%3E'>
@@ -5909,11 +5918,11 @@
                 <docSect name='ARGUMENTS'>
                     <docChild name='handle' summary='handle+of+a+previously-created+%3Ctt%3EGateNull%3C%2Ftt%3E+instance+object'>
                     </docChild>
-                    <docChild name='key' summary='the+value+returned+by+a+matching+call+to%0A++++++++++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22GateNull.html%23enter%22+title%3D%22enter%22%3Eenter%3C%2Fa%3E%3C%2Ftt%3E'>
+                    <docChild name='key' summary='the+value+returned+by+a+matching+call+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22GateNull.html%23enter%22+title%3D%22enter%22%3Eenter%3C%2Fa%3E%3C%2Ftt%3E'>
                     </docChild>
                 </docSect>
                 <docSect name='details'>
-                    <docPara content='This+method+is+only+called+by+threads+that+have+previously+entered+%0A++this+gate+via+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22GateNull.html%23enter%22+title%3D%22enter%22%3Eenter%3C%2Fa%3E%3C%2Ftt%3E.++After+this+method+returns%2C+the%0A++caller+must+not+access+the+data+structure+protected+by+this+gate%0A++%28unless+the+caller+has+entered+the+gate+more+than+once+and+other%0A++calls+to+%3Ctt%3Eleave%3C%2Ftt%3E+remain+to+balance+the+number+of+previous%0A++calls+to+%3Ctt%3Eenter%3C%2Ftt%3E%29.'/>
+                    <docPara content='This+method+is+only+called+by+threads+that+have+previously+entered+this%0A++gate+via+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22GateNull.html%23enter%22+title%3D%22enter%22%3Eenter%3C%2Fa%3E%3C%2Ftt%3E.++After+this+method+returns%2C+the+caller+must%0A++not+access+the+data+structure+protected+by+this+gate+%28unless+the+caller%0A++has+entered+the+gate+more+than+once+and+other+calls+to+%3Ctt%3Eleave%3C%2Ftt%3E+remain%0A++to+balance+the+number+of+previous+calls+to+%3Ctt%3Eenter%3C%2Ftt%3E%29.'/>
                 </docSect>
             </decl>
             <decl spacer='1'/>
@@ -6289,7 +6298,7 @@
                     <line tab='0' content='%3Cgo%3EHeapMin.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.HeapMin.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -7007,7 +7016,7 @@
                     <line tab='0' content='%3Cgo%3EHeapStd.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.HeapStd.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -7844,7 +7853,7 @@
                     <line tab='0' content='%3Cgo%3ELog.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='idToInfo' anchor='id.To.Info' altext='xdc.runtime.Log.idToInfo' nodoc='0' external='0' overrides='0' readonly='0' instance='0' summary='' metaonly='1'>
@@ -9232,7 +9241,7 @@
                     <line tab='0' content='%3Cgo%3ELoggerBuf.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.LoggerBuf.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -10070,7 +10079,7 @@
                     <line tab='0' content='%3Cgo%3ELoggerCallback.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.LoggerCallback.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -10679,7 +10688,7 @@
                     <line tab='0' content='%3Cgo%3ELoggerSys.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.LoggerSys.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -11241,7 +11250,7 @@
                     <line tab='0' content='%3Cgo%3EMain.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.Main.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -11658,7 +11667,7 @@
                     <line tab='0' content='%3Cgo%3EMemory.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='defaultHeapSize' anchor='default.Heap.Size' altext='xdc.runtime.Memory.defaultHeapSize' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='The+size+%28in+target+MADUs%29+of+the+%3Ctt%3EdefaultHeapInstance%3C%2Ftt%3E' metaonly='1'>
@@ -12240,7 +12249,7 @@
                     <line tab='0' content='%3Cgo%3ERegistry.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.Registry.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -12930,7 +12939,7 @@
                     <line tab='0' content='%3Cgo%3ERta.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.Rta.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -12971,18 +12980,18 @@
             </decl>
             <decl kind='fxn' name='disableLog' anchor='disable.Log' altext='xdc.runtime.Rta.disableLog' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary=''>
                 <synopSpec>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EdisableLog%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FRta.html%23.Response.Packet%22+title%3D%22xdc.runtime.Rta.ResponsePacket%22%3ERta.ResponsePacket%3C%2Fa%3E%26nbsp%3B*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eresp%3C%2Fspan%3E%3C%2Fgo%3E%2C+%3Cspan+class%3D%22xdoc-kw2%22%3EUArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Elog%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EdisableLog%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FRta.html%23.Response.Packet%22+title%3D%22xdc.runtime.Rta.ResponsePacket%22%3ERta.ResponsePacket%3C%2Fa%3E%26nbsp%3B*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eresp%3C%2Fspan%3E%3C%2Fgo%3E%2C+%3Cspan+class%3D%22xdoc-kw2%22%3EUArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ElogNum%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
                 </synopSpec>
                 <synopTarg>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ERta_disableLog%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FRta.html%23.Response.Packet%22+title%3D%22xdc.runtime.Rta.ResponsePacket%22%3ERta_ResponsePacket%3C%2Fa%3E%26nbsp%3B*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eresp%3C%2Fspan%3E%3C%2Fgo%3E%2C+%3Cspan+class%3D%22xdoc-kw2%22%3EUArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Elog%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ERta_disableLog%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FRta.html%23.Response.Packet%22+title%3D%22xdc.runtime.Rta.ResponsePacket%22%3ERta_ResponsePacket%3C%2Fa%3E%26nbsp%3B*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eresp%3C%2Fspan%3E%3C%2Fgo%3E%2C+%3Cspan+class%3D%22xdoc-kw2%22%3EUArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ElogNum%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
                 </synopTarg>
             </decl>
             <decl kind='fxn' name='enableLog' anchor='enable.Log' altext='xdc.runtime.Rta.enableLog' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary=''>
                 <synopSpec>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EenableLog%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FRta.html%23.Response.Packet%22+title%3D%22xdc.runtime.Rta.ResponsePacket%22%3ERta.ResponsePacket%3C%2Fa%3E%26nbsp%3B*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eresp%3C%2Fspan%3E%3C%2Fgo%3E%2C+%3Cspan+class%3D%22xdoc-kw2%22%3EUArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Elog%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EenableLog%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FRta.html%23.Response.Packet%22+title%3D%22xdc.runtime.Rta.ResponsePacket%22%3ERta.ResponsePacket%3C%2Fa%3E%26nbsp%3B*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eresp%3C%2Fspan%3E%3C%2Fgo%3E%2C+%3Cspan+class%3D%22xdoc-kw2%22%3EUArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ElogNum%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
                 </synopSpec>
                 <synopTarg>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ERta_enableLog%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FRta.html%23.Response.Packet%22+title%3D%22xdc.runtime.Rta.ResponsePacket%22%3ERta_ResponsePacket%3C%2Fa%3E%26nbsp%3B*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eresp%3C%2Fspan%3E%3C%2Fgo%3E%2C+%3Cspan+class%3D%22xdoc-kw2%22%3EUArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Elog%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ERta_enableLog%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FRta.html%23.Response.Packet%22+title%3D%22xdc.runtime.Rta.ResponsePacket%22%3ERta_ResponsePacket%3C%2Fa%3E%26nbsp%3B*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eresp%3C%2Fspan%3E%3C%2Fgo%3E%2C+%3Cspan+class%3D%22xdoc-kw2%22%3EUArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ElogNum%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
                 </synopTarg>
             </decl>
             <decl kind='fxn' name='getCpuSpeed' anchor='get.Cpu.Speed' altext='xdc.runtime.Rta.getCpuSpeed' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary=''>
@@ -13020,10 +13029,10 @@
             </decl>
             <decl kind='fxn' name='resetLog' anchor='reset.Log' altext='xdc.runtime.Rta.resetLog' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary=''>
                 <synopSpec>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EresetLog%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FRta.html%23.Response.Packet%22+title%3D%22xdc.runtime.Rta.ResponsePacket%22%3ERta.ResponsePacket%3C%2Fa%3E%26nbsp%3B*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eresp%3C%2Fspan%3E%3C%2Fgo%3E%2C+%3Cspan+class%3D%22xdoc-kw2%22%3EUArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Elog%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EresetLog%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FRta.html%23.Response.Packet%22+title%3D%22xdc.runtime.Rta.ResponsePacket%22%3ERta.ResponsePacket%3C%2Fa%3E%26nbsp%3B*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eresp%3C%2Fspan%3E%3C%2Fgo%3E%2C+%3Cspan+class%3D%22xdoc-kw2%22%3EUArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ElogNum%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
                 </synopSpec>
                 <synopTarg>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ERta_resetLog%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FRta.html%23.Response.Packet%22+title%3D%22xdc.runtime.Rta.ResponsePacket%22%3ERta_ResponsePacket%3C%2Fa%3E%26nbsp%3B*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eresp%3C%2Fspan%3E%3C%2Fgo%3E%2C+%3Cspan+class%3D%22xdoc-kw2%22%3EUArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Elog%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ERta_resetLog%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FRta.html%23.Response.Packet%22+title%3D%22xdc.runtime.Rta.ResponsePacket%22%3ERta_ResponsePacket%3C%2Fa%3E%26nbsp%3B*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Eresp%3C%2Fspan%3E%3C%2Fgo%3E%2C+%3Cspan+class%3D%22xdoc-kw2%22%3EUArg%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ElogNum%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
                 </synopTarg>
             </decl>
             <decl kind='fxn' name='writeMask' anchor='write.Mask' altext='xdc.runtime.Rta.writeMask' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary=''>
@@ -13079,11 +13088,11 @@
         </synopTarg>
         <docSect name='details'>
             <docPara content='This+module+manages+the+very+early+startup+initialization+that+occurs%0A++before+C%27s+%3Ctt%3Emain%28%29%3C%2Ftt%3E+function+is+invoked.++This+initialization+typically%0A++consists+of+setting+hardware+specific+registers+that+control+watchdog%0A++timers%2C+access+to+memory%2C+cache+settings%2C+clock+speeds%2C+etc.'/>
-            <docPara content='In+addition+to+configuration+parameters+that+allow+the+user+to+add+custom%0A++startup+functions%2C+this+module+also+provides+services+that+allow+modules%0A++to+automatically+add+initialiazation+functions+to+the+startup+sequence.'/>
+            <docPara content='In+addition+to+configuration+parameters+that+allow+the+user+to+add+custom%0A++startup+functions%2C+this+module+also+provides+services+that+allow+modules%0A++to+automatically+add+initialization+functions+to+the+startup+sequence.'/>
         </docSect>
         <docSect name='Startup Sequence'>
             <docPara content='The+following+list+defines+the+startup+sequence+and%2C+in+particular%2C+when%0A++user+provided+startup+functions+are+invoked%3A'/>
-            <docPara content='%3COL%3E%3CLI%3E+CPU+is+initialized+and+initial+C+stack+setup+is+performed.%0A%3C%2FLI%3E%3CLI%3E+The+function+specified+by+%3Ctt%3EStartup.resetFxn%3C%2Ftt%3E+is+called.%0A+++++%3Ctt%3EStartup.resetFxn%3C%2Ftt%3E+is+called+only+on+platforms+where+reset+is+performed%0A+++++before+running+a+program.+For+example%2C+boot+code+for+all+TI+targets%0A+++++invokes+%3Ctt%3EStartup.resetFxn%3C%2Ftt%3E%2C+but+this+function+is+not+invoked+on%0A+++++Microsoft+targets.%0A%3C%2FLI%3E%3CLI%3E+C+runtime+initialization+is+performed.%0A%3C%2FLI%3E%3CLI%3E+Functions+from+the+array+%3Ctt%3EStartup.firstFxns%3C%2Ftt%3E+are+called.%0A%3C%2FLI%3E%3CLI%3E+All+%3Ctt%3EMod_Module_startup%3C%2Ftt%3E+functions+%28see+Module+Initialization+below%29+%0A+++++are+called+in+a+loop+until+all+such+functions+return%0A+++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Startup.html%23.Startup_.D.O.N.E%22+title%3D%22Startup_DONE%22%3EStartup_DONE%3C%2Fa%3E%3C%2Ftt%3E+or+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Startup.html%23max.Passes%22+title%3D%22maxPasses%22%3EmaxPasses%3C%2Fa%3E%3C%2Ftt%3E+threshold+is%0A+++++reached.%0A%3C%2FLI%3E%3CLI%3E+Functions+from+the+array+%3Ctt%3EStartup.lastFxns%3C%2Ftt%3E+are+called.%0A%3C%2FLI%3E%3CLI%3E+The+function+%3Ctt%3Emain%3C%2Ftt%3E+is+called.%0A%3C%2FLI%3E%3C%2FOL%3E'/>
+            <docPara content='%3COL%3E%3CLI%3E+CPU+is+initialized+and+initial+C+stack+setup+is+performed.%0A%3C%2FLI%3E%3CLI%3E+The+function+specified+by+%3Ctt%3EStartup.resetFxn%3C%2Ftt%3E+is+called.%0A+++++%3Ctt%3EStartup.resetFxn%3C%2Ftt%3E+is+called+only+on+platforms+where+reset+is+performed%0A+++++before+running+a+program.+For+example%2C+boot+code+for+all+TI+targets%0A+++++invokes+%3Ctt%3EStartup.resetFxn%3C%2Ftt%3E%2C+but+this+function+is+not+invoked+on%0A+++++Microsoft+targets.%0A%3C%2FLI%3E%3CLI%3E+C+runtime+initialization+is+performed.%0A%3C%2FLI%3E%3CLI%3E+Functions+from+the+array+%3Ctt%3EStartup.firstFxns%3C%2Ftt%3E+are+called.%0A%3C%2FLI%3E%3CLI%3E+All+%3Ctt%3EMod_Module_startup%3C%2Ftt%3E+functions+%28see+Module+Initialization+below%29%0A+++++are+called+in+a+loop+until+all+such+functions+return%0A+++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Startup.html%23.Startup_.D.O.N.E%22+title%3D%22Startup_DONE%22%3EStartup_DONE%3C%2Fa%3E%3C%2Ftt%3E+or+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Startup.html%23max.Passes%22+title%3D%22maxPasses%22%3EmaxPasses%3C%2Fa%3E%3C%2Ftt%3E+threshold+is%0A+++++reached.%0A%3C%2FLI%3E%3CLI%3E+Functions+from+the+array+%3Ctt%3EStartup.lastFxns%3C%2Ftt%3E+are+called.%0A%3C%2FLI%3E%3CLI%3E+The+function+%3Ctt%3Emain%3C%2Ftt%3E+is+called.%0A%3C%2FLI%3E%3C%2FOL%3E'/>
             <docPara content='The+steps+4+-+6+occur+during+C%2B%2B+static+object+initialization.+Since%0A+++++the+ANSI+C%2B%2B+Language+Standard+does+not+provide+a+means+to+control%0A+++++the+order+of+C%2B%2B+constructors%2C+if+a+C%2B%2B+constructor+uses+an+XDC+module%2C%0A+++++there+is+no+guarantee+that+the+module%27s+startup+function+already+ran.%0A+++++Therefore%2C+any+C%2B%2B+constructor+that+needs+XDC+modules%27+services+should%0A+++++call+%3Ctt%3EStartup_exec%3C%2Ftt%3E+first+to+force+all+startup+related+functions+from%0A+++++steps+4+-+6+to+run%2C+before+the+constructor+uses+any+XDC+module.'/>
             <docPara content='Also%2C+if+a+target+does+not+support+C%2B%2B%2C+the+steps+4+-+6+will+not+run%0A+++++automatically.+It+is+then+up+to+a+user%27s+code+to+invoke+%3Ctt%3EStartup_exec%3C%2Ftt%3E%2C%0A+++++possibly+as+the+first+step+in+%3Ctt%3Emain%3C%2Ftt%3E.'/>
         </docSect>
@@ -13542,7 +13551,7 @@
                     <line tab='0' content='%3Cgo%3EStartup.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='resetFxn' anchor='reset.Fxn' altext='xdc.runtime.Startup.resetFxn' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Function+to+be+called+by+during+initialization' metaonly='1'>
@@ -13608,7 +13617,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EBool%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EStartup_rtsDone%3C%2Fspan%3E%3C%2Fgo%3E%28++%29%3B'/>
                 </synopTarg>
                 <docSect name='details'>
-                    <docPara content='This+function+is+used+by+module+startup+functions+to+determine%0A++when+it+is+possible+to+use+the+%3Ctt%3Exdc.runtime%3C%2Ftt%3E+modules%3B+e.g.+to%0A++allocate+memory%2C+create+instances+managed+by+some+module+%28even%0A++those+outside+the+%3Ctt%3Exdc.runtime%3C%2Ftt%3E+package%29%2C+call+a+%3Ctt%3ELog%3C%2Ftt%3E+function%2C%0A++etc.'/>
+                    <docPara content='This+function+is+used+by+module+startup+functions+to+determine+when+it%0A++is+possible+to+use+the+%3Ctt%3Exdc.runtime%3C%2Ftt%3E+modules%3B+e.g.+to+allocate+memory%2C%0A++create+instances+managed+by+some+module+%28even+those+outside+the%0A++%3Ctt%3Exdc.runtime%3C%2Ftt%3E+package%29%2C+call+a+%3Ctt%3ELog%3C%2Ftt%3E+function%2C+etc.'/>
                 </docSect>
                 <docSect name='returns'>
                     <docPara content='Returns+%3Ctt%3ETRUE%3C%2Ftt%3E+when+all+%3Ctt%3Exdc.runtime%3C%2Ftt%3E+modules+have+completed%0A++initialization.'/>
@@ -14006,7 +14015,7 @@
                     <line tab='0' content='%3Cgo%3ESysCallback.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.SysCallback.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -14496,7 +14505,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Eextern+const%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3ESizeT%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ESysMin_bufSize%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
                 </synopTarg>
                 <docSect name='details'>
-                    <docPara content='An+internal+buffer+of+this+size+is+allocated.+All+output+is+stored+%0A++in+this+internal+buffer.'/>
+                    <docPara content='An+internal+buffer+of+this+size+is+allocated.+All+output+is+stored%0A++in+this+internal+buffer.'/>
                     <docPara content='If+0+is+specified+for+the+size%2C+no+buffer+is+created%2C+all+output%0A++is+dropped%2C+and+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23ready%22+title%3D%22SysMin.ready%22%3ESysMin.ready%28%29%3C%2Fa%3E%3C%2Ftt%3E+always+returns+%3Ctt%3EFALSE%3C%2Ftt%3E.'/>
                 </docSect>
             </decl>
@@ -14513,7 +14522,7 @@
                 <docSect name='details'>
                     <docPara content='If+the+application%27s+target+is+a+TI+target%2C+the+internal+buffer+is%0A++flushed+via+the+%3Ctt%3EHOSTwrite%3C%2Ftt%3E+function+in+the+TI+C+Run+Time+Support%0A++%28RTS%29+library.'/>
                     <docPara content='If+the+application%27s+target+is+not+a+TI+target%2C+the+internal+buffer%0A++is+flushed+to+%3Ctt%3Estdout%3C%2Ftt%3E+via+%3Ctt%3Efwrite%28...%2C+stdout%29%3C%2Ftt%3E.'/>
-                    <docPara content='Setting+this+parameter+to+%3Ctt%3Efalse%3C%2Ftt%3E+reduces+the+footprint+of+the+%0A++application+at+the+expense+of+not+getting+output+when+the+application%0A++ends+via+a+%3Ctt%3ESystem_exit%28%29%3C%2Ftt%3E%2C+%3Ctt%3ESystem_abort%28%29%3C%2Ftt%3E%2C+%3Ctt%3Eexit%28%29%3C%2Ftt%3E+or+%3Ctt%3Eabort%28%29%3C%2Ftt%3E.'/>
+                    <docPara content='Setting+this+parameter+to+%3Ctt%3Efalse%3C%2Ftt%3E+reduces+the+footprint+of+the%0A++application+at+the+expense+of+not+getting+output+when+the+application%0A++ends+via+a+%3Ctt%3ESystem_exit%28%29%3C%2Ftt%3E%2C+%3Ctt%3ESystem_abort%28%29%3C%2Ftt%3E%2C+%3Ctt%3Eexit%28%29%3C%2Ftt%3E+or+%3Ctt%3Eabort%28%29%3C%2Ftt%3E.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='outputFxn' anchor='output.Fxn' altext='xdc.runtime.SysMin.outputFxn' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='User+supplied+character+output+function'>
@@ -14530,7 +14539,7 @@
                     <docPara content='If+this+parameter+is+set+to+a+non-%3Ctt%3Enull%3C%2Ftt%3E+value%2C+the+specified%0A++function+will+be+called+by+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23flush%22+title%3D%22System.flush%22%3ESystem.flush%28%29%3C%2Fa%3E%3C%2Ftt%3E+to+output%0A++any+characters+buffered+within+%3Ctt%3ESysMin%3C%2Ftt%3E.'/>
                     <docPara content='For+example%2C+if+you+define+a+function+named+%3Ctt%3EmyOutputFxn%3C%2Ftt%3E%2C+the%0A++following+configuration+fragment+will+cause+%3Ctt%3ESysMin%3C%2Ftt%3E+to+call%0A++%3Ctt%3EmyOutputFxn%3C%2Ftt%3E+whenever+the+character+buffer+is+flushed.'/>
                     <docPara content='%3CPRE+class%3D%22Example%22%3E++++++var+SysMin+%3D+xdc.useModule%28%22xdc.runtime.SysMin%22%29%3B%0A++++++SysMin.outputFxn+%3D+%22%26amp%3BmyOutputFxn%22%3B%0A%3C%2FPRE%3E'/>
-                    <docPara content='If+this+parameter+is+not+set%2C+a+default+function+will+be+used+which%0A++uses+the+ANSI+C+Standard+Library+function+%3Ctt%3Efwrite%28%29%3C%2Ftt%3E+%28or+%3Ctt%3EHOSTwrite%3C%2Ftt%3E+%0A++in+the+TI+C+Run+Time+Support+library%29+to+output%0A++accumulated+output+characters.'/>
+                    <docPara content='If+this+parameter+is+not+set%2C+a+default+function+will+be+used+which+uses%0A++the+ANSI+C+Standard+Library+function+%3Ctt%3Efwrite%28%29%3C%2Ftt%3E+%28or+%3Ctt%3EHOSTwrite%3C%2Ftt%3E+in+the%0A++TI+C+Run+Time+Support+library%29+to+output+accumulated+output+characters.'/>
                 </docSect>
                 <docSect name='see'>
                     <docPara content='%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23.Output.Fxn%22+title%3D%22OutputFxn%22%3EOutputFxn%3C%2Fa%3E'/>
@@ -14545,7 +14554,7 @@
                     <line tab='0' content='%3Cgo%3ESysMin.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.SysMin.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -14603,7 +14612,7 @@
                 </docSect>
                 <docSect name='details'>
                     <docPara content='This+function+is+called+by+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23abort%22+title%3D%22System.abort%22%3ESystem.abort%28%29%3C%2Fa%3E%3C%2Ftt%3E+prior+to+calling%0A++the+ANSI+C+Standard+library+function+%3Ctt%3Eabort%28%29%3C%2Ftt%3E.++So%2C+to+ensure+the%0A++abort+processing+of+the+system%27s+ANSI+C+Standard+library+completes%2C%0A++this+function+should+return+to+its+caller.'/>
-                    <docPara content='This+abort+function+writes+the+string+to+the+internal%0A++output+buffer+and+then+gives+all+internal+output+to+the+%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23output.Fxn%22+title%3D%22outputFxn%22%3EoutputFxn%3C%2Fa%3E%3C%2Ftt%3E+function+if+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23flush.At.Exit%22+title%3D%22flushAtExit%22%3EflushAtExit%3C%2Fa%3E%3C%2Ftt%3E+%0A++configuration+parameter+is+true.'/>
+                    <docPara content='This+abort+function+writes+the+string+to+the+internal+output+buffer+and%0A++then+gives+all+internal+output+to+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23output.Fxn%22+title%3D%22outputFxn%22%3EoutputFxn%3C%2Fa%3E%3C%2Ftt%3E+function+if%0A++the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23flush.At.Exit%22+title%3D%22flushAtExit%22%3EflushAtExit%3C%2Fa%3E%3C%2Ftt%3E+configuration+parameter+is+true.'/>
                 </docSect>
                 <docSect name='see'>
                     <docPara content='%3Ca+class%3D%22xdoc-link%22+href%3D%22ISystemSupport.html%23abort%22+title%3D%22ISystemSupport.abort%22%3EISystemSupport.abort%3C%2Fa%3E'/>
@@ -14625,7 +14634,7 @@
                     <docPara content='This+function+is+called+as+part+the+normal+%22atexit%22+processing%0A++performed+by+the+ANSI+C+Standard+Library%27s+%3Ctt%3Eexit%28%29%3C%2Ftt%3E+function%3B%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23exit%22+title%3D%22System.exit%22%3ESystem.exit%28%29%3C%2Fa%3E%3C%2Ftt%3E+directly+calls+ANSI+%3Ctt%3Eexit%28%29%3C%2Ftt%3E.'/>
                     <docPara content='This+function+is+called+after+all+%22atexit%22+handlers+bound+via%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23atexit%22+title%3D%22System.atexit%22%3ESystem.atexit%28%29%3C%2Fa%3E%3C%2Ftt%3E+are+run+and+it%0A++is+always+called+while+%22inside%22+the+the+%3Ctt%3ESystem%3C%2Ftt%3E+gate.'/>
                     <docPara content='To+ensure+that+all+exit+processing+of+the+system%27s+ANSI+C%0A++Standard+Library+completes%2C+this+function+should+return+to+its+caller.%0A++Exit+handlers+bound+using+the+ANSI+C+Standard+Library+%3Ctt%3Eatexit%28%29%3C%2Ftt%3E%0A++function+may+run+before+or+after+this+function.'/>
-                    <docPara content='This+exit+function+gives+all+internal+output+to+the+%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23output.Fxn%22+title%3D%22outputFxn%22%3EoutputFxn%3C%2Fa%3E%3C%2Ftt%3E+function+if+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23flush.At.Exit%22+title%3D%22flushAtExit%22%3EflushAtExit%3C%2Fa%3E%3C%2Ftt%3E+%0A++configuration+parameter+is+true.'/>
+                    <docPara content='This+exit+function+gives+all+internal+output+to+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23output.Fxn%22+title%3D%22outputFxn%22%3EoutputFxn%3C%2Fa%3E%3C%2Ftt%3E%0A++function+if+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23flush.At.Exit%22+title%3D%22flushAtExit%22%3EflushAtExit%3C%2Fa%3E%3C%2Ftt%3E+configuration+parameter+is+true.'/>
                 </docSect>
                 <docSect name='see'>
                     <docPara content='%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23atexit%22+title%3D%22System.atexit%22%3ESystem.atexit%3C%2Fa%3E%2C+%3Ca+class%3D%22xdoc-link%22+href%3D%22ISystemSupport.html%23exit%22+title%3D%22ISystemSupport.exit%22%3EISystemSupport.exit%3C%2Fa%3E'/>
@@ -14664,7 +14673,7 @@
                     <docPara content='Output+a+single+character.++This+function+is+called+by%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23printf%22+title%3D%22System.printf%22%3ESystem_printf%28%29%3C%2Fa%3E%3C%2Ftt%3E+to+write+each+character%0A++of+formated+output+specified+by+its+arguments.'/>
                     <docPara content='This+function+appends+the+character+to+an+internal+circular+buffer.%0A++In+the+event+that+this+buffer+is+not+%22flushed%22+%28via+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23flush%22+title%3D%22flush%22%3Eflush%3C%2Fa%3E%3C%2Ftt%3E%29%0A++before+the+output+pointer+wraps%2C+the+oldest+previously+put+character%0A++will+be+overwritten.'/>
                     <docPara content='%3Ctt%3ESysMin_flush%3C%2Ftt%3E+passes+the+internal+buffer+to+the%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23output.Fxn%22+title%3D%22outputFxn%22%3EoutputFxn%3C%2Fa%3E%3C%2Ftt%3E+function+and+resets+the+internal+buffer.'/>
-                    <docPara content='If+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23flush.At.Exit%22+title%3D%22flushAtExit%22%3EflushAtExit%3C%2Fa%3E%3C%2Ftt%3E+configuration+parameter+is+true%2C+%0A++%3Ctt%3ESysMin_flush%3C%2Ftt%3E+is+implicitly+called+by+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23exit%22+title%3D%22exit%22%3Eexit%3C%2Fa%3E%3C%2Ftt%3E+and%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23abort%22+title%3D%22abort%22%3Eabort%3C%2Fa%3E%3C%2Ftt%3E.'/>
+                    <docPara content='If+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23flush.At.Exit%22+title%3D%22flushAtExit%22%3EflushAtExit%3C%2Fa%3E%3C%2Ftt%3E+configuration+parameter+is+true%2C%0A++%3Ctt%3ESysMin_flush%3C%2Ftt%3E+is+implicitly+called+by+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23exit%22+title%3D%22exit%22%3Eexit%3C%2Fa%3E%3C%2Ftt%3E+and%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22SysMin.html%23abort%22+title%3D%22abort%22%3Eabort%3C%2Fa%3E%3C%2Ftt%3E.'/>
                 </docSect>
                 <docSect name='see'>
                     <docPara content='%3Ca+class%3D%22xdoc-link%22+href%3D%22ISystemSupport.html%23putch%22+title%3D%22ISystemSupport.putch%22%3EISystemSupport.putch%3C%2Fa%3E'/>
@@ -14956,7 +14965,7 @@
                     <line tab='0' content='%3Cgo%3ESysStd.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.SysStd.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -15569,7 +15578,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Eextern+const%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FSystem.html%23.Abort.Fxn%22+title%3D%22xdc.runtime.System.AbortFxn%22%3ESystem_AbortFxn%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ESystem_abortFxn%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
                 </synopTarg>
                 <docSect name='details'>
-                    <docPara content='This+configuration+parameter+allows+user+to+plug+in+their+own+abort%0A++function.+By+default+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23abort.Std%22+title%3D%22abortStd%22%3EabortStd%3C%2Fa%3E%3C%2Ftt%3E+which+calls+ANSI+C+Standard+%0A++%3Ctt%3Eabort%28%29%3C%2Ftt%3E+is+plugged+in.+Alternatively+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23abort.Spin%22+title%3D%22abortSpin%22%3EabortSpin%3C%2Fa%3E%3C%2Ftt%3E+can+be+%0A++plugged+which+loops+infinitely.'/>
+                    <docPara content='This+configuration+parameter+allows+user+to+plug+in+their+own+abort%0A++function.+By+default+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23abort.Std%22+title%3D%22abortStd%22%3EabortStd%3C%2Fa%3E%3C%2Ftt%3E+which+calls+ANSI+C+Standard%0A++%3Ctt%3Eabort%28%29%3C%2Ftt%3E+is+plugged+in.+Alternatively+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23abort.Spin%22+title%3D%22abortSpin%22%3EabortSpin%3C%2Fa%3E%3C%2Ftt%3E+can+be%0A++plugged+which+loops+infinitely.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='exitFxn' anchor='exit.Fxn' altext='xdc.runtime.System.exitFxn' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Exit+handler+function'>
@@ -15583,7 +15592,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Eextern+const%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FSystem.html%23.Exit.Fxn%22+title%3D%22xdc.runtime.System.ExitFxn%22%3ESystem_ExitFxn%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ESystem_exitFxn%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
                 </synopTarg>
                 <docSect name='details'>
-                    <docPara content='This+configuration+parameter+allows+user+to+plug+in+their+own+exit%0A++function.+By+default+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23exit.Std%22+title%3D%22exitStd%22%3EexitStd%3C%2Fa%3E%3C%2Ftt%3E+which+calls+ANSI+C+Standard+%0A++%3Ctt%3Eexit%28%29%3C%2Ftt%3E+is+plugged+in.+Alternatively+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23exit.Spin%22+title%3D%22exitSpin%22%3EexitSpin%3C%2Fa%3E%3C%2Ftt%3E+can+be+%0A++plugged+which+loops+infinitely.'/>
+                    <docPara content='This+configuration+parameter+allows+user+to+plug+in+their+own+exit%0A++function.+By+default+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23exit.Std%22+title%3D%22exitStd%22%3EexitStd%3C%2Fa%3E%3C%2Ftt%3E+which+calls+ANSI+C+Standard%0A++%3Ctt%3Eexit%28%29%3C%2Ftt%3E+is+plugged+in.+Alternatively+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23exit.Spin%22+title%3D%22exitSpin%22%3EexitSpin%3C%2Fa%3E%3C%2Ftt%3E+can+be%0A++plugged+which+loops+infinitely.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='maxAtexitHandlers' anchor='max.Atexit.Handlers' altext='xdc.runtime.System.maxAtexitHandlers' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Maximum+number+of+dynamic+atexit+handlers+allowed+in+the+system'>
@@ -15609,7 +15618,7 @@
                     <line tab='0' content='%3Cgo%3ESystem.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='exitFxns' anchor='exit.Fxns' altext='xdc.runtime.System.exitFxns' nodoc='1' external='0' overrides='0' readonly='0' instance='0' summary='' metaonly='1'>
@@ -15680,7 +15689,7 @@
                     </docChild>
                 </docSect>
                 <docSect name='details'>
-                    <docPara content='This+is+called+when+an+executable+abnormally+terminates.++%0A++The+%3Ctt%3ESystem%3C%2Ftt%3E+gate+is+entered%2C+the+%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23.Support.Proxy%22+title%3D%22SupportProxy%22%3ESupportProxy%3C%2Fa%3E%3C%2Ftt%3E%27s+%3Ctt%3Eabort%3C%2Ftt%3E+function+is+called%0A++and+then+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23abort.Fxn%22+title%3D%22abortFxn%22%3EabortFxn%3C%2Fa%3E%3C%2Ftt%3E+is+called.%0A++No+exit+functions+bound+via+%3Ctt%3ESystem_atexit%28%29%3C%2Ftt%3E+or+the+ANSI+C+Standard%0A++Library+%3Ctt%3Eatexit%28%29%3C%2Ftt%3E+functions+are+executed.'/>
+                    <docPara content='This+is+called+when+an+executable+abnormally+terminates.%0A++The+%3Ctt%3ESystem%3C%2Ftt%3E+gate+is+entered%2C+the%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23.Support.Proxy%22+title%3D%22SupportProxy%22%3ESupportProxy%3C%2Fa%3E%3C%2Ftt%3E%27s+%3Ctt%3Eabort%3C%2Ftt%3E+function+is+called%0A++and+then+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23abort.Fxn%22+title%3D%22abortFxn%22%3EabortFxn%3C%2Fa%3E%3C%2Ftt%3E+is+called.%0A++No+exit+functions+bound+via+%3Ctt%3ESystem_atexit%28%29%3C%2Ftt%3E+or+the+ANSI+C+Standard%0A++Library+%3Ctt%3Eatexit%28%29%3C%2Ftt%3E+functions+are+executed.'/>
                 </docSect>
             </decl>
             <decl kind='fxn' name='abortSpin' anchor='abort.Spin' altext='xdc.runtime.System.abortSpin' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Lightweight+implementation+of+abortFxn+function'>
@@ -15691,7 +15700,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ESystem_abortSpin%3C%2Fspan%3E%3C%2Fgo%3E%28++%29%3B'/>
                 </synopTarg>
                 <docSect name='details'>
-                    <docPara content='This+functions+loops+indefinitely.+This+can+used+as+an+alternative%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23abort.Fxn%22+title%3D%22abortFxn%22%3EabortFxn%3C%2Fa%3E%3C%2Ftt%3E+when+a+lightweight+implementation+is+%0A++required+instead+of+the+ANSI+C+Standard+%3Ctt%3Eabort%28%29%3C%2Ftt%3E.'/>
+                    <docPara content='This+functions+loops+indefinitely.+This+can+used+as+an+alternative%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23abort.Fxn%22+title%3D%22abortFxn%22%3EabortFxn%3C%2Fa%3E%3C%2Ftt%3E+when+a+lightweight+implementation+is%0A++required+instead+of+the+ANSI+C+Standard+%3Ctt%3Eabort%28%29%3C%2Ftt%3E.'/>
                 </docSect>
             </decl>
             <decl kind='fxn' name='abortStd' anchor='abort.Std' altext='xdc.runtime.System.abortStd' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='ANSI+C+Standard+implementation+of+abortFxn+function'>
@@ -15702,7 +15711,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ESystem_abortStd%3C%2Fspan%3E%3C%2Fgo%3E%28++%29%3B'/>
                 </synopTarg>
                 <docSect name='details'>
-                    <docPara content='This+function+calls+ANSI+C+Standard+%3Ctt%3Eabort%28%29%3C%2Ftt%3E+to+terminate+currently+%0A++running+executable.+This+function+is+used+by+default+in+%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23abort.Fxn%22+title%3D%22abortFxn%22%3EabortFxn%3C%2Fa%3E%3C%2Ftt%3E.'/>
+                    <docPara content='This+function+calls+ANSI+C+Standard+%3Ctt%3Eabort%28%29%3C%2Ftt%3E+to+terminate+currently%0A++running+executable.+This+function+is+used+by+default+in%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23abort.Fxn%22+title%3D%22abortFxn%22%3EabortFxn%3C%2Fa%3E%3C%2Ftt%3E.'/>
                 </docSect>
             </decl>
             <decl kind='fxn' name='aprintf' anchor='aprintf' altext='xdc.runtime.System.aprintf' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23printf%22+title%3D%22printf%22%3Eprintf%3C%2Fa%3E%3C%2Ftt%3E+where+all+optional+arguments+are+%3Ctt%3EIArg%3C%2Ftt%3Es'>
@@ -15713,7 +15722,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EInt%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ESystem_aprintf%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Cspan+class%3D%22xdoc-kw2%22%3ECString%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Efmt%3C%2Fspan%3E%3C%2Fgo%3E%2C+...+%29%3B'/>
                 </synopTarg>
                 <docSect name='details'>
-                    <docPara content='This+function+will+treat+each+argument+as+though+it+was+widened+to+be+%0A++of+type+%3Ctt%3EIArg%3C%2Ftt%3E+prior+to+being+passed+to+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23printf%22+title%3D%22printf%22%3Eprintf%3C%2Fa%3E%3C%2Ftt%3E+function'/>
+                    <docPara content='This+function+will+treat+each+argument+as+though+it+was+widened+to+be%0A++of+type+%3Ctt%3EIArg%3C%2Ftt%3E+prior+to+being+passed+to+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23printf%22+title%3D%22printf%22%3Eprintf%3C%2Fa%3E%3C%2Ftt%3E+function'/>
                 </docSect>
                 <docSect name='see'>
                     <docPara content='%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23printf%22+title%3D%22printf%22%3Eprintf%3C%2Fa%3E'/>
@@ -15745,8 +15754,8 @@
                     </docChild>
                 </docSect>
                 <docSect name='details'>
-                    <docPara content='%3Ctt%3ESystem_atexit%3C%2Ftt%3E+pushes+%3Ctt%3Ehandler%3C%2Ftt%3E+onto+an+internal+stack+of+functions+%0A++to+be+executed+when+system+is+exiting+%28e.g.+%3Ctt%3ESystem_exit%3C%2Ftt%3E+is+called%29.%0A++Up+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23max.Atexit.Handlers%22+title%3D%22maxAtexitHandlers%22%3EmaxAtexitHandlers%3C%2Fa%3E%3C%2Ftt%3E+functions+can+be+specified+in+this%0A++manner.++During+the+exit+processing%2C+the+functions+are+popped+off+the%0A++internal+stack+and+called+until+the+stack+is+empty.'/>
-                    <docPara content='The+%3Ctt%3ESystem%3C%2Ftt%3E+gate+is+entered+before+the+%3Ctt%3ESystem_atexit%3C%2Ftt%3E+functions+%0A++are+called.'/>
+                    <docPara content='%3Ctt%3ESystem_atexit%3C%2Ftt%3E+pushes+%3Ctt%3Ehandler%3C%2Ftt%3E+onto+an+internal+stack+of+functions%0A++to+be+executed+when+system+is+exiting+%28e.g.+%3Ctt%3ESystem_exit%3C%2Ftt%3E+is+called%29.%0A++Up+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23max.Atexit.Handlers%22+title%3D%22maxAtexitHandlers%22%3EmaxAtexitHandlers%3C%2Fa%3E%3C%2Ftt%3E+functions+can+be+specified+in+this%0A++manner.++During+the+exit+processing%2C+the+functions+are+popped+off+the%0A++internal+stack+and+called+until+the+stack+is+empty.'/>
+                    <docPara content='The+%3Ctt%3ESystem%3C%2Ftt%3E+gate+is+entered+before+the+%3Ctt%3ESystem_atexit%3C%2Ftt%3E+functions%0A++are+called.'/>
                     <docPara content='The+%3Ctt%3ESupportProxy%3C%2Ftt%3E%27s+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22ISystemSupport.html%23exit%22+title%3D%22ISystemSupport.exit%22%3EISystemSupport.exit%3C%2Fa%3E%3C%2Ftt%3E+function+is+called%0A++after+all+the+atexit+functions+are+called.'/>
                 </docSect>
                 <docSect name='returns'>
@@ -15880,9 +15889,9 @@
                     <docPara content='%3CDL%3E%3CDT%3E+%3Ctt%3Ef%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++++decimal+floating+point.%0A%3C%2FDD%3E%3CDT%3E+%3Ctt%3E%24%3C%2Ftt%3E%3C%2FDT%3E%3CDD%3E%0A++++++++++non-ANSI+conversion+prefix.++This+prefix+indicates+that+the%0A++++++++++next+character+identifies+a+non-ANSI+standard+conversion.+See%0A++++++++++the+next+section+for+details.%0A%3C%2FDD%3E%3C%2FDL%3E'/>
                 </docSect>
                 <docSect name='Non ANSI Conversion Specifiers'>
-                    <docPara content='Among+the+extended+conversion+specifiers+are+unique+specifiers+which%0A++are+not+part+of+ANSI+printf.+These+are+specified+using+a+%24%2C+for+%0A++example+%25%24L.'/>
+                    <docPara content='Among+the+extended+conversion+specifiers+are+unique+specifiers+which%0A++are+not+part+of+ANSI+printf.+These+are+specified+using+a+%24%2C+for%0A++example+%25%24L.'/>
                     <docPara content='These+unique+specifiers+do+not+support+the+minimum+field+width%0A++attribute.+Certain+specifiers+have+additional+restrictions%3B+see+below.'/>
-                    <docPara content='%3CDL%3E%3CDT%3E+%27%24L%27%3C%2FDT%3E%3CDD%3E%0A++++++++++The+argument+is+treated+as+a+pointer+to+a+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Types.html%23.Label%22+title%3D%22Types.Label%22%3ETypes.Label%3C%2Fa%3E%3C%2Ftt%3E%0A++++++++++and+is+converted+to+an+appropriate+string.%0A%3C%2FDD%3E%3CDT%3E+%27%24F%27%3C%2FDT%3E%3CDD%3E%0A++++++++++Displays+a+file+and+line+number%3B+used+for+displaying+the+call+%0A++++++++++site.+This+specifier+consumes+two+arguments%2C+the+file+and+line+%0A++++++++++number%2C+in+that+order.+See+an+example+below.%0A%3C%2FDD%3E%3CDT%3E+%27%24S%27%3C%2FDT%3E%3CDD%3E%0A++++++++++The+argument+is+treated+as+a+format+string%2C+and+is+recursively%0A++++++++++formatted+using+any+following+arguments.+This+specifier+does+%0A++++++++++not+support+the+use+of+the+%22precision%22+field+for+specifying+%0A++++++++++maximum+string+length.%0A%3C%2FDD%3E%3C%2FDL%3E'/>
+                    <docPara content='%3CDL%3E%3CDT%3E+%27%24L%27%3C%2FDT%3E%3CDD%3E%0A++++++++++The+argument+is+treated+as+a+pointer+to+a+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Types.html%23.Label%22+title%3D%22Types.Label%22%3ETypes.Label%3C%2Fa%3E%3C%2Ftt%3E%0A++++++++++and+is+converted+to+an+appropriate+string.%0A%3C%2FDD%3E%3CDT%3E+%27%24F%27%3C%2FDT%3E%3CDD%3E%0A++++++++++Displays+a+file+and+line+number%3B+used+for+displaying+the+call%0A++++++++++site.+This+specifier+consumes+two+arguments%2C+the+file+and+line%0A++++++++++number%2C+in+that+order.+See+an+example+below.%0A%3C%2FDD%3E%3CDT%3E+%27%24S%27%3C%2FDT%3E%3CDD%3E%0A++++++++++The+argument+is+treated+as+a+format+string%2C+and+is+recursively%0A++++++++++formatted+using+any+following+arguments.+This+specifier+does%0A++++++++++not+support+the+use+of+the+%22precision%22+field+for+specifying%0A++++++++++maximum+string+length.%0A%3C%2FDD%3E%3C%2FDL%3E'/>
                     <docPara content='The+following+are+example+uses+of+the+%25%24F+and+%25%24S+format+specifiers.'/>
                     <docPara content='In+this+call+using+%25%24F%2C+the+compiler+recognizes+these+symbols+and%0A++fills+in+the+file+and+line+number.'/>
                     <docPara content='%3CPRE+class%3D%22Example%22%3E++System_printf%28%22%25%24F%22%2C+__FILE__%2C+__LINE__%29%3B%0A%3C%2FPRE%3E'/>
@@ -15905,7 +15914,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ESystem_processAtExit%3C%2Fspan%3E%3C%2Fgo%3E%28+%3Cspan+class%3D%22xdoc-kw2%22%3EInt%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3Estat%3C%2Fspan%3E%3C%2Fgo%3E+%29%3B'/>
                 </synopTarg>
                 <docSect name='ARGUMENTS'>
-                    <docChild name='stat' summary='exit+status+which+will+be+passed+to+all+functions+%0A++++++++++++++++++processed.'>
+                    <docChild name='stat' summary='exit+status+which+will+be+passed+to+all+functions%0A++++++++++++++++++processed.'>
                     </docChild>
                 </docSect>
                 <docSect name='details'>
@@ -15943,10 +15952,10 @@
                     </docChild>
                 </docSect>
                 <docSect name='details'>
-                    <docPara content='This+function+is+identical+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23sprintf%22+title%3D%22sprintf%22%3Esprintf%3C%2Fa%3E%3C%2Ftt%3E+except+that+at+most%0A++%3Ctt%3En%3C%2Ftt%3E+characters+are+copied+to+the+specified+character+buffer+%3Ctt%3Ebuf%3C%2Ftt%3E.%0A++If+n+is+zero%2C+nothing+is+written+to+character+buffer.+Otherwise%2C%0A++output+characters+beyond+the+%3Ctt%3En%3C%2Ftt%3E+-+1+are+discarded+rather+than%0A++being+written+to+the+character+buf%2C+and+a+null+character+is+written+%0A++at+the+end+of+the+characters+written+into+the+buffer.'/>
+                    <docPara content='This+function+is+identical+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23sprintf%22+title%3D%22sprintf%22%3Esprintf%3C%2Fa%3E%3C%2Ftt%3E+except+that+at+most%0A++%3Ctt%3En%3C%2Ftt%3E+characters+are+copied+to+the+specified+character+buffer+%3Ctt%3Ebuf%3C%2Ftt%3E.%0A++If+n+is+zero%2C+nothing+is+written+to+character+buffer.+Otherwise%2C%0A++output+characters+beyond+the+%3Ctt%3En%3C%2Ftt%3E+-+1+are+discarded+rather+than%0A++being+written+to+the+character+buf%2C+and+a+null+character+is+written%0A++at+the+end+of+the+characters+written+into+the+buffer.'/>
                 </docSect>
                 <docSect name='returns'>
-                    <docPara content='%3Ctt%3Esnprintf%3C%2Ftt%3E+returns+the+number+of+characters+that+would+have+been%0A++written+had+%3Ctt%3En%3C%2Ftt%3E+been+sufficiently+large%2C+not+counting+the+terminating%0A++%27%5C0%27+character.'/>
+                    <docPara content='%3Ctt%3Esnprintf%3C%2Ftt%3E+returns+the+number+of+characters+that+would+have+been%0A++written+had+%3Ctt%3En%3C%2Ftt%3E+been+sufficiently+large%2C+not+counting+the+terminating%0A++%27%5C0%27+character.+However%2C+if+extended+conversion+specifiers+are+used%0A++%28%40see+%23printf%29%2C+the+return+value+may+be+lower+than+the+number+of%0A++characters+that+would+be+written+had+%3Ctt%3En%3C%2Ftt%3E+been+sufficiently+large.'/>
                 </docSect>
             </decl>
             <decl kind='fxn' name='sprintf' anchor='sprintf' altext='xdc.runtime.System.sprintf' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Write+formated+output+to+a+character+buffer'>
@@ -16010,7 +16019,7 @@
                     <docPara content='This+function+is+identical+to+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22System.html%23snprintf%22+title%3D%22snprintf%22%3Esnprintf%3C%2Fa%3E%3C%2Ftt%3E+except+that+%0A++its+arguments+are+passed+via+a+%3Ctt%3EVaList%3C%2Ftt%3E+%28a+%22varargs+list%22%29.'/>
                 </docSect>
                 <docSect name='returns'>
-                    <docPara content='%3Ctt%3Evsnprintf%3C%2Ftt%3E+returns+the+number+of+characters+that+would+have+been%0A++written+had+%3Ctt%3En%3C%2Ftt%3E+been+sufficiently+large%2C+not+counting+the+terminating%0A++%27%5C0%27+character.'/>
+                    <docPara content='%3Ctt%3Evsnprintf%3C%2Ftt%3E+returns+the+number+of+characters+that+would+have+been%0A++written+had+%3Ctt%3En%3C%2Ftt%3E+been+sufficiently+large%2C+not+counting+the+terminating%0A++%27%5C0%27+character.+However%2C+if+extended+conversion+specifiers+are+used%0A++%28%40see+%23printf%29%2C+the+return+value+may+be+lower+than+the+number+of%0A++characters+that+would+be+written+had+%3Ctt%3En%3C%2Ftt%3E+been+sufficiently+large.'/>
                 </docSect>
             </decl>
             <decl kind='fxn' name='vsprintf' anchor='vsprintf' altext='xdc.runtime.System.vsprintf' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='A+%3Ctt%3EVaList%3C%2Ftt%3E+sprintf'>
@@ -16086,9 +16095,9 @@
             <line tab='0' content='%3Cspan+class%3D%22xdoc-kw3%22%3E%23include%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-id%22%3E%26lt%3Bxdc%2Fruntime%2FText.h%26gt%3B%3C%2Fspan%3E'/>
         </synopTarg>
         <docSect name='details'>
-            <docPara content='This+module+efficiently+manages+a+collection+of+strings+that+have+common%0A++substrings.++Collections+with+a+high+degree+of+commonality+are+stored+in%0A++much+less+space+than+as+ordinary+table+of+independent+C+strings.'/>
+            <docPara content='This+module+efficiently+manages+a+collection+of+strings+that+have+common%0A++substrings.++Collections+with+a+high+degree+of+commonality+are+stored+in%0A++much+less+space+than+as+an+ordinary+table+of+independent+C+strings.'/>
             <docPara content='To+further+save+space%2C+the+%22compressed%22+representation+need+not+even%0A++be+loaded+in+the+target%27s+memory%3B+see+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Text.html%23is.Loaded%22+title%3D%22isLoaded%22%3EisLoaded%3C%2Fa%3E%3C%2Ftt%3E.'/>
-            <docPara content='The+total+space+available+for+the+compressed+representation+of+text+strings%0A++is+limited+to+64K+characters%3B+each+string+is+represented+by+a+16-bit%0A++%22rope+id%22.'/>
+            <docPara content='The+total+space+available+for+the+compressed+representation+of+text+strings%0A++is+limited+to+32K+characters%3B+the+lowest+15+bits+of+a+16-bit+%22rope+id%22+are%0A++an+index+of+a+storage+array.'/>
         </docSect>
         <group name='local proxy modules'>
         </group>
@@ -16128,18 +16137,18 @@
             </decl>
             <decl kind='typedef' name='VisitRopeFxn' anchor='.Visit.Rope.Fxn' altext='xdc.runtime.Text.VisitRopeFxn' nodoc='0' external='0' overrides='0' readonly='0' instance='0' summary=''>
                 <synopSpec>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Etypedef%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%28*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EVisitRopeFxn%3C%2Fspan%3E%3C%2Fgo%3E%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Id%22+title%3D%22xdc.runtime.Text.RopeId%22%3EText.RopeId%3C%2Fa%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EFxn%3C%2Fspan%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EPtr%3C%2Fspan%3E%29%3B'/>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Etypedef%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%28*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EVisitRopeFxn%3C%2Fspan%3E%3C%2Fgo%3E%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Id%22+title%3D%22xdc.runtime.Text.RopeId%22%3EText.RopeId%3C%2Fa%3E%2C%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Visitor%22+title%3D%22xdc.runtime.Text.RopeVisitor%22%3EText.RopeVisitor%3C%2Fa%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EPtr%3C%2Fspan%3E%29%3B'/>
                 </synopSpec>
                 <synopTarg>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Etypedef%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%28*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EText_VisitRopeFxn%3C%2Fspan%3E%3C%2Fgo%3E%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Id%22+title%3D%22xdc.runtime.Text.RopeId%22%3EText_RopeId%3C%2Fa%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EFxn%3C%2Fspan%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EPtr%3C%2Fspan%3E%29%3B'/>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Etypedef%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%28*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EText_VisitRopeFxn%3C%2Fspan%3E%3C%2Fgo%3E%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Id%22+title%3D%22xdc.runtime.Text.RopeId%22%3EText_RopeId%3C%2Fa%3E%2C%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Visitor%22+title%3D%22xdc.runtime.Text.RopeVisitor%22%3EText_RopeVisitor%3C%2Fa%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EPtr%3C%2Fspan%3E%29%3B'/>
                 </synopTarg>
             </decl>
             <decl kind='typedef' name='VisitRopeFxn2' anchor='.Visit.Rope.Fxn2' altext='xdc.runtime.Text.VisitRopeFxn2' nodoc='0' external='0' overrides='0' readonly='0' instance='0' summary=''>
                 <synopSpec>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Etypedef%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%28*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EVisitRopeFxn2%3C%2Fspan%3E%3C%2Fgo%3E%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Id%22+title%3D%22xdc.runtime.Text.RopeId%22%3EText.RopeId%3C%2Fa%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EFxn%3C%2Fspan%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EPtr%3C%2Fspan%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3ECString%3C%2Fspan%3E%5B%3Cspan+class%3D%22xdoc-kw2%22%3E%3C%2Fspan%3E%5D%29%3B'/>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Etypedef%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%28*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EVisitRopeFxn2%3C%2Fspan%3E%3C%2Fgo%3E%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Id%22+title%3D%22xdc.runtime.Text.RopeId%22%3EText.RopeId%3C%2Fa%3E%2C%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Visitor%22+title%3D%22xdc.runtime.Text.RopeVisitor%22%3EText.RopeVisitor%3C%2Fa%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EPtr%3C%2Fspan%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3ECString%3C%2Fspan%3E%5B%3Cspan+class%3D%22xdoc-kw2%22%3E%3C%2Fspan%3E%5D%29%3B'/>
                 </synopSpec>
                 <synopTarg>
-                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Etypedef%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%28*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EText_VisitRopeFxn2%3C%2Fspan%3E%3C%2Fgo%3E%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Id%22+title%3D%22xdc.runtime.Text.RopeId%22%3EText_RopeId%3C%2Fa%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EFxn%3C%2Fspan%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EPtr%3C%2Fspan%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3ECString%3C%2Fspan%3E%5B%3Cspan+class%3D%22xdoc-kw2%22%3E%3C%2Fspan%3E%5D%29%3B'/>
+                    <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Etypedef%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%26nbsp%3B%28*%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EText_VisitRopeFxn2%3C%2Fspan%3E%3C%2Fgo%3E%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Id%22+title%3D%22xdc.runtime.Text.RopeId%22%3EText_RopeId%3C%2Fa%3E%2C%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Visitor%22+title%3D%22xdc.runtime.Text.RopeVisitor%22%3EText_RopeVisitor%3C%2Fa%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EPtr%3C%2Fspan%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3ECString%3C%2Fspan%3E%5B%3Cspan+class%3D%22xdoc-kw2%22%3E%3C%2Fspan%3E%5D%29%3B'/>
                 </synopTarg>
             </decl>
             <decl spacer='1'/>
@@ -16502,10 +16511,10 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Eextern+const%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-kw2%22%3EBool%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EText_isLoaded%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
                 </synopTarg>
                 <docSect name='details'>
-                    <docPara content='Character+strings+managed+by+this+module+are+allocated+together%0A++with+other+character+strings%2C+and+loaded+to+the+target%2C+when+this%0A++parameter+is+set+to+its+default+value+%3Ctt%3Etrue%3C%2Ftt%3E.+If+this+parameter+is%0A++set+to+%3Ctt%3Efalse%3C%2Ftt%3E%2C+the+character+strings+managed+by+Text+are+removed+from%0A++the+application.'/>
-                    <docPara content='A+consequence+of+setting+this+parameter+to+%3Ctt%3Efalse%3C%2Ftt%3E+is+that+all+names+%0A+assigned+to+static+instances+are+set+to+NULL%2C+and+cannot+be+displayed+by%0A+the+code+loaded+to+the+target.+Also%2C+the+Log+Events+that+automatically%0A+print+instance+names+will+print+NULL+for+any+static+instance.+The+same%0A+code+would+print+the+pointers+to+the+names+if+this+parameter+is+set+to%0A+%3Ctt%3Etrue%3C%2Ftt%3E+and+%27isLoaded%3Ctt%3E+is+set+to+%27%3C%2Ftt%3Efalse%60.'/>
-                    <docPara content='ROV+is+not+affected+by+this+parameter+and+it+will+also+correctly+display%0A+names+of+static+instances+in+their+modules%27+views.+ROV+detects+these%0A+names+from+the+saved+configuration+files.'/>
-                    <docPara content='Module+and+event+IDs+are+still+unique+and+Log.Events+within+one+module%0A+have+consecutive+IDs.'/>
+                    <docPara content='Character+strings+managed+by+this+module+are+allocated+together%0A++with+other+character+strings%2C+and+loaded+to+the+target%2C+when+this%0A++parameter+is+set+to+its+default+value+%3Ctt%3Etrue%3C%2Ftt%3E.+If+this+parameter+is%0A++set+to+%3Ctt%3Efalse%3C%2Ftt%3E%2C+the+character+strings+managed+by+Text+are+kept+in+the%0A++application+object+file%2C+but+they+are+not+loaded+to+the+target.'/>
+                    <docPara content='A+consequence+of+setting+this+parameter+to+%3Ctt%3Efalse%3C%2Ftt%3E+is+that+all+names%0A++assigned+to+static+instances+are+set+to+NULL%2C+and+cannot+be+displayed+by%0A++the+code+loaded+to+the+target.+Also%2C+the+Log+Events+that+automatically%0A++print+instance+names+will+print+NULL+for+any+static+instance.'/>
+                    <docPara content='ROV+is+not+affected+by+this+parameter+and+it+will+also+correctly+display%0A++names+of+static+instances+in+their+modules%27+views.+ROV+detects+these%0A++names+from+the+saved+configuration+files.'/>
+                    <docPara content='Module+and+event+IDs+are+still+unique+and+Log.Events+within+one+module%0A++have+consecutive+IDs.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='nameEmpty' anchor='name.Empty' altext='xdc.runtime.Text.nameEmpty' nodoc='0' external='1' overrides='0' readonly='0' instance='0' summary='Default+%3Ctt%3ENULL%3C%2Ftt%3E+instance+name'>
@@ -16609,7 +16618,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Visit.Rope.Fxn%22+title%3D%22xdc.runtime.Text.VisitRopeFxn%22%3EText.VisitRopeFxn%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EvisitRopeFxn%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%253Ca%2Bclass%253D%2522xdoc-link%2522%2Bhref%253D%2522..%252F..%252Fxdc%252Fruntime%252FText.html%2523visit.Rope%2522%2Btitle%253D%2522xdc.runtime.Text.visitRope%2522%253EText.visitRope%253C%252Fa%253E%3B'/>
                 </synopSpec>
                 <synopMeta>
-                    <line tab='0' content='%3Cgo%3EText.%3Cspan+class%3D%22xdoc-id%22%3EvisitRopeFxn%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%28*%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Id%22+title%3D%22xdc.runtime.Text.RopeId%22%3EText.RopeId%3C%2Fa%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EFxn%3C%2Fspan%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EPtr%3C%2Fspan%3E%29%3C%2Fi%3E+%253Ca%2Bclass%253D%2522xdoc-link%2522%2Bhref%253D%2522..%252F..%252Fxdc%252Fruntime%252FText.html%2523visit.Rope%2522%2Btitle%253D%2522xdc.runtime.Text.visitRope%2522%253EText.visitRope%253C%252Fa%253E%3B'/>
+                    <line tab='0' content='%3Cgo%3EText.%3Cspan+class%3D%22xdoc-id%22%3EvisitRopeFxn%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%28*%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Id%22+title%3D%22xdc.runtime.Text.RopeId%22%3EText.RopeId%3C%2Fa%3E%2C%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Visitor%22+title%3D%22xdc.runtime.Text.RopeVisitor%22%3EText.RopeVisitor%3C%2Fa%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EPtr%3C%2Fspan%3E%29%3C%2Fi%3E+%253Ca%2Bclass%253D%2522xdoc-link%2522%2Bhref%253D%2522..%252F..%252Fxdc%252Fruntime%252FText.html%2523visit.Rope%2522%2Btitle%253D%2522xdc.runtime.Text.visitRope%2522%253EText.visitRope%253C%252Fa%253E%3B'/>
                 </synopMeta>
                 <synopTarg>
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Eextern+const%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Visit.Rope.Fxn%22+title%3D%22xdc.runtime.Text.VisitRopeFxn%22%3EText_VisitRopeFxn%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EText_visitRopeFxn%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
@@ -16620,7 +16629,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Econfig%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Visit.Rope.Fxn2%22+title%3D%22xdc.runtime.Text.VisitRopeFxn2%22%3EText.VisitRopeFxn2%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EvisitRopeFxn2%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%253Ca%2Bclass%253D%2522xdoc-link%2522%2Bhref%253D%2522..%252F..%252Fxdc%252Fruntime%252FText.html%2523visit.Rope2%2522%2Btitle%253D%2522xdc.runtime.Text.visitRope2%2522%253EText.visitRope2%253C%252Fa%253E%3B'/>
                 </synopSpec>
                 <synopMeta>
-                    <line tab='0' content='%3Cgo%3EText.%3Cspan+class%3D%22xdoc-id%22%3EvisitRopeFxn2%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%28*%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Id%22+title%3D%22xdc.runtime.Text.RopeId%22%3EText.RopeId%3C%2Fa%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EFxn%3C%2Fspan%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EPtr%3C%2Fspan%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3ECString%3C%2Fspan%3E%5B%3Cspan+class%3D%22xdoc-kw2%22%3E%3C%2Fspan%3E%5D%29%3C%2Fi%3E+%253Ca%2Bclass%253D%2522xdoc-link%2522%2Bhref%253D%2522..%252F..%252Fxdc%252Fruntime%252FText.html%2523visit.Rope2%2522%2Btitle%253D%2522xdc.runtime.Text.visitRope2%2522%253EText.visitRope2%253C%252Fa%253E%3B'/>
+                    <line tab='0' content='%3Cgo%3EText.%3Cspan+class%3D%22xdoc-id%22%3EvisitRopeFxn2%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Cspan+class%3D%22xdoc-kw2%22%3EVoid%3C%2Fspan%3E%28*%29%28%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Id%22+title%3D%22xdc.runtime.Text.RopeId%22%3EText.RopeId%3C%2Fa%3E%2C%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Rope.Visitor%22+title%3D%22xdc.runtime.Text.RopeVisitor%22%3EText.RopeVisitor%3C%2Fa%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3EPtr%3C%2Fspan%3E%2C%3Cspan+class%3D%22xdoc-kw2%22%3ECString%3C%2Fspan%3E%5B%3Cspan+class%3D%22xdoc-kw2%22%3E%3C%2Fspan%3E%5D%29%3C%2Fi%3E+%253Ca%2Bclass%253D%2522xdoc-link%2522%2Bhref%253D%2522..%252F..%252Fxdc%252Fruntime%252FText.html%2523visit.Rope2%2522%2Btitle%253D%2522xdc.runtime.Text.visitRope2%2522%253EText.visitRope2%253C%252Fa%253E%3B'/>
                 </synopMeta>
                 <synopTarg>
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw1%22%3Eextern+const%3C%2Fspan%3E+%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FText.html%23.Visit.Rope.Fxn2%22+title%3D%22xdc.runtime.Text.VisitRopeFxn2%22%3EText_VisitRopeFxn2%3C%2Fa%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3EText_visitRopeFxn2%3C%2Fspan%3E%3C%2Fgo%3E%3B'/>
@@ -16635,7 +16644,7 @@
                     <line tab='0' content='%3Cgo%3EText.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.Text.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -16801,11 +16810,11 @@
             <line tab='0' content='%3Cspan+class%3D%22xdoc-kw3%22%3E%23include%3C%2Fspan%3E+%3Cspan+class%3D%22xdoc-id%22%3E%26lt%3Bxdc%2Fruntime%2FTimestamp.h%26gt%3B%3C%2Fspan%3E'/>
         </synopTarg>
         <docSect name='details'>
-            <docPara content='This+module+provides+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FITimestampClient.html%22+title%3D%22xdc.runtime.ITimestampClient%22%3Exdc.runtime.ITimestampClient%3C%2Fa%3E%3C%2Ftt%3E+APIs+for%0A++the+xdc+Runtime+Support+Library.+Calls+to+these+APIs+are+forwarded%0A++to+a+platform+specific+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FITimestampProvider.html%22+title%3D%22xdc.runtime.ITimestampProvider%22%3Exdc.runtime.ITimestampProvider%3C%2Fa%3E%3C%2Ftt%3E%0A++implementation.'/>
+            <docPara content='This+module+provides+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FITimestampClient.html%22+title%3D%22xdc.runtime.ITimestampClient%22%3Exdc.runtime.ITimestampClient%3C%2Fa%3E%3C%2Ftt%3E+APIs+for+the+xdc%0A++Runtime+Support+Library.+Calls+to+these+APIs+are+forwarded+to+a+platform%0A++specific+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FITimestampProvider.html%22+title%3D%22xdc.runtime.ITimestampProvider%22%3Exdc.runtime.ITimestampProvider%3C%2Fa%3E%3C%2Ftt%3E+implementation.'/>
             <docPara content='A+user+can+attach+their+own+ITimestampProvider+module%0A++using+the+following+config+file+command%3A'/>
             <docPara content='%3CPRE+class%3D%22Example%22%3E%0A++xdc.runtime.Timestamp.SupportProxy+%3D+xdc.useModule%28%22usersTimestampProvider%22%29%3B%0A%3C%2FPRE%3E'/>
             <docPara content='If+no+such+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Timestamp.html%23.Support.Proxy%22+title%3D%22SupportProxy%22%3ESupportProxy%3C%2Fa%3E%3C%2Ftt%3E+initialization+is+done%2C%0A++the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTimestampNull.html%22+title%3D%22xdc.runtime.TimestampNull%22%3Exdc.runtime.TimestampNull%3C%2Fa%3E%3C%2Ftt%3E+ITimestampProvider+implementation%2C%0A++which+provides+null+stubs+for+the+APIs%2C+will+be+attached+by+default.'/>
-            <docPara content='If+the+user+is+developing+code+using+CCS%2C+the%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTimestampStd.html%22+title%3D%22xdc.runtime.TimestampStd%22%3Exdc.runtime.TimestampStd%3C%2Fa%3E%3C%2Ftt%3E%0A++ITimestampProvider+implementation%2C+which+uses+the+ANSI+C+clock%28%29%0A++function%2C+may+provide+a+satisfactory+timestamp+source+%28remember+to%0A++enable+the+profile+clock+in+CCS%29.'/>
+            <docPara content='If+the+user+is+developing+code+using+CCS%2C+the%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTimestampStd.html%22+title%3D%22xdc.runtime.TimestampStd%22%3Exdc.runtime.TimestampStd%3C%2Fa%3E%3C%2Ftt%3E+ITimestampProvider+implementation%2C+which%0A++uses+the+ANSI+C+clock%28%29+function%2C+may+provide+a+satisfactory+timestamp%0A++source+%28remember+to+enable+the+profile+clock+in+CCS%29.'/>
             <docPara content='To+use+the+TimestampStd+implementation%2C+add+the+following+to%0A++your+config+script%3A'/>
             <docPara content='%3CPRE+class%3D%22Example%22%3E%0A++xdc.runtime.Timestamp.SupportProxy+%3D+xdc.useModule%28%22xdc.runtime.TimestampStd%22%29%3B%0A%3C%2FPRE%3E'/>
         </docSect>
@@ -16826,7 +16835,7 @@
                     <line elem='0'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='The+SupportProxy+module+provides+application%2Fplatform%0A++specific+implementations+of+the+%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FITimestampProvider.html%22+title%3D%22xdc.runtime.ITimestampProvider%22%3Exdc.runtime.ITimestampProvider%3C%2Fa%3E%3C%2Ftt%3E+APIs.'/>
+                    <docPara content='The+SupportProxy+module+provides+application%2Fplatform+specific+%0A++implementations+of+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FITimestampProvider.html%22+title%3D%22xdc.runtime.ITimestampProvider%22%3Exdc.runtime.ITimestampProvider%3C%2Fa%3E%3C%2Ftt%3E+APIs.'/>
                     <docPara content='If+not+explicitly+supplied+by+the+user%2C+this+proxy+defaults+to%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTimestampNull.html%22+title%3D%22xdc.runtime.TimestampNull%22%3Exdc.runtime.TimestampNull%3C%2Fa%3E%3C%2Ftt%3E%2C+%0A++which+provides+null+stubs+for+all+of+the+ITimestampProvider+APIs.'/>
                 </docSect>
             </decl>
@@ -17060,7 +17069,7 @@
                     <line tab='0' content='%3Cgo%3ETimestamp.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.Timestamp.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -17091,7 +17100,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EBits32%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ETimestamp_get32%3C%2Fspan%3E%3C%2Fgo%3E%28++%29%3B'/>
                 </synopTarg>
                 <docSect name='returns'>
-                    <docPara content='Returns+a+32-bit+timestamp+value.++%0A++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Timestamp.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+time.'/>
+                    <docPara content='Returns+a+32-bit+timestamp+value.%0A++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Timestamp.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+time.'/>
                 </docSect>
                 <docSect name='see'>
                     <docPara content='%3Ca+class%3D%22xdoc-link%22+href%3D%22Timestamp.html%23get64%22+title%3D%22get64%22%3Eget64%3C%2Fa%3E'/>
@@ -17107,7 +17116,7 @@
                 <docSect name='ARGUMENTS'>
                     <docChild name='result' summary='pointer+to+64-bit+result'>
                         <docPara content='This+parameter+is+a+pointer+to+a+structure+representing+a+64-bit%0A++++++wide+timestamp+value+where+the+current+timestamp+is+written.'/>
-                        <docPara content='If+the+underlying+hardware+does+not+support+64-bit+resolution%2C+the%0A++++++%3Ctt%3Ehi%3C%2Ftt%3E+field+of+%3Ctt%3Eresult%3C%2Ftt%3E+is+always+set+to+0%3B+see%0A++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Timestamp64%22+title%3D%22xdc.runtime.Types.Timestamp64%22%3Exdc.runtime.Types.Timestamp64%3C%2Fa%3E%3C%2Ftt%3E.++So%2C+it+is+possible+for+%0A++++++the+%3Ctt%3Elo%3C%2Ftt%3E+field+to+wrap+around+without+any+change+to+the+%3Ctt%3Ehi%3C%2Ftt%3E+field.%0A++++++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Timestamp.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+%0A++++++time.'/>
+                        <docPara content='If+the+underlying+hardware+does+not+support+64-bit+resolution%2C+the%0A++++++%3Ctt%3Ehi%3C%2Ftt%3E+field+of+%3Ctt%3Eresult%3C%2Ftt%3E+is+always+set+to+0%3B+see%0A++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Timestamp64%22+title%3D%22xdc.runtime.Types.Timestamp64%22%3Exdc.runtime.Types.Timestamp64%3C%2Fa%3E%3C%2Ftt%3E.++So%2C+it+is+possible+for%0A++++++the+%3Ctt%3Elo%3C%2Ftt%3E+field+to+wrap+around+without+any+change+to+the+%3Ctt%3Ehi%3C%2Ftt%3E+field.%0A++++++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Timestamp.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real%0A++++++time.'/>
                     </docChild>
                 </docSect>
                 <docSect name='see'>
@@ -17398,7 +17407,7 @@
                     <line tab='0' content='%3Cgo%3ETimestampNull.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.TimestampNull.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -17429,7 +17438,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EBits32%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ETimestampNull_get32%3C%2Fspan%3E%3C%2Fgo%3E%28++%29%3B'/>
                 </synopTarg>
                 <docSect name='returns'>
-                    <docPara content='Returns+a+32-bit+timestamp+value.++%0A++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22TimestampNull.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+time.'/>
+                    <docPara content='Returns+a+32-bit+timestamp+value.%0A++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22TimestampNull.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+time.'/>
                 </docSect>
                 <docSect name='see'>
                     <docPara content='%3Ca+class%3D%22xdoc-link%22+href%3D%22TimestampNull.html%23get64%22+title%3D%22get64%22%3Eget64%3C%2Fa%3E'/>
@@ -17445,7 +17454,7 @@
                 <docSect name='ARGUMENTS'>
                     <docChild name='result' summary='pointer+to+64-bit+result'>
                         <docPara content='This+parameter+is+a+pointer+to+a+structure+representing+a+64-bit%0A++++++wide+timestamp+value+where+the+current+timestamp+is+written.'/>
-                        <docPara content='If+the+underlying+hardware+does+not+support+64-bit+resolution%2C+the%0A++++++%3Ctt%3Ehi%3C%2Ftt%3E+field+of+%3Ctt%3Eresult%3C%2Ftt%3E+is+always+set+to+0%3B+see%0A++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Timestamp64%22+title%3D%22xdc.runtime.Types.Timestamp64%22%3Exdc.runtime.Types.Timestamp64%3C%2Fa%3E%3C%2Ftt%3E.++So%2C+it+is+possible+for+%0A++++++the+%3Ctt%3Elo%3C%2Ftt%3E+field+to+wrap+around+without+any+change+to+the+%3Ctt%3Ehi%3C%2Ftt%3E+field.%0A++++++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22TimestampNull.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+%0A++++++time.'/>
+                        <docPara content='If+the+underlying+hardware+does+not+support+64-bit+resolution%2C+the%0A++++++%3Ctt%3Ehi%3C%2Ftt%3E+field+of+%3Ctt%3Eresult%3C%2Ftt%3E+is+always+set+to+0%3B+see%0A++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Timestamp64%22+title%3D%22xdc.runtime.Types.Timestamp64%22%3Exdc.runtime.Types.Timestamp64%3C%2Fa%3E%3C%2Ftt%3E.++So%2C+it+is+possible+for%0A++++++the+%3Ctt%3Elo%3C%2Ftt%3E+field+to+wrap+around+without+any+change+to+the+%3Ctt%3Ehi%3C%2Ftt%3E+field.%0A++++++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22TimestampNull.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real%0A++++++time.'/>
                     </docChild>
                 </docSect>
                 <docSect name='see'>
@@ -17736,7 +17745,7 @@
                     <line tab='0' content='%3Cgo%3ETimestampStd.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.TimestampStd.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -17767,7 +17776,7 @@
                     <line tab='0' content='%3Cspan+class%3D%22xdoc-kw2%22%3EBits32%3C%2Fspan%3E%26nbsp%3B%3Cgo%3E%3Cspan+class%3D%22xdoc-id%22%3ETimestampStd_get32%3C%2Fspan%3E%3C%2Fgo%3E%28++%29%3B'/>
                 </synopTarg>
                 <docSect name='returns'>
-                    <docPara content='Returns+a+32-bit+timestamp+value.++%0A++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22TimestampStd.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+time.'/>
+                    <docPara content='Returns+a+32-bit+timestamp+value.%0A++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22TimestampStd.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+time.'/>
                 </docSect>
                 <docSect name='see'>
                     <docPara content='%3Ca+class%3D%22xdoc-link%22+href%3D%22TimestampStd.html%23get64%22+title%3D%22get64%22%3Eget64%3C%2Fa%3E'/>
@@ -17783,7 +17792,7 @@
                 <docSect name='ARGUMENTS'>
                     <docChild name='result' summary='pointer+to+64-bit+result'>
                         <docPara content='This+parameter+is+a+pointer+to+a+structure+representing+a+64-bit%0A++++++wide+timestamp+value+where+the+current+timestamp+is+written.'/>
-                        <docPara content='If+the+underlying+hardware+does+not+support+64-bit+resolution%2C+the%0A++++++%3Ctt%3Ehi%3C%2Ftt%3E+field+of+%3Ctt%3Eresult%3C%2Ftt%3E+is+always+set+to+0%3B+see%0A++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Timestamp64%22+title%3D%22xdc.runtime.Types.Timestamp64%22%3Exdc.runtime.Types.Timestamp64%3C%2Fa%3E%3C%2Ftt%3E.++So%2C+it+is+possible+for+%0A++++++the+%3Ctt%3Elo%3C%2Ftt%3E+field+to+wrap+around+without+any+change+to+the+%3Ctt%3Ehi%3C%2Ftt%3E+field.%0A++++++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22TimestampStd.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real+%0A++++++time.'/>
+                        <docPara content='If+the+underlying+hardware+does+not+support+64-bit+resolution%2C+the%0A++++++%3Ctt%3Ehi%3C%2Ftt%3E+field+of+%3Ctt%3Eresult%3C%2Ftt%3E+is+always+set+to+0%3B+see%0A++++++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Timestamp64%22+title%3D%22xdc.runtime.Types.Timestamp64%22%3Exdc.runtime.Types.Timestamp64%3C%2Fa%3E%3C%2Ftt%3E.++So%2C+it+is+possible+for%0A++++++the+%3Ctt%3Elo%3C%2Ftt%3E+field+to+wrap+around+without+any+change+to+the+%3Ctt%3Ehi%3C%2Ftt%3E+field.%0A++++++Use+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22TimestampStd.html%23get.Freq%22+title%3D%22getFreq%22%3EgetFreq%3C%2Fa%3E%3C%2Ftt%3E+to+convert+this+value+into+units+of+real%0A++++++time.'/>
                     </docChild>
                 </docSect>
                 <docSect name='see'>
@@ -18737,7 +18746,7 @@
                     <line tab='0' content='%3Cgo%3ETypes.%3Cspan+class%3D%22xdoc-id%22%3Ecommon%24%3C%2Fspan%3E%3C%2Fgo%3E+%3D+%3Ci%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FTypes.html%23.Common%24%22+title%3D%22xdc.runtime.Types.Common%24%22%3ETypes.Common%24%3C%2Fa%3E%3C%2Fi%3E+%3Cspan+class%3D%22xdoc-kw2%22%3Eundefined%3C%2Fspan%3E%3B'/>
                 </synopMeta>
                 <docSect name='details'>
-                    <docPara content='All+modules+have+this+configuration+parameter.++Its+name%0A++contains+the+%27%24%27+character+to+ensure+it+does+not+conflict+with%0A++configuration+parameters+declared+by+the+module.++This+allows%0A++new+configuration+parameters+to+be+added+in+the+future+without%0A++any+chance+of+breaking+existing+modules.'/>
+                    <docPara content='All+modules+have+this+configuration+parameter.+Its+name+contains+the+%27%24%27%0A++character+to+ensure+it+does+not+conflict+with+configuration+parameters%0A++declared+by+the+module.+This+allows+new+configuration+parameters+to+be+%0A++added+in+the+future+without+any+chance+of+breaking+existing+modules.'/>
                 </docSect>
             </decl>
             <decl kind='config' name='rovShowRawTab$' anchor='rov.Show.Raw.Tab$' altext='xdc.runtime.Types.rovShowRawTab$' nodoc='1' external='1' overrides='0' readonly='0' instance='0' summary='' origin='%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fruntime%2FIModule.html%23rov.Show.Raw.Tab%24%22+title%3D%22xdc.runtime.IModule.rovShowRawTab%24%22%3EIModule%3C%2Fa%3E' metaonly='1'>
@@ -18831,13 +18840,13 @@
     </unit>
     <docSect name='details'>
         <docPara content='The+modules+and+interfaces+in+the+%3Ctt%3Exdc.runtime%3C%2Ftt%3E+package+form+the+%22core%22%0A++RTSC+target+runtime+support+library+which+provides+basic+system+services%0A++required+by+virtually+all+applications.'/>
-        <docPara content='Since+this+package%27s+services+are+intended+to+be+available+to+any%0A++C%2FC%2B%2B+client%2C+this+package+does+not+contain+any+pre-compiled+libraries.%0A++Instead%2C+this+package+provides+complete+sources+which+are+built+and%0A++supplied+by+a+target-specific+package+named+by+the%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fbld%2FITarget.html%23rts%22+title%3D%22xdc.bld.ITarget.rts%22%3Erts%3C%2Fa%3E%3C%2Ftt%3E+parameter+of+the+target+used+to+build%0A++the+client+sources.++This+%22indirection%22+make+it+possible+for+new+targets%0A++to+be+added+by+interested+parties+whithout+ever+having+to+update+this%0A++package.'/>
+        <docPara content='Since+this+package%27s+services+are+intended+to+be+available+to+any+C%2FC%2B%2B%0A++client%2C+this+package+does+not+contain+any+pre-compiled+libraries.+Instead%2C%0A++this+package+provides+complete+sources+which+are+built+and+supplied+by+a%0A++target-specific+package+named+by+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22..%2F..%2Fxdc%2Fbld%2FITarget.html%23rts%22+title%3D%22xdc.bld.ITarget.rts%22%3Erts%3C%2Fa%3E%3C%2Ftt%3E%0A++parameter+of+the+target+used+to+build+the+client+sources.++This+%22indirection%22%0A++makes+it+possible+for+new+targets+to+be+added+by+interested+parties+whithout%0A++ever+having+to+update+this+package.'/>
         <docPara content='The+functionality+provided+by+this+package+can+be+roughly+partitioned%0A++into+four+categories%3A'/>
         <docPara content='%3COL%3E%3CLI%3E+Diagnostics+and+Logs%0A%3C%2FLI%3E%3CLI%3E+Memory+Management%0A%3C%2FLI%3E%3CLI%3E+Concurrency+Support%0A%3C%2FLI%3E%3CLI%3E+Startup+and+Shutdown%0A%3C%2FLI%3E%3C%2FOL%3E'/>
     </docSect>
     <docSect name='Diagnostics and Logs'>
         <docPara content='This+package+provides+for+diagnostics+with+a+set+of+modules+that+operate%0A++together+to+configure+and+implement+diagnostics.'/>
-        <docPara content='The+modules+can+be+partitioned+into+three+groups%3A+modules+that%0A++generate+events%2C+a+module+that+allows+precise+control+over+when%0A++%28or+if%29+various+events+are+generated%2C+and+modules+that+manage+the%0A++output+or+display+of+the+events.'/>
+        <docPara content='The+modules+can+be+partitioned+into+three+groups%3A+modules+that+generate%0A++events%2C+a+module+that+allows+precise+control+over+when+%28or+if%29+various%0A++events+are+generated%2C+and+modules+that+manage+the+output+or+display+of+the%0A++events.'/>
         <docPara content='%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Assert.html%22+title%3D%22Assert%22%3EAssert%3C%2Fa%3E%3C%2Ftt%3E%2C+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%22+title%3D%22Error%22%3EError%3C%2Fa%3E%3C%2Ftt%3E%2C+and+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Log.html%22+title%3D%22Log%22%3ELog%3C%2Fa%3E%3C%2Ftt%3E+provide+methods+that%0A++are+added+to+source+code+and+generate+events.+The+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Diags.html%22+title%3D%22Diags%22%3EDiags%3C%2Fa%3E%3C%2Ftt%3E+module%0A++provides+both+configuration+and+runtime+methods+to+selectively+enable+or%0A++disable+different+types+of+events+on+a+per+module+basis.+Finally%2C%0A++%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22LoggerBuf.html%22+title%3D%22LoggerBuf%22%3ELoggerBuf%3C%2Fa%3E%3C%2Ftt%3E%2C+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22LoggerSys.html%22+title%3D%22LoggerSys%22%3ELoggerSys%3C%2Fa%3E%3C%2Ftt%3E+and+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22LoggerCallback.html%22+title%3D%22LoggerCallback%22%3ELoggerCallback%3C%2Fa%3E%3C%2Ftt%3E+are+%0A++simple+alternative+implementations+of+the+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22ILogger.html%22+title%3D%22ILogger%22%3EILogger%3C%2Fa%3E%3C%2Ftt%3E+event+%22handler%22%0A++interface.+You+can+provide+more+sophisticated+or+platform-specific%0A++implementations+of+%3Ctt%3EILogger%3C%2Ftt%3E+without+making+any+changes+to+code+that%0A++uses+%3Ctt%3EAssert%3C%2Ftt%3E%2C+%3Ctt%3ELog%3C%2Ftt%3E%2C+%3Ctt%3EError%3C%2Ftt%3E%2C+or+%3Ctt%3EDiags%3C%2Ftt%3E.'/>
         <docPara content='The+diagnostics+and+logger+modules+include+the+following%3A'/>
         <docPara content='%3CUL%3E%3CLI%3E+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Assert.html%22+title%3D%22Assert%22%3EAssert%3C%2Fa%3E%3C%2Ftt%3E+++++++++-+Add+integrity+checks+to+the+code.%0A%3C%2FLI%3E%3CLI%3E+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Diags.html%22+title%3D%22Diags%22%3EDiags%3C%2Fa%3E%3C%2Ftt%3E++++++++++-+Manage+a+module%27s+diagnostics+mask.%0A%3C%2FLI%3E%3CLI%3E+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Error.html%22+title%3D%22Error%22%3EError%3C%2Fa%3E%3C%2Ftt%3E++++++++++-+Raise+error+events.%0A%3C%2FLI%3E%3CLI%3E+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Log.html%22+title%3D%22Log%22%3ELog%3C%2Fa%3E%3C%2Ftt%3E++++++++++++-+Generate+log+events+in+realtime.%0A%3C%2FLI%3E%3CLI%3E+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22LoggerBuf.html%22+title%3D%22LoggerBuf%22%3ELoggerBuf%3C%2Fa%3E%3C%2Ftt%3E++++++-+A+logger+using+a+buffer+for+log+events.%0A%3C%2FLI%3E%3CLI%3E+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22LoggerCallback.html%22+title%3D%22LoggerCallback%22%3ELoggerCallback%3C%2Fa%3E%3C%2Ftt%3E+-+A+logger+using+user+defined+callback+function%0A+++++++++++++++++++++++++++++++for+log+events.%0A%3C%2FLI%3E%3CLI%3E+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22LoggerSys.html%22+title%3D%22LoggerSys%22%3ELoggerSys%3C%2Fa%3E%3C%2Ftt%3E++++++-+A+logger+using+printf+for+log+events.%0A%3C%2FLI%3E%3CLI%3E+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Types.html%22+title%3D%22Types%22%3ETypes%3C%2Fa%3E%3C%2Ftt%3E++++++++++-+Define+diagnostics+configuration+parameters.%0A%3C%2FLI%3E%3CLI%3E+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Timestamp.html%22+title%3D%22Timestamp%22%3ETimestamp%3C%2Fa%3E%3C%2Ftt%3E++++++-+Simple+timestamp+service%0A%3C%2FLI%3E%3C%2FUL%3E'/>
@@ -18848,7 +18857,7 @@
     </docSect>
     <docSect name='Concurrency Support'>
         <docPara content='The+concurency+support+modules+include+the+following%3A'/>
-        <docPara content='%3CUL%3E%3CLI%3E+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Gate.html%22+title%3D%22Gate%22%3EGate%3C%2Fa%3E%3C%2Ftt%3E+++++-++module+used+by+clients+to+serialize+access+to%0A++++++++++++++++++++++++++shared+data+structures%0A%3C%2FLI%3E%3CLI%3E+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22GateNull.html%22+title%3D%22GateNull%22%3EGateNull%3C%2Fa%3E%3C%2Ftt%3E+-+%22null%22+implementation+for+applications+that%0A+++++++++++++++++++++++++don%27t+need+serialization%3B+e.g.%2C+single+threaded%0A+++++++++++++++++++++++++applications%0A%3C%2FLI%3E%3C%2FUL%3E'/>
+        <docPara content='%3CUL%3E%3CLI%3E+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22Gate.html%22+title%3D%22Gate%22%3EGate%3C%2Fa%3E%3C%2Ftt%3E+++++-+module+used+by+clients+to+serialize+access+to%0A+++++++++++++++++++++++++shared+data+structures%0A%3C%2FLI%3E%3CLI%3E+%3Ctt%3E%3Ca+class%3D%22xdoc-link%22+href%3D%22GateNull.html%22+title%3D%22GateNull%22%3EGateNull%3C%2Fa%3E%3C%2Ftt%3E+-+%22null%22+implementation+for+applications+that%0A+++++++++++++++++++++++++don%27t+need+serialization%3B+e.g.%2C+single+threaded%0A+++++++++++++++++++++++++applications%0A%3C%2FLI%3E%3C%2FUL%3E'/>
     </docSect>
     <docSect name='Startup and Shutdown'>
         <docPara content='The+system+startup+and+shutdown+support+modules+include%3A'/>

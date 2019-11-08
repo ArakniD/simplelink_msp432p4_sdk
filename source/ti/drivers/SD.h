@@ -55,7 +55,7 @@
  *  SD_init();
  *
  *  // Open SD and initialize card
- *  handle = SD_open(Board_SD0, NULL);
+ *  handle = SD_open(CONFIG_SD0, NULL);
  *  status = SD_initialize(handle);
  *  if (handle == NULL || status != SD_STATUS_SUCCESS) {
  *      //Error opening SD driver
@@ -106,11 +106,11 @@
 #ifndef ti_drivers_SD__include
 #define ti_drivers_SD__include
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <stdint.h>
 
 /**
  *  @defgroup SD_CONTROL SD_control command and status codes
@@ -194,7 +194,7 @@ extern "C" {
 /*!
  *  @brief  SD Card type inserted
  */
-typedef enum SD_CardType_ {
+typedef enum {
     SD_NOCARD = 0, /*!< Unrecognized Card */
     SD_MMC = 1,    /*!< Multi-media Memory Card (MMC) */
     SD_SDSC = 2,   /*!< Standard SDCard (SDSC) */
@@ -216,7 +216,7 @@ typedef struct SD_Config_ *SD_Handle;
  */
 
 /* SD Parameters */
-typedef struct SD_Params_ {
+typedef struct {
     void   *custom;  /*!< Custom argument used by driver implementation */
 } SD_Params;
 
@@ -282,7 +282,7 @@ typedef int_fast16_t (*SD_WriteFxn) (SD_Handle handle, const void *buf,
  *         required set of functions to control a specific SD driver
  *         implementation.
  */
-typedef struct SD_FxnTable_ {
+typedef struct {
     /*! Function to close the specified peripheral */
     SD_CloseFxn             closeFxn;
     /*! Function to implementation specific control function */

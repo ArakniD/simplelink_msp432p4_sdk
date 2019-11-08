@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2018, Texas Instruments Incorporated
+ * Copyright (c) 2013-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -271,7 +271,7 @@ Bool Adaptor_sendPacket(UIAPacket_Hdr *packet)
      *  If the call is being made in the context of the transferAgent,
      *  just call the Adaptor directly.
      */
-    if ((Adaptor_module->transferAgentHandle == Task_self())) {
+    if (Adaptor_module->transferAgentHandle == Task_self()) {
         status = Adaptor_sendToHost(packet);
     }
     else {

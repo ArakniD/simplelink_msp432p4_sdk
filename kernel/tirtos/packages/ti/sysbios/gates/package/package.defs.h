@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_gates__
@@ -19,7 +19,6 @@ typedef struct ti_sysbios_gates_GateHwi_Params ti_sysbios_gates_GateHwi_Params;
 typedef struct ti_sysbios_gates_GateHwi_Object ti_sysbios_gates_GateHwi_Object;
 typedef struct ti_sysbios_gates_GateHwi_Struct ti_sysbios_gates_GateHwi_Struct;
 typedef ti_sysbios_gates_GateHwi_Object* ti_sysbios_gates_GateHwi_Handle;
-typedef struct ti_sysbios_gates_GateHwi_Object__ ti_sysbios_gates_GateHwi_Instance_State;
 typedef ti_sysbios_gates_GateHwi_Object* ti_sysbios_gates_GateHwi_Instance;
 
 /*
@@ -32,7 +31,6 @@ typedef struct ti_sysbios_gates_GateAll_Params ti_sysbios_gates_GateAll_Params;
 typedef struct ti_sysbios_gates_GateAll_Object ti_sysbios_gates_GateAll_Object;
 typedef struct ti_sysbios_gates_GateAll_Struct ti_sysbios_gates_GateAll_Struct;
 typedef ti_sysbios_gates_GateAll_Object* ti_sysbios_gates_GateAll_Handle;
-typedef struct ti_sysbios_gates_GateAll_Object__ ti_sysbios_gates_GateAll_Instance_State;
 typedef ti_sysbios_gates_GateAll_Object* ti_sysbios_gates_GateAll_Instance;
 
 /*
@@ -45,7 +43,6 @@ typedef struct ti_sysbios_gates_GateSwi_Params ti_sysbios_gates_GateSwi_Params;
 typedef struct ti_sysbios_gates_GateSwi_Object ti_sysbios_gates_GateSwi_Object;
 typedef struct ti_sysbios_gates_GateSwi_Struct ti_sysbios_gates_GateSwi_Struct;
 typedef ti_sysbios_gates_GateSwi_Object* ti_sysbios_gates_GateSwi_Handle;
-typedef struct ti_sysbios_gates_GateSwi_Object__ ti_sysbios_gates_GateSwi_Instance_State;
 typedef ti_sysbios_gates_GateSwi_Object* ti_sysbios_gates_GateSwi_Instance;
 
 /*
@@ -58,7 +55,6 @@ typedef struct ti_sysbios_gates_GateTask_Params ti_sysbios_gates_GateTask_Params
 typedef struct ti_sysbios_gates_GateTask_Object ti_sysbios_gates_GateTask_Object;
 typedef struct ti_sysbios_gates_GateTask_Struct ti_sysbios_gates_GateTask_Struct;
 typedef ti_sysbios_gates_GateTask_Object* ti_sysbios_gates_GateTask_Handle;
-typedef struct ti_sysbios_gates_GateTask_Object__ ti_sysbios_gates_GateTask_Instance_State;
 typedef ti_sysbios_gates_GateTask_Object* ti_sysbios_gates_GateTask_Instance;
 
 /*
@@ -71,7 +67,6 @@ typedef struct ti_sysbios_gates_GateTest_Params ti_sysbios_gates_GateTest_Params
 typedef struct ti_sysbios_gates_GateTest_Object ti_sysbios_gates_GateTest_Object;
 typedef struct ti_sysbios_gates_GateTest_Struct ti_sysbios_gates_GateTest_Struct;
 typedef ti_sysbios_gates_GateTest_Object* ti_sysbios_gates_GateTest_Handle;
-typedef struct ti_sysbios_gates_GateTest_Object__ ti_sysbios_gates_GateTest_Instance_State;
 typedef ti_sysbios_gates_GateTest_Object* ti_sysbios_gates_GateTest_Instance;
 
 /*
@@ -84,7 +79,6 @@ typedef struct ti_sysbios_gates_GateMutexPri_Params ti_sysbios_gates_GateMutexPr
 typedef struct ti_sysbios_gates_GateMutexPri_Object ti_sysbios_gates_GateMutexPri_Object;
 typedef struct ti_sysbios_gates_GateMutexPri_Struct ti_sysbios_gates_GateMutexPri_Struct;
 typedef ti_sysbios_gates_GateMutexPri_Object* ti_sysbios_gates_GateMutexPri_Handle;
-typedef struct ti_sysbios_gates_GateMutexPri_Object__ ti_sysbios_gates_GateMutexPri_Instance_State;
 typedef ti_sysbios_gates_GateMutexPri_Object* ti_sysbios_gates_GateMutexPri_Instance;
 
 /*
@@ -97,7 +91,6 @@ typedef struct ti_sysbios_gates_GateMutex_Params ti_sysbios_gates_GateMutex_Para
 typedef struct ti_sysbios_gates_GateMutex_Object ti_sysbios_gates_GateMutex_Object;
 typedef struct ti_sysbios_gates_GateMutex_Struct ti_sysbios_gates_GateMutex_Struct;
 typedef ti_sysbios_gates_GateMutex_Object* ti_sysbios_gates_GateMutex_Handle;
-typedef struct ti_sysbios_gates_GateMutex_Object__ ti_sysbios_gates_GateMutex_Instance_State;
 typedef ti_sysbios_gates_GateMutex_Object* ti_sysbios_gates_GateMutex_Instance;
 
 /*
@@ -110,7 +103,6 @@ typedef struct ti_sysbios_gates_GateSpinlock_Params ti_sysbios_gates_GateSpinloc
 typedef struct ti_sysbios_gates_GateSpinlock_Object ti_sysbios_gates_GateSpinlock_Object;
 typedef struct ti_sysbios_gates_GateSpinlock_Struct ti_sysbios_gates_GateSpinlock_Struct;
 typedef ti_sysbios_gates_GateSpinlock_Object* ti_sysbios_gates_GateSpinlock_Handle;
-typedef struct ti_sysbios_gates_GateSpinlock_Object__ ti_sysbios_gates_GateSpinlock_Instance_State;
 typedef ti_sysbios_gates_GateSpinlock_Object* ti_sysbios_gates_GateSpinlock_Instance;
 
 

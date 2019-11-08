@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_knl_Idle__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_knl_Idle___VERS 200
@@ -262,17 +264,17 @@ __extern __FAR__ const CT__ti_sysbios_knl_Idle_coreList ti_sysbios_knl_Idle_core
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_knl_Idle_Module__startupDone__S, "ti_sysbios_knl_Idle_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_knl_Idle_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_knl_Idle_Module__startupDone__S( void);
 
 /* loop__E */
 #define ti_sysbios_knl_Idle_loop ti_sysbios_knl_Idle_loop__E
 xdc__CODESECT(ti_sysbios_knl_Idle_loop__E, "ti_sysbios_knl_Idle_loop")
-__extern xdc_Void ti_sysbios_knl_Idle_loop__E( xdc_UArg arg1, xdc_UArg arg2 );
+__extern xdc_Void ti_sysbios_knl_Idle_loop__E( xdc_UArg arg1, xdc_UArg arg2);
 
 /* run__E */
 #define ti_sysbios_knl_Idle_run ti_sysbios_knl_Idle_run__E
 xdc__CODESECT(ti_sysbios_knl_Idle_run__E, "ti_sysbios_knl_Idle_run")
-__extern xdc_Void ti_sysbios_knl_Idle_run__E( void );
+__extern xdc_Void ti_sysbios_knl_Idle_run__E( void);
 
 
 /*

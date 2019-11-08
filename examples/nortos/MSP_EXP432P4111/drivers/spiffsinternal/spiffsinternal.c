@@ -40,7 +40,7 @@
 
 #include <ti/display/Display.h>
 
-#include "Board.h"
+#include "ti_drivers_config.h"
 
 /* SPIFFS configuration parameters */
 #define SPIFFS_LOGICAL_BLOCK_SIZE    (4096)
@@ -85,7 +85,7 @@ void *mainThread(void *arg0)
     }
 
     /* Initialize spiffs, spiffs_config & spiffsnvsdata structures */
-    status = SPIFFSNVS_config(&spiffsnvsData, Board_NVSINTERNAL, &fs, &fsConfig,
+    status = SPIFFSNVS_config(&spiffsnvsData, CONFIG_NVSINTERNAL, &fs, &fsConfig,
         SPIFFS_LOGICAL_BLOCK_SIZE, SPIFFS_LOGICAL_PAGE_SIZE);
     if (status != SPIFFSNVS_STATUS_SUCCESS) {
         Display_printf(displayHandle, 0, 0,

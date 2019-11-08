@@ -9,10 +9,10 @@
         </when>
     </applicability>
 
-
     <project
         title="Swi Example"
         name="swi_MSP_EXP432P401R_tirtos_ccs"
+        configurations="Debug"
         toolChain="TI"
         connection="TIXDS110_Connection.xml"
         device="MSP432P401R"
@@ -21,6 +21,8 @@
         products="com.ti.SIMPLELINK_MSP432_SDK"
         compilerBuildOptions="
             -I${PROJECT_ROOT}
+            -I${PROJECT_ROOT}/${ConfigName}
+            -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
             -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/third_party/CMSIS/Include
             --advice:power=none
             -I${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/posix/ccs
@@ -36,58 +38,53 @@
             -I${CG_TOOL_ROOT}/include
         "
         linkerBuildOptions="
-             -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
-             -lti/display/lib/display.aem4f
-             -lti/grlib/lib/ccs/m4f/grlib.a
-             -lthird_party/spiffs/lib/ccs/m4f/spiffs.a
-             -lti/drivers/lib/drivers_msp432p401x.aem4f
-             -lthird_party/fatfs/lib/ccs/m4f/fatfs.a
-             -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages
-             -lti/dpl/lib/dpl_msp432p401x.aem4f
-             -lti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib
-             --warn_sections
-             --display_error_number
-             --diag_wrap=off
-             --rom_model
-             -i${CG_TOOL_ROOT}/lib
-             -llibc.a
+            -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source
+            -lti/display/lib/display.aem4f
+            -lti/grlib/lib/ccs/m4f/grlib.a
+            -lthird_party/spiffs/lib/ccs/m4f/spiffs.a
+            -lti/drivers/lib/drivers_msp432p401x.aem4f
+            -lthird_party/fatfs/lib/ccs/m4f/fatfs.a
+            -i${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/kernel/tirtos/packages
+            -lti/dpl/lib/dpl_msp432p401x.aem4f
+            -lti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib
+            --warn_sections
+            --display_error_number
+            --diag_wrap=off
+            --rom_model
+            -i${CG_TOOL_ROOT}/lib
+            -llibc.a
         "
-        preBuildStep="
-        "
-        postBuildStep="
+        enableSysConfigTool="true"
+        sysConfigBuildOptions="
+            --product ${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/.metadata/product.json
         "
         description="The swi example shows how to use the ti.sysbios.knl.Swi module. It demonstrates how the various Swi APIs work.">
-
         <property name="type" value="rtsc"/>
-        <property name="xdcToolsVersion" value="3_51_03_28_core"/>
+        <property name="xdcToolsVersion" value="3_60_00_24_core"/>
         <property name="target" value="ti.targets.arm.elf.M4F"/>
         <property name="platform" value="ti.platforms.msp432:MSP432P401R"/>
+
         <property name="buildProfile" value="release"/>
         <property name="isHybrid" value="true"/>
         <property name="configuroOptions" value=" --compileOptions &quot;${COMPILER_FLAGS} &quot;"/>
         <group id="swi.SIMPLELINK_MSP432_SDK.MSP_EXP432P401R.sysbios.TI"/>
-        <file path="../../overview.rov.json" openOnCreation="false" excludeFromBuild="false" action="copy">
+        <file path="../../swi.c" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
-        <file path="../../swi.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        <file path="../../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../swi.syscfg" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../overview.rov.json" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../../tirtos/swi.cfg" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
-        <file path="../../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../../Board.h" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../../MSP_EXP432P401R.c" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../../MSP_EXP432P401R.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        <file path="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/boards/MSP_EXP432P401R/Board.html" openOnCreation="false" excludeFromBuild="false" action="link">
         </file>
         <file path="../../tirtos/ccs/MSP_EXP432P401R_TIRTOS.cmd" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/boards/MSP_EXP432P401R/Board.html" openOnCreation="false" excludeFromBuild="false" action="link">
         </file>
         <file path="../../tirtos/makefile.defs" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
     </project>
 </projectSpec>
-

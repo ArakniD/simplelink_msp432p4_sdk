@@ -40,8 +40,8 @@
 #include "ti/drivers/UART.h"
 #include "ti/drivers/Timer.h"
 
-/* Standard Defines */
-#include "Board.h"
+/* Example/Board Header Files */
+#include <ti/drivers/Board.h>
 
 /* Include project header files */
 #include "vibrationCapture.h"
@@ -55,7 +55,7 @@ Display_Handle displayOut;
 int main(void)
 {
     /* Call driver init functions */
-    Board_initGeneral();
+    Board_init();
     GPIO_init();
     UART_init();
     ADCBuf_init();

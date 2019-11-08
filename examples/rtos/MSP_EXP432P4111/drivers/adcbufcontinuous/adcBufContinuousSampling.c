@@ -34,92 +34,50 @@
  */
 #include <stdint.h>
 #include <stdio.h>
-/* For sleep() */
-#include <unistd.h>
+#include <mqueue.h>
 
 /* Driver Header files */
 #include <ti/drivers/ADCBuf.h>
-#include <ti/drivers/UART.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Display Header files */
+#include <ti/display/Display.h>
 
-#define ADCBUFFERSIZE    (50)
-#define UARTBUFFERSIZE   ((20 * ADCBUFFERSIZE) + 24)
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
-uint16_t sampleBufferOne[ADCBUFFERSIZE];
-uint16_t sampleBufferTwo[ADCBUFFERSIZE];
-uint32_t microVoltBuffer[ADCBUFFERSIZE];
+#define ADCSAMPLESIZE    (5)
+#define MAX_QUEUED_ADC_CONVERSIONS (4)
+#define QUEUED_ADC_MESSAGE_SIZE (sizeof(uint32_t) * ADCSAMPLESIZE)
+
+uint16_t sampleBufferOne[ADCSAMPLESIZE];
+uint16_t sampleBufferTwo[ADCSAMPLESIZE];
+uint32_t microVoltBuffer[ADCSAMPLESIZE];
+uint32_t outputBuffer[ADCSAMPLESIZE];
 uint32_t buffersCompletedCounter = 0;
-char uartTxBuffer[UARTBUFFERSIZE];
 
-/* Driver handle shared between the task and the callback function */
-UART_Handle uart;
+/* Display Driver Handle */
+Display_Handle displayHandle;
+
+/* Used to pass ADC data between callback and main task */
+static mqd_t queueReceive;
+static mqd_t queueSend;
 
 /*
  * This function is called whenever an ADC buffer is full.
  * The content of the buffer is then converted into human-readable format and
- * sent to the PC via UART.
+ * sent to the main thread.
  */
 void adcBufCallback(ADCBuf_Handle handle, ADCBuf_Conversion *conversion,
     void *completedADCBuffer, uint32_t completedChannel)
 {
-    uint_fast16_t i;
-    uint_fast16_t uartTxBufferOffset = 0;
-
     /* Adjust raw ADC values and convert them to microvolts */
-    ADCBuf_adjustRawValues(handle, completedADCBuffer, ADCBUFFERSIZE,
+    ADCBuf_adjustRawValues(handle, completedADCBuffer, ADCSAMPLESIZE,
         completedChannel);
     ADCBuf_convertAdjustedToMicroVolts(handle, completedChannel,
-        completedADCBuffer, microVoltBuffer, ADCBUFFERSIZE);
+        completedADCBuffer, microVoltBuffer, ADCSAMPLESIZE);
 
-    /* Start with a header message. */
-    uartTxBufferOffset = snprintf(uartTxBuffer,
-        UARTBUFFERSIZE - uartTxBufferOffset, "\r\nBuffer %u finished.",
-        (unsigned int)buffersCompletedCounter++);
-
-    /* Write raw adjusted values to the UART buffer if there is room. */
-    uartTxBufferOffset += snprintf(uartTxBuffer + uartTxBufferOffset,
-        UARTBUFFERSIZE - uartTxBufferOffset, "\r\nRaw Buffer: ");
-
-    for (i = 0; i < ADCBUFFERSIZE && uartTxBufferOffset < UARTBUFFERSIZE; i++) {
-        uartTxBufferOffset += snprintf(uartTxBuffer + uartTxBufferOffset,
-            UARTBUFFERSIZE - uartTxBufferOffset, "%u,",
-        *(((uint16_t *)completedADCBuffer) + i));
-    }
-
-    /* Write microvolt values to the UART buffer if there is room. */
-    if (uartTxBufferOffset < UARTBUFFERSIZE) {
-        uartTxBufferOffset += snprintf(uartTxBuffer + uartTxBufferOffset,
-            UARTBUFFERSIZE - uartTxBufferOffset, "\r\nMicrovolts: ");
-
-        for (i = 0; i < ADCBUFFERSIZE && uartTxBufferOffset < UARTBUFFERSIZE; i++) {
-            uartTxBufferOffset += snprintf(uartTxBuffer + uartTxBufferOffset,
-                UARTBUFFERSIZE - uartTxBufferOffset, "%u,",
-                (unsigned int)microVoltBuffer[i]);
-        }
-    }
-
-    /*
-     * Ensure we don't write outside the buffer.
-     * Append a newline after the data.
-     */
-    if (uartTxBufferOffset < UARTBUFFERSIZE) {
-        uartTxBuffer[uartTxBufferOffset++] = '\n';
-    }
-    else {
-        uartTxBuffer[UARTBUFFERSIZE-1] = '\n';
-    }
-
-    /* Display the data via UART */
-    UART_write(uart, uartTxBuffer, uartTxBufferOffset);
-}
-
-/*
- * Callback function to use the UART in callback mode. It does nothing.
- */
-void uartCallback(UART_Handle handle, void *buf, size_t count) {
-   return;
+    /* Send ADC data to main thread using message queue */
+    mq_send(queueSend, (char *) microVoltBuffer, QUEUED_ADC_MESSAGE_SIZE, 0);
 }
 
 /*
@@ -127,22 +85,39 @@ void uartCallback(UART_Handle handle, void *buf, size_t count) {
  */
 void *mainThread(void *arg0)
 {
-    UART_Params uartParams;
+    Display_Params displayParams;
     ADCBuf_Handle adcBuf;
     ADCBuf_Params adcBufParams;
     ADCBuf_Conversion continuousConversion;
+    struct mq_attr attr;
+    uint32_t average;
+    uint_fast16_t i = 0;
+
+    /* Create RTOS Queue */
+    attr.mq_flags = 0;
+    attr.mq_maxmsg = MAX_QUEUED_ADC_CONVERSIONS;
+    attr.mq_msgsize = QUEUED_ADC_MESSAGE_SIZE;
+    attr.mq_curmsgs = 0;
+
+    queueReceive = mq_open("ADCBuf", O_RDWR | O_CREAT, 0664, &attr);
+    queueSend = mq_open("ADCBuf", O_RDWR | O_CREAT | O_NONBLOCK, 0664,
+                          &attr);
 
     /* Call driver init functions */
     ADCBuf_init();
-    UART_init();
+    Display_init();
 
-    /* Create a UART with data processing off. */
-    UART_Params_init(&uartParams);
-    uartParams.writeDataMode = UART_DATA_BINARY;
-    uartParams.writeMode = UART_MODE_CALLBACK;
-    uartParams.writeCallback = uartCallback;
-    uartParams.baudRate = 115200;
-    uart = UART_open(Board_UART0, &uartParams);
+    /* Configure & open Display driver */
+    Display_Params_init(&displayParams);
+    displayParams.lineClearMode = DISPLAY_CLEAR_BOTH;
+    displayHandle = Display_open(Display_Type_UART, &displayParams);
+    if (displayHandle == NULL) {
+        Display_printf(displayHandle, 0, 0, "Error creating displayHandle\n");
+        while (1);
+    }
+
+    Display_printf(displayHandle, 0, 0,
+                    "Starting the ADCBufContinuous example");
 
     /* Set up an ADCBuf peripheral in ADCBuf_RECURRENCE_MODE_CONTINUOUS */
     ADCBuf_Params_init(&adcBufParams);
@@ -150,14 +125,14 @@ void *mainThread(void *arg0)
     adcBufParams.recurrenceMode = ADCBuf_RECURRENCE_MODE_CONTINUOUS;
     adcBufParams.returnMode = ADCBuf_RETURN_MODE_CALLBACK;
     adcBufParams.samplingFrequency = 200;
-    adcBuf = ADCBuf_open(Board_ADCBUF0, &adcBufParams);
+    adcBuf = ADCBuf_open(CONFIG_ADCBUF_0, &adcBufParams);
 
     /* Configure the conversion struct */
     continuousConversion.arg = NULL;
-    continuousConversion.adcChannel = Board_ADCBUF0CHANNEL0;
+    continuousConversion.adcChannel = CONFIG_ADCBUF_0_CHANNEL_0;
     continuousConversion.sampleBuffer = sampleBufferOne;
     continuousConversion.sampleBufferTwo = sampleBufferTwo;
-    continuousConversion.samplesRequestedCount = ADCBUFFERSIZE;
+    continuousConversion.samplesRequestedCount = ADCSAMPLESIZE;
 
     if (adcBuf == NULL){
         /* ADCBuf failed to open. */
@@ -172,11 +147,28 @@ void *mainThread(void *arg0)
     }
 
     /*
-     * Go to sleep in the foreground thread forever. The ADC hardware will
-     * perform conversions and invoke the callback function when a buffer is
-     * full.
+     * Wait for the message queue to receive ADC data from the callback
+     * function. When data is received, calculate the average and print to UART
      */
     while(1) {
-        sleep(1000);
+        if (mq_receive(queueReceive, (char *) outputBuffer,
+                       QUEUED_ADC_MESSAGE_SIZE, NULL) == -1)
+        {
+            Display_printf(displayHandle, 0, 0, "Error receiving ADC message");
+            while(1);
+        }
+
+        Display_printf(displayHandle, 0, 0, "Buffer %u finished:",
+                    (unsigned int)buffersCompletedCounter++);
+
+        /* Calculate average ADC data value in uV */
+        average = 0;
+        for (i = 0; i < ADCSAMPLESIZE; i++) {
+            average += outputBuffer[i];
+        }
+        average = average/ADCSAMPLESIZE;
+
+        /* Print average ADCBuf value */
+        Display_printf(displayHandle, 0, 0, "  Average: %u uV,", average);
     }
 }

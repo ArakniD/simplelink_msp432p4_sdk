@@ -81,8 +81,29 @@ per __Power Performance Level__ configured in the __Power Module__.
     templates: {
         boardc: "/ti/drivers/pwm/PWMTimerMSP432.Board.c.xdt",
         boardh: "/ti/drivers/pwm/PWMTimer.Board.h.xdt"
-    }
+    },
+
+    _getPinResources: _getPinResources
 };
+
+/*
+ *  ======== _getPinResources ========
+ */
+function _getPinResources(inst)
+{
+    let pin;
+
+    if (inst.timer) {
+        pin = inst.timer.pwmPin.$solution.devicePinName;
+        pin = pin.match(/P\d+\.\d+/)[0];
+
+        if (inst.$hardware && inst.$hardware.displayName) {
+            pin += ", " + inst.$hardware.displayName;
+        }
+    }
+
+    return (pin);
+}
 
 /*
  *  ======== pinmuxRequirements ========

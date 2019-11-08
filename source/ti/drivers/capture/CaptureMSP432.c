@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -253,20 +253,27 @@ Capture_Handle CaptureMSP432_open(Capture_Handle handle, Capture_Params *params)
         return (NULL);
     }
 
-    object->isRunning = false;
-    object->callBack = params->callbackFxn;
-    object->periodUnits = params->periodUnit;
-    object->ccrRegister = getCompareRegister(hwAttrs->capturePort);
-
     if (params->mode == Capture_RISING_EDGE) {
         mode = TIMER_A_CAPTUREMODE_RISING_EDGE;
     }
     else if (params->mode == Capture_FALLING_EDGE) {
         mode = TIMER_A_CAPTUREMODE_FALLING_EDGE;
     }
-    else {
+    else if (params->mode == Capture_ANY_EDGE) {
         mode = TIMER_A_CAPTUREMODE_RISING_AND_FALLING_EDGE;
     }
+    else {
+        HwiP_delete(object->hwiHandle);
+
+        /* Fail if capture mode is not supported by device*/
+        TimerMSP432_freeTimerResource(hwAttrs->timerBaseAddress);
+        return (NULL);
+    }
+
+    object->isRunning = false;
+    object->callBack = params->callbackFxn;
+    object->periodUnits = params->periodUnit;
+    object->ccrRegister = getCompareRegister(hwAttrs->capturePort);
 
     port = getPinPort(hwAttrs->capturePort);
     pin = getPin(hwAttrs->capturePort);

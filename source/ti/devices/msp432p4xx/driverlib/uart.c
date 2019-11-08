@@ -34,7 +34,7 @@
 #include <ti/devices/msp432p4xx/driverlib/debug.h>
 #include <ti/devices/msp432p4xx/driverlib/eusci.h>
 
-bool UART_initModule(uint32_t moduleInstance, const eUSCI_UART_Config *config)
+bool UART_initModule(uint32_t moduleInstance, const eUSCI_UART_ConfigV1 *config)
 {
     bool retVal = true;
 
@@ -64,6 +64,9 @@ bool UART_initModule(uint32_t moduleInstance, const eUSCI_UART_Config *config)
             (EUSCI_A_UART_NO_PARITY == config->parity)
             || (EUSCI_A_UART_ODD_PARITY == config->parity)
             || (EUSCI_A_UART_EVEN_PARITY == config->parity));
+    ASSERT(
+            (EUSCI_A_UART_8_BIT_LEN == config->dataLength)
+            || (EUSCI_A_UART_7_BIT_LEN == config->dataLength));
 
     /* Disable the USCI Module */
     BITBAND_PERI(EUSCI_A_CMSIS(moduleInstance)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 1;
@@ -101,6 +104,12 @@ bool UART_initModule(uint32_t moduleInstance, const eUSCI_UART_Config *config)
         break;
     }
 
+    /* UC7BIT = 0(8 bit) OR 1(7 bit) */
+    if (config->dataLength)
+        BITBAND_PERI(EUSCI_A_CMSIS(moduleInstance)->CTLW0, EUSCI_B_CTLW0_SEVENBIT_OFS) = 1;
+    else
+        BITBAND_PERI(EUSCI_A_CMSIS(moduleInstance)->CTLW0, EUSCI_B_CTLW0_SEVENBIT_OFS) = 0;
+
     /* BaudRate Control Register */
     EUSCI_A_CMSIS(moduleInstance)->BRW = config->clockPrescalar;
     EUSCI_A_CMSIS(moduleInstance)->MCTLW = ((config->secondModReg << 8)
@@ -109,7 +118,7 @@ bool UART_initModule(uint32_t moduleInstance, const eUSCI_UART_Config *config)
     /* Asynchronous mode & 8 bit character select & clear mode */
     EUSCI_A_CMSIS(moduleInstance)->CTLW0 =
             (EUSCI_A_CMSIS(moduleInstance)->CTLW0
-                    & ~(EUSCI_A_CTLW0_SYNC | EUSCI_A_CTLW0_SEVENBIT | EUSCI_A_CTLW0_MODE_3 | EUSCI_A_CTLW0_RXEIE | EUSCI_A_CTLW0_BRKIE | EUSCI_A_CTLW0_DORM
+                    & ~(EUSCI_A_CTLW0_SYNC | EUSCI_A_CTLW0_MODE_3 | EUSCI_A_CTLW0_RXEIE | EUSCI_A_CTLW0_BRKIE | EUSCI_A_CTLW0_DORM
                             | EUSCI_A_CTLW0_TXADDR | EUSCI_A_CTLW0_TXBRK)) | config->uartMode;
 
     return retVal;
@@ -291,29 +300,33 @@ uint_fast8_t UART_getInterruptStatus(uint32_t moduleInstance, uint8_t mask)
 uint_fast8_t UART_getEnabledInterruptStatus(uint32_t moduleInstance)
 {
     uint_fast8_t intStatus = UART_getInterruptStatus(moduleInstance,
-    EUSCI_A_UART_RECEIVE_INTERRUPT_FLAG | EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG);
+    EUSCI_A_UART_RECEIVE_INTERRUPT_FLAG | EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG | EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG);
     uint_fast8_t intEnabled = EUSCI_A_CMSIS(moduleInstance)->IE;
 
     if (!(intEnabled & EUSCI_A_UART_RECEIVE_INTERRUPT))
     {
-        intStatus &= ~EUSCI_A_UART_RECEIVE_INTERRUPT;
+        intStatus &= ((uint_fast8_t)~EUSCI_A_UART_RECEIVE_INTERRUPT);
     }
 
     if (!(intEnabled & EUSCI_A_UART_TRANSMIT_INTERRUPT))
     {
-        intStatus &= ~EUSCI_A_UART_TRANSMIT_INTERRUPT;
+        intStatus &= ((uint_fast8_t)~EUSCI_A_UART_TRANSMIT_INTERRUPT);
+    }
+    if(!(intEnabled & EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT))
+    {
+        intStatus &= ((uint_fast8_t)~EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT);
     }
 
     intEnabled = EUSCI_A_CMSIS(moduleInstance)->CTLW0;
 
     if (!(intEnabled & EUSCI_A_UART_RECEIVE_ERRONEOUSCHAR_INTERRUPT))
     {
-        intStatus &= ~EUSCI_A_UART_RECEIVE_ERRONEOUSCHAR_INTERRUPT;
+        intStatus &= ((uint_fast8_t)~EUSCI_A_UART_RECEIVE_ERRONEOUSCHAR_INTERRUPT);
     }
 
     if (!(intEnabled & EUSCI_A_UART_BREAKCHAR_INTERRUPT))
     {
-        intStatus &= ~EUSCI_A_UART_BREAKCHAR_INTERRUPT;
+        intStatus &= ((uint_fast8_t)~EUSCI_A_UART_BREAKCHAR_INTERRUPT);
     }
 
     return intStatus;

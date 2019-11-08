@@ -46,8 +46,8 @@
 // #include <ti/drivers/UART.h>
 // #include <ti/drivers/Watchdog.h>
 
-/* Board Header file */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 /*
  *  ======== mainThread ========
@@ -65,13 +65,13 @@ void *mainThread(void *arg0)
     // Watchdog_init();
 
     /* Configure the LED pin */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 
     /* Turn on user LED */
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
     while (1) {
         sleep(time);
-        GPIO_toggle(Board_GPIO_LED0);
+        GPIO_toggle(CONFIG_GPIO_LED_0);
     }
 }

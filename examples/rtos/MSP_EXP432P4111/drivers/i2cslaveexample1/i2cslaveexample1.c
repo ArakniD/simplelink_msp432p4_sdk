@@ -41,8 +41,8 @@
 #include <ti/drivers/I2CSlave.h>
 #include <ti/display/Display.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 static Display_Handle display;
 uint8_t commandBuffer[10];
@@ -133,7 +133,7 @@ void *mainThread(void *arg0)
     /* Create I2CSlave for usage */
     I2CSlave_Params_init(&i2cSlaveParams);
     i2cSlaveParams.transferMode = I2CSLAVE_MODE_BLOCKING;
-    i2cSlave = I2CSlave_open(Board_I2CSLAVE0, &i2cSlaveParams);
+    i2cSlave = I2CSlave_open(CONFIG_I2CSLAVE_0, &i2cSlaveParams);
 
     if (NULL == i2cSlave) {
         Display_printf(display, 0, 0, "Error Initializing I2CSlave\n");

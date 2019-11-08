@@ -277,13 +277,6 @@ ti_sysbios_family_arm_m3_Hwi_excHandlerAsm__I:
         mrsne   r0, psp         ; if yes, then use PSP
         moveq   r0, sp          ; else use MSP
 
-#if (__CORE__ == __ARM8M_MAINLINE__)
-        mov     r1, #0          ; exception may occur on psp stack and it
-        msr     msplim, r1      ; may be at a lower address than msp stack.
-                                ; therefore, set msplim to 0 to disable
-                                ; stack limit checking
-#endif
-
         mov     sp, r0          ; use this stack
         stmfd   sp!, {r4-r11}   ; save r4-r11 while we're at it
         mov     r0, sp          ; pass sp to exception handler

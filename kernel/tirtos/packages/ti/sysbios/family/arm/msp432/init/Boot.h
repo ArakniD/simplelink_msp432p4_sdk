@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_family_arm_msp432_init_Boot__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_family_arm_msp432_init_Boot___VERS 200
@@ -294,12 +296,12 @@ __extern __FAR__ const CT__ti_sysbios_family_arm_msp432_init_Boot_bypassHFXT ti_
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_family_arm_msp432_init_Boot_Module__startupDone__S, "ti_sysbios_family_arm_msp432_init_Boot_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_family_arm_msp432_init_Boot_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_family_arm_msp432_init_Boot_Module__startupDone__S( void);
 
 /* init__I */
 #define ti_sysbios_family_arm_msp432_init_Boot_init ti_sysbios_family_arm_msp432_init_Boot_init__I
 xdc__CODESECT(ti_sysbios_family_arm_msp432_init_Boot_init__I, "ti_sysbios_family_arm_msp432_init_Boot_init")
-__extern xdc_Void ti_sysbios_family_arm_msp432_init_Boot_init__I( void );
+__extern xdc_Void ti_sysbios_family_arm_msp432_init_Boot_init__I( void);
 
 
 /*

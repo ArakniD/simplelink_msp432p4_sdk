@@ -48,7 +48,9 @@
 
 /* Board Header file */
 #include "sleep_task.h"
-#include "Board.h"
+/* Board Header file */
+#include "ti_drivers_config.h"
+
 
 /*******************************************************************************
  *                             LOCAL VARIABLES
@@ -120,10 +122,10 @@ void SLEEP_createTask(void)
  ******************************************************************************/
 static void *SLEEP_taskFxn(void *arg0)
 {
-    GPIO_write(Board_GPIO_LED1, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED1, CONFIG_GPIO_LED_ON);
 
-    GPIO_setCallback(Board_GPIO_BUTTON0, (GPIO_CallbackFxn)GPIO_irqHandler);
-    GPIO_enableInt(Board_GPIO_BUTTON0);
+    GPIO_setCallback(CONFIG_GPIO_BUTTON0, (GPIO_CallbackFxn)GPIO_irqHandler);
+    GPIO_enableInt(CONFIG_GPIO_BUTTON0);
 
     return (NULL);
 }
@@ -131,7 +133,7 @@ static void *SLEEP_taskFxn(void *arg0)
 /*******************************************************************************
  * @fn      GPIO_irqHandler
  *
- * @brief   Callback function for the GPIO interrupt on Board_GPIO_BUTTON0.
+ * @brief   Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON0.
  *
  * @param   None.
  *
@@ -139,9 +141,9 @@ static void *SLEEP_taskFxn(void *arg0)
  ******************************************************************************/
 static void GPIO_irqHandler(void)
 {
-    GPIO_clearInt(Board_GPIO_BUTTON0);
-    GPIO_disableInt(Board_GPIO_BUTTON0);
-    GPIO_write(Board_GPIO_LED1, Board_GPIO_LED_OFF);
+    GPIO_clearInt(CONFIG_GPIO_BUTTON0);
+    GPIO_disableInt(CONFIG_GPIO_BUTTON0);
+    GPIO_write(CONFIG_GPIO_LED1, CONFIG_GPIO_LED_OFF);
 
 #ifdef __MSP_EXP432P4111_H
     /* Set P5.3 as analog input (connected to Temp Sensor on MSP_EXP432P4111 LaunchPad) */

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-G10
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_family
 {
-    static final String VERS = "@(#) xdc-G10\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -124,7 +124,6 @@ public class ti_sysbios_family
         po.addFld("mmuModule", $$T_Str, $$UNDEF, "wh");
         po.addFld("clockTimerDelegate", $$T_Str, $$UNDEF, "wh");
         po.addFld("secondsDelegate", $$T_Str, $$UNDEF, "wh");
-        po.addFld("syscallDelegate", $$T_Str, $$UNDEF, "wh");
         po.addFld("timerDelegate", $$T_Str, $$UNDEF, "wh");
         po.addFld("timestampDelegate", $$T_Str, $$UNDEF, "wh");
         po.addFld("familyName", $$T_Str, $$UNDEF, "wh");
@@ -159,8 +158,6 @@ public class ti_sysbios_family
                 if (fxn != null) po.addFxn("getDefaultPowerDelegate", (Proto.Fxn)om.findStrict("ti.sysbios.interfaces.ISettings$$getDefaultPowerDelegate", "ti.sysbios.family"), fxn);
                 fxn = Global.get(cap, "getDefaultSecondsDelegate");
                 if (fxn != null) po.addFxn("getDefaultSecondsDelegate", (Proto.Fxn)om.findStrict("ti.sysbios.interfaces.ISettings$$getDefaultSecondsDelegate", "ti.sysbios.family"), fxn);
-                fxn = Global.get(cap, "getDefaultSysCallDelegate");
-                if (fxn != null) po.addFxn("getDefaultSysCallDelegate", (Proto.Fxn)om.findStrict("ti.sysbios.interfaces.ISettings$$getDefaultSysCallDelegate", "ti.sysbios.family"), fxn);
                 fxn = Global.get(cap, "getDefaultBootModule");
                 if (fxn != null) po.addFxn("getDefaultBootModule", (Proto.Fxn)om.findStrict("ti.sysbios.interfaces.ISettings$$getDefaultBootModule", "ti.sysbios.family"), fxn);
                 fxn = Global.get(cap, "getDefaultMmuModule");

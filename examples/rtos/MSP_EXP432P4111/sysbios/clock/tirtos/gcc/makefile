@@ -3,20 +3,21 @@ SIMPLELINK_MSP432_SDK_INSTALL_DIR ?= $(abspath ../../../../../../..)
 include $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
 
 XDCPATH = $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source;$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/packages;
+XDCTARGET = gnu.targets.arm.M4F
+PLATFORM = ti.platforms.msp432:MSP432P4111
+.PRECIOUS: $(CONFIGPKG)/compiler.opt $(CONFIGPKG)/linker.cmd
 
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-XDCTARGET = gnu.targets.arm.M4F
-PLATFORM = ti.platforms.msp432:MSP432P4111
-
-OBJECTS = clock.obj MSP_EXP432P4111.obj
+OBJECTS = clock.obj ti_drivers_config.obj
 
 CONFIGPKG = clock
 
 NAME = clock
 
 CFLAGS = -I../.. \
+    -I. \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/Include" \
     "-I$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/posix/gcc" \
@@ -55,28 +56,37 @@ LFLAGS = -Wl,-T,../../tirtos/gcc/MSP_EXP432P4111_TIRTOS.lds \
     -static \
     -Wl,--gc-sections \
     "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib" \
+    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/hard" \
     -lgcc \
     -lc \
     -lm \
     -lnosys \
     --specs=nano.specs
 
-.PRECIOUS: $(CONFIGPKG)/compiler.opt $(CONFIGPKG)/linker.cmd
-
 all: $(NAME).out
+
+cflags.opt: makefile $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/imports.mak
+	@ echo --compileOptions $(CFLAGS) > $@
 
 $(CONFIGPKG)/compiler.opt: $(CONFIGPKG)/linker.cmd
 
-$(CONFIGPKG)/linker.cmd: ../../tirtos/clock.cfg
+$(CONFIGPKG)/linker.cmd: ../../tirtos/clock.cfg cflags.opt
 	@ echo Running Configuro...
-	@ $(XDC_INSTALL_DIR)/xs --xdcpath="$(XDCPATH)" xdc.tools.configuro -c "$(GCC_ARMCOMPILER)" -t $(XDCTARGET) -p $(PLATFORM) --compileOptions "$(CFLAGS)" -o "$(CONFIGPKG)" ../../tirtos/clock.cfg
+	@ $(XDC_INSTALL_DIR)/xs --xdcpath="$(XDCPATH)" xdc.tools.configuro -c "$(GCC_ARMCOMPILER)" -t $(XDCTARGET) -p $(PLATFORM) -@cflags.opt -o "$(CONFIGPKG)" ../../tirtos/clock.cfg
 
-clock.obj: ../../clock.c $(CONFIGPKG)/compiler.opt
+.INTERMEDIATE: syscfg
+ti_drivers_config.c ti_drivers_config.h: syscfg
+	@ echo generation complete
+
+syscfg: ../../clock.syscfg
+	@ echo Generating configuration files...
+	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+
+clock.obj: ../../clock.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
-MSP_EXP432P4111.obj: ../../MSP_EXP432P4111.c $(CONFIGPKG)/compiler.opt
+ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
@@ -84,9 +94,12 @@ $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
 
+
 clean:
 	@ echo Cleaning...
 	@ $(RM) $(OBJECTS) > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).out > $(DEVNULL) 2>&1
 	@ $(RM) $(NAME).map > $(DEVNULL) 2>&1
 	@ $(RMDIR) $(NAME) > $(DEVNULL) 2>&1
+	@ $(RM) cflags.opt > $(DEVNULL) 2>&1
+	@ $(RM) ti_drivers_config.c ti_drivers_config.h > $(DEVNULL) 2>&1

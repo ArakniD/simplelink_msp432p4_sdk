@@ -1,21 +1,8 @@
 var searchData=
 [
-  ['adc_5fconfig',['ADC_Config',['../_a_d_c_8h.html#af334849657f87b79a31392f89828299a',1,'ADC.h']]],
-  ['adc_5fhandle',['ADC_Handle',['../_a_d_c_8h.html#ac98b1222559c172df43505d672e1376c',1,'ADC.h']]],
+  ['adc_5fconfig',['ADC_Config',['../_a_d_c_8h.html#acde6feaa979f1952a70a38e9e1e1ea74',1,'ADC.h']]],
+  ['adc_5fhandle',['ADC_Handle',['../_a_d_c_8h.html#a7447d17264445ab6285ddab2bb794582',1,'ADC.h']]],
   ['adcbuf_5fcallback',['ADCBuf_Callback',['../_a_d_c_buf_8h.html#a477c377c65f8de04aa67ff7eefa0a4cf',1,'ADCBuf.h']]],
-  ['adcbuf_5fconfig',['ADCBuf_Config',['../_a_d_c_buf_8h.html#a630c696a789e6c298dc97b960f72e3d1',1,'ADCBuf.h']]],
-  ['adcbuf_5fhandle',['ADCBuf_Handle',['../_a_d_c_buf_8h.html#a9b9646efcf7a7fd38a2935abd940cf96',1,'ADCBuf.h']]],
-  ['adcbufmsp432_5fchannels',['ADCBufMSP432_Channels',['../_a_d_c_buf_m_s_p432_8h.html#ab5a45967a9fbf5dac02dd585705af82e',1,'ADCBufMSP432.h']]],
-  ['adcbufmsp432_5fclocksource',['ADCBufMSP432_ClockSource',['../_a_d_c_buf_m_s_p432_8h.html#a91323059166d7aeaf2b172b08aa79bd9',1,'ADCBufMSP432.h']]],
-  ['adcbufmsp432_5fdifferentialmode',['ADCBufMSP432_DifferentialMode',['../_a_d_c_buf_m_s_p432_8h.html#aead00dd805f86b8375e9c3a5dccf7922',1,'ADCBufMSP432.h']]],
-  ['adcbufmsp432_5fhwattrs',['ADCBufMSP432_HWAttrs',['../_a_d_c_buf_m_s_p432_8h.html#a26e8c609ad6faea8ef58025c71c02650',1,'ADCBufMSP432.h']]],
-  ['adcbufmsp432_5finternalsourcemode',['ADCBufMSP432_InternalSourceMode',['../_a_d_c_buf_m_s_p432_8h.html#a6be1bf94ffefb2e5d85f249668643d2f',1,'ADCBufMSP432.h']]],
-  ['adcbufmsp432_5fobject',['ADCBufMSP432_Object',['../_a_d_c_buf_m_s_p432_8h.html#adc405d1a565b94be5ac9b82bb585c71a',1,'ADCBufMSP432.h']]],
-  ['adcbufmsp432_5fparamsextension',['ADCBufMSP432_ParamsExtension',['../_a_d_c_buf_m_s_p432_8h.html#ab94bc91a559da163736948363cc2bca2',1,'ADCBufMSP432.h']]],
-  ['adcbufmsp432_5freferencesource',['ADCBufMSP432_ReferenceSource',['../_a_d_c_buf_m_s_p432_8h.html#a16821e9f514ed9c8f4baf035719c43e2',1,'ADCBufMSP432.h']]],
-  ['adcbufmsp432_5fsamplingduration',['ADCBufMSP432_SamplingDuration',['../_a_d_c_buf_m_s_p432_8h.html#affb89972a3b84e1794ff49677a189fcb',1,'ADCBufMSP432.h']]],
-  ['adcbufmsp432_5ftimerreferencesource',['ADCBufMSP432_TimerReferenceSource',['../_a_d_c_buf_m_s_p432_8h.html#a8a1570712b4d2903e765a4f513e7e75b',1,'ADCBufMSP432.h']]],
-  ['adcbufmsp432_5ftriggersource',['ADCBufMSP432_TriggerSource',['../_a_d_c_buf_m_s_p432_8h.html#a6d41fccd53c2d8d5f957f375ac6bff6f',1,'ADCBufMSP432.h']]],
-  ['adcmsp432_5fhwattrsv1',['ADCMSP432_HWAttrsV1',['../_a_d_c_m_s_p432_8h.html#a243ec34a74269bf1dfb0711c6c633b95',1,'ADCMSP432.h']]],
-  ['adcmsp432_5fobject',['ADCMSP432_Object',['../_a_d_c_m_s_p432_8h.html#ab1d9be62ba3c924798434f5acea0964a',1,'ADCMSP432.h']]]
+  ['adcbuf_5fconfig',['ADCBuf_Config',['../_a_d_c_buf_8h.html#a72d585edb37e7c4c53c278305a8df7d2',1,'ADCBuf.h']]],
+  ['adcbuf_5fhandle',['ADCBuf_Handle',['../_a_d_c_buf_8h.html#a12e1cd567193c54b72c1baa82e6b221b',1,'ADCBuf.h']]]
 ];

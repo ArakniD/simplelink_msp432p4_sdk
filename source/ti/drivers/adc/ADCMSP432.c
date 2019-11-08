@@ -229,7 +229,7 @@ int_fast16_t ADCMSP432_convert(ADC_Handle handle, uint16_t *value)
 
     DebugP_log0("ADC: Convert completed");
 
-    /* Return the number of bytes transfered by the ADC */
+    /* Return the number of bytes transferred by the ADC */
     return (ADC_STATUS_SUCCESS);
 }
 
@@ -257,16 +257,11 @@ uint32_t ADCMSP432_convertToMicroVolts(ADC_Handle handle,
             break;
 
         case ADCMSP432_REF_VOLTAGE_EXT:
-            refMicroVolts = hwAttrs->refExtValue;
-            break;
-
         case ADCMSP432_REF_VOLTAGE_EXT_BUF:
+        case ADCMSP432_REF_VOLTAGE_VDD:
+        default:
             refMicroVolts = hwAttrs->refExtValue;
             break;
-
-        default:
-            refMicroVolts = 2500000;
-
     }
 
     if (adcValue == 0x3FFF) {

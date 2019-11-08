@@ -64,7 +64,6 @@ sleep state.
 [3]: /tidrivers/doxygen/html/_power_8h.html#ti_drivers_Power_Examples "C usage examples"
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#Power_Configuration_Options "Configuration options reference"
 `,
-    defaultInstanceName : "Board_Power",
     maxInstances        : 1,
     initPriority        : -1 /* lower numbers init earlier */
 };

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-G10
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_posix__

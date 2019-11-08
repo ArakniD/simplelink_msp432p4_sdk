@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_family_arm_cc26xx__
@@ -17,7 +17,6 @@ typedef struct ti_sysbios_family_arm_cc26xx_Alarm_Params ti_sysbios_family_arm_c
 typedef struct ti_sysbios_family_arm_cc26xx_Alarm_Object ti_sysbios_family_arm_cc26xx_Alarm_Object;
 typedef struct ti_sysbios_family_arm_cc26xx_Alarm_Struct ti_sysbios_family_arm_cc26xx_Alarm_Struct;
 typedef ti_sysbios_family_arm_cc26xx_Alarm_Object* ti_sysbios_family_arm_cc26xx_Alarm_Handle;
-typedef struct ti_sysbios_family_arm_cc26xx_Alarm_Object__ ti_sysbios_family_arm_cc26xx_Alarm_Instance_State;
 typedef ti_sysbios_family_arm_cc26xx_Alarm_Object* ti_sysbios_family_arm_cc26xx_Alarm_Instance;
 
 /*
@@ -44,7 +43,6 @@ typedef struct ti_sysbios_family_arm_cc26xx_Timer_Params ti_sysbios_family_arm_c
 typedef struct ti_sysbios_family_arm_cc26xx_Timer_Object ti_sysbios_family_arm_cc26xx_Timer_Object;
 typedef struct ti_sysbios_family_arm_cc26xx_Timer_Struct ti_sysbios_family_arm_cc26xx_Timer_Struct;
 typedef ti_sysbios_family_arm_cc26xx_Timer_Object* ti_sysbios_family_arm_cc26xx_Timer_Handle;
-typedef struct ti_sysbios_family_arm_cc26xx_Timer_Object__ ti_sysbios_family_arm_cc26xx_Timer_Instance_State;
 typedef ti_sysbios_family_arm_cc26xx_Timer_Object* ti_sysbios_family_arm_cc26xx_Timer_Instance;
 
 /*

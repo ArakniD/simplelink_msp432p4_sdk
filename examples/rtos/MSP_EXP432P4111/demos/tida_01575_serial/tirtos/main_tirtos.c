@@ -41,8 +41,8 @@
 /* RTOS header files */
 #include <ti/sysbios/BIOS.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Example/Board Header Files */
+#include <ti/drivers/Board.h>
 #include "ti/drivers/GPIO.h"
 #include "ti/drivers/ADCBuf.h"
 #include "ti/drivers/UART.h"
@@ -58,7 +58,7 @@
 int main(void)
 {
     /* Call driver init functions */
-    Board_initGeneral();
+    Board_init();
     GPIO_init();
     UART_init();
     ADCBuf_init();

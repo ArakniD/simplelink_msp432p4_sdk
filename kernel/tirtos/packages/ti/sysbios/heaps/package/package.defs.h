@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_heaps__
@@ -21,7 +21,6 @@ typedef struct ti_sysbios_heaps_HeapBuf_Params ti_sysbios_heaps_HeapBuf_Params;
 typedef struct ti_sysbios_heaps_HeapBuf_Object ti_sysbios_heaps_HeapBuf_Object;
 typedef struct ti_sysbios_heaps_HeapBuf_Struct ti_sysbios_heaps_HeapBuf_Struct;
 typedef ti_sysbios_heaps_HeapBuf_Object* ti_sysbios_heaps_HeapBuf_Handle;
-typedef struct ti_sysbios_heaps_HeapBuf_Object__ ti_sysbios_heaps_HeapBuf_Instance_State;
 typedef ti_sysbios_heaps_HeapBuf_Object* ti_sysbios_heaps_HeapBuf_Instance;
 
 /*
@@ -36,7 +35,6 @@ typedef struct ti_sysbios_heaps_HeapMem_Params ti_sysbios_heaps_HeapMem_Params;
 typedef struct ti_sysbios_heaps_HeapMem_Object ti_sysbios_heaps_HeapMem_Object;
 typedef struct ti_sysbios_heaps_HeapMem_Struct ti_sysbios_heaps_HeapMem_Struct;
 typedef ti_sysbios_heaps_HeapMem_Object* ti_sysbios_heaps_HeapMem_Handle;
-typedef struct ti_sysbios_heaps_HeapMem_Object__ ti_sysbios_heaps_HeapMem_Instance_State;
 typedef ti_sysbios_heaps_HeapMem_Object* ti_sysbios_heaps_HeapMem_Instance;
 
 /*
@@ -50,7 +48,6 @@ typedef struct ti_sysbios_heaps_HeapMultiBuf_Params ti_sysbios_heaps_HeapMultiBu
 typedef struct ti_sysbios_heaps_HeapMultiBuf_Object ti_sysbios_heaps_HeapMultiBuf_Object;
 typedef struct ti_sysbios_heaps_HeapMultiBuf_Struct ti_sysbios_heaps_HeapMultiBuf_Struct;
 typedef ti_sysbios_heaps_HeapMultiBuf_Object* ti_sysbios_heaps_HeapMultiBuf_Handle;
-typedef struct ti_sysbios_heaps_HeapMultiBuf_Object__ ti_sysbios_heaps_HeapMultiBuf_Instance_State;
 typedef ti_sysbios_heaps_HeapMultiBuf_Object* ti_sysbios_heaps_HeapMultiBuf_Instance;
 
 /*
@@ -63,7 +60,6 @@ typedef struct ti_sysbios_heaps_HeapNull_Params ti_sysbios_heaps_HeapNull_Params
 typedef struct ti_sysbios_heaps_HeapNull_Object ti_sysbios_heaps_HeapNull_Object;
 typedef struct ti_sysbios_heaps_HeapNull_Struct ti_sysbios_heaps_HeapNull_Struct;
 typedef ti_sysbios_heaps_HeapNull_Object* ti_sysbios_heaps_HeapNull_Handle;
-typedef struct ti_sysbios_heaps_HeapNull_Object__ ti_sysbios_heaps_HeapNull_Instance_State;
 typedef ti_sysbios_heaps_HeapNull_Object* ti_sysbios_heaps_HeapNull_Instance;
 
 /*
@@ -77,7 +73,6 @@ typedef struct ti_sysbios_heaps_HeapTrack_Params ti_sysbios_heaps_HeapTrack_Para
 typedef struct ti_sysbios_heaps_HeapTrack_Object ti_sysbios_heaps_HeapTrack_Object;
 typedef struct ti_sysbios_heaps_HeapTrack_Struct ti_sysbios_heaps_HeapTrack_Struct;
 typedef ti_sysbios_heaps_HeapTrack_Object* ti_sysbios_heaps_HeapTrack_Handle;
-typedef struct ti_sysbios_heaps_HeapTrack_Object__ ti_sysbios_heaps_HeapTrack_Instance_State;
 typedef ti_sysbios_heaps_HeapTrack_Object* ti_sysbios_heaps_HeapTrack_Instance;
 
 /*
@@ -90,7 +85,6 @@ typedef struct ti_sysbios_heaps_HeapCallback_Params ti_sysbios_heaps_HeapCallbac
 typedef struct ti_sysbios_heaps_HeapCallback_Object ti_sysbios_heaps_HeapCallback_Object;
 typedef struct ti_sysbios_heaps_HeapCallback_Struct ti_sysbios_heaps_HeapCallback_Struct;
 typedef ti_sysbios_heaps_HeapCallback_Object* ti_sysbios_heaps_HeapCallback_Handle;
-typedef struct ti_sysbios_heaps_HeapCallback_Object__ ti_sysbios_heaps_HeapCallback_Instance_State;
 typedef ti_sysbios_heaps_HeapCallback_Object* ti_sysbios_heaps_HeapCallback_Instance;
 
 /*

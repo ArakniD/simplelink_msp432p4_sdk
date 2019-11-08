@@ -39,8 +39,9 @@
     /* passed by /ti/drivers/templates/Board.c.xdt */
     let ADC = args[0];
     let instances = ADC.$instances;
+    if (instances.length == 0) return;
 
-    /* Board_XXXCOUNT string, derived from defaultInstanceName */
+    /* CONFIG_XXXCOUNT string, derived from defaultInstanceName */
     let countDef = ADC.defaultInstanceName + "COUNT";
 
     let map = {
@@ -55,21 +56,6 @@
         "12 Bits"           : "ADC_12BIT",
         "14 Bits"           : "ADC_14BIT"
     };
-
-    /*
-     * Example inputs of chan:
-     * P4.3.GPIO/CS.MCLK/RTC_C.CLK/ADC14.A10
-     * P4.1.GPIO/ADC14.A12/LCD_F.L12
-     * P4.5.GPIO/ADC14.A8
-     */
-    function getAdcPinName(chan)
-    {
-        let pName = chan.match(/P\d\.\d/)[0]; /* PX.Y, ie P4.3 */
-        let ax = chan.match(/ADC14\.A\d{1,2}/)[0].replace("ADC14.", ""); /* ADC14.Axx */
-        let px = pName.substr(0, 2);     /* PX */
-        let py = pName.substr(3, 1);     /* Y */
-        return ("ADCMSP432_" + px + "_" + py + "_" + ax);
-    }
 %%}
 /*
  *  =============================== ADC ===============================
@@ -95,8 +81,7 @@ ADCMSP432_Object adcMSP432Objects[`countDef`];
 const ADCMSP432_HWAttrsV1 adcMSP432HWAttrs[`countDef`] = {
 % for (let i = 0; i < instances.length; i++) {
     % let inst = instances[i];
-    % let chan = inst.adc.adcPin.$solution.devicePinName;
-    % let adcPin = getAdcPinName(chan);
+    % let adcPin = "ADCMSP432_" + ADC._getAdcPinName(inst);
     /* `inst.$name` */
     % if (inst.$hardware) {
     %    if (inst.$hardware.displayName) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@
 #include <ti/sysbios/knl/Clock.h>
 
 /* Example/Board Header files */
-#include "Board.h"
+#include <ti/drivers/Board.h>
 
 #define TASKSTACKSIZE   512
 

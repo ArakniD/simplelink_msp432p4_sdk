@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 Texas Instruments Incorporated - http://www.ti.com
+ * Copyright (c) 2015-2019 Texas Instruments Incorporated - http://www.ti.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,6 +44,11 @@ with a Texas Instruments compiler. You appear to be using a different compiler.
 #endif
 
 #include <stdint.h>
+
+/* CODEGEN-6425 work-around; remove when bug is fixed */
+#if defined(__clang__) && defined(__ti_version__)
+#pragma clang system_header
+#endif
 
 #include "sys/types.h"
 #include "time.h"

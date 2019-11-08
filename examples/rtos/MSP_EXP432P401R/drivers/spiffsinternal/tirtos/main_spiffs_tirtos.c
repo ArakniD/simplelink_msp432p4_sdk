@@ -42,8 +42,8 @@
 /* RTOS header files */
 #include <ti/sysbios/BIOS.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 extern void *mainThread(void *arg0);
 

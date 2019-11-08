@@ -39,12 +39,13 @@
     /* passed by /ti/drivers/templates/Board.c.xdt */
     let I2CSlave = args[0];
     let instances = I2CSlave.$instances;
+    if (instances.length == 0) return;
 
     /* get ti/drivers common utility functions */
     let Common = system.getScript("/ti/drivers/Common.js");
     let getPort = Common.getPort;
 
-    /* Board_XXXCOUNT string, derived from defaultInstanceName */
+    /* CONFIG_XXXCOUNT string, derived from defaultInstanceName */
     let countDef = I2CSlave.defaultInstanceName + "COUNT";
 %%}
 /*

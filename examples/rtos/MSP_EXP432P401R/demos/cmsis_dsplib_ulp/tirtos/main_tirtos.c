@@ -49,8 +49,8 @@
 /* Display Header file */
 #include <ti/display/Display.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include <ti/drivers/Board.h>
 
 /* Stack size in bytes */
 #define THREADSTACKSIZE    1024
@@ -82,7 +82,7 @@ int main(void)
     int                 detachState;
 
     /* Call driver init functions */
-    Board_initGeneral();
+    Board_init();
     GPIO_init();
     ADCBuf_init();
     Display_init();

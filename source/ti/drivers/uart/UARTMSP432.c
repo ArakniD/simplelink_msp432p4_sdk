@@ -211,8 +211,8 @@ static int32_t findBaudDividerIndex(UARTMSP432_BaudrateConfig const *table,
 static void initHw(UARTMSP432_Object *object,
     UARTMSP432_HWAttrsV1 const *hwAttrs, uint32_t inputClkFreq)
 {
-    int32_t           baudrateIndex;
-    eUSCI_UART_Config uartConfig;
+    int32_t             baudrateIndex;
+    eUSCI_UART_ConfigV1 uartConfig;
 
     /*
      * This will never return -1, constarints prevent unsupported performance
@@ -230,12 +230,10 @@ static void initHw(UARTMSP432_Object *object,
     uartConfig.numberofStopBits = stopBits[object->stopBits];
     uartConfig.uartMode = EUSCI_A_UART_MODE;
     uartConfig.overSampling = hwAttrs->baudrateLUT[baudrateIndex].oversampling;
+    uartConfig.dataLength = (object->dataLength == UART_LEN_7) ?
+        EUSCI_A_UART_7_BIT_LEN : EUSCI_A_UART_8_BIT_LEN;
 
     MAP_UART_initModule(hwAttrs->baseAddr, &uartConfig);
-
-    if (object->dataLength == UART_LEN_7) {
-        EUSCI_A_CMSIS(hwAttrs->baseAddr)->CTLW0 |= EUSCI_A_CTLW0_SEVENBIT;
-    }
 
     /* Enable UART and disable its interrupts. */
     MAP_UART_disableInterrupt(hwAttrs->baseAddr, EUSCI_A_UART_TRANSMIT_INTERRUPT);
@@ -436,7 +434,8 @@ static bool readIsrTextCallback(UART_Handle handle)
             if (object->state.readEcho) {
                 /* Wait until TX is ready */
                 while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                    EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {}
+                    EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {
+                }
                 MAP_UART_transmitData(hwAttrs->baseAddr, '\r');
             }
             readIn = '\n';
@@ -451,7 +450,8 @@ static bool readIsrTextCallback(UART_Handle handle)
         if (object->state.readEcho) {
             /* Wait until TX is ready */
             while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {}
+                EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {
+            }
             MAP_UART_transmitData(hwAttrs->baseAddr, (unsigned char)readIn);
         }
     }
@@ -1251,7 +1251,8 @@ int_fast32_t UARTMSP432_readPolling(UART_Handle handle, void *buf, size_t size)
         if (object->state.readDataMode == UART_DATA_TEXT &&
                 object->state.readEcho) {
             while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG));
+                EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {
+            }
             MAP_UART_transmitData(hwAttrs->baseAddr,  *buffer);
         }
 
@@ -1401,7 +1402,8 @@ int_fast32_t UARTMSP432_writePolling(UART_Handle handle, const void *buf,
         if (object->state.writeDataMode == UART_DATA_TEXT && *buffer == '\n') {
             /* Wait until we can TX a byte */
             while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                           EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG));
+                           EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {
+            }
 
             /* Clear the transfer complete interrupt */
             MAP_UART_clearInterruptFlag(hwAttrs->baseAddr,
@@ -1411,14 +1413,16 @@ int_fast32_t UARTMSP432_writePolling(UART_Handle handle, const void *buf,
 
             /* Wait until the byte has gone out the wire. */
             while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                    EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG));
+                    EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG)) {
+            }
 
             count++;
         }
 
         /* Wait until we can TX a byte */
         while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                       EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG));
+                       EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {
+        }
 
         /*
          *  Atomically clear the TX complete flag so we don't wipe
@@ -1430,7 +1434,8 @@ int_fast32_t UARTMSP432_writePolling(UART_Handle handle, const void *buf,
 
         /* Wait until the byte has gone out the wire. */
         while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                       EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG));
+                       EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG)) {
+        }
 
         DebugP_log2("UART:(%p) Wrote character 0x%x", hwAttrs->baseAddr,
             *buffer);

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-F14
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_uia_runtime
 {
-    static final String VERS = "@(#) xdc-F14\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -3445,9 +3445,9 @@ public class ti_uia_runtime
         vo.bind("$$errorDescCfgs", Global.newArray("E_badLevel"));
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./LoggerSM.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.uia.runtime.LoggerSM.Object", "ti.uia.runtime"));
         vo.bind("Instance_State", om.findStrict("ti.uia.runtime.LoggerSM.Instance_State", "ti.uia.runtime"));

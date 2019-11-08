@@ -48,8 +48,8 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-/* Board Header files */
-#include "Board.h"
+/* Example/Board Header Files */
+#include <ti/drivers/Board.h>
 
 /* Local Header Files */
 #include "lcd_hal.h"

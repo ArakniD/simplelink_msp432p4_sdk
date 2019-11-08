@@ -51,8 +51,8 @@
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/SDFatFS.h>
 
-/* Example/Board Header files */
-#include "Board.h"
+/* Driver configuration */
+#include "ti_drivers_config.h"
 
 /* Buffer size used for the file copy process */
 #ifndef CPY_BUFF_SIZE
@@ -90,7 +90,7 @@ const struct timespec ts = {
 /* File name prefix for this filesystem for use with TI C RTS */
 char fatfsPrefix[] = "fat";
 
-unsigned char cpy_buff[CPY_BUFF_SIZE + 1];
+unsigned char cpy_buff[CPY_BUFF_SIZE];
 
 /*
  *  ======== mainThread ========
@@ -115,13 +115,16 @@ void *mainThread(void *arg0)
     unsigned int filesize;
     unsigned int totalBytesCopied = 0;
 
+    /* Return variables */
+    int result;
+
     /* Call driver init functions */
     GPIO_init();
     Display_init();
     SDFatFS_init();
 
     /* Configure the LED pin */
-    GPIO_setConfig(Board_GPIO_LED0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 
     /* add_device() should be called once and is used for all media types */
     add_device(fatfsPrefix, _MSA, ffcio_open, ffcio_close, ffcio_read,
@@ -138,7 +141,7 @@ void *mainThread(void *arg0)
     clock_settime(CLOCK_REALTIME, &ts);
 
     /* Turn on user LED */
-    GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_ON);
+    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
     Display_printf(display, 0, 0, "Starting the fatsd example\n");
     Display_printf(display, 0, 0,
@@ -147,7 +150,7 @@ void *mainThread(void *arg0)
         "You will get errors if your SD card is not formatted with a filesystem.\n");
 
     /* Mount and register the SD Card */
-    sdfatfsHandle = SDFatFS_open(Board_SDFatFS0, DRIVE_NUM);
+    sdfatfsHandle = SDFatFS_open(CONFIG_SDFatFS_0, DRIVE_NUM);
     if (sdfatfsHandle == NULL) {
         Display_printf(display, 0, 0, "Error starting the SD card\n");
         while (1);
@@ -195,6 +198,16 @@ void *mainThread(void *arg0)
     }
     else {
         Display_printf(display, 0, 0, "Starting file copy\n");
+    }
+
+    /*
+     * Optional call to disable internal buffering. This allows FatFs to use
+     * multi-block writes to increase throughput if applicable. Note that this
+     * may come with a performance penalty for smaller writes.
+     */
+    result = setvbuf(dst, NULL, _IONBF, 0);
+    if (result != 0) {
+        Display_printf(display, 0, 0, "Call to setvbuf failed!");
     }
 
     /*  Copy the contents from the src to the dst */

@@ -26,13 +26,11 @@ Task__prologue.h
 Task__epilogue.h
 Event__prologue.h
 Event__epilogue.h
-Semaphore__prologue.h
-Semaphore__epilogue.h
 package/ti.sysbios.knl.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_sysbios_knl.java
 package/ti_sysbios_knl.class
 package/package_ti.sysbios.knl.c

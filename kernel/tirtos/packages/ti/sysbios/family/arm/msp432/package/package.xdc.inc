@@ -12,7 +12,7 @@ package/ti.sysbios.family.arm.msp432.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-F14
+package/.xdc-H25
 package/ti_sysbios_family_arm_msp432.java
 package/ti_sysbios_family_arm_msp432.class
 package/package_ti.sysbios.family.arm.msp432.c

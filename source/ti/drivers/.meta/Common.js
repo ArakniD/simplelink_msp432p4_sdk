@@ -41,7 +41,6 @@ exports = {
     device2Family: device2Family,  /* get /ti/drivers device family name */
     device2DeviceFamily: device2DeviceFamily, /* get driverlib DeviceFamily_xxx name */
     device2DevicesDir: device2DevicesDir, /* get driverlib 'devices' dir */
-    device2LinkCmd: device2LinkCmd,
 
     getCompName: getCompName,      /* get fully qualified component name */
     getConfigs: getConfigs,        /* get all of a module's config params */
@@ -81,6 +80,7 @@ exports = {
 
     autoForceModules: autoForceModules,
     genBoardHeader: genBoardHeader,
+    genResourceComment: genResourceComment,
     findSignalTypes : findSignalTypes,
 
     init: init
@@ -117,84 +117,6 @@ let deferred = {
     logError:   function (inst, field, msg) {this.errs.push({inst: inst, field: field, msg: msg});},
     logWarning: function (inst, field, msg) {this.warn.push({inst: inst, field: field, msg: msg});},
     logInfo:    function (inst, field, msg) {this.info.push({inst: inst, field: field, msg: msg});}
-};
-
-const FAMILY2LIBS = {
-    CC26X2: [
-        "ti/display/lib/display.aem4f",
-        "ti/drivers/lib/drivers_cc26x2.aem4f",
-        "ti/drivers/rf/lib/rf_multiMode_cc26x2.aem4f",
-        "tirtos/packages/ti/dpl/lib/dpl_cc26x2.aem4f",
-        "ti/devices/cc13x2_cc26x2/driverlib/bin/${toolchain}/driverlib.lib"
-    ],
-    CC13X2: [
-        "ti/display/lib/display.aem4f",
-        "ti/drivers/lib/drivers_cc13x2.aem4f",
-        "ti/drivers/rf/lib/rf_multiMode_cc13x2.aem4f",
-        "tirtos/packages/ti/dpl/lib/dpl_cc13x2.aem4f",
-        "ti/devices/cc13x2_cc26x2/driverlib/bin/${toolchain}/driverlib.lib"
-    ],
-    CC26X0: [
-        "ti/display/lib/display.aem3",
-        "ti/drivers/lib/drivers_cc26x0.aem3",
-        "ti/drivers/rf/lib/rf_multiMode_cc26x0.aem3",
-        "tirtos/packages/ti/dpl/lib/dpl_cc26x0.aem3",
-        "ti/devices/cc26x0/driverlib/bin/${toolchain}/driverlib.lib"
-    ],
-    CC26X0R2: [
-        "ti/display/lib/display.aem3",
-        "ti/drivers/lib/drivers_cc26x0r2.aem3",
-        "ti/drivers/rf/lib/rf_multiMode_cc26x0r2.aem3",
-        "tirtos/packages/ti/dpl/lib/dpl_cc26x0r2.aem3",
-        "ti/devices/cc26x0r2/driverlib/bin/${toolchain}/driverlib.lib"
-    ],
-    CC13X0: [
-        "ti/display/lib/display.aem3",
-        "ti/drivers/lib/drivers_cc13x0.aem3",
-        "ti/drivers/rf/lib/rf_multiMode_cc13x0.aem3",
-        "tirtos/packages/ti/dpl/lib/dpl_cc13x0.aem3",
-        "ti/devices/cc13x0/driverlib/bin/${toolchain}/driverlib.lib"
-    ],
-    CC32XX: [
-        "ti/display/lib/display.aem4",
-        "ti/drivers/lib/drivers_cc32xx.aem4",
-        "tirtos/packages/ti/dpl/lib/dpl_cc32xx.aem4",
-        "ti/devices/cc32xx/driverlib/${toolchain}/Release/driverlib.a"
-    ],
-    MSP432E4: [
-        "ti/display/lib/display.aem4f",
-        "ti/net/lib/${toolchain}/m4f/slnetsock_release.a",
-        "ti/net/sntp/lib/${toolchain}/m4f/sntp_release.a",
-        "ti/ndk/slnetif/lib/slnetifndk.aem4f",
-        "third_party/mbedtls/ti/lib/${toolchain}/m4f/mbedtls.a",
-        "ti/ndk/hal/timer_bios/lib/hal_timer.aem4f",
-        "ti/ndk/hal/eth_stub/lib/hal_eth_stub.aem4f",
-        "ti/ndk/tools/cgi/lib/cgi.aem4f",
-        "ti/ndk/tools/hdlc/lib/hdlc.aem4f",
-        "ti/ndk/tools/console/lib/console_min_ipv4.aem4f",
-        "ti/ndk/netctrl/lib/netctrl_min_ipv4.aem4f",
-        "ti/ndk/nettools/lib/nettool_ipv4.aem4f",
-        "ti/ndk/hal/ser_stub/lib/hal_ser_stub.aem4f",
-        "ti/ndk/tools/servers/lib/servers_min_ipv4.aem4f",
-        "ti/ndk/hal/userled_stub/lib/hal_userled_stub.aem4f",
-        "ti/ndk/stack/lib/stk.aem4f",
-        "ti/ndk/os/lib/os.aem4f",
-        "ti/drivers/lib/drivers_msp432e4.aem4f",
-        "tirtos/packages/ti/dpl/lib/dpl_msp432e4.aem4f",
-        "ti/devices/msp432e4/driverlib/lib/${toolchain}/m4f/msp432e4_driverlib.a"
-    ],
-    MSP432P4x1xI: [
-        "ti/display/lib/display.aem4f",
-        "ti/drivers/lib/drivers_msp432p4x1xi.aem4f",
-        "tirtos/packages/ti/dpl/lib/dpl_msp432p4x1xi.aem4f",
-        "ti/devices/msp432p4xx/driverlib/${toolchain}/msp432p4xx_driverlib.lib"
-    ],
-    MSP432P4: [
-        "ti/display/lib/display.aem4f",
-        "ti/drivers/lib/drivers_msp432p4xx.aem4f",
-        "tirtos/packages/ti/dpl/lib/dpl_msp432p4xx.aem4f",
-        "ti/devices/msp432p4xx/driverlib/${toolchain}/msp432p4xx_driverlib.lib"
-    ]
 };
 
 /*
@@ -337,47 +259,13 @@ function device2Family(device, mod)
  *  @returns String - the corresponding "DeviceFamily_xxxx" string
  *                    used by driverlib header files.
  */
-function device2DeviceFamily(deviceId)
+function device2DeviceFamily(deviceId, part)
 {
-    var driverString;
+    var DriverLib = system.getScript("/ti/devices/DriverLib");
 
-    /* Determine libraries required by device name. */
-    if (deviceId.match(/CC13.2/)) {
-        driverString = "DeviceFamily_CC13X2";
-    }
-    else if (deviceId.match(/CC13.0/)) {
-        driverString = "DeviceFamily_CC13X0";
-    }
-    else if (deviceId.match(/CC26.0R2/)) {
-        driverString = "DeviceFamily_CC26X0R2";
-    }
-    else if (deviceId.match(/CC26.2/)) {
-        driverString = "DeviceFamily_CC26X2";
-    }
-    else if (deviceId.match(/CC26.0/)) {
-        driverString = "DeviceFamily_CC26X0";
-    }
-    else if (deviceId.match(/CC32/)) {
-        driverString = "DeviceFamily_CC3220";
-    }
-    else if (deviceId.match(/MSP432E.*/)) {
-        driverString = "DeviceFamily_MSP432E401Y";
-    }
-    else if (deviceId.match(/MSP432P4.1.I/)
-             || deviceId.match(/MSP432P4111/)) {
-        driverString = "DeviceFamily_MSP432P4x1xI";
-    }
-    else if (deviceId.match(/MSP432P4.1.T/)) {
-        driverString = "DeviceFamily_MSP432P4x1xT";
-    }
-    else if (deviceId.match(/MSP432P401/)) {
-        driverString = "DeviceFamily_MSP432P401x";
-    }
-    else {
-        driverString = "";
-    }
+    let attrs = DriverLib.getAttrs(deviceId, part);
 
-    return (driverString);
+    return (attrs.deviceDefine);
 }
 
 /*!
@@ -390,78 +278,11 @@ function device2DeviceFamily(deviceId)
  */
 function device2DevicesDir(deviceId)
 {
-    var devicesDir;
+    var DriverLib = system.getScript("/ti/devices/DriverLib");
 
-    /* Determine libraries required by device name. */
-    if (deviceId.match(/CC13.2/)) {
-        devicesDir = "cc13x2_cc26x2";
-    }
-    else if (deviceId.match(/CC13.0/)) {
-        devicesDir = "cc13x0";
-    }
-    else if (deviceId.match(/CC26.0R2/)) {
-        devicesDir = "cc26x0r2";
-    }
-    else if (deviceId.match(/CC26.2/)) {
-        devicesDir = "cc13x2_cc26x2";
-    }
-    else if (deviceId.match(/CC26.0/)) {
-        devicesDir = "cc26x0";
-    }
-    else if (deviceId.match(/CC3220/)) {
-        devicesDir = "cc32xx";
-    }
-    else if (deviceId.match(/MSP432E.*/)) {
-        devicesDir = "msp432e4";
-    }
-    else if (deviceId.match(/MSP432P4.1.I/)
-             || deviceId.match(/MSP432P4111/)) {
-        devicesDir = "msp432p4x1xi";
-    }
-    else if (deviceId.match(/MSP432P4.1.T/)) {
-        devicesDir = "msp432p4x1xt";
-    }
-    else if (deviceId.match(/MSP432P401/)) {
-        devicesDir = "msp432p401x";
-    }
-    else {
-        devicesDir = "";
-    }
+    let attrs = DriverLib.getAttrs(deviceId);
 
-    return (devicesDir);
-}
-
-/*
- *  ======== device2LinkCmd ========
- */
-function device2LinkCmd(deviceId, toolchain)
-{
-    let result = {undefs: {}, defs: [], libs: null};
-    let family = this.device2DeviceFamily(deviceId);
-    if (family != "") {
-        family = family.replace(/^DeviceFamily_/, "");
-        if (family.indexOf("MSP432E") == 0) {
-            family = "MSP432E4";
-        }
-        else if (family.indexOf("MSP432P401") == 0) {
-            family = "MSP432P4";
-        }
-        else if (family.indexOf("CC32") == 0) {
-            family = "CC32XX";
-        }
-        result.libs = FAMILY2LIBS[family];
-    }
-
-    if (result.libs == null) {
-        throw Error("device2LinkCmd: unknown device family ('"
-                    + family + "') for deviceId '" + deviceId + "'");
-    }
-
-    for (let i = 0; i < result.libs.length; i++) {
-        result.libs[i] = result.libs[i].replace("${toolchain}", toolchain);
-    }
-
-    return (result);
+    return (attrs.deviceDir);
 }
 
 /*
@@ -568,7 +389,7 @@ function getConfigs(modName)
     let ModDev = undefined;
     let deviceConfigs = {};
     let portableConfigs = {};
-    let base = {config: []};
+    let base = {moduleStatic: {config:[]}, config: []};
     let devModName =
         modName.substring(0, modName.lastIndexOf('/'))
         + '/' + baseName.toLowerCase() + '/'
@@ -806,8 +627,12 @@ function newConfig()
 function newIntPri()
 {
     let intPri = [{
-        name: "intPriority",
-        displayName: "Interrupt Priority",
+        name: "interruptPriority",
+        displayName: "Hardware Interrupt Priority",
+        description: "Hardware interrupt priority",
+        longDescription:`This configuration allows you to configure the
+hardware interrupt priority.
+`,
         default: "7",
         options: [
             { name: "7", displayName: "7 - Lowest Priority" },
@@ -849,8 +674,12 @@ function intPriority2Hex(intPri)
 function newSwiPri()
 {
     let swiPri = {
-        name: "swiPriority",
-        displayName: "Swi Priority",
+        name: "softwareInterruptPriority",
+        displayName: "Software Interrupt Priority",
+        description: "Software interrupt priority",
+        longDescription:`This configuration allows you to configure the
+software interrupt priority.
+`,
         default: "0",
         options: [
             { name: "0", displayName: "0 - Lowest Priority" },
@@ -919,6 +748,9 @@ function print(obj, header, depth, indent)
         if (obj.$name != null) {
             console.log(header + obj.$name + ":");
         }
+        else if (obj.name != null) {
+            console.log(header + obj.name + ":");
+        }
         else {
             console.log(header + obj + " (nameless):");
         }
@@ -970,7 +802,28 @@ function printModule(mod, header, indent)
     if (header == null) header = "";
 
     function printConfigs(configs, indent) {
+
+        /* recursively find config arrays and accumulate into flat array */
+        function flatten(cfgs, result) {
+            if (cfgs != null) {
+                for (var i = 0; i < cfgs.length; i++) {
+                    var cfg = cfgs[i];
+                    if (cfg.name == null) { /* must be a config group */
+                        flatten(cfg.config, result);
+                    }
+                    else {
+                        result.push(cfg);
+                    }
+                }
+            }
+        }
+
         if (configs != null && configs.length != 0) {
+            /* accumulate all configs */
+            var flatCfgs = [];
+            flatten(configs, flatCfgs);
+            configs = flatCfgs;
+
             /* maxPad is the maximum field width */
             let maxPad = "                           ";
 
@@ -1211,15 +1064,18 @@ function typeMatches(type, nameArray)
  *  ======== setDefaults ========
  *  Copy properties from a signal's settings into inst
  *
- *  inst - the instance whose properties need to be modified
+ *  inst   - the instance whose properties need to be modified by
+ *           an inst.$hardware assignment
  *  signal - a signal object defined by a component
- *  type - a specific type for the signal (DOUT, PWM, ...)
+ *  type   - a specific type for the signal (DOUT, PWM, ...)
  *
  *  If type is undefined or null, no properties of inst are modified.
  */
 function setDefaults(inst, signal, type)
 {
     let settings = {};
+
+    let comp = inst.$hardware;
 
     /* populate settings hash from the specified signal settings */
     if (signal.settings != null) {
@@ -1233,7 +1089,6 @@ function setDefaults(inst, signal, type)
     }
 
     /* allow component settings to override signal settings */
-    let comp = inst.$hardware;
     if (comp.settings != null) {
         let csettings = null;
         if (comp.type instanceof Array && comp.type.length > 1) {
@@ -1354,14 +1209,14 @@ function addNameConfig(config, modName, prefix)
         description: "The C/C++ identifier used in applications as the index"
                    + " parameter passed to " + baseName + " runtime APIs",
 
-        /* TODO: The name should be declared as an extern const in Board.h
-         * and defined in Board.c. Using an extern const
+        /* TODO: The name should be declared as an extern const in ti_drivers_config.h
+         * and defined in ti_drivers_config.c. Using an extern const
          * allows libraries to define symbolic names for GPIO
          * signals they require for their use _without_ requiring
          * editing or rebuilding of the library source files.
          */
-        longDescription: "This name is declared in the generated Board.h file"
-                   + " so applications can reference this instance"
+        longDescription: "This name is declared in the generated ti_drivers_config.h"
+                   + " file so applications can reference this instance"
                    + " symbolically.  It can be set to any globally unique"
                    + " name that is also a valid C/C++ identifier."
                    + "\n[More ...](/" + docsDir
@@ -1379,8 +1234,8 @@ function addNameConfig(config, modName, prefix)
                    + " and, if another instance has the same name, an error is"
                    + " triggered."
                    + "\n\n"
-                   + "Note: since not all names are added to Board.h, it's"
-                   + " possible that some names will not be allowed even"
+                   + "Note: since not all names are added to ti_drivers_config.h,"
+                   + " it's possible that some names will not be allowed even"
                    + " though they do not actually collide in the generated"
                    + " files."
     };
@@ -1391,12 +1246,15 @@ function addNameConfig(config, modName, prefix)
 
 /*
  *  ======== autoForceModules ========
+ *  Returns an implementation of a module's modules method that just
+ *  forces the addition of the specified modules
+ *
  *  @param kwargs An array of module name strings.
  *
- * @return An array with module instance objects
+ *  @return An array with module instance objects
  *
- * Example:
- *    modules: Common.autoForceModules(["Board", "DMA"])
+ *  Example:
+ *     modules: Common.autoForceModules(["Board", "DMA"])
  */
 function autoForceModules(kwargs)
 {
@@ -1410,15 +1268,15 @@ function autoForceModules(kwargs)
         }
 
         for (let args = kwargs.length - 1; args >= 0; args--) {
-            let modString = kwargs[args];
-            let modPath = "/ti/drivers/" + modString;
-            let mod = {
-                name:modString,
-                moduleName:modPath,
-                hidden:true
-            };
-
-            modArray = modArray.concat(mod);
+            let modPath = kwargs[args];
+            if (modPath.indexOf('/') == -1) {
+                modPath = "/ti/drivers/" + modPath;
+            }
+            modArray.push({
+                name      : modPath.substring(modPath.lastIndexOf('/') + 1),
+                moduleName: modPath,
+                hidden    : true
+            });
         }
 
         return modArray;
@@ -1437,35 +1295,107 @@ function genBoardHeader(instances, mod)
 {
     let padding = Array(80).join(' ');
     let maxLineLength = 30;
+    let line;
     let lines = [];
     let banner = [];
+    let pinResources = [];
+
     banner.push("/*");
     banner.push(" *  ======== " + mod.displayName + " ========");
     banner.push(" */");
     banner.push("");
-    let line;
+
+    /* Construct each line and determine max line length */
     for (let i = 0; i < instances.length; i++) {
         let inst = instances[i];
+
+        /* Does the module have a '_getPinResources()' method */
+        if (mod._getPinResources) {
+
+            /* Construct pin resources string to be used as a comment */
+            pinResources[i] = mod._getPinResources(inst);
+
+            /* Check if anything was returned */
+            if (pinResources[i] != null && pinResources[i] != undefined) {
+
+                /* Construct a comment string */
+                line = genResourceComment(pinResources[i]);
+                lines.push(line);
+            }
+        }
+
         line = "#define " + inst.$name;
         lines.push(line);
+
+        /* Is this line length greater than the previous max */
         if (line.length > maxLineLength) {
             maxLineLength = line.length;
         }
     }
+
+    /*
+     * No comment was included in this original implementation. Not sure
+     * what wizardry is going on here.
+     */
     maxLineLength = ((maxLineLength + 3) & 0xfffc) + 4;
-    for (let i = 0; i < instances.length; i++) {
+
+    /* Modulate lines based on max line length, append instance number */
+    let instanceNum = 0;
+    for (let i = 0; i < lines.length; i++) {
+
+        /* If this instance has a comment, assume 1 comment per instance */
+        if (pinResources[instanceNum] && pinResources[instanceNum] != null) {
+            i++;
+        }
         lines[i] += padding.substring(0, maxLineLength - lines[i].length);
-        lines[i] += i;
+        lines[i] += instanceNum++;
     }
+
     return ((banner.concat(lines)).join("\n"));
 }
 
 /*
- *  ======== findSignalTypes ========
- *  Function to recursively parse a hardware component for a slave select.
+ *  ======== genResourceComment ========
+ * Construct a comment string from (potentially) multi-line text
  *
- *  hardware - an object resprenting a hardware component
- *  signalTypes  - an array of signal type strings
+ * Assumes 'text' is a string containing one or more
+ * lines delimited by new lines (\n)
+ */
+function genResourceComment(text)
+{
+    /* split into separate lines and trim trailing white space */
+    let lines = text.split(/[ \t]*\n/);
+
+    /* if it's a multi-line comment ... */
+    if (lines.length > 1) {
+
+        /* Prevent trailing space after digraph */
+        lines[0] = "/*" + lines[0];
+
+        for (let i = 1; i < lines.length; i++) {
+            /* prefix intermediate lines with asterisks and spaces */
+            lines[i] = " *  " + lines[i];
+        }
+        lines.push(""); /* add new line for comment end */
+    }
+    else {
+        /* If single line comment, add a space after initial digraph */
+        lines[0] = "/* " + lines[0];
+    }
+
+    /* end the comment */
+    lines[lines.length - 1] += " */";
+
+    /* return a single string with embedded \n's */
+    return (lines.join("\n"));
+}
+
+/*
+ *  ======== findSignalTypes ========
+ *  Function to recursively parse a hardware component for a signal type.
+ *
+ *  hardware    - an object representing a hardware component
+ *  signalTypes - an array of signal type strings
  *
  * Example:
  *    findSignalTypes(hardware, ["SPI_SS", "DOUT", "I2S_SCL"])
@@ -1476,7 +1406,6 @@ function genBoardHeader(instances, mod)
  */
 function findSignalTypes(hardware, signalTypes)
 {
-
     /* 'signalTypes' should be an array of signal names in a string */
     if (signalTypes == undefined || signalTypes == null || !Array.isArray(signalTypes)) {
         console.log("Common.js:findSignalTypes(hardware, signalTypes):"
