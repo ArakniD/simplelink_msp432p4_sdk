@@ -66,7 +66,7 @@ package/ti.catalog.arm.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-H25
+package/.xdc-H32
 package/ti_catalog_arm.java
 package/ti_catalog_arm.class
 package/package_ti.catalog.arm.c

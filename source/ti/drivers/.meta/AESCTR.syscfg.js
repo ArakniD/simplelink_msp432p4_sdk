@@ -74,8 +74,8 @@ entire message when the message is larger than one block.
 * [Examples][3]
 * [Configuration Options][4]
 [1]: /tidrivers/doxygen/html/_a_e_s_c_t_r_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_a_e_s_c_t_r_8h.html#ti_drivers_CTR_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_a_e_s_c_t_r_8h.html#ti_drivers_CTR_Examples "C usage examples"
+[2]: /tidrivers/doxygen/html/_a_e_s_c_t_r_8h.html#ti_drivers_AESCTR_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_a_e_s_c_t_r_8h.html#ti_drivers_AESCTR_Examples "C usage examples"
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#AESCTR_Configuration_Options "Configuration options reference"
 `,
     validate            : validate,

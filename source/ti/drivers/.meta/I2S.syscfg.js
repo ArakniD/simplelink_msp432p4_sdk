@@ -106,13 +106,13 @@ function validate(inst, validation)
     if((inst.sd0DataDirection == "Disabled") &&
         (inst.sd1DataDirection == "Disabled")) {
             Common.logInfo(validation, inst, "sd0DataDirection",
-              "Consider activate one of the two data interfaces (SD0 or SD1)");
+              "Consider activating one of the two data interfaces (SD0 or SD1)");
     }
 
     if((inst.sd0DataDirection == "Disabled") &&
         (inst.sd1DataDirection == "Disabled")) {
             Common.logInfo(validation, inst, "sd1DataDirection",
-              "Consider activate one of the two data interfaces (SD0 or SD1)");
+              "Consider activating one of the two data interfaces (SD0 or SD1)");
     }
 }
 

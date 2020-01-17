@@ -3,7 +3,7 @@ package/ti.uia.build.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-H25
+package/.xdc-H32
 package/ti_uia_build.java
 package/ti_uia_build.class
 package/package_ti.uia.build.c

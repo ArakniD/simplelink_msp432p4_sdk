@@ -1202,7 +1202,8 @@ function addNameConfig(config, modName, prefix)
 {
     let baseName = modName.split('/').pop();                 // GPIO
     let fullName = modName.replace(/\//g, '_').substring(1); // ti_drivers_GPIO
-    let docsDir =  modName.split('/').slice(0, -1).join(""); // tidrivers
+    //let docsDir =  modName.split('/').slice(0, -1).join(""); // tidrivers
+    let docsDir = "tidrivers"; // Since this function is tidrivers specific
 
     let nameCfg = {
         name: "$name",

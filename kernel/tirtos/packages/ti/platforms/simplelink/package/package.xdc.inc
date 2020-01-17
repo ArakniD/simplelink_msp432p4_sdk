@@ -6,7 +6,7 @@ package/ti.platforms.simplelink.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-H25
+package/.xdc-H32
 package/ti_platforms_simplelink.java
 package/ti_platforms_simplelink.class
 package/package_ti.platforms.simplelink.c

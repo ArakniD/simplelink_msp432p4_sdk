@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = freertos_main_freertos.obj commonComms.obj vibrationCapture.obj ti_drivers_config.obj
+OBJECTS = commonComms.obj vibrationCapture.obj ti_drivers_config.obj freertos_main_freertos.obj
 
 NAME = tida_01575_serial
 
@@ -60,7 +60,6 @@ LFLAGS = "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/third_party/CMSIS/DSP_Li
     -static \
     -Wl,--gc-sections \
     "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/hard" \
     -lgcc \
     -lc \
     -lm \
@@ -81,17 +80,17 @@ ti_drivers_config.c ti_drivers_config.h: syscfg
 
 syscfg: ../../tida_01575_serial.syscfg
 	@ echo Generating configuration files...
-	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
-
-freertos_main_freertos.obj: ../../freertos/main_freertos.c ti_drivers_config.h
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
+	@ $(SYSCONFIG_TOOL) --compiler gcc --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
 
 commonComms.obj: ../../commonComms.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
 vibrationCapture.obj: ../../vibrationCapture.c ti_drivers_config.h
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
+freertos_main_freertos.obj: ../../freertos/main_freertos.c ti_drivers_config.h
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
@@ -102,7 +101,6 @@ ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/gcc/freertos.lib
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
-
 
 clean:
 	@ echo Cleaning...

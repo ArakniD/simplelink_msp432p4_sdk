@@ -51,7 +51,6 @@ LFLAGS = -Wl,-T,../../freertos/gcc/MSP_EXP432P4111_FREERTOS.lds \
     -static \
     -Wl,--gc-sections \
     "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/hard" \
     -lgcc \
     -lc \
     -lm \
@@ -81,7 +80,6 @@ MSP_EXP432P4111.obj: ../../MSP_EXP432P4111.c
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/gcc/freertos.lib
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
-
 
 clean:
 	@ echo Cleaning...

@@ -75,8 +75,8 @@ input blocks using AES.
 * [Examples][3]
 * [Configuration Options][4]
 [1]: /tidrivers/doxygen/html/_a_e_s_e_c_b_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_a_e_s_e_c_b_8h.html#ti_drivers_ECB_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_a_e_s_e_c_b_8h.html#ti_drivers_ECB_Examples "C usage examples"
+[2]: /tidrivers/doxygen/html/_a_e_s_e_c_b_8h.html#ti_drivers_AESECB_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_a_e_s_e_c_b_8h.html#ti_drivers_AESECB_Examples "C usage examples"
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#AESECB_Configuration_Options "Configuration options reference"
 `,
     validate            : validate,

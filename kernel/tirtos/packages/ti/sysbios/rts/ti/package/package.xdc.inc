@@ -9,7 +9,7 @@ package/ti.sysbios.rts.ti.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-H25
+package/.xdc-H32
 package/ti_sysbios_rts_ti.java
 package/ti_sysbios_rts_ti.class
 package/package_ti.sysbios.rts.ti.c

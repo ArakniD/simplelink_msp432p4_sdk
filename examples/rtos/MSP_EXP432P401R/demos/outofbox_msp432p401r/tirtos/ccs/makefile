@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/builds/MSP_EX
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = tirtos_main_tirtos.obj callbacks.obj led_thread.obj uart_thread.obj ti_drivers_config.obj
+OBJECTS = callbacks.obj led_thread.obj uart_thread.obj ti_drivers_config.obj tirtos_main_tirtos.obj
 
 CONFIGPKG = $(KERNEL_BUILD)/ccs
 
@@ -65,11 +65,7 @@ ti_drivers_config.c ti_drivers_config.h: syscfg
 
 syscfg: ../../outofbox_msp432p401r.syscfg
 	@ echo Generating configuration files...
-	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
-
-tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
+	@ $(SYSCONFIG_TOOL) --compiler ccs --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
 
 callbacks.obj: ../../callbacks.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
@@ -83,6 +79,10 @@ uart_thread.obj: ../../uart_thread.c ti_drivers_config.h $(CONFIGPKG)/compiler.o
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
+tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
+
 ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
@@ -90,7 +90,6 @@ ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/comp
 $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
 	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
-
 
 clean:
 	@ echo Cleaning...

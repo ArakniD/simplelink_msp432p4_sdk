@@ -4,7 +4,7 @@ package/ti.dpl.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-H25
+package/.xdc-H32
 package/ti_dpl.java
 package/ti_dpl.class
 package/package_ti.dpl.c

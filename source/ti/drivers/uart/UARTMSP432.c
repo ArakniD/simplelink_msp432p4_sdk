@@ -887,6 +887,7 @@ void UARTMSP432_hwiIntFxn(uintptr_t arg)
 #endif
             Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
 
+            object->state.txBusy = false;  // Allow another write
             object->writeCallback((UART_Handle)arg, (void *) object->writeBuf,
                     object->writeSize);
         }
@@ -1140,7 +1141,7 @@ UART_Handle UARTMSP432_open(UART_Handle handle, UART_Params *params)
     object->writeSize            = 0;
     object->readSize             = 0;
     object->state.writeCR        = false;
-    object->state.txEnabled      = false;
+    object->state.txBusy         = false;
     object->state.rxEnabled      = true;
     object->state.callCallback   = false;
 
@@ -1288,8 +1289,7 @@ int_fast32_t UARTMSP432_write(UART_Handle handle, const void *buffer,
 
     key = HwiP_disable();
 
-    if (object->writeCount ||
-            MAP_UART_queryStatusFlags(hwAttrs->baseAddr, EUSCI_A_UART_BUSY)) {
+    if (object->writeCount || object->state.txBusy) {
         HwiP_restore(key);
         DebugP_log1("UART:(%p) Could not write data, uart in use.",
             hwAttrs->baseAddr);
@@ -1301,6 +1301,7 @@ int_fast32_t UARTMSP432_write(UART_Handle handle, const void *buffer,
     object->writeBuf = buffer;
     object->writeSize = size;
     object->writeCount = size;
+    object->state.txBusy = true;
 
     /*
      * Set power constraint to keep peripheral active during transfer and
@@ -1333,6 +1334,7 @@ int_fast32_t UARTMSP432_write(UART_Handle handle, const void *buffer,
             DebugP_log2("UART:(%p) Write timed out, %d bytes written",
                 hwAttrs->baseAddr, object->writeCount);
         }
+        object->state.txBusy = false;
         return (object->writeSize - object->writeCount);
     }
 
@@ -1350,6 +1352,8 @@ void UARTMSP432_writeCancel(UART_Handle handle)
     unsigned int                written;
 
     key = HwiP_disable();
+
+    object->state.txBusy = false;
 
     /* Return if there is no write. */
     if (!object->writeCount) {

@@ -425,7 +425,7 @@ and portable APIs.
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#Display_Configuration_Options "Configuration options reference"
 `,
     defaultInstanceName   : "CONFIG_Display_",
-    config                : Common.addNameConfig(config, "ti/drivers/Display","CONFIG_Display_"),
+    config                : Common.addNameConfig(config, "/ti/display/Display","CONFIG_Display_"),
     validate              : validate,
     maxInstances          : 3,
     filterHardware        : filterHardware,

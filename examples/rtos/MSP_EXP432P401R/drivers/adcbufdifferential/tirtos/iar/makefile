@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/builds/MSP_EX
 CC = "$(IAR_ARMCOMPILER)/bin/iccarm"
 LNK = "$(IAR_ARMCOMPILER)/bin/ilinkarm"
 
-OBJECTS = tirtos_main_tirtos.obj adcBufDifferential.obj ti_drivers_config.obj
+OBJECTS = adcBufDifferential.obj ti_drivers_config.obj tirtos_main_tirtos.obj
 
 CONFIGPKG = $(KERNEL_BUILD)/iar
 
@@ -55,13 +55,13 @@ ti_drivers_config.c ti_drivers_config.h: syscfg
 
 syscfg: ../../adcBufDifferential.syscfg
 	@ echo Generating configuration files...
-	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+	@ $(SYSCONFIG_TOOL) --compiler iar --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
 
-tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
+adcBufDifferential.obj: ../../adcBufDifferential.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -f $(CONFIGPKG)/compiler.opt -o $@
 
-adcBufDifferential.obj: ../../adcBufDifferential.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
+tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -f $(CONFIGPKG)/compiler.opt -o $@
 
@@ -72,7 +72,6 @@ ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/comp
 $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
-
 
 clean:
 	@ echo Cleaning...

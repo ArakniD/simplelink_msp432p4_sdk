@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/builds/MSP_EX
 CC = "$(CCS_ARMCOMPILER)/bin/armcl"
 LNK = "$(CCS_ARMCOMPILER)/bin/armcl"
 
-OBJECTS = tirtos_main_tirtos.obj adcBufTemperature.obj ti_drivers_config.obj
+OBJECTS = adcBufTemperature.obj ti_drivers_config.obj tirtos_main_tirtos.obj
 
 CONFIGPKG = $(KERNEL_BUILD)/ccs
 
@@ -65,13 +65,13 @@ ti_drivers_config.c ti_drivers_config.h: syscfg
 
 syscfg: ../../adcBufTemperature.syscfg
 	@ echo Generating configuration files...
-	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+	@ $(SYSCONFIG_TOOL) --compiler ccs --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
 
-tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
+adcBufTemperature.obj: ../../adcBufTemperature.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
-adcBufTemperature.obj: ../../adcBufTemperature.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
+tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< --cmd_file=$(CONFIGPKG)/compiler.opt --output_file=$@
 
@@ -82,7 +82,6 @@ ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/comp
 $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
 	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
-
 
 clean:
 	@ echo Cleaning...

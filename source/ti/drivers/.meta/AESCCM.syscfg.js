@@ -76,8 +76,8 @@ multiples of the block cipher block size.
 * [Examples][3]
 * [Configuration Options][4]
 [1]: /tidrivers/doxygen/html/_a_e_s_c_c_m_8h.html#details "C API reference"
-[2]: /tidrivers/doxygen/html/_a_e_s_c_c_m_8h.html#ti_drivers_CCM_Synopsis "Basic C usage summary"
-[3]: /tidrivers/doxygen/html/_a_e_s_c_c_m_8h.html#ti_drivers_CCM_Examples "C usage examples"
+[2]: /tidrivers/doxygen/html/_a_e_s_c_c_m_8h.html#ti_drivers_AESCCM_Synopsis "Basic C usage summary"
+[3]: /tidrivers/doxygen/html/_a_e_s_c_c_m_8h.html#ti_drivers_AESCCM_Examples "C usage examples"
 [4]: /tidrivers/syscfg/html/ConfigDoc.html#AESCCM_Configuration_Options "Configuration options reference"
 `,
     validate            : validate,

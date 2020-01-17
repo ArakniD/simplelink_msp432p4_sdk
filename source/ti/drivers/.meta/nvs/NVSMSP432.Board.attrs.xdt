@@ -79,8 +79,7 @@
 
 #if defined(__TI_COMPILER_VERSION__)
 
-% for (let i = 0; i < localInstances.length; i++) {
-%     let k = 0;
+% for (let i = 0, k = 0; i < localInstances.length; i++) {
 %     let inst = localInstances[i];
 %     if (inst.internalFlash.regionType !== "Generated") continue;
 #pragma LOCATION(`name``k`, 0x`inst.internalFlash.regionBase.toString(16)`);
@@ -90,17 +89,15 @@ static char `name``k++`[0x`inst.internalFlash.regionSize.toString(16)`];
 % }
 #elif defined(__IAR_SYSTEMS_ICC__)
 
-% for (let i = 0; i < localInstances.length; i++) {
-%     let k = 0;
+% for (let i = 0, k = 0; i < localInstances.length; i++) {
 %     let inst = localInstances[i];
 %     if (inst.internalFlash.regionType !== "Generated") continue;
-__no_init static char `name``k`[0x`inst.internalFlash.regionSize.toString(16)`] @ 0x`inst.internalFlash.regionBase.toString(16)`;
+__no_init static char `name``k++`[0x`inst.internalFlash.regionSize.toString(16)`] @ 0x`inst.internalFlash.regionBase.toString(16)`;
 % }
 
 #elif defined(__GNUC__)
 
-% for (let i = 0; i < localInstances.length; i++) {
-%     let k = 0;
+% for (let i = 0, k = 0; i < localInstances.length; i++) {
 %     let inst = localInstances[i];
 %     if (inst.internalFlash.regionType !== "Generated") continue;
 __attribute__ ((section (".nvs")))
@@ -113,8 +110,7 @@ static char `name``k++`[0x`inst.internalFlash.regionSize.toString(16)`];
 NVSMSP432_Object nvsMSP432Objects[`localInstances.length`];
 
 static const NVSMSP432_HWAttrs nvsMSP432HWAttrs[`localInstances.length`] = {
-% for (let i = 0; i < localInstances.length; i++) {
-%     let k = 0;
+% for (let i = 0, k = 0; i < localInstances.length; i++) {
 %     let inst = localInstances[i];
     /* `inst.$name` */
     {

@@ -10,7 +10,7 @@ package/iar.targets.arm.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-H25
+package/.xdc-H32
 package/iar_targets_arm.java
 package/iar_targets_arm.class
 package/package_iar.targets.arm.c

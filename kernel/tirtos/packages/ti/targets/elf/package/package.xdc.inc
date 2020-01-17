@@ -12,7 +12,7 @@ package/ti.targets.elf.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-H25
+package/.xdc-H32
 package/ti_targets_elf.java
 package/ti_targets_elf.class
 package/package_ti.targets.elf.c

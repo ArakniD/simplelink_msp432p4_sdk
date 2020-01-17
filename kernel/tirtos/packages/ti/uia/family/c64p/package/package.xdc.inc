@@ -12,7 +12,7 @@ package/ti.uia.family.c64p.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-H25
+package/.xdc-H32
 package/ti_uia_family_c64p.java
 package/ti_uia_family_c64p.class
 package/package_ti.uia.family.c64p.c

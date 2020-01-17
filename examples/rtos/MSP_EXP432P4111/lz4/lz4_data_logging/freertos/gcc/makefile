@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/freertos/builds/MSP_
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = freertos_main_freertos.obj compress_thread.obj sensor_thread.obj MSP_EXP432P4111.obj
+OBJECTS = compress_thread.obj sensor_thread.obj MSP_EXP432P4111.obj freertos_main_freertos.obj
 
 NAME = lz4_data_logging
 
@@ -55,7 +55,6 @@ LFLAGS = "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/source/ti/compression/lz4/lib/g
     -static \
     -Wl,--gc-sections \
     "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/hard" \
     -lgcc \
     -lc \
     -lm \
@@ -70,10 +69,6 @@ $(KERNEL_BUILD)/gcc/freertos.lib:
 	@ echo You can build it by issuing $(MAKE) in $(dir $@).
 	@ $(ECHOBLANKLINE)
 
-freertos_main_freertos.obj: ../../freertos/main_freertos.c
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
-
 compress_thread.obj: ../../compress_thread.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
@@ -86,10 +81,13 @@ MSP_EXP432P4111.obj: ../../MSP_EXP432P4111.c
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c -o $@
 
+freertos_main_freertos.obj: ../../freertos/main_freertos.c
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c -o $@
+
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/gcc/freertos.lib
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
-
 
 clean:
 	@ echo Cleaning...

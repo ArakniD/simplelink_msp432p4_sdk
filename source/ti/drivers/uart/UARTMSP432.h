@@ -523,8 +523,8 @@ typedef struct {
         bool             drainByISR:1;
         /* Flag to keep the state of the read Power constraints */
         bool             rxEnabled:1;
-        /* Flag to keep the state of the write Power constraints */
-        bool             txEnabled:1;
+        /* Flag to keep track of ongoing transmit */
+        bool             txBusy:1;
 
         /* Flags to prevent recursion in read callback mode */
         bool             inReadCallback:1;

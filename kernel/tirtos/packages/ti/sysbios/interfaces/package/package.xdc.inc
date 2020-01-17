@@ -15,7 +15,7 @@ package/ti.sysbios.interfaces.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-H25
+package/.xdc-H32
 package/ti_sysbios_interfaces.java
 package/ti_sysbios_interfaces.class
 package/package_ti.sysbios.interfaces.c

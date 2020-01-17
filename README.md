@@ -1,30 +1,21 @@
-# SimpleLink™ MSP432P4 SDK 3.30.00.13 Release Notes
+# SimpleLink™ MSP432P4 SDK 3.40.00.05 Release Notes
 
 ## Introduction
 The SimpleLink™ MSP432P4 SDK delivers components that enable engineers to develop applications on Texas Instruments MSP432P4 microcontroller devices. The product is comprised of multiple software components and examples of how to use these components together. In addition, examples are provided to demonstrate the use of each functional area and each supported device and as a starting point for your own projects.
 
 The SimpleLink™ MCU portfolio offers a single development environment that delivers flexible hardware, software and tool options for customers developing wired and wireless applications. With 100 percent code reuse across host MCUs, Wi-Fi™, Bluetooth® low energy, Sub-1GHz devices and more, choose the MCU or connectivity standard that fits your design. A one-time investment with the SimpleLink software development kit (SDK) allows you to reuse often, opening the door to create unlimited applications. For more information, visit www.ti.com/simplelink.
 
-This is version 3.30.00.13 of the SimpleLink MSP432P4 SDK.
+This is version 3.40.00.05 of the SimpleLink MSP432P4 SDK.
 
 ## What’s New
 * Please refer to the Documentation Overview for the individual release notes for details for each SDK component
 * SimpleLink Platform level changes are available in SimpleLink Core SDK Release Notes
-* This release supports the production release of SysConfig. All TI-Driver based examples have been updated to use sysconfig. The drivers/empty_legacy example is provided as an example of how TI-Driver based applications were supported in earlier releases.
-* A new version of Driverlib(Version - 4.40.00.03) component is included in this release. Please refer to the Driverlib Release notes for details
 * SDK Change Log provides a list of all SDK component changes
 
-
 ## Upgrade and Compatibility Information
-* Example/SysConfig Updates All TI-Driver based examples in this release have been updated to use SysConfig. SysConfig generates .c and .h files with the various configuration data structures and constants. These files were previously written by hand. Check the User’s Guide for more information about SysConfig. Here is a short summary of the changes to each example:
-Previous Release	This release
-Hand written files with #defines and C structures	example.syscfg (generates files with #defines and C structures)
-Board.h, MSPXXXX_LAUNCHXL.h	ti_drivers_config.h
-MSPXXXX_LAUNCHXL.c	ti_drivers_config.c
-#defines are named Board_GPIO_LED0, etc.	#defines are named CONFIG_GPIO_LED_0, etc.
-pin settings common to all examples are shown in Board.html	pin settings unique to each example are commented in ti_drivers_config.h
 * If you are migrating from MSP432Ware please read the Migration Guide.
 * Please see the SimpleLink Core SDK Upgrade and Compatibility Information for its updates on core sdk compatibility breaks.
+
 ## Operating Systems Support
 * Windows 7, Windows 8, Windows 10
 * Ubuntu 14.04 64-bit, Ubuntu 16.04 64-bit
@@ -35,7 +26,7 @@ This release was validated with the following components:
 
 * Code Composer Studio 9.2.0
 ** ARM 18.12.3.LTS
-* XDCTools 3.60.00.24
+* XDCTools 3.60.00.34
 * GNU Code Generation Tools
 ** ARM gcc-arm-none-eabi-7-2017-q4-major
 * IAR Code Generation Tools
@@ -43,7 +34,7 @@ This release was validated with the following components:
 * Keil uVision (A subset of the SDK components support Keil IDE)
 ** 5.23
 ** TexasInstruments.MSP432E4_DFP.3.2.3.pack
-This release of SDK is CMSIS 5.0.1 Compliant.
+This release of SDK is CMSIS 5.1.0 Compliant.
 
 ## Device Support
 * MSP432P401R (Rev C and later)
@@ -69,6 +60,7 @@ M - Is incremented for the first release every year. 1 -> 2017, 2 -> 2018, and s
 mm - indicates the specific quarter of the year the SDK was released. 10 -> Q1; 20 -> Q2; 30 -> Q3; 40 -> Q4
 
 ## Prior Releases
+* 3.30.00.13
 * 3.20.00.06
 * 3.10.00.08
 * 2.40.00.10

@@ -7,7 +7,7 @@ KERNEL_BUILD := $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/builds/MSP_EX
 CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
 
-OBJECTS = tirtos_main_tirtos.obj callbacks.obj lcd_thread.obj led_thread.obj temperature_thread.obj uart_thread.obj ti_drivers_config.obj cJSON_cJSON.obj LCD_HAL_lcd_hal.obj
+OBJECTS = callbacks.obj lcd_thread.obj led_thread.obj temperature_thread.obj uart_thread.obj ti_drivers_config.obj cJSON_cJSON.obj LCD_HAL_lcd_hal.obj tirtos_main_tirtos.obj
 
 CONFIGPKG = $(KERNEL_BUILD)/gcc
 
@@ -55,7 +55,6 @@ LFLAGS = -Wl,-T,../../tirtos/gcc/MSP_EXP432P4111_TIRTOS.lds \
     -static \
     -Wl,--gc-sections \
     "-L$(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/kernel/tirtos/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/hard" \
     -lgcc \
     -lc \
     -lm \
@@ -76,11 +75,7 @@ ti_drivers_config.c ti_drivers_config.h: syscfg
 
 syscfg: ../../outOfBox_msp432p4111.syscfg
 	@ echo Generating configuration files...
-	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
-
-tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
-	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
+	@ $(SYSCONFIG_TOOL) --compiler gcc --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
 
 callbacks.obj: ../../callbacks.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
@@ -110,6 +105,10 @@ LCD_HAL_lcd_hal.obj: ../../LCD_HAL/lcd_hal.c ti_drivers_config.h $(CONFIGPKG)/co
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
 
+tirtos_main_tirtos.obj: ../../tirtos/main_tirtos.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
+	@ echo Building $@
+	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
+
 ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
 	@ $(CC) $(CFLAGS) $< -c @$(CONFIGPKG)/compiler.opt -o $@
@@ -117,7 +116,6 @@ ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/comp
 $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
-
 
 clean:
 	@ echo Cleaning...

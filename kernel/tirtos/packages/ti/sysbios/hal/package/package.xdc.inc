@@ -30,7 +30,7 @@ package/ti.sysbios.hal.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-H25
+package/.xdc-H32
 package/ti_sysbios_hal.java
 package/ti_sysbios_hal.class
 package/package_ti.sysbios.hal.c

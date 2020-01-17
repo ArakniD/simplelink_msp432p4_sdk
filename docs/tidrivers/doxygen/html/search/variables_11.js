@@ -26,8 +26,8 @@ var searchData=
   ['transfertimeout',['transferTimeout',['../struct_s_p_i_m_s_p432_d_m_a___object.html#a09eb796fcf9e89948efc9c6c8cf98048',1,'SPIMSP432DMA_Object::transferTimeout()'],['../struct_s_p_i___params.html#a600801907cf396a96825eaf69781913a',1,'SPI_Params::transferTimeout()']]],
   ['tunefreqdco',['tuneFreqDCO',['../struct_power_m_s_p432___perf_level.html#a2404b7d8870a764f17a35bc8701bf827',1,'PowerMSP432_PerfLevel']]],
   ['txbuf',['txBuf',['../struct_s_p_i___transaction.html#a9461a248f1cceb4048668d44b323a0b8',1,'SPI_Transaction']]],
+  ['txbusy',['txBusy',['../struct_u_a_r_t_m_s_p432___object.html#a7aaab2479e41a7930d86f20a5e432633',1,'UARTMSP432_Object']]],
   ['txdmachannelindex',['txDMAChannelIndex',['../struct_s_p_i_m_s_p432_d_m_a___h_w_attrs_v1.html#a62499bab06a4b5fe9032b6cba41e4919',1,'SPIMSP432DMA_HWAttrsV1']]],
-  ['txenabled',['txEnabled',['../struct_u_a_r_t_m_s_p432___object.html#a77009f703339d8eb9f9b0e2a9748da1c',1,'UARTMSP432_Object']]],
   ['txpin',['txPin',['../struct_u_a_r_t_m_s_p432___h_w_attrs_v1.html#a1af241f65064590245b51675ce7a66b8',1,'UARTMSP432_HWAttrsV1']]],
   ['type',['type',['../structspiffs__stat.html#ae08c958bb4b22fd9c6d576e1fea23685',1,'spiffs_stat::type()'],['../structspiffs__dirent.html#a38414e80ef79bb9dcf421555e9435f89',1,'spiffs_dirent::type()'],['../struct_l_e_d___h_w_attrs.html#a56f4d54df1562f438ae6821f49812322',1,'LED_HWAttrs::type()']]]
 ];

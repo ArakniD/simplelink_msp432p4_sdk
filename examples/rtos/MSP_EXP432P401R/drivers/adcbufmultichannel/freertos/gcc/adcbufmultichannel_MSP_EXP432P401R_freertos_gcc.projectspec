@@ -66,7 +66,6 @@
             -static
             -Wl,--gc-sections
             -L${CG_TOOL_ROOT}/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard
-            -L${CG_TOOL_ROOT}/arm-none-eabi/lib/hard
             -lgcc
             -lc
             -lm
@@ -76,16 +75,13 @@
         enableSysConfigTool="true"
         sysConfigBuildOptions="
             --product ${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/.metadata/product.json
+            --compiler gcc
         "
         description="TODO: Write description">
 
         <property name="buildProfile" value="release"/>
         <property name="isHybrid" value="true"/>
         <group id="adcbufmultichannel.SIMPLELINK_MSP432_SDK.MSP_EXP432P401R.drivers.GCC"/>
-        <file path="../../freertos/main_freertos.c" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
-        <file path="../../freertos/gcc/MSP_EXP432P401R_FREERTOS.lds" openOnCreation="false" excludeFromBuild="false" action="copy">
-        </file>
         <file path="../../README.md" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../../README.html" openOnCreation="false" excludeFromBuild="false" action="copy">
@@ -97,6 +93,10 @@
         <file path="../../adcBufMultiChannel.c" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
         <file path="../../adcBufMultiChannel.syscfg" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../freertos/main_freertos.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../../freertos/gcc/MSP_EXP432P401R_FREERTOS.lds" openOnCreation="false" excludeFromBuild="false" action="copy">
         </file>
     </project>
 </projectSpec>

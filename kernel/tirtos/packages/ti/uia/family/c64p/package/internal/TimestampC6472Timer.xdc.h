@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-H25
+ * @(#) xdc-H32
  */
 
 #ifndef ti_uia_family_c64p_TimestampC6472Timer__INTERNAL__

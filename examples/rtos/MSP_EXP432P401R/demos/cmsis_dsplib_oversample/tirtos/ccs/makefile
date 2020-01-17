@@ -68,7 +68,7 @@ ti_drivers_config.c ti_drivers_config.h: syscfg
 
 syscfg: ../../cmsis_dsplib_oversample.syscfg
 	@ echo Generating configuration files...
-	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+	@ $(SYSCONFIG_TOOL) --compiler ccs --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
 
 firDecimation.obj: ../../firDecimation.c ti_drivers_config.h $(CONFIGPKG)/compiler.opt
 	@ echo Building $@
@@ -89,7 +89,6 @@ ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h $(CONFIGPKG)/comp
 $(NAME).out: $(OBJECTS) $(CONFIGPKG)/linker.cmd
 	@ echo linking $@
 	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
-
 
 clean:
 	@ echo Cleaning...

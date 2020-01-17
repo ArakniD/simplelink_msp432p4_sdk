@@ -452,7 +452,7 @@ function validate(inst, vo)
     }
 
     if (inst.smclk > 24000000) {
-        logError(vo, inst, ["hsmclkSource", "smclkDivider"],
+        logError(vo, inst, ["smclk", "smclkDivider"],
                  'SMCLK frequency must be 24000000 or lower.');
     }
 

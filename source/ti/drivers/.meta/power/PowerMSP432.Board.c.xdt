@@ -137,8 +137,10 @@
 
 #include <ti/drivers/Power.h>
 #include <ti/drivers/power/PowerMSP432.h>
-% if (customLevels > 0) {
+% if ((customLevels > 0) || (onHFXT) || (onLFXT)) {
 #include <ti/devices/msp432p4xx/driverlib/cs.h>
+% }
+% if (customLevels > 0) {
 #include <ti/devices/msp432p4xx/driverlib/pcm.h>
 
 PowerMSP432_PerfLevel `customLevName`[] = {

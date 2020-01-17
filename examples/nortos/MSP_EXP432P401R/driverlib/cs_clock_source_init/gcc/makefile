@@ -44,7 +44,6 @@ LFLAGS = -Wl,-T,../gcc/msp432p401r.lds \
     -static \
     -Wl,--gc-sections \
     "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard" \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/hard" \
     -lgcc \
     -lc \
     -lm \
@@ -68,7 +67,6 @@ gcc_startup_msp432p401r_gcc.obj: ../gcc/startup_msp432p401r_gcc.c
 $(NAME).out: $(OBJECTS)
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
-
 
 clean:
 	@ echo Cleaning...

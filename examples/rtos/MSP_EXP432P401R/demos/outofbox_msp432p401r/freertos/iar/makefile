@@ -57,7 +57,7 @@ ti_drivers_config.c ti_drivers_config.h: syscfg
 
 syscfg: ../../outofbox_msp432p401r.syscfg
 	@ echo Generating configuration files...
-	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+	@ $(SYSCONFIG_TOOL) --compiler iar --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
 
 callbacks.obj: ../../callbacks.c ti_drivers_config.h
 	@ echo Building $@
@@ -82,7 +82,6 @@ ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/iar/freertos.lib
 	@ echo linking $@
 	@ $(LNK)  $(OBJECTS)  $(LFLAGS) -o $(NAME).out
-
 
 clean:
 	@ echo Cleaning...

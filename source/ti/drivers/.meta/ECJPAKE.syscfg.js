@@ -67,7 +67,7 @@ let base = {
     description : "Elliptic Curve Password Authenticated Key Exchange by"
         + " Juggling Driver",
     longDescription : `
-The [__ECJPAKE driver__][1] provides is a key agreement
+The [__ECJPAKE driver__][1] provides a key agreement
 scheme that establishes a secure channel over an insecure network.
 It only requires sharing a password offline and does not require
 public key infrastructure or trusted third parties such as

@@ -65,7 +65,7 @@ ti_drivers_config.c ti_drivers_config.h: syscfg
 
 syscfg: ../../capkeypad_captivate_demo.syscfg
 	@ echo Generating configuration files...
-	@ $(SYSCONFIG_TOOL) --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+	@ $(SYSCONFIG_TOOL) --compiler ccs --product $(SIMPLELINK_MSP432_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
 
 captivate_task.obj: ../../captivate_task.c ti_drivers_config.h
 	@ echo Building $@
@@ -98,7 +98,6 @@ ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h
 $(NAME).out: $(OBJECTS) $(KERNEL_BUILD)/ccs/freertos.lib
 	@ echo linking $@
 	@ $(LNK) -z $(OBJECTS)  $(LFLAGS) -o $(NAME).out
-
 
 clean:
 	@ echo Cleaning...

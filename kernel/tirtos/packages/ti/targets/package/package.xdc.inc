@@ -14,7 +14,7 @@ package/ti.targets.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-H25
+package/.xdc-H32
 package/ti_targets.java
 package/ti_targets.class
 package/package_ti.targets.c

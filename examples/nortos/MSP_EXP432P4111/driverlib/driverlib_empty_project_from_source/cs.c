@@ -548,7 +548,7 @@ void CS_setDCOExternalResistorCalibration(uint_fast8_t calData,
 
     CS->CTL0 &= ~CS_CTL0_DCORSEL_MASK;
 
-    if ((freqRange == CS_OVER32MHZ))
+    if (freqRange == CS_OVER32MHZ)
     {
         CS->DCOERCAL1 &= ~CS_DCOERCAL1_DCO_FCAL_RSEL5_MASK;
         CS->DCOERCAL1 |= (calData);
@@ -655,7 +655,7 @@ uint32_t CS_getDCOFrequency(void)
         return (uint32_t) centeredFreq;
 
     /* DCORSEL = 5  */
-    if ((centeredFreq == 48000000))
+    if (centeredFreq == 48000000)
     {
         /* External Resistor */
         if (BITBAND_PERI(CS->CTL0, CS_CTL0_DCORES_OFS))
